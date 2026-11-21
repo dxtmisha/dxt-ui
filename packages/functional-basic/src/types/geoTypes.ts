@@ -187,4 +187,10 @@ export interface GeoPhoneMapInfoFull extends GeoPhoneMapInfo {
   full: string
   /** Formatted phone number according to the mask / Отформатированный номер телефона по маске */
   format: string
+  /** Phone number formatted with the mask / Номер телефона в формате маски */
+  mask: string
+  /** Phone number in E.164 format (`+` followed by digits) / Номер телефона в формате E.164 (`+` и цифры) */
+  e164: string
+  /** Digits-only phone number / Номер телефона, содержащий только цифры */
+  digits: string
 }

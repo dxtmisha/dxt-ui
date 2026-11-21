@@ -461,6 +461,10 @@ async function mountInputPhone(
             emittedEvents.push({ type: String(type), args })
             if (type === 'update:modelValue') {
               props.modelValue = args[0] as string | undefined
+            } else if (type === 'update:modelE164') {
+              props.modelE164 = args[0] as string | undefined
+            } else if (type === 'update:modelDigits') {
+              props.modelDigits = args[0] as string | undefined
             }
           },
           components: {
@@ -633,6 +637,7 @@ describe('InputPhone (Integration)', () => {
 
     expect(exposed.value.value).toBe('7')
     expect(exposed.getValue()).toBeUndefined()
+    expect(exposed.isChanged()).toBe(false)
     expect(exposed.checkValidity()).toBe(false)
     expect(exposed.getValidationMessage()).toBe('')
 
@@ -640,6 +645,7 @@ describe('InputPhone (Integration)', () => {
     expect(input).not.toBeNull()
     input.dispatchEvent(new FocusEvent('blur'))
     await nextTick()
+    expect(exposed.isChanged()).toBe(true)
     expect(exposed.getValidationMessage()).toBe('Phone is required')
 
     exposed.setValue('79001234567')
@@ -1158,5 +1164,54 @@ describe('InputPhone (Integration)', () => {
       format: '+371-21-234-567',
       isFull: true
     })
+  })
+
+  it('should support formatOutput (mask | e164 | digits) and dedicated v-model:e164 / v-model:digits', async () => {
+    const { container, props, exposed, emittedEvents } = await mountInputPhone({
+      countryDefault: 'RU',
+      formatOutput: 'e164'
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(exposed.getValue()).toBeUndefined()
+
+    // Autofill/input emits E.164 in v-model and getValue() while keeping masked DOM input
+    input.value = '+7-900-123-45-67'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: null }))
+    await nextTick()
+    await nextTick()
+
+    expect(input.value).toBe('+7-900-123-45-67')
+    expect(exposed.getValue()).toBe('+79001234567')
+    expect(props.modelValue).toBe('+79001234567')
+    expect(props.modelE164).toBe('+79001234567')
+    expect(props.modelDigits).toBe('79001234567')
+    expect(emittedEvents.some(event => event.type === 'update:e164' && event.args[0] === '+79001234567')).toBe(true)
+    expect(emittedEvents.some(event => event.type === 'update:digits' && event.args[0] === '79001234567')).toBe(true)
+
+    // Switch formatOutput dynamically to 'digits' and 'mask'
+    props.formatOutput = 'digits'
+    await nextTick()
+    expect(exposed.getValue()).toBe('79001234567')
+    expect(props.modelValue).toBe('79001234567')
+
+    props.formatOutput = 'mask'
+    await nextTick()
+    expect(exposed.getValue()).toBe('+7-900-123-45-67')
+    expect(props.modelValue).toBe('+7-900-123-45-67')
+
+    // Two-way update via modelE164 updates DOM, country, and digits model
+    props.modelE164 = '+4930123456'
+    await nextTick()
+    await nextTick()
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('DE')
+    expect(props.modelDigits).toBe('4930123456')
+
+    // Clear resets model outputs to undefined
+    exposed.clear()
+    await nextTick()
+    expect(exposed.getValue()).toBeUndefined()
+    expect(props.modelE164).toBeUndefined()
+    expect(props.modelDigits).toBeUndefined()
   })
 })

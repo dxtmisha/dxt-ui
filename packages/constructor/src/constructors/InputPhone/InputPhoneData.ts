@@ -79,6 +79,30 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     return this.country().toPhone()
   })
 
+  /** E.164 phone number when input is complete / Номер в формате E.164 при полном заполнении */
+  readonly e164 = computed<string | undefined>(() => {
+    if (
+      this.value().isFull.value
+      && this.value().item.value
+    ) {
+      return this.getDetail().e164 || undefined
+    }
+
+    return undefined
+  })
+
+  /** Digits-only phone number when input is complete / Цифры номера телефона при полном заполнении */
+  readonly digits = computed<string | undefined>(() => {
+    if (
+      this.value().isFull.value
+      && this.value().item.value
+    ) {
+      return this.getDetail().digits || undefined
+    }
+
+    return undefined
+  })
+
   /**
    * Returns current phone metadata context preserving the `GeoPhoneMapInfoFull` structure (`item`, `phone`, `full`, `format`) plus `isFull`.
    *
@@ -202,7 +226,10 @@ export class InputPhoneData extends DesignLifecycleAbstract {
         item: GeoPhone.getByCode(activeCountry),
         phone: '',
         full: '',
-        format: ''
+        format: '',
+        mask: '',
+        e164: '',
+        digits: ''
       }
     }
 

@@ -217,7 +217,7 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
     type: string & keyof FieldBasicEmits = 'input'
   ): this => {
     if (type === 'input') {
-      this.model.emit(this.value().itemByFull.value)
+      this.emitModel()
     }
 
     const data = {
@@ -247,6 +247,15 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
       .onChange(event)
 
     return this
+  }
+
+  /**
+   * Emits model update value on input events.
+   *
+   * Испускает обновление значения модели при событиях ввода.
+   */
+  protected emitModel(): void {
+    this.model.emit(this.value().itemByFull.value)
   }
 
   /**

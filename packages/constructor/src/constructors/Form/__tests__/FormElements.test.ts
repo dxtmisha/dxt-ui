@@ -18,6 +18,7 @@ describe('FormElements', () => {
       getValue: () => 'test@example.com',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -54,6 +55,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     }
@@ -75,6 +77,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -85,6 +88,7 @@ describe('FormElements', () => {
       getValue: () => 25,
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -106,6 +110,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -120,6 +125,7 @@ describe('FormElements', () => {
       getValue: () => 25,
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -144,6 +150,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -162,6 +169,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: setValueMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -181,6 +189,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: setUsernameMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -191,6 +200,7 @@ describe('FormElements', () => {
       getValue: () => 25,
       setValue: setAgeMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -215,6 +225,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: setUsernameMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -225,6 +236,7 @@ describe('FormElements', () => {
       getValue: () => 25,
       setValue: vi.fn(),
       clear: clearAgeMock,
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -248,6 +260,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: clearMock,
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -258,6 +271,7 @@ describe('FormElements', () => {
       getValue: () => 25,
       setValue: setValueMock,
       clear: undefined as any,
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -278,6 +292,7 @@ describe('FormElements', () => {
       getValue: () => 'modified',
       setValue: setUsernameMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -288,6 +303,7 @@ describe('FormElements', () => {
       getValue: () => 99,
       setValue: setAgeMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -306,6 +322,7 @@ describe('FormElements', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -343,6 +360,7 @@ describe('FormElements', () => {
       getValue: () => 'email',
       setValue: setRadio1Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: { value: 'email', status: true }
@@ -355,6 +373,7 @@ describe('FormElements', () => {
       getValue: () => undefined,
       setValue: setRadio2Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: undefined
@@ -382,6 +401,7 @@ describe('FormElements', () => {
       getValue: () => 'email',
       setValue: setRadio1Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: { value: 'email', status: true }
@@ -394,6 +414,7 @@ describe('FormElements', () => {
       getValue: () => undefined,
       setValue: setRadio2Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: { value: 'sms', status: true }
@@ -422,6 +443,7 @@ describe('FormElements', () => {
       getValue: () => 'email',
       setValue: setRadio1Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: { value: 'email', status: true }
@@ -434,6 +456,7 @@ describe('FormElements', () => {
       getValue: () => undefined,
       setValue: setRadio2Mock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: undefined

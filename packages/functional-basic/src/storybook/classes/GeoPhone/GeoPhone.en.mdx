@@ -78,6 +78,9 @@ Result of the `getByPhone` search method:
 Extended result of the `getByPhoneFull` method (extends `GeoPhoneMapInfo`):
 - `full: string` — Full phone number (digits only).
 - `format: string` — Formatted phone number according to the mask (supports partial formatting when `isPartial` is `true`, or returns the original string if no mask matches).
+- `mask: string` — Phone number formatted with the mask (`+7-999-123-45-67`).
+- `e164: string` — Phone number in E.164 format (`+79991234567`, or empty string when there are no digits).
+- `digits: string` — Digits-only phone number (`79991234567`).
 
 ## Examples
 
@@ -100,6 +103,9 @@ console.log(result.item?.value) // 'RU'
 console.log(result.phone)       // '9991234567'
 console.log(result.full)        // '79991234567'
 console.log(result.format)      // '+7-999-123-45-67'
+console.log(result.mask)        // '+7-999-123-45-67'
+console.log(result.e164)        // '+79991234567'
+console.log(result.digits)      // '79991234567'
 
 // Partial formatting for an incomplete phone number
 const partial = GeoPhone.getByPhoneFull('+7 (999) 123', true)

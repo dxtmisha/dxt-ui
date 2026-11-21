@@ -162,8 +162,9 @@ export class FieldValidationInclude {
    * Возвращает свойства валидации для экспонирования.
    * @returns validation expose object / объект экспонирования валидации
    */
-  readonly expose = (): Pick<FieldBasicExpose, 'checkValidity' | 'getValidationMessage'> => {
+  readonly expose = (): Pick<FieldBasicExpose, 'checkValidity' | 'getValidationMessage' | 'isChanged'> => {
     return {
+      isChanged: () => this.change?.().is() ?? false,
       checkValidity: this.checkValidity,
       getValidationMessage: () => this.message
     }

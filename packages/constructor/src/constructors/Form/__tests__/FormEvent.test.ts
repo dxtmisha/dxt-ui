@@ -29,6 +29,7 @@ describe('FormEvent', () => {
       getValue: () => 'john',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -75,6 +76,7 @@ describe('FormEvent', () => {
       getValue: () => '25',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -177,6 +179,7 @@ describe('FormEvent', () => {
       getValue: () => 'test@example.com',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })

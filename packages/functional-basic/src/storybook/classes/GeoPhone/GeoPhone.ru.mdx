@@ -78,6 +78,9 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 Расширенный результат выполнения метода `getByPhoneFull` (наследует `GeoPhoneMapInfo`):
 - `full: string` — Полный номер телефона (только цифры).
 - `format: string` — Отформатированный номер телефона по маске (поддерживает частичное форматирование при `isPartial = true` или возвращает исходную строку при отсутствии подходящей маски).
+- `mask: string` — Номер телефона в формате маски (`+7-999-123-45-67`).
+- `e164: string` — Номер телефона в формате E.164 (`+79991234567` или пустая строка при отсутствии цифр).
+- `digits: string` — Номер телефона только из цифр (`79991234567`).
 
 ## Примеры
 
@@ -100,6 +103,9 @@ console.log(result.item?.value) // 'RU'
 console.log(result.phone)       // '9991234567'
 console.log(result.full)        // '79991234567'
 console.log(result.format)      // '+7-999-123-45-67'
+console.log(result.mask)        // '+7-999-123-45-67'
+console.log(result.e164)        // '+79991234567'
+console.log(result.digits)      // '79991234567'
 
 // Частичное форматирование для неполного номера
 const partial = GeoPhone.getByPhoneFull('+7 (999) 123', true)

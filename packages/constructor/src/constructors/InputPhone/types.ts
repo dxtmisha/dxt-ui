@@ -5,7 +5,7 @@ import type { InputPhoneDialCodeComponentInclude } from '../InputPhoneDialCode'
 import type { MaskComponentInclude } from '../Mask'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
-import type { ModelEmitsCountry } from '../../types/modelTypes'
+import type { ModelEmitsCountry, ModelEmitsDigits, ModelEmitsE164 } from '../../types/modelTypes'
 import type { InputPhoneDetail } from './basicTypes'
 
 /**
@@ -22,7 +22,11 @@ export type InputPhoneComponents = FieldComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type InputPhoneEmits = FieldBasicEmits & ModelEmitsCountry
+export type InputPhoneEmits
+  = FieldBasicEmits
+    & ModelEmitsCountry
+    & ModelEmitsDigits
+    & ModelEmitsE164
 
 /**
  * Type describing available properties.

@@ -20,6 +20,7 @@ import { userRoles } from '../media/schema/userRoles'
 import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsDbResolver } from './CmsDbResolver'
 import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -795,7 +796,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   static normalizeCode(
     code: string
   ): string {
-    return CmsDbItemAbstract.normalizeCodeValue('cms-role', code)
+    return CmsVerification.normalizeCode(code, 'cms-role')
   }
 
   /**
@@ -808,6 +809,6 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   static normalizeName(
     name: string
   ): string {
-    return CmsDbItemAbstract.normalizeNameValue('cms-role', name)
+    return CmsVerification.normalizeName(name, 'cms-role')
   }
 }

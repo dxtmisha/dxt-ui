@@ -212,6 +212,8 @@ export type FieldBasicExpose<T = string> = {
   /** Clears the value/ Очищает значение */
   clear: () => void
 
+  /** Checks whether the field was changed/ Проверяет, было ли изменено поле */
+  isChanged: () => boolean
   /** Checks validity of the field and returns status/ Проверяет валидность поля и возвращает статус */
   checkValidity: () => boolean
   /** Returns validation message/ Возвращает сообщение валидации */

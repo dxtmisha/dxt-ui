@@ -2,6 +2,7 @@ import {
   ErrorCenterThrow,
   executeFunction,
   isPositiveInteger,
+  isString,
   type ErrorCenterCauseItem
 } from '@dxtmisha/functional-basic'
 
@@ -33,6 +34,58 @@ export class CmsVerification {
           }
         : undefined
     )
+  }
+
+  /**
+   * Normalizes and validates a non-empty unique entity code without whitespace.
+   *
+   * Нормализует и проверяет непустой уникальный код сущности без пробельных символов.
+   * @param code Raw entity code / Исходный код сущности
+   * @param errorGroup Error group / Группа ошибки
+   * @returns Trimmed non-empty entity code / Очищенный код сущности
+   */
+  static normalizeCode(
+    code: string,
+    errorGroup: string
+  ): string {
+    const normalized = isString(code) ? code.trim() : ''
+
+    this.verify(
+      normalized.length > 0 && !/\s/.test(normalized),
+      {
+        group: errorGroup,
+        code: 'invalidCode',
+        details: { code }
+      }
+    )
+
+    return normalized
+  }
+
+  /**
+   * Normalizes and validates a non-empty entity display name.
+   *
+   * Нормализует и проверяет непустое отображаемое название сущности.
+   * @param name Raw entity name / Исходное название сущности
+   * @param errorGroup Error group / Группа ошибки
+   * @returns Trimmed non-empty entity name / Очищенное название сущности
+   */
+  static normalizeName(
+    name: string,
+    errorGroup: string
+  ): string {
+    const normalized = isString(name) ? name.trim() : ''
+
+    this.verify(
+      normalized.length > 0,
+      {
+        group: errorGroup,
+        code: 'invalidName',
+        details: { name }
+      }
+    )
+
+    return normalized
   }
 
   /**

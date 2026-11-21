@@ -53,6 +53,108 @@ describe('CmsVerification', () => {
     })
   })
 
+  describe('normalizeCode', () => {
+    it('trims and returns valid codes without reporting an error', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeCode('  admin  ', 'cms-role')).toBe('admin')
+      expect(CmsVerification.normalizeCode('users:read', 'cms-permission')).toBe('users:read')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('reports invalidCode via ErrorCenterThrow.on and throws ErrorCenterError for empty or whitespace codes', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(() => CmsVerification.normalizeCode('   ', 'cms-role'))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.normalizeCode('bad code', 'cms-permission'))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.normalizeCode(null as unknown as string, 'cms-created-origin'))
+        .toThrow(ErrorCenterError)
+
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        1,
+        {
+          group: 'cms-role',
+          code: 'invalidCode',
+          details: { code: '   ' }
+        },
+        undefined
+      )
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        2,
+        {
+          group: 'cms-permission',
+          code: 'invalidCode',
+          details: { code: 'bad code' }
+        },
+        undefined
+      )
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        3,
+        {
+          group: 'cms-created-origin',
+          code: 'invalidCode',
+          details: { code: null }
+        },
+        undefined
+      )
+    })
+  })
+
+  describe('normalizeName', () => {
+    it('trims and returns valid names without reporting an error', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeName('  Admin Role  ', 'cms-role')).toBe('Admin Role')
+      expect(CmsVerification.normalizeName('Read Users', 'cms-permission')).toBe('Read Users')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('reports invalidName via ErrorCenterThrow.on and throws ErrorCenterError for empty or non-string names', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(() => CmsVerification.normalizeName('   ', 'cms-role'))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.normalizeName('', 'cms-permission'))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.normalizeName(undefined as unknown as string, 'cms-created-origin'))
+        .toThrow(ErrorCenterError)
+
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        1,
+        {
+          group: 'cms-role',
+          code: 'invalidName',
+          details: { name: '   ' }
+        },
+        undefined
+      )
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        2,
+        {
+          group: 'cms-permission',
+          code: 'invalidName',
+          details: { name: '' }
+        },
+        undefined
+      )
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        3,
+        {
+          group: 'cms-created-origin',
+          code: 'invalidName',
+          details: { name: undefined }
+        },
+        undefined
+      )
+    })
+  })
+
   describe('verify', () => {
     it('does not report an error and returns true when the callback or boolean value is true', () => {
       ErrorCenter.setIsConsole(false)

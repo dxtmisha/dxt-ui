@@ -21,6 +21,7 @@ export * from './composables/useCmsDb'
 // Functions
 export * from './functions/createCmsDb'
 export * from './functions/escapeCmsSearchPattern'
+export * from './functions/findOneCmsRecord'
 export * from './functions/normalizeCmsLimit'
 export * from './functions/normalizeCmsOffset'
 export * from './functions/normalizeCmsOptionalText'

@@ -57,6 +57,7 @@ describe('FormValue', () => {
       getValue: () => 'admin',
       setValue: setUsernameMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -71,6 +72,7 @@ describe('FormValue', () => {
       getValue: () => 25,
       setValue: setAgeMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -136,6 +138,7 @@ describe('FormValue', () => {
       getValue: () => 'Hello',
       setValue: setMock,
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => ''
     })

@@ -10,9 +10,9 @@ import type { MaskPropsBasic } from '../Mask'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputPhoneProps } from '../../types/fieldTypes'
-import type { ModelPropsCountry } from '../../types/modelTypes'
+import type { ModelPropsCountry, ModelPropsDigits, ModelPropsE164 } from '../../types/modelTypes'
 import type { TextInvalidPhonePropsInclude } from '../../types/textTypes'
-import type { InputPhoneMatch } from './basicTypes'
+import type { InputPhoneFormatOutput, InputPhoneMatch } from './basicTypes'
 
 /**
  * Type describing token properties for InputPhone.
@@ -42,6 +42,8 @@ export type InputPhonePropsBasic<
   & Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'>
   & FieldInputPhoneProps
   & ModelPropsCountry
+  & ModelPropsDigits
+  & ModelPropsE164
   & TextInvalidPhonePropsInclude
   & {
     /** Default country / Страна по умолчанию */
@@ -50,6 +52,8 @@ export type InputPhonePropsBasic<
     countryReadonly?: boolean
     /** Flag to disable dynamic country detection by phone number / Флаг для отключения динамического определения страны по номеру телефона */
     countryBlock?: boolean
+    /** Output format mode for v-model and getValue() / Формат выходного значения для v-model и getValue() */
+    formatOutput?: InputPhoneFormatOutput
     /** Country-specific pattern map or custom phone validation rule / Карта паттернов по странам или пользовательское правило валидации телефона */
     phoneMatch?: InputPhoneMatch
     /** Additional attributes for the mask / Дополнительные атрибуты для маски */
@@ -62,6 +66,7 @@ export type InputPhoneProps = InputPhonePropsBasic & InputPhonePropsToken
 /** Default values for properties / Значения по умолчанию для свойств */
 export const defaultsInputPhone = {
   autocomplete: 'tel',
+  formatOutput: 'mask' as InputPhoneFormatOutput,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

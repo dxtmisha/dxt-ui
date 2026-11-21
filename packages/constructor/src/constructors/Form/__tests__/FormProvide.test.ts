@@ -50,6 +50,7 @@ describe('FormProvide', () => {
       getValue: () => 'admin',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {

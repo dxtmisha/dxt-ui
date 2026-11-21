@@ -26,6 +26,7 @@ describe('FormError', () => {
       getValue: () => 'invalid-email',
       setValue: vi.fn(),
       clear: vi.fn(),
+      isChanged: () => false,
       checkValidity: () => false,
       getValidationMessage: () => 'Invalid email address'
     })

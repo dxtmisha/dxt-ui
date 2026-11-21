@@ -234,7 +234,12 @@ describe('InputPhoneData', () => {
       expect(bareDetail.phone).toBe('')
       expect(bareDetail.full).toBe('7')
       expect(bareDetail.format).toBe('+7')
+      expect(bareDetail.mask).toBe('+7')
+      expect(bareDetail.e164).toBe('+7')
+      expect(bareDetail.digits).toBe('7')
       expect(bareDetail.isFull).toBe(false)
+      expect(data.e164.value).toBeUndefined()
+      expect(data.digits.value).toBeUndefined()
 
       valueRef.value = '+7-900-123-45-67'
       isFullRef.value = true
@@ -243,7 +248,12 @@ describe('InputPhoneData', () => {
       expect(fullRuDetail.phone).toBe('9001234567')
       expect(fullRuDetail.full).toBe('79001234567')
       expect(fullRuDetail.format).toBe('+7-900-123-45-67')
+      expect(fullRuDetail.mask).toBe('+7-900-123-45-67')
+      expect(fullRuDetail.e164).toBe('+79001234567')
+      expect(fullRuDetail.digits).toBe('79001234567')
       expect(fullRuDetail.isFull).toBe(true)
+      expect(data.e164.value).toBe('+79001234567')
+      expect(data.digits.value).toBe('79001234567')
 
       // Alternative subcode for Puerto Rico (1-939)
       const { data: prData, isFullRef: prFull } = createData({ countryDefault: 'PR' }, '+1-939-555-1234')

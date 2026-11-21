@@ -9,11 +9,13 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { findOneCmsRecord } from '../functions/findOneCmsRecord'
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsDbResolver } from './CmsDbResolver'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -112,7 +114,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsPermission | undefined> {
-    return CmsDbItemAbstract.findOneRecord<CmsPermission>(
+    return findOneCmsRecord<CmsPermission>(
       executor,
       permissions,
       whereCondition
@@ -322,7 +324,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
   static normalizeCode(
     code: string
   ): string {
-    return CmsDbItemAbstract.normalizeCodeValue('cms-permission', code)
+    return CmsVerification.normalizeCode(code, 'cms-permission')
   }
 
   /**
@@ -335,6 +337,6 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
   static normalizeName(
     name: string
   ): string {
-    return CmsDbItemAbstract.normalizeNameValue('cms-permission', name)
+    return CmsVerification.normalizeName(name, 'cms-permission')
   }
 }

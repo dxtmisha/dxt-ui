@@ -78,6 +78,9 @@ Kết quả của phương thức tìm kiếm `getByPhone`:
 Kết quả mở rộng của phương thức `getByPhoneFull` (kế thừa `GeoPhoneMapInfo`):
 - `full: string` — Số điện thoại đầy đủ (chỉ gồm các chữ số).
 - `format: string` — Số điện thoại đã được định dạng theo mặt nạ (hỗ trợ định dạng một phần khi `isPartial = true`, hoặc trả về chuỗi gốc nếu không khớp mặt nạ).
+- `mask: string` — Số điện thoại theo định dạng mặt nạ (`+7-999-123-45-67`).
+- `e164: string` — Số điện thoại theo định dạng E.164 (`+79991234567`, hoặc chuỗi rỗng nếu không có chữ số).
+- `digits: string` — Số điện thoại chỉ gồm các chữ số (`79991234567`).
 
 ## Ví dụ
 
@@ -100,6 +103,9 @@ console.log(result.item?.value) // 'RU'
 console.log(result.phone)       // '9991234567'
 console.log(result.full)        // '79991234567'
 console.log(result.format)      // '+7-999-123-45-67'
+console.log(result.mask)        // '+7-999-123-45-67'
+console.log(result.e164)        // '+79991234567'
+console.log(result.digits)      // '79991234567'
 
 // Định dạng một phần cho số điện thoại chưa đầy đủ
 const partial = GeoPhone.getByPhoneFull('+7 (999) 123', true)

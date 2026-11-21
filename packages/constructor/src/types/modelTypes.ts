@@ -21,6 +21,28 @@ export type ModelEmitsCountry<Value = string> = {
 }
 
 /**
+ * Event signatures for model digits updates/
+ * Сигнатуры событий для обновления цифр номера модели
+ */
+export type ModelEmitsDigits<Value = string | undefined> = {
+  /** Update digits event/ Событие обновления цифр номера */
+  'update:digits': [value: Value]
+  /** Update model digits event/ Событие обновления цифр номера модели */
+  'update:modelDigits': [value: Value]
+}
+
+/**
+ * Event signatures for model E.164 updates/
+ * Сигнатуры событий для обновления номера E.164 модели
+ */
+export type ModelEmitsE164<Value = string | undefined> = {
+  /** Update E.164 event/ Событие обновления номера E.164 */
+  'update:e164': [value: Value]
+  /** Update model E.164 event/ Событие обновления номера E.164 модели */
+  'update:modelE164': [value: Value]
+}
+
+/**
  * Event signatures for model files updates/
  * Сигнатуры событий для обновления файлов модели
  */
@@ -79,6 +101,36 @@ export type ModelPropsCountry<Value = string> = {
   'onUpdate:country'?: (value: Value) => void
   /** Update model country handler/ Обработчик обновления страны модели */
   'onUpdate:modelCountry'?: (value: Value) => void
+}
+
+/**
+ * Props for model digits used with v-model:digits/
+ * Свойства для цифр номера модели, используемых с v-model:digits
+ */
+export type ModelPropsDigits<Value = string | undefined> = {
+  /** Digits prop/ Свойство цифр номера */
+  'digits'?: Value
+  /** Model digits prop/ Свойство цифр номера модели */
+  'modelDigits'?: Value
+  /** Update digits handler/ Обработчик обновления цифр номера */
+  'onUpdate:digits'?: (value: Value) => void
+  /** Update model digits handler/ Обработчик обновления цифр номера модели */
+  'onUpdate:modelDigits'?: (value: Value) => void
+}
+
+/**
+ * Props for model E.164 used with v-model:e164/
+ * Свойства для номера E.164 модели, используемого с v-model:e164
+ */
+export type ModelPropsE164<Value = string | undefined> = {
+  /** E.164 prop/ Свойство номера E.164 */
+  'e164'?: Value
+  /** Model E.164 prop/ Свойство номера E.164 модели */
+  'modelE164'?: Value
+  /** Update E.164 handler/ Обработчик обновления номера E.164 */
+  'onUpdate:e164'?: (value: Value) => void
+  /** Update model E.164 handler/ Обработчик обновления номера E.164 модели */
+  'onUpdate:modelE164'?: (value: Value) => void
 }
 
 /**

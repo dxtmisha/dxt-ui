@@ -1,5 +1,8 @@
 import type { GeoPhoneMapInfoFull } from '@dxtmisha/functional'
 
+/** Output value format mode for InputPhone v-model and getValue() / Формат выходного значения для v-model и getValue() */
+export type InputPhoneFormatOutput = 'mask' | 'e164' | 'digits'
+
 /**
  * Resolved phone country and formatted value.
  *

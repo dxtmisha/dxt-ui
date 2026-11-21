@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { describe, expect, it, vi } from 'vitest'
-import { reactive } from 'vue'
+import { effectScope, nextTick, reactive, ref } from 'vue'
 import { GeoPhone } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../../classes/Field/FieldChangeInclude'
 import { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import type { ModelInclude } from '../../../classes/ModelInclude'
 import type { FieldAllProps, FieldValidationItem } from '../../../types/fieldTypes'
 import type { InputPhoneData } from '../InputPhoneData'
 import { InputPhoneEvent } from '../InputPhoneEvent'
@@ -77,5 +78,53 @@ describe('InputPhoneEvent', () => {
       source: 'checkout'
     })
     expect(latestInputLite.detail?.item?.value).toBe('RO')
+  })
+
+  it('should emit update:e164/update:modelE164 and update:digits/update:modelDigits on input and reactive updates', async () => {
+    const scope = effectScope()
+    const props = reactive<FieldAllProps>({})
+    const change = new FieldChangeInclude(props)
+    const value = new FieldValueInclude<string>(props)
+    const e164Ref = ref<string | undefined>()
+    const digitsRef = ref<string | undefined>()
+
+    const emitE164Spy = vi.fn()
+    const emitDigitsSpy = vi.fn()
+    const mockData = {
+      getDetail: () => ({ ...GeoPhone.getByPhoneFull('+7-900-123-45-67', true), isFull: true }),
+      e164: e164Ref,
+      digits: digitsRef
+    } as unknown as InputPhoneData
+
+    const phoneEvent = scope.run(() => {
+      const instance = new InputPhoneEvent(
+        props,
+        () => change,
+        () => value,
+        () => mockData,
+        undefined,
+        undefined,
+        undefined,
+        () => ({ emit: emitE164Spy }) as unknown as ModelInclude<string | undefined>,
+        () => ({ emit: emitDigitsSpy }) as unknown as ModelInclude<string | undefined>
+      )
+      instance.onMounted()
+      return instance
+    })!
+
+    e164Ref.value = '+79001234567'
+    digitsRef.value = '79001234567'
+    await nextTick()
+    expect(emitE164Spy).toHaveBeenCalledWith('+79001234567')
+    expect(emitDigitsSpy).toHaveBeenCalledWith('79001234567')
+
+    emitE164Spy.mockClear()
+    emitDigitsSpy.mockClear()
+    phoneEvent.on(new Event('input'))
+    expect(emitE164Spy).toHaveBeenCalledWith('+79001234567')
+    expect(emitDigitsSpy).toHaveBeenCalledWith('79001234567')
+
+    phoneEvent.onUnmounted()
+    scope.stop()
   })
 })

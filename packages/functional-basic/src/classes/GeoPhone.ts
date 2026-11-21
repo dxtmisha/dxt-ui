@@ -195,11 +195,15 @@ export class GeoPhone {
   ): GeoPhoneMapInfoFull {
     const data = this.getByPhone(phone)
     const full = this.cleanPhone(phone)
+    const format = this.toMask(full, data.item?.maskFull, false, isPartial) ?? phone
 
     return {
       ...data,
       full,
-      format: this.toMask(full, data.item?.maskFull, false, isPartial) ?? phone
+      format,
+      mask: format,
+      e164: full ? `+${full}` : '',
+      digits: full
     }
   }
 

@@ -115,17 +115,27 @@ describe('FieldValidationInclude', () => {
     expect(validation.message).toBe('Fields do not match')
   })
 
-  it('should expose checkValidity and message getter', () => {
+  it('should expose isChanged, checkValidity, and getValidationMessage', () => {
     const props = { validationMessage: 'Explicit' }
     const attributes = { listForCheck: {} } as unknown as FieldAttributesInclude
     const value = {
       getToArray: () => [],
       item: ref('val')
     } as unknown as FieldValueInclude
+    const changed = ref(false)
+    const change = {
+      is: () => changed.value
+    } as unknown as FieldChangeInclude
 
-    const validation = new FieldValidationInclude(props, () => attributes, () => value)
+    const validationWithoutChange = new FieldValidationInclude(props, () => attributes, () => value)
+    expect(validationWithoutChange.expose().isChanged()).toBe(false)
+
+    const validation = new FieldValidationInclude(props, () => attributes, () => value, () => change)
     const exp = validation.expose()
 
+    expect(exp.isChanged()).toBe(false)
+    changed.value = true
+    expect(exp.isChanged()).toBe(true)
     expect(exp.checkValidity()).toBe(false)
     expect(exp.getValidationMessage()).toBe('Explicit')
   })

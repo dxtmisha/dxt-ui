@@ -12,7 +12,6 @@ import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
@@ -29,6 +28,7 @@ import { InputPhoneFormat } from './InputPhoneFormat'
 import { InputPhoneMask } from './InputPhoneMask'
 import { InputPhonePaste } from './InputPhonePaste'
 import { InputPhoneValidation } from './InputPhoneValidation'
+import { InputPhoneValue } from './InputPhoneValue'
 
 import type { InputPhoneProps } from './props'
 import type { InputPhoneComponents, InputPhoneEmits, InputPhoneSlots } from './types'
@@ -65,6 +65,10 @@ export type InputPhoneConstructors = {
   mask: typeof MaskInclude
   /** Country model constructor / Конструктор модели страны */
   modelCountry: typeof ModelInclude<string>
+  /** Digits model constructor / Конструктор модели цифр номера */
+  modelDigits: typeof ModelInclude<string | undefined>
+  /** E.164 model constructor / Конструктор модели E.164 */
+  modelE164: typeof ModelInclude<string | undefined>
   /** Input phone paste constructor / Конструктор вставки телефона */
   paste: typeof InputPhonePaste
   /** Input phone mask constructor / Конструктор маски ввода телефона */
@@ -73,8 +77,8 @@ export type InputPhoneConstructors = {
   text: typeof TextInclude
   /** Field validation constructor / Конструктор валидации поля */
   validation: typeof InputPhoneValidation
-  /** Field value constructor / Конструктор значения поля */
-  value: typeof FieldValueInclude<string>
+  /** Input phone value constructor / Конструктор значения ввода телефона */
+  value: typeof InputPhoneValue
 }
 
 /**
@@ -171,7 +175,9 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('data'),
         () => this.i('validation'),
         this.emits,
-        () => this.callInstance('form', item => item)
+        () => this.callInstance('form', item => item),
+        () => this.i('modelE164'),
+        () => this.i('modelDigits')
       ]
     },
     field: {
@@ -223,6 +229,20 @@ export class InputPhone extends DesignLogicAbstract<
         this.emits
       ]
     },
+    modelDigits: {
+      item: ModelInclude<string | undefined>,
+      parameters: () => [
+        'digits',
+        this.emits
+      ]
+    },
+    modelE164: {
+      item: ModelInclude<string | undefined>,
+      parameters: () => [
+        'e164',
+        this.emits
+      ]
+    },
     paste: {
       item: InputPhonePaste,
       parameters: () => [
@@ -261,9 +281,10 @@ export class InputPhone extends DesignLogicAbstract<
       ]
     },
     value: {
-      item: FieldValueInclude<string>,
+      item: InputPhoneValue,
       parameters: () => [
         this.props,
+        () => this.i('data'),
         () => this.i('elementItem')
       ]
     }

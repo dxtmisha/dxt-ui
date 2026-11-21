@@ -7,10 +7,12 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { findOneCmsRecord } from '../functions/findOneCmsRecord'
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { createdOrigins } from '../media/schema/createdOrigins'
 import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsDbResolver } from './CmsDbResolver'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsCreatedOrigin,
@@ -99,7 +101,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsCreatedOrigin | undefined> {
-    return CmsDbItemAbstract.findOneRecord<CmsCreatedOrigin>(
+    return findOneCmsRecord<CmsCreatedOrigin>(
       executor,
       createdOrigins,
       whereCondition
@@ -242,7 +244,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
   static normalizeCode(
     code: string
   ): string {
-    return CmsDbItemAbstract.normalizeCodeValue('cms-created-origin', code)
+    return CmsVerification.normalizeCode(code, 'cms-created-origin')
   }
 
   /**
@@ -255,6 +257,6 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
   static normalizeName(
     name: string
   ): string {
-    return CmsDbItemAbstract.normalizeNameValue('cms-created-origin', name)
+    return CmsVerification.normalizeName(name, 'cms-created-origin')
   }
 }

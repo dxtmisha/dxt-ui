@@ -1,17 +1,13 @@
-import {
-  eq,
-  type SQL
-} from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import {
   ErrorCenterThrow,
-  isPositiveInteger,
-  isString
+  isPositiveInteger
 } from '@dxtmisha/functional-basic'
 
+import { findOneCmsRecord } from '../functions/findOneCmsRecord'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
-  CmsDbExecutor,
   CmsDbItemData,
   CmsIdTable,
   CmsSystemStatus
@@ -184,7 +180,7 @@ export abstract class CmsDbItemAbstract<
    * @returns Loaded entity record or undefined / Загруженная запись сущности или undefined
    */
   protected async fetchById(id: number): Promise<TData | undefined> {
-    return CmsDbItemAbstract.findOneRecord<TData>(
+    return findOneCmsRecord<TData>(
       this.databaseInstance.get(),
       this.getBaseTable(),
       eq(this.getBaseTable().id, id)
@@ -264,82 +260,5 @@ export abstract class CmsDbItemAbstract<
       },
       error
     )
-  }
-
-  /**
-   * Finds a single entity record matching a SQL predicate in the specified table.
-   *
-   * Находит одну запись в указанной таблице по SQL-предикату.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param table Drizzle table schema / Схема таблицы Drizzle
-   * @param whereCondition SQL predicate / SQL-условие поиска
-   * @returns Found record or undefined / Найденная запись или undefined
-   */
-  protected static async findOneRecord<TRecord>(
-    executor: CmsDbExecutor,
-    table: CmsIdTable,
-    whereCondition: SQL | undefined
-  ): Promise<TRecord | undefined> {
-    if (!whereCondition) {
-      return undefined
-    }
-
-    const foundRows = await executor
-      .select()
-      .from(table)
-      .where(whereCondition)
-      .limit(1)
-
-    return foundRows[0] as TRecord | undefined
-  }
-
-  /**
-   * Normalizes and validates a non-empty unique entity code without whitespace.
-   *
-   * Нормализует и проверяет непустой уникальный код сущности без пробельных символов.
-   * @param errorGroup Error group / Группа ошибки
-   * @param code Raw entity code / Исходный код сущности
-   * @returns Trimmed non-empty entity code / Очищенный код сущности
-   */
-  protected static normalizeCodeValue(
-    errorGroup: string,
-    code: string
-  ): string {
-    const normalized = isString(code) ? code.trim() : ''
-
-    if (normalized.length === 0 || /\s/.test(normalized)) {
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: 'invalidCode',
-        details: { code }
-      })
-    }
-
-    return normalized
-  }
-
-  /**
-   * Normalizes and validates a non-empty entity display name.
-   *
-   * Нормализует и проверяет непустое отображаемое название сущности.
-   * @param errorGroup Error group / Группа ошибки
-   * @param name Raw entity name / Исходное название сущности
-   * @returns Trimmed non-empty entity name / Очищенное название сущности
-   */
-  protected static normalizeNameValue(
-    errorGroup: string,
-    name: string
-  ): string {
-    const normalized = isString(name) ? name.trim() : ''
-
-    if (normalized.length === 0) {
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: 'invalidName',
-        details: { name }
-      })
-    }
-
-    return normalized
   }
 }
