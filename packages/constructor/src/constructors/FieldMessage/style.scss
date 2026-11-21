@@ -27,21 +27,20 @@
     white-space: nowrap;
   }
 
-  &--warning {
+  &--warning,
+  &--validation {
     @include ui.subclass('info') {
       display: none;
     }
+  }
 
+  &--warning {
     @include ui.subclass('warning') {
       display: unset;
     }
   }
 
   &--validation {
-    @include ui.subclass('info') {
-      display: none;
-    }
-
     @include ui.subclass('warning') {
       display: none;
     }

@@ -126,6 +126,7 @@ describe('FieldMessageDesign (unit & DOM)', () => {
   it('should render HTML only when hasHtmlCode is true and escape text by default', async () => {
     const props = reactive<FieldMessageProps>({
       helperMessage: '<b>Bold Helper</b>',
+      warningMessage: '<u>Underline Warning</u>',
       validationMessage: '<i>Italic Error</i>',
       hasHtmlCode: false
     })
@@ -151,6 +152,8 @@ describe('FieldMessageDesign (unit & DOM)', () => {
 
     expect(container.querySelector('.d1-fieldMessage__info b')).toBeNull()
     expect(container.querySelector('.d1-fieldMessage__info')?.textContent).toBe('<b>Bold Helper</b>')
+    expect(container.querySelector('.d1-fieldMessage__warning u')).toBeNull()
+    expect(container.querySelector('.d1-fieldMessage__warning')?.textContent).toBe('<u>Underline Warning</u>')
     expect(container.querySelector('.d1-fieldMessage__error i')).toBeNull()
     expect(container.querySelector('.d1-fieldMessage__error')?.textContent).toBe('<i>Italic Error</i>')
 
@@ -158,16 +161,19 @@ describe('FieldMessageDesign (unit & DOM)', () => {
     await nextTick()
 
     expect(container.querySelector('.d1-fieldMessage__info b')?.textContent).toBe('Bold Helper')
+    expect(container.querySelector('.d1-fieldMessage__warning u')?.textContent).toBe('Underline Warning')
     expect(container.querySelector('.d1-fieldMessage__error i')?.textContent).toBe('Italic Error')
   })
 
   it('should project helper and validation slots with slot data and prefer slots over innerHTML', async () => {
     const props = reactive<FieldMessageProps>({
       helperMessage: 'Helper text',
+      warningMessage: 'Warning text',
       validationMessage: 'Validation text',
       hasHtmlCode: true
     })
     const capturedHelperProps: unknown[] = []
+    const capturedWarningProps: unknown[] = []
     const capturedValidationProps: unknown[] = []
 
     const Component = defineComponent({
@@ -190,6 +196,10 @@ describe('FieldMessageDesign (unit & DOM)', () => {
             capturedHelperProps.push(slotProps)
             return h('span', { class: 'slot-helper' }, 'Custom Helper: ')
           },
+          warning: (slotProps: FieldMessageSlot) => {
+            capturedWarningProps.push(slotProps)
+            return h('span', { class: 'slot-warning' }, 'Custom Warning: ')
+          },
           validation: (slotProps: FieldMessageSlot) => {
             capturedValidationProps.push(slotProps)
             return h('span', { class: 'slot-validation' }, 'Custom Error: ')
@@ -207,15 +217,25 @@ describe('FieldMessageDesign (unit & DOM)', () => {
     expect(capturedHelperProps[0]).toEqual({
       message: 'Helper text',
       helperMessage: 'Helper text',
+      warningMessage: 'Warning text',
+      validationMessage: 'Validation text'
+    })
+    expect(capturedWarningProps[0]).toEqual({
+      message: 'Warning text',
+      helperMessage: 'Helper text',
+      warningMessage: 'Warning text',
       validationMessage: 'Validation text'
     })
     expect(capturedValidationProps[0]).toEqual({
       message: 'Validation text',
       helperMessage: 'Helper text',
+      warningMessage: 'Warning text',
       validationMessage: 'Validation text'
     })
     expect(container.querySelector('.slot-helper')?.textContent).toBe('Custom Helper: ')
     expect(container.querySelector('.d1-fieldMessage__info')?.textContent).toBe('Custom Helper: Helper text')
+    expect(container.querySelector('.slot-warning')?.textContent).toBe('Custom Warning: ')
+    expect(container.querySelector('.d1-fieldMessage__warning')?.textContent).toBe('Custom Warning: Warning text')
     expect(container.querySelector('.slot-validation')?.textContent).toBe('Custom Error: ')
     expect(container.querySelector('.d1-fieldMessage__error')?.textContent).toBe('Custom Error: Validation text')
   })

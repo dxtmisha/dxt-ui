@@ -6,6 +6,7 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const interactiveHelper = ref<string>('Use at least 8 characters with letters and numbers.')
+const interactiveWarning = ref<string>('')
 const interactiveValidation = ref<string>('')
 const interactiveDisabled = ref<boolean>(false)
 const interactiveForceShow = ref<boolean>(false)
@@ -17,6 +18,7 @@ const interactiveUseSlots = ref<boolean>(false)
 
 const stateSummary = computed<string>(() => JSON.stringify({
   helperMessage: interactiveHelper.value,
+  warningMessage: interactiveWarning.value,
   validationMessage: interactiveValidation.value,
   disabled: interactiveDisabled.value,
   forceShow: interactiveForceShow.value,
@@ -31,6 +33,12 @@ const toggleHelper = (): void => {
   interactiveHelper.value = interactiveHelper.value
     ? ''
     : 'Use at least 8 characters with letters and numbers.'
+}
+
+const toggleWarning = (): void => {
+  interactiveWarning.value = interactiveWarning.value
+    ? ''
+    : 'Phone number from legacy profile needs confirmation.'
 }
 
 const toggleValidation = (): void => {
@@ -48,10 +56,21 @@ const incrementCounter = (): void => {
   <DemoLinkBlack/>
   <D1Page label="FieldMessage">
     <D1Section>
-      <D1Group label="Helper, Validation & ARIA Binding">
+      <D1Group label="Helper, Warning, Validation & ARIA Binding">
         <DemoFlex direction="column">
           <DemoBox>
             <D1FieldMessage helper-message="Enter your email address for account notifications."/>
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage warning-message="Phone number from legacy profile needs confirmation."/>
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage
+              helper-message="This helper text is overridden visually while warning is active."
+              warning-message="Warning takes display priority over helper text."
+            />
           </DemoBox>
 
           <DemoBox>
@@ -61,7 +80,8 @@ const incrementCounter = (): void => {
           <DemoBox>
             <D1FieldMessage
               helper-message="This helper text is overridden visually while validation is active."
-              validation-message="Validation error takes display priority over helper text."
+              warning-message="This warning text is overridden visually while validation is active."
+              validation-message="Validation error takes display priority over warning and helper text."
             />
           </DemoBox>
 
@@ -74,11 +94,13 @@ const incrementCounter = (): void => {
               class="demo-field-message-page__input"
               type="text"
               placeholder="Focus or inspect aria-describedby"
-              aria-describedby="demo-field-message-helper demo-field-message-validation"
+              aria-describedby="demo-field-message-helper demo-field-message-warning demo-field-message-validation"
             />
             <D1FieldMessage
               helper-message="Helper linked via helperId"
               helper-id="demo-field-message-helper"
+              warning-message="Warning linked via warningId"
+              warning-id="demo-field-message-warning"
               validation-message="Validation linked via validationId and role=alert"
               validation-id="demo-field-message-validation"
             />
@@ -92,6 +114,7 @@ const incrementCounter = (): void => {
             <div data-testid="disabled-hidden-probe">
               <D1FieldMessage
                 helper-message="Hidden while disabled"
+                warning-message="Hidden warning while disabled"
                 validation-message="Hidden error while disabled"
                 disabled
               />
@@ -107,6 +130,17 @@ const incrementCounter = (): void => {
               helper-message="Visible while disabled because forceShow is true"
               disabled
               force-show
+            />
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage
+              warning-message="Warning visible while disabled because forceShow is true"
+              disabled
+              force-show
+              counter-show
+              :counter="16"
+              :maxlength="40"
             />
           </DemoBox>
 
@@ -141,6 +175,13 @@ const incrementCounter = (): void => {
 
           <DemoBox>
             <D1FieldMessage
+              warning-message="Formatted <strong>HTML warning</strong> requiring <em>confirmation</em>."
+              has-html-code
+            />
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage
               validation-message="Error in <b>required</b> field: check value."
               has-html-code
             />
@@ -165,6 +206,15 @@ const incrementCounter = (): void => {
               counter-show
               :counter="0"
               :maxlength="50"
+            />
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage
+              warning-message="Approaching recommended length"
+              counter-show
+              :counter="88"
+              :maxlength="100"
             />
           </DemoBox>
 
@@ -223,6 +273,14 @@ const incrementCounter = (): void => {
 
           <DemoBox>
             <D1FieldMessage>
+              <template #warning>
+                <span><strong>Warning Slot:</strong> Value from legacy profile needs confirmation.</span>
+              </template>
+            </D1FieldMessage>
+          </DemoBox>
+
+          <DemoBox>
+            <D1FieldMessage>
               <template #validation>
                 <span><strong>Validation Slot:</strong> This value is already in use.</span>
               </template>
@@ -232,11 +290,15 @@ const incrementCounter = (): void => {
           <DemoBox>
             <D1FieldMessage
               helper-message="Trailing text"
+              warning-message="Trailing warning"
               validation-message="Trailing error"
               has-html-code
             >
               <template #helper="{ helperMessage }">
                 <span>Scoped helper ({{ helperMessage }}): </span>
+              </template>
+              <template #warning="{ warningMessage }">
+                <span>Scoped warning ({{ warningMessage }}): </span>
               </template>
               <template #validation="{ validationMessage }">
                 <span>Scoped validation ({{ validationMessage }}): </span>
@@ -250,7 +312,7 @@ const incrementCounter = (): void => {
         <DemoFlex direction="column">
           <DemoBox>
             <div data-testid="empty-probe">
-              <D1FieldMessage helper-message="" validation-message="   "/>
+              <D1FieldMessage helper-message="" warning-message="   " validation-message="   "/>
             </div>
             <DemoValue
               label="Empty & Whitespace Probe"
@@ -299,6 +361,12 @@ const incrementCounter = (): void => {
           <DemoFlex>
             <D1Button label="Toggle Helper" outline @click="toggleHelper"/>
             <D1Button
+              label="Toggle Warning"
+              :selected="Boolean(interactiveWarning)"
+              outline
+              @click="toggleWarning"
+            />
+            <D1Button
               label="Toggle Validation"
               :selected="Boolean(interactiveValidation)"
               outline
@@ -346,6 +414,7 @@ const incrementCounter = (): void => {
           <DemoBox data-testid="interactive-preview">
             <D1FieldMessage
               :helper-message="interactiveHelper"
+              :warning-message="interactiveWarning"
               :validation-message="interactiveValidation"
               :disabled="interactiveDisabled"
               :force-show="interactiveForceShow"
@@ -357,6 +426,9 @@ const incrementCounter = (): void => {
             >
               <template v-if="interactiveUseSlots" #helper>
                 <span><strong>Slot Helper:</strong> {{ interactiveHelper || 'Empty' }}</span>
+              </template>
+              <template v-if="interactiveUseSlots && interactiveWarning" #warning>
+                <span><strong>Slot Warning:</strong> {{ interactiveWarning }}</span>
               </template>
               <template v-if="interactiveUseSlots && interactiveValidation" #validation>
                 <span><strong>Slot Validation:</strong> {{ interactiveValidation }}</span>

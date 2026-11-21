@@ -8,19 +8,19 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsFieldMessage: StorybookComponentsDescriptionItem = {
   name: 'FieldMessage',
   description: {
-    en: 'Component for displaying helper and validation messages, character counters, and skeleton states beneath form fields.',
-    ru: 'Компонент для отображения вспомогательных сообщений, ошибок валидации, счётчика символов и состояния скелетона под полями форм.'
+    en: 'Component for displaying helper, warning, and validation messages, character counters, and skeleton states beneath form fields.',
+    ru: 'Компонент для отображения вспомогательных сообщений, предупреждений, ошибок валидации, счётчика символов и состояния скелетона под полями форм.'
   },
   possibilities: {
     en: [
-      'displaying helper text (`helperMessage`), non-blocking warnings (`warning`, `warningMessage`), and validation errors (`validationMessage`) with priority `--validation` > `--warning` > helper',
+      'displaying helper text (`helperMessage`), non-blocking warnings (`warningMessage`), and validation errors (`validationMessage`) with CSS priority `--validation` > `--warning` > helper',
       'adding `role="alert"` on error nodes and custom `helperId`, `warningId`, `validationId`, and `counterId` identifiers',
       'hiding output when `disabled` unless `forceShow` is active, and unmounting when inactive',
       'supporting safe text escaping by default, opt-in `hasHtmlCode`, and `#helper` / `#warning` / `#validation` slots',
       'integrating character counters (`counterShow`, `counter`, `maxlength`, `maxlengthOnce`, `counterTemplate`, `fieldCounterAttrs`) and `isSkeleton`'
     ],
     ru: [
-      'отображение вспомогательного текста (`helperMessage`), неблокирующих предупреждений (`warning`, `warningMessage`) и ошибок валидации (`validationMessage`) с приоритетом `--validation` > `--warning` > подсказка',
+      'отображение вспомогательного текста (`helperMessage`), неблокирующих предупреждений (`warningMessage`) и ошибок валидации (`validationMessage`) с CSS-приоритетом `--validation` > `--warning` > подсказка',
       'добавление `role="alert"` для ошибок и настраиваемых идентификаторов `helperId`, `warningId`, `validationId` и `counterId`',
       'скрытие вывода при `disabled` без `forceShow` и полное размонтирование при отсутствии активного содержимого',
       'экранирование текста по умолчанию, явный `hasHtmlCode` и поддержка слотов `#helper` / `#warning` / `#validation`',
@@ -59,7 +59,7 @@ if (component) {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Warning Message</div>
-            <DesignComponent warning warning-message="Phone from legacy profile needs confirmation" warning-id="wiki-field-message-warning"/>
+            <DesignComponent warning-message="Phone from legacy profile needs confirmation" warning-id="wiki-field-message-warning"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Validation Message</div>
@@ -92,9 +92,12 @@ await expect(errorElement).toBeInTheDocument()
 await expect(errorElement).toHaveAttribute('role', 'alert')
 
 expect(messages[3].classList.contains('design-component--validation')).toBe(true)
+expect(messages[3].classList.contains('design-component--warning')).toBe(true)
 const fourthInfo = messages[3].querySelector<HTMLElement>('.design-component__info')
+const fourthWarning = messages[3].querySelector<HTMLElement>('.design-component__warning')
 const fourthError = messages[3].querySelector<HTMLElement>('.design-component__error')
 await expect(fourthInfo).toBeInTheDocument()
+await expect(fourthWarning).toBeInTheDocument()
 await expect(fourthError).toBeInTheDocument()
 await expect(fourthError).toHaveAttribute('role', 'alert')
       `
@@ -241,6 +244,7 @@ expect(messages[3].querySelector('.design-component__error')?.textContent?.trim(
       },
       setup: `
 const helperMessage = ref('Initial helper')
+const warningMessage = ref('')
 const validationMessage = ref('')
 const disabled = ref(false)
 const forceShow = ref(false)
@@ -251,6 +255,7 @@ const counter = ref(5)
 
 return {
   helperMessage,
+  warningMessage,
   validationMessage,
   disabled,
   forceShow,
@@ -264,6 +269,7 @@ return {
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button type="button" class="wiki-storybook-button" @click="helperMessage = helperMessage ? '' : 'Initial helper'">Toggle Helper</button>
+            <button type="button" class="wiki-storybook-button" @click="warningMessage = warningMessage ? '' : 'Warning text'">Toggle Warning</button>
             <button type="button" class="wiki-storybook-button" @click="validationMessage = validationMessage ? '' : 'Error text'">Toggle Validation</button>
             <button type="button" class="wiki-storybook-button" @click="disabled = !disabled">Toggle Disabled</button>
             <button type="button" class="wiki-storybook-button" @click="forceShow = !forceShow">Toggle Force Show</button>
@@ -275,6 +281,7 @@ return {
           <div class="reactive-host">
             <DesignComponent
               :helper-message="helperMessage"
+              :warning-message="warningMessage"
               :validation-message="validationMessage"
               :disabled="disabled"
               :force-show="forceShow"
@@ -298,13 +305,20 @@ await step('Initial state renders helper message and counter', async () => {
   expect(root?.textContent).toContain('5 / 40')
 })
 
-await step('Toggling validation switches validation modifier and alert element', async () => {
+await step('Toggling warning and validation switches modifiers and alert element', async () => {
+  const toggleWarningButton = canvas.getByRole('button', { name: 'Toggle Warning' })
   const toggleValidationButton = canvas.getByRole('button', { name: 'Toggle Validation' })
+  await userEvent.click(toggleWarningButton)
+  expect(host.querySelector('.design-component')?.classList.contains('design-component--warning')).toBe(true)
+  expect(host.querySelector('.design-component__warning')?.textContent?.trim()).toBe('Warning text')
   await userEvent.click(toggleValidationButton)
   expect(host.querySelector('.design-component')?.classList.contains('design-component--validation')).toBe(true)
+  expect(host.querySelector('.design-component')?.classList.contains('design-component--warning')).toBe(true)
   await expect(host.querySelector('.design-component__error')).toHaveAttribute('role', 'alert')
   await userEvent.click(toggleValidationButton)
   expect(host.querySelector('.design-component')?.classList.contains('design-component--validation')).toBe(false)
+  await userEvent.click(toggleWarningButton)
+  expect(host.querySelector('.design-component')?.classList.contains('design-component--warning')).toBe(false)
 })
 
 await step('Toggling disabled hides root until forceShow is enabled', async () => {
@@ -342,7 +356,7 @@ await step('Incrementing counter, toggling skeleton, and clearing all content up
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="empty-host">
-            <DesignComponent helper-message="" validation-message="   "/>
+            <DesignComponent helper-message="" warning-message="   " validation-message="   "/>
           </div>
           <div class="multilingual-host">
             <DesignComponent
@@ -415,8 +429,8 @@ await step('HTML/XSS string renders strictly as escaped text when hasHtmlCode is
     `,
     description: `
 Subcomponent of the Field wrapper used to display helper text, non-blocking warning messages, validation errors, and character counters beneath input fields.
-Automatically activates validation state (--validation) when validationMessage or #validation slot is present, and warning state (--warning) when warning, warningMessage, or #warning slot is present (validation takes priority over warning, which takes priority over helper). Adds role="alert" to error nodes, hides output when disabled unless forceShow is true, supports opt-in hasHtmlCode markup, and integrates FieldCounter and isSkeleton.
-Controlled via helperMessage, warning, warningMessage, validationMessage, helperId, warningId, validationId, disabled, forceShow, hasHtmlCode, isSkeleton, counterShow, counter, maxlength, maxlengthOnce, counterTemplate, counterId, fieldCounterAttrs, and #helper/#warning/#validation slots.
+Automatically activates validation state (--validation) when validationMessage or #validation slot is present, and warning state (--warning) when warningMessage or #warning slot is present (CSS priority: validation > warning > helper). Adds role="alert" to error nodes, hides output when disabled unless forceShow is true, supports opt-in hasHtmlCode markup, and integrates FieldCounter and isSkeleton.
+Controlled via helperMessage, warningMessage, validationMessage, helperId, warningId, validationId, disabled, forceShow, hasHtmlCode, isSkeleton, counterShow, counter, maxlength, maxlengthOnce, counterTemplate, counterId, fieldCounterAttrs, and #helper/#warning/#validation slots.
     `,
     hide: true
   }

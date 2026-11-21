@@ -23,7 +23,7 @@
     
     @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     
-    &__warning {
+    &--warning {
       @include ui.color(#{var(--d1-sys-palette-warning)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
     }

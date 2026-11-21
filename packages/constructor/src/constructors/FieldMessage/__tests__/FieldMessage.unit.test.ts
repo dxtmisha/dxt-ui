@@ -183,9 +183,9 @@ describe('FieldMessage (unit)', () => {
       props.validationMessage = 'Error text'
       expect(instance.classes).toEqual({
         'd1-fieldMessage--validation': true,
-        'd1-fieldMessage--warning': false
+        'd1-fieldMessage--warning': true
       })
-      expect(instance.isWarning()).toBe(false)
+      expect(instance.isWarning()).toBe(true)
       expect(instance.isValidation()).toBe(true)
       expect(instance.slotValidationData).toEqual({
         message: 'Error text',

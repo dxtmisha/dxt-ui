@@ -23,10 +23,10 @@ import {
 
 /**
  * Constructor class for the FieldMessage component design.
- * It manages class lists, style lists, and renders information (helper) or error (validation) and character counter.
+ * It manages class lists, style lists, and renders information (helper), warning, or error (validation) messages and character counter.
  *
  * Класс-конструктор для дизайна компонента FieldMessage.
- * Управляет списками классов, стилей, а также выполняет рендеринг информации (вспомогательного сообщения), ошибки (валидации) и счетчика символов.
+ * Управляет списками классов, стилей, а также выполняет рендеринг информации (вспомогательного сообщения), предупреждения, ошибки (валидации) и счетчика символов.
  */
 export class FieldMessageDesign<
   COMP extends FieldMessageComponents,
@@ -150,6 +150,52 @@ export class FieldMessageDesign<
   }
 
   /**
+   * Renders a single message container (helper, warning, or validation).
+   *
+   * Рендерит один контейнер сообщения (вспомогательного, предупреждения или валидации).
+   * @param key virtual node key / ключ виртуального узла
+   * @param id element identifier / идентификатор элемента
+   * @param className class name or list / имя класса или список классов
+   * @param slotName slot name / имя слота
+   * @param slotData slot data / данные слота
+   * @param message message text / текст сообщения
+   * @param attrs additional attributes / дополнительные атрибуты
+   * @returns virtual node / виртуальный узел
+   */
+  renderMessageItem(
+    key: string,
+    id: string | undefined,
+    className: unknown,
+    slotName: keyof FieldMessageSlots,
+    slotData: FieldMessageSlot,
+    message: string | undefined,
+    attrs: Record<string, unknown> = {}
+  ): VNode {
+    const children: VNode[] = []
+    const props: Record<string, unknown> = {
+      key,
+      id,
+      class: className,
+      ...attrs
+    }
+
+    this.initSlot(slotName, children, slotData)
+
+    if (isFilled(message)) {
+      if (
+        this.props.hasHtmlCode
+        && children.length < 1
+      ) {
+        props.innerHTML = message
+      } else {
+        return h('div', props, [...children, message])
+      }
+    }
+
+    return h('div', props, children)
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
@@ -171,9 +217,9 @@ export class FieldMessageDesign<
       ...{
         // :classes [!] System label / Системная метка
         info: this.naming.getSubClass('info'),
-        warning: this.naming.getSubClass('warning'),
         error: this.naming.getSubClass('error'),
-        fieldCounter: this.naming.getSubClass('fieldCounter')
+        fieldCounter: this.naming.getSubClass('fieldCounter'),
+        warning: this.naming.getSubClass('warning')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -218,51 +264,5 @@ export class FieldMessageDesign<
     }
 
     return undefined
-  }
-
-  /**
-   * Renders a single message container (helper or validation).
-   *
-   * Рендерит один контейнер сообщения (вспомогательного или валидации).
-   * @param key virtual node key / ключ виртуального узла
-   * @param id element identifier / идентификатор элемента
-   * @param className class name or list / имя класса или список классов
-   * @param slotName slot name / имя слота
-   * @param slotData slot data / данные слота
-   * @param message message text / текст сообщения
-   * @param attrs additional attributes / дополнительные атрибуты
-   * @returns virtual node / виртуальный узел
-   */
-  protected renderMessageItem(
-    key: string,
-    id: string | undefined,
-    className: unknown,
-    slotName: keyof FieldMessageSlots,
-    slotData: FieldMessageSlot,
-    message: string | undefined,
-    attrs: Record<string, unknown> = {}
-  ): VNode {
-    const children: VNode[] = []
-    const props: Record<string, unknown> = {
-      key,
-      id,
-      class: className,
-      ...attrs
-    }
-
-    this.initSlot(slotName, children, slotData)
-
-    if (isFilled(message)) {
-      if (
-        this.props.hasHtmlCode
-        && children.length < 1
-      ) {
-        props.innerHTML = message
-      } else {
-        return h('div', props, [...children, message])
-      }
-    }
-
-    return h('div', props, children)
   }
 }

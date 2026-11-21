@@ -99,10 +99,6 @@ src/constructors/Skeleton/SkeletonInclude.ts
 src/constructors/FieldLabel/FieldLabel.ts
 src/constructors/FieldLabel/FieldLabelDesign.tsx
 src/constructors/FieldLabel/FieldLabelInclude.ts
-src/constructors/FieldMessage/FieldMessageMessage.ts
-src/constructors/FieldMessage/FieldMessage.ts
-src/constructors/FieldMessage/FieldMessageDesign.tsx
-src/constructors/FieldMessage/FieldMessageInclude.ts
 src/constructors/Field/FieldElement.ts
 src/constructors/Field/FieldIcons.ts
 src/constructors/Field/FieldSize.ts
@@ -217,3 +213,7 @@ src/constructors/InputPhone/InputPhoneData.ts
 src/constructors/InputPhone/InputPhoneMask.ts
 src/constructors/InputPhone/InputPhone.ts
 src/constructors/InputPhone/InputPhoneDesign.tsx
+src/constructors/FieldMessage/FieldMessageMessage.ts
+src/constructors/FieldMessage/FieldMessageInclude.ts
+src/constructors/FieldMessage/FieldMessage.ts
+src/constructors/FieldMessage/FieldMessageDesign.tsx

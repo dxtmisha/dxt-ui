@@ -19,7 +19,6 @@ const propsNames: StorybookProps = [
   { name: 'maxlength', type: 'string | number' },
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
-  { name: 'warning', type: 'boolean' },
   { name: 'warningId', type: 'string' },
   { name: 'warningMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
@@ -27,9 +26,9 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'helper', description: `Slot for helper message/ Слот для вспомогательного сообщения`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] },
-  { name: 'validation', description: `Slot for validation message/Слот для сообщения об ошибке`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] },
-  { name: 'warning', description: `Slot for warning message/ Слот для предупреждающего сообщения`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] }
+  { name: 'helper', description: `Slot for helper message / Слот для вспомогательного сообщения`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] },
+  { name: 'validation', description: `Slot for validation message / Слот для сообщения об ошибке`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] },
+  { name: 'warning', description: `Slot for warning message / Слот для предупреждающего сообщения`, properties: [{ name: 'props', type: '(FieldMessageSlot) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

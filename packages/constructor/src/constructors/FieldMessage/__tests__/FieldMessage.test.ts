@@ -136,7 +136,7 @@ describe('FieldMessage component integration', () => {
     expect(container.querySelector('.d1-fieldMessage')).toBeNull()
   })
 
-  it('should render warning message with warning class and hide it when validation error takes precedence', async () => {
+  it('should render warning message with warning class and keep warning DOM node alongside validation error for CSS priority', async () => {
     const { container, props } = await mountFieldMessage({
       helperMessage: 'Hint',
       warningMessage: 'Confirm legacy phone',
@@ -156,9 +156,9 @@ describe('FieldMessage component integration', () => {
     props.validationMessage = 'Phone is required'
     await nextTick()
 
-    expect(root?.classList.contains('d1-fieldMessage--warning')).toBe(false)
+    expect(root?.classList.contains('d1-fieldMessage--warning')).toBe(true)
     expect(root?.classList.contains('d1-fieldMessage--validation')).toBe(true)
-    expect(root?.querySelector('.d1-fieldMessage__warning')).toBeNull()
+    expect(root?.querySelector('.d1-fieldMessage__warning')?.textContent).toBe('Confirm legacy phone')
     expect(root?.querySelector('.d1-fieldMessage__error')?.textContent).toBe('Phone is required')
   })
 })

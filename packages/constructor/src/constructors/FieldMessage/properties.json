@@ -3,9 +3,13 @@
     "_type": "var"
   },
   "#info": {},
-  "#warning": {},
   "#error": {},
   "#fieldCounter": {},
+  "warning": {
+    "_type": "state",
+    "_prop": false,
+    "_subclass": true
+  },
   "~validation": {
     "_prop": false
   }

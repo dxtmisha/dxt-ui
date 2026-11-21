@@ -7,6 +7,8 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'disabled', type: 'boolean' },
   { name: 'disableFocusReturn', type: 'boolean' },
+  { name: 'filterMode', type: 'boolean' },
+  { name: 'highlightLengthStart', type: 'number' },
   { name: 'isSelectedByValue', type: 'boolean' },
   { name: 'language', type: 'string' },
   { name: 'list', type: 'string[]' },
@@ -15,7 +17,8 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
   { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
   { name: 'selected', type: 'ListSelectedList' },
-  { name: 'showPhoneCode', type: 'boolean' }
+  { name: 'showPhoneCode', type: 'boolean' },
+  { name: 'showSearch', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

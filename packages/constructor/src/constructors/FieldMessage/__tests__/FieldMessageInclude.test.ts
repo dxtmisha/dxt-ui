@@ -19,6 +19,8 @@ describe('FieldMessageInclude (isolated class)', () => {
       const props = reactive<FieldMessagePropsInclude>({
         helperMessage: 'Enter phone',
         helperId: 'custom-helper',
+        warningMessage: 'Legacy number',
+        warningId: 'custom-warning',
         validationMessage: 'Invalid format',
         validationId: 'custom-validation',
         counterShow: true,
@@ -36,13 +38,16 @@ describe('FieldMessageInclude (isolated class)', () => {
         isCounter
       )
 
-      expect(include.id).toBe('custom-helper custom-validation custom-counter')
+      expect(include.id).toBe('custom-helper custom-warning custom-validation custom-counter')
 
       props.counter = undefined
       props.maxlength = undefined
-      expect(include.id).toBe('custom-helper custom-validation')
+      expect(include.id).toBe('custom-helper custom-warning custom-validation')
 
       props.validationMessage = ''
+      expect(include.id).toBe('custom-helper custom-warning')
+
+      props.warningMessage = ''
       expect(include.id).toBe('custom-helper')
 
       props.helperMessage = ''
@@ -136,6 +141,8 @@ describe('FieldMessageInclude (isolated class)', () => {
           helperMessage: 'Hint',
           fieldMessageAttrs: {
             helperId: 'attrs-helper-id',
+            warningMessage: 'Attrs warning',
+            warningId: 'attrs-warning-id',
             validationId: 'attrs-validation-id',
             counterId: 'attrs-counter-id'
           }
@@ -144,12 +151,14 @@ describe('FieldMessageInclude (isolated class)', () => {
       )
 
       expect(includeWithAttrs.helperId).toBe('attrs-helper-id')
+      expect(includeWithAttrs.warningId).toBe('attrs-warning-id')
       expect(includeWithAttrs.validationId).toBe('attrs-validation-id')
       expect(includeWithAttrs.counterId).toBe('attrs-counter-id')
-      expect(includeWithAttrs.id).toBe('attrs-helper-id')
+      expect(includeWithAttrs.id).toBe('attrs-helper-id attrs-warning-id')
 
       const includeDefaults = new FieldMessageInclude({}, new DesignName('d1.field'))
       expect(includeDefaults.helperId).toBe(includeDefaults.helperIdDefault)
+      expect(includeDefaults.warningId).toBe(includeDefaults.warningIdDefault)
       expect(includeDefaults.validationId).toBe(includeDefaults.validationIdDefault)
       expect(includeDefaults.counterId).toBe(includeDefaults.counterIdDefault)
     })

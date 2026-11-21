@@ -24,11 +24,11 @@ export type FieldMessageConstructors = {
 }
 
 /**
- * Manager for handling helper messages, validation messages, and counters.
- * It coordinates text output for information or validation and controls the associated character counters.
+ * Manager for handling helper messages, warning messages, validation messages, and counters.
+ * It coordinates text output for information, warnings, or validation and controls the associated character counters.
  *
- * Менеджер для обработки вспомогательных сообщений, сообщений валидации и счетчиков.
- * Координирует вывод текста для информации или валидации и управляет соответствующими счетчиками символов.
+ * Менеджер для обработки вспомогательных сообщений, предупреждений, сообщений валидации и счетчиков.
+ * Координирует вывод текста для информации, предупреждений или валидации и управляет соответствующими счетчиками символов.
  */
 export class FieldMessage extends DesignLogicAbstract<
   HTMLElement,

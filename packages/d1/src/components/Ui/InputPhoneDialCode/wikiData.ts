@@ -9,6 +9,8 @@ const propsNames: StorybookProps = [
   { name: 'countryList', type: 'string[]' },
   { name: 'disabled', type: 'boolean' },
   { name: 'disableFocusReturn', type: 'boolean' },
+  { name: 'filterMode', type: 'boolean' },
+  { name: 'highlightLengthStart', type: 'number' },
   { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
   { name: 'labelType', type: 'string', option: ['name', 'none', 'code'] },
   { name: 'menuCountryAttrs', type: 'ConstrBind<MenuCountryProps>' },
@@ -16,6 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
   { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
   { name: 'readonly', type: 'boolean' },
+  { name: 'showSearch', type: 'boolean' },
   { name: 'value', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]

@@ -88,10 +88,12 @@ describe('FieldMessage (SSR)', () => {
       expect(html).toBe('<!---->')
     })
 
-    it('should render helper, validation, skeleton class, role alert, and counter in SSR', async () => {
+    it('should render helper, warning, validation, skeleton class, role alert, and counter in SSR', async () => {
       const html = await renderFieldMessageSsr({
         helperMessage: 'Helper text',
         helperId: 'ssr-helper-id',
+        warningMessage: 'Warning text',
+        warningId: 'ssr-warning-id',
         validationMessage: 'Validation text',
         validationId: 'ssr-validation-id',
         isSkeleton: true,
@@ -102,10 +104,14 @@ describe('FieldMessage (SSR)', () => {
       })
 
       expect(html).toContain('d1-fieldMessage')
+      expect(html).toContain('d1-fieldMessage--warning')
       expect(html).toContain('d1-fieldMessage--validation')
       expect(html).toContain('d1-skeleton__textVariant')
       expect(html).toContain('id="ssr-helper-id"')
       expect(html).toContain('Helper text')
+      expect(html).toContain('id="ssr-warning-id"')
+      expect(html).toContain('d1-fieldMessage__warning')
+      expect(html).toContain('Warning text')
       expect(html).toContain('id="ssr-validation-id"')
       expect(html).toContain('role="alert"')
       expect(html).toContain('Validation text')

@@ -6,9 +6,9 @@ import type { FieldMessageProps } from './props'
 import type { FieldMessageSlots } from './types'
 
 /**
- * Class for managing message strings (both helper and validation text).
+ * Class for managing message strings (helper, warning, and validation text).
  *
- * Класс для работы со строками сообщений (как вспомогательными текстами, так и текстами валидации).
+ * Класс для работы со строками сообщений (вспомогательным текстом, предупреждением и текстом валидации).
  */
 export class FieldMessageMessage {
   /**
@@ -70,18 +70,15 @@ export class FieldMessageMessage {
   }
 
   /**
-   * Checks if there is a warning message or active warning slot without validation errors.
+   * Checks if there is a warning message or active warning slot.
    *
-   * Проверяет, есть ли предупреждающее сообщение или слот warning при отсутствии ошибки валидации.
+   * Проверяет, есть ли предупреждающее сообщение или активный слот warning.
    * @returns boolean value / логическое значение
    */
   isWarning(): boolean {
     return Boolean(
-      !this.isValidation()
-      && (
-        isFilled(this.props.warningMessage)
-        || this.slots?.warning
-      )
+      isFilled(this.props.warningMessage)
+      || this.slots?.warning
     )
   }
 
