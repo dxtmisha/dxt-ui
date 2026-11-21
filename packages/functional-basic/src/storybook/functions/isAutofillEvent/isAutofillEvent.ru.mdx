@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/DOM и элементы/isAutofillEvent - Проверка события автозаполнения'/>
+
+# `isAutofillEvent`
+
+Проверяет, вызвано ли событие `input` автозаполнением браузера (`inputType === 'insertReplacementText'`, отсутствующий/пустой `inputType` или совпадение целевого элемента с `isAutofillElement`).
+
+**Параметры:**
+- `event?: Event | null` — проверяемое DOM-событие.
+- `elementSelectors?: ElementOrString<E> | null` — необязательный элемент или CSS-селектор (по умолчанию берётся `event.target`).
+
+**Возвращает:**
+`boolean` — `true`, если событие относится к автозаполнению браузера, иначе `false`.
+
+```typescript
+import { isAutofillEvent } from '@dxtmisha/functional-basic'
+
+input.addEventListener('input', (event) => {
+  if (isAutofillEvent(event)) {
+    console.log('Значение подставлено автозаполнением браузера')
+  }
+})
+```

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/DOM & Phần tử/isAutofillElement - Kiểm tra trạng thái tự động điền'/>
+
+# `isAutofillElement`
+
+Kiểm tra xem phần tử có khớp với các pseudo-class tự động điền của trình duyệt (`:autofill`, `:-webkit-autofill`, `:-moz-ui-autofill`) hay không.
+
+Từng pseudo-class được kiểm tra riêng trong `try/catch` vì gọi `element.matches()` với chuỗi nhiều bộ chọn sẽ ném ra `SyntaxError` nếu trình duyệt hiện tại không hỗ trợ một trong các tiền tố.
+
+**Tham số:**
+- `elementSelectors?: ElementOrString<E> | null` — bộ chọn CSS, `Element`, hoặc `null`/`undefined`.
+
+**Trả về:**
+`boolean` — `true` nếu phần tử đang ở trạng thái tự động điền, ngược lại là `false`.
+
+```typescript
+import { isAutofillElement } from '@dxtmisha/functional-basic'
+
+const input = document.querySelector<HTMLInputElement>('input[autocomplete="tel"]')
+
+if (isAutofillElement(input)) {
+  console.log('Trình duyệt đã tự động điền')
+}
+```

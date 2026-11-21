@@ -184,6 +184,7 @@ export class InputPhoneDesign<
       'input',
       mergeProps(
         {
+          autocomplete: 'tel',
           inputMode: 'tel',
           onFocus: event.onFocus,
           onBlur: event.onBlur
@@ -206,7 +207,9 @@ export class InputPhoneDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderMask = (input: FieldControl): VNode[] => {
+    const autofill = this.item.i('autofill')
     const event = this.item.i('event')
+    const paste = this.item.i('paste')
 
     return this.item.i('mask').render(undefined, {
       ref: this.element,
@@ -214,8 +217,11 @@ export class InputPhoneDesign<
       align: this.props.align,
       inputAttrs: mergeProps(
         {
+          autocomplete: 'tel',
           inputMode: 'tel',
-          onPaste: this.item.i('paste').onPaste
+          onInput: autofill.onInput,
+          onPaste: paste.onPaste,
+          onAnimationstart: autofill.onAnimationstart
         },
         this.item.i('attributes').listForInput,
         input.binds

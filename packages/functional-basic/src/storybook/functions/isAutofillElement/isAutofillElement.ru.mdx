@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/DOM и элементы/isAutofillElement - Проверка автозаполнения элемента'/>
+
+# `isAutofillElement`
+
+Проверяет, соответствует ли элемент псевдоклассам автозаполнения браузера (`:autofill`, `:-webkit-autofill`, `:-moz-ui-autofill`).
+
+Каждый псевдокласс проверяется по отдельности внутри `try/catch`, так как вызов `element.matches()` со строкой через запятую выбрасывает `SyntaxError`, если хотя бы один вендорный селектор не поддерживается текущим браузером.
+
+**Параметры:**
+- `elementSelectors?: ElementOrString<E> | null` — CSS-селектор, `Element` или `null`/`undefined`.
+
+**Возвращает:**
+`boolean` — `true`, если элемент соответствует состоянию автозаполнения, иначе `false`.
+
+```typescript
+import { isAutofillElement } from '@dxtmisha/functional-basic'
+
+const input = document.querySelector<HTMLInputElement>('input[autocomplete="tel"]')
+
+if (isAutofillElement(input)) {
+  console.log('Применено автозаполнение браузера')
+}
+```

@@ -21,6 +21,7 @@ import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
 import { MaskInclude } from '../Mask'
 
+import { InputPhoneAutofill } from './InputPhoneAutofill'
 import { InputPhoneCountry } from './InputPhoneCountry'
 import { InputPhoneCountryList } from './InputPhoneCountryList'
 import { InputPhoneData } from './InputPhoneData'
@@ -36,6 +37,8 @@ import type { InputPhoneComponents, InputPhoneEmits, InputPhoneSlots } from './t
 export type InputPhoneConstructors = {
   /** Field attributes constructor / Конструктор атрибутов поля */
   attributes: typeof FieldAttributesInclude
+  /** Input phone autofill constructor / Конструктор автозаполнения ввода телефона */
+  autofill: typeof InputPhoneAutofill
   /** Field change constructor / Конструктор изменения поля */
   change: typeof FieldChangeInclude
   /** Field code constructor / Конструктор кода поля */
@@ -94,6 +97,14 @@ export class InputPhone extends DesignLogicAbstract<
     attributes: {
       item: FieldAttributesInclude,
       parameters: () => [this.props]
+    },
+    autofill: {
+      item: InputPhoneAutofill,
+      parameters: () => [
+        () => this.i('country'),
+        () => this.i('event'),
+        () => this.i('paste')
+      ]
     },
     change: {
       item: FieldChangeInclude,

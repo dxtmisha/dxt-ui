@@ -58,6 +58,7 @@ export type InputPhoneProps = InputPhonePropsBasic & InputPhonePropsToken
 
 /** Default values for properties / Значения по умолчанию для свойств */
 export const defaultsInputPhone = {
+  autocomplete: 'tel',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

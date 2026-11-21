@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Sự kiện & Nhập liệu/isEventStopped - Kiểm tra sự kiện đã dừng'/>
+
+# `isEventStopped`
+
+Kiểm tra xem sự kiện DOM đã bị dừng bởi trình xử lý bên ngoài thông qua `defaultPrevented` hoặc qua `eventStopPropagation` hay chưa.
+
+Khác với việc chỉ kiểm tra `event.defaultPrevented`, `isEventStopped` cũng trả về `true` cho các sự kiện không thể hủy (như `input` hoặc `animationstart`) đã được truyền vào `eventStopPropagation`.
+
+**Tham số:**
+- `event?: Event | null` — đối tượng sự kiện DOM cần kiểm tra; trả về `false` nếu bị bỏ qua hoặc nullish.
+
+**Trả về:**
+`boolean` — `true` nếu sự kiện đã bị dừng hoặc bị hủy mặc định, ngược lại là `false`.
+
+```typescript
+import { eventStopPropagation, isEventStopped } from '@dxtmisha/functional-basic'
+
+input.addEventListener('input', (event) => {
+  if (isSpecialInput(event)) {
+    eventStopPropagation(event)
+  }
+})
+
+input.addEventListener('input', (event) => {
+  if (isEventStopped(event)) {
+    return
+  }
+
+  console.log('Xử lý nhập liệu thông thường')
+})
+```

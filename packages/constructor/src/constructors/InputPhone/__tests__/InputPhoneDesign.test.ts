@@ -227,9 +227,25 @@ describe('InputPhoneDesign', () => {
     const input = container.querySelector('input.mock-mask__input') as HTMLInputElement
     expect(input).not.toBeNull()
     expect(input.getAttribute('id')).toBe('phone-field-1')
+    expect(input.getAttribute('autocomplete')).toBe('tel')
     expect(input.getAttribute('inputmode')).toBe('tel')
     expect(input.classList.contains('extra-phone-input')).toBe(true)
     expect(input.placeholder).toBe('Phone')
+  })
+
+  it('should allow overriding autocomplete prop directly on InputPhone', async () => {
+    const { container, props } = await mountInputPhoneDesign({
+      countryDefault: 'RU',
+      autocomplete: 'off'
+    })
+
+    const input = container.querySelector('input.mock-mask__input') as HTMLInputElement
+    expect(input.getAttribute('autocomplete')).toBe('off')
+
+    props.disabled = true
+    await nextTick()
+    const plainInput = container.querySelector('input.d1-field__body__input') as HTMLInputElement
+    expect(plainInput.getAttribute('autocomplete')).toBe('off')
   })
 
   it('should omit dialCode when countryBlock is true and toggle reactively', async () => {

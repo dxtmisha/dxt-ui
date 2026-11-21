@@ -60,7 +60,7 @@ goScrollSmooth(item)
 Helper functions for determining element types and their presence in the current document.
 
 ```javascript
-import { isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
+import { isAutofillElement, isAutofillEvent, isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
 
 // 1. Check if an element is mounted in the DOM
 if (isInDom(el)) {
@@ -76,4 +76,16 @@ if (isElementVisible(el)) {
 if (isInput(el)) {
   el.focus()
 }
+
+// 4. Check if an element is currently autofilled by the browser
+if (isAutofillElement(el)) {
+  console.log('Browser autofill active')
+}
+
+// 5. Check if an input event was triggered by browser autofill
+el.addEventListener('input', (event) => {
+  if (isAutofillEvent(event)) {
+    console.log('Autofill input event')
+  }
+})
 ```

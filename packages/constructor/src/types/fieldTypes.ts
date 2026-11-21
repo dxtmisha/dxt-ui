@@ -385,6 +385,10 @@ export type FieldInputProps<Value = any>
 export type FieldInputPhoneProps
   = Omit<FieldBasicProps<string>, 'match' | 'pattern'>
     & FieldPatternProps
+    & {
+      /** Autocomplete hint/ Подсказка автозаполнения */
+      autocomplete?: string
+    }
 
 /**
  * Props for social field elements (type="social")/

@@ -4,6 +4,9 @@ import {
   ErrorCenter,
   eventStopPropagation,
   getClipboardData,
+  isAutofillElement,
+  isAutofillEvent,
+  isEventStopped,
   isMetaKey,
   writeClipboardData
 } from '@dxtmisha/functional'
@@ -209,6 +212,12 @@ export class MaskEvent {
   readonly onInput = (event: InputEvent): void => {
     const target = event.target as HTMLInputElement
 
+    if (isEventStopped(event)) {
+      this.unidentified = undefined
+      this.isKeydown = false
+      return
+    }
+
     if (this.isPaste) {
       this.isPaste = false
       this.isKeydown = false
@@ -251,7 +260,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onPaste = (event: ClipboardEvent): void => {
-    if (event.defaultPrevented) {
+    if (isEventStopped(event)) {
       return
     }
 
@@ -309,6 +318,10 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onAnimationstart = (event: AnimationEvent): void => {
+    if (isEventStopped(event)) {
+      return
+    }
+
     if (event.animationName.includes('autofill')) {
       const target = event.target as HTMLInputElement
 
@@ -369,45 +382,6 @@ export class MaskEvent {
   }
 
   /**
-   * Checks whether the element is in autofill state.
-   *
-   * Проверяет, находится ли элемент в состоянии автозаполнения.
-   * @param element target element/ целевой элемент
-   * @returns is autofilled/ заполнено ли автозаполнением
-   */
-  protected isAutofill(element?: HTMLInputElement): boolean {
-    if (!element) {
-      return false
-    }
-
-    try {
-      if (element.matches(':autofill')) {
-        return true
-      }
-    } catch {
-      // Ignore unsupported pseudo-class
-    }
-
-    try {
-      if (element.matches(':-webkit-autofill')) {
-        return true
-      }
-    } catch {
-      // Ignore unsupported pseudo-class
-    }
-
-    try {
-      if (element.matches(':-moz-ui-autofill')) {
-        return true
-      }
-    } catch {
-      // Ignore unsupported pseudo-class
-    }
-
-    return false
-  }
-
-  /**
    * Checks whether the input event was triggered by browser autofill or external insertion.
    *
    * Проверяет, вызвано ли событие ввода автозаполнением браузера или внешней вставкой.
@@ -416,23 +390,8 @@ export class MaskEvent {
    * @returns is autofill event/ является ли событием автозаполнения
    */
   protected isAutofillEvent(event: InputEvent, target: HTMLInputElement): boolean {
-    if (event.inputType === 'insertReplacementText') {
-      return true
-    }
-
-    if (this.isAutofill(target)) {
-      return true
-    }
-
-    if (!this.isKeydown && !this.unidentified) {
-      return true
-    }
-
-    if (!event.inputType) {
-      return true
-    }
-
-    return false
+    return isAutofillEvent(event, target)
+      || (!this.isKeydown && !this.unidentified)
   }
 
   /**
@@ -465,7 +424,7 @@ export class MaskEvent {
       target
       && target.value
       && (
-        this.isAutofill(target)
+        isAutofillElement(target)
         || !this.characterLength().is()
         || target.value !== this.valueBasic().item.value
       )

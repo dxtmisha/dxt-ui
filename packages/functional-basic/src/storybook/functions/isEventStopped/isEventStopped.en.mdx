@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Events & Input/isEventStopped - Check if event was stopped'/>
+
+# `isEventStopped`
+
+Checks whether a DOM event has already been stopped externally via `defaultPrevented` or via `eventStopPropagation`.
+
+Unlike checking `event.defaultPrevented` alone, `isEventStopped` also returns `true` for non-cancelable events (such as `input` or `animationstart`) that were passed to `eventStopPropagation`.
+
+**Parameters:**
+- `event?: Event | null` — the DOM event instance to check; omitted or nullish values return `false`.
+
+**Returns:**
+`boolean` — `true` if the event was stopped or prevented, otherwise `false`.
+
+```typescript
+import { eventStopPropagation, isEventStopped } from '@dxtmisha/functional-basic'
+
+input.addEventListener('input', (event) => {
+  if (isSpecialInput(event)) {
+    eventStopPropagation(event)
+  }
+})
+
+input.addEventListener('input', (event) => {
+  if (isEventStopped(event)) {
+    return
+  }
+
+  console.log('Standard input processing')
+})
+```

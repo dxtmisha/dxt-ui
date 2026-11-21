@@ -1,11 +1,12 @@
+import { eventStopPropagation, GeoPhone, type GeoPhoneMapInfoFull } from '@dxtmisha/functional'
 import { nextTick } from 'vue'
-import { eventStopPropagation, GeoPhone } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
-import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { InputPhoneResolved } from './basicTypes'
 import type { InputPhoneCountry } from './InputPhoneCountry'
 import type { InputPhoneCountryList } from './InputPhoneCountryList'
+import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import type { InputPhonePropsBasic } from './props'
 
@@ -62,28 +63,20 @@ export class InputPhonePaste {
       return
     }
 
-    const resolved = this.resolveFullPaste(cleanPasted)
-
-    if (
-      resolved
-      && this.isAllowedPaste(resolved.country, resolved.format)
-    ) {
-      eventStopPropagation(event)
-      void this.applyFullPaste(resolved.country, resolved.format)
-    }
+    this.applyResolved(event, this.resolveFull(cleanPasted))
   }
 
   /**
-   * Resolves pasted digits into a country code and full formatted phone string.
+   * Resolves cleaned phone digits into a country code and full formatted phone string.
    * Falls back to normalizing the active country's domestic trunk prefix (`within`) to its dial code.
    *
-   * Определяет код страны и полный отформатированный номер по вставленным цифрам.
+   * Определяет код страны и полный отформатированный номер по очищенным цифрам.
    * При отсутствии прямого совпадения заменяет внутренний префикс активной страны (`within`) на её код.
-   * @param cleanPasted cleaned digits from clipboard / очищенные цифры из буфера обмена
+   * @param cleanPhone cleaned digits string / строка из очищенных цифр
    * @returns resolved country code and formatted phone, or undefined / код страны и номер или undefined
    */
-  protected resolveFullPaste(cleanPasted: string): { country: string, format: string } | undefined {
-    const directInfo = this.getFullInfo(cleanPasted)
+  resolveFull(cleanPhone: string): InputPhoneResolved | undefined {
+    const directInfo = this.getFullInfo(cleanPhone)
 
     if (directInfo?.item?.value) {
       return {
@@ -97,13 +90,13 @@ export class InputPhonePaste {
 
     if (
       !within
-      || !cleanPasted.startsWith(within)
+      || !cleanPhone.startsWith(within)
     ) {
       return undefined
     }
 
     const normalizedInfo = this.getFullInfo(
-      `${this.country().toPhone(activeCountry)}${cleanPasted.slice(within.length)}`
+      `${this.country().toPhone(activeCountry)}${cleanPhone.slice(within.length)}`
     )
 
     if (normalizedInfo?.item?.items.some(entry => entry.value === activeCountry)) {
@@ -117,13 +110,33 @@ export class InputPhonePaste {
   }
 
   /**
+   * Stops event propagation and applies a resolved full phone if allowed by `countryBlock` and `countryList`.
+   *
+   * Останавливает всплытие события и применяет определённый полный номер при разрешении `countryBlock` и `countryList`.
+   * @param event DOM event / DOM-событие
+   * @param resolved resolved country and formatted phone / определённый код страны и отформатированный номер
+   */
+  applyResolved(
+    event: Event,
+    resolved?: InputPhoneResolved
+  ): void {
+    if (
+      resolved
+      && this.isAllowedPaste(resolved.country, resolved.format)
+    ) {
+      eventStopPropagation(event)
+      void this.applyFullPaste(resolved.country, resolved.format)
+    }
+  }
+
+  /**
    * Validates whether a digit sequence matches a complete phone mask.
    *
    * Проверяет, соответствует ли последовательность цифр полной маске номера.
    * @param phone digits string / строка из цифр
    * @returns full phone info if complete, otherwise undefined / полная информация о номере или undefined
    */
-  protected getFullInfo(phone: string) {
+  protected getFullInfo(phone: string): GeoPhoneMapInfoFull | undefined {
     const info = GeoPhone.getByPhoneFull(phone)
 
     if (
@@ -137,12 +150,12 @@ export class InputPhonePaste {
   }
 
   /**
-   * Checks whether the pasted phone is allowed under the current `countryBlock` and `countryList` settings.
+   * Checks whether the resolved phone is allowed under the current `countryBlock` and `countryList` settings.
    *
-   * Проверяет, разрешена ли вставка номера с учётом флага `countryBlock` и списка `countryList`.
+   * Проверяет, разрешён ли определённый номер с учётом флага `countryBlock` и списка `countryList`.
    * @param targetCountry resolved country code / определённый код страны
    * @param format formatted full phone string / отформатированный полный номер
-   * @returns true if paste is allowed / true, если вставка разрешена
+   * @returns true if allowed / true, если применение разрешено
    */
   protected isAllowedPaste(
     targetCountry: string,
@@ -176,9 +189,9 @@ export class InputPhonePaste {
   }
 
   /**
-   * Applies a pasted full phone number with its resolved country code.
+   * Applies a full phone number with its resolved country code.
    *
-   * Применяет вставленный полный номер телефона с определённым кодом страны.
+   * Применяет полный номер телефона с определённым кодом страны.
    * @param targetCountry resolved country code / определённый код страны
    * @param formattedPhone formatted full phone string / отформатированная строка полного номера
    */

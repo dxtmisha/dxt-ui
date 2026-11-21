@@ -95,6 +95,7 @@ describe('InputPhone (unit)', () => {
       expect(instance.hasInstance('validation')).toBe(true)
 
       expect(instance.hasInstance('attributes')).toBe(false)
+      expect(instance.hasInstance('autofill')).toBe(false)
       expect(instance.hasInstance('change')).toBe(false)
       expect(instance.hasInstance('code')).toBe(false)
       expect(instance.hasInstance('dialCode')).toBe(false)

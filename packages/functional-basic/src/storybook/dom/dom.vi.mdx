@@ -60,7 +60,7 @@ goScrollSmooth(item)
 Các hàm trợ giúp để xác định loại phần tử và sự hiện diện của chúng trong tài liệu hiện tại.
 
 ```javascript
-import { isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
+import { isAutofillElement, isAutofillEvent, isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
 
 // 1. Kiểm tra xem một phần tử có được gắn vào DOM hay không
 if (isInDom(el)) {
@@ -76,4 +76,16 @@ if (isElementVisible(el)) {
 if (isInput(el)) {
   el.focus()
 }
+
+// 4. Kiểm tra xem phần tử có đang được trình duyệt tự động điền hay không
+if (isAutofillElement(el)) {
+  console.log('Tự động điền của trình duyệt đang hoạt động')
+}
+
+// 5. Kiểm tra xem sự kiện input có do tự động điền của trình duyệt kích hoạt hay không
+el.addEventListener('input', (event) => {
+  if (isAutofillEvent(event)) {
+    console.log('Sự kiện tự động điền')
+  }
+})
 ```

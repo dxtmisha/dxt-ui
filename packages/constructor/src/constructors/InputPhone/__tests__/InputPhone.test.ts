@@ -1068,4 +1068,23 @@ describe('InputPhone (Integration)', () => {
       filterMode: true
     })
   })
+
+  it('should deduplicate country prefix on autofill insertReplacementText in full InputPhone+Mask integration', async () => {
+    const { container, exposed } = await mountInputPhone({
+      countryDefault: 'RU'
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(input.getAttribute('autocomplete')).toBe('tel')
+    expect(input.value).toBe('+7-')
+
+    input.value = '+7-79001234567'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: null }))
+    await nextTick()
+    await nextTick()
+
+    expect(input.value).toBe('+7-900-123-45-67')
+    expect(exposed.getValue()).toBe('+7-900-123-45-67')
+    expect(exposed.checkValidity()).toBe(true)
+  })
 })

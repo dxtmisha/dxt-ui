@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/DOM & Elements/isAutofillElement - Check if element is autofilled'/>
+
+# `isAutofillElement`
+
+Checks whether an element currently matches browser autofill pseudo-classes (`:autofill`, `:-webkit-autofill`, `:-moz-ui-autofill`).
+
+Each pseudo-class is tested individually inside `try/catch` because calling `element.matches()` with a comma-separated list throws a `SyntaxError` if any vendor pseudo-class is unsupported by the current browser.
+
+**Parameters:**
+- `elementSelectors?: ElementOrString<E> | null` — a CSS selector, `Element`, or `null`/`undefined`.
+
+**Returns:**
+`boolean` — `true` if the element matches any autofill pseudo-class, otherwise `false`.
+
+```typescript
+import { isAutofillElement } from '@dxtmisha/functional-basic'
+
+const input = document.querySelector<HTMLInputElement>('input[autocomplete="tel"]')
+
+if (isAutofillElement(input)) {
+  console.log('Browser autofill applied')
+}
+```

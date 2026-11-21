@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/События и ввод/isEventStopped - Проверка остановки события'/>
+
+# `isEventStopped`
+
+Проверяет, было ли DOM-событие уже остановлено внешним обработчиком через `defaultPrevented` или с помощью `eventStopPropagation`.
+
+В отличие от прямой проверки `event.defaultPrevented`, `isEventStopped` также возвращает `true` для неотменяемых событий (например, `input` или `animationstart`), переданных в `eventStopPropagation`.
+
+**Параметры:**
+- `event?: Event | null` — проверяемый экземпляр DOM-события; при отсутствии или nullish-значении возвращает `false`.
+
+**Возвращает:**
+`boolean` — `true`, если событие было остановлено или отменено, иначе `false`.
+
+```typescript
+import { eventStopPropagation, isEventStopped } from '@dxtmisha/functional-basic'
+
+input.addEventListener('input', (event) => {
+  if (isSpecialInput(event)) {
+    eventStopPropagation(event)
+  }
+})
+
+input.addEventListener('input', (event) => {
+  if (isEventStopped(event)) {
+    return
+  }
+
+  console.log('Обычная обработка ввода')
+})
+```

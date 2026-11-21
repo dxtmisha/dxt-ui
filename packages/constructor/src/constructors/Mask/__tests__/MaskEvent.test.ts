@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
+import { eventStopPropagation } from '@dxtmisha/functional'
 import { MaskEvent } from '../MaskEvent'
 import type { MaskBuffer } from '../MaskBuffer'
 import type { MaskFocus } from '../MaskFocus'
@@ -179,5 +180,23 @@ describe('MaskEvent', () => {
     maskEvent.onAnimationstart(animationEvent)
 
     expect(mockData.reset).toHaveBeenCalledWith('123')
+  })
+
+  it('should skip onInput and onAnimationstart when eventStopPropagation() was called on a non-cancelable event', () => {
+    const inputEvent = new InputEvent('input', { cancelable: false, inputType: 'insertReplacementText' })
+    Object.defineProperty(inputEvent, 'target', { value: inputElement })
+    eventStopPropagation(inputEvent)
+
+    maskEvent.onInput(inputEvent)
+    expect(mockData.reset).not.toHaveBeenCalled()
+    expect(mockEmit.set).not.toHaveBeenCalled()
+
+    const animationEvent = new Event('animationstart', { cancelable: false }) as AnimationEvent
+    Object.defineProperty(animationEvent, 'animationName', { value: 'onautofillstart' })
+    Object.defineProperty(animationEvent, 'target', { value: inputElement })
+    eventStopPropagation(animationEvent)
+
+    maskEvent.onAnimationstart(animationEvent)
+    expect(mockData.reset).not.toHaveBeenCalled()
   })
 })

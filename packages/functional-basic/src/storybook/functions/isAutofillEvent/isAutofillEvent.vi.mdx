@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/DOM & Phần tử/isAutofillEvent - Kiểm tra sự kiện tự động điền'/>
+
+# `isAutofillEvent`
+
+Kiểm tra xem sự kiện `input` có được kích hoạt bởi tính năng tự động điền của trình duyệt hay không (`inputType === 'insertReplacementText'`, thiếu/rỗng `inputType`, hoặc phần tử đích khớp `isAutofillElement`).
+
+**Tham số:**
+- `event?: Event | null` — sự kiện DOM cần kiểm tra.
+- `elementSelectors?: ElementOrString<E> | null` — phần tử hoặc bộ chọn CSS tùy chọn (mặc định dùng `event.target`).
+
+**Trả về:**
+`boolean` — `true` nếu sự kiện tương ứng với tự động điền của trình duyệt, ngược lại là `false`.
+
+```typescript
+import { isAutofillEvent } from '@dxtmisha/functional-basic'
+
+input.addEventListener('input', (event) => {
+  if (isAutofillEvent(event)) {
+    console.log('Giá trị được điền bởi tự động điền của trình duyệt')
+  }
+})
+```
