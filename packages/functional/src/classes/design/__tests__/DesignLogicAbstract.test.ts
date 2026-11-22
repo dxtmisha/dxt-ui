@@ -1033,4 +1033,61 @@ describe('DesignLogicAbstract', () => {
     expect(existingResult).toBe(10)
     expect(canCreateGuarded).toHaveBeenCalledTimes(2)
   })
+
+  it('supports callInstanceArray, callInstanceBoolean, and safe fallback when scope is stopped or constructor is missing', () => {
+    interface HelperConstructors {
+      blocked?: typeof CountDependency
+      allowed?: typeof CountDependency
+      missing?: typeof CountDependency
+    }
+
+    class HelperLogic extends DesignLogicAbstract<
+      HTMLElement,
+      ConstrComponent,
+      ConstrItem,
+      ConstrItem,
+      ConstrItem,
+      HelperConstructors
+    > {
+      protected readonly constructorItems = {
+        blocked: {
+          item: CountDependency,
+          canCreate: false,
+          parameters: (): [number] => [3]
+        },
+        allowed: {
+          item: CountDependency,
+          canCreate: true,
+          parameters: (): [number] => [7]
+        },
+        missing: {
+          parameters: (): [number] => [1]
+        }
+      }
+
+      constructor() {
+        super({}, ref<HTMLElement>(), new DesignName('d1.helper-test'), undefined, undefined, undefined, undefined, false)
+      }
+    }
+
+    const scope = createScope()
+    const logic = scope.run(() => new HelperLogic())
+    assert(logic)
+
+    expect(logic.callInstanceArray('blocked', instance => [instance.count])).toEqual([])
+    expect(logic.callInstanceArray('allowed', instance => [instance.count, instance.count + 1])).toEqual([7, 8])
+
+    expect(logic.callInstanceBoolean('blocked', instance => instance.count > 0)).toBe(false)
+    expect(logic.callInstanceBoolean('allowed', instance => instance.count === 7)).toBe(true)
+
+    const missingCallback = vi.fn((instance: CountDependency) => instance.count)
+    expect(logic.callInstance('missing', missingCallback, -1)).toBe(-1)
+    expect(missingCallback).not.toHaveBeenCalled()
+
+    scope.stop()
+    const stoppedCallback = vi.fn((instance: CountDependency) => [instance.count])
+    expect(logic.callInstanceArray('blocked', stoppedCallback)).toEqual([])
+    expect(logic.callInstanceBoolean('missing', () => true)).toBe(false)
+    expect(stoppedCallback).not.toHaveBeenCalled()
+  })
 })

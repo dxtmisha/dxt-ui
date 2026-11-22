@@ -174,7 +174,11 @@ export abstract class DesignLogicAbstract<
       || isNull(canCreate)
       || executeFunction(canCreate)
     ) {
-      return callback(this.getInstance(name))
+      const instance = this.getInstance(name)
+
+      if (instance) {
+        return callback(instance)
+      }
     }
 
     return executeFunction(defaultValue) as R | D

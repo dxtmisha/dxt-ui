@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `eventStopPropagation`
 
-Stops the further propagation of an event in the DOM tree (bubbling / capturing) and cancels the browser's default action.
+Stops the further propagation of an event in the DOM tree (bubbling / capturing), cancels the browser's default action, and registers the event as stopped for `isEventStopped`.
 
-The function is a convenient wrapper around calling both `event.preventDefault()` and `event.stopPropagation()`.
+The function wraps calling `event.preventDefault()`, `event.stopPropagation()`, and marks the event object in an internal `WeakSet` so `isEventStopped(event)` returns `true` even for non-cancelable events.
 
 It safely ignores `null` and `undefined`. Default prevention follows native event rules: it has no effect for non-cancelable events or passive listeners. Other listeners on the same target are still allowed to run.
 

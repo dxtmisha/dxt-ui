@@ -59,6 +59,8 @@ scope.stop()
 
 ### Dependency access
 
+- `hasInstance<K extends keyof CONSTRUCTORS & string>(name: K): boolean` — Checks whether a dependency instance has already been created and cached.
+
 #### `getInstance`
 
 `getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>`
@@ -74,6 +76,12 @@ Returns a cached dependency or creates it inside the captured active scope. Cons
 ```typescript
 const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
 ```
+
+### Guarded invocation (`canCreate`)
+
+- `callInstance<K, R = void, D = undefined>(name: K, callback: (instance) => R, defaultValue?: D | (() => D)): R | D` — Executes `callback` with the dependency instance when it already exists, has no `canCreate` guard, or `canCreate()` returns `true` (and an active instance is resolved); otherwise returns `defaultValue` or `undefined`.
+- `callInstanceArray<K, T = unknown>(name: K, callback: (instance) => T[]): T[]` — Guarded helper returning `[]` when the dependency cannot be accessed.
+- `callInstanceBoolean<K>(name: K, callback: (instance) => boolean): boolean` — Guarded helper returning `false` when the dependency cannot be accessed.
 
 ### Shorthand access
 

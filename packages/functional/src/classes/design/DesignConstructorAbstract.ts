@@ -168,14 +168,6 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Implement in a subclass to return the externally exposed data.
-   *
-   * Реализуйте в подклассе для получения внешнего API.
-   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
-   */
-  protected abstract initExpose(): EXPOSE
-
-  /**
    * Implement in a subclass to return the logic class map before merging.
    *
    * Реализуйте в подклассе для получения карты классов логики перед объединением.
@@ -184,12 +176,12 @@ export abstract class DesignConstructorAbstract<
   protected abstract initClasses(): Partial<CLASSES>
 
   /**
-   * Implement in a subclass to return styles before options and attrs are applied.
+   * Implement in a subclass to return the externally exposed data.
    *
-   * Реализуйте в подклассе для получения стилей до применения опций и атрибутов.
+   * Реализуйте в подклассе для получения внешнего API.
    * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
-  protected abstract initStyles(): ConstrStyles
+  protected abstract initExpose(): EXPOSE
 
   /**
    * Implement the VNode tree. The result may be one node, an array, or `undefined`.
@@ -225,6 +217,14 @@ export abstract class DesignConstructorAbstract<
 
     return undefined
   }
+
+  /**
+   * Implement in a subclass to return styles before options and attrs are applied.
+   *
+   * Реализуйте в подклассе для получения стилей до применения опций и атрибутов.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+   */
+  protected abstract initStyles(): ConstrStyles
 
   /**
    * Updating data about classes by merging constructor, options, and attribute classes.

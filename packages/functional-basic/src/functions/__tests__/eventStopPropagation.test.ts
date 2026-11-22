@@ -1,10 +1,15 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, it, expect, vi } from 'vitest'
 import { eventStopPropagation } from '../eventStopPropagation'
+import { isEventStopped } from '../isEventStopped'
 
 describe('eventStopPropagation', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
   describe('Standard functional requirements (Happy path)', () => {
     it('should call both preventDefault and stopPropagation on a mocked Event', () => {
       const mockEvent = {
@@ -134,11 +139,13 @@ describe('eventStopPropagation', () => {
   })
 
   describe('Boundary conditions and idempotency', () => {
-    it('should safely handle non-cancelable events without throwing errors', () => {
+    it('should safely handle non-cancelable events without throwing errors and mark them stopped for isEventStopped', () => {
       const nonCancelableEvent = new Event('scroll', { bubbles: false, cancelable: false })
 
+      expect(isEventStopped(nonCancelableEvent)).toBe(false)
       expect(() => eventStopPropagation(nonCancelableEvent)).not.toThrow()
       expect(nonCancelableEvent.defaultPrevented).toBe(false)
+      expect(isEventStopped(nonCancelableEvent)).toBe(true)
     })
 
     it('should support multiple consecutive calls on the same event instance', () => {
@@ -152,12 +159,24 @@ describe('eventStopPropagation', () => {
 
       expect(mockEvent.preventDefault).toHaveBeenCalledTimes(2)
       expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(2)
+      expect(isEventStopped(mockEvent)).toBe(true)
     })
 
-    it('should safely handle null and undefined without throwing', () => {
+    it('should safely handle null, undefined, and SSR environments without window', () => {
       expect(() => eventStopPropagation(null)).not.toThrow()
       expect(() => eventStopPropagation(undefined)).not.toThrow()
       expect(() => eventStopPropagation()).not.toThrow()
+
+      vi.stubGlobal('window', undefined)
+      const ssrMockEvent = {
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn()
+      } as unknown as Event
+
+      expect(() => eventStopPropagation(ssrMockEvent)).not.toThrow()
+      expect(ssrMockEvent.preventDefault).toHaveBeenCalledOnce()
+      expect(ssrMockEvent.stopPropagation).toHaveBeenCalledOnce()
+      expect(isEventStopped(ssrMockEvent)).toBe(true)
     })
   })
 })

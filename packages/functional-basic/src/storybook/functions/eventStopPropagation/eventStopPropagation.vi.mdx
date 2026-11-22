@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `eventStopPropagation`
 
-Dừng việc lan truyền tiếp theo của một sự kiện trong cây DOM (giai đoạn nổi lên / bắt giữ) và hủy bỏ hành động mặc định của trình duyệt.
+Dừng việc lan truyền tiếp theo của một sự kiện trong cây DOM (giai đoạn nổi lên / bắt giữ), hủy bỏ hành động mặc định của trình duyệt và đánh dấu sự kiện là đã dừng cho `isEventStopped`.
 
-Hàm này là một trình bao bọc (wrapper) tiện lợi gọi cả hai phương thức `event.preventDefault()` và `event.stopPropagation()`.
+Hàm này gọi `event.preventDefault()`, `event.stopPropagation()` và đăng ký đối tượng sự kiện vào `WeakSet` nội bộ để `isEventStopped(event)` trả về `true` ngay cả với các sự kiện không thể hủy.
 
 Hàm bỏ qua `null` và `undefined` một cách an toàn. Việc hủy hành động tuân theo quy tắc sự kiện gốc: không có tác dụng với sự kiện không thể hủy hoặc trình xử lý thụ động. Các trình xử lý khác trên cùng phần tử vẫn được thực thi.
 

@@ -22,7 +22,7 @@ function getParentSource(
   instance: ComponentInternalInstance
 ): AppContext | ComponentInternalInstance {
   if (
-    instance.parent == null
+    isNull(instance.parent)
     || ('ce' in instance && instance.ce)
   ) {
     return instance.appContext

@@ -18,24 +18,25 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Поведение и жизненный цикл
 
-У класса нет публичных методов. Подклассы реализуют readonly-свойства `onMounted?: () => void` и `onUnmounted?: () => void`. Асинхронную работу и её очистку организует подкласс.
+У класса нет публичных методов. Подклассы реализуют readonly-свойства `onMounted?: (scope?: EffectScope) => void` и `onUnmounted?: (scope?: EffectScope) => void`, получающие активную область эффектов Vue `EffectScope`. Асинхронную работу и её очистку организует подкласс.
 
 ## Использование
 
 ```typescript
 import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import type { EffectScope } from 'vue'
 
 class Dependency extends DesignLifecycleAbstract {
   mounted = false
-  override readonly onMounted = (): void => { this.mounted = true }
-  override readonly onUnmounted = (): void => { this.mounted = false }
+  override readonly onMounted = (_scope?: EffectScope): void => { this.mounted = true }
+  override readonly onUnmounted = (_scope?: EffectScope): void => { this.mounted = false }
 }
 ```
 
 ## Свойства
 
-- `onMounted: (() => void) | undefined` — Необязательный синхронный обработчик монтирования.
-- `onUnmounted: (() => void) | undefined` — Необязательный синхронный обработчик очистки.
+- `onMounted: ((scope?: EffectScope) => void) | undefined` — Необязательный синхронный обработчик монтирования, получающий активную область эффектов Vue.
+- `onUnmounted: ((scope?: EffectScope) => void) | undefined` — Необязательный синхронный обработчик очистки, получающий область эффектов Vue.
 
 ## Методы
 

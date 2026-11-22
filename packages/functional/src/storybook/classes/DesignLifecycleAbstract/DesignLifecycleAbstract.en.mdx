@@ -18,24 +18,25 @@ Extend this abstract class; do not instantiate it directly.
 
 ## Behavior and lifecycle
 
-This class has no public methods. Subclasses supply readonly `onMounted?: () => void` and `onUnmounted?: () => void` properties. Asynchronous work and its cleanup belong to the subclass.
+This class has no public methods. Subclasses supply readonly `onMounted?: (scope?: EffectScope) => void` and `onUnmounted?: (scope?: EffectScope) => void` properties receiving the active Vue `EffectScope`. Asynchronous work and its cleanup belong to the subclass.
 
 ## Usage
 
 ```typescript
 import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import type { EffectScope } from 'vue'
 
 class Dependency extends DesignLifecycleAbstract {
   mounted = false
-  override readonly onMounted = (): void => { this.mounted = true }
-  override readonly onUnmounted = (): void => { this.mounted = false }
+  override readonly onMounted = (_scope?: EffectScope): void => { this.mounted = true }
+  override readonly onUnmounted = (_scope?: EffectScope): void => { this.mounted = false }
 }
 ```
 
 ## Properties
 
-- `onMounted: (() => void) | undefined` — Optional synchronous mount callback.
-- `onUnmounted: (() => void) | undefined` — Optional synchronous cleanup callback.
+- `onMounted: ((scope?: EffectScope) => void) | undefined` — Optional synchronous mount callback receiving the active Vue effect scope.
+- `onUnmounted: ((scope?: EffectScope) => void) | undefined` — Optional synchronous cleanup callback receiving the Vue effect scope.
 
 ## Methods
 

@@ -8,9 +8,6 @@ src/functions/toBinds.ts
 src/classes/design/DesignComponents.ts
 src/classes/design/DesignComp.ts
 src/classes/design/DesignName.ts
-src/classes/design/DesignConstructorAbstract.ts
-src/classes/design/DesignLifecycleAbstract.ts
-src/classes/design/DesignLogicAbstract.ts
 src/classes/ref/EffectScopeGlobal.ts
 src/classes/ref/GeoRef.ts
 src/functions/ref/toRefItem.ts
@@ -53,7 +50,6 @@ src/composables/ref/useSessionRef.ts
 src/composables/ref/useStorageRef.ts
 src/composables/ref/useTranslateRef.ts
 src/functions/watchEffectAsync.ts
-src/functions/computedAsync.ts
 src/functions/computedByLanguage.ts
 src/functions/computedEternity.ts
 src/functions/dxtFunctionalPlugin.ts
@@ -64,3 +60,8 @@ src/functions/render/getClassName.ts
 src/functions/getInject.ts
 src/functions/ref/setRef.ts
 src/functions/ref/toShallowRefItem.ts
+src/classes/design/DesignConstructorAbstract.ts
+src/classes/design/DesignLifecycleAbstract.ts
+src/classes/design/DesignLogicAbstract.ts
+src/functions/computedAsync.ts
+src/functions/getInjectNearest.ts

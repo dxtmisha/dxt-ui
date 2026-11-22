@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import {
   computed,
   createApp,
+  createSSRApp,
   defineComponent,
   h,
   nextTick,
@@ -14,6 +15,7 @@ import {
   type InjectionKey,
   type Ref
 } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 
 import { getInjectNearest } from '../getInjectNearest'
 
@@ -309,6 +311,33 @@ describe('getInjectNearest', () => {
       expectTypeOf(refResult).toEqualTypeOf<string>()
       expect(plainResult).toBe('hello')
       expect(refResult).toBe('world')
+    })
+
+    it('walks multi-level component ancestors for Symbol InjectionKey and renders identically in SSR', async () => {
+      const symbolKey: InjectionKey<Ref<string | undefined>> = Symbol('nearest-area')
+
+      const Child = defineComponent({
+        setup() {
+          return () => h('span', getInjectNearest(symbolKey, 'fallback'))
+        }
+      })
+
+      const Middle = defineComponent({
+        setup() {
+          provide(symbolKey, ref<string | undefined>(undefined))
+          return () => h(Child)
+        }
+      })
+
+      const Outer = defineComponent({
+        setup() {
+          provide(symbolKey, ref('ssr-outer'))
+          return () => h(Middle)
+        }
+      })
+
+      const markup = await renderToString(createSSRApp(Outer))
+      expect(markup).toBe('<span>ssr-outer</span>')
     })
   })
 })

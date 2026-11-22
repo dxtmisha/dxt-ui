@@ -18,24 +18,25 @@ Kế thừa lớp trừu tượng này; không khởi tạo trực tiếp.
 
 ## Hành vi và vòng đời
 
-Lớp không có phương thức công khai. Lớp con cung cấp các thuộc tính readonly `onMounted?: () => void` và `onUnmounted?: () => void`. Lớp con quản lý tác vụ bất đồng bộ và dọn dẹp.
+Lớp không có phương thức công khai. Lớp con cung cấp các thuộc tính readonly `onMounted?: (scope?: EffectScope) => void` và `onUnmounted?: (scope?: EffectScope) => void` nhận phạm vi hiệu ứng Vue `EffectScope`. Lớp con quản lý tác vụ bất đồng bộ và dọn dẹp.
 
 ## Cách dùng
 
 ```typescript
 import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import type { EffectScope } from 'vue'
 
 class Dependency extends DesignLifecycleAbstract {
   mounted = false
-  override readonly onMounted = (): void => { this.mounted = true }
-  override readonly onUnmounted = (): void => { this.mounted = false }
+  override readonly onMounted = (_scope?: EffectScope): void => { this.mounted = true }
+  override readonly onUnmounted = (_scope?: EffectScope): void => { this.mounted = false }
 }
 ```
 
 ## Thuộc tính
 
-- `onMounted: (() => void) | undefined` — Callback gắn đồng bộ tùy chọn.
-- `onUnmounted: (() => void) | undefined` — Callback dọn dẹp đồng bộ tùy chọn.
+- `onMounted: ((scope?: EffectScope) => void) | undefined` — Callback gắn đồng bộ tùy chọn nhận phạm vi hiệu ứng Vue đang hoạt động.
+- `onUnmounted: ((scope?: EffectScope) => void) | undefined` — Callback dọn dẹp đồng bộ tùy chọn nhận phạm vi hiệu ứng Vue.
 
 ## Phương thức
 

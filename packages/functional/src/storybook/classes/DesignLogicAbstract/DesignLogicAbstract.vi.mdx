@@ -59,6 +59,8 @@ scope.stop()
 
 ### Truy cập phụ thuộc
 
+- `hasInstance<K extends keyof CONSTRUCTORS & string>(name: K): boolean` — Kiểm tra xem thực thể phụ thuộc đã được tạo và lưu trong bộ nhớ đệm hay chưa.
+
 #### `getInstance`
 
 `getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>`
@@ -74,6 +76,12 @@ Trả phụ thuộc đã lưu hoặc tạo trong phạm vi hoạt động đã g
 ```typescript
 const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
 ```
+
+### Gọi có điều kiện (`canCreate`)
+
+- `callInstance<K, R = void, D = undefined>(name: K, callback: (instance) => R, defaultValue?: D | (() => D)): R | D` — Gọi `callback` với thực thể phụ thuộc khi đã tồn tại, không có `canCreate` hoặc `canCreate()` trả về `true` (và thực thể khả dụng); ngược lại trả về `defaultValue` hoặc `undefined`.
+- `callInstanceArray<K, T = unknown>(name: K, callback: (instance) => T[]): T[]` — Hàm trợ giúp trả về `[]` khi không thể truy cập phụ thuộc.
+- `callInstanceBoolean<K>(name: K, callback: (instance) => boolean): boolean` — Hàm trợ giúp trả về `false` khi không thể truy cập phụ thuộc.
 
 ### Truy cập rút gọn
 

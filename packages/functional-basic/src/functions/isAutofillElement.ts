@@ -1,7 +1,9 @@
 import { getElement } from './getElement'
 import { isFunction } from './isFunction'
+import { isObject } from './isObject'
 import type { ElementOrString } from '../types/basicTypes'
 
+/** Browser autofill pseudo-class selectors / Псевдоклассы автозаполнения браузера */
 const AUTOFILL_SELECTORS = [
   ':autofill',
   ':-webkit-autofill',
@@ -24,7 +26,7 @@ export function isAutofillElement<E extends Element = HTMLElement>(
 
   if (
     !element
-    || !('matches' in element)
+    || !isObject(element)
     || !isFunction(element.matches)
   ) {
     return false
@@ -36,7 +38,7 @@ export function isAutofillElement<E extends Element = HTMLElement>(
         return true
       }
     } catch {
-      // Ignore unsupported pseudo-class
+      // Ignore unsupported pseudo-class / Игнорируем неподдерживаемый псевдокласс
     }
   }
 

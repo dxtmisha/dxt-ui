@@ -32,11 +32,12 @@ describe('isPositiveInteger', () => {
       expect(isPositiveInteger(Infinity)).toBe(false)
       expect(isPositiveInteger(-Infinity)).toBe(false)
       expect(isPositiveInteger(Number.MAX_SAFE_INTEGER + 1)).toBe(false)
+      expect(isPositiveInteger(Number.MIN_SAFE_INTEGER)).toBe(false)
     })
   })
 
   describe('Non-number values', () => {
-    it('should return false for strings, booleans, nullish values, bigint, objects, and arrays', () => {
+    it('should return false for strings, booleans, nullish values, bigint, boxed numbers, objects, and arrays', () => {
       expect(isPositiveInteger('1')).toBe(false)
       expect(isPositiveInteger('')).toBe(false)
       expect(isPositiveInteger(true)).toBe(false)
@@ -45,6 +46,8 @@ describe('isPositiveInteger', () => {
       expect(isPositiveInteger(undefined)).toBe(false)
       expect(isPositiveInteger()).toBe(false)
       expect(isPositiveInteger(1n)).toBe(false)
+      expect(isPositiveInteger(Object(1))).toBe(false)
+      expect(isPositiveInteger(Symbol('1'))).toBe(false)
       expect(isPositiveInteger({})).toBe(false)
       expect(isPositiveInteger([1])).toBe(false)
     })

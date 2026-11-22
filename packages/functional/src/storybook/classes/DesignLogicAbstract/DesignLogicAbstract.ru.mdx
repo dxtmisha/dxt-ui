@@ -59,6 +59,8 @@ scope.stop()
 
 ### Доступ к зависимостям
 
+- `hasInstance<K extends keyof CONSTRUCTORS & string>(name: K): boolean` — Проверяет, был ли уже создан и сохранён экземпляр зависимости.
+
 #### `getInstance`
 
 `getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>`
@@ -74,6 +76,12 @@ scope.stop()
 ```typescript
 const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
 ```
+
+### Условный вызов (`canCreate`)
+
+- `callInstance<K, R = void, D = undefined>(name: K, callback: (instance) => R, defaultValue?: D | (() => D)): R | D` — Выполняет `callback` с экземпляром зависимости, если он уже создан, отсутствует `canCreate` или `canCreate()` возвращает `true` (и экземпляр доступен); иначе возвращает `defaultValue` или `undefined`.
+- `callInstanceArray<K, T = unknown>(name: K, callback: (instance) => T[]): T[]` — Хелпер для вызовов, возвращающих массив (`[]` по умолчанию).
+- `callInstanceBoolean<K>(name: K, callback: (instance) => boolean): boolean` — Хелпер для вызовов, возвращающих булево значение (`false` по умолчанию).
 
 ### Сокращённый доступ
 

@@ -1,5 +1,10 @@
 import { isAutofillElement } from './isAutofillElement'
+import { isObject } from './isObject'
+import { isString } from './isString'
 import type { ElementOrString } from '../types/basicTypes'
+
+/** Input event type dispatched on browser autofill replacement / Тип события ввода при автоподстановке браузера */
+const AUTOFILL_INPUT_TYPE = 'insertReplacementText'
 
 /**
  * Checks whether an input event represents browser autofill (`insertReplacementText`, missing `inputType`, or an autofilled element state).
@@ -13,16 +18,16 @@ export function isAutofillEvent<E extends Element = HTMLElement>(
   event?: Event | null,
   elementSelectors?: ElementOrString<E> | null
 ): boolean {
-  if (!event) {
+  if (!isObject(event)) {
     return false
   }
 
-  const inputType = 'inputType' in event && typeof event.inputType === 'string'
+  const inputType = 'inputType' in event && isString(event.inputType)
     ? event.inputType
     : ''
 
   if (
-    inputType === 'insertReplacementText'
+    inputType === AUTOFILL_INPUT_TYPE
     || !inputType
   ) {
     return true

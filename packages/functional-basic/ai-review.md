@@ -133,7 +133,6 @@ domQuerySelectorAll
 getElementImage
 resizeImageByMax
 ensureMaxSize
-eventStopPropagation
 frame
 getArrayHighlightMatch
 getAttributes
@@ -206,3 +205,8 @@ ErrorCenterThrowInstance
 ErrorCenterThrow
 GeoFlag
 GeoPhone
+eventStopPropagation
+isAutofillElement
+isAutofillEvent
+isEventStopped
+isPositiveInteger
