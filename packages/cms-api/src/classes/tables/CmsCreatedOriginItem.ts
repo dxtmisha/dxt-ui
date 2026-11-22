@@ -7,22 +7,23 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../functions/findOneCmsRecord'
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { createdOrigins } from '../media/schema/createdOrigins'
-import { CmsDbItemAbstract } from './CmsDbItemAbstract'
-import { CmsDbResolver } from './CmsDbResolver'
-import { CmsVerification } from './CmsVerification'
-import type { CmsDbInstance } from './CmsDbInstance'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
+import { createdOrigins } from '../../media/schema/createdOrigins'
+import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
+import { CmsDbResolver } from '../CmsDbResolver'
+import { CmsVerification } from '../CmsVerification'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsCreatedOrigin,
   CmsDbExecutor,
   CmsNewCreatedOrigin
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 import type {
   CmsCreatedOriginCreateInput,
   CmsCreatedOriginUpdateInput
-} from '../types/cmsCreatedOriginTypes'
+} from '../../types/cmsCreatedOriginTypes'
 
 /**
  * Represents a single CMS created origin entity and provides instance-level methods for reading and editing.
@@ -30,6 +31,9 @@ import type {
  * Представляет конкретный источник создания записей CMS и предоставляет методы для чтения и редактирования полей.
  */
 export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigins, CmsCreatedOrigin> {
+  /** ErrorCenter group name for created origin errors / Имя группы ошибок ErrorCenter для источников создания записей */
+  protected readonly errorGroup = CMS_CREATED_ORIGIN_ERROR_GROUP
+
   /**
    * Initializes a created origin entity wrapper with record data and database instance manager.
    *
@@ -41,7 +45,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
     data: CmsCreatedOrigin,
     databaseInstance?: CmsDbInstance
   ) {
-    super(createdOrigins, data, 'cms-created-origin', databaseInstance)
+    super(createdOrigins, data, databaseInstance)
   }
 
   /**
@@ -121,7 +125,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
     originIds?: readonly number[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByIds(
-      'cms-created-origin',
+      CMS_CREATED_ORIGIN_ERROR_GROUP,
       'notFound',
       uniqueIds => executor
         .select({ id: createdOrigins.id })
@@ -144,7 +148,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
     originCodes?: readonly string[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByCodes(
-      'cms-created-origin',
+      CMS_CREATED_ORIGIN_ERROR_GROUP,
       'notFound',
       uniqueCodes => executor
         .select({ id: createdOrigins.id, code: createdOrigins.code })

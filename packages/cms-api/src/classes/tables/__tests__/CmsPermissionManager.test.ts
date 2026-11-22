@@ -1,12 +1,13 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { useCmsDb } from '../../composables/useCmsDb'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { useCmsDb } from '../../../composables/useCmsDb'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsPermissionManager } from '../CmsPermissionManager'
-import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
-import type { CmsPermissionListResult } from '../../types/cmsPermissionTypes'
+import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import type { CmsPermissionListResult } from '../../../types/cmsPermissionTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -291,7 +292,7 @@ describe('CmsPermissionManager', () => {
     })
     await expect(manager.create({ code: 'a:b', name: 'AB' })).rejects.toThrow('Failed to create CMS permission.')
     expect(capturedErrors[0]).toMatchObject({
-      group: 'cms-permission',
+      group: CMS_PERMISSION_ERROR_GROUP,
       code: 'create'
     })
   })

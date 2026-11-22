@@ -15,39 +15,53 @@ describe('CmsVerification', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(CmsVerification.isPositiveInteger(1, true)).toBe(true)
+      expect(CmsVerification.isPositiveInteger(1)).toBe(true)
       expect(CmsVerification.isPositiveInteger(42, true)).toBe(true)
-      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER, true)).toBe(true)
+      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER, false)).toBe(true)
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('returns false without reporting an error when value is zero, negative, float, unsafe, or non-number and isError is false or omitted', () => {
-      expect(CmsVerification.isPositiveInteger(0)).toBe(false)
+    it('returns false without reporting an error when value is zero, negative, float, unsafe, or non-number and isError is false', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
       expect(CmsVerification.isPositiveInteger(0, false)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(-0)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(-1)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(1.5)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(Number.NaN)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(Number.POSITIVE_INFINITY)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER + 1)).toBe(false)
-      expect(CmsVerification.isPositiveInteger('1')).toBe(false)
-      expect(CmsVerification.isPositiveInteger(null)).toBe(false)
-      expect(CmsVerification.isPositiveInteger(undefined)).toBe(false)
-      expect(CmsVerification.isPositiveInteger({})).toBe(false)
+      expect(CmsVerification.isPositiveInteger(-0, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(-1, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(1.5, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(Number.NaN, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(Number.POSITIVE_INFINITY, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER + 1, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger('1', false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(null, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger(undefined, false)).toBe(false)
+      expect(CmsVerification.isPositiveInteger({}, false)).toBe(false)
+      expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('reports cms-verification:invalidId and throws ErrorCenterError when value is not a positive safe integer and isError is true', () => {
+    it('reports cms-verification:invalidId and throws ErrorCenterError when value is not a positive safe integer and isError is true or omitted', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(() => CmsVerification.isPositiveInteger(0, true))
+      expect(() => CmsVerification.isPositiveInteger(0))
         .toThrow(ErrorCenterError)
-      expect(reportSpy).toHaveBeenCalledTimes(1)
-      expect(reportSpy).toHaveBeenCalledWith(
+      expect(() => CmsVerification.isPositiveInteger(-1, true))
+        .toThrow(ErrorCenterError)
+      expect(reportSpy).toHaveBeenCalledTimes(2)
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        1,
         {
           group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidId',
           details: { id: 0 }
+        },
+        undefined
+      )
+      expect(reportSpy).toHaveBeenNthCalledWith(
+        2,
+        {
+          group: CMS_VERIFICATION_ERROR_GROUP,
+          code: 'invalidId',
+          details: { id: -1 }
         },
         undefined
       )
@@ -60,7 +74,16 @@ describe('CmsVerification', () => {
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
       expect(CmsVerification.normalizeCode('  admin  ')).toBe('admin')
-      expect(CmsVerification.normalizeCode('users:read')).toBe('users:read')
+      expect(CmsVerification.normalizeCode('users:read', false)).toBe('users:read')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('returns empty string without reporting an error for invalid codes when isError is false', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeCode('   ', false)).toBe('')
+      expect(CmsVerification.normalizeCode('bad code', false)).toBe('')
+      expect(CmsVerification.normalizeCode(null as unknown as string, false)).toBe('')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -111,7 +134,16 @@ describe('CmsVerification', () => {
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
       expect(CmsVerification.normalizeName('  Admin Role  ')).toBe('Admin Role')
-      expect(CmsVerification.normalizeName('Read Users')).toBe('Read Users')
+      expect(CmsVerification.normalizeName('Read Users', false)).toBe('Read Users')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('returns empty string without reporting an error for invalid names when isError is false', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeName('   ', false)).toBe('')
+      expect(CmsVerification.normalizeName('', false)).toBe('')
+      expect(CmsVerification.normalizeName(undefined as unknown as string, false)).toBe('')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -160,50 +192,72 @@ describe('CmsVerification', () => {
     it('does not report an error and returns true when the callback or boolean value is true', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
-      const cause = {
-        group: 'cms-user',
-        code: 'invalidEmail'
-      }
 
-      expect(CmsVerification.verify(() => true, cause)).toBe(true)
-      expect(CmsVerification.verify(true, cause)).toBe(true)
+      expect(CmsVerification.verify(true, () => true, undefined, 'invalidId', { id: 1 })).toBe(true)
+      expect(CmsVerification.verify(undefined, true, undefined, 'invalidId', { id: 1 })).toBe(true)
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('does not report an error and returns false when the callback or boolean value is false and cause is omitted', () => {
-      expect(CmsVerification.verify(() => false)).toBe(false)
-      expect(CmsVerification.verify(false)).toBe(false)
+    it('does not report an error and returns false when the callback or boolean value is false and isError is false', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.verify(false, () => false)).toBe(false)
+      expect(CmsVerification.verify(false, false)).toBe(false)
+      expect(CmsVerification.verify(
+        false,
+        false,
+        undefined,
+        'invalidCode',
+        { code: 'bad code' }
+      )).toBe(false)
+      expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('calls ErrorCenterThrow.on and throws ErrorCenterError when the callback or boolean value is false and cause is provided', () => {
+    it('uses the default invalid code when code is omitted and isError is true', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
-      const cause = {
-        group: 'cms-user',
-        code: 'invalidEmail',
-        details: { email: 'bad' }
-      }
-      const rootCause = new Error('Validation failed')
 
-      expect(() => CmsVerification.verify(() => false, cause, { cause: rootCause }))
+      expect(() => CmsVerification.verify(true, () => false))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.verify(false, cause, { cause: rootCause }))
+      expect(() => CmsVerification.verify(undefined, false))
         .toThrow(ErrorCenterError)
       expect(reportSpy).toHaveBeenCalledTimes(2)
-      expect(reportSpy).toHaveBeenCalledWith(cause, { cause: rootCause })
+      expect(reportSpy).toHaveBeenCalledWith(
+        {
+          group: CMS_VERIFICATION_ERROR_GROUP,
+          code: 'invalid',
+          details: undefined
+        },
+        undefined
+      )
+    })
+
+    it('calls ErrorCenterThrow.on with assembled CMS verification cause and throws ErrorCenterError when false and code is provided', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+      const details = { code: 'bad code' }
+      const rootCause = new Error('Validation failed')
+
+      expect(() => CmsVerification.verify(undefined, () => false, { cause: rootCause }, 'invalidCode', details))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.verify(true, false, { cause: rootCause }, 'invalidCode', details))
+        .toThrow(ErrorCenterError)
+      expect(reportSpy).toHaveBeenCalledTimes(2)
+      expect(reportSpy).toHaveBeenCalledWith(
+        {
+          group: CMS_VERIFICATION_ERROR_GROUP,
+          code: 'invalidCode',
+          details
+        },
+        { cause: rootCause }
+      )
     })
 
     it('throws ErrorCenterError with cause code when reporting through static ErrorCenterThrow', () => {
       ErrorCenter.setIsConsole(false)
 
-      expect(() => CmsVerification.verify(
-        () => false,
-        {
-          group: 'cms-role',
-          code: 'notFound'
-        }
-      ))
-        .toThrow('notFound')
+      expect(() => CmsVerification.verify(true, () => false, undefined, 'invalidName', { name: '' }))
+        .toThrow('invalidName')
     })
   })
 })

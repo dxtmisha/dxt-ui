@@ -1,4 +1,4 @@
-import type { CmsUserItem } from '../classes/CmsUserItem'
+import type { CmsUserItem } from '../classes/tables/CmsUserItem'
 import type {
   CmsNewUser,
   CmsUser,

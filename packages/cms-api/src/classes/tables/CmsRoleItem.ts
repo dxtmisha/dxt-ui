@@ -12,26 +12,27 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { permissions } from '../media/schema/permissions'
-import { rolePermissions } from '../media/schema/rolePermissions'
-import { roles } from '../media/schema/roles'
-import { userRoles } from '../media/schema/userRoles'
-import { CmsDbItemAbstract } from './CmsDbItemAbstract'
-import { CmsDbResolver } from './CmsDbResolver'
+import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
+import { permissions } from '../../media/schema/permissions'
+import { rolePermissions } from '../../media/schema/rolePermissions'
+import { roles } from '../../media/schema/roles'
+import { userRoles } from '../../media/schema/userRoles'
+import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
+import { CmsDbResolver } from '../CmsDbResolver'
 import { CmsPermissionItem } from './CmsPermissionItem'
-import { CmsVerification } from './CmsVerification'
-import type { CmsDbInstance } from './CmsDbInstance'
+import { CmsVerification } from '../CmsVerification'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsNewRole,
   CmsPermission
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 import type {
   CmsRoleCreateInput,
   CmsRoleUpdateInput,
   CmsRoleWithPermissions
-} from '../types/cmsRoleTypes'
+} from '../../types/cmsRoleTypes'
 
 /**
  * Represents a single CMS role entity and provides instance-level methods for reading, editing, permission management, reloading, and deletion.
@@ -39,6 +40,9 @@ import type {
  * Представляет конкретную роль CMS и предоставляет методы для чтения полей, редактирования, управления правами доступа, перезагрузки и удаления.
  */
 export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPermissions> {
+  /** ErrorCenter group name for role errors / Имя группы ошибок ErrorCenter для ролей */
+  protected readonly errorGroup = CMS_ROLE_ERROR_GROUP
+
   /**
    * Initializes a role entity wrapper with role data and database instance manager.
    *
@@ -50,7 +54,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     data: CmsRoleWithPermissions,
     databaseInstance?: CmsDbInstance
   ) {
-    super(roles, data, 'cms-role', databaseInstance)
+    super(roles, data, databaseInstance)
   }
 
   /**
@@ -610,7 +614,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
       ErrorCenterThrow.on({
-        group: 'cms-role',
+        group: CMS_ROLE_ERROR_GROUP,
         code: 'notFound',
         details: { roleId }
       })
@@ -624,7 +628,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
 
     if (foundRows.length === 0) {
       ErrorCenterThrow.on({
-        group: 'cms-role',
+        group: CMS_ROLE_ERROR_GROUP,
         code: 'notFound',
         details: { roleId }
       })
@@ -644,7 +648,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     roleIds?: readonly number[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByIds(
-      'cms-role',
+      CMS_ROLE_ERROR_GROUP,
       'notFound',
       uniqueIds => executor
         .select({ id: roles.id })
@@ -667,7 +671,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     roleCodes?: readonly string[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByCodes(
-      'cms-role',
+      CMS_ROLE_ERROR_GROUP,
       'notFound',
       uniqueCodes => executor
         .select({ id: roles.id, code: roles.code })

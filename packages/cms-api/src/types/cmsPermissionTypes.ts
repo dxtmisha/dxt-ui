@@ -1,4 +1,4 @@
-import type { CmsPermissionItem } from '../classes/CmsPermissionItem'
+import type { CmsPermissionItem } from '../classes/tables/CmsPermissionItem'
 import type { CmsNewPermission } from './cmsDbTypes'
 
 /** Input payload for creating a new CMS permission / Входные данные для создания нового права доступа CMS */

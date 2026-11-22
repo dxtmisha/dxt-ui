@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { useCmsDb } from '../../composables/useCmsDb'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { useCmsDb } from '../../../composables/useCmsDb'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsRoleManager } from '../CmsRoleManager'
-import type { CmsDb, CmsPermission, CmsRole } from '../../types/cmsDbTypes'
-import type { CmsRoleListResult } from '../../types/cmsRoleTypes'
+import type { CmsDb, CmsPermission, CmsRole } from '../../../types/cmsDbTypes'
+import type { CmsRoleListResult } from '../../../types/cmsRoleTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>

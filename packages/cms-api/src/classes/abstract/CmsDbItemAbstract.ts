@@ -4,14 +4,14 @@ import {
   isPositiveInteger
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../functions/findOneCmsRecord'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CmsDbAbstract } from './CmsDbAbstract'
-import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbItemData,
   CmsIdTable,
   CmsSystemStatus
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 
 /**
  * Abstract base class for CMS database entity item wrappers providing shared record getters, status transitions, updates, reloads, and deletion.
@@ -22,19 +22,20 @@ export abstract class CmsDbItemAbstract<
   TTable extends CmsIdTable = CmsIdTable,
   TData extends CmsDbItemData = CmsDbItemData
 > extends CmsDbAbstract<TTable> {
+  /** ErrorCenter group name for entity errors / Имя группы ошибок ErrorCenter для сущности */
+  protected abstract readonly errorGroup: string
+
   /**
-   * Initializes an entity item wrapper with its table schema, current record snapshot, error group, and optional database instance manager.
+   * Initializes an entity item wrapper with its table schema, current record snapshot, and optional database instance manager.
    *
-   * Инициализирует обёртку записи сущности со схемой таблицы, текущими данными записи, группой ошибок и необязательным менеджером БД.
+   * Инициализирует обёртку записи сущности со схемой таблицы, текущими данными записи и необязательным менеджером БД.
    * @param table Drizzle PostgreSQL table schema / Схема таблицы Drizzle PostgreSQL
    * @param data Entity record snapshot from database / Данные записи сущности из базы данных
-   * @param errorGroup ErrorCenter group name for entity errors / Имя группы ошибок ErrorCenter для сущности
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    */
   constructor(
     table: TTable,
     protected data: TData,
-    protected readonly errorGroup: string,
     databaseInstance?: CmsDbInstance
   ) {
     super(table, databaseInstance)

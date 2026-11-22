@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
+import { CMS_VERIFICATION_ERROR_GROUP } from '../../media/errors/cmsVerificationErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
@@ -121,10 +122,10 @@ describe('CmsDbSystemStatus', () => {
       await expect(status.block(2.3)).rejects.toThrow(ErrorCenterError)
       await expect(status.softDelete(Number.NaN)).rejects.toThrow(ErrorCenterError)
       expect(capturedErrors).toEqual([
-        { group: 'cms-verification', code: 'invalidId' },
-        { group: 'cms-verification', code: 'invalidId' },
-        { group: 'cms-verification', code: 'invalidId' },
-        { group: 'cms-verification', code: 'invalidId' }
+        { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' },
+        { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' },
+        { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' },
+        { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' }
       ])
       expect(raw.update).not.toHaveBeenCalled()
     })

@@ -1,18 +1,20 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { useCmsDb } from '../../composables/useCmsDb'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { useCmsDb } from '../../../composables/useCmsDb'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_ROLE_ERROR_GROUP } from '../../../media/errors/cmsRoleErrorCauseList'
+import { CMS_USER_ERROR_GROUP } from '../../../media/errors/cmsUserErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleManager } from '../CmsRoleManager'
 import { CmsUserItem } from '../CmsUserItem'
 import { CmsUserManager } from '../CmsUserManager'
-import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
-import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
+import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
 import type {
   CmsUserListResult,
   CmsUserPublic
-} from '../../types/cmsUserTypes'
+} from '../../../types/cmsUserTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -323,7 +325,7 @@ describe('CmsUserManager', () => {
       })).rejects.toThrow('Requested CMS role was not found.')
 
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-role',
+        group: CMS_ROLE_ERROR_GROUP,
         code: 'notFound'
       })
     })
@@ -538,7 +540,7 @@ describe('CmsUserManager', () => {
       })).rejects.toThrow('Failed to create CMS user.')
 
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'create'
       })
     })

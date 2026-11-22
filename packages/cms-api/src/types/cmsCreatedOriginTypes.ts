@@ -1,4 +1,4 @@
-import type { CmsCreatedOriginItem } from '../classes/CmsCreatedOriginItem'
+import type { CmsCreatedOriginItem } from '../classes/tables/CmsCreatedOriginItem'
 import type { CmsNewCreatedOrigin, CmsSystemStatus } from './cmsDbTypes'
 
 /** Input payload for creating a new CMS created origin / Входные данные для создания нового источника создания записей CMS */

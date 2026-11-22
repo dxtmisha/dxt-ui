@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_ROLE_ERROR_GROUP } from '../../../media/errors/cmsRoleErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
-import type { CmsDb, CmsPermission, CmsRole } from '../../types/cmsDbTypes'
-import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
+import type { CmsDb, CmsPermission, CmsRole } from '../../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -255,7 +256,7 @@ describe('CmsRoleItem', () => {
 
       await expect(item.setPermissions([10])).rejects.toThrow('Requested CMS role was not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-role',
+        group: CMS_ROLE_ERROR_GROUP,
         code: 'notFound'
       })
     })

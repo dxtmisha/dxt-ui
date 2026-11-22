@@ -15,30 +15,31 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
-import { permissions } from '../media/schema/permissions'
-import { rolePermissions } from '../media/schema/rolePermissions'
-import { roles } from '../media/schema/roles'
-import { userRoles } from '../media/schema/userRoles'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
+import { permissions } from '../../media/schema/permissions'
+import { rolePermissions } from '../../media/schema/rolePermissions'
+import { roles } from '../../media/schema/roles'
+import { userRoles } from '../../media/schema/userRoles'
+import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
-import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsPermission,
   CmsRole
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 import type {
   CmsRoleCreateInput,
   CmsRoleListOptions,
   CmsRoleListResult,
   CmsRoleUpdateInput,
   CmsRoleWithPermissions
-} from '../types/cmsRoleTypes'
+} from '../../types/cmsRoleTypes'
 
 /**
  * Manages CMS role collections: querying lists, searching, creating, and wrapping role records with permissions into CmsRoleItem instances.
@@ -281,7 +282,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
         const createdRole = insertedRows[0]
         if (!createdRole) {
           ErrorCenterThrow.on({
-            group: 'cms-role',
+            group: CMS_ROLE_ERROR_GROUP,
             code: 'create'
           })
         }
@@ -307,7 +308,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     } catch (error) {
       return ErrorCenterThrow.handle(
         {
-          group: 'cms-role',
+          group: CMS_ROLE_ERROR_GROUP,
           code: 'create'
         },
         error

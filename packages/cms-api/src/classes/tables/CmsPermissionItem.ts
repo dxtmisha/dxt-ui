@@ -9,23 +9,24 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../functions/findOneCmsRecord'
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { permissions } from '../media/schema/permissions'
-import { rolePermissions } from '../media/schema/rolePermissions'
-import { CmsDbItemAbstract } from './CmsDbItemAbstract'
-import { CmsDbResolver } from './CmsDbResolver'
-import { CmsVerification } from './CmsVerification'
-import type { CmsDbInstance } from './CmsDbInstance'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
+import { permissions } from '../../media/schema/permissions'
+import { rolePermissions } from '../../media/schema/rolePermissions'
+import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
+import { CmsDbResolver } from '../CmsDbResolver'
+import { CmsVerification } from '../CmsVerification'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsNewPermission,
   CmsPermission
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 import type {
   CmsPermissionCreateInput,
   CmsPermissionUpdateInput
-} from '../types/cmsPermissionTypes'
+} from '../../types/cmsPermissionTypes'
 
 /**
  * Represents a single CMS permission entity and provides instance-level methods for reading and editing.
@@ -33,6 +34,9 @@ import type {
  * Представляет конкретное право доступа CMS и предоставляет методы для чтения и редактирования полей.
  */
 export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, CmsPermission> {
+  /** ErrorCenter group name for permission errors / Имя группы ошибок ErrorCenter для прав доступа */
+  protected readonly errorGroup = CMS_PERMISSION_ERROR_GROUP
+
   /**
    * Initializes a permission entity wrapper with permission data and database instance manager.
    *
@@ -44,7 +48,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     data: CmsPermission,
     databaseInstance?: CmsDbInstance
   ) {
-    super(permissions, data, 'cms-permission', databaseInstance)
+    super(permissions, data, databaseInstance)
   }
 
   /**
@@ -201,7 +205,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     permissionIds?: readonly number[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByIds(
-      'cms-permission',
+      CMS_PERMISSION_ERROR_GROUP,
       'notFound',
       uniqueIds => executor
         .select({ id: permissions.id })
@@ -224,7 +228,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     permissionCodes?: readonly string[]
   ): Promise<number[]> {
     return CmsDbResolver.resolveByCodes(
-      'cms-permission',
+      CMS_PERMISSION_ERROR_GROUP,
       'notFound',
       uniqueCodes => executor
         .select({ id: permissions.id, code: permissions.code })

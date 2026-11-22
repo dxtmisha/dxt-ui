@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../../media/errors/cmsCreatedOriginErrorCauseList'
 import { CmsCreatedOriginItem } from '../CmsCreatedOriginItem'
-import { CmsDbInstance } from '../CmsDbInstance'
-import type { CmsCreatedOrigin, CmsDb } from '../../types/cmsDbTypes'
+import { CmsDbInstance } from '../../CmsDbInstance'
+import type { CmsCreatedOrigin, CmsDb } from '../../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -236,7 +237,7 @@ describe('CmsCreatedOriginItem', () => {
         CmsCreatedOriginItem.resolveIds(mock.db, [999])
       ).rejects.toThrow('Requested CMS created origin was not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-created-origin',
+        group: CMS_CREATED_ORIGIN_ERROR_GROUP,
         code: 'notFound'
       })
     })

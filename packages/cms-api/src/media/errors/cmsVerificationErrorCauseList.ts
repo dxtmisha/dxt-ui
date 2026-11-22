@@ -9,6 +9,13 @@ export const CMS_VERIFICATION_ERROR_GROUP = 'cms-verification'
  * Список описаний причин ошибок для проверок валидации CMS.
  */
 export const cmsVerificationErrorCauseList: ErrorCenterCauseList = [
+  // General verification failure / Общая ошибка проверки валидации
+  {
+    group: CMS_VERIFICATION_ERROR_GROUP,
+    code: 'invalid',
+    label: 'Verification Error',
+    message: 'Verification check failed.'
+  },
   // Invalid entity code / Некорректный код сущности
   {
     group: CMS_VERIFICATION_ERROR_GROUP,

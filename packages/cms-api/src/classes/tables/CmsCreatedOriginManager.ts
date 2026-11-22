@@ -14,24 +14,25 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
-import { seedCmsCreatedOrigins } from '../functions/seedCmsCreatedOrigins'
-import { createdOrigins } from '../media/schema/createdOrigins'
+import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { seedCmsCreatedOrigins } from '../../functions/seedCmsCreatedOrigins'
+import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
+import { createdOrigins } from '../../media/schema/createdOrigins'
 import { CmsCreatedOriginItem } from './CmsCreatedOriginItem'
-import { CmsDbAbstract } from './CmsDbAbstract'
-import type { CmsDbInstance } from './CmsDbInstance'
+import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsCreatedOrigin,
   CmsNewCreatedOrigin
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 import type {
   CmsCreatedOriginCreateInput,
   CmsCreatedOriginListOptions,
   CmsCreatedOriginListResult,
   CmsCreatedOriginUpdateInput
-} from '../types/cmsCreatedOriginTypes'
+} from '../../types/cmsCreatedOriginTypes'
 
 /**
  * Manages CMS created origin collections: querying lists, searching, seeding, creating, updating, and wrapping records into CmsCreatedOriginItem instances.
@@ -232,7 +233,7 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
       const createdRecord = insertedRows[0]
       if (!createdRecord) {
         ErrorCenterThrow.on({
-          group: 'cms-created-origin',
+          group: CMS_CREATED_ORIGIN_ERROR_GROUP,
           code: 'create'
         })
       }
@@ -241,7 +242,7 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
     } catch (error) {
       return ErrorCenterThrow.handle(
         {
-          group: 'cms-created-origin',
+          group: CMS_CREATED_ORIGIN_ERROR_GROUP,
           code: 'create'
         },
         error
@@ -267,7 +268,7 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
     } catch (error) {
       return ErrorCenterThrow.handle(
         {
-          group: 'cms-created-origin',
+          group: CMS_CREATED_ORIGIN_ERROR_GROUP,
           code: 'create'
         },
         error

@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsDbItemAbstract } from '../CmsDbItemAbstract'
-import type { CmsDb, CmsDbItemData } from '../../types/cmsDbTypes'
+import type { CmsDb, CmsDbItemData } from '../../../types/cmsDbTypes'
 
 const testItemsTable = pgTable('test_items', {
   id: serial('id').primaryKey(),
@@ -19,11 +20,13 @@ interface TestItemRecord extends CmsDbItemData {
 }
 
 class TestDbItem extends CmsDbItemAbstract<typeof testItemsTable, TestItemRecord> {
+  protected readonly errorGroup = CMS_PERMISSION_ERROR_GROUP
+
   constructor(
     data: TestItemRecord,
     databaseInstance?: CmsDbInstance
   ) {
-    super(testItemsTable, data, 'cms-permission', databaseInstance)
+    super(testItemsTable, data, databaseInstance)
   }
 
   updateName(name: string) {

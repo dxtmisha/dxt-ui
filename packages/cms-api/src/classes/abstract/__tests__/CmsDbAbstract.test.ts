@@ -1,11 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { permissions } from '../../media/schema/permissions'
+import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_VERIFICATION_ERROR_GROUP } from '../../../media/errors/cmsVerificationErrorCauseList'
+import { permissions } from '../../../media/schema/permissions'
 import { CmsDbAbstract } from '../CmsDbAbstract'
-import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
-import { CmsDbTimestamp } from '../CmsDbTimestamp'
-import type { CmsDb, CmsSystemStatus } from '../../types/cmsDbTypes'
+import { CmsDbInstance } from '../../CmsDbInstance'
+import { CmsDbSystemStatus } from '../../CmsDbSystemStatus'
+import { CmsDbTimestamp } from '../../CmsDbTimestamp'
+import type { CmsDb, CmsSystemStatus } from '../../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -39,12 +41,18 @@ function createChain(resolveNext: () => unknown): MockQueryChain {
   return chain
 }
 
-function createMockDb(selectQueue: unknown[][] = [], updateQueue: unknown[][] = []) {
+function createMockDb(
+  selectQueue: unknown[][] = [],
+  updateQueue: unknown[][] = [],
+  deleteQueue: unknown[][] = []
+) {
   const sQueue = [...selectQueue]
   const uQueue = [...updateQueue]
+  const dQueue = [...deleteQueue]
   const db = {
     select: vi.fn(() => createChain(() => sQueue.shift() ?? [])),
-    update: vi.fn(() => createChain(() => uQueue.shift() ?? []))
+    update: vi.fn(() => createChain(() => uQueue.shift() ?? [])),
+    delete: vi.fn(() => createChain(() => dQueue.shift() ?? []))
   }
 
   const dbInstance = new CmsDbInstance()
@@ -80,6 +88,10 @@ class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
   activateRecord(id: number): Promise<boolean> {
     return this.systemStatus.activate(id)
   }
+
+  removeRecord(id: number): Promise<boolean> {
+    return this.deleteRecordById(id)
+  }
 }
 
 describe('CmsDbAbstract', () => {
@@ -109,5 +121,32 @@ describe('CmsDbAbstract', () => {
     expect(instance.readTimestamp()).toBeInstanceOf(CmsDbTimestamp)
     expect(raw.select).toHaveBeenCalledTimes(1)
     expect(raw.update).toHaveBeenCalledTimes(1)
+  })
+
+  it('throws ErrorCenterError on invalid ID and deletes record on valid ID in deleteRecordById', async () => {
+    ErrorCenter.setIsConsole(false)
+    registerCmsErrorCauses()
+    const capturedErrors: Array<{ group?: string, code: string }> = []
+    ErrorCenter.addCallback((cause) => {
+      capturedErrors.push({
+        group: cause.group,
+        code: cause.code
+      })
+    })
+
+    const { dbInstance, raw } = createMockDb([], [], [[{ id: 5 }], []])
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    await expect(instance.removeRecord(0)).rejects.toThrow(ErrorCenterError)
+    await expect(instance.removeRecord(-3)).rejects.toThrow('Valid positive integer record ID is required.')
+    expect(capturedErrors).toEqual([
+      { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' },
+      { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' }
+    ])
+    expect(raw.delete).not.toHaveBeenCalled()
+
+    expect(await instance.removeRecord(5)).toBe(true)
+    expect(await instance.removeRecord(6)).toBe(false)
+    expect(raw.delete).toHaveBeenCalledTimes(2)
   })
 })

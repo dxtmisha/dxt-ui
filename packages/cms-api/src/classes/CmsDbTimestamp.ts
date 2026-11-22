@@ -35,7 +35,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
    * @returns Timestamp values or undefined if invalid, unsupported, or not found / Значения временных меток или undefined, если ID некорректен, колонки отсутствуют или запись не найдена
    */
   async get(id: number): Promise<CmsTimestampValues | undefined> {
-    if (!CmsVerification.isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
 
@@ -105,7 +105,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
     id: number,
     updatedAt: Date = new Date()
   ): Promise<boolean> {
-    CmsVerification.isPositiveInteger(id, true)
+    CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
     if (!baseTable.updatedAt) {

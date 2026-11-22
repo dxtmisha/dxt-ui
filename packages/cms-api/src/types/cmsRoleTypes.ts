@@ -1,4 +1,4 @@
-import type { CmsRoleItem } from '../classes/CmsRoleItem'
+import type { CmsRoleItem } from '../classes/tables/CmsRoleItem'
 import type {
   CmsNewRole,
   CmsPermission,

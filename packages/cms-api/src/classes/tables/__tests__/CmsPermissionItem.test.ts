@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
-import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
+import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -249,7 +250,7 @@ describe('CmsPermissionItem', () => {
         CmsPermissionItem.resolveIds(mock.db, [999])
       ).rejects.toThrow('Requested CMS permissions were not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-permission',
+        group: CMS_PERMISSION_ERROR_GROUP,
         code: 'notFound'
       })
     })
@@ -278,7 +279,7 @@ describe('CmsPermissionItem', () => {
         CmsPermissionItem.resolveIdsByCodes(mock.db, ['missing:code'])
       ).rejects.toThrow('Requested CMS permissions were not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-permission',
+        group: CMS_PERMISSION_ERROR_GROUP,
         code: 'notFound'
       })
     })

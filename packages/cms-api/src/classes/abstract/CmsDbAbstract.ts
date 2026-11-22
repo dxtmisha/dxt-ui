@@ -4,14 +4,13 @@ import {
   sql,
   type SQL
 } from 'drizzle-orm'
-import { isPositiveInteger } from '@dxtmisha/functional-basic'
 
-import { useCmsDb } from '../composables/useCmsDb'
-import { CmsDbSystemStatus } from './CmsDbSystemStatus'
-import { CmsDbTimestamp } from './CmsDbTimestamp'
-import { CmsVerification } from './CmsVerification'
-import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsIdTable } from '../types/cmsDbTypes'
+import { useCmsDb } from '../../composables/useCmsDb'
+import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
+import { CmsDbTimestamp } from '../CmsDbTimestamp'
+import { CmsVerification } from '../CmsVerification'
+import type { CmsDbInstance } from '../CmsDbInstance'
+import type { CmsIdTable } from '../../types/cmsDbTypes'
 
 /**
  * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenterThrow delegation.
@@ -103,7 +102,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     id: number,
     condition?: SQL
   ): Promise<boolean> {
-    if (!CmsVerification.isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return false
     }
 
@@ -146,9 +145,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * @returns True if a record was deleted / True, если запись была удалена
    */
   protected async deleteRecordById(id: number): Promise<boolean> {
-    if (!isPositiveInteger(id)) {
-      return false
-    }
+    CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
     const deletedRows = await this.databaseInstance.get()

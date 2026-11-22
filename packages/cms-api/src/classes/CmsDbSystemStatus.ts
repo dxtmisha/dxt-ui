@@ -46,7 +46,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    * @returns System status or undefined if invalid or not found / Системный статус или undefined, если ID некорректен или запись не найдена
    */
   async get(id: number): Promise<CmsSystemStatus | undefined> {
-    if (!CmsVerification.isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
 
@@ -72,7 +72,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     id: number,
     systemStatus: CmsSystemStatus
   ): Promise<boolean> {
-    CmsVerification.isPositiveInteger(id, true)
+    CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
     const updatedRows = await this.databaseInstance.get()

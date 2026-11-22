@@ -1,13 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { CmsDbInstance } from '../CmsDbInstance'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_USER_ERROR_GROUP } from '../../../media/errors/cmsUserErrorCauseList'
+import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsUserItem } from '../CmsUserItem'
-import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
-import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
-import type { CmsUserWithRoles } from '../../types/cmsUserTypes'
+import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
+import type { CmsUserWithRoles } from '../../../types/cmsUserTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -346,7 +347,7 @@ describe('CmsUserItem', () => {
 
       await expect(item.setRoles([1])).rejects.toThrow('Requested CMS user was not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'notFound'
       })
     })

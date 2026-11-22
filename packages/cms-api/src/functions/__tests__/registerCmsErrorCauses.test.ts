@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
+import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { registerCmsErrorCauses } from '../registerCmsErrorCauses'
 
 describe('registerCmsErrorCauses', () => {
@@ -10,7 +12,7 @@ describe('registerCmsErrorCauses', () => {
   it('registers default CMS causes into the provided ErrorCenterInstance without overwriting existing entries', () => {
     const errorCenter = new ErrorCenterInstance()
     errorCenter.add({
-      group: 'cms-user',
+      group: CMS_USER_ERROR_GROUP,
       code: 'notFound',
       label: 'Custom Label',
       message: 'Custom Message'
@@ -18,13 +20,13 @@ describe('registerCmsErrorCauses', () => {
 
     registerCmsErrorCauses(errorCenter)
 
-    expect(errorCenter.get('notFound', 'cms-user')).toEqual({
-      group: 'cms-user',
+    expect(errorCenter.get('notFound', CMS_USER_ERROR_GROUP)).toEqual({
+      group: CMS_USER_ERROR_GROUP,
       code: 'notFound',
       label: 'Custom Label',
       message: 'Custom Message'
     })
-    expect(errorCenter.has('notFound', 'cms-role')).toBe(true)
+    expect(errorCenter.has('notFound', CMS_ROLE_ERROR_GROUP)).toBe(true)
   })
 
   it('defaults to global ErrorCenter and supports custom causes list', () => {

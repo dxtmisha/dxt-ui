@@ -15,28 +15,29 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { roles } from '../media/schema/roles'
-import { userRoles } from '../media/schema/userRoles'
-import { users } from '../media/schema/users'
-import { CmsDbItemAbstract } from './CmsDbItemAbstract'
+import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
+import { roles } from '../../media/schema/roles'
+import { userRoles } from '../../media/schema/userRoles'
+import { users } from '../../media/schema/users'
+import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
-import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsNewUser,
   CmsPermission,
   CmsUserMetadata,
   CmsUserStatus
-} from '../types/cmsDbTypes'
-import type { CmsRoleWithPermissions } from '../types/cmsRoleTypes'
+} from '../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
 import type {
   CmsUserCreateInput,
   CmsUserDeleteOptions,
   CmsUserUpdateInput,
   CmsUserWithRoles
-} from '../types/cmsUserTypes'
+} from '../../types/cmsUserTypes'
 
 /** Keys ignored during metadata sanitization / Ключи, игнорируемые при очистке метаданных */
 const FORBIDDEN_METADATA_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
@@ -50,6 +51,9 @@ const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ 
  * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями и правами доступа, удаления и восстановления.
  */
 export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRoles> {
+  /** ErrorCenter group name for user errors / Имя группы ошибок ErrorCenter для пользователей */
+  protected readonly errorGroup = CMS_USER_ERROR_GROUP
+
   /**
    * Initializes a user entity wrapper with user data and database instance manager.
    *
@@ -61,7 +65,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
     data: CmsUserWithRoles,
     databaseInstance?: CmsDbInstance
   ) {
-    super(users, data, 'cms-user', databaseInstance)
+    super(users, data, databaseInstance)
   }
 
   /**
@@ -1005,7 +1009,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
       ErrorCenterThrow.on({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'notFound',
         details: { userId }
       })
@@ -1019,7 +1023,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
 
     if (foundRows.length === 0) {
       ErrorCenterThrow.on({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'notFound',
         details: { userId }
       })
@@ -1076,7 +1080,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       || /\s/.test(normalized)
     ) {
       ErrorCenterThrow.on({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'invalidEmail',
         details: { email }
       })
@@ -1099,7 +1103,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
 
     if (normalized.length === 0) {
       ErrorCenterThrow.on({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'invalidFirstName',
         details: { firstName }
       })
@@ -1128,7 +1132,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
       ErrorCenterThrow.on({
-        group: 'cms-user',
+        group: CMS_USER_ERROR_GROUP,
         code: 'invalidPhone',
         details: { phone }
       })

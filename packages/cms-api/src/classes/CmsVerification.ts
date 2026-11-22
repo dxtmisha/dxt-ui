@@ -2,8 +2,7 @@ import {
   ErrorCenterThrow,
   executeFunction,
   isPositiveInteger,
-  isString,
-  type ErrorCenterCauseItem
+  isString
 } from '@dxtmisha/functional-basic'
 import { CMS_VERIFICATION_ERROR_GROUP } from '../media/errors/cmsVerificationErrorCauseList'
 
@@ -23,17 +22,14 @@ export class CmsVerification {
    */
   static isPositiveInteger(
     value?: unknown,
-    isError: boolean = false
+    isError: boolean = true
   ): value is number {
     return this.verify(
+      isError,
       isPositiveInteger(value),
-      isError
-        ? {
-            group: CMS_VERIFICATION_ERROR_GROUP,
-            code: 'invalidId',
-            details: { id: value }
-          }
-        : undefined
+      undefined,
+      'invalidId',
+      { id: value }
     )
   }
 
@@ -42,23 +38,23 @@ export class CmsVerification {
    *
    * Нормализует и проверяет непустой уникальный код сущности без пробельных символов.
    * @param code Raw entity code / Исходный код сущности
-   * @returns Trimmed non-empty entity code / Очищенный код сущности
+   * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
+   * @returns Trimmed non-empty entity code or empty string when invalid and isError is false / Очищенный код сущности или пустая строка при ошибке и isError = false
    */
   static normalizeCode(
-    code: string
+    code: string,
+    isError: boolean = true
   ): string {
     const normalized = isString(code) ? code.trim() : ''
-
-    this.verify(
+    const isValid = this.verify(
+      isError,
       normalized.length > 0 && !/\s/.test(normalized),
-      {
-        group: CMS_VERIFICATION_ERROR_GROUP,
-        code: 'invalidCode',
-        details: { code }
-      }
+      undefined,
+      'invalidCode',
+      { code }
     )
 
-    return normalized
+    return isValid ? normalized : ''
   }
 
   /**
@@ -66,43 +62,57 @@ export class CmsVerification {
    *
    * Нормализует и проверяет непустое отображаемое название сущности.
    * @param name Raw entity name / Исходное название сущности
-   * @returns Trimmed non-empty entity name / Очищенное название сущности
+   * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
+   * @returns Trimmed non-empty entity name or empty string when invalid and isError is false / Очищенное название сущности или пустая строка при ошибке и isError = false
    */
   static normalizeName(
-    name: string
+    name: string,
+    isError: boolean = true
   ): string {
     const normalized = isString(name) ? name.trim() : ''
-
-    this.verify(
+    const isValid = this.verify(
+      isError,
       normalized.length > 0,
-      {
-        group: CMS_VERIFICATION_ERROR_GROUP,
-        code: 'invalidName',
-        details: { name }
-      }
+      undefined,
+      'invalidName',
+      { name }
     )
 
-    return normalized
+    return isValid ? normalized : ''
   }
 
   /**
-   * Evaluates a boolean value or predicate function and reports the specified error cause if it resolves to false and a cause is provided.
+   * Evaluates a boolean value or predicate function and reports a CMS verification error if it resolves to false and `isError` is enabled.
    *
-   * Проверяет логическое значение или выполняет функцию-предикат и регистрирует указанную причину ошибки, если результат равен false и причина передана.
+   * Проверяет логическое значение или выполняет функцию-предикат и регистрирует ошибку валидации CMS, если результат равен false и включён флаг `isError`.
+   * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
    * @param callback Boolean value or predicate function to verify / Логическое значение или функция-предикат для проверки
-   * @param cause Optional error cause details reported on failure / Необязательные детали причины ошибки при неудачной проверке
    * @param options Standard Error options / Стандартные опции Error
+   * @param code Error code in the CMS verification group reported on failure / Код ошибки в группе валидации CMS при неудачной проверке
+   * @param details Optional additional error details / Необязательные дополнительные данные ошибки
    * @returns True if the check resolves to true, otherwise false / True, если проверка дала true, иначе false
    */
   static verify<D = unknown>(
-    callback: boolean | (() => boolean),
-    cause?: ErrorCenterCauseItem<D>,
-    options?: ErrorOptions
+    isError: boolean = true,
+    callback: boolean | (() => boolean) = false,
+    options?: ErrorOptions,
+    code: string = 'invalid',
+    details?: D
   ): boolean {
     const result = executeFunction(callback)
 
-    if (!result && cause) {
-      ErrorCenterThrow.on(cause, options)
+    if (
+      !result
+      && isError
+    ) {
+      ErrorCenterThrow.on(
+        {
+          group: CMS_VERIFICATION_ERROR_GROUP,
+          code,
+          details
+        },
+        options
+      )
     }
 
     return result

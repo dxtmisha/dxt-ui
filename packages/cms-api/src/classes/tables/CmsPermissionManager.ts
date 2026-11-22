@@ -15,22 +15,23 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
-import { permissions } from '../media/schema/permissions'
-import { rolePermissions } from '../media/schema/rolePermissions'
-import { roles } from '../media/schema/roles'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
+import { permissions } from '../../media/schema/permissions'
+import { rolePermissions } from '../../media/schema/rolePermissions'
+import { roles } from '../../media/schema/roles'
+import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
-import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsPermission } from '../types/cmsDbTypes'
+import type { CmsDbInstance } from '../CmsDbInstance'
+import type { CmsPermission } from '../../types/cmsDbTypes'
 import type {
   CmsPermissionCreateInput,
   CmsPermissionListOptions,
   CmsPermissionListResult,
   CmsPermissionUpdateInput
-} from '../types/cmsPermissionTypes'
+} from '../../types/cmsPermissionTypes'
 
 /**
  * Manages CMS permission collections: querying lists, searching, creating, and wrapping permission records into CmsPermissionItem instances.
@@ -251,7 +252,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
       const createdPermission = insertedRows[0]
       if (!createdPermission) {
         ErrorCenterThrow.on({
-          group: 'cms-permission',
+          group: CMS_PERMISSION_ERROR_GROUP,
           code: 'create'
         })
       }
@@ -260,7 +261,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     } catch (error) {
       return ErrorCenterThrow.handle(
         {
-          group: 'cms-permission',
+          group: CMS_PERMISSION_ERROR_GROUP,
           code: 'create'
         },
         error

@@ -16,25 +16,26 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
-import { permissions } from '../media/schema/permissions'
-import { rolePermissions } from '../media/schema/rolePermissions'
-import { roles } from '../media/schema/roles'
-import { userRoles } from '../media/schema/userRoles'
-import { users } from '../media/schema/users'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
+import { permissions } from '../../media/schema/permissions'
+import { rolePermissions } from '../../media/schema/rolePermissions'
+import { roles } from '../../media/schema/roles'
+import { userRoles } from '../../media/schema/userRoles'
+import { users } from '../../media/schema/users'
+import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
 import { CmsUserItem } from './CmsUserItem'
-import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsUserStatus
-} from '../types/cmsDbTypes'
-import type { CmsRoleWithPermissions } from '../types/cmsRoleTypes'
+} from '../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
 import type {
   CmsUserCreateInput,
   CmsUserDeleteOptions,
@@ -43,7 +44,7 @@ import type {
   CmsUserPublic,
   CmsUserUpdateInput,
   CmsUserWithRoles
-} from '../types/cmsUserTypes'
+} from '../../types/cmsUserTypes'
 
 /**
  * Manages CMS user collections: querying lists, searching, creating, and wrapping user records into CmsUserItem instances with integrated role and permission managers.
@@ -316,7 +317,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
         const createdUser = insertedRows[0]
         if (!createdUser) {
           ErrorCenterThrow.on({
-            group: 'cms-user',
+            group: CMS_USER_ERROR_GROUP,
             code: 'create'
           })
         }
@@ -342,7 +343,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     } catch (error) {
       return ErrorCenterThrow.handle(
         {
-          group: 'cms-user',
+          group: CMS_USER_ERROR_GROUP,
           code: 'create'
         },
         error

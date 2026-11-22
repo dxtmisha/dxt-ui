@@ -1,12 +1,13 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { useCmsDb } from '../../composables/useCmsDb'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
+import { useCmsDb } from '../../../composables/useCmsDb'
+import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
+import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../../media/errors/cmsCreatedOriginErrorCauseList'
 import { CmsCreatedOriginItem } from '../CmsCreatedOriginItem'
 import { CmsCreatedOriginManager } from '../CmsCreatedOriginManager'
-import { CmsDbInstance } from '../CmsDbInstance'
-import type { CmsCreatedOrigin, CmsDb } from '../../types/cmsDbTypes'
-import type { CmsCreatedOriginListResult } from '../../types/cmsCreatedOriginTypes'
+import { CmsDbInstance } from '../../CmsDbInstance'
+import type { CmsCreatedOrigin, CmsDb } from '../../../types/cmsDbTypes'
+import type { CmsCreatedOriginListResult } from '../../../types/cmsCreatedOriginTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -285,7 +286,7 @@ describe('CmsCreatedOriginManager', () => {
     })
     await expect(manager.create({ code: 'api', name: 'API' })).rejects.toThrow('Failed to create CMS created origin.')
     expect(capturedErrors[0]).toMatchObject({
-      group: 'cms-created-origin',
+      group: CMS_CREATED_ORIGIN_ERROR_GROUP,
       code: 'create'
     })
   })
