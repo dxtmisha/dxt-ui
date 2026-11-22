@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { MaskMatch } from '../MaskMatch'
 import type { MaskSpecial } from '../MaskSpecial'
@@ -22,6 +22,10 @@ describe('MaskMatch', () => {
     } as unknown as MaskSpecial
 
     maskMatch = new MaskMatch(mockProps, () => mockSpecial)
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should match characters using default pattern (digits)', () => {
@@ -57,5 +61,7 @@ describe('MaskMatch', () => {
     const filtered = maskMatch.filter('a1-b2#c3')
     // 'd' matches digits, 'w' matches letters, punctuation is ignored
     expect(filtered).toEqual(['a', '1', 'b', '2', 'c', '3'])
+    expect(maskMatch.filter('')).toEqual([])
+    expect(maskMatch.filter('---')).toEqual([])
   })
 })

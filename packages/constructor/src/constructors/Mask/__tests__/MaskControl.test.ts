@@ -117,4 +117,26 @@ describe('MaskControl', () => {
     expect(input.focus).toHaveBeenCalledTimes(1)
     expect(scrollSync).toHaveBeenCalledTimes(1)
   })
+
+  it('should cancel pending animation frame on consecutive clear() calls and work safely without element (SSR)', () => {
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 654)
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => undefined)
+
+    const { control, element, dataReset } = createMaskControl({ valueDefault: '' })
+
+    expect(control.clear()).toBe(true)
+    expect(dataReset).toHaveBeenCalledWith('')
+    expect(rafSpy).not.toHaveBeenCalled()
+
+    const input = document.createElement('input')
+    input.focus = vi.fn()
+    element.value = input
+
+    control.clear()
+    control.clear()
+    expect(cancelSpy).toHaveBeenCalledWith(654)
+
+    control.onUnmounted()
+    expect(cancelSpy).toHaveBeenCalledTimes(2)
+  })
 })

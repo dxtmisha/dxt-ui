@@ -17,8 +17,10 @@ const MATCH_DEFAULT = /[0-9]/
 export class MaskMatch {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param special special symbols helper/ объект помощник специальных символов
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param special special symbols helper / объект помощник специальных символов
    */
   constructor(
     protected readonly props: Readonly<MaskProps>,
@@ -30,8 +32,9 @@ export class MaskMatch {
    * Checks whether the character matches allowed pattern(s).
    *
    * Проверяет, соответствует ли символ разрешённому шаблону.
-   * @param char character to check/ символ для проверки
-   * @param groupName optional group name/ необязательное имя группы
+   * @param char character to check / символ для проверки
+   * @param groupName optional group name / необязательное имя группы
+   * @returns true if character matches / true, если символ соответствует шаблону
    */
   is(
     char: string,
@@ -54,7 +57,8 @@ export class MaskMatch {
    * Returns match definition (regexp or string) for group or global.
    *
    * Возвращает правило проверки (regexp или строка) для группы или глобально.
-   * @param groupName group name/ имя группы
+   * @param groupName group name / имя группы
+   * @returns matching pattern or regular expression / шаблон или регулярное выражение сопоставления
    */
   get(groupName?: string): MaskMatchItem {
     return (groupName ? this.special().getMatch(groupName) : undefined)
@@ -66,7 +70,8 @@ export class MaskMatch {
    * Filters text returning only allowed characters (any group).
    *
    * Фильтрует текст, возвращая только допустимые символы (любая группа).
-   * @param text source text/ исходный текст
+   * @param text source text / исходный текст
+   * @returns list of allowed characters / список допустимых символов
    */
   filter(text: string): string[] {
     const special = this.special().item.value

@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Mask` (`packages/constructor/src/constructors/Mask`, `packages/demo/src/pages/components/DemoMaskPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-mask`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-16`
-- **Всего тест-кейсов**: `10`
+- **Последняя проверка / обновление**: `2026-11-22`
+- **Всего тест-кейсов**: `11`
 
 ---
 
@@ -15,7 +15,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **Визуал и токены** | `VIS` | 3 | P0, P1 | Базовый рендеринг, видимость, выравнивание (`align`, `dir`), `special`, типы дат/чисел/валют |
 | **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Ввод с клавиатуры, `Backspace`, валидация (`pattern`, `check`), `fullOnly`, `expose` (`setValue`, `clear`) |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Числовой `value={0}`, скрытое поле `name`, резиновые группы `rubber`, `groupSave` |
+| **Границы и крайние случаи** | `BND` | 2 | P1 | Числовой `value={0}`, скрытое поле `name`, `rubber`, `groupSave`, обрезка оверлея и синхронизация `scrollLeft` |
 | **Адаптивность и viewport** | `RSP` | 1 | P1 | Десктоп (`1440×900`), планшет (`768×1024`), мобильные (`375×812`, `320×568`) |
 | **Доступность (A11y)** | `A11Y` | 1 | P1 | `aria-hidden="true"` на `.d1-mask__character`, `inputAttrs` (`aria-label`, `inputMode`), фокус |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | События `focus`/`blur`/`keydown`/`input`/`change`/`reset`, `0` ошибок и `[Vue warn]` |
@@ -105,6 +105,17 @@
   3. Проверить отображение резиновой маски `value="12-34"` и вариантов `groupSave`.
 - **Ожидаемый результат**: Ноль `0` не теряется как falsy-значение, скрытый `input` синхронизирован, `rubber` и `groupSave` рендерятся корректно.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Обрезка визуального оверлея и синхронизация горизонтальной прокрутки (`MaskScroll`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Boundary & Edge Cases`
+- **Предусловия**: Найти длинную маску `input[aria-label="Overflow clipped long mask"]` внутри узкого контейнера `.demo-mask-page__narrow` (`max-width: 120px`).
+- **Шаги теста**:
+  1. Проверить вычисленные стили `.d1-mask__character` (`overflow: hidden`, `white-space: nowrap`, `max-width: 100%`) и геометрию (`rect.width <= 120`).
+  2. Прокрутить `input.scrollLeft` и отправить событие `scroll`.
+  3. Проверить синхронизацию `character.scrollLeft === input.scrollLeft`.
+- **Ожидаемый результат**: Визуальный слой символов не выходит за пределы узкого контейнера, а его горизонтальная прокрутка синхронно следует за нативным `<input>`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
 
 ---
 

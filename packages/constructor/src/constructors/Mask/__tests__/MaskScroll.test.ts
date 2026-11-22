@@ -81,4 +81,29 @@ describe('MaskScroll', () => {
     expect(() => scroll.sync(true)).not.toThrow()
     expect(() => scroll.onUnmounted()).not.toThrow()
   })
+
+  it('should skip animation frame scheduling when requestAnimationFrame is unavailable (SSR)', () => {
+    vi.stubGlobal('requestAnimationFrame', undefined)
+    try {
+      const element = ref<MaskElementInput>(undefined)
+      const scroll = new MaskScroll(element)
+      const input = document.createElement('input')
+      const view = document.createElement('span')
+
+      Object.defineProperty(input, 'scrollLeft', {
+        value: 18,
+        writable: true,
+        configurable: true
+      })
+
+      element.value = input
+      scroll.elementView.value = view
+
+      expect(() => scroll.sync(true)).not.toThrow()
+      expect(view.scrollLeft).toBe(18)
+      expect(() => scroll.onUnmounted()).not.toThrow()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
 })

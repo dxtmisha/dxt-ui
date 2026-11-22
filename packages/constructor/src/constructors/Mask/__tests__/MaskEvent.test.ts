@@ -199,4 +199,36 @@ describe('MaskEvent', () => {
     maskEvent.onAnimationstart(animationEvent)
     expect(mockData.reset).not.toHaveBeenCalled()
   })
+
+  it('should emit change onBlur after a modification and apply autofill onInput', () => {
+    const inputEvent = new InputEvent('input', { inputType: 'insertReplacementText' })
+    Object.defineProperty(inputEvent, 'target', { value: inputElement })
+
+    maskEvent.onInput(inputEvent)
+    expect(mockData.reset).toHaveBeenCalledWith('123')
+    expect(mockEmit.set).toHaveBeenCalledWith('input', inputEvent)
+
+    const blurEvent = new FocusEvent('blur')
+    Object.defineProperty(blurEvent, 'target', { value: inputElement })
+    maskEvent.onBlur(blurEvent)
+
+    expect(mockEmit.setType).toHaveBeenCalledWith('change')
+    expect(mockFocus.out).toHaveBeenCalled()
+  })
+
+  it('should handle Unidentified keydown followed by onInput insertion', () => {
+    inputElement.selectionStart = 1
+    inputElement.selectionEnd = 1
+
+    const keydownEvent = new KeyboardEvent('keydown', { key: 'Unidentified' })
+    Object.defineProperty(keydownEvent, 'target', { value: inputElement })
+    maskEvent.onKeydown(keydownEvent)
+
+    const inputEvent = new InputEvent('input', { data: '7', inputType: 'insertText' })
+    Object.defineProperty(inputEvent, 'target', { value: inputElement })
+    maskEvent.onInput(inputEvent)
+
+    expect(mockBuffer.go).toHaveBeenCalledWith('7')
+    expect(mockData.add).toHaveBeenCalledWith(1, '7')
+  })
 })

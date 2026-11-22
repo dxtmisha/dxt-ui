@@ -328,12 +328,14 @@ export class Mask extends DesignLogicAbstract<
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors optional override constructors / необязательные переопределяющие конструкторы
    */
   constructor(
@@ -366,6 +368,8 @@ export class Mask extends DesignLogicAbstract<
    * Инициализация наблюдателей при монтировании компонента.
    */
   protected override readonly onMounted = (): void => {
+    this.onUnmounted()
+
     const control = this.i('control')
 
     this.watchStops.push(

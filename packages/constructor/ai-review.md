@@ -97,7 +97,6 @@ src/constructors/Mask/MaskRight.ts
 src/constructors/Mask/MaskDate.ts
 src/constructors/Mask/MaskFormat.ts
 src/constructors/Mask/MaskSpecial.ts
-src/constructors/Mask/MaskMatch.ts
 src/constructors/Mask/MaskItem.ts
 src/constructors/Mask/MaskSelection.ts
 src/constructors/Mask/MaskCharacter.ts
@@ -109,8 +108,6 @@ src/constructors/Mask/MaskEmit.ts
 src/constructors/Mask/MaskRubber.ts
 src/constructors/Mask/MaskView.ts
 src/constructors/Mask/MaskData.ts
-src/constructors/Mask/MaskEvent.ts
-src/constructors/Mask/Mask.ts
 src/classes/ClientOnlyInclude.ts
 src/classes/Field/FieldArrowInclude.ts
 src/classes/Field/FieldAttributesInclude.ts
@@ -127,7 +124,6 @@ src/classes/Field/FieldEventInclude.ts
 src/constructors/ListGroup/ListGroupOpen.ts
 src/constructors/ListGroup/ListGroup.ts
 src/constructors/ListGroup/ListGroupDesign.tsx
-src/constructors/Mask/MaskDesign.tsx
 src/constructors/Mask/MaskInclude.ts
 src/classes/LabelNumberInclude.ts
 src/constructors/Badge/Badge.ts
@@ -218,3 +214,9 @@ src/constructors/Bars/BarsAction.ts
 src/constructors/Bars/Bars.ts
 src/constructors/Bars/BarsDesign.tsx
 src/constructors/Bars/BarsInclude.ts
+src/constructors/Mask/MaskScroll.ts
+src/constructors/Mask/MaskControl.ts
+src/constructors/Mask/MaskMatch.ts
+src/constructors/Mask/MaskEvent.ts
+src/constructors/Mask/Mask.ts
+src/constructors/Mask/MaskDesign.tsx

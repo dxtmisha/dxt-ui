@@ -286,6 +286,15 @@ const onFullOnlyInput = (validation: FieldValidationItem): void => {
               :input-attrs="{ 'aria-label': 'RTL mask' }"
             />
           </DemoBox>
+          <DemoBox>
+            <div class="demo-mask-page__narrow">
+              <D1Mask
+                mask="+1 (***) ***-**-** ext. ****"
+                value="20255501479999"
+                :input-attrs="{ 'aria-label': 'Overflow clipped long mask' }"
+              />
+            </div>
+          </DemoBox>
         </DemoFlex>
       </D1Group>
 
@@ -399,4 +408,10 @@ const onFullOnlyInput = (validation: FieldValidationItem): void => {
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-mask-page {
+  &__narrow {
+    max-width: 120px;
+  }
+}
+</style>

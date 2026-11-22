@@ -12,6 +12,8 @@
   box-sizing: border-box;
   position: relative;
 
+  max-width: 100%;
+
   text-align: ui.v('??sys.align');
 
   &__input {

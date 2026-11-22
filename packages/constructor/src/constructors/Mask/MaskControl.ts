@@ -54,18 +54,6 @@ export class MaskControl extends DesignLifecycleAbstract {
     super()
   }
 
-  /**
-   * Cancels pending animation frame on unmount.
-   *
-   * Отменяет ожидающий кадр анимации при размонтировании.
-   */
-  override readonly onUnmounted = (): void => {
-    if (this.animationFrame !== undefined) {
-      cancelAnimationFrame(this.animationFrame)
-      this.animationFrame = undefined
-    }
-  }
-
   /** Receiving basic standard values / Получение базовых стандартных значений */
   readonly basic = computed<string>(() => {
     const view = this.view()
@@ -137,6 +125,7 @@ export class MaskControl extends DesignLifecycleAbstract {
 
       if (this.animationFrame !== undefined) {
         cancelAnimationFrame(this.animationFrame)
+        this.animationFrame = undefined
       }
 
       if (typeof requestAnimationFrame !== 'undefined') {
@@ -152,5 +141,17 @@ export class MaskControl extends DesignLifecycleAbstract {
     }
 
     return true
+  }
+
+  /**
+   * Cancels pending animation frame on unmount.
+   *
+   * Отменяет ожидающий кадр анимации при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    if (this.animationFrame !== undefined) {
+      cancelAnimationFrame(this.animationFrame)
+      this.animationFrame = undefined
+    }
   }
 }

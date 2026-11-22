@@ -286,6 +286,7 @@ describe('Mask (unit)', () => {
       cleanups.push(stop)
 
       instance.mount()
+      instance.mount()
 
       props.value = '45'
       await nextTick()

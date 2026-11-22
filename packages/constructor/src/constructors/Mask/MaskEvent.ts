@@ -344,10 +344,24 @@ export class MaskEvent {
   }
 
   /**
+   * Checks whether the input event was triggered by browser autofill or external insertion.
+   *
+   * Проверяет, вызвано ли событие ввода автозаполнением браузера или внешней вставкой.
+   * @param event input event / событие ввода
+   * @param target input element / элемент ввода
+   * @returns is autofill event / является ли событием автозаполнения
+   */
+  protected isAutofillEvent(event: InputEvent, target: HTMLInputElement): boolean {
+    return isAutofillEvent(event, target)
+      || (!this.isKeydown && !this.unidentified)
+  }
+
+  /**
    * Was a cut operation performed.
    *
    * Была ли выполнена операция вырезания.
-   * @param event invoked event/ вызываемое событие
+   * @param event invoked event / вызываемое событие
+   * @returns true if cut operation / true, если операция вырезания
    */
   protected isCut(event: KeyboardEvent): boolean {
     return event.type === 'cut'
@@ -364,7 +378,8 @@ export class MaskEvent {
    * Checks key value in the event.
    *
    * Проверяет значение key в событии.
-   * @param event invoked event/ вызываемое событие
+   * @param event invoked event / вызываемое событие
+   * @returns true if key is identified / true, если клавиша определена
    */
   protected isKey(event: KeyboardEvent): boolean {
     return Boolean(event.key && event.key !== 'Unidentified')
@@ -374,7 +389,8 @@ export class MaskEvent {
    * Was there a selection.
    *
    * Было ли выделение.
-   * @param info selection data/ данные выделения
+   * @param info selection data / данные выделения
+   * @returns true if there is an active selection or non-zero cursor / true, если есть выделение или позиция больше нуля
    */
   protected isSelection(info: MaskEventSelection): boolean {
     const { start, end } = info
@@ -382,23 +398,11 @@ export class MaskEvent {
   }
 
   /**
-   * Checks whether the input event was triggered by browser autofill or external insertion.
-   *
-   * Проверяет, вызвано ли событие ввода автозаполнением браузера или внешней вставкой.
-   * @param event input event/ событие ввода
-   * @param target input element/ элемент ввода
-   * @returns is autofill event/ является ли событием автозаполнения
-   */
-  protected isAutofillEvent(event: InputEvent, target: HTMLInputElement): boolean {
-    return isAutofillEvent(event, target)
-      || (!this.isKeydown && !this.unidentified)
-  }
-
-  /**
    * Getting data about selection on the event element.
    *
    * Получение данных о выделении у элемента события.
-   * @param event invoked event/ вызываемое событие
+   * @param event invoked event / вызываемое событие
+   * @returns selection information / информация о выделении
    */
   protected getSelectionInfo(event: Event): MaskEventSelection {
     const target = event.target as HTMLInputElement
