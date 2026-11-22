@@ -20,20 +20,6 @@ export const cmsPermissionErrorCauseList: ErrorCenterCauseList = [
     label: 'Permission Delete Error',
     message: 'Failed to delete CMS permission.'
   },
-  // Invalid permission code / Некорректный код права доступа
-  {
-    group: 'cms-permission',
-    code: 'invalidCode',
-    label: 'Invalid Permission Code',
-    message: 'Valid permission code is required.'
-  },
-  // Invalid permission name / Некорректное название права доступа
-  {
-    group: 'cms-permission',
-    code: 'invalidName',
-    label: 'Invalid Permission Name',
-    message: 'Permission name is required.'
-  },
   // Permission not found / Право доступа не найдено
   {
     group: 'cms-permission',

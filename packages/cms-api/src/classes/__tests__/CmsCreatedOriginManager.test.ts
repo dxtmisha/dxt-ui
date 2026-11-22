@@ -162,14 +162,14 @@ describe('CmsCreatedOriginManager', () => {
     const mock = createMockDb()
     const manager = new CmsCreatedOriginManager(mock.dbInstance)
 
-    await expect(manager.create({ code: '  ', name: 'Name' })).rejects.toThrow('Valid created origin code is required.')
-    await expect(manager.create({ code: 'has space', name: 'Name' })).rejects.toThrow('Valid created origin code is required.')
-    await expect(manager.create({ code: 'api', name: '  ' })).rejects.toThrow('Created origin name is required.')
+    await expect(manager.create({ code: '  ', name: 'Name' })).rejects.toThrow('Valid code is required.')
+    await expect(manager.create({ code: 'has space', name: 'Name' })).rejects.toThrow('Valid code is required.')
+    await expect(manager.create({ code: 'api', name: '  ' })).rejects.toThrow('Valid name is required.')
 
     expect(capturedErrors.map(item => `${item.group}:${item.code}`)).toEqual([
-      'cms-created-origin:invalidCode',
-      'cms-created-origin:invalidCode',
-      'cms-created-origin:invalidName'
+      'cms-verification:invalidCode',
+      'cms-verification:invalidCode',
+      'cms-verification:invalidName'
     ])
     expect(mock.raw.insert).not.toHaveBeenCalled()
   })

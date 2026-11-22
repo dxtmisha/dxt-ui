@@ -244,7 +244,7 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
   static normalizeCode(
     code: string
   ): string {
-    return CmsVerification.normalizeCode(code, 'cms-created-origin')
+    return CmsVerification.normalizeCode(code)
   }
 
   /**
@@ -257,6 +257,6 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
   static normalizeName(
     name: string
   ): string {
-    return CmsVerification.normalizeName(name, 'cms-created-origin')
+    return CmsVerification.normalizeName(name)
   }
 }

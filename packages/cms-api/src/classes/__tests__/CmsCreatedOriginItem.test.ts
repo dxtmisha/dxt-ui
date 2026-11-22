@@ -174,11 +174,11 @@ describe('CmsCreatedOriginItem', () => {
       const mock = createMockDb()
       const item = new CmsCreatedOriginItem(makeCreatedOrigin(), mock.dbInstance)
 
-      await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid created origin code is required.')
-      await expect(item.update({ name: '   ' })).rejects.toThrow('Created origin name is required.')
+      await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid code is required.')
+      await expect(item.update({ name: '   ' })).rejects.toThrow('Valid name is required.')
       expect(capturedErrors.map(error => `${error.group}:${error.code}`)).toEqual([
-        'cms-created-origin:invalidCode',
-        'cms-created-origin:invalidName'
+        'cms-verification:invalidCode',
+        'cms-verification:invalidName'
       ])
     })
 

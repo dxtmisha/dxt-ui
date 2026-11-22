@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
+import { CMS_VERIFICATION_ERROR_GROUP } from '../../media/errors/cmsVerificationErrorCauseList'
 import { CmsVerification } from '../CmsVerification'
 
 describe('CmsVerification', () => {
@@ -44,7 +45,7 @@ describe('CmsVerification', () => {
       expect(reportSpy).toHaveBeenCalledTimes(1)
       expect(reportSpy).toHaveBeenCalledWith(
         {
-          group: 'cms-verification',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidId',
           details: { id: 0 }
         },
@@ -58,26 +59,26 @@ describe('CmsVerification', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(CmsVerification.normalizeCode('  admin  ', 'cms-role')).toBe('admin')
-      expect(CmsVerification.normalizeCode('users:read', 'cms-permission')).toBe('users:read')
+      expect(CmsVerification.normalizeCode('  admin  ')).toBe('admin')
+      expect(CmsVerification.normalizeCode('users:read')).toBe('users:read')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('reports invalidCode via ErrorCenterThrow.on and throws ErrorCenterError for empty or whitespace codes', () => {
+    it('reports cms-verification:invalidCode via ErrorCenterThrow.on and throws ErrorCenterError for empty or whitespace codes', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(() => CmsVerification.normalizeCode('   ', 'cms-role'))
+      expect(() => CmsVerification.normalizeCode('   '))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeCode('bad code', 'cms-permission'))
+      expect(() => CmsVerification.normalizeCode('bad code'))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeCode(null as unknown as string, 'cms-created-origin'))
+      expect(() => CmsVerification.normalizeCode(null as unknown as string))
         .toThrow(ErrorCenterError)
 
       expect(reportSpy).toHaveBeenNthCalledWith(
         1,
         {
-          group: 'cms-role',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidCode',
           details: { code: '   ' }
         },
@@ -86,7 +87,7 @@ describe('CmsVerification', () => {
       expect(reportSpy).toHaveBeenNthCalledWith(
         2,
         {
-          group: 'cms-permission',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidCode',
           details: { code: 'bad code' }
         },
@@ -95,7 +96,7 @@ describe('CmsVerification', () => {
       expect(reportSpy).toHaveBeenNthCalledWith(
         3,
         {
-          group: 'cms-created-origin',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidCode',
           details: { code: null }
         },
@@ -109,26 +110,26 @@ describe('CmsVerification', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(CmsVerification.normalizeName('  Admin Role  ', 'cms-role')).toBe('Admin Role')
-      expect(CmsVerification.normalizeName('Read Users', 'cms-permission')).toBe('Read Users')
+      expect(CmsVerification.normalizeName('  Admin Role  ')).toBe('Admin Role')
+      expect(CmsVerification.normalizeName('Read Users')).toBe('Read Users')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
-    it('reports invalidName via ErrorCenterThrow.on and throws ErrorCenterError for empty or non-string names', () => {
+    it('reports cms-verification:invalidName via ErrorCenterThrow.on and throws ErrorCenterError for empty or non-string names', () => {
       ErrorCenter.setIsConsole(false)
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
-      expect(() => CmsVerification.normalizeName('   ', 'cms-role'))
+      expect(() => CmsVerification.normalizeName('   '))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeName('', 'cms-permission'))
+      expect(() => CmsVerification.normalizeName(''))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeName(undefined as unknown as string, 'cms-created-origin'))
+      expect(() => CmsVerification.normalizeName(undefined as unknown as string))
         .toThrow(ErrorCenterError)
 
       expect(reportSpy).toHaveBeenNthCalledWith(
         1,
         {
-          group: 'cms-role',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidName',
           details: { name: '   ' }
         },
@@ -137,7 +138,7 @@ describe('CmsVerification', () => {
       expect(reportSpy).toHaveBeenNthCalledWith(
         2,
         {
-          group: 'cms-permission',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidName',
           details: { name: '' }
         },
@@ -146,7 +147,7 @@ describe('CmsVerification', () => {
       expect(reportSpy).toHaveBeenNthCalledWith(
         3,
         {
-          group: 'cms-created-origin',
+          group: CMS_VERIFICATION_ERROR_GROUP,
           code: 'invalidName',
           details: { name: undefined }
         },

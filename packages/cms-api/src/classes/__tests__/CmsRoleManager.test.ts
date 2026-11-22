@@ -220,8 +220,8 @@ describe('CmsRoleManager', () => {
     })
     const manager = new CmsRoleManager(mock.dbInstance)
 
-    await expect(manager.create({ code: '  ', name: 'Role' })).rejects.toThrow('Valid role code is required.')
-    await expect(manager.create({ code: 'mod', name: '  ' })).rejects.toThrow('Role name is required.')
+    await expect(manager.create({ code: '  ', name: 'Role' })).rejects.toThrow('Valid code is required.')
+    await expect(manager.create({ code: 'mod', name: '  ' })).rejects.toThrow('Valid name is required.')
     await expect(manager.create({
       code: 'mod',
       name: 'Mod',
@@ -229,8 +229,8 @@ describe('CmsRoleManager', () => {
     })).rejects.toThrow('Requested CMS permissions were not found.')
 
     expect(capturedErrors.map(item => `${item.group}:${item.code}`)).toEqual([
-      'cms-role:invalidCode',
-      'cms-role:invalidName',
+      'cms-verification:invalidCode',
+      'cms-verification:invalidName',
       'cms-permission:notFound'
     ])
   })

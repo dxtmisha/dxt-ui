@@ -796,7 +796,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   static normalizeCode(
     code: string
   ): string {
-    return CmsVerification.normalizeCode(code, 'cms-role')
+    return CmsVerification.normalizeCode(code)
   }
 
   /**
@@ -809,6 +809,6 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   static normalizeName(
     name: string
   ): string {
-    return CmsVerification.normalizeName(name, 'cms-role')
+    return CmsVerification.normalizeName(name)
   }
 }

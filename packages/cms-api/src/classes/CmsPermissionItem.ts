@@ -324,7 +324,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
   static normalizeCode(
     code: string
   ): string {
-    return CmsVerification.normalizeCode(code, 'cms-permission')
+    return CmsVerification.normalizeCode(code)
   }
 
   /**
@@ -337,6 +337,6 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
   static normalizeName(
     name: string
   ): string {
-    return CmsVerification.normalizeName(name, 'cms-permission')
+    return CmsVerification.normalizeName(name)
   }
 }

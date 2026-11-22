@@ -20,20 +20,6 @@ export const cmsCreatedOriginErrorCauseList: ErrorCenterCauseList = [
     label: 'Created Origin Delete Error',
     message: 'Failed to delete CMS created origin.'
   },
-  // Invalid created origin code / Некорректный код источника создания записей
-  {
-    group: 'cms-created-origin',
-    code: 'invalidCode',
-    label: 'Invalid Created Origin Code',
-    message: 'Valid created origin code is required.'
-  },
-  // Invalid created origin name / Некорректное название источника создания записей
-  {
-    group: 'cms-created-origin',
-    code: 'invalidName',
-    label: 'Invalid Created Origin Name',
-    message: 'Created origin name is required.'
-  },
   // Created origin not found / Источник создания записей не найден
   {
     group: 'cms-created-origin',

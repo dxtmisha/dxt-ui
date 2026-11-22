@@ -5,6 +5,7 @@ import {
   isString,
   type ErrorCenterCauseItem
 } from '@dxtmisha/functional-basic'
+import { CMS_VERIFICATION_ERROR_GROUP } from '../media/errors/cmsVerificationErrorCauseList'
 
 /**
  * Static utility class for verifying CMS conditions and reporting domain errors via ErrorCenterThrow.
@@ -28,7 +29,7 @@ export class CmsVerification {
       isPositiveInteger(value),
       isError
         ? {
-            group: 'cms-verification',
+            group: CMS_VERIFICATION_ERROR_GROUP,
             code: 'invalidId',
             details: { id: value }
           }
@@ -41,19 +42,17 @@ export class CmsVerification {
    *
    * Нормализует и проверяет непустой уникальный код сущности без пробельных символов.
    * @param code Raw entity code / Исходный код сущности
-   * @param errorGroup Error group / Группа ошибки
    * @returns Trimmed non-empty entity code / Очищенный код сущности
    */
   static normalizeCode(
-    code: string,
-    errorGroup: string
+    code: string
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     this.verify(
       normalized.length > 0 && !/\s/.test(normalized),
       {
-        group: errorGroup,
+        group: CMS_VERIFICATION_ERROR_GROUP,
         code: 'invalidCode',
         details: { code }
       }
@@ -67,19 +66,17 @@ export class CmsVerification {
    *
    * Нормализует и проверяет непустое отображаемое название сущности.
    * @param name Raw entity name / Исходное название сущности
-   * @param errorGroup Error group / Группа ошибки
    * @returns Trimmed non-empty entity name / Очищенное название сущности
    */
   static normalizeName(
-    name: string,
-    errorGroup: string
+    name: string
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     this.verify(
       normalized.length > 0,
       {
-        group: errorGroup,
+        group: CMS_VERIFICATION_ERROR_GROUP,
         code: 'invalidName',
         details: { name }
       }

@@ -27,20 +27,6 @@ export const cmsRoleErrorCauseList: ErrorCenterCauseList = [
     label: 'Role Delete Error',
     message: 'Failed to delete CMS role.'
   },
-  // Invalid role code / Некорректный код роли
-  {
-    group: 'cms-role',
-    code: 'invalidCode',
-    label: 'Invalid Role Code',
-    message: 'Valid role code is required.'
-  },
-  // Invalid role name / Некорректное название роли
-  {
-    group: 'cms-role',
-    code: 'invalidName',
-    label: 'Invalid Role Name',
-    message: 'Role name is required.'
-  },
   // Role not found / Роль не найдена
   {
     group: 'cms-role',

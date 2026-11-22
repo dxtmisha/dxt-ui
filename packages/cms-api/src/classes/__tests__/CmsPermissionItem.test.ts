@@ -181,11 +181,11 @@ describe('CmsPermissionItem', () => {
       const mock = createMockDb()
       const item = new CmsPermissionItem(makePermission(), mock.dbInstance)
 
-      await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid permission code is required.')
-      await expect(item.update({ name: '   ' })).rejects.toThrow('Permission name is required.')
+      await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid code is required.')
+      await expect(item.update({ name: '   ' })).rejects.toThrow('Valid name is required.')
       expect(capturedErrors.map(error => `${error.group}:${error.code}`)).toEqual([
-        'cms-permission:invalidCode',
-        'cms-permission:invalidName'
+        'cms-verification:invalidCode',
+        'cms-verification:invalidName'
       ])
     })
 
