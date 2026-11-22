@@ -1,6 +1,6 @@
 // ai-none
 
-import { ref, watch } from 'vue'
+import { ref, watch, type WatchStopHandle } from 'vue'
 import { anyToString, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -25,12 +25,8 @@ export class CheckboxSelected extends DesignLifecycleAbstract {
     return props?.selected !== undefined || props?.valueVariant !== undefined
   }
 
-  /**
-   * Internal reactive state for the selected value.
-   *
-   * Внутреннее реактивное состояние для выбранного значения.
-   */
-  protected readonly selected = ref<string>()
+  /** Watchers cleanup handlers / Функции остановки наблюдателей */
+  protected watchStops: WatchStopHandle[] = []
 
   /**
    * Constructor
@@ -51,19 +47,39 @@ export class CheckboxSelected extends DesignLifecycleAbstract {
   }
 
   /**
+   * Internal reactive state for the selected value.
+   *
+   * Внутреннее реактивное состояние для выбранного значения.
+   */
+  protected readonly selected = ref<string>()
+
+  /**
    * Registers reactive watchers when the component mounts.
    *
    * Регистрирует реактивные наблюдатели при монтировании компонента.
    */
   override readonly onMounted = (): void => {
-    watch(
-      () => this.props.selected,
-      this.update
+    this.stopWatchers()
+
+    this.watchStops.push(
+      watch(
+        () => this.props.selected,
+        this.update
+      ),
+      watch(this.value().item, this.updateByValue),
+      watch(this.selected, (newValue) => {
+        this.model?.().emit(newValue)
+      })
     )
-    watch(this.value().item, this.updateByValue)
-    watch(this.selected, (newValue) => {
-      this.model?.().emit(newValue)
-    })
+  }
+
+  /**
+   * Stops registered reactive watchers when the component unmounts.
+   *
+   * Останавливает зарегистрированные реактивные наблюдатели при размонтировании компонента.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatchers()
   }
 
   /**
@@ -92,7 +108,20 @@ export class CheckboxSelected extends DesignLifecycleAbstract {
       return
     }
 
-    this.value().set(this.props.selected === this.props.valueVariant)
+    this.value().set(
+      this.props.valueVariant !== undefined
+      && this.props.selected === anyToString(this.props.valueVariant)
+    )
     this.selected.value = this.props.selected
+  }
+
+  /**
+   * Stops and clears all active lifecycle watchers.
+   *
+   * Останавливает и очищает все активные наблюдатели жизненного цикла.
+   */
+  protected stopWatchers(): void {
+    this.watchStops.forEach(stop => stop())
+    this.watchStops = []
   }
 }

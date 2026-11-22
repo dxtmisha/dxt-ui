@@ -113,6 +113,10 @@ const validateExposeValue = (): void => {
           helperMessage="Helper with <strong>strong</strong> markup"
         />
         <D1Checkbox
+          label="With Warning Message"
+          warningMessage="Warning: Double-check this option"
+        />
+        <D1Checkbox
           label="With Validation Message"
           validationMessage="Error: This field is required"
         />
@@ -211,6 +215,8 @@ const validateExposeValue = (): void => {
           @input-lite="(detail) => onEvent('inputLite', detail)"
           @change="(event, detail) => onEvent('change', event, detail)"
           @change-lite="(detail) => onEvent('changeLite', detail)"
+          @focus="(event) => onEvent('focus', event)"
+          @blur="(event) => onEvent('blur', event)"
         />
         <DemoValue :value="eventName"/>
       </D1Group>

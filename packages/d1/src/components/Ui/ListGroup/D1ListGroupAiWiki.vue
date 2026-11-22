@@ -21,8 +21,8 @@ defineOptions({
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
   <D1ListGroup v-bind="args">
-    <template #head="{ binds }">
-      <span v-bind="binds">head</span>
+    <template #head="{ open, ...binds }">
+      <span v-bind="binds">head ({{ open ? 'open' : 'close' }})</span>
     </template>
     <template #list>
       list

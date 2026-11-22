@@ -14,15 +14,6 @@ import type { MotionTransformEmitOptions } from '../MotionTransform'
  */
 export class ListGroupOpen<T extends { open?: boolean }> {
   /**
-   * Internal reactive state for group open/close status.
-   * This state is independent from props and can be controlled programmatically.
-   *
-   * Внутреннее реактивное состояние для статуса открытия/закрытия группы.
-   * Это состояние независимо от пропсов и может контролироваться программно.
-   */
-  readonly open = ref<boolean>(false)
-
-  /**
    * Constructor initializes the ListGroupOpen with component props.
    *
    * Конструктор инициализирует ListGroupOpen с пропсами компонента.
@@ -32,6 +23,15 @@ export class ListGroupOpen<T extends { open?: boolean }> {
     protected readonly props: Readonly<T>
   ) {
   }
+
+  /**
+   * Internal reactive state for group open/close status.
+   * This state is independent from props and can be controlled programmatically.
+   *
+   * Внутреннее реактивное состояние для статуса открытия/закрытия группы.
+   * Это состояние независимо от пропсов и может контролироваться программно.
+   */
+  readonly open = ref<boolean>(false)
 
   /**
    * Returns information about the opening status.

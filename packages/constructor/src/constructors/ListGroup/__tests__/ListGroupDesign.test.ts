@@ -41,9 +41,12 @@ const MockMotionTransform = defineComponent({
           idControl: 'ctrl-1',
           idBody: 'body-1',
           binds: {
-            role: 'button',
-            ariaExpanded: props.open ? 'true' : 'false',
-            ariaControls: 'body-1'
+            'id': 'ctrl-1',
+            'role': 'button',
+            'aria-expanded': props.open ? 'true' : 'false',
+            'aria-controls': 'body-1',
+            'ariaExpanded': props.open ? 'true' : 'false',
+            'ariaControls': 'body-1'
           }
         }),
         slots.body?.()
@@ -144,7 +147,15 @@ describe('ListGroupDesign', () => {
 
     const app = createApp({
       render: () => h(TestComponent, null, {
-        head: (slotProps: { open: boolean, ariaExpanded?: string }) => h('span', { class: 'slot-head' }, `open:${slotProps.open}:${slotProps.ariaExpanded}`),
+        head: (slotProps: { 'open': boolean, 'ariaExpanded'?: string, 'aria-expanded'?: string, 'aria-controls'?: string }) => h(
+          'span',
+          {
+            'class': 'slot-head',
+            'data-aria-expanded': slotProps['aria-expanded'],
+            'data-aria-controls': slotProps['aria-controls']
+          },
+          `open:${slotProps.open}:${slotProps.ariaExpanded}`
+        ),
         list: () => h('div', { class: 'slot-list' }, 'List Items')
       })
     })
@@ -154,10 +165,13 @@ describe('ListGroupDesign', () => {
     await nextTick()
 
     const transform = host.querySelector('.mock-motion-transform')
+    const slotHead = host.querySelector('.slot-head')
     expect(transform?.getAttribute('data-auto-close')).toBe('false')
     expect(transform?.getAttribute('data-section')).toBe('true')
     expect(transform?.getAttribute('data-adaptive')).toBe('planeAlways')
     expect(host.querySelector('.d1-listGroup__head')?.textContent).toBe('open:false:false')
+    expect(slotHead?.getAttribute('data-aria-expanded')).toBe('false')
+    expect(slotHead?.getAttribute('data-aria-controls')).toBe('body-1')
     expect(host.querySelector('.d1-listGroup__list')?.textContent).toBe('List Items')
     expect(exposedApi.getOpen()).toBe(false)
 
@@ -165,6 +179,7 @@ describe('ListGroupDesign', () => {
     await nextTick()
     expect(exposedApi.getOpen()).toBe(true)
     expect(host.querySelector('.d1-listGroup__head')?.textContent).toBe('open:true:true')
+    expect(slotHead?.getAttribute('data-aria-expanded')).toBe('true')
   })
 
   it('should render safely when motionTransform component is omitted', async () => {

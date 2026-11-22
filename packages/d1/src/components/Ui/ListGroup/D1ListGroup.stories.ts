@@ -169,8 +169,8 @@ export const ListGroupSlots: Story = {
     template: `
         
         <D1ListGroup>
-          <template #head="{ open, role, ariaExpanded }">
-            <div class="wiki-storybook-item--padding" :role="role" :aria-expanded="ariaExpanded">
+          <template #head="{ open, ...binds }">
+            <div class="wiki-storybook-item--padding" v-bind="binds">
               Header slot state: {{ open ? 'expanded' : 'collapsed' }}
             </div>
           </template>
@@ -186,12 +186,15 @@ export const ListGroupSlots: Story = {
   play: async ({ canvasElement }) => {
     const groupElement = canvasElement.querySelector<HTMLElement>('.d1-listGroup')
     const headElement = canvasElement.querySelector<HTMLElement>('.d1-listGroup__head')
+    const headContent = headElement?.querySelector<HTMLElement>('.wiki-storybook-item--padding')
     await expect(headElement).toHaveTextContent('Header slot state: collapsed')
+    await expect(headContent).toHaveAttribute('aria-expanded', 'false')
 
     await userEvent.click(headElement!)
     await waitFor(async () => {
       await expect(groupElement).toHaveAttribute('data-open', 'open')
       await expect(headElement).toHaveTextContent('Header slot state: expanded')
+      await expect(headContent).toHaveAttribute('aria-expanded', 'true')
     })
   }
 }

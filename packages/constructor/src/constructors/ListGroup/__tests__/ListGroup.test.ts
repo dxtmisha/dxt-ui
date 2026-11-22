@@ -222,4 +222,30 @@ describe('ListGroup (Integration)', () => {
     expect(root.getAttribute('data-divider')).toBe('divider')
     expect(expose.getOpen()).toBe(true)
   })
+
+  it('should isolate open state between sibling/nested ListGroup instances', async () => {
+    const first = await mountListGroup(
+      { open: false },
+      {
+        head: slotProps => h('span', { class: 'first-head' }, String(slotProps.open)),
+        list: () => h('div', 'First list')
+      }
+    )
+    const second = await mountListGroup(
+      { open: false, divider: true },
+      {
+        head: slotProps => h('span', { class: 'second-head' }, String(slotProps.open)),
+        list: () => h('div', 'Second list')
+      }
+    )
+
+    const firstToggle = first.host.querySelector('.mock-motion-transform-toggle') as HTMLButtonElement
+    firstToggle.click()
+    await nextTick()
+
+    expect(first.expose.getOpen()).toBe(true)
+    expect(second.expose.getOpen()).toBe(false)
+    expect(first.host.querySelector('.d1-listGroup')?.getAttribute('data-open')).toBe('open')
+    expect(second.host.querySelector('.d1-listGroup')?.getAttribute('data-open')).toBe('close')
+  })
 })

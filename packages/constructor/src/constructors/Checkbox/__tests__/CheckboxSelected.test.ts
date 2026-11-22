@@ -153,9 +153,9 @@ describe('CheckboxSelected', () => {
       expect(mockModel.emit).toHaveBeenCalledWith('option-a')
     })
 
-    it('should handle numeric 0 valueVariant properly when checked', async () => {
+    it('should handle numeric 0 valueVariant properly when checked and on round-trip selected update', async () => {
       const valueItem = ref<boolean>(false)
-      const { mockModel, mount, stop } = createCheckboxSelected({
+      const { props, mockValue, mockModel, mount, stop } = createCheckboxSelected({
         selected: undefined,
         valueVariant: 0
       }, valueItem)
@@ -166,6 +166,45 @@ describe('CheckboxSelected', () => {
       await nextTick()
 
       expect(mockModel.emit).toHaveBeenCalledWith('0')
+
+      props.selected = '0'
+      await nextTick()
+      expect(mockValue.set).toHaveBeenLastCalledWith(true)
+    })
+
+    it('should not match empty selected string when valueVariant is undefined', () => {
+      const { mockValue, stop } = createCheckboxSelected({
+        selected: '',
+        valueVariant: undefined
+      })
+      cleanups.push(stop)
+
+      expect(mockValue.set).toHaveBeenCalledWith(false)
+    })
+
+    it('should stop reacting after onUnmounted and avoid duplicate watchers on repeated onMounted', async () => {
+      const valueItem = ref<boolean>(false)
+      const { checkboxSelected, props, mockValue, mockModel, mount, stop } = createCheckboxSelected({
+        selected: 'no',
+        valueVariant: 'yes'
+      }, valueItem)
+      cleanups.push(stop)
+
+      mount()
+      mount()
+
+      props.selected = 'yes'
+      await nextTick()
+      expect(mockModel.emit).toHaveBeenCalledTimes(1)
+      expect(mockModel.emit).toHaveBeenCalledWith('yes')
+
+      checkboxSelected.onUnmounted()
+      props.selected = 'no'
+      valueItem.value = false
+      await nextTick()
+
+      expect(mockModel.emit).toHaveBeenCalledTimes(1)
+      expect(mockValue.set).toHaveBeenLastCalledWith(true)
     })
 
     it('should stop reacting after effectScope disposal', async () => {

@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1Checkbox`](../../src/components/Ui/Checkbox) ([`Checkbox`](../../../constructor/src/constructors/Checkbox))
 - **Демо / Целевой URL:** `http://localhost:3000/component-checkbox`
 - **Материалы:** `Нет`
-- **Дата тестирования (UTC):** `2026-11-17T00:35:50Z`
+- **Дата тестирования (UTC):** `2026-11-22T13:32:01Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 16 / 16 (`100%`)
 - **Сводка:** **16 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Checkbox` корректно отображает все состояния (`checked`, `indeterminate`, `disabled`, `readonly`, `focus`, `loading`, `isSkeleton`), палитры, кастомные иконки, слоты, адаптивность и ARIA-атрибуты при `0` ошибках и предупреждениях консоли.
@@ -19,7 +19,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовые состояния, обязательность (`required`), описание и сообщения (`helperMessage`, `validationMessage`) | ✅ | Проверено `39` экземпляров `D1Checkbox`; `.d1-checkbox--required` отображает `*` (`::after`), `validationMessage` выводит `"Error: This field is required"` и `aria-invalid="true"`, `Indeterminate checked` показывает `-`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-001` | Базовые состояния, обязательность (`required`), описание и сообщения (`helperMessage`, `validationMessage`) | ✅ | Проверено `40` экземпляров `D1Checkbox`; `.d1-checkbox--required` отображает `*` (`::after`), `warningMessage` и `validationMessage` выводят соответствующие тексты (`"Error: This field is required"`, `aria-invalid="true"`), `Indeterminate checked` показывает `-`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
 | `TC-VIS-002` | Макет и адаптивные модификаторы (`block`, `itemCenter`, `container`, `adaptive`) | ✅ | `block` имеет `display: flex` (`width: 1280px`); `adaptive="rightAlways"` выставляет `order: 4` у `.d1-checkbox__item` и `order: 2` у `.d1-checkbox__info`; `DemoBox container` содержит `.d1-checkbox--container--rightSm`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 | `TC-VIS-003` | Состояния `disabled`, `readonly`, `focus`, `loading` и `isSkeleton` | ✅ | Присутствуют `.d1-checkbox--disabled` (`2`), `.d1-checkbox--focus` (`1`), `.d1-progress` (`2`) при `loading` (`boolean` и `{ visible: true, circular: true }`), а также `.d1-skeleton__text` (`3`) и `.d1-skeleton__background` (`2`) при `isSkeleton`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 | `TC-VIS-004` | Палитры (`palette`), кастомные иконки (`iconCheckbox`, `iconIndeterminate`, `null`) и слоты (`#default`, `#description`) | ✅ | Применяются `.d1-palette--red`/`green`/`blue`; 4 иконки в группе `Icons` (включая объект `{ value: 'verified' }` и `null`); слоты `#default` (`<strong>Custom Label Slot</strong>`) и `#description` (`<em>Custom Description Slot</em>`) рендерятся. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
@@ -39,7 +39,7 @@
 | :--- | :--- | :---: | :--- | :--- |
 | `TC-BND-001` | Числовой ноль (`:label="0"`, `:description="0"`) и `modelValue: false` | ✅ | Метка `"0"`, описание `"0"`, `input.checked === false` сохраняются без отбрасывания как falsy. | — |
 | `TC-BND-002` | `hasHtmlCode` и `forceShowMessage` при `disabled` | ✅ | `hasStrongHtmlHelper: true` (рендеринг `<strong>` внутри `.d1-fieldMessage__info`); `forceMsgVisible: true` при `disabled`. | — |
-| `TC-BND-003` | Проверка переполнения текста и выравнивания по всем чекбоксам страницы | ✅ | Проверены все `39` компонентов: `overflowCount: 0` (`overflowItems: []`). | — |
+| `TC-BND-003` | Проверка переполнения текста и выравнивания по всем чекбоксам страницы | ✅ | Проверены все `40` компонентов: `overflowCount: 0` (`overflowItems: []`). | — |
 
 ### 2.4 Адаптивность (`RSP`)
 
@@ -59,7 +59,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | Генерация событий и чистота консоли | ✅ | Отслеживание событий зафиксировало `Value: changeLite`; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`. | — |
+| `TC-LOG-001` | Генерация событий и чистота консоли | ✅ | Отслеживание событий зафиксировало `Value: changeLite` и `Value: blur`; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `httpErrors: []`. | — |
 
 ---
 

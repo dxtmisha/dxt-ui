@@ -119,9 +119,6 @@ src/classes/Field/FieldPatternInclude.ts
 src/classes/Field/FieldVisibilityInclude.ts
 src/classes/Field/FieldFormInclude.ts
 src/classes/Field/FieldMatchInclude.ts
-src/constructors/ListGroup/ListGroupOpen.ts
-src/constructors/ListGroup/ListGroup.ts
-src/constructors/ListGroup/ListGroupDesign.tsx
 src/constructors/Mask/MaskInclude.ts
 src/classes/LabelNumberInclude.ts
 src/constructors/Badge/Badge.ts
@@ -129,10 +126,6 @@ src/constructors/Badge/BadgeDesign.tsx
 src/constructors/Badge/BadgeInclude.ts
 src/constructors/Radio/Radio.ts
 src/constructors/Radio/RadioDesign.tsx
-src/constructors/Checkbox/CheckboxIcon.ts
-src/constructors/Checkbox/CheckboxSelected.ts
-src/constructors/Checkbox/CheckboxDesign.tsx
-src/constructors/Checkbox/Checkbox.ts
 src/classes/LabelHighlightInclude.ts
 src/classes/PrefixInclude.ts
 src/classes/SuffixInclude.ts
@@ -220,3 +213,10 @@ src/classes/Field/FieldValidationInclude.ts
 src/classes/Field/FieldEventInclude.ts
 src/constructors/Input/Input.ts
 src/constructors/Input/InputDesign.tsx
+src/constructors/ListGroup/ListGroupOpen.ts
+src/constructors/ListGroup/ListGroup.ts
+src/constructors/ListGroup/ListGroupDesign.tsx
+src/constructors/Checkbox/CheckboxIcon.ts
+src/constructors/Checkbox/CheckboxSelected.ts
+src/constructors/Checkbox/Checkbox.ts
+src/constructors/Checkbox/CheckboxDesign.tsx

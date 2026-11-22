@@ -235,6 +235,7 @@ export const CheckboxTestLayoutAndBoundaries: Story = {
           <D1Checkbox :label="0" :description="0" :modelValue="false" />
           <D1Checkbox label="Inline" :block="false" :itemCenter="false" description="Top aligned" />
           <D1Checkbox label="Required" required validationMessage="Validation failed" />
+          <D1Checkbox label="Warning" warningMessage="Check this setting" />
           <D1Checkbox label="HTML helper" hasHtmlCode helperMessage="Helper <strong>bold</strong> text" />
           <D1Checkbox label="Object icon" :iconCheckbox="{ value: 'verified' }" :modelValue="true" />
         </div>
@@ -243,7 +244,7 @@ export const CheckboxTestLayoutAndBoundaries: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-checkbox')
-    await expect(items.length).toBe(5)
+    await expect(items.length).toBe(6)
 
     await expect(items[0].querySelector('.d1-checkbox__label')).toHaveTextContent('0')
     await expect(items[0].querySelector('.d1-checkbox__description')).toHaveTextContent('0')
@@ -257,7 +258,9 @@ export const CheckboxTestLayoutAndBoundaries: Story = {
     await expect(requiredInput).toHaveAttribute('aria-invalid', 'true')
     await expect(items[2]).toHaveTextContent('Validation failed')
 
-    await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
+    await expect(items[3]).toHaveTextContent('Check this setting')
+
+    await expect(items[4].querySelector('strong')).toHaveTextContent('bold')
   }
 }
 export const CheckboxTestCombinationsAndAttributes: Story = {

@@ -170,8 +170,8 @@ await expect(groups[2]).not.toHaveAttribute('data-divider', 'divider')
       },
       template: `
         <DesignComponent>
-          <template #head="{ open, role, ariaExpanded }">
-            <div class="wiki-storybook-item--padding" :role="role" :aria-expanded="ariaExpanded">
+          <template #head="{ open, ...binds }">
+            <div class="wiki-storybook-item--padding" v-bind="binds">
               Header slot state: {{ open ? 'expanded' : 'collapsed' }}
             </div>
           </template>
@@ -185,12 +185,15 @@ await expect(groups[2]).not.toHaveAttribute('data-divider', 'divider')
       play: `
 const groupElement = canvasElement.querySelector<HTMLElement>('.design-component')
 const headElement = canvasElement.querySelector<HTMLElement>('.design-component__head')
+const headContent = headElement?.querySelector<HTMLElement>('.wiki-storybook-item--padding')
 await expect(headElement).toHaveTextContent('Header slot state: collapsed')
+await expect(headContent).toHaveAttribute('aria-expanded', 'false')
 
 await userEvent.click(headElement!)
 await waitFor(async () => {
   await expect(groupElement).toHaveAttribute('data-open', 'open')
   await expect(headElement).toHaveTextContent('Header slot state: expanded')
+  await expect(headContent).toHaveAttribute('aria-expanded', 'true')
 })
       `
     },
@@ -324,8 +327,8 @@ await waitFor(async () => {
     render: `
 <div :class="classDemo.item">
   <ListGroup v-bind="args">
-    <template #head="{ binds }">
-      <span v-bind="binds">head</span>
+    <template #head="{ open, ...binds }">
+      <span v-bind="binds">head ({{ open ? 'open' : 'close' }})</span>
     </template>
     <template #list>
       list
