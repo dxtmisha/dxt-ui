@@ -43,7 +43,7 @@ export class WindowVerification extends DesignLifecycleAbstract {
    * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly classes: () => WindowClassesData,
     protected readonly element: () => WindowElement,
     protected readonly open: () => WindowOpen,
@@ -61,6 +61,16 @@ export class WindowVerification extends DesignLifecycleAbstract {
    */
   override readonly onUnmounted = (): void => {
     this.clearTimers()
+  }
+
+  /**
+   * Returns the element in focus.
+   *
+   * Возвращает элемент в фокусе.
+   * @returns element in focus or undefined / элемент в фокусе или undefined
+   */
+  getFocus(): HTMLElement | undefined {
+    return this.classes().findMain(this.getTarget())
   }
 
   /**
@@ -144,16 +154,6 @@ export class WindowVerification extends DesignLifecycleAbstract {
     } else if (this.isEnabled()) {
       await this.open().toggle()
     }
-  }
-
-  /**
-   * Returns the element in focus.
-   *
-   * Возвращает элемент в фокусе.
-   * @returns element in focus or undefined / элемент в фокусе или undefined
-   */
-  getFocus(): HTMLElement | undefined {
-    return this.classes().findMain(this.getTarget())
   }
 
   /**

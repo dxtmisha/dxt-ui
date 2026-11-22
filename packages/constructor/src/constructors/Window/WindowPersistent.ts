@@ -26,7 +26,7 @@ export class WindowPersistent extends DesignLifecycleAbstract {
    * @param props component properties / свойства компонента
    * @returns true if persistent is enabled / true, если постоянный режим включён
    */
-  static is(props?: WindowProps): boolean {
+  static is(props?: Readonly<WindowProps>): boolean {
     return Boolean(props?.persistent)
   }
 
@@ -39,7 +39,7 @@ export class WindowPersistent extends DesignLifecycleAbstract {
    * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly classes: () => WindowClassesData,
     protected readonly element: () => WindowElement
   ) {

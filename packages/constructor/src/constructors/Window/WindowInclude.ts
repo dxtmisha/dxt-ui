@@ -58,7 +58,9 @@ export class WindowInclude<
   protected override readonly propsAttrsName = 'windowAttrs'
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -142,8 +144,8 @@ export class WindowInclude<
         opening: this.getOpening,
         closing: this.getClosing,
 
-        ariaLabelledby: this.ariaLabelledby,
-        ariaDescribedby: this.ariaDescribedby,
+        ...(this.ariaLabelledby !== undefined ? { ariaLabelledby: this.ariaLabelledby } : {}),
+        ...(this.ariaDescribedby !== undefined ? { ariaDescribedby: this.ariaDescribedby } : {}),
 
         onWindow: this.onWindow
       }

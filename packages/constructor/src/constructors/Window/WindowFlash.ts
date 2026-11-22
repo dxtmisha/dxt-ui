@@ -26,7 +26,7 @@ export class WindowFlash {
    * @param props component properties / свойства компонента
    * @returns true if flash is enabled / true, если flash включён
    */
-  static is(props?: WindowProps): boolean {
+  static is(props?: Readonly<WindowProps>): boolean {
     return Boolean(props?.flash)
   }
 
@@ -38,7 +38,7 @@ export class WindowFlash {
    * @param classes function returning class manager / функция, возвращающая менеджер классов
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly classes: () => WindowClassesData
   ) {
   }

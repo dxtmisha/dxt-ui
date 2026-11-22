@@ -27,7 +27,7 @@ export class WindowPosition {
    * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly client: () => WindowClient,
     protected readonly coordinates: () => WindowCoordinates,
     protected readonly element: () => WindowElement
@@ -88,6 +88,7 @@ export class WindowPosition {
    * Update of the element's position coordinates.
    *
    * Обновление координаты положения элемента.
+   * @returns true if coordinates changed / true, если координаты изменились
    */
   update(): boolean {
     if (this.coordinates().update()) {
@@ -116,14 +117,12 @@ export class WindowPosition {
     ) {
       const rect = getElement(this.props.overElement)?.getBoundingClientRect()
       const rectBody = this.element().getBody()?.getBoundingClientRect()
-      const rectBodyContext = elementBodyContext?.getBoundingClientRect()
+      const rectBodyContext = elementBodyContext.getBoundingClientRect()
       const rectControl = this.element().getControl()?.getBoundingClientRect()
 
       if (
-        elementBodyContext
-        && rect
+        rect
         && rectBody
-        && rectBodyContext
       ) {
         const center = rect.height / 2
         const shift = rect.top - rectBodyContext.top
@@ -171,6 +170,7 @@ export class WindowPosition {
    * Returns the axis alignment values.
    *
    * Возвращает значения оси выравнивания.
+   * @returns resolved axis / вычисленная ось выравнивания
    */
   protected getAxis(): WindowProps['axis'] {
     return this.isOver() ? 'y' : (this.props?.axis ?? 'y')
@@ -180,7 +180,8 @@ export class WindowPosition {
    * Returns the margins from the control element.
    *
    * Возвращает отступы от элемента управления.
-   * @param axis the axis of alignment of the element/ ось выравнивания элемента
+   * @param axis the axis of alignment of the element / ось выравнивания элемента
+   * @returns indent in pixels / отступ в пикселях
    */
   protected getIndent(axis: string): number {
     return this.getAxis() === axis ? (this.props.indent ?? 4) : 0
@@ -295,11 +296,12 @@ export class WindowPosition {
    * Calculation of the element's position.
    *
    * Вычисление положения элемента.
-   * @param inValue initial values/ начальные значения
-   * @param outValue final values/ конечные значения
-   * @param length length of the object/ длина объекта
-   * @param innerLength length of the indentation/ длина отступа
-   * @param maxSize maximum length/ максимальная длина
+   * @param inValue initial values / начальные значения
+   * @param outValue final values / конечные значения
+   * @param length length of the object / длина объекта
+   * @param innerLength length of the indentation / длина отступа
+   * @param maxSize maximum length / максимальная длина
+   * @returns calculated position coordinate / вычисленная координата положения
    */
   protected calculationInner(
     inValue: number,
@@ -325,11 +327,12 @@ export class WindowPosition {
    * Calculation of the element's position.
    *
    * Вычисление положения над элемента.
-   * @param value initial values/ начальные значения
-   * @param top high control coordinates/ высокие координаты контрола
-   * @param bottom lower control coordinates/ нижние координаты контрола
-   * @param length length of the object/ длина объекта
-   * @param innerLength length of the indentation/ длина отступа
+   * @param value initial values / начальные значения
+   * @param top high control coordinates / высокие координаты контрола
+   * @param bottom lower control coordinates / нижние координаты контрола
+   * @param length length of the object / длина объекта
+   * @param innerLength length of the indentation / длина отступа
+   * @returns calculated over-element coordinate / вычисленная координата положения над элементом
    */
   protected calculationOver(
     value: number,

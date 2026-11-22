@@ -79,7 +79,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
    * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly client: () => WindowClient,
     protected readonly coordinates: () => WindowCoordinates,
     protected readonly element: () => WindowElement,

@@ -27,7 +27,7 @@ export class WindowStatic extends DesignLifecycleAbstract {
    * @param props component properties / свойства компонента
    * @returns true if staticMode is true / true, если staticMode равен true
    */
-  static is(props?: WindowProps): boolean {
+  static is(props?: Readonly<WindowProps>): boolean {
     return Boolean(props?.staticMode)
   }
 
@@ -39,7 +39,7 @@ export class WindowStatic extends DesignLifecycleAbstract {
    * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly element: () => WindowElement
   ) {
     super()

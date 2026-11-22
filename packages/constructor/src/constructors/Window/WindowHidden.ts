@@ -12,7 +12,7 @@ import type { WindowStatic } from './WindowStatic'
 import type { WindowOpen } from './WindowOpen'
 import type { WindowProps } from './props'
 
-const elementBlockCount = new WeakMap<HTMLElement, number>()
+const elementBlockCount = /* #__PURE__ */ new WeakMap<HTMLElement, number>()
 
 /**
  * A class for managing the hiding of elements outside the window when it is open.
@@ -31,12 +31,14 @@ export class WindowHidden extends DesignLifecycleAbstract {
    * @param props input data / входные данные
    * @returns true if hidden mode can be active / true, если скрытый режим может быть активен
    */
-  static is(props?: WindowProps): boolean {
+  static is(props?: Readonly<WindowProps>): boolean {
     return Boolean(props?.inert && !props?.embedded && !props?.staticMode)
   }
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
    * @param classes function returning an object for working with class names / функция, возвращающая объект для работы с названиями классов
    * @param open function returning an object for working with the open state / функция, возвращающая объект для работы с состоянием открытия окна
@@ -44,7 +46,7 @@ export class WindowHidden extends DesignLifecycleAbstract {
    * @param teleport function returning an object for working with teleport status / функция, возвращающая объект для работы с состоянием телепорта окна
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly classes: () => WindowClassesData,
     protected readonly open: () => WindowOpen,
     protected readonly staticMode: () => WindowStatic,

@@ -11,11 +11,13 @@ import type { WindowProps } from './props'
  */
 export class WindowHook {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: WindowProps
+    protected readonly props: Readonly<WindowProps>
   ) {
   }
 
@@ -23,6 +25,7 @@ export class WindowHook {
    * Hook for preparing elements before opening/closing.
    *
    * Хук для подготовки элементов перед открытием/закрытием.
+   * @returns promise that resolves after preparation / промис, завершающийся после подготовки
    */
   async preparation(): Promise<void> {
     if (this.props.preparation) {

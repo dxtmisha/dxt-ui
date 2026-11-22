@@ -41,7 +41,7 @@ export class WindowEvent extends DesignLifecycleAbstract {
    * @param verification function returning verification manager / функция, возвращающая менеджер проверки
    */
   constructor(
-    protected readonly props: WindowProps,
+    protected readonly props: Readonly<WindowProps>,
     protected readonly client: () => WindowClient,
     protected readonly flash: () => WindowFlash,
     protected readonly open: () => WindowOpen,
@@ -91,6 +91,7 @@ export class WindowEvent extends DesignLifecycleAbstract {
    *
    * События нажатия на элемент управления.
    * @param event event object / объект события
+   * @returns promise that resolves after handling click / промис, завершающийся после обработки клика
    */
   readonly onClick = async (event: WindowEventClickType): Promise<void> => {
     if (!this.props.contextmenu) {
@@ -132,6 +133,7 @@ export class WindowEvent extends DesignLifecycleAbstract {
    *
    * События нажатия на правую кнопку мыши на элемент управления.
    * @param event event object / объект события
+   * @returns promise that resolves after handling context menu / промис, завершающийся после обработки контекстного меню
    */
   readonly onContextmenu = async (event: WindowEventClickType): Promise<void> => {
     if (this.props.contextmenu) {
@@ -200,7 +202,8 @@ export class WindowEvent extends DesignLifecycleAbstract {
    * Checks if the down arrow key is pressed.
    *
    * Проверяет, нажата ли стрелка вниз.
-   * @param event event object/ объект события
+   * @param event event object / объект события
+   * @returns true if ArrowDown is pressed / true, если нажата стрелка вниз
    */
   protected isArrowDown(event: KeyboardEvent): boolean {
     return Boolean(
@@ -218,7 +221,8 @@ export class WindowEvent extends DesignLifecycleAbstract {
    * Checks if the tab key is pressed.
    *
    * Проверяет, нажата ли клавиша Tab.
-   * @param event event object/ объект события
+   * @param event event object / объект события
+   * @returns true if Tab is pressed / true, если нажата клавиша Tab
    */
   protected isTab(event: KeyboardEvent): boolean {
     return event.key === 'Tab'
@@ -230,7 +234,8 @@ export class WindowEvent extends DesignLifecycleAbstract {
    * Event activation.
    *
    * Активация события.
-   * @param event event object/ объект события
+   * @param event event object / объект события
+   * @returns promise that resolves after activation / промис, завершающийся после активации
    */
   protected async on(event: WindowEventClickType): Promise<void> {
     this.tabIndex().updateOldElement()
@@ -248,7 +253,8 @@ export class WindowEvent extends DesignLifecycleAbstract {
    * Callback of the event when pressing any area for checking and changing the opening state.
    *
    * Callback события при нажатии на любую область для проверки и изменения состояния открытия.
-   * @param event event instance/ экземпляр события
+   * @param event event instance / экземпляр события
+   * @returns promise that resolves after handling global event / промис, завершающийся после обработки глобального события
    */
   protected readonly onGlobal = async (event?: Event): Promise<void> => {
     if (

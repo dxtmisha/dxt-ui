@@ -29,7 +29,7 @@ export class WindowEsc extends DesignLifecycleAbstract {
    * @param props component properties / свойства компонента
    * @returns true if close on escape is enabled / true, если закрытие по escape включено
    */
-  static is(props?: WindowProps): boolean {
+  static is(props?: Readonly<WindowProps>): boolean {
     return !props?.persistent && (props?.closeOnEsc ?? true)
   }
 

@@ -1,15 +1,20 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { DesignName } from '@dxtmisha/functional'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { type ConstrEmit, DesignName } from '@dxtmisha/functional'
+import type { ModelInclude } from '../../../classes/ModelInclude'
 import { WindowInclude } from '../WindowInclude'
-import type { WindowPropsInclude } from '../basicTypes'
+import type { WindowEmitOptions, WindowEmitsInclude, WindowExposeInclude, WindowPropsInclude } from '../basicTypes'
+
+type MockWindowElement = Pick<WindowExposeInclude, 'getId' | 'getOpen'> & {
+  toggle: ReturnType<typeof vi.fn>
+}
 
 describe('WindowInclude', () => {
-  let mockWindowElement: any
+  let mockWindowElement: MockWindowElement
   let mockProps: Partial<WindowPropsInclude>
-  let mockExtra: any
-  let mockEmits: any
-  let mockModel: any
+  let mockExtra: Partial<WindowPropsInclude['windowAttrs']>
+  let mockEmits: ConstrEmit<WindowEmitsInclude>
+  let mockModel: Pick<ModelInclude<boolean>, 'emit'>
   let windowInclude: WindowInclude
 
   beforeEach(() => {
@@ -30,7 +35,7 @@ describe('WindowInclude', () => {
     mockExtra = {
       preparation: vi.fn()
     }
-    mockEmits = vi.fn()
+    mockEmits = vi.fn() as unknown as ConstrEmit<WindowEmitsInclude>
     mockModel = {
       emit: vi.fn()
     }
@@ -38,16 +43,20 @@ describe('WindowInclude', () => {
     windowInclude = new WindowInclude(
       mockProps as WindowPropsInclude,
       new DesignName('d1.dialog'),
-      undefined, // components
-      () => mockExtra, // extra
+      undefined,
+      () => mockExtra,
       'index-key',
       mockEmits,
       'title-id',
       'desc-id',
-      () => mockModel
+      () => mockModel as ModelInclude<boolean>
     )
 
-    ;(windowInclude as any).element.value = mockWindowElement
+    ;(windowInclude as unknown as { element: { value: MockWindowElement } }).element.value = mockWindowElement
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should return correct bindings from toBinds()', () => {
@@ -58,9 +67,8 @@ describe('WindowInclude', () => {
     expect(bindings.ariaLabelledby).toBe('title-id')
     expect(bindings.ariaDescribedby).toBe('desc-id')
 
-    // Call execution wrappers for preparation/opening/closing
     bindings.preparation?.()
-    expect(mockExtra.preparation).toHaveBeenCalled()
+    expect(mockExtra?.preparation).toHaveBeenCalled()
 
     const openingResult = bindings.opening?.()
     expect(openingResult).toBe(true)
@@ -74,7 +82,6 @@ describe('WindowInclude', () => {
 
     expect(api.getWindowElement()).toStrictEqual(mockWindowElement)
 
-    // Call exposed proxy methods (mocked via exposeItems)
     api.getId()
     expect(mockWindowElement.getId).toHaveBeenCalled()
 
@@ -84,25 +91,29 @@ describe('WindowInclude', () => {
   })
 
   it('should handle onWindow events by updating model and emitting window parameters', () => {
-    const emitOptions = {
+    const emitOptions: WindowEmitOptions = {
       id: 'window-123',
       element: document.createElement('div'),
       control: document.createElement('button'),
       open: true
     }
 
-    ;(windowInclude as any).onWindow(emitOptions)
+    const onWindow = windowInclude.binds.value.onWindow as (options: WindowEmitOptions) => void
+    onWindow(emitOptions)
 
     expect(mockEmits).toHaveBeenCalledWith('window', emitOptions)
     expect(mockModel.emit).toHaveBeenCalledWith(true)
   })
 
-  it('should preserve windowAttrs disabled and autoClose when top-level props omit them', () => {
+  it('should preserve windowAttrs disabled, autoClose, disableFocusReturn, and aria attributes when top-level props omit them', () => {
     const includeWithWindowAttrs = new WindowInclude(
       {
         windowAttrs: {
           disabled: true,
-          autoClose: false
+          autoClose: false,
+          disableFocusReturn: true,
+          ariaLabelledby: 'attrs-title-id',
+          ariaDescribedby: 'attrs-desc-id'
         }
       } as WindowPropsInclude,
       new DesignName('d1.dialog')
@@ -110,13 +121,41 @@ describe('WindowInclude', () => {
 
     expect(includeWithWindowAttrs.binds.value.disabled).toBe(true)
     expect(includeWithWindowAttrs.binds.value.autoClose).toBe(false)
+    expect(includeWithWindowAttrs.binds.value.disableFocusReturn).toBe(true)
+    expect(includeWithWindowAttrs.binds.value.ariaLabelledby).toBe('attrs-title-id')
+    expect(includeWithWindowAttrs.binds.value.ariaDescribedby).toBe('attrs-desc-id')
   })
 
-  it('should support getter function props and compose onWindow handlers via mergeProps', () => {
+  it('should forward disableFocusReturn from top-level props when true or false and override windowAttrs', () => {
+    const includeTrue = new WindowInclude(
+      {
+        disableFocusReturn: true,
+        windowAttrs: {
+          disableFocusReturn: false
+        }
+      } as WindowPropsInclude,
+      new DesignName('d1.dialog')
+    )
+    expect(includeTrue.binds.value.disableFocusReturn).toBe(true)
+
+    const includeFalse = new WindowInclude(
+      {
+        disableFocusReturn: false,
+        windowAttrs: {
+          disableFocusReturn: true
+        }
+      } as WindowPropsInclude,
+      new DesignName('d1.dialog')
+    )
+    expect(includeFalse.binds.value.disableFocusReturn).toBe(false)
+  })
+
+  it('should support getter function props including disableFocusReturn and compose onWindow handlers via mergeProps', () => {
     const externalOnWindow = vi.fn()
     const getterInclude = new WindowInclude(
       () => ({
         disabled: true,
+        disableFocusReturn: true,
         windowAttrs: {
           onWindow: externalOnWindow
         }
@@ -128,11 +167,11 @@ describe('WindowInclude', () => {
       mockEmits,
       undefined,
       undefined,
-      () => mockModel
+      () => mockModel as ModelInclude<boolean>
     )
 
     const bindings = getterInclude.binds.value
-    const emitOptions = {
+    const emitOptions: WindowEmitOptions = {
       id: 'window-123',
       element: document.createElement('div'),
       control: document.createElement('button'),
@@ -140,9 +179,10 @@ describe('WindowInclude', () => {
     }
 
     expect(bindings.disabled).toBe(true)
+    expect(bindings.disableFocusReturn).toBe(true)
     expect(Array.isArray(bindings.onWindow)).toBe(true)
 
-    const handlers = bindings.onWindow as unknown as Array<(options: typeof emitOptions) => void>
+    const handlers = bindings.onWindow as unknown as Array<(options: WindowEmitOptions) => void>
     handlers.forEach(handler => handler(emitOptions))
 
     expect(externalOnWindow).toHaveBeenCalledWith(emitOptions)
