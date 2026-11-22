@@ -1,3 +1,4 @@
+import { mergeProps } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
@@ -35,7 +36,7 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
   MotionTransformSlots
 > {
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
-  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+  protected override readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'isShow', type: 'boolean' },
     { name: 'getOpen', type: 'boolean' },
 
@@ -46,9 +47,9 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
   ]
 
   /** Component sub-name / Дополнительное имя компонента */
-  protected readonly name = 'motionTransform'
+  protected override readonly name = 'motionTransform'
   /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
-  protected readonly propsAttrsName = 'motionTransformAttrs'
+  protected override readonly propsAttrsName = 'motionTransformAttrs'
 
   /**
    * Constructor for initializing MotionTransform properties and inclusion managers.
@@ -99,13 +100,14 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
   protected override toBinds(): ConstrBind<MotionTransformProps> {
     const props = this.getProps()
 
-    return {
-      ...super.toBinds(),
-
-      ...(props.clickOpen !== undefined ? { clickOpen: props.clickOpen } : {}),
-      ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
-      onTransform: this.onTransform
-    }
+    return mergeProps(
+      super.toBinds(),
+      {
+        ...(props.clickOpen !== undefined ? { clickOpen: props.clickOpen } : {}),
+        ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
+        onTransform: this.onTransform
+      }
+    ) as ConstrBind<MotionTransformProps>
   }
 
   /**

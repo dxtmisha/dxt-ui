@@ -23,31 +23,33 @@ MotionTransform centralizes management of open/show/teleport states, measures el
 
 <Source
     code={`
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import { MotionTransform } from '@dxtmisha/constructor'
+import type { MotionTransformExpose } from '@dxtmisha/constructor/MotionTransform'
 
-const element = ref()
-const elementContext = ref()
+const isOpen = ref(false)
+const transformRef = ref<MotionTransformExpose>()
 
-const motion = new MotionTransform(
-  { open: false, autoClose: true },
-  // ...other params
-)
-
-// Programmatic control
-motion.go.toOpen()
-motion.go.toClose()
-
-// State access
-const isOpen = motion.state.isOpen
-const isShow = motion.state.isShow
+const openPanel = () => transformRef.value?.toOpen()
+const closePanel = () => transformRef.value?.toClose()
 </script>
 
 <template>
-  <div ref="element">
-    <!-- Content with managed transform -->
-  </div>
+  <MotionTransform
+    ref="transformRef"
+    v-model:open="isOpen"
+    :auto-close="true"
+  >
+    <template #head>
+      <div>Click to expand</div>
+    </template>
+    <template #body="{ classes }">
+      <div>
+        <p>Expandable content with managed transform</p>
+        <button :class="classes.close">Close</button>
+      </div>
+    </template>
+  </MotionTransform>
 </template>
   `}
     language="html"

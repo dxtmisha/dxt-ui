@@ -1,6 +1,11 @@
 import type { AriaByPropsInclude } from '../../types/ariaTypes'
 import type { ModelPropsOpen } from '../../types/modelTypes'
 
+/**
+ * Type describing token properties for MotionTransform.
+ *
+ * Тип, описывающий свойства токенов для MotionTransform.
+ */
 export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
   section?: boolean
@@ -9,6 +14,11 @@ export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties of the MotionTransform component.
+ *
+ * Тип, описывающий базовые свойства компонента MotionTransform.
+ */
 export type MotionTransformPropsBasic
   = AriaByPropsInclude
     & ModelPropsOpen

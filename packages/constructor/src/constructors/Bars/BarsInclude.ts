@@ -43,7 +43,7 @@ export class BarsInclude<
    * @param props input properties / входные свойства
    * @returns true if bars should be displayed / true, если панели должны отображаться
    */
-  static is(props?: BarsPropsInclude): boolean {
+  static is(props?: Readonly<BarsPropsInclude>): boolean {
     return !props?.barsHide && Boolean(
       isFilled(props?.barsLabel, true)
       || isNumber(props?.barsLabel)
@@ -58,7 +58,9 @@ export class BarsInclude<
   protected override readonly propsAttrsName = 'barsAttrs'
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -82,8 +84,10 @@ export class BarsInclude<
   }
 
   /**
-   * Checks whether bars should be displayed /
-   * Проверяет, нужно ли отображать панели
+   * Checks whether bars should be displayed.
+   *
+   * Проверяет, нужно ли отображать панели.
+   * @returns true if bars should be displayed / true, если панели должны отображаться
    */
   override get is(): boolean {
     return BarsInclude.is(this.getProps())

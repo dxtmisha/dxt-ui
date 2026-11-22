@@ -89,4 +89,33 @@ describe('MotionTransformInclude', () => {
     expect(include.binds.value.autoClose).toBe(false)
     expect(include.binds.value.tagBody).toBe('section')
   })
+
+  it('should compose external onTransform handlers with internal emit via mergeProps', () => {
+    const emits = vi.fn()
+    const externalOnTransform = vi.fn()
+    const include = new MotionTransformInclude(
+      {
+        motionTransformAttrs: {
+          onTransform: externalOnTransform
+        }
+      },
+      new DesignName('base.class'),
+      undefined,
+      emits
+    )
+
+    const onTransform = include.binds.value.onTransform
+    const mockEvent = new Event('transform')
+    const mockOptions = { type: 'head' as const, open: true }
+
+    if (Array.isArray(onTransform)) {
+      onTransform.forEach(handler => handler(mockEvent, mockOptions))
+    } else {
+      onTransform?.(mockEvent, mockOptions)
+    }
+
+    expect(externalOnTransform).toHaveBeenCalledWith(mockEvent, mockOptions)
+    expect(emits).toHaveBeenCalledWith('transform', mockEvent, mockOptions)
+    expect(emits).toHaveBeenCalledWith('transformLite', mockOptions)
+  })
 })

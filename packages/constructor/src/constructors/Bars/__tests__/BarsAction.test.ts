@@ -131,5 +131,16 @@ describe('BarsAction', () => {
       barsAction.close()
       expect(barsAction.action.value).toBe(false)
     })
+
+    it('should stop watcher on unmount so subsequent prop mutations do not update action', async () => {
+      const { barsAction, reactiveProperties } = createBarsAction({ action: false })
+
+      barsAction.onUnmounted()
+      reactiveProperties.action = true
+      reactiveProperties.modelAction = true
+      await nextTick()
+
+      expect(barsAction.action.value).toBe(false)
+    })
   })
 })

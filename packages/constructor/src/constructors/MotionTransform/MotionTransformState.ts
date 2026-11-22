@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref, watch, type WatchStopHandle } from 'vue'
 import { DesignLifecycleAbstract, isDomRuntime } from '@dxtmisha/functional'
 
 import type { TabIndexInclude } from '../../classes/TabIndexInclude'
@@ -34,6 +34,8 @@ export class MotionTransformState extends DesignLifecycleAbstract {
   protected frameFocus?: number
   /** Pending target open state during animated transition / Ожидаемое целевое состояние открытия во время анимированного перехода */
   protected targetOpen?: boolean
+  /** Watchers cleanup handlers / Функции остановки наблюдателей */
+  protected watchStops: WatchStopHandle[] = []
 
   /**
    * Constructor.
@@ -59,10 +61,13 @@ export class MotionTransformState extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
-    watch([() => this.element().getElement(), this.show], this.makeShow)
-    watch([() => this.element().getElement(), this.open], this.makeOpen)
-    watch([() => this.element().getElement(), this.teleport], this.makeTeleport)
-    watch(() => this.props.open, () => this.set(Boolean(this.props.open)))
+    this.stopWatchers()
+    this.watchStops.push(
+      watch([() => this.element().getElement(), this.show], this.makeShow),
+      watch([() => this.element().getElement(), this.open], this.makeOpen),
+      watch([() => this.element().getElement(), this.teleport], this.makeTeleport),
+      watch(() => this.props.open, () => this.set(Boolean(this.props.open)))
+    )
 
     this.makeShow()
     this.makeOpen()
@@ -83,6 +88,7 @@ export class MotionTransformState extends DesignLifecycleAbstract {
    * Очистка слушателей жизненного цикла при размонтировании.
    */
   override readonly onUnmounted = (): void => {
+    this.stopWatchers()
     clearTimeout(this.timer)
     this.timer = undefined
     this.targetOpen = undefined
@@ -255,6 +261,16 @@ export class MotionTransformState extends DesignLifecycleAbstract {
     }
 
     this.cancelAnimationFrames()
+  }
+
+  /**
+   * Stops and clears all registered lifecycle watchers.
+   *
+   * Останавливает и очищает все зарегистрированные наблюдатели жизненного цикла.
+   */
+  protected stopWatchers(): void {
+    this.watchStops.forEach(stop => stop())
+    this.watchStops = []
   }
 
   /**

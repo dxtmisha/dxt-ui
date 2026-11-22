@@ -1,6 +1,6 @@
 // ai-none
 
-import { ref, watch } from 'vue'
+import { ref, watch, type WatchStopHandle } from 'vue'
 import { DesignLifecycleAbstract, isFilled, isNumber } from '@dxtmisha/functional'
 
 import type { BarsProps } from './props'
@@ -15,6 +15,8 @@ import type { BarsProps } from './props'
 export class BarsAction extends DesignLifecycleAbstract {
   /** Current action mode state / Текущее состояние action-режима */
   readonly action = ref<boolean>(false)
+  /** Stop handle for the action prop watcher / Функция остановки наблюдателя свойства action */
+  protected watchStop?: WatchStopHandle
 
   /**
    * Constructor for initializing BarsAction properties.
@@ -35,7 +37,18 @@ export class BarsAction extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
-    watch(() => Boolean(this.props.action || this.props.modelAction), this.update)
+    this.watchStop?.()
+    this.watchStop = watch(() => Boolean(this.props.action || this.props.modelAction), this.update)
+  }
+
+  /**
+   * Cleanup lifecycle watchers on unmount.
+   *
+   * Очистка наблюдателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**

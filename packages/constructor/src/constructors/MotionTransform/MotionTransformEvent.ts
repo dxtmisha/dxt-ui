@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { watch, type WatchStopHandle } from 'vue'
 import {
   type ConstrEmit,
   DesignLifecycleAbstract,
@@ -20,6 +20,8 @@ import type { MotionTransformProps } from './props'
 export class MotionTransformEvent extends DesignLifecycleAbstract {
   /** Pointer click event item listener instance / Экземпляр слушателя событий клика указателя (pointer click) */
   protected item?: EventItem<HTMLElement, PointerEvent>
+  /** Stop handle for the open state watcher / Функция остановки наблюдателя состояния открытия */
+  protected watchStop?: WatchStopHandle
 
   /**
    * Constructor for creating a MotionTransformEvent instance.
@@ -45,10 +47,12 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
+    this.stop()
     this.item = new EventItem(document.body, 'click', this.listener)
     this.item.toggle(this.state().open.value)
 
-    watch(
+    this.watchStop?.()
+    this.watchStop = watch(
       this.state().open,
       () => this.item?.toggle(this.state().open.value)
     )
@@ -60,6 +64,8 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * Очистка слушателей жизненного цикла при размонтировании.
    */
   override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
     this.stop()
     this.item = undefined
   }

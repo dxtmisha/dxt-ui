@@ -64,12 +64,7 @@ src/constructors/Arrow/ArrowDesign.tsx
 src/constructors/MotionTransform/MotionTransformClassesInclude.ts
 src/constructors/MotionTransform/MotionTransformElement.ts
 src/constructors/MotionTransform/MotionTransformSize.ts
-src/constructors/MotionTransform/MotionTransformState.ts
-src/constructors/MotionTransform/MotionTransformEvent.ts
 src/constructors/MotionTransform/MotionTransformGo.ts
-src/constructors/MotionTransform/MotionTransform.ts
-src/constructors/MotionTransform/MotionTransformDesign.tsx
-src/constructors/MotionTransform/MotionTransformInclude.ts
 src/classes/TabIndexInclude.ts
 src/constructors/Icon/Icon.ts
 src/constructors/Icon/IconDesign.tsx
@@ -175,10 +170,6 @@ src/constructors/ListItem/ListItem.ts
 src/constructors/Button/ButtonDesign.tsx
 src/constructors/Button/ButtonInclude.ts
 src/constructors/Button/Button.ts
-src/constructors/Bars/BarsAction.ts
-src/constructors/Bars/Bars.ts
-src/constructors/Bars/BarsDesign.tsx
-src/constructors/Bars/BarsInclude.ts
 src/constructors/List/List.ts
 src/constructors/List/ListDesign.tsx
 src/constructors/Menu/Menu.ts
@@ -218,3 +209,12 @@ src/constructors/Window/WindowPersistent.ts
 src/constructors/Window/WindowPosition.ts
 src/constructors/Window/WindowStatic.ts
 src/constructors/Window/WindowVerification.ts
+src/constructors/MotionTransform/MotionTransformState.ts
+src/constructors/MotionTransform/MotionTransformEvent.ts
+src/constructors/MotionTransform/MotionTransformInclude.ts
+src/constructors/MotionTransform/MotionTransform.ts
+src/constructors/MotionTransform/MotionTransformDesign.tsx
+src/constructors/Bars/BarsAction.ts
+src/constructors/Bars/Bars.ts
+src/constructors/Bars/BarsDesign.tsx
+src/constructors/Bars/BarsInclude.ts

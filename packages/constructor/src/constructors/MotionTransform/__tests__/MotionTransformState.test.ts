@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, ref } from 'vue'
+import { effectScope, nextTick, reactive, ref } from 'vue'
 import { MotionTransformState } from '../MotionTransformState'
+
+import type { TabIndexInclude } from '../../../classes/TabIndexInclude'
+import type { MotionTransformSize } from '../MotionTransformSize'
 
 describe('MotionTransformState', () => {
   afterEach(() => {
@@ -46,8 +49,8 @@ describe('MotionTransformState', () => {
     const scope = effectScope()
     const element = document.createElement('div')
     const mockElement = createElementMock({ element })
-    const sizeMock = { update: vi.fn(), reset: vi.fn() } as any
-    const tabIndexMock = { updateOldElement: vi.fn(), toggle: vi.fn() } as any
+    const sizeMock = { update: vi.fn(), reset: vi.fn() } as unknown as MotionTransformSize
+    const tabIndexMock = { updateOldElement: vi.fn(), toggle: vi.fn() } as unknown as TabIndexInclude
 
     const state = scope.run(() => new MotionTransformState(
       { open: true },
@@ -76,8 +79,8 @@ describe('MotionTransformState', () => {
     const scope = effectScope()
     const element = document.createElement('div')
     const mockElement = createElementMock({ element, animation: true })
-    const sizeMock = { update: vi.fn(), reset: vi.fn() } as any
-    const tabIndexMock = { updateOldElement: vi.fn(), toggle: vi.fn() } as any
+    const sizeMock = { update: vi.fn(), reset: vi.fn() } as unknown as MotionTransformSize
+    const tabIndexMock = { updateOldElement: vi.fn(), toggle: vi.fn() } as unknown as TabIndexInclude
 
     const state = scope.run(() => new MotionTransformState(
       { open: false, animationShow: true },
@@ -150,5 +153,29 @@ describe('MotionTransformState', () => {
     expect(state.isTeleportClose()).toBe(true)
     state.open.value = true
     expect(state.isTeleportClose()).toBe(false)
+  })
+
+  it('should stop lifecycle watchers on unmount so later props.open mutations have no effect', async () => {
+    const props = reactive({ open: false, animationShow: false })
+    const element = document.createElement('div')
+    const mockElement = createElementMock({ element })
+    const sizeMock = { update: vi.fn(), reset: vi.fn() } as unknown as MotionTransformSize
+    const tabIndexMock = { updateOldElement: vi.fn(), toggle: vi.fn() } as unknown as TabIndexInclude
+
+    const state = new MotionTransformState(
+      props,
+      () => mockElement,
+      () => sizeMock,
+      () => tabIndexMock
+    )
+
+    state.onMounted()
+    state.onUnmounted()
+
+    props.open = true
+    await nextTick()
+
+    expect(state.open.value).toBe(false)
+    expect(element.dataset.open).toBe('none')
   })
 })

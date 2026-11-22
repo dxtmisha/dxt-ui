@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1MotionTransform`](../../src/components/Ui/MotionTransform)
 - **Целевой URL:** `http://localhost:3000/component-motion-transform`
 - **Материалы (`materials/`):** `Отсутствуют`
-- **Дата тестирования (UTC):** `2026-11-14T17:16:00Z`
+- **Дата тестирования (UTC):** `2026-11-22T04:09:08Z`
 - **Окружение:** `Headless Chrome (CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
 - **Покрытие тест-кейсов:** `17 / 17` (`100%`)
 - **Итог:** **17 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — компонент `D1MotionTransform` рендерится без визуальных дефектов и переполнений, корректно обрабатывает анимации, зоны исключения, доступность и адаптивные режимы, без единой ошибки консоли или сети.
@@ -19,7 +19,7 @@
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг и `:open="true"` | ✅ | `scrollWidth: 1425 <= innerWidth: 1440`, 27 экземпляров; базовый закрыт (`data-open="none"`), `:open="true"` открыт (`data-open="open"`, body в DOM). | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-001` | Базовый рендеринг и `:open="true"` | ✅ | `scrollWidth: 1440 <= innerWidth: 1440`, 27 экземпляров; базовый закрыт (`data-open="none"`), `:open="true"` открыт (`data-open="open"`, body в DOM). | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
 | `TC-VIS-002` | `animationHeadPosition` и режим `section` | ✅ | Применены `--animationHeadPosition--top`, `--animationHeadPosition--toBottom` и `--section`; в режиме `section` при открытии заголовок остаётся видимым (`visibility: visible`, `opacity: 1`). | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 | `TC-VIS-003` | Адаптивные макеты (`planeAlways`..`plane2xl`) | ✅ | Все 6 вариантов (`planeAlways`, `planeSm`, `planeMd`, `planeLg`, `planeXl`, `plane2xl`) имеют корректные классы-модификаторы без визуальных наложений. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 | `TC-VIS-004` | Кастомный тег `tagBody="article"` и `in-dom` | ✅ | `.d1-motionTransform__body` рендерится тегом `ARTICLE`; слотовые контролы и текст отображаются ровно и без наложений. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |

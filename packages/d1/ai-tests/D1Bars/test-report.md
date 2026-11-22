@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1Bars`](../../src/components/Ui/Bars/D1Bars.vue) ([`Bars`](../../../constructor/src/constructors/Bars/Bars.ts), [`DemoBarsPage`](../../../demo/src/pages/components/DemoBarsPage.vue))
 - **Целевой URL:** `http://localhost:3000/component-bars`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-18T02:54:09Z`
+- **Дата тестирования (UTC):** `2026-11-22T08:35:23Z`
 - **Окружение:** `Headless Chrome 157.0.8103.51 (Puppeteer / CDP 127.0.0.1:9222, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 10 / 10 (`100%`)
 - **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Bars` корректно рендерит иерархию текста, все токены отступов, режим скелетона, переключение `action`/`modelAction`, слоты и ARIA-атрибуты при нуле ошибок и предупреждений в консоли.

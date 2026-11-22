@@ -3,6 +3,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
 import { MotionTransformEvent } from '../MotionTransformEvent'
 
+import type { MotionTransformElement } from '../MotionTransformElement'
+import type { MotionTransformState } from '../MotionTransformState'
+
 describe('MotionTransformEvent', () => {
   afterEach(() => {
     vi.restoreAllMocks()
@@ -145,5 +148,47 @@ describe('MotionTransformEvent', () => {
 
     expect(stateMock.toggle).not.toHaveBeenCalled()
     expect(elementMock.isClick).not.toHaveBeenCalled()
+  })
+
+  it('should stop open watcher on unmount so subsequent open changes do not re-register listeners', async () => {
+    const mainElement = document.createElement('div')
+    document.body.appendChild(mainElement)
+
+    const stateMock = {
+      open: ref(false),
+      set: vi.fn(),
+      toggle: vi.fn(),
+      reset: vi.fn()
+    } as unknown as MotionTransformState
+
+    const elementMock = {
+      getElement: () => mainElement,
+      isClick: vi.fn().mockReturnValue(true),
+      isClickGlobal: vi.fn().mockReturnValue(true),
+      isClose: vi.fn().mockReturnValue(false),
+      isOutside: vi.fn().mockReturnValue(true),
+      isIgnore: vi.fn().mockReturnValue(true)
+    } as unknown as MotionTransformElement
+
+    const eventHandler = new MotionTransformEvent(
+      { clickOpen: true, autoClose: true },
+      () => elementMock,
+      () => stateMock
+    )
+
+    eventHandler.onMounted()
+    eventHandler.onUnmounted()
+
+    stateMock.open.value = true
+    await nextTick()
+
+    const outsideElement = document.createElement('button')
+    document.body.appendChild(outsideElement)
+    outsideElement.click()
+
+    expect(stateMock.set).not.toHaveBeenCalled()
+
+    mainElement.remove()
+    outsideElement.remove()
   })
 })

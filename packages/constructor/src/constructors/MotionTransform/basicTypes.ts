@@ -75,9 +75,9 @@ export type MotionTransformControlItem = {
   isShow: boolean
   /** Helper CSS classes/ Вспомогательные CSS‑классы */
   classes: MotionTransformClassList
-  /** Helper style variables/ Вспомогательные стилевые переменные */
+  /** Control element ID / Идентификатор элемента управления */
   idControl: string
-  /** Helper style variables/ Вспомогательные стилевые переменные */
+  /** Body element ID / Идентификатор элемента тела */
   idBody: string
 
   /** Binding attributes for element/ Атрибуты привязки для элемента */
