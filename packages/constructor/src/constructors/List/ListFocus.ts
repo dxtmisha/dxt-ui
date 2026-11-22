@@ -45,7 +45,9 @@ export class ListFocus extends DesignLifecycleAbstract {
   protected scrollContainer?: HTMLElement
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
    * @param listId unique list identifier / уникальный идентификатор списка

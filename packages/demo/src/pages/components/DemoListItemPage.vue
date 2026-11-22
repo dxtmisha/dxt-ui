@@ -201,6 +201,7 @@ const checkExpose = (): void => {
           <D1ListItem label="Pineapple" value="fruit-pineapple" :highlight="filterQuery" :filter-mode="filterActive"/>
           <D1ListItem label="Banana" value="fruit-banana" :highlight="filterQuery" :filter-mode="filterActive"/>
           <D1ListItem label="Match by value (apple)" value="apple" :highlight="filterQuery" :filter-mode="filterActive"/>
+          <D1ListItem label="Match by search metadata" value="orchard" search="apple orchard cider" :highlight="filterQuery" :filter-mode="filterActive"/>
           <D1ListItem label="Min length 3 highlight" :highlight="filterQuery" :highlight-length-start="3" :filter-mode="filterActive"/>
         </DemoBox>
       </D1Group>

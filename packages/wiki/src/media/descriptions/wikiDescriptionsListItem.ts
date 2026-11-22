@@ -427,6 +427,7 @@ await expect(items[2].querySelector('.design-component__badge')).toHaveTextConte
           />
           <DesignComponent label="Visible filtered" highlight="vis" filterMode/>
           <DesignComponent label="Hidden filtered" highlight="vis" filterMode/>
+          <DesignComponent label="Search metadata match" search="Vietnam +84" highlight="+84" :highlightLengthStart="1" filterMode/>
         </div>
       `,
       play: `
@@ -456,8 +457,10 @@ await expect(canvasElement.querySelector('#custom-desc-id')).toHaveTextContent('
 await expect(canvasElement.querySelector('.design-component__caption')).toHaveAttribute('aria-hidden', 'true')
 
 const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(8)
+await expect(items.length).toBe(9)
 await expect(items[7]).toHaveAttribute('data-highlight', 'vis')
+await expect(items[8]).toHaveAttribute('data-highlight', '+84')
+await expect(items[8].querySelector('.design-component__highlight')).toHaveTextContent('Search metadata match')
       `
     },
     {

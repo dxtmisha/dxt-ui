@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/ListMenu` (`packages/constructor/src/constructors/ListMenu`, `packages/demo/src/pages/components/DemoListMenuPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list-menu`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-17`
+- **Последняя проверка / обновление**: `2026-11-22`
 - **Всего тест-кейсов**: `9`
 
 ---
@@ -61,16 +61,17 @@
 - **Ожидаемый результат**: Меню плавно открывается и закрывается, `open.value` в слоте `#head` синхронизируется (`Closed` <-> `Open`), содержимое `#list` отображается при открытии.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] Управляемый `open`, `auto-close="false"` и `inDom`
+#### [TC-INT-002] Управляемый `open`, `auto-close="false"`, `inDom` и `disable-focus-return`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функционал`
-- **Предусловия**: Секции `Open State` и `Auto Close & Window Attrs (SSR inDom)`.
+- **Предусловия**: Секции `Open State` и `Auto Close, Focus Return & Window Attrs (SSR inDom)`.
 - **Шаги теста**:
   1. Нажать кнопку `Set open=true` в `Open State` и проверить, что `Controlled Menu` открылось и отображает `Action One` / `Action Two`.
   2. Нажать `Set open=false` и проверить закрытие.
   3. Открыть меню `Persistent AutoClose=false (inDom)` и кликнуть по пункту `Keeps open on item click` внутри списка.
   4. Закрыть меню кликом по его триггеру и проверить, что элемент `Kept in DOM after first open` остаётся в DOM (`inDom: true`).
-- **Ожидаемый результат**: Внешнее изменение `open` управляет состоянием меню; при `auto-close="false"` клик по пункту внутри меню не закрывает окно; при `inDom: true` окно остаётся смонтированным в DOM после первого открытия и закрытия.
+  5. Открыть меню `Disable Focus Return`, закрыть его кликом вне окна и проверить, что фокус не возвращается на кнопку-триггер.
+- **Ожидаемый результат**: Внешнее изменение `open` управляет состоянием меню; при `auto-close="false"` клик по пункту внутри меню не закрывает окно; при `inDom: true` окно остаётся смонтированным в DOM после закрытия; при `disable-focus-return` фокус не возвращается на триггер после закрытия.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
 #### [TC-INT-003] Программное управление через `expose`

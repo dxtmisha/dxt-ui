@@ -382,7 +382,7 @@ export const ListMenuEventWindow: Story = {
   }
 }
 export const ListMenuTestStates: Story = {
-  name: 'Тест: Отключённое состояние, autoClose и вложенные подменю',
+  name: 'Тест: Отключённое состояние, autoClose, disableFocusReturn и вложенные подменю',
   render: () => ({
     components: { D1ListMenu },
     template: `
@@ -399,7 +399,7 @@ export const ListMenuTestStates: Story = {
             </template>
           </D1ListMenu>
 
-          <D1ListMenu :auto-close="false" open :window-attrs="{ embedded: true, flash: true }">
+          <D1ListMenu :auto-close="false" disable-focus-return open :window-attrs="{ embedded: true, flash: true }">
             <template #head="{ open, binds }">
               <button v-bind="binds" class="wiki-storybook-button" type="button" data-testid="autoclose-trigger">
                 AutoClose=false ({{ open.value ? 'open' : 'closed' }})

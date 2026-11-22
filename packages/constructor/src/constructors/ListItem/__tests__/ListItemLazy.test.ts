@@ -296,4 +296,31 @@ describe('ListItemLazy', () => {
 
     lazy.onUnmounted()
   })
+
+  it('prevents duplicate watchers on repeated onMounted and stops reacting after onUnmounted', async () => {
+    const ioMock = installIntersectionObserverMock()
+    const props = reactive<ListItemProps>({
+      lazy: true,
+      lazyMargin: '512px 0px',
+      label: 'Idempotent Lazy Row'
+    })
+    const element = ref<HTMLElement | undefined>(document.createElement('div'))
+    const lazy = new ListItemLazy(props, element, naming)
+
+    lazy.onMounted()
+    await nextTick()
+    expect(ioMock.observe).toHaveBeenCalledTimes(1)
+
+    lazy.onMounted()
+    await nextTick()
+    expect(ioMock.unobserve).toHaveBeenCalledTimes(1)
+    expect(ioMock.observe).toHaveBeenCalledTimes(2)
+
+    lazy.onUnmounted()
+    expect(ioMock.unobserve).toHaveBeenCalledTimes(2)
+
+    props.lazyMargin = '640px 0px'
+    await nextTick()
+    expect(ioMock.observe).toHaveBeenCalledTimes(2)
+  })
 })

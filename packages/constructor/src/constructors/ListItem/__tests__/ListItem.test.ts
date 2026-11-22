@@ -321,4 +321,25 @@ describe('ListItem (Integration)', () => {
     expect(root.querySelector('.d1-listItem__body .slot-body')?.textContent).toBe('BodyExtra')
     expect(root.querySelector('.d1-listItem__trailing .slot-trailing')?.textContent).toBe('T')
   })
+
+  it('should match and highlight by search metadata under filterMode', async () => {
+    const { host, props } = await mountListItem({
+      label: 'Vietnam',
+      value: 'VN',
+      search: 'Vietnam Việt Nam VN +84 84',
+      highlight: '+84',
+      highlightLengthStart: 1,
+      filterMode: true,
+      selectionStyle: 'none'
+    })
+
+    const root = host.querySelector('.d1-listItem') as HTMLElement
+    expect(root).not.toBeNull()
+    expect(root.getAttribute('data-highlight')).toBe('+84')
+    expect(root.querySelector('.d1-listItem__highlight')?.textContent).toBe('Vietnam')
+
+    props.highlight = '+99'
+    await nextTick()
+    expect(host.querySelector('.d1-listItem')).toBeNull()
+  })
 })

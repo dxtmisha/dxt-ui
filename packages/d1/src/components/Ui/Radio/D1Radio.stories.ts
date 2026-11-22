@@ -265,6 +265,7 @@ export const RadioTestLayoutAndBoundaries: Story = {
           <D1Radio :label="0" :description="0" :modelValue="false" />
           <D1Radio label="Inline" :block="false" :itemCenter="false" description="Top aligned" />
           <D1Radio label="Required" required validationMessage="Validation failed" />
+          <D1Radio label="Warning" warningMessage="Check this setting" />
           <D1Radio label="HTML helper" hasHtmlCode helperMessage="Helper <strong>bold</strong> text" />
           <D1Radio label="Object icon" :iconCheckbox="{ value: 'verified' }" :modelValue="true" />
         </div>
@@ -273,7 +274,7 @@ export const RadioTestLayoutAndBoundaries: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-radio')
-    await expect(items.length).toBe(5)
+    await expect(items.length).toBe(6)
 
     await expect(items[0].querySelector('.d1-radio__label')).toHaveTextContent('0')
     await expect(items[0].querySelector('.d1-radio__description')).toHaveTextContent('0')
@@ -287,7 +288,9 @@ export const RadioTestLayoutAndBoundaries: Story = {
     await expect(requiredInput).toHaveAttribute('aria-invalid', 'true')
     await expect(items[2]).toHaveTextContent('Validation failed')
 
-    await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
+    await expect(items[3]).toHaveTextContent('Check this setting')
+
+    await expect(items[4].querySelector('strong')).toHaveTextContent('bold')
   }
 }
 export const RadioTestCombinationsAndAttributes: Story = {

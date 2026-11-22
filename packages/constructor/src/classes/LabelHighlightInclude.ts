@@ -61,15 +61,14 @@ export class LabelHighlightInclude extends LabelInclude {
       return true
     }
 
-    if (!(
-      props.highlight
-      && props.highlight.length >= this.getLengthStart()
-      && props.label
-    )) {
+    if (
+      !isFilled(props.label, true)
+      && !isNumber(props.label)
+    ) {
       return false
     }
 
-    const label = props.label.toString()
+    const label = String(props.label)
     const expression = getExp(props.highlight, 'i')
 
     return Boolean(
@@ -114,10 +113,10 @@ export class LabelHighlightInclude extends LabelInclude {
     if (
       props.highlight
       && props.highlight.length >= this.getLengthStart()
-      && props.label
+      && (isFilled(props.label, true) || isNumber(props.label))
     ) {
       const className = this.naming.getSubClass('highlight')
-      const label = props.label.toString()
+      const label = String(props.label)
       const expression = getExp(props.highlight, 'i')
 
       if (label.match(expression)) {

@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/List` (`packages/constructor/src/constructors/List`, `packages/demo/src/pages/components/DemoListPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-18`
+- **Последняя проверка / обновление**: `2026-11-22`
 - **Всего тест-кейсов**: `10`
 
 ---

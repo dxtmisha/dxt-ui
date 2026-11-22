@@ -6,7 +6,7 @@
 - **Исходный код:** [`List`](packages/d1/src/components/Ui/List) ([`constructor`](packages/constructor/src/constructors/List), [`demo`](packages/demo/src/pages/components/DemoListPage.vue))
 - **Демо / целевой URL:** `http://localhost:3000/component-list`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-18T05:01:28Z`
+- **Дата тестирования (UTC):** `2026-11-22T16:28:54Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 10 / 10 (`100%`)
 - **Итог:** **9 ✅, 1 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1List` корректно рендерит все структурные типы элементов (`item`, `group`, `menu`, `subtitle`, `line`, `space`, `html`, слот), поддерживает ленивый рендеринг (`lazy`, `lazyMargin`, `lazyCacheHeight`) и кастомные роли/атрибуты, синхронизирует выбор, поиск и `expose`, соответствует требованиям WAI-ARIA и не вызывает ошибок/предупреждений в консоли.
@@ -41,13 +41,13 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптация `D1List` на `1440×900`, `768×1024`, `375×812` и `320×568` | ⚠️ | На `1440×900` и `768×1024` переполнения нет (`maxListOverflow: 0`, `docScrollWidth === innerWidth`). На `375×812` (`docScrollWidth: 375`) и `320×568` (`docScrollWidth: 374`) вертикальные списки адаптируются полностью, а горизонтальный `axis="x"` (`display: flex` без переноса) выходит на `25px` / `79px`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-001` | Адаптация `D1List` на `1440×900`, `768×1024`, `375×812` и `320×568` | ⚠️ | На `1440×900` и `768×1024` переполнения нет (`maxListOverflow: 0`, `docScrollWidth === innerWidth`). На `375×812` (`docScrollWidth: 375`) и `320×568` (`docScrollWidth: 374`) вертикальные списки адаптируются полностью, а горизонтальный `axis="x"` (`display: flex` без переноса) выходит на `24px` / `79px`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная доступность | ✅ | Проверены `role="listbox"` (`15`), `role="menu"` (`1`), `role="option"` (`66`), `role="menuitem"` (`1`), `role="separator"` (`6`), `aria-selected="true"` (`14`), `aria-disabled="true"` (`7`), `aria-multiselectable="true"` (`1`), `aria-live="polite"`; фокус устанавливается на `.d1-list`. | — |
+| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная доступность | ✅ | Проверены `role="listbox"` (`15`), `role="menu"` (`1`), `role="option"` (`64`), `role="menuitem"` (`1`), `role="separator"` (`6`), `aria-selected="true"` (`14`), `aria-disabled="true"` (`7`), `aria-multiselectable="true"` (`1`), `aria-live="polite"`; фокус устанавливается на `.d1-list`. | — |
 
 ### 2.6 Логи и консоль (`LOG`)
 
@@ -59,6 +59,6 @@
 
 ## 3. AI-аудит и рекомендации
 
-1. **Устранённый дефект `aria-multiselectable` и типовое связывание в `DemoListPage.vue`:** При прогоне обнаружено предупреждение `[Vue warn]: Invalid prop: type check failed for prop "ariaMultiselectable". Expected Boolean, got String with value "true"` в `DemoListPage.vue` из-за строкового атрибута `aria-multiselectable="true"`. Исправлено на `:aria-multiselectable="true"`, после чего повторный прогон завершился без единого предупреждения.
+1. **Стабильность поиска, подсветки и ленивого рендеринга:** Повторная проверка после коммитов `8b72b5cf9` и `4fab6d2d4` подтверждает корректную работу `lazy` (`12/12` элементов), живой подсветки и фильтрации `show-search` / `filter-mode` / `highlight`, а также всех структурных типов списка.
 2. **Поведение горизонтальной оси `axis="x"` на узких вьюпортах (`320px–375px`):** Модификатор `.d1-list--axis--x` использует `display: flex` без `flex-wrap` или горизонтального скролла (`D1HorizontalScroll`), поэтому при 3 и более пунктах на узких мобильных экранах ширина ряда (`389px`) превышает ширину карточки (`320px`). При использовании `axis="x"` в мобильных контейнерах рекомендуется оборачивать список в `D1HorizontalScroll` или задавать `overflow-x: auto`.
 3. **Чистота рантайма и интерактивность:** На всём протяжении тестирования (`VIS`, `INT`, `BND`, `RSP`, `A11Y`) зафиксировано `0` ошибок JavaScript, `0` предупреждений `[Vue warn]` и `0` сетевых ошибок.

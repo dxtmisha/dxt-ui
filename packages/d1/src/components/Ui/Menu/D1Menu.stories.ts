@@ -575,6 +575,7 @@ export const MenuTestSearchHighlightAndStates: Story = {
               :highlight-length-start="4"
               :lite-threshold="2"
               :auto-close="false"
+              disable-focus-return
               is-selected-by-value
               selected="one"
               @click="onItemClick"

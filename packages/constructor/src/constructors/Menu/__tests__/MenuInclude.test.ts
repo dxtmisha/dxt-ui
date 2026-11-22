@@ -11,10 +11,11 @@ import type { MenuProps } from '../props'
 describe('MenuInclude', () => {
   const naming = new DesignName('d1.select')
 
-  it('should build binds non-destructively preserving menuAttrs.disabled when props.disabled is undefined', () => {
+  it('should build binds non-destructively preserving menuAttrs.disabled and disableFocusReturn when props are undefined', () => {
     const props = reactive<MenuPropsInclude<MenuProps>>({
       menuAttrs: {
         disabled: true,
+        disableFocusReturn: true,
         hideList: true
       }
     })
@@ -22,11 +23,17 @@ describe('MenuInclude', () => {
 
     expect(include.binds.value).toMatchObject({
       disabled: true,
+      disableFocusReturn: true,
       hideList: true
     })
 
     props.disabled = false
+    props.disableFocusReturn = false
     expect(include.binds.value.disabled).toBe(false)
+    expect(include.binds.value.disableFocusReturn).toBe(false)
+
+    props.disableFocusReturn = true
+    expect(include.binds.value.disableFocusReturn).toBe(true)
   })
 
   it('should expose all proxy methods and render menu component with slots', () => {

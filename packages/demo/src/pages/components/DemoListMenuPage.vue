@@ -187,7 +187,7 @@ const checkExposeState = () => {
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Auto Close & Window Attrs (SSR inDom)">
+      <D1Group label="Auto Close, Focus Return & Window Attrs (SSR inDom)">
         <DemoFlex>
           <DemoBox>
             <D1ListMenu :auto-close="false" :window-attrs="{ inDom: true }">
@@ -205,6 +205,26 @@ const checkExposeState = () => {
               <template #list>
                 <D1ListItem label="Keeps open on item click"/>
                 <D1ListItem label="Kept in DOM after first open"/>
+              </template>
+            </D1ListMenu>
+          </DemoBox>
+
+          <DemoBox>
+            <D1ListMenu disable-focus-return>
+              <template #head="{ open, binds }">
+                <D1ListItem
+                  v-bind="binds"
+                  label="Disable Focus Return"
+                  :caption="open.value ? 'Open' : 'Closed'"
+                  icon="center_focus_weak"
+                  icon-trailing="keyboard_arrow_right"
+                  :icon-turn="open.value"
+                  tag="button"
+                />
+              </template>
+              <template #list>
+                <D1ListItem label="Focus Return Disabled 1"/>
+                <D1ListItem label="Focus Return Disabled 2"/>
               </template>
             </D1ListMenu>
           </DemoBox>

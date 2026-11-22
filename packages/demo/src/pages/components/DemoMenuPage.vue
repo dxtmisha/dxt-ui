@@ -499,6 +499,19 @@ const { eventName, onEvent } = useDemoEvent()
               />
             </template>
           </D1Menu>
+
+          <D1Menu
+            :list="menuItems"
+            disable-focus-return
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="disableFocusReturn: true"
+                secondary
+              />
+            </template>
+          </D1Menu>
         </DemoFlex>
         <DemoFlex>
           <DemoValue label="autoClose" :value="selectedAutoClose"/>

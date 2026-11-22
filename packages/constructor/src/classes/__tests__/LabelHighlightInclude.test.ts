@@ -69,6 +69,14 @@ describe('LabelHighlightInclude', () => {
     expect(includeZeroValue.isHighlight()).toBe(true)
     const zeroNode = (includeZeroValue.render()[0]?.children as unknown as { props: { innerHTML: string } }[])[0]
     expect(zeroNode.props.innerHTML).toBe('<span class="prefix__highlight">Zero</span>')
+
+    const includeZeroLabel = new LabelHighlightInclude({ label: 0, highlight: '0', highlightLengthStart: 1 }, new DesignName('prefix'))
+    expect(includeZeroLabel.isHighlight()).toBe(true)
+    const zeroLabelNode = (includeZeroLabel.render()[0]?.children as unknown as { props: { innerHTML: string } }[])[0]
+    expect(zeroLabelNode.props.innerHTML).toBe('<span class="prefix__highlight">0</span>')
+
+    const includeZeroLabelMismatch = new LabelHighlightInclude({ label: 0, highlight: '9', highlightLengthStart: 1 }, new DesignName('prefix'))
+    expect(includeZeroLabelMismatch.isHighlight()).toBe(false)
   })
 
   it('should match and highlight entire label when search property matches', () => {

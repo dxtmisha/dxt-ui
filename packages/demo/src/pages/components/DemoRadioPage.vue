@@ -13,7 +13,7 @@ const { eventName, onEvent } = useDemoEvent()
 const value = ref<boolean>(false)
 const valueTrue = ref<boolean>(true)
 const selected = ref<string>('space')
-const selectedNumeric = ref<number>(0)
+const selectedNumeric = ref<string>('0')
 const exposeTarget = ref<RadioExpose>()
 const exposeResult = ref<Record<string, unknown>>({})
 
@@ -108,6 +108,10 @@ const validateExposeValue = (): void => {
           helperMessage="Helper with <strong>strong</strong> markup"
         />
         <D1Radio
+          label="With Warning Message"
+          warningMessage="Warning: Double-check this option"
+        />
+        <D1Radio
           label="With Validation Message"
           validationMessage="Error: Please choose an option"
         />
@@ -140,6 +144,7 @@ const validateExposeValue = (): void => {
         <D1Radio label="Readonly" readonly />
         <D1Radio label="Readonly Selected" readonly :modelValue="true" />
         <D1Radio label="Focus" focus />
+        <D1Radio label="Indeterminate" indeterminate :modelValue="true" />
         <D1Radio label="Loading (boolean)" loading />
         <D1Radio label="Loading (object)" :loading="{ visible: true, circular: true }" :modelValue="true" />
       </D1Group>
@@ -197,6 +202,8 @@ const validateExposeValue = (): void => {
           @input-lite="(detail) => onEvent('inputLite', detail)"
           @change="(event, detail) => onEvent('change', event, detail)"
           @change-lite="(detail) => onEvent('changeLite', detail)"
+          @focus="(event) => onEvent('focus', event)"
+          @blur="(event) => onEvent('blur', event)"
         />
         <DemoValue :value="eventName"/>
       </D1Group>

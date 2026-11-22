@@ -423,6 +423,7 @@ export const ListItemTestTagsAriaFilterAndIds: Story = {
           />
           <D1ListItem label="Visible filtered" highlight="vis" filterMode/>
           <D1ListItem label="Hidden filtered" highlight="vis" filterMode/>
+          <D1ListItem label="Search metadata match" search="Vietnam +84" highlight="+84" :highlightLengthStart="1" filterMode/>
         </div>
       
     `
@@ -454,8 +455,10 @@ export const ListItemTestTagsAriaFilterAndIds: Story = {
     await expect(canvasElement.querySelector('.d1-listItem__caption')).toHaveAttribute('aria-hidden', 'true')
 
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-listItem')
-    await expect(items.length).toBe(8)
+    await expect(items.length).toBe(9)
     await expect(items[7]).toHaveAttribute('data-highlight', 'vis')
+    await expect(items[8]).toHaveAttribute('data-highlight', '+84')
+    await expect(items[8].querySelector('.d1-listItem__highlight')).toHaveTextContent('Search metadata match')
   }
 }
 export const ListItemTestLazy: Story = {

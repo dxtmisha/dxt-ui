@@ -61,8 +61,11 @@ const RealFieldMessage = defineComponent({
     'hasHtmlCode',
     'helperMessage',
     'validationMessage',
+    'warningMessage',
+    'warning',
     'helperId',
     'validationId',
+    'warningId',
     'counterId'
   ]),
   setup(componentProps) {
@@ -492,6 +495,39 @@ describe('Radio (integration)', () => {
 
     const input = container.querySelector('input[type="radio"]') as HTMLInputElement
     expect(logicInstance.hasInstance('selected')).toBe(true)
+    expect(input.checked).toBe(true)
+  })
+
+  it('should emit focus and blur events from the radio input', async () => {
+    const { container, emitted } = mountRadio({ label: 'Select plan' })
+    const input = container.querySelector('input[type="radio"]') as HTMLInputElement
+
+    input.dispatchEvent(new FocusEvent('focus'))
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+
+    expect(emitted.some(([name]) => name === 'focus')).toBe(true)
+    expect(emitted.some(([name]) => name === 'blur')).toBe(true)
+  })
+
+  it('should render warningMessage and match numeric 0 valueVariant round-trip selection', async () => {
+    const { container, props } = mountRadio({
+      label: 'Zero option',
+      valueVariant: 0,
+      selected: '0',
+      warningMessage: 'Double-check selection'
+    })
+
+    const input = container.querySelector('input[type="radio"]') as HTMLInputElement
+    expect(input.checked).toBe(true)
+    expect(container.textContent).toContain('Double-check selection')
+
+    props.selected = '1'
+    await nextTick()
+    expect(input.checked).toBe(false)
+
+    props.selected = '0'
+    await nextTick()
     expect(input.checked).toBe(true)
   })
 })

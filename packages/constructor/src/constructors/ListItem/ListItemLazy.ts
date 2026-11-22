@@ -71,6 +71,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
    * Хук монтирования, запускающий отслеживание видимости на клиенте.
    */
   override readonly onMounted = (): void => {
+    this.onUnmounted()
     this.stopPropsWatch = watch(
       () => [this.props.lazy, this.props.lazyMargin],
       () => this.update(),

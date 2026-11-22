@@ -42,7 +42,9 @@ export class ListMenuDesign<
   protected readonly item: ListMenu
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров

@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/ListItem` (`packages/constructor/src/constructors/ListItem`, `packages/demo/src/pages/components/DemoListItemPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list-item`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-18`
+- **Последняя проверка / обновление**: `2026-11-22`
 - **Всего тест-кейсов**: `10`
 
 ---
@@ -66,7 +66,7 @@
 - **Предусловия**: Секции `Selection Styles & Control Position` и `Highlight & Filter Mode`.
 - **Шаги теста**:
   1. Кликнуть по `Selection Checkbox` и `Selection Radio Beta`, проверить обновление состояния выбора.
-  2. В секции `Highlight & Filter Mode` проверить подсветку `.d1-listItem__highlight` для запроса `app` (`Apple Juice`, `Pineapple`, `Match by value (apple)`), затем переключить запрос на `ban` и `Clear Query`, а также отключить `filterMode`.
+  2. В секции `Highlight & Filter Mode` проверить подсветку `.d1-listItem__highlight` для запроса `app` (`Apple Juice`, `Pineapple`, `Match by value (apple)`, `Match by search metadata`), затем переключить запрос на `ban` и `Clear Query`, а также отключить `filterMode`.
 - **Ожидаемый результат**: Элементы выбора переключаются по клику; при активном `filterMode` несовпадающие элементы скрываются, а совпадающие подсвечивают подстроку внутри `.d1-listItem__highlight`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 

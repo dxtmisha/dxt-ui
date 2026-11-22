@@ -268,13 +268,14 @@ await waitFor(async () => {
           <DesignComponent :label="0" :description="0" :modelValue="false" />
           <DesignComponent label="Inline" :block="false" :itemCenter="false" description="Top aligned" />
           <DesignComponent label="Required" required validationMessage="Validation failed" />
+          <DesignComponent label="Warning" warningMessage="Check this setting" />
           <DesignComponent label="HTML helper" hasHtmlCode helperMessage="Helper <strong>bold</strong> text" />
           <DesignComponent label="Object icon" :iconCheckbox="{ value: 'verified' }" :modelValue="true" />
         </div>
       `,
       play: `
 const items = canvasElement.querySelectorAll('.design-component')
-await expect(items.length).toBe(5)
+await expect(items.length).toBe(6)
 
 await expect(items[0].querySelector('.design-component__label')).toHaveTextContent('0')
 await expect(items[0].querySelector('.design-component__description')).toHaveTextContent('0')
@@ -288,7 +289,9 @@ await expect(items[2]).toHaveClass('design-component--required')
 await expect(requiredInput).toHaveAttribute('aria-invalid', 'true')
 await expect(items[2]).toHaveTextContent('Validation failed')
 
-await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
+await expect(items[3]).toHaveTextContent('Check this setting')
+
+await expect(items[4].querySelector('strong')).toHaveTextContent('bold')
       `
     },
     {
@@ -379,6 +382,7 @@ await expect(indeterminateInput?.checked).toBe(true)
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
+<StorybookDescriptions componentName={'Event'} type={'focus'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'getValue'}/>

@@ -385,10 +385,10 @@ await waitFor(async () => {
     {
       id: 'ListMenuTestStates',
       name: {
-        en: 'Test: Disabled, autoClose and nested submenus',
-        ru: 'Тест: Отключённое состояние, autoClose и вложенные подменю'
+        en: 'Test: Disabled, autoClose, disableFocusReturn and nested submenus',
+        ru: 'Тест: Отключённое состояние, autoClose, disableFocusReturn и вложенные подменю'
       },
-      propsName: ['disabled', 'autoClose', 'open', 'axis', 'divider', 'windowAttrs'],
+      propsName: ['disabled', 'autoClose', 'disableFocusReturn', 'open', 'axis', 'divider', 'windowAttrs'],
       template: `
         <div class="wiki-storybook-flex">
           <DesignComponent disabled>
@@ -402,7 +402,7 @@ await waitFor(async () => {
             </template>
           </DesignComponent>
 
-          <DesignComponent :auto-close="false" open :window-attrs="{ embedded: true, flash: true }">
+          <DesignComponent :auto-close="false" disable-focus-return open :window-attrs="{ embedded: true, flash: true }">
             <template #head="{ open, binds }">
               <button v-bind="binds" class="wiki-storybook-button" type="button" data-testid="autoclose-trigger">
                 AutoClose=false ({{ open.value ? 'open' : 'closed' }})

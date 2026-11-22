@@ -112,7 +112,8 @@ describe('ListMenu (Logic Orchestrator)', () => {
         open: false,
         axis: 'x',
         disabled: false,
-        autoClose: true
+        autoClose: true,
+        disableFocusReturn: false
       })
 
       scope.run(() => {
@@ -132,20 +133,23 @@ describe('ListMenu (Logic Orchestrator)', () => {
           role: 'menu',
           ariaHaspopup: 'menu',
           disabled: false,
-          autoClose: true
+          autoClose: true,
+          disableFocusReturn: false
         })
 
         props.open = true
         props.axis = 'y'
         props.disabled = true
         props.autoClose = false
+        props.disableFocusReturn = true
 
         expect(menu.isOpen()).toBe(true)
         expect(menu.binds.open).toBe(true)
         expect(menu.i('window').binds.value).toMatchObject({
           axis: 'y',
           disabled: true,
-          autoClose: false
+          autoClose: false,
+          disableFocusReturn: true
         })
 
         props.open = false

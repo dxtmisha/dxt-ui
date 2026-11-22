@@ -50,6 +50,7 @@ const MockWindow = defineComponent({
     closeOnEsc: Boolean,
     disabled: Boolean,
     autoClose: Boolean,
+    disableFocusReturn: Boolean,
     preparation: Function,
     opening: Function,
     closing: Function,
@@ -118,7 +119,8 @@ const MockWindow = defineComponent({
         'data-open': String(props.open),
         'data-axis': props.axis,
         'data-disabled': String(props.disabled),
-        'data-auto-close': String(props.autoClose)
+        'data-auto-close': String(props.autoClose),
+        'data-disable-focus-return': String(props.disableFocusReturn)
       },
       [
         h(
@@ -219,7 +221,7 @@ async function mountListMenu(
 describe('ListMenu (Integration)', () => {
   it('should render root DOM structure, classes, window attributes, and slots', async () => {
     const { host, logic, expose } = await mountListMenu(
-      { axis: 'x', divider: true, autoClose: false },
+      { axis: 'x', divider: true, autoClose: false, disableFocusReturn: true },
       {
         head: slotProps => h('span', { class: 'head-label' }, `Menu (${slotProps.open.value})`),
         list: () => h('ul', { class: 'submenu-items' }, [h('li', 'Option A')])
@@ -236,6 +238,7 @@ describe('ListMenu (Integration)', () => {
     expect(root.getAttribute('data-open')).toBe('false')
     expect(root.getAttribute('data-axis')).toBe('x')
     expect(root.getAttribute('data-auto-close')).toBe('false')
+    expect(root.getAttribute('data-disable-focus-return')).toBe('true')
 
     expect(host.querySelector('.head-label')?.textContent).toBe('Menu (false)')
     expect(host.querySelector('.submenu-items li')?.textContent).toBe('Option A')

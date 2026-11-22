@@ -568,6 +568,7 @@ await expect(canvasElement.querySelector('[data-testid="custom-key-val"]')).toHa
         'liteThreshold',
         'hideList',
         'disabled',
+        'disableFocusReturn',
         'autoClose'
       ],
       setup: `
@@ -605,6 +606,7 @@ await expect(canvasElement.querySelector('[data-testid="custom-key-val"]')).toHa
               :highlight-length-start="4"
               :lite-threshold="2"
               :auto-close="false"
+              disable-focus-return
               is-selected-by-value
               selected="one"
               @click="onItemClick"
