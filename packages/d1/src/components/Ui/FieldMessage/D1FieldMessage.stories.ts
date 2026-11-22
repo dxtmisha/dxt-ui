@@ -61,7 +61,7 @@ export const FieldMessageBasic: Story = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Warning Message</div>
-            <D1FieldMessage warning warning-message="Phone from legacy profile needs confirmation" warning-id="wiki-field-message-warning"/>
+            <D1FieldMessage warning-message="Phone from legacy profile needs confirmation" warning-id="wiki-field-message-warning"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Validation Message</div>
@@ -96,9 +96,12 @@ export const FieldMessageBasic: Story = {
     await expect(errorElement).toHaveAttribute('role', 'alert')
 
     expect(messages[3].classList.contains('d1-fieldMessage--validation')).toBe(true)
+    expect(messages[3].classList.contains('d1-fieldMessage--warning')).toBe(true)
     const fourthInfo = messages[3].querySelector<HTMLElement>('.d1-fieldMessage__info')
+    const fourthWarning = messages[3].querySelector<HTMLElement>('.d1-fieldMessage__warning')
     const fourthError = messages[3].querySelector<HTMLElement>('.d1-fieldMessage__error')
     await expect(fourthInfo).toBeInTheDocument()
+    await expect(fourthWarning).toBeInTheDocument()
     await expect(fourthError).toBeInTheDocument()
     await expect(fourthError).toHaveAttribute('role', 'alert')
   }
@@ -242,6 +245,7 @@ export const FieldMessageTestReactivity: Story = {
     components: { D1FieldMessage },
     setup() {
       const helperMessage = ref('Initial helper')
+      const warningMessage = ref('')
       const validationMessage = ref('')
       const disabled = ref(false)
       const forceShow = ref(false)
@@ -252,6 +256,7 @@ export const FieldMessageTestReactivity: Story = {
 
       return {
         helperMessage,
+        warningMessage,
         validationMessage,
         disabled,
         forceShow,
@@ -266,6 +271,7 @@ export const FieldMessageTestReactivity: Story = {
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button type="button" class="wiki-storybook-button" @click="helperMessage = helperMessage ? '' : 'Initial helper'">Toggle Helper</button>
+            <button type="button" class="wiki-storybook-button" @click="warningMessage = warningMessage ? '' : 'Warning text'">Toggle Warning</button>
             <button type="button" class="wiki-storybook-button" @click="validationMessage = validationMessage ? '' : 'Error text'">Toggle Validation</button>
             <button type="button" class="wiki-storybook-button" @click="disabled = !disabled">Toggle Disabled</button>
             <button type="button" class="wiki-storybook-button" @click="forceShow = !forceShow">Toggle Force Show</button>
@@ -277,6 +283,7 @@ export const FieldMessageTestReactivity: Story = {
           <div class="reactive-host">
             <D1FieldMessage
               :helper-message="helperMessage"
+              :warning-message="warningMessage"
               :validation-message="validationMessage"
               :disabled="disabled"
               :force-show="forceShow"
@@ -302,13 +309,20 @@ export const FieldMessageTestReactivity: Story = {
       expect(root?.textContent).toContain('5 / 40')
     })
 
-    await step('Toggling validation switches validation modifier and alert element', async () => {
+    await step('Toggling warning and validation switches modifiers and alert element', async () => {
+      const toggleWarningButton = canvas.getByRole('button', { name: 'Toggle Warning' })
       const toggleValidationButton = canvas.getByRole('button', { name: 'Toggle Validation' })
+      await userEvent.click(toggleWarningButton)
+      expect(host.querySelector('.d1-fieldMessage')?.classList.contains('d1-fieldMessage--warning')).toBe(true)
+      expect(host.querySelector('.d1-fieldMessage__warning')?.textContent?.trim()).toBe('Warning text')
       await userEvent.click(toggleValidationButton)
       expect(host.querySelector('.d1-fieldMessage')?.classList.contains('d1-fieldMessage--validation')).toBe(true)
+      expect(host.querySelector('.d1-fieldMessage')?.classList.contains('d1-fieldMessage--warning')).toBe(true)
       await expect(host.querySelector('.d1-fieldMessage__error')).toHaveAttribute('role', 'alert')
       await userEvent.click(toggleValidationButton)
       expect(host.querySelector('.d1-fieldMessage')?.classList.contains('d1-fieldMessage--validation')).toBe(false)
+      await userEvent.click(toggleWarningButton)
+      expect(host.querySelector('.d1-fieldMessage')?.classList.contains('d1-fieldMessage--warning')).toBe(false)
     })
 
     await step('Toggling disabled hides root until forceShow is enabled', async () => {
@@ -345,7 +359,7 @@ export const FieldMessageTestBoundaries: Story = {
         
         <div class="wiki-storybook-flex-column">
           <div class="empty-host">
-            <D1FieldMessage helper-message="" validation-message="   "/>
+            <D1FieldMessage helper-message="" warning-message="   " validation-message="   "/>
           </div>
           <div class="multilingual-host">
             <D1FieldMessage

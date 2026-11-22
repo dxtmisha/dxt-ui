@@ -7,56 +7,56 @@ import type {
 } from '../FieldCounter'
 
 /**
- * Type describing available slots/ Тип, описывающий доступные слоты
+ * Type describing available slots / Тип, описывающий доступные слоты
  */
 export type FieldMessageSlot = {
-  /** Current message/ Текущее сообщение */
+  /** Current message / Текущее сообщение */
   message?: string
-  /** Helper message/ Вспомогательное сообщение */
+  /** Helper message / Вспомогательное сообщение */
   helperMessage?: string
-  /** Warning message/ Предупреждающее сообщение */
+  /** Warning message / Предупреждающее сообщение */
   warningMessage?: string
-  /** Validation message/ Сообщение валидации */
+  /** Validation message / Сообщение валидации */
   validationMessage?: string
 }
 
 /**
- * Interface for describing which components need to be connected for FieldMessage work/
+ * Interface for describing which components need to be connected for FieldMessage work /
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldMessage
  */
 export type FieldMessageComponentInclude = {
-  /** FieldMessage component configuration/ Конфигурация компонента сообщения поля */
+  /** FieldMessage component configuration / Конфигурация компонента сообщения поля */
   fieldMessage?: object
 }
 
 /**
- * Properties that can be passed to FieldMessageInclude/
+ * Properties that can be passed to FieldMessageInclude /
  * Свойства, которые можно передать в FieldMessageInclude
  */
 export interface FieldMessagePropsInclude<
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
 > extends FieldCounterPropsInclude<FieldCounter> {
-  /** Whether to force show the message/ Принудительно ли показывать сообщение */
+  /** Whether to force show the message / Принудительно ли показывать сообщение */
   forceShowMessage?: boolean
-  /** Whether the message can contain HTML code/ Может ли сообщение содержать HTML-код */
+  /** Whether the message can contain HTML code / Может ли сообщение содержать HTML-код */
   hasHtmlCode?: boolean
-  /** Whether the field is disabled/ Отключено ли поле */
+  /** Whether the field is disabled / Отключено ли поле */
   disabled?: boolean
-  /** Whether the field is in warning state/ Находится ли поле в состоянии предупреждения */
+  /** Whether the field is in warning state / Находится ли поле в состоянии предупреждения */
   warning?: boolean
-  /** Helper message text/ Текст вспомогательного сообщения */
+  /** Helper message text / Текст вспомогательного сообщения */
   helperMessage?: string
-  /** Warning message text/ Текст предупреждающего сообщения */
+  /** Warning message text / Текст предупреждающего сообщения */
   warningMessage?: string
-  /** Validation message text/ Текст сообщения валидации */
+  /** Validation message text / Текст сообщения валидации */
   validationMessage?: string
-  /** Additional attributes for the FieldMessage component/ Дополнительные атрибуты для компонента сообщения поля */
+  /** Additional attributes for the FieldMessage component / Дополнительные атрибуты для компонента сообщения поля */
   fieldMessageAttrs?: ConstrBind<FieldMessage>
-  /** Unique ID for the helper message/ Уникальный идентификатор вспомогательного сообщения */
+  /** Unique ID for the helper message / Уникальный идентификатор вспомогательного сообщения */
   helperId?: string
-  /** Unique ID for the warning message/ Уникальный идентификатор предупреждающего сообщения */
+  /** Unique ID for the warning message / Уникальный идентификатор предупреждающего сообщения */
   warningId?: string
-  /** Unique ID for the validation message/ Уникальный идентификатор сообщения валидации */
+  /** Unique ID for the validation message / Уникальный идентификатор сообщения валидации */
   validationId?: string
 }
