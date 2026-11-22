@@ -119,8 +119,6 @@ src/classes/Field/FieldPatternInclude.ts
 src/classes/Field/FieldVisibilityInclude.ts
 src/classes/Field/FieldFormInclude.ts
 src/classes/Field/FieldMatchInclude.ts
-src/classes/Field/FieldValidationInclude.ts
-src/classes/Field/FieldEventInclude.ts
 src/constructors/ListGroup/ListGroupOpen.ts
 src/constructors/ListGroup/ListGroup.ts
 src/constructors/ListGroup/ListGroupDesign.tsx
@@ -154,9 +152,7 @@ src/constructors/Menu/MenuWindow.ts
 src/constructors/Menu/MenuInclude.ts
 src/constructors/Menu/MenuDesign.tsx
 src/constructors/Input/InputPassword.ts
-src/constructors/Input/InputDesign.tsx
 src/classes/Field/FieldValueInclude.ts
-src/constructors/Input/Input.ts
 src/classes/Field/FieldTypeInclude.ts
 src/constructors/ListItem/ListItemLazyHeight.ts
 src/constructors/ListItem/ListItemLazy.ts
@@ -220,3 +216,7 @@ src/constructors/Mask/MaskMatch.ts
 src/constructors/Mask/MaskEvent.ts
 src/constructors/Mask/Mask.ts
 src/constructors/Mask/MaskDesign.tsx
+src/classes/Field/FieldValidationInclude.ts
+src/classes/Field/FieldEventInclude.ts
+src/constructors/Input/Input.ts
+src/constructors/Input/InputDesign.tsx

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref } from 'vue'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { nextTick, ref } from 'vue'
 import { FieldEventInclude } from '../FieldEventInclude'
 
 vi.mock('vue', async () => {
@@ -145,6 +145,32 @@ describe('FieldEventInclude', () => {
     mockValue.set.mockClear()
     eventInclude.onValue()
     expect(mockValue.set).not.toHaveBeenCalled()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should watch itemByFull after onMounted, deduplicate repeated mounts, and stop on onUnmounted', async () => {
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+
+    eventInclude.onMounted()
+    eventInclude.onMounted()
+
+    mockValue.itemByFull.value = 'updated-1'
+    await nextTick()
+
+    expect(emitsSpy).toHaveBeenCalledTimes(2)
+    expect(emitsSpy).toHaveBeenCalledWith('update:value', 'updated-1')
+    expect(emitsSpy).toHaveBeenCalledWith('update:modelValue', 'updated-1')
+
+    emitsSpy.mockClear()
+    eventInclude.onUnmounted()
+
+    mockValue.itemByFull.value = 'updated-2'
+    await nextTick()
+
+    expect(emitsSpy).not.toHaveBeenCalled()
   })
 
   it('should call form.updateData on event when form and props.name are provided', () => {

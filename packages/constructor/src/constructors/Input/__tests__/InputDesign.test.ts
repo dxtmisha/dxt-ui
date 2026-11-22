@@ -204,9 +204,15 @@ describe('InputDesign', () => {
       validationMessage: 'Required field'
     })
 
+    expect(exposed.isChanged()).toBe(false)
     expect(exposed.checkValidity()).toBe(false)
     expect(exposed.getValidationMessage()).toBe('Required field')
     expect(container.querySelector('.mock-field')?.getAttribute('data-validation')).toBe('Required field')
+
+    const input = container.querySelector('input') as HTMLInputElement
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+    expect(exposed.isChanged()).toBe(true)
 
     exposed.setValue('valid text')
     await nextTick()

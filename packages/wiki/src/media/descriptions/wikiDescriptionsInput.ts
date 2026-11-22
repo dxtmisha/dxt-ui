@@ -15,18 +15,18 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
     en: [
       'supports standard, numeric (number, number-format, currency), date/time, email, tel, url, search, and password input types',
       'built-in mask integration (mask, maskVisible, maskNone, maskAttrs) and localization (language, currency, currencyHide, fraction)',
-      'built-in validation via pattern, validationCode, validationMessage, forceShowMessage, and cross-field match checking',
+      'built-in validation via pattern, validationCode, validationMessage, forceShowMessage, non-blocking warning/warningMessage states, and cross-field match checking',
       'password visibility toggle with customizable textShow and textHide labels',
       'numeric controls with min, max, step, arrow (auto, stepper, carousel, none), arrowStep, arrowAlign, and text align',
-      'supports two-way binding (value, modelValue), slots (leading, trailing, label, prefix, suffix, caption), and exposed methods (getValue, setValue, clear, checkValidity, getValidationMessage)'
+      'supports two-way binding (value, modelValue), focus/blur/input/change events, slots (leading, trailing, label, prefix, suffix, caption), and exposed methods (getValue, setValue, clear, isChanged, checkValidity, getValidationMessage)'
     ],
     ru: [
       'поддерживает стандартные, числовые (number, number-format, currency), даты/времени, email, tel, url, search и password типы ввода',
       'встроенная интеграция с масками (mask, maskVisible, maskNone, maskAttrs) и локализацией (language, currency, currencyHide, fraction)',
-      'встроенная валидация через pattern, validationCode, validationMessage, forceShowMessage и проверку совпадения match',
+      'встроенная валидация через pattern, validationCode, validationMessage, forceShowMessage, неблокирующие предупреждения warning/warningMessage и проверку совпадения match',
       'переключатель видимости пароля с настраиваемыми метками textShow и textHide',
       'числовое управление с min, max, step, arrow (auto, stepper, carousel, none), arrowStep, arrowAlign и выравниванием текста align',
-      'поддерживает двустороннюю привязку (value, modelValue), слоты (leading, trailing, label, prefix, suffix, caption) и методы (getValue, setValue, clear, checkValidity, getValidationMessage)'
+      'поддерживает двустороннюю привязку (value, modelValue), события focus/blur/input/change, слоты (leading, trailing, label, prefix, suffix, caption) и методы (getValue, setValue, clear, isChanged, checkValidity, getValidationMessage)'
     ]
   },
   render: `
@@ -238,11 +238,11 @@ await expect(inputs[0].value).toContain('+1 (555) 123-4567')
         </div>
       `,
       play: `
-const setTextBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === 'Set text')
-const plusBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === '+10')
+const setTextButton = Array.from(canvasElement.querySelectorAll('button')).find((button) => button.textContent === 'Set text')
+const plusButton = Array.from(canvasElement.querySelectorAll('button')).find((button) => button.textContent === '+10')
 await step('Update reactive v-model via buttons', async () => {
-  await userEvent.click(setTextBtn!)
-  await userEvent.click(plusBtn!)
+  await userEvent.click(setTextButton!)
+  await userEvent.click(plusButton!)
   await new Promise((resolve) => setTimeout(resolve, 50))
 })
 await expect(canvasElement.querySelector('[data-testid="text-value"]')).toHaveTextContent('Changed value')
@@ -321,7 +321,7 @@ await expect(canvasElement.textContent).toContain('Hint')
         exposeStatus,
         runSetValue: () => {
           inputRef.value?.setValue('updated')
-          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity())
+          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity()) + '|' + String(inputRef.value?.isChanged())
         },
         runClear: () => {
           inputRef.value?.clear()
@@ -337,21 +337,21 @@ await expect(canvasElement.textContent).toContain('Hint')
             label="Expose demo"
           />
           <div class="wiki-storybook-flex">
-            <button data-testid="btn-expose-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
-            <button data-testid="btn-expose-clear" class="wiki-storybook-button" @click="runClear">clear</button>
-            <span data-testid="btn-expose-out">{{ exposeStatus }}</span>
+            <button data-testid="button-expose-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
+            <button data-testid="button-expose-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <span data-testid="button-expose-out">{{ exposeStatus }}</span>
           </div>
         </div>
       `,
       play: `
 await step('Call exposed setValue and clear methods', async () => {
-  await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-set"]')!)
+  await userEvent.click(canvasElement.querySelector('[data-testid="button-expose-set"]')!)
   await new Promise((resolve) => setTimeout(resolve, 50))
-  await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('updated|true')
-  await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-clear"]')!)
+  await expect(canvasElement.querySelector('[data-testid="button-expose-out"]')).toHaveTextContent('updated|true|true')
+  await userEvent.click(canvasElement.querySelector('[data-testid="button-expose-clear"]')!)
   await new Promise((resolve) => setTimeout(resolve, 50))
 })
-await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('cleared:')
+await expect(canvasElement.querySelector('[data-testid="button-expose-out"]')).toHaveTextContent('cleared:')
       `
     },
     // =========================================================================
@@ -391,10 +391,10 @@ await expect(inputs.length).toBe(2)
 await expect(inputs[0].type).toBe('password')
 await expect(inputs[1].value).toBe('0')
 
-const toggleBtn = canvasElement.querySelector<HTMLElement>('[aria-label="Show secret"]')
-await expect(toggleBtn).toBeInTheDocument()
+const toggleButton = canvasElement.querySelector<HTMLElement>('[aria-label="Show secret"]')
+await expect(toggleButton).toBeInTheDocument()
 await step('Toggle password visibility on and off', async () => {
-  await userEvent.click(toggleBtn!)
+  await userEvent.click(toggleButton!)
   await new Promise((resolve) => setTimeout(resolve, 50))
 })
 await expect(inputs[0].type).toBe('text')
@@ -404,8 +404,8 @@ await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTh
     {
       id: 'InputTestValidationAndMatch',
       name: {
-        en: 'Test: Validation, pattern, and match',
-        ru: 'Тест: Валидация, pattern и совпадение (match)'
+        en: 'Test: Validation, warning, pattern, and match',
+        ru: 'Тест: Валидация, предупреждение, pattern и совпадение (match)'
       },
       propsName: [
         'required',
@@ -414,6 +414,8 @@ await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTh
         'pattern',
         'validationCode',
         'validationMessage',
+        'warning',
+        'warningMessage',
         'forceShowMessage',
         'match',
         'textEntriesMatch'
@@ -439,6 +441,12 @@ await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTh
             value="bad"
           />
           <DesignComponent
+            label="Warning State"
+            warning
+            warning-message="Caps Lock may be active"
+            value="warn"
+          />
+          <DesignComponent
             label="Password Source"
             name="story-password-source"
             type="password"
@@ -457,12 +465,13 @@ await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTh
 await new Promise((resolve) => setTimeout(resolve, 80))
 await expect(canvasElement.textContent).toContain('Letters only allowed')
 await expect(canvasElement.textContent).toContain('Server validation error')
+await expect(canvasElement.textContent).toContain('Caps Lock may be active')
 await expect(canvasElement.textContent).toContain('Passwords do not match')
 
 const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
 await step('Type matching password into confirm field', async () => {
-  await userEvent.clear(inputs[3])
-  await userEvent.type(inputs[3], 'Secret123')
+  await userEvent.clear(inputs[4])
+  await userEvent.type(inputs[4], 'Secret123')
   await new Promise((resolve) => setTimeout(resolve, 80))
 })
 await expect(canvasElement.textContent).not.toContain('Passwords do not match')
@@ -477,14 +486,14 @@ await expect(canvasElement.textContent).not.toContain('Passwords do not match')
       propsName: ['arrow', 'arrowStep', 'arrowAlign', 'align', 'min', 'max', 'step'],
       setup: `
       return {
-        num: ref(10)
+        numericValue: ref(10)
       }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
           <DesignComponent
             type="number"
-            v-model="num"
+            v-model="numericValue"
             arrow="stepper"
             :min="0"
             :max="30"
@@ -499,10 +508,10 @@ await expect(canvasElement.textContent).not.toContain('Passwords do not match')
       play: `
 const input = canvasElement.querySelector<HTMLInputElement>('input')
 await expect(input?.value).toBe('10')
-const nextBtn = canvasElement.querySelector<HTMLElement>('[data-event-type="next"]')
-await expect(nextBtn).toBeInTheDocument()
+const nextButton = canvasElement.querySelector<HTMLElement>('[data-event-type="next"]')
+await expect(nextButton).toBeInTheDocument()
 await step('Increment number via stepper arrow', async () => {
-  await userEvent.click(nextBtn!)
+  await userEvent.click(nextButton!)
   await new Promise((resolve) => setTimeout(resolve, 50))
 })
 await expect(input?.value).toBe('15')
@@ -526,20 +535,28 @@ await expect(input?.value).toBe('15')
       ],
       setup: `
       const inputRef = ref()
-      const val = ref('domain')
+      const domainValue = ref('domain')
       const lastEvent = ref('none')
+      const focusState = ref('none')
       const exposeStatus = ref('none')
       return {
         inputRef,
-        val,
+        domainValue,
         lastEvent,
+        focusState,
         exposeStatus,
+        onFocus: () => {
+          focusState.value = 'focused'
+        },
+        onBlur: () => {
+          focusState.value = 'blurred'
+        },
         onInputLite: (data: FieldValidationItem) => {
           lastEvent.value = 'inputLite:' + String(data.value)
         },
         runSetValue: () => {
           inputRef.value?.setValue('updated')
-          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity())
+          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity()) + '|' + String(inputRef.value?.isChanged())
         },
         runClear: () => {
           inputRef.value?.clear()
@@ -551,7 +568,7 @@ await expect(input?.value).toBe('15')
         <div class="wiki-storybook-flex-column">
           <DesignComponent
             ref="inputRef"
-            v-model="val"
+            v-model="domainValue"
             label="Domain"
             cancel="always"
             counter-show
@@ -559,6 +576,8 @@ await expect(input?.value).toBe('15')
             icon="search"
             :field-attrs="{ 'data-test-field': 'true' }"
             :input-attrs="{ 'data-test-input': 'true' }"
+            @focus="onFocus"
+            @blur="onBlur"
             @input-lite="onInputLite"
           >
             <template #leading><span>[L]</span></template>
@@ -568,8 +587,9 @@ await expect(input?.value).toBe('15')
             <template #caption><span>Hint</span></template>
           </DesignComponent>
           <div class="wiki-storybook-flex">
-            <button data-testid="btn-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
-            <button data-testid="btn-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <button data-testid="button-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
+            <button data-testid="button-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <span data-testid="focus-out">{{ focusState }}</span>
             <span data-testid="event-out">{{ lastEvent }}</span>
             <span data-testid="expose-out">{{ exposeStatus }}</span>
           </div>
@@ -584,11 +604,19 @@ await expect(canvasElement.textContent).toContain('Hint')
 await expect(canvasElement.querySelector('[data-test-field="true"]')).toBeInTheDocument()
 await expect(canvasElement.querySelector('[data-test-input="true"]')).toBeInTheDocument()
 
+const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+await step('Verify focus and blur events', async () => {
+  await userEvent.click(inputElement!)
+  await expect(canvasElement.querySelector('[data-testid="focus-out"]')).toHaveTextContent('focused')
+  await userEvent.tab()
+  await expect(canvasElement.querySelector('[data-testid="focus-out"]')).toHaveTextContent('blurred')
+})
+
 await step('Call exposed setValue and clear methods', async () => {
-  await userEvent.click(canvasElement.querySelector('[data-testid="btn-set"]')!)
+  await userEvent.click(canvasElement.querySelector('[data-testid="button-set"]')!)
   await new Promise((resolve) => setTimeout(resolve, 50))
-  await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('updated|true')
-  await userEvent.click(canvasElement.querySelector('[data-testid="btn-clear"]')!)
+  await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('updated|true|true')
+  await userEvent.click(canvasElement.querySelector('[data-testid="button-clear"]')!)
   await new Promise((resolve) => setTimeout(resolve, 50))
 })
 await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('cleared:')
@@ -623,7 +651,7 @@ await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTe
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
-<StorybookDescriptions componentName={'Event'} type={'change'}/>
+<StorybookDescriptions componentName={'Event'} type={'focus'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>

@@ -131,12 +131,12 @@ describe('FieldValidationInclude', () => {
     expect(validationWithoutChange.expose().isChanged()).toBe(false)
 
     const validation = new FieldValidationInclude(props, () => attributes, () => value, () => change)
-    const exp = validation.expose()
+    const exposed = validation.expose()
 
-    expect(exp.isChanged()).toBe(false)
+    expect(exposed.isChanged()).toBe(false)
     changed.value = true
-    expect(exp.isChanged()).toBe(true)
-    expect(exp.checkValidity()).toBe(false)
-    expect(exp.getValidationMessage()).toBe('Explicit')
+    expect(exposed.isChanged()).toBe(true)
+    expect(exposed.checkValidity()).toBe(false)
+    expect(exposed.getValidationMessage()).toBe('Explicit')
   })
 })

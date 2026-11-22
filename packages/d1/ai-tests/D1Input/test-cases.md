@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Input`, `packages/constructor/src/constructors/Input`, `packages/demo/src/pages/components/DemoInputPage.vue`
 - **Целевой URL**: `http://localhost:3000/component-input`
 - **Справочные материалы**: `None`
-- **Дата последнего обновления**: `2026-11-16`
+- **Дата последнего обновления**: `2026-11-22`
 - **Всего тест-кейсов**: `17`
 
 ---
@@ -136,24 +136,24 @@
 - **Ожидаемый результат**: Маска форматирует ввод и синхронизирует `v-model`; `mask-visible="false"` скрывает оверлей; `mask-none` отключает маску.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-006.png`)
 
-#### [TC-INT-007] Валидация (`required`, `pattern`, `validationCode`, `forceShowMessage`) и счётчики
+#### [TC-INT-007] Валидация (`required`, `pattern`, `validationCode`, `forceShowMessage`), предупреждения (`warning`, `warningMessage`) и счётчики
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и функционал`
 - **Предусловия**: Открыть `http://localhost:3000/component-input`.
 - **Шаги тестирования**:
-  1. В группе `Validation & Counter` проверить отображение счётчика `2 / 12`, сообщения `Only Latin letters allowed` (объектный `validation-code`), `Must contain digits only` (строковый `validation-code`) и принудительной ошибки `Server validation failed` (`force-show-message`).
+  1. В группе `Validation & Counter` проверить отображение счётчика `2 / 12`, сообщения `Only Latin letters allowed` (объектный `validation-code`), `Must contain digits only` (строковый `validation-code`), принудительной ошибки `Server validation failed` (`force-show-message`), состояния предупреждения `Warning State` (`Caps Lock may be active`) и приоритета ошибки над предупреждением `Validation Overrides Warning` (`Validation takes priority`).
   2. Ввести валидные латинские буквы `"Abc"` в `Pattern Letters Only` и убедиться в исчезновении ошибки.
-- **Ожидаемый результат**: Ошибки валидации и счётчики отображаются корректно; после ввода корректного значения по `pattern` ошибка исчезает.
+- **Ожидаемый результат**: Ошибки валидации, предупреждения (с приоритетом валидации над предупреждением) и счётчики отображаются корректно; после ввода корректного значения по `pattern` ошибка исчезает.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-007.png`)
 
-#### [TC-INT-008] Программный `expose` API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
+#### [TC-INT-008] Программный `expose` API (`getValue`, `setValue`, `clear`, `isChanged`, `checkValidity`, `getValidationMessage`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функционал`
 - **Предусловия**: Открыть `http://localhost:3000/component-input`.
 - **Шаги тестирования**:
   1. В группе `Exposed API` нажать последовательно кнопки `Read Values`, `setValue('Preset Value')`, `clear()` и снова `Read Values`.
   2. Зафиксировать текст вывода `DemoValue` после каждого действия.
-- **Ожидаемый результат**: `Read Values` читает `value=Initial, valid=true`; `setValue` устанавливает `"Preset Value"`; `clear()` очищает поле и при `required` переводит `checkValidity()` в `false`.
+- **Ожидаемый результат**: `Read Values` читает `value=Initial, valid=true, changed=true`; `setValue` устанавливает `"Preset Value"`; `clear()` очищает поле и при `required` переводит `checkValidity()` в `false`.
 - **Тип доказательства**: `Console/Log`
 
 ---
@@ -212,12 +212,12 @@
 
 ### 2.6 Консоль и рантайм (`LOG`)
 
-#### [TC-LOG-001] События (`update:*`, `input*`, `change*`) и чистота консоли/сети
+#### [TC-LOG-001] События (`focus`, `blur`, `update:*`, `input*`, `change*`) и чистота консоли/сети
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Консоль и рантайм`
 - **Предусловия**: Открыть `http://localhost:3000/component-input`, очистить счётчики событий и логов.
 - **Шаги тестирования**:
-  1. В группе `Events` ввести текст `"Test"` и снять фокус с `Event Tracker`.
-  2. Проверить обновление `DemoValue` и собрать все `console.error`, `[Vue warn]` (включая гидратацию), `pageerror` и HTTP-статусы `>= 400` за всё время прогона.
-- **Ожидаемый результат**: События фиксируются корректно; зафиксировано `0` ошибок консоли, `0` предупреждений гидратации Vue, `0` исключений и `0` HTTP-ошибок.
+  1. В группе `Events` сфокусироваться на `Event Tracker`, ввести текст `"Test"` и снять фокус.
+  2. Проверить обновление `DemoValue` (включая `focus`, события ввода/изменения и `blur`) и собрать все `console.error`, `[Vue warn]` (включая гидратацию), `pageerror` и HTTP-статусы `>= 400` за всё время прогона.
+- **Ожидаемый результат**: События `focus`, `input`/`change` и `blur` фиксируются корректно; зафиксировано `0` ошибок консоли, `0` предупреждений гидратации Vue, `0` исключений и `0` HTTP-ошибок.
 - **Тип доказательства**: `Console/Log`

@@ -1,10 +1,10 @@
 import { watch } from 'vue'
 import { type ConstrEmit, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
-import { FieldChangeInclude } from './FieldChangeInclude'
-import { FieldFormInclude } from './FieldFormInclude'
-import { FieldValidationInclude } from './FieldValidationInclude'
-import { FieldValueInclude } from './FieldValueInclude'
+import type { FieldChangeInclude } from './FieldChangeInclude'
+import type { FieldFormInclude } from './FieldFormInclude'
+import type { FieldValidationInclude } from './FieldValidationInclude'
+import type { FieldValueInclude } from './FieldValueInclude'
 import { ModelInclude } from '../ModelInclude'
 
 import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../types/fieldTypes'
@@ -17,6 +17,9 @@ import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../
 export class FieldEventInclude extends DesignLifecycleAbstract {
   /** Model inclusion instance / Экземпляр включения модели */
   protected readonly model: ModelInclude
+
+  /** Cleanup function for value watcher / Функция очистки наблюдателя значения */
+  protected watchStop?: () => void
 
   /**
    * Constructor
@@ -47,9 +50,16 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
-    watch(this.value().itemByFull, (newValue) => {
+    this.watchStop?.()
+    this.watchStop = watch(this.value().itemByFull, (newValue) => {
       this.model.emit(newValue)
     })
+  }
+
+  /** Callback after component unmounting / Обработчик после размонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**
@@ -64,8 +74,9 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
   }
 
   /**
-   * Events for focus/
-   * События для фокуса
+   * Events for focus.
+   *
+   * События для фокуса.
    * @param event focus event / событие фокуса
    */
   readonly onFocus = (event?: FocusEvent): void => {
@@ -75,8 +86,9 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
   }
 
   /**
-   * Events for losing focus/
-   * События для потери фокуса
+   * Events for losing focus.
+   *
+   * События для потери фокуса.
    * @param event blur event / событие потери фокуса
    */
   readonly onBlur = (event?: FocusEvent): void => {

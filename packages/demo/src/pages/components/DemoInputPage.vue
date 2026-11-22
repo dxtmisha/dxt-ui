@@ -53,10 +53,11 @@ const exposedRef = ref<InputExpose>()
 const exposedResult = ref<string>('none')
 
 const onReadExposed = (): void => {
-  const val = exposedRef.value?.getValue()
-  const valid = exposedRef.value?.checkValidity()
-  const msg = exposedRef.value?.getValidationMessage()
-  exposedResult.value = `value=${String(val)}, valid=${String(valid)}, message=${msg || 'none'}`
+  const currentValue = exposedRef.value?.getValue()
+  const isValid = exposedRef.value?.checkValidity()
+  const isChanged = exposedRef.value?.isChanged()
+  const validationMessage = exposedRef.value?.getValidationMessage()
+  exposedResult.value = `value=${String(currentValue)}, valid=${String(isValid)}, changed=${String(isChanged)}, message=${validationMessage || 'none'}`
 }
 
 const onSetExposed = (): void => {
@@ -532,6 +533,26 @@ const onClearExposed = (): void => {
               value="abc"
             />
           </DemoBox>
+          <DemoBox>
+            <D1Input
+              label="Warning State"
+              warning
+              warning-id="warn-input"
+              warning-message="Caps Lock may be active"
+              helper-message="Fallback helper text"
+              value="Warning value"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1Input
+              label="Validation Overrides Warning"
+              warning
+              warning-message="Warning text"
+              validation-message="Validation takes priority"
+              force-show-message
+              value="Error priority"
+            />
+          </DemoBox>
         </DemoFlex>
       </D1Group>
 
@@ -709,6 +730,8 @@ const onClearExposed = (): void => {
             <D1Input
               label="Event Tracker"
               placeholder="Type and blur to emit events..."
+              @focus="() => onEvent('focus')"
+              @blur="() => onEvent('blur')"
               @update:value="() => onEvent('update:value')"
               @update:model-value="() => onEvent('update:modelValue')"
               @input="(event, value) => onEvent('input', event, value)"

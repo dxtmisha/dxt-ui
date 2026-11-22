@@ -454,6 +454,7 @@ describe('Input (integration)', () => {
         modelValue: 'different'
       })
 
+      expect(exposed.isChanged()).toBe(true)
       expect(exposed.checkValidity()).toBe(false)
       expect(exposed.getValidationMessage()).toBe('Passwords do not match')
 
@@ -542,16 +543,18 @@ describe('Input (integration)', () => {
       expect(maskEmitted.some(item => item.type === 'focus')).toBe(true)
       expect(maskEmitted.some(item => item.type === 'blur')).toBe(true)
 
-      const { container: readonlyContainer, emittedEvents: readonlyEmitted } = await mountInput({
+      const { container: readonlyContainer, emittedEvents: readonlyEmitted, exposed: readonlyExposed } = await mountInput({
         required: true,
         readonly: true
       })
       const readonlyInput = readonlyContainer.querySelector('input') as HTMLInputElement
 
+      expect(readonlyExposed.isChanged()).toBe(false)
       readonlyInput.dispatchEvent(new FocusEvent('focus'))
       readonlyInput.dispatchEvent(new FocusEvent('blur'))
       await nextTick()
 
+      expect(readonlyExposed.isChanged()).toBe(false)
       expect(readonlyEmitted.some(item => item.type === 'focus')).toBe(true)
       expect(readonlyEmitted.some(item => item.type === 'blur')).toBe(true)
       expect(readonlyContainer.querySelector('.mock-field-message')?.textContent ?? '').toBe('')
