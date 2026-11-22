@@ -31,6 +31,25 @@ export class ErrorCenterThrow {
   }
 
   /**
+   * Handles a caught error without double-reporting ErrorCenterError instances.
+   * Preserves the caught error as `options.cause` when `error` is defined and `options.cause` is not explicitly provided.
+   *
+   * Обрабатывает перехваченную ошибку без повторной регистрации экземпляров ErrorCenterError.
+   * Сохраняет перехваченную ошибку в `options.cause`, если `error` определён и `options.cause` не передан явно.
+   * @param cause error cause details / детали причины ошибки
+   * @param error caught error instance / перехваченная ошибка
+   * @param options standard Error options / стандартные опции Error
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
+   */
+  static handle<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    error?: unknown,
+    options?: ErrorOptions
+  ): never {
+    return this.getItem().handle(cause, error, options)
+  }
+
+  /**
    * Triggers error handling in ErrorCenter for a group and throws an ErrorCenterError.
    *
    * Вызывает обработку ошибки в ErrorCenter для группы и выбрасывает ErrorCenterError.
@@ -43,22 +62,5 @@ export class ErrorCenterThrow {
     options?: ErrorOptions
   ): never {
     return this.getItem().on(cause, options)
-  }
-
-  /**
-   * Handles a caught error without double-reporting ErrorCenterError instances.
-   *
-   * Обрабатывает перехваченную ошибку без повторной регистрации экземпляров ErrorCenterError.
-   * @param cause error cause details / детали причины ошибки
-   * @param error caught error instance / перехваченная ошибка
-   * @param options standard Error options / стандартные опции Error
-   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
-   */
-  static handle<D = unknown>(
-    cause: ErrorCenterCauseItem<D>,
-    error?: unknown,
-    options?: ErrorOptions
-  ): never {
-    return this.getItem().handle(cause, error, options)
   }
 }

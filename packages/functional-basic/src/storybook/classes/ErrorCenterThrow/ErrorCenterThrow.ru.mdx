@@ -47,11 +47,11 @@ ErrorCenterThrow.on<{ resourceId: number }>({
 ```
 
 ### `handle`
-Обрабатывает перехваченную ошибку без повторной регистрации экземпляров `ErrorCenterError`. Если `error` является `ErrorCenterError`, выбрасывает его напрямую; в противном случае делегирует выполнение в `on(cause, options)`.
+Обрабатывает перехваченную ошибку без повторной регистрации экземпляров `ErrorCenterError`. Если `error` является `ErrorCenterError`, выбрасывает его напрямую; в противном случае делегирует выполнение в `on(cause, resolvedOptions)`, автоматически сохраняя `error` в `Error.cause`, если `error` определён и `options.cause` не передан явно.
 
 **Параметры:**
 - `cause: ErrorCenterCauseItem<D>` — структурированные данные причины ошибки (`group`, `code`, `priority`, `label`, `message`, `details`).
-- `error?: unknown` — перехваченная ошибка или значение для проверки.
+- `error?: unknown` — перехваченная ошибка или значение для проверки (автоматически передаётся в `Error.cause`, если определено и `options.cause` не задан).
 - `options?: ErrorOptions` — стандартные опции `Error` (например, `{ cause: originalError }`).
 
 **Возвращает:** `never` — никогда не возвращает управление штатно; повторно выбрасывает `error` (если это `ErrorCenterError`) либо выбрасывает `ErrorCenterError<D>`.
@@ -62,8 +62,7 @@ try {
 } catch (error) {
   ErrorCenterThrow.handle(
     { group: 'api', code: 'server' },
-    error,
-    error instanceof Error ? { cause: error } : undefined
+    error
   )
 }
 ```

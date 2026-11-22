@@ -36,6 +36,7 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 
 - `getList(): GeoPhoneValue[]` — Returns a complete, sorted, flat list of all registered international phone metadata.
 - `getMap(): Record<string, GeoPhoneMap>` — Returns the root node of the internal prefix tree used for searching.
+- `reset(): void` — Clears the cached phone list and prefix map so they are rebuilt on the next access (useful after `Geo.add()` or in tests).
 
 ### Selection & Formatting
 
@@ -48,7 +49,7 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 
 ### Protected Auxiliary Methods (`protected`)
 
-- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean, isPartial?: boolean): string | undefined` — Converts a raw numeric phone string into a formatted version according to the mask (supports partial formatting when `isPartial` is `true`).
+- `toMask(phone: string, masks?: readonly string[], isRemoveZero?: boolean, isPartial?: boolean): string | undefined` — Converts a raw numeric phone string into a formatted version according to the mask (supports partial formatting when `isPartial` is `true`).
 - `removeZero(phone: string): string` — Standardizes the internal representation of a number by removing leading zeros or adjusting regional prefixes.
 
 ## Data Types
@@ -57,6 +58,7 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 Basic metadata structure for each country's phone configuration:
 - `phone: number` — Phone country code (e.g., `7`).
 - `within?: string` — Internal dialing rule code (used to select the special symbol in the mask).
+- `withinSkip?: boolean` — Skips replacing `*` placeholders with the internal `within` symbol in country masks.
 - `mask: string[]` — Array of mask patterns assigned to the country.
 - `value: string` — Country identifier (ISO 3166).
 

@@ -47,11 +47,11 @@ errorThrow.on<{ resourceId: number }>({
 ```
 
 ### `handle`
-Xử lý lỗi đã bắt được mà không ghi nhận trùng lặp các thực thể `ErrorCenterError`. Nếu `error` là một `ErrorCenterError`, ném lại trực tiếp lỗi đó; ngược lại sẽ ủy quyền cho `on(cause, options)`.
+Xử lý lỗi đã bắt được mà không ghi nhận trùng lặp các thực thể `ErrorCenterError`. Nếu `error` là một `ErrorCenterError`, ném lại trực tiếp lỗi đó; ngược lại sẽ ủy quyền cho `on(cause, resolvedOptions)`, tự động lưu `error` vào `Error.cause` khi `error` được xác định và `options.cause` không được truyền tường minh.
 
 **Tham số:**
 - `cause: ErrorCenterCauseItem<D>` — dữ liệu nguyên nhân lỗi có cấu trúc (`group`, `code`, `priority`, `label`, `message`, `details`).
-- `error?: unknown` — thực thể hoặc giá trị lỗi đã bắt được để kiểm tra.
+- `error?: unknown` — thực thể hoặc giá trị lỗi đã bắt được để kiểm tra (tự động chuyển vào `Error.cause` khi có giá trị và không truyền `options.cause`).
 - `options?: ErrorOptions` — các tùy chọn chuẩn của `Error` (ví dụ `{ cause: originalError }`).
 
 **Trả về:** `never` — không bao giờ trả về bình thường; ném lại `error` (nếu là `ErrorCenterError`) hoặc ném ra `ErrorCenterError<D>`.
@@ -62,8 +62,7 @@ try {
 } catch (error) {
   errorThrow.handle(
     { group: 'api', code: 'server' },
-    error,
-    error instanceof Error ? { cause: error } : undefined
+    error
   )
 }
 ```

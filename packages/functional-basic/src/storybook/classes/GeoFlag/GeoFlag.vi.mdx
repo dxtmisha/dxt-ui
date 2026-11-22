@@ -39,10 +39,10 @@ const vnFlag = new GeoFlag('vi-VN')
 - `getLanguage(code?: string): GeoFlagItem | undefined` — Trả về thông tin ngôn ngữ và cờ (trong đó `label` và `value` tương ứng với ngôn ngữ).
 
 ### Danh sách
-- `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Trả về một mảng dữ liệu quốc gia. Mặc định sắp xếp theo bảng chữ cái.
-- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Trả về danh sách các ngôn ngữ duy nhất không trùng lặp. Mặc định sắp xếp theo bảng chữ cái.
-- `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các quốc gia với tên quốc gia gốc. Mặc định sắp xếp theo bảng chữ cái.
-- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các ngôn ngữ với tên ngôn ngữ gốc. Mặc định sắp xếp theo bảng chữ cái.
+- `getList(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Trả về một mảng dữ liệu quốc gia. Mặc định sắp xếp theo bảng chữ cái.
+- `getListLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Trả về danh sách các ngôn ngữ duy nhất không trùng lặp. Mặc định sắp xếp theo bảng chữ cái.
+- `getNational(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các quốc gia với tên quốc gia gốc. Mặc định sắp xếp theo bảng chữ cái.
+- `getNationalLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các ngôn ngữ với tên ngôn ngữ gốc. Mặc định sắp xếp theo bảng chữ cái.
 
 ### Cấu hình
 - `setCode(code: string): this` — Thay đổi ngôn ngữ cơ sở cho thực thể hiện tại.
@@ -96,7 +96,7 @@ const national = geo.getNational(['JP'])
 Mở rộng `GeoFlagItem` với các trường bổ sung:
 - `nationalCountry`: string — Tên quốc gia bằng ngôn ngữ gốc.
 - `nationalLanguage`: string — Tên ngôn ngữ bằng ngôn ngữ gốc.
-- `description`: string — Mô tả ngắn gọn (sao chép `nationalCountry`).
+- `description`: string — Mô tả ngắn gọn (sao chép `nationalCountry` trong `getNational` hoặc `nationalLanguage` trong `getNationalLanguage`).
 
 ## Ví dụ
 

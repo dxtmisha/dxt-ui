@@ -1,17 +1,16 @@
 /** @vitest-environment jsdom */
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { GeoPhone } from '../GeoPhone'
 import { Geo } from '../Geo'
 import { GeoList } from '../GeoList'
 import { ServerStorage } from '../ServerStorage'
 
 type GeoPhoneInternal = typeof GeoPhone & {
-  list?: unknown[]
-  map?: Record<string, unknown>
+  extractPrefixes: (masks: readonly string[]) => string[]
   getUnnecessaryLength: (mask: string) => number
   getWithinSymbol: (within?: string) => string
   removeZero: (phone: string) => string
-  toMask: (phone: string, masks?: string[], isRemoveZero?: boolean, isPartial?: boolean) => string | undefined
+  toMask: (phone: string, masks?: readonly string[], isRemoveZero?: boolean, isPartial?: boolean) => string | undefined
   toNumber: (value: string) => string[]
   toStandard: (phone: string, mask: string) => string
   toWithin: (mask: string, within?: string) => string
@@ -24,8 +23,15 @@ describe('GeoPhone', () => {
     ServerStorage.reset()
     ServerStorage.init(() => ({}))
     GeoList.reset()
-    GeoPhoneProtected.list = undefined
-    GeoPhoneProtected.map = undefined
+    GeoPhone.reset()
+  })
+
+  afterEach(() => {
+    ServerStorage.reset()
+    GeoList.reset()
+    GeoPhone.reset()
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
   })
 
   describe('get', () => {
@@ -165,6 +171,24 @@ describe('GeoPhone', () => {
     it('should return an empty array for unknown or empty code', () => {
       expect(GeoPhone.getCodes('INVALID')).toEqual([])
       expect(GeoPhone.getCodes('')).toEqual([])
+    })
+
+    it('should fall back to extracted mask prefixes when a custom country has no phoneCode', () => {
+      Geo.add('ZZ', {
+        language: 'zz',
+        phoneMask: ['+999-**-***', '+998-**-***']
+      })
+
+      expect(GeoPhone.getCodes('ZZ')).toEqual(['999', '998'])
+    })
+
+    it('should isolate items and next when baseNode belongs to a different country sharing the dial code (CA vs US)', () => {
+      const canadaInfo = GeoPhone.getByCode('CA')
+      expect(canadaInfo).toBeDefined()
+      expect(canadaInfo?.value).toBe('CA')
+      expect(canadaInfo?.items).toHaveLength(1)
+      expect(canadaInfo?.items[0]?.value).toBe('CA')
+      expect(canadaInfo?.next).toEqual({})
     })
   })
 
@@ -314,6 +338,29 @@ describe('GeoPhone', () => {
       expect(Object.keys(firstMap).length).toBeGreaterThan(0)
       expect(firstMap).toBe(secondMap)
     })
+
+    it('should invalidate cached list and map on reset() so dynamically added countries are picked up', () => {
+      const initialList = GeoPhone.getList()
+      const initialMap = GeoPhone.getMap()
+      expect(GeoPhone.get('ZZ')).toBeUndefined()
+
+      Geo.add('ZZ', {
+        language: 'zz',
+        phoneCode: '999',
+        phoneMask: '+999-**-***'
+      })
+
+      expect(GeoPhone.get('ZZ')).toBeUndefined()
+
+      GeoPhone.reset()
+
+      const rebuiltList = GeoPhone.getList()
+      const rebuiltMap = GeoPhone.getMap()
+      expect(rebuiltList).not.toBe(initialList)
+      expect(rebuiltMap).not.toBe(initialMap)
+      expect(GeoPhone.get('ZZ')?.phone).toBe(999)
+      expect(GeoPhone.getByPhone('+99912345').item?.value).toBe('ZZ')
+    })
   })
 
   describe('cleanPhone', () => {
@@ -378,6 +425,21 @@ describe('GeoPhone', () => {
         expect(GeoPhoneProtected.toMask('79991234567', [])).toBeUndefined()
         expect(GeoPhoneProtected.toMask('79991234567', undefined)).toBeUndefined()
         expect(GeoPhoneProtected.toMask('', ['+* (***) ***-**-**'])).toBeUndefined()
+        expect(GeoPhoneProtected.toMask('0', ['+* (***)'], true, true)).toBeUndefined()
+      })
+
+      it('should pick the closest longer mask in partial mode and accept readonly mask arrays without mutating them', () => {
+        const masks = ['+*-***-***-****', '+*-***-***-***'] as const
+        expect(GeoPhoneProtected.toMask('799912', masks, false, true)).toBe('+7-999-12')
+        expect(GeoPhoneProtected.toMask('7999123456', masks, false, true)).toBe('+7-999-123-456')
+        expect(GeoPhoneProtected.toMask('799912345678', masks, false, true)).toBeUndefined()
+      })
+    })
+
+    describe('extractPrefixes', () => {
+      it('should extract unique dial prefixes from readonly masks without leading plus or trailing hyphens', () => {
+        const masks = ['+1-809-***-****', '+1-809-***-***', '+39-06-698-*****', '+***-***'] as const
+        expect(GeoPhoneProtected.extractPrefixes(masks)).toEqual(['1-809', '39-06-698'])
       })
     })
 
@@ -391,6 +453,7 @@ describe('GeoPhone', () => {
         expect(GeoPhoneProtected.toStandard('7900', '+* (***)')).toBe('+7 (900)')
         expect(GeoPhoneProtected.toStandard('9001', '+~ ($=?)')).toBe('+9 (001)')
         expect(GeoPhoneProtected.toStandard('7900123', '+*-***-***-**-**')).toBe('+7-900-123')
+        expect(GeoPhoneProtected.toStandard('', '+*-***')).toBe('')
       })
 
       it('should apply within symbols for corresponding within variations', () => {
@@ -400,6 +463,16 @@ describe('GeoPhone', () => {
         expect(GeoPhoneProtected.toWithin('+* (***)', '06')).toBe('+? (?**)')
         expect(GeoPhoneProtected.toWithin('+* (***)', undefined)).toBe('+* (***)')
         expect(GeoPhoneProtected.toWithin('+* (***)', 'unknown')).toBe('+* (***)')
+      })
+    })
+
+    describe('SSR compatibility', () => {
+      it('should parse and format phones identically when window is undefined', () => {
+        vi.stubGlobal('window', undefined)
+        const result = GeoPhone.getByPhoneFull('+84 90 123 45 67')
+        expect(result.item?.value).toBe('VN')
+        expect(result.e164).toBe('+84901234567')
+        expect(result.digits).toBe('84901234567')
       })
     })
   })

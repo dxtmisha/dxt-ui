@@ -79,8 +79,6 @@ isPrototypeKey
 getItemByPath
 toCamelCase
 Formatters
-GeoFlag
-GeoPhone
 GeoUnit
 forOwn
 Global
@@ -204,4 +202,7 @@ writeClipboardData
 ErrorCenterError
 ErrorCenterInstance
 ErrorCenter
+ErrorCenterThrowInstance
 ErrorCenterThrow
+GeoFlag
+GeoPhone

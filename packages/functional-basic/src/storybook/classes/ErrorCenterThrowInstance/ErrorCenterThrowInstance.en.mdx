@@ -47,11 +47,11 @@ errorThrow.on<{ resourceId: number }>({
 ```
 
 ### `handle`
-Handles a caught error without double-reporting `ErrorCenterError` instances. If `error` is an `ErrorCenterError`, rethrows it directly; otherwise delegates to `on(cause, options)`.
+Handles a caught error without double-reporting `ErrorCenterError` instances. If `error` is an `ErrorCenterError`, rethrows it directly; otherwise delegates to `on(cause, resolvedOptions)`, automatically preserving `error` in `Error.cause` when `error` is defined and `options.cause` is not explicitly provided.
 
 **Parameters:**
 - `cause: ErrorCenterCauseItem<D>` — structured error cause details (`group`, `code`, `priority`, `label`, `message`, `details`).
-- `error?: unknown` — caught error instance or value to inspect.
+- `error?: unknown` — caught error instance or value to inspect (automatically forwarded as `Error.cause` when defined and `options.cause` is omitted).
 - `options?: ErrorOptions` — standard `Error` options (such as `{ cause: originalError }`).
 
 **Returns:** `never` — never returns normally; rethrows `error` (when it is `ErrorCenterError`) or throws `ErrorCenterError<D>`.
@@ -62,8 +62,7 @@ try {
 } catch (error) {
   errorThrow.handle(
     { group: 'api', code: 'server' },
-    error,
-    error instanceof Error ? { cause: error } : undefined
+    error
   )
 }
 ```

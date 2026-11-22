@@ -375,8 +375,8 @@ export class GeoFlag {
    * @param sort whether to sort the list / сортировать ли список
    * @returns list of countries / список стран
    */
-  getList(codes?: string[], sort: boolean = true): GeoFlagItem[] {
-    const list = forEach(this.getCodes(codes), code => this.get(code)) as GeoFlagItem[]
+  getList(codes?: readonly string[], sort: boolean = true): GeoFlagItem[] {
+    const list = forEach(this.getCodes(codes), code => this.get(code))
 
     if (sort) {
       return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
@@ -395,7 +395,7 @@ export class GeoFlag {
    * @param sort whether to sort the list / сортировать ли список
    * @returns list of languages / список языков
    */
-  getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[] {
+  getListLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagItem[] {
     const list: GeoFlagItem[] = []
     const cache = new Set<string>()
 
@@ -426,17 +426,19 @@ export class GeoFlag {
    * @param sort whether to sort the list / сортировать ли список
    * @returns list of countries with national names / список стран с национальными названиями
    */
-  getNational(codes?: string[], sort: boolean = true): GeoFlagNational[] {
-    const list = forEach(this.getList(codes, false), (item) => {
-      const geo = new GeoFlag(item.standard).get(item.standard)
+  getNational(codes?: readonly string[], sort: boolean = true): GeoFlagNational[] {
+    const list = forEach(this.getList(codes, false), (item): GeoFlagNational => {
+      const intl = GeoIntl.getInstance(item.standard)
+      const nationalCountry = intl.countryName(item.countryCode) || item.country
+      const nationalLanguage = intl.languageName(item.languageCode) || item.language
 
       return {
         ...item,
-        description: geo?.country,
-        nationalLanguage: geo?.language,
-        nationalCountry: geo?.country
+        description: nationalCountry,
+        nationalLanguage,
+        nationalCountry
       }
-    }) as GeoFlagNational[]
+    })
 
     if (sort) {
       return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
@@ -453,17 +455,19 @@ export class GeoFlag {
    * @param sort whether to sort the list / сортировать ли список
    * @returns list of languages with national names / список языков с национальными названиями
    */
-  getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[] {
-    const list = forEach(this.getListLanguage(codes, false), (item) => {
-      const geo = new GeoFlag(item.standard).getLanguage(item.standard)
+  getNationalLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagNational[] {
+    const list = forEach(this.getListLanguage(codes, false), (item): GeoFlagNational => {
+      const intl = GeoIntl.getInstance(item.standard)
+      const nationalCountry = intl.countryName(item.countryCode) || item.country
+      const nationalLanguage = intl.languageName(item.languageCode) || item.language
 
       return {
         ...item,
-        description: geo?.language,
-        nationalLanguage: geo?.language,
-        nationalCountry: geo?.country
+        description: nationalLanguage,
+        nationalLanguage,
+        nationalCountry
       }
-    }) as GeoFlagNational[]
+    })
 
     if (sort) {
       return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
@@ -492,7 +496,7 @@ export class GeoFlag {
    * @protected
    * @returns array of codes / массив кодов
    */
-  protected getCodes(codes?: string[]): string[] {
+  protected getCodes(codes?: readonly string[]): readonly string[] {
     return codes ?? Object.keys(GeoFlag.flags)
   }
 

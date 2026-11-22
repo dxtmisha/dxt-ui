@@ -39,10 +39,10 @@ const ruFlag = new GeoFlag('ru-RU')
 - `getLanguage(code?: string): GeoFlagItem | undefined` — Возвращает информацию о языке и его флаге (где `label` и `value` соответствуют языку).
 
 ### Списки
-- `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Возвращает массив данных о странах. По умолчанию сортирует по алфавиту.
-- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Возвращает список уникальных языков без дубликатов. По умолчанию сортирует по алфавиту.
-- `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список стран с национальными названиями. По умолчанию сортирует по алфавиту.
-- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список языков с их национальными названиями. По умолчанию сортирует по алфавиту.
+- `getList(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Возвращает массив данных о странах. По умолчанию сортирует по алфавиту.
+- `getListLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Возвращает список уникальных языков без дубликатов. По умолчанию сортирует по алфавиту.
+- `getNational(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список стран с национальными названиями. По умолчанию сортирует по алфавиту.
+- `getNationalLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список языков с их национальными названиями. По умолчанию сортирует по алфавиту.
 
 ### Настройка
 - `setCode(code: string): this` — Изменяет базовую локаль для текущего экземпляра.
@@ -96,7 +96,7 @@ const national = geo.getNational(['JP'])
 Расширяет `GeoFlagItem` дополнительными полями:
 - `nationalCountry`: string — Название страны на её родном языке.
 - `nationalLanguage`: string — Название языка на родном языке.
-- `description`: string — Краткое описание (дублирует `nationalCountry`).
+- `description`: string — Краткое описание (дублирует `nationalCountry` в `getNational` или `nationalLanguage` в `getNationalLanguage`).
 
 ## Примеры
 

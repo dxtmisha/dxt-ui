@@ -91,6 +91,26 @@ describe('ErrorCenterThrow', () => {
       )).toThrow(domainError)
       expect(callback).not.toHaveBeenCalled()
 
+      const rawError = new Error('Raw failure without explicit options')
+      let caughtAutoCause: unknown
+      try {
+        ErrorCenterThrow.handle(
+          {
+            group: 'api',
+            code: 'server',
+            message: 'Request failed.'
+          },
+          rawError
+        )
+      } catch (error) {
+        caughtAutoCause = error
+      }
+
+      expect(caughtAutoCause).toBeInstanceOf(ErrorCenterError)
+      if (caughtAutoCause instanceof ErrorCenterError) {
+        expect(caughtAutoCause.cause).toBe(rawError)
+      }
+
       const explicitCause = new Error('Explicit cause')
       let caughtError: unknown
 
@@ -115,7 +135,7 @@ describe('ErrorCenterThrow', () => {
         expect(caughtError.getDetails()).toEqual({ step: 2 })
         expect(caughtError.cause).toBe(explicitCause)
       }
-      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(2)
     })
 
     it('should isolate ErrorCenterThrow instances across SSR requests without triggering context errors', () => {
@@ -137,6 +157,25 @@ describe('ErrorCenterThrow', () => {
       expect(() => ErrorCenterThrow.on({ group: 'api', code: 'server' })).toThrow(ErrorCenterError)
       expect(secondCallback).toHaveBeenCalledTimes(1)
       expect(firstCallback).not.toHaveBeenCalled()
+    })
+
+    it('should work in SSR without an initialized ServerStorage context without reporting storage context errors', () => {
+      vi.stubGlobal('window', undefined)
+
+      const storageHandler = vi.fn()
+      const apiHandler = vi.fn()
+      ErrorCenter.addHandler('storage', storageHandler)
+      ErrorCenter.addHandler('api', apiHandler)
+
+      expect(() => ErrorCenterThrow.handle({ group: 'api', code: 'timeout' }, null)).toThrow(ErrorCenterError)
+      expect(storageHandler).not.toHaveBeenCalled()
+      expect(apiHandler).toHaveBeenCalledTimes(1)
+
+      const primitives: unknown[] = [undefined, 0, false, '']
+      for (const value of primitives) {
+        expect(() => ErrorCenterThrow.handle({ group: 'api', code: 'unknown' }, value)).toThrow(ErrorCenterError)
+      }
+      expect(apiHandler).toHaveBeenCalledTimes(1 + primitives.length)
     })
   })
 })

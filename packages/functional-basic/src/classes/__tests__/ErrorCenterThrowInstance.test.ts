@@ -27,10 +27,12 @@ describe('ErrorCenterThrowInstance', () => {
 
       const customInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
       customInstance.addCallback(customCallback)
+      const assignSpy = vi.spyOn(customInstance, 'assign')
 
       const errorThrow = new ErrorCenterThrowInstance(customInstance)
 
       expect(() => errorThrow.on({ group: 'custom', code: 'CUSTOM_ERR' })).toThrow(ErrorCenterError)
+      expect(assignSpy).toHaveBeenCalledTimes(1)
       expect(customCallback).toHaveBeenCalledExactlyOnceWith({ group: 'custom', code: 'CUSTOM_ERR' })
       expect(staticCallback).not.toHaveBeenCalled()
     })
@@ -73,9 +75,10 @@ describe('ErrorCenterThrowInstance', () => {
       }
     })
 
-    it('should enforce never return type on on() method', () => {
+    it('should enforce never return type on on() and handle() methods', () => {
       const errorThrow = new ErrorCenterThrowInstance(new ErrorCenterInstance([], new ErrorCenterHandler([], false)))
       expectTypeOf(errorThrow.on<{ id: number }>).returns.toEqualTypeOf<never>()
+      expectTypeOf(errorThrow.handle<{ id: number }>).returns.toEqualTypeOf<never>()
     })
 
     it('should respect cause priority when resolving stored cause metadata', () => {
@@ -381,6 +384,32 @@ describe('ErrorCenterThrowInstance', () => {
         expect(caughtWithoutError.cause).toEqual(causeItem)
       }
 
+      let caughtWithAutoCause: unknown
+      const underlyingError = new Error('Underlying DB failure')
+      try {
+        errorThrow.handle(causeItem, underlyingError)
+      } catch (error) {
+        caughtWithAutoCause = error
+      }
+
+      expect(caughtWithAutoCause).toBeInstanceOf(ErrorCenterError)
+      if (caughtWithAutoCause instanceof ErrorCenterError) {
+        expect(caughtWithAutoCause.getDetails()).toEqual({ step: 1 })
+        expect(caughtWithAutoCause.cause).toBe(underlyingError)
+      }
+
+      let caughtWithEmptyOptions: unknown
+      try {
+        errorThrow.handle(causeItem, underlyingError, {})
+      } catch (error) {
+        caughtWithEmptyOptions = error
+      }
+
+      expect(caughtWithEmptyOptions).toBeInstanceOf(ErrorCenterError)
+      if (caughtWithEmptyOptions instanceof ErrorCenterError) {
+        expect(caughtWithEmptyOptions.cause).toBe(underlyingError)
+      }
+
       let caughtWithNativeError: unknown
       try {
         errorThrow.handle(causeItem, new Error('Underlying failure'), { cause: explicitCause })
@@ -394,7 +423,48 @@ describe('ErrorCenterThrowInstance', () => {
         expect(caughtWithNativeError.cause).toBe(explicitCause)
       }
 
-      expect(callback).toHaveBeenCalledTimes(2)
+      expect(callback).toHaveBeenCalledTimes(4)
+    })
+
+    it('should rethrow ErrorCenterError subclasses without double-reporting and preserve falsy/primitive errors as cause', () => {
+      class CustomDomainError extends ErrorCenterError<{ code: number }> {}
+
+      const customInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
+      const callback = vi.fn()
+      customInstance.addCallback(callback)
+
+      const errorThrow = new ErrorCenterThrowInstance(customInstance)
+      const subclassError = new CustomDomainError({
+        group: 'domain',
+        code: 'SUBCLASS',
+        details: { code: 409 }
+      })
+
+      expect(() => errorThrow.handle(
+        { group: 'domain', code: 'FALLBACK' },
+        subclassError
+      )).toThrow(subclassError)
+      expect(callback).not.toHaveBeenCalled()
+
+      const primitiveInputs: unknown[] = [null, 0, false, '', { code: 'plain' }]
+      for (const primitiveError of primitiveInputs) {
+        let caughtPrimitive: unknown
+        try {
+          errorThrow.handle(
+            { group: 'domain', code: 'PRIMITIVE' },
+            primitiveError
+          )
+        } catch (error) {
+          caughtPrimitive = error
+        }
+
+        expect(caughtPrimitive).toBeInstanceOf(ErrorCenterError)
+        if (caughtPrimitive instanceof ErrorCenterError) {
+          expect(caughtPrimitive.cause).toBe(primitiveError)
+        }
+      }
+
+      expect(callback).toHaveBeenCalledTimes(primitiveInputs.length)
     })
   })
 })

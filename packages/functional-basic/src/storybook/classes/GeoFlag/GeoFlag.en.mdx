@@ -39,10 +39,10 @@ const usFlag = new GeoFlag('en-US')
 - `getLanguage(code?: string): GeoFlagItem | undefined` — Returns language and flag information (where `label` and `value` correspond to the language).
 
 ### Lists
-- `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Returns an array of country data, sorted alphabetically by default.
-- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Returns a deduplicated list of languages, sorted alphabetically by default.
-- `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of countries with national names, sorted alphabetically by default.
-- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of languages with their national names, sorted alphabetically by default.
+- `getList(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Returns an array of country data, sorted alphabetically by default.
+- `getListLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagItem[]` — Returns a deduplicated list of languages, sorted alphabetically by default.
+- `getNational(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of countries with national names, sorted alphabetically by default.
+- `getNationalLanguage(codes?: readonly string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of languages with their national names, sorted alphabetically by default.
 
 ### Configuration
 - `setCode(code: string): this` — Changes the base locale for the current instance.
@@ -96,7 +96,7 @@ Basic flag information object.
 Extends `GeoFlagItem` with additional fields:
 - `nationalCountry`: string — Country name in its native language.
 - `nationalLanguage`: string — Language name in its native language.
-- `description`: string — Brief description (duplicates `nationalCountry`).
+- `description`: string — Brief description (duplicates `nationalCountry` in `getNational` or `nationalLanguage` in `getNationalLanguage`).
 
 ## Examples
 

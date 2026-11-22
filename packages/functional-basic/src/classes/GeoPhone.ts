@@ -20,6 +20,8 @@ const REGEXP_MASK_PLACEHOLDER_CHAR = /[*=~$?]/
 const REGEXP_MASK_PLACEHOLDER = /[*=~$?]/g
 /** Regular expression matching non-digit sequences / Регулярное выражение для поиска нецифровых последовательностей */
 const REGEXP_NON_DIGIT = /\D+/g
+/** Regular expression matching trailing hyphens / Регулярное выражение для поиска завершающих дефисов */
+const REGEXP_TRAILING_HYPHENS = /-+$/
 
 /**
  * A class for storing and processing phone number masks.
@@ -100,41 +102,6 @@ export class GeoPhone {
   }
 
   /**
-   * Returns a list of distinct dial codes for a country, including alternatives when present.
-   *
-   * Возвращает список уникальных телефонных кодов страны, включая альтернативные при их наличии.
-   * @param code country and language code / код страны и языка
-   * @returns array of dial codes without leading "+" / массив телефонных кодов без ведущего "+"
-   */
-  static getCodes(code: string): string[] {
-    const item = this.get(code)
-
-    if (!item) {
-      return []
-    }
-
-    const primaryCode = Geo.getByCountry(item.value)?.phoneCode
-    const extracted = this.extractPrefixes(item.mask)
-
-    if (!primaryCode) {
-      return extracted
-    }
-
-    const hasAlternative = extracted.some(
-      prefix => prefix !== primaryCode && !prefix.startsWith(`${primaryCode}-`)
-    )
-
-    if (!hasAlternative) {
-      return [primaryCode]
-    }
-
-    return [
-      primaryCode,
-      ...extracted.filter(prefix => prefix !== primaryCode)
-    ]
-  }
-
-  /**
    * Getting information by phone.
    *
    * Получение информации по телефону.
@@ -208,6 +175,41 @@ export class GeoPhone {
   }
 
   /**
+   * Returns a list of distinct dial codes for a country, including alternatives when present.
+   *
+   * Возвращает список уникальных телефонных кодов страны, включая альтернативные при их наличии.
+   * @param code country and language code / код страны и языка
+   * @returns array of dial codes without leading "+" / массив телефонных кодов без ведущего "+"
+   */
+  static getCodes(code: string): string[] {
+    const item = this.get(code)
+
+    if (!item) {
+      return []
+    }
+
+    const primaryCode = Geo.getByCountry(item.value)?.phoneCode
+    const extracted = this.extractPrefixes(item.mask)
+
+    if (!primaryCode) {
+      return extracted
+    }
+
+    const hasAlternative = extracted.some(
+      prefix => prefix !== primaryCode && !prefix.startsWith(`${primaryCode}-`)
+    )
+
+    if (!hasAlternative) {
+      return [primaryCode]
+    }
+
+    return [
+      primaryCode,
+      ...extracted.filter(prefix => prefix !== primaryCode)
+    ]
+  }
+
+  /**
    * We get an array from a list of all phone numbers.
    *
    * Получаем массив из списка всех телефонных кодов.
@@ -236,6 +238,18 @@ export class GeoPhone {
   }
 
   /**
+   * Resets the cached phone list and prefix map, forcing them to be rebuilt on next access.
+   * Useful after dynamically adding countries via Geo.add() or during testing.
+   *
+   * Сбрасывает кэшированные список и префиксную карту телефонов, вызывая их перестроение при следующем обращении.
+   * Полезно после динамического добавления стран через Geo.add() или в тестах.
+   */
+  static reset(): void {
+    this.list = undefined
+    this.map = undefined
+  }
+
+  /**
    * Removes all non-digit characters from the phone string.
    *
    * Удаляет все нецифровые символы из строки телефона.
@@ -244,18 +258,6 @@ export class GeoPhone {
    */
   static cleanPhone(value: string): string {
     return value.replace(REGEXP_NON_DIGIT, '')
-  }
-
-  /**
-   * Finds a phone metadata item directly by exact country code.
-   *
-   * Находит элемент метаданных телефона по точному коду страны.
-   * @param code country code / код страны
-   * @protected
-   * @returns phone mask item or undefined / объект маски телефона или undefined
-   */
-  protected static findItem(code: string): GeoPhoneValue | undefined {
-    return this.getList().find(entry => code === entry.value)
   }
 
   /**
@@ -268,43 +270,6 @@ export class GeoPhone {
    */
   protected static getUnnecessaryLength(mask: string): number {
     return mask.match(REGEXP_MASK_PLACEHOLDER)?.length ?? 0
-  }
-
-  /**
-   * Extracts distinct static dial code prefixes from an array of phone masks.
-   *
-   * Извлекает уникальные статические префиксы телефонных кодов из массива масок.
-   * @param masks array of phone masks / массив телефонных масок
-   * @protected
-   * @returns list of prefixes without leading "+" / список префиксов без ведущего "+"
-   */
-  protected static extractPrefixes(masks: string[]): string[] {
-    const prefixes: string[] = []
-
-    for (const mask of masks) {
-      const prefixChars: string[] = []
-
-      for (const char of mask) {
-        if (REGEXP_MASK_PLACEHOLDER_CHAR.test(char)) {
-          break
-        }
-
-        if (char !== '+') {
-          prefixChars.push(char)
-        }
-      }
-
-      const prefix = prefixChars.join('').replace(/-+$/, '')
-
-      if (
-        prefix
-        && !prefixes.includes(prefix)
-      ) {
-        prefixes.push(prefix)
-      }
-    }
-
-    return prefixes
   }
 
   /**
@@ -350,6 +315,55 @@ export class GeoPhone {
   }
 
   /**
+   * Extracts distinct static dial code prefixes from an array of phone masks.
+   *
+   * Извлекает уникальные статические префиксы телефонных кодов из массива масок.
+   * @param masks array of phone masks / массив телефонных масок
+   * @protected
+   * @returns list of prefixes without leading "+" / список префиксов без ведущего "+"
+   */
+  protected static extractPrefixes(masks: readonly string[]): string[] {
+    const prefixes: string[] = []
+
+    for (const mask of masks) {
+      const prefixChars: string[] = []
+
+      for (const char of mask) {
+        if (REGEXP_MASK_PLACEHOLDER_CHAR.test(char)) {
+          break
+        }
+
+        if (char !== '+') {
+          prefixChars.push(char)
+        }
+      }
+
+      const prefix = prefixChars.join('').replace(REGEXP_TRAILING_HYPHENS, '')
+
+      if (
+        prefix
+        && !prefixes.includes(prefix)
+      ) {
+        prefixes.push(prefix)
+      }
+    }
+
+    return prefixes
+  }
+
+  /**
+   * Finds a phone metadata item directly by exact country code.
+   *
+   * Находит элемент метаданных телефона по точному коду страны.
+   * @param code country code / код страны
+   * @protected
+   * @returns phone mask item or undefined / объект маски телефона или undefined
+   */
+  protected static findItem(code: string): GeoPhoneValue | undefined {
+    return this.getList().find(entry => code === entry.value)
+  }
+
+  /**
    * Creating a list for the map.
    *
    * Формирование списка данных.
@@ -357,7 +371,7 @@ export class GeoPhone {
    * @returns void / ничего не возвращает
    */
   protected static makeList(): void {
-    const list = forEach(Geo.getList(), (item) => {
+    const list = forEach(Geo.getList(), (item): GeoPhoneValue | undefined => {
       if (item?.phoneMask) {
         const phone = (item.phoneCode && Number(this.cleanPhone(item.phoneCode))) || 0
         const within = isNumber(item.phoneWithin) ? String(item.phoneWithin) : undefined
@@ -372,7 +386,7 @@ export class GeoPhone {
       }
 
       return undefined
-    }) as GeoPhoneValue[]
+    })
 
     this.list = list.sort((itemA, itemB) => (itemA.phone - itemB.phone))
   }
@@ -447,17 +461,22 @@ export class GeoPhone {
    */
   protected static toMask(
     phone: string,
-    masks?: string[],
+    masks?: readonly string[],
     isRemoveZero: boolean = false,
     isPartial: boolean = false
   ): string | undefined {
     if (
       isFilled(phone)
-      && isArray(masks)
+      && isArray<string>(masks)
       && masks.length > 0
     ) {
       const value = isRemoveZero ? this.removeZero(phone) : phone
       const length = value.length
+
+      if (length === 0) {
+        return undefined
+      }
+
       let partialMask: string | undefined
       let partialLength = Number.POSITIVE_INFINITY
 
