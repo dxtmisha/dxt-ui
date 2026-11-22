@@ -189,6 +189,7 @@ export const FieldSlots: Story = {
     template: `
         
         <D1Field
+          id="field-slots-demo"
           :cancel-show="true"
           label="Label prop"
           icon="home"
@@ -198,8 +199,8 @@ export const FieldSlots: Story = {
           <template #default="{binds}">
             <input v-bind="binds" value="Value" readonly/>
           </template>
-          <template #leading>Leading slot</template>
-          <template #trailing>Trailing slot</template>
+          <template #leading="{id}"><span :data-leading-id="id">Leading slot</span></template>
+          <template #trailing="{id}"><span :data-trailing-id="id">Trailing slot</span></template>
           <template #label><b>Label slot</b></template>
           <template #prefix>Prefix slot</template>
           <template #suffix>Suffix slot</template>
@@ -210,11 +211,15 @@ export const FieldSlots: Story = {
   }),
   play: async ({ canvasElement }) => {
     const component = canvasElement.querySelector('.d1-field')
+    const leadingSlot = canvasElement.querySelector('[data-leading-id]')
+    const trailingSlot = canvasElement.querySelector('[data-trailing-id]')
     await expect(component).toHaveTextContent('Leading slot')
     await expect(component).toHaveTextContent('Trailing slot')
     await expect(component).toHaveTextContent('Prefix slot')
     await expect(component).toHaveTextContent('Suffix slot')
     await expect(component).toHaveTextContent('Caption slot')
+    await expect(leadingSlot?.getAttribute('data-leading-id')).toBe('field-slots-demo')
+    await expect(trailingSlot?.getAttribute('data-trailing-id')).toBe('field-slots-demo')
   }
 }
 export const FieldTestStates: Story = {
@@ -244,9 +249,14 @@ export const FieldTestStates: Story = {
               <input v-bind="binds" value="Load" readonly/>
             </template>
           </D1Field>
-          <D1Field classic is-value warning label="Classic Warning" warning-message="Needs confirmation">
+          <D1Field classic is-value warning label="Classic Warning" warning-message="Needs confirmation" warning-id="field-test-warning">
             <template #default="{binds}">
               <input v-bind="binds" value="Warn" readonly/>
+            </template>
+          </D1Field>
+          <D1Field outlined is-value warning label="Validation Priority" warning-message="Suppressed warning" validation-message="Blocking error">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Conflict" readonly/>
             </template>
           </D1Field>
         </div>
@@ -255,7 +265,7 @@ export const FieldTestStates: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-field')
-    await expect(items.length).toBe(5)
+    await expect(items.length).toBe(6)
 
     await expect(items[0].tagName).toBe('DIV')
     await expect(items[0]).toHaveClass('d1-field--classic')
@@ -274,8 +284,16 @@ export const FieldTestStates: Story = {
     await expect(items[3]).toHaveClass('d1-field--tonal')
     await expect(items[3].querySelector('.d1-field__loading')).not.toBeNull()
 
+    const warningInput = items[4].querySelector('input')
     await expect(items[4]).toHaveClass('d1-field--warning')
     await expect(items[4]).not.toHaveClass('d1-field--validation')
+    await expect(warningInput?.getAttribute('aria-invalid')).toBeNull()
+    await expect(warningInput?.getAttribute('aria-describedby')).toContain('field-test-warning')
+
+    const conflictInput = items[5].querySelector('input')
+    await expect(items[5]).toHaveClass('d1-field--validation')
+    await expect(items[5]).not.toHaveClass('d1-field--warning')
+    await expect(conflictInput?.getAttribute('aria-invalid')).toBe('true')
   }
 }
 export const FieldTestPrefixSuffixCaption: Story = {
