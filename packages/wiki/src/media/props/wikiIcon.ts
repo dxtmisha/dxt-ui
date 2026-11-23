@@ -52,6 +52,17 @@ export const wikiIcon: StorybookArgsToList = {
   },
 
   // Style
+  'icon.noPointerEvents': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Disables pointer events on the icon element (`pointer-events: none`)',
+        ru: 'Отключает обработку событий указателя на элементе иконки (`pointer-events: none`)'
+      }
+    },
+    hide: true
+  },
   'icon.start': {
     type: StorybookControl.boolean,
     options: {

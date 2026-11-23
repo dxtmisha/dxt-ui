@@ -62,8 +62,6 @@ src/classes/TabIndexInclude.ts
 src/constructors/Icon/Icon.ts
 src/constructors/Icon/IconDesign.tsx
 src/constructors/Icon/IconLiteInclude.ts
-src/constructors/Icon/IconInclude.ts
-src/constructors/Icon/IconTrailingInclude.ts
 src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.ts
@@ -135,7 +133,6 @@ src/classes/Field/FieldTypeInclude.ts
 src/classes/CaptionInclude.ts
 src/constructors/Button/ButtonDesign.tsx
 src/constructors/Button/ButtonInclude.ts
-src/constructors/Button/Button.ts
 src/classes/ModelValueInclude.ts
 src/constructors/FieldMessage/FieldMessageMessage.ts
 src/constructors/FieldMessage/FieldMessageInclude.ts
@@ -168,7 +165,6 @@ src/constructors/MotionTransform/MotionTransformInclude.ts
 src/constructors/MotionTransform/MotionTransform.ts
 src/constructors/MotionTransform/MotionTransformDesign.tsx
 src/constructors/Bars/BarsAction.ts
-src/constructors/Bars/Bars.ts
 src/constructors/Bars/BarsDesign.tsx
 src/constructors/Bars/BarsInclude.ts
 src/constructors/Mask/MaskScroll.ts
@@ -240,3 +236,7 @@ src/constructors/Modal/ModalDesign.tsx
 src/classes/TouchEventInclude.ts
 src/constructors/ActionSheet/ActionSheet.ts
 src/constructors/ActionSheet/ActionSheetDesign.tsx
+src/constructors/Icon/IconInclude.ts
+src/constructors/Icon/IconTrailingInclude.ts
+src/constructors/Button/Button.ts
+src/constructors/Bars/Bars.ts

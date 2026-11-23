@@ -33,14 +33,16 @@ const MockIcon = defineComponent({
   name: 'MockIcon',
   props: {
     icon: [String, Object],
-    disabled: Boolean
+    disabled: Boolean,
+    noPointerEvents: Boolean
   },
   setup(componentProps, { attrs }) {
     return () => h(
       'span',
       mergeProps({
         'class': 'mock-icon',
-        'data-disabled': String(Boolean(componentProps.disabled))
+        'data-disabled': String(Boolean(componentProps.disabled)),
+        'data-no-pointer-events': String(Boolean(componentProps.noPointerEvents))
       }, attrs),
       String(componentProps.icon ?? '')
     )
@@ -167,8 +169,10 @@ describe('Button (integration)', () => {
       expect(icons).toHaveLength(2)
       expect(icons[0]?.textContent).toBe('check')
       expect(icons[0]?.classList.contains('d1-button__icon')).toBe(true)
+      expect(icons[0]?.getAttribute('data-no-pointer-events')).toBe('true')
       expect(icons[1]?.textContent).toBe('arrow_forward')
       expect(icons[1]?.classList.contains('d1-button__trailing')).toBe(true)
+      expect(icons[1]?.getAttribute('data-no-pointer-events')).toBe('false')
 
       expect(container.querySelector('.mock-ripple.d1-button__ripple')).not.toBeNull()
       expect(exposed.getValue?.()).toBe('save-btn')

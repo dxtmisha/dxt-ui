@@ -17,7 +17,7 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       'using an anchor root when `to` or `href` is provided, and a span otherwise',
       'toggling between primary (`icon`) and active (`iconActive`) icons based on the `active` state',
       'interactive mode (`dynamic`) with `@click` / `@clickLite` events, keyboard navigation (`tabindex`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`)',
-      'visual state transformations via 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), `hide`, and `disabled`',
+      'visual state transformations via 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), `hide`, `disabled`, and `noPointerEvents`',
       'integration with the color palette (`asPalette`) and background substrate (`overlay`)',
       'displaying a skeleton loader placeholder (`isSkeleton`)',
       'forwarding image `load` events (`@load`) and programmatic state inspection via `isActive()`, `getValue()`, and `getDetail()`'
@@ -27,7 +27,7 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       'использование корневого тега ссылки при переданном `to` или `href`, иначе span',
       'переключение между основной (`icon`) и активной (`iconActive`) иконками в зависимости от состояния `active`',
       'интерактивный режим (`dynamic`) с событиями `@click` / `@clickLite`, навигацией с клавиатуры (`tabindex`) и автоматическими ARIA-атрибутами (`role`, `ariaLabel`, `aria-disabled`)',
-      'визуальные трансформации состояния с помощью поворота на 180 градусов (`turn`), автоматического зеркалирования для RTL (`dir`), `hide` и `disabled`',
+      'визуальные трансформации состояния с помощью поворота на 180 градусов (`turn`), автоматического зеркалирования для RTL (`dir`), `hide`, `disabled` и `noPointerEvents`',
       'интеграция с цветовой палитрой (`asPalette`) и фоновой подложкой (`overlay`)',
       'отображение заполнителя (скелетона) при загрузке (`isSkeleton`)',
       'проксирование события загрузки изображения (`@load`) и программный доступ к состоянию через `isActive()`, `getValue()` и `getDetail()`'
@@ -481,8 +481,8 @@ await waitFor(() => {
     {
       id: 'IconTestStatesAndAnimations',
       name: {
-        en: 'Test: Visual states, layout modifiers, and animations (turn, disabled, hide, start, end, high, animationType, animationShow)',
-        ru: 'Тест: Визуальные состояния, модификаторы позиционирования и анимации (turn, disabled, hide, start, end, high, animationType, animationShow)'
+        en: 'Test: Visual states, layout modifiers, and animations (turn, disabled, hide, noPointerEvents, start, end, high, animationType, animationShow)',
+        ru: 'Тест: Визуальные состояния, модификаторы позиционирования и анимации (turn, disabled, hide, noPointerEvents, start, end, high, animationType, animationShow)'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -542,11 +542,19 @@ await waitFor(() => {
             <div class="wiki-storybook-item__label">custom --width var</div>
             <DesignComponent icon="star" style="--design-component-width: 36px;"/>
           </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">noPointerEvents</div>
+            <DesignComponent icon="touch_app" no-pointer-events/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">dynamic + noPointerEvents</div>
+            <DesignComponent icon="do_not_touch" dynamic no-pointer-events aria-label="Non-pointer dynamic"/>
+          </div>
         </div>
       `,
       play: `
 const icons = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(icons.length).toBe(14)
+await expect(icons.length).toBe(16)
 
 // 0. Default state: animationType--type1, no modifier flags
 await expect(icons[0]).toHaveClass('design-component--animationType--type1')
@@ -611,6 +619,17 @@ await expect(icons[12]).toHaveClass('design-component--animationShow')
 
 // 13. Custom CSS variable --design-component-width
 expect(icons[13].style.getPropertyValue('--design-component-width')).toBe('36px')
+
+// 14. Static noPointerEvents modifier
+await expect(icons[0]).not.toHaveClass('design-component--noPointerEvents')
+await expect(icons[14]).toHaveClass('design-component--noPointerEvents')
+await expect(icons[14]).toHaveAttribute('aria-hidden', 'true')
+
+// 15. Dynamic + noPointerEvents modifier
+await expect(icons[15]).toHaveClass('design-component--dynamic')
+await expect(icons[15]).toHaveClass('design-component--noPointerEvents')
+await expect(icons[15]).toHaveAttribute('role', 'button')
+await expect(icons[15]).toHaveAttribute('aria-label', 'Non-pointer dynamic')
       `
     },
     {
@@ -895,7 +914,7 @@ await step('Disable icon and verify clicks are blocked', async () => {
 Vector icon orchestrator component that renders icons, images, and flags via the underlying Image component. Supports dynamic state switching between primary (icon) and active (iconActive) representations, 180-degree rotation (turn), automatic RTL mirroring (dir), background substrate (overlay), and color palette inheritance (asPalette).
 Operates as a decorative element (aria-hidden="true") by default, or as an accessible interactive control with role="button", keyboard navigation (tabindex, Enter/Space), and @click/@clickLite events when dynamic is enabled. Integrates with Skeleton via isSkeleton and forwards @load events from child images.
 Uses an anchor root when to or href is provided, otherwise a span; interactive bindings remain controlled by dynamic.
-Controlled via icon, iconActive, active, dynamic, turn, dir, and disabled props, and exposes isActive(), getValue(), and getDetail() methods. Use standalone or within composite components (Button, Chip, Field, Cell) for navigation, actions, and status indicators.
+Controlled via icon, iconActive, active, dynamic, noPointerEvents, turn, dir, and disabled props, and exposes isActive(), getValue(), and getDetail() methods. Use standalone or within composite components (Button, Chip, Field, Cell) for navigation, actions, and status indicators.
     `
   }
 }

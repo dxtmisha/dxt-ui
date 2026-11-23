@@ -209,6 +209,12 @@ describe('Button (unit)', () => {
         expect(button.classes[naming.getStatusClass('icon')]).toBe(true)
         expect(button.i('icon').iconBind.noPointerEvents).toBe(true)
         expect(button.i('icon').trailingBind.noPointerEvents).toBeUndefined()
+
+        props.disabled = true
+        expect(button.i('icon').iconBind.disabled).toBe(true)
+        expect(button.i('icon').iconBind.noPointerEvents).toBe(true)
+        expect(button.i('icon').trailingBind.disabled).toBe(true)
+        expect(button.i('icon').trailingBind.noPointerEvents).toBeUndefined()
       })
     })
 

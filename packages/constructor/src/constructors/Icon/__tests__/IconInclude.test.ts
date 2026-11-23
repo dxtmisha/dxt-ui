@@ -125,6 +125,36 @@ describe('IconInclude', () => {
       expect(include.iconBind.start).toBe(false)
       expect(include.iconBind.end).toBe(true)
     })
+
+    it('should resolve reactive extra getters and allow subclasses to override getExtraIcon', () => {
+      const disabledState = ref(false)
+      const props = createReactiveProps<IconPropsInclude>({
+        icon: 'settings'
+      })
+
+      class CustomIconInclude extends IconInclude {
+        protected override getExtraIcon() {
+          return {
+            ...(this.getExtra() ?? {}),
+            noPointerEvents: true
+          }
+        }
+      }
+
+      const include = new CustomIconInclude(
+        props,
+        naming,
+        undefined,
+        () => ({ disabled: disabledState.value })
+      )
+
+      expect(include.iconBind.disabled).toBe(false)
+      expect(include.iconBind.noPointerEvents).toBe(true)
+
+      disabledState.value = true
+      expect(include.iconBind.disabled).toBe(true)
+      expect(include.iconBind.noPointerEvents).toBe(true)
+    })
   })
 
   describe('Multilingual and Unicode support', () => {

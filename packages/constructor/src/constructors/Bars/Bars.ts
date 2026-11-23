@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { computed, mergeProps, type Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -7,8 +7,7 @@ import {
   type DesignName,
   DesignLogicAbstract,
   forEach,
-  getBind,
-  toBinds
+  getBind
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -184,7 +183,7 @@ export class Bars extends DesignLogicAbstract<
   /** Returns the button data / Возвращает данные кнопки */
   readonly backBinds = computed<BarsProps['buttonAttrs']>(
     () => this.initItem(
-      toBinds(
+      mergeProps(
         {
           icon: {
             icon: this.props.iconBack,
@@ -196,12 +195,13 @@ export class Bars extends DesignLogicAbstract<
             this.i('windowClasses').get().close,
             this.i('motionTransformClasses').get().close
           ],
-          onClick: this.onClickBack,
           ...AriaStaticInclude.label(this.i('text').close)
         },
-        this.props.backButton
-      ),
-      'main-back'
+        this.props.backButton ?? {}
+      ) as BarsProps['buttonAttrs'],
+      'main-back',
+      false,
+      this.onClickBack
     )
   )
 
@@ -286,25 +286,31 @@ export class Bars extends DesignLogicAbstract<
    * @param item list of buttons / список параметров
    * @param key button identifier / идентификатор кнопки
    * @param isAction is action button / является ли кнопка действия
+   * @param onClick click handler for the button / обработчик клика для кнопки
    * @returns button attributes / атрибуты кнопки
    */
   protected initItem(
     item: BarsProps['buttonAttrs'],
     key: string | number,
-    isAction: boolean = false
+    isAction: boolean = false,
+    onClick: (event: MouseEvent, options?: EventClickValue) => void = this.i('event').onClick
   ): BarsProps['buttonAttrs'] {
-    const binds = toBinds(
-      this.props.buttonAttrs,
-      item
-    )
+    const icon = item && 'icon' in item
+      ? item.icon
+      : this.props.buttonAttrs?.icon
 
-    return {
-      isSkeleton: this.props.isSkeleton,
-      onClick: this.i('event').onClick,
-      ...binds,
-      key: `${isAction ? 'action' : 'main'}Bar-${item?.value ?? key}`,
-      ...(binds.icon ? { icon: getBind(binds.icon, { animationShow: isAction }, 'icon') } : {})
-    }
+    return mergeProps(
+      {
+        isSkeleton: this.props.isSkeleton,
+        onClick
+      },
+      this.props.buttonAttrs ?? {},
+      item ?? {},
+      {
+        key: `${isAction ? 'action' : 'main'}Bar-${item?.value ?? key}`,
+        ...(icon ? { icon: getBind(icon, { animationShow: isAction }, 'icon') } : {})
+      }
+    ) as BarsProps['buttonAttrs']
   }
 
   /**

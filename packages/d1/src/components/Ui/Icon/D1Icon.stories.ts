@@ -478,7 +478,7 @@ export const IconTestSourcesAndActive: Story = {
   }
 }
 export const IconTestStatesAndAnimations: Story = {
-  name: 'Тест: Визуальные состояния, модификаторы позиционирования и анимации (turn, disabled, hide, start, end, high, animationType, animationShow)',
+  name: 'Тест: Визуальные состояния, модификаторы позиционирования и анимации (turn, disabled, hide, noPointerEvents, start, end, high, animationType, animationShow)',
   render: () => ({
     components: { D1Icon },
     template: `
@@ -540,13 +540,21 @@ export const IconTestStatesAndAnimations: Story = {
             <div class="wiki-storybook-item__label">custom --width var</div>
             <D1Icon icon="star" style="--d1-icon-width: 36px;"/>
           </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">noPointerEvents</div>
+            <D1Icon icon="touch_app" no-pointer-events/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">dynamic + noPointerEvents</div>
+            <D1Icon icon="do_not_touch" dynamic no-pointer-events aria-label="Non-pointer dynamic"/>
+          </div>
         </div>
       
     `
   }),
   play: async ({ canvasElement }) => {
     const icons = canvasElement.querySelectorAll<HTMLElement>('.d1-icon')
-    await expect(icons.length).toBe(14)
+    await expect(icons.length).toBe(16)
 
     // 0. Default state: animationType--type1, no modifier flags
     await expect(icons[0]).toHaveClass('d1-icon--animationType--type1')
@@ -611,6 +619,17 @@ export const IconTestStatesAndAnimations: Story = {
 
     // 13. Custom CSS variable --d1-icon-width
     expect(icons[13].style.getPropertyValue('--d1-icon-width')).toBe('36px')
+
+    // 14. Static noPointerEvents modifier
+    await expect(icons[0]).not.toHaveClass('d1-icon--noPointerEvents')
+    await expect(icons[14]).toHaveClass('d1-icon--noPointerEvents')
+    await expect(icons[14]).toHaveAttribute('aria-hidden', 'true')
+
+    // 15. Dynamic + noPointerEvents modifier
+    await expect(icons[15]).toHaveClass('d1-icon--dynamic')
+    await expect(icons[15]).toHaveClass('d1-icon--noPointerEvents')
+    await expect(icons[15]).toHaveAttribute('role', 'button')
+    await expect(icons[15]).toHaveAttribute('aria-label', 'Non-pointer dynamic')
   }
 }
 export const IconTestAccessibilityAndDynamic: Story = {

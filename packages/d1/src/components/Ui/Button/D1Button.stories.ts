@@ -70,10 +70,20 @@ export const ButtonBasic: Story = {
 
     await expect(items[0]).toHaveTextContent('Button')
     await expect(items[1]).toHaveClass('d1-button--icon')
-    await expect(items[1].querySelector('.d1-button__icon')).toBeInTheDocument()
-    await expect(items[2].querySelector('.d1-button__trailing')).toBeInTheDocument()
-    await expect(items[3].querySelector('.d1-button__icon')).toBeInTheDocument()
-    await expect(items[3].querySelector('.d1-button__trailing')).toBeInTheDocument()
+    const leadingOnlyIcon = items[1].querySelector<HTMLElement>('.d1-button__icon')
+    await expect(leadingOnlyIcon).toBeInTheDocument()
+    expect(leadingOnlyIcon?.className).toContain('--noPointerEvents')
+
+    const trailingOnlyIcon = items[2].querySelector<HTMLElement>('.d1-button__trailing')
+    await expect(trailingOnlyIcon).toBeInTheDocument()
+    expect(trailingOnlyIcon?.className).not.toContain('--noPointerEvents')
+
+    const bothLeadingIcon = items[3].querySelector<HTMLElement>('.d1-button__icon')
+    const bothTrailingIcon = items[3].querySelector<HTMLElement>('.d1-button__trailing')
+    await expect(bothLeadingIcon).toBeInTheDocument()
+    await expect(bothTrailingIcon).toBeInTheDocument()
+    expect(bothLeadingIcon?.className).toContain('--noPointerEvents')
+    expect(bothTrailingIcon?.className).not.toContain('--noPointerEvents')
   }
 }
 export const ButtonPrimary: Story = {

@@ -19,6 +19,7 @@ export type IconPropsToken = {
   dir?: boolean
   overlay?: boolean
   dynamic?: boolean
+  noPointerEvents?: boolean
   start?: boolean
   end?: boolean
   high?: boolean

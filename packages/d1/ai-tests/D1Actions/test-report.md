@@ -6,8 +6,8 @@
 - **Исходный код:** [`D1Actions`](../../src/components/Ui/Actions), [`Actions`](../../../constructor/src/constructors/Actions)
 - **Целевой URL:** `http://localhost:3000/component-actions`
 - **Материалы (`materials/`):** `Отсутствуют`
-- **Дата тестирования (UTC):** `2026-11-23T09:11:36Z`
-- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Дата тестирования (UTC):** `2026-11-23T14:37:32Z`
+- **Окружение:** `Headless Chrome (Chrome/157.0.8103.79, Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
 - **Покрытие тест-кейсов:** `14 / 14` (`100%`)
 - **Итог:** **14 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — все визуальные, интерактивные, граничные (включая числовой `label: 0`), адаптивные, A11y и runtime-сценарии `D1Actions` пройдены без единого предупреждения и сетевой ошибки (`vueWarnings: []`, `pageErrors: []`, `consoleErrors: []`, `networkErrors: []`).
 
@@ -22,7 +22,7 @@
 | `TC-VIS-001` | Базовый рендеринг списков (`list`, `list + listSecondary`, `listSecondary`) и спейсера | ✅ | Отрендерено `39` экземпляров `.d1-actions` на странице, в группе `Basic Lists` — `3` блока (`1246×64px`, `gap: 8px`), `.d1-actions__spacer` разделяет группы (`Cancel`/`Apply` справа по умолчанию, `Delete` слева), `scrollWidth: 1440 === innerWidth: 1440`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
 | `TC-VIS-002` | Варианты выравнивания (`right`, `left`, `center`, `block`, `auto`, `none`) | ✅ | CSS `order` убран, порядок полностью корректен: `align="right"` -> `Delete` слева (`113px`), `Cancel`/`Apply` справа (`1159px`); `align="left"` и `align="none"` -> primary слева (`113px`), secondary справа (`1247px`); `center` (`justifyContent: center`), `block` (`column-reverse`), `auto` (`flexGrow: 1`). | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 | `TC-VIS-003` | Варианты отступов (`padding`, `paddingByIndent`) и `buttonAttrs` / `buttonSecondaryAttrs` | ✅ | При `:paddingByIndent="false"` варианты `padding` корректно применяются (`sm`: `8/12px`, `md`: `12/16px`, `lg`: `16/20px`, `ySm`: `8/0px`, `yMd`: `12/0px`, `yLg`: `16/0px`, `none`: `0/0px`); при дефолтном `paddingByIndent: true` (`padding="lg"`) подтверждён ожидаемый приоритет `.d1-actions--paddingByIndent` (`8/16px`). `buttonAttrs`/`buttonSecondaryAttrs` применены ко всем `3` блокам. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
-| `TC-VIS-004` | Состояния кнопок, иконки и слоты (`#default`, `#secondary`) | ✅ | В группе `Slots` отрендерены `[2, 1, 2, 5]` кнопок (в смешанном блоке: `Delete`, `Extra Secondary`, `Cancel`, `Apply`, `Extra Primary`); в группе `Button States & Icons` все `8` состояний (`disabled`, `readonly`, `selected`, `focus`, `loading`, `skeleton`, `icon`, `iconTrailing`) отображены корректно (`disabledCount: 1`, `hasSkeleton: true`). | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
+| `TC-VIS-004` | Состояния кнопок, иконки и слоты (`#default`, `#secondary`) | ✅ | В группе `Slots` отрендерены `[2, 1, 2, 5]` кнопок; в группе `Button States & Icons` все `8` состояний (`disabled`, `readonly`, `selected`, `focus`, `loading`, `skeleton`, `icon`, `iconTrailing`) отображены корректно (`disabledCount: 1`, `hasSkeleton: true`), ведущая иконка имеет `pointer-events: none`, хвостовая — `pointer-events: auto`. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 

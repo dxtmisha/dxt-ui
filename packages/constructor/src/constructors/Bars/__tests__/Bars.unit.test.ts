@@ -313,5 +313,77 @@ describe('Bars (Logic Orchestrator)', () => {
 
       scope.stop()
     })
+
+    it('should compose external onClick handlers and merge classes without duplicating back click emit', async () => {
+      const scope = effectScope()
+      const element = ref<HTMLElement>()
+      const emitFn = vi.fn()
+      const sharedClick = vi.fn()
+      const backExternalClick = vi.fn()
+      const itemExternalClick = vi.fn()
+
+      await scope.run(async () => {
+        const bars = new Bars(
+          reactive({
+            action: true,
+            buttonAttrs: {
+              class: 'shared-button',
+              onClick: sharedClick
+            },
+            backButton: {
+              class: 'custom-back',
+              onClick: backExternalClick
+            },
+            bars: [
+              {
+                value: 'edit',
+                label: 'Edit',
+                class: 'edit-button',
+                onClick: itemExternalClick
+              }
+            ]
+          }),
+          element,
+          naming,
+          undefined,
+          undefined,
+          emitFn
+        )
+
+        const backBinds = bars.backBinds.value
+        expect(backBinds?.class).toContain('shared-button')
+        expect(backBinds?.class).toContain('custom-back')
+        expect(backBinds?.class).toContain('d1-window--close')
+        expect(backBinds?.class).toContain('d1-motionTransform--close')
+        expect(Array.isArray(backBinds?.onClick)).toBe(true)
+
+        const backHandlers = backBinds?.onClick as unknown as Array<(event: MouseEvent, options?: { value: string, type: string }) => void>
+        const backEvent = new MouseEvent('click')
+        backHandlers.forEach(handler => handler(backEvent, { value: 'back', type: 'back' }))
+        await nextTick()
+
+        expect(bars.isAction()).toBe(false)
+        expect(sharedClick).toHaveBeenCalledTimes(1)
+        expect(backExternalClick).toHaveBeenCalledTimes(1)
+        const clickEmitsAfterBack = emitFn.mock.calls.filter(call => call[0] === 'click')
+        expect(clickEmitsAfterBack).toHaveLength(1)
+
+        const editBinds = bars.barsBinds.value?.[0]
+        expect(editBinds?.class).toContain('shared-button')
+        expect(editBinds?.class).toContain('edit-button')
+        expect(Array.isArray(editBinds?.onClick)).toBe(true)
+
+        const editHandlers = editBinds?.onClick as unknown as Array<(event: MouseEvent, options?: { value: string, type: string }) => void>
+        const editEvent = new MouseEvent('click')
+        editHandlers.forEach(handler => handler(editEvent, { value: 'edit', type: 'button' }))
+
+        expect(sharedClick).toHaveBeenCalledTimes(2)
+        expect(itemExternalClick).toHaveBeenCalledTimes(1)
+        const clickEmitsAfterEdit = emitFn.mock.calls.filter(call => call[0] === 'click')
+        expect(clickEmitsAfterEdit).toHaveLength(2)
+      })
+
+      scope.stop()
+    })
   })
 })

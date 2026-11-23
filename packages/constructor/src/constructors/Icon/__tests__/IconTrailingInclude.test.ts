@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { describe, expect, it } from 'vitest'
-import { h, reactive } from 'vue'
+import { h, reactive, ref } from 'vue'
 import { type ConstrClass, DesignComponents, DesignName, type Undefined } from '@dxtmisha/functional'
 import { IconTrailingInclude } from '../IconTrailingInclude'
 import { type IconComponentInclude, type IconLitePropsInclude, type IconTrailingPropsInclude } from '../basicTypes'
@@ -225,6 +225,80 @@ describe('IconTrailingInclude', () => {
       expect(include.trailingBind.disabled).toBe(true)
       expect(include.trailingBind.noPointerEvents).toBeUndefined()
       expect(include.trailingBind.dynamic).toBe(true)
+    })
+
+    it('should evaluate static IconTrailingInclude.is across all prop combinations', () => {
+      expect(IconTrailingInclude.is(undefined)).toBe(false)
+      expect(IconTrailingInclude.is({})).toBe(false)
+      expect(IconTrailingInclude.is({ icon: 'home' })).toBe(true)
+      expect(IconTrailingInclude.is({ iconTrailing: 'chevron_right' })).toBe(true)
+      expect(IconTrailingInclude.is({ icon: 'home', iconTrailing: 'chevron_right' })).toBe(true)
+    })
+
+    it('should merge classes, apply overrides, and reactively resolve Ref/getter extraIcon and extraTrailing', () => {
+      const props = createReactiveProps<IconTrailingPropsInclude>({
+        icon: 'star',
+        iconTrailing: 'expand_more'
+      })
+      const sharedDisabled = ref(false)
+      const leadingNoPointer = ref(true)
+      const trailingDynamic = ref(false)
+
+      const include = new IconTrailingInclude(
+        props,
+        naming,
+        undefined,
+        () => ({ class: 'shared-extra', disabled: sharedDisabled.value, dynamic: true }),
+        () => ({ class: 'leading-extra', noPointerEvents: leadingNoPointer.value, dynamic: false }),
+        () => ({ class: 'trailing-extra', dynamic: trailingDynamic.value })
+      )
+
+      expect(extractClassList(include.iconBind.class)).toEqual([
+        'shared-extra',
+        'leading-extra',
+        'd1-button__icon'
+      ])
+      expect(include.iconBind.disabled).toBe(false)
+      expect(include.iconBind.noPointerEvents).toBe(true)
+      expect(include.iconBind.dynamic).toBe(false)
+
+      expect(extractClassList(include.trailingBind.class)).toEqual([
+        'shared-extra',
+        'trailing-extra',
+        'd1-button__trailing'
+      ])
+      expect(include.trailingBind.disabled).toBe(false)
+      expect(include.trailingBind.dynamic).toBe(false)
+
+      sharedDisabled.value = true
+      leadingNoPointer.value = false
+      trailingDynamic.value = true
+
+      expect(include.iconBind.disabled).toBe(true)
+      expect(include.iconBind.noPointerEvents).toBe(false)
+      expect(include.trailingBind.disabled).toBe(true)
+      expect(include.trailingBind.dynamic).toBe(true)
+    })
+
+    it('should work when extraIcon or extraTrailing is provided without shared extra', () => {
+      const props = createReactiveProps<IconTrailingPropsInclude>({
+        icon: 'search',
+        iconTrailing: 'close'
+      })
+
+      const include = new IconTrailingInclude(
+        props,
+        naming,
+        undefined,
+        undefined,
+        { noPointerEvents: true },
+        { dynamic: true }
+      )
+
+      expect(include.iconBind.noPointerEvents).toBe(true)
+      expect(include.iconBind.dynamic).toBeUndefined()
+      expect(include.trailingBind.dynamic).toBe(true)
+      expect(include.trailingBind.noPointerEvents).toBeUndefined()
     })
   })
 })

@@ -6,10 +6,10 @@
 - **Исходный код:** [`D1Bars`](../../src/components/Ui/Bars/D1Bars.vue) ([`Bars`](../../../constructor/src/constructors/Bars/Bars.ts), [`DemoBarsPage`](../../../demo/src/pages/components/DemoBarsPage.vue))
 - **Целевой URL:** `http://localhost:3000/component-bars`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-22T08:35:23Z`
-- **Окружение:** `Headless Chrome 157.0.8103.51 (Puppeteer / CDP 127.0.0.1:9222, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
+- **Дата тестирования (UTC):** `2026-11-23T14:54:20Z`
+- **Окружение:** `Headless Chrome 157.0.8103.79 (Puppeteer / CDP 127.0.0.1:9222, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 10 / 10 (`100%`)
-- **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Bars` корректно рендерит иерархию текста, все токены отступов, режим скелетона, переключение `action`/`modelAction`, слоты и ARIA-атрибуты при нуле ошибок и предупреждений в консоли.
+- **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Bars` корректно рендерит иерархию текста, все токены отступов, режим скелетона, переключение `action`/`modelAction`, слоты, `pointer-events: none` на ведущих иконках кнопок и ARIA-атрибуты при нуле ошибок и предупреждений в консоли.
 
 ---
 
@@ -19,7 +19,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг заголовка, описания и кнопок | ✅ | Корневой блок `1246×66px`, заголовок `"Page Title"`, описание `"A concise description for this page"`, кнопки выровнены без перекрытий. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-001` | Базовый рендеринг заголовка, описания и кнопок | ✅ | Корневой блок `1246×66px`, заголовок `"Page Title"`, описание `"A concise description for this page"`, кнопки выровнены без перекрытий; у ведущих иконок кнопок `back`/`search`/`refresh` подтверждено `.d1-icon--noPointerEvents` и `pointer-events: none`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
 | `TC-VIS-002` | Варианты отступов (`padding` и `paddingByIndent`) | ✅ | При отключённом `paddingByIndent` все 7 токенов `padding` применяют точные отступы: `sm` (`8px/12px`), `md` (`12px/16px`), `lg` (`16px/20px`), `ySm` (`8px/0px`), `yMd` (`12px/0px`), `yLg` (`16px/0px`), `none` (`0px`); по умолчанию `paddingByIndent` даёт `8px/16px`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 | `TC-VIS-003` | Режим скелетона (`isSkeleton` внутри `D1Skeleton`) | ✅ | Классы `.d1-skeleton__textVariant` применены к `.d1-bars__label` и `.d1-bars__description`, кнопки переведены в скелетон без дублирования DOM. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 

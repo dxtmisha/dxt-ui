@@ -389,7 +389,7 @@ const onIconLoad = (event: ImageEventData): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Interactive Mode, Navigation & Accessibility (dynamic, ariaLabel, role, tabindex, href, to, disabled)">
+      <D1Group label="Interactive Mode, Navigation & Accessibility (dynamic, noPointerEvents, ariaLabel, role, tabindex, href, to, disabled)">
         <DemoFlex align="center">
           <D1Icon
             icon="notifications"
@@ -453,6 +453,22 @@ const onIconLoad = (event: ImageEventData): void => {
             overlay
             circle
             ariaLabel="Disabled action"
+          />
+          <D1Icon
+            icon="touch_app"
+            noPointerEvents
+            size="2xl"
+            overlay
+            circle
+          />
+          <D1Icon
+            icon="do_not_touch"
+            dynamic
+            noPointerEvents
+            size="2xl"
+            overlay
+            circle
+            ariaLabel="Non-pointer dynamic icon"
           />
         </DemoFlex>
       </D1Group>

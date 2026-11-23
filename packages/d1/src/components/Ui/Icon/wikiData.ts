@@ -25,6 +25,7 @@ const propsNames: StorybookProps = [
   { name: 'index', type: 'string | number' },
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
+  { name: 'noPointerEvents', type: 'boolean' },
   { name: 'overlay', type: 'boolean' },
   { name: 'rect', type: 'boolean' },
   { name: 'role', type: 'string' },

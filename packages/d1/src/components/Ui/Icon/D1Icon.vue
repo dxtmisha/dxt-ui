@@ -34,6 +34,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-icon--dir': props.dir,
     'd1-icon--overlay': props.overlay,
     'd1-icon--dynamic': props.dynamic,
+    'd1-icon--noPointerEvents': props.noPointerEvents,
     'd1-icon--start': props.start,
     'd1-icon--end': props.end,
     'd1-icon--high': props.high,

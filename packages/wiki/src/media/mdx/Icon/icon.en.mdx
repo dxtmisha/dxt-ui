@@ -11,7 +11,7 @@ It provides a unified interface on top of the `Image` component, managing both a
 - **Interactive Mode & Accessibility:** Full keyboard navigation (`tabindex`, `Enter`, `Space`), click events (`@click`, `@clickLite`), link support (`href`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`) when `dynamic` is enabled
 - **Decorative Default:** Renders with `aria-hidden="true"` and zero extraneous ARIA attributes when `dynamic` is not enabled
 - **Visual Transformations:** Built-in 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), background substrate (`overlay`), and color palette inheritance (`asPalette`)
-- **Layout & Stacking Control:** Flex layout ordering (`start`, `end`) and elevated stacking context (`high`)
+- **Layout & Stacking Control:** Flex layout ordering (`start`, `end`), elevated stacking context (`high`), and pointer-event pass-through (`noPointerEvents`)
 - **Visibility & Disabled States:** Granular control via `hide` and `disabled` modifiers propagated to child `Image` elements
 - **Lifecycle & Programmatic API:** Forwarding of child image `@load` events and exposed inspection methods (`isActive()`, `getValue()`, `getDetail()`)
 - **Skeleton & Composite Integration:** Built-in placeholder support (`isSkeleton`) and seamless composition in parent components via `IconLiteInclude`, `IconInclude`, and `IconTrailingInclude`

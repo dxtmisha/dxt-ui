@@ -69,10 +69,20 @@ await expect(items.length).toBe(4)
 
 await expect(items[0]).toHaveTextContent('Button')
 await expect(items[1]).toHaveClass('design-component--icon')
-await expect(items[1].querySelector('.design-component__icon')).toBeInTheDocument()
-await expect(items[2].querySelector('.design-component__trailing')).toBeInTheDocument()
-await expect(items[3].querySelector('.design-component__icon')).toBeInTheDocument()
-await expect(items[3].querySelector('.design-component__trailing')).toBeInTheDocument()
+const leadingOnlyIcon = items[1].querySelector<HTMLElement>('.design-component__icon')
+await expect(leadingOnlyIcon).toBeInTheDocument()
+expect(leadingOnlyIcon?.className).toContain('--noPointerEvents')
+
+const trailingOnlyIcon = items[2].querySelector<HTMLElement>('.design-component__trailing')
+await expect(trailingOnlyIcon).toBeInTheDocument()
+expect(trailingOnlyIcon?.className).not.toContain('--noPointerEvents')
+
+const bothLeadingIcon = items[3].querySelector<HTMLElement>('.design-component__icon')
+const bothTrailingIcon = items[3].querySelector<HTMLElement>('.design-component__trailing')
+await expect(bothLeadingIcon).toBeInTheDocument()
+await expect(bothTrailingIcon).toBeInTheDocument()
+expect(bothLeadingIcon?.className).toContain('--noPointerEvents')
+expect(bothTrailingIcon?.className).not.toContain('--noPointerEvents')
       `
     },
     {

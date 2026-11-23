@@ -43,8 +43,7 @@ const MockButton = defineComponent({
     value: [String, Number],
     icon: [String, Object],
     selected: Boolean,
-    isSkeleton: Boolean,
-    onClick: Function
+    isSkeleton: Boolean
   },
   emits: ['click'],
   setup(componentProps, { attrs, emit }) {
@@ -59,10 +58,6 @@ const MockButton = defineComponent({
           'data-skeleton': componentProps.isSkeleton ? 'true' : undefined,
           'data-has-icon': componentProps.icon ? 'true' : undefined,
           'onClick': (event: MouseEvent) => {
-            componentProps.onClick?.(event, {
-              type: componentProps.value === 'back' ? 'back' : 'button',
-              value: componentProps.value
-            })
             emit('click', event, {
               type: componentProps.value === 'back' ? 'back' : 'button',
               value: componentProps.value
@@ -197,10 +192,10 @@ describe('Bars (Integration)', () => {
       expect(label?.classList.contains('d1-skeleton__textVariant')).toBe(true)
       expect(description?.classList.contains('d1-skeleton__textVariant')).toBe(true)
 
-      const searchBtn = host.querySelector('button[data-value="search"]')
-      const filterBtn = host.querySelector('button[data-value="filter"]')
-      expect(searchBtn?.getAttribute('data-has-icon')).toBe('true')
-      expect(filterBtn?.getAttribute('data-has-icon')).toBeNull()
+      const searchButton = host.querySelector('button[data-value="search"]')
+      const filterButton = host.querySelector('button[data-value="filter"]')
+      expect(searchButton?.getAttribute('data-has-icon')).toBe('true')
+      expect(filterButton?.getAttribute('data-has-icon')).toBeNull()
 
       props.label = 'Updated Inbox'
       await nextTick()
@@ -258,19 +253,31 @@ describe('Bars (Integration)', () => {
       expect(emitted.some(item => item.event === 'click')).toBe(true)
     })
 
-    it('should emit click events from regular bar buttons', async () => {
+    it('should emit click events from regular bar buttons and compose external onClick handlers', async () => {
+      const externalClick = vi.fn()
+      const backExternalClick = vi.fn()
       const { host, emitted } = await mountBars({
-        backHide: true,
-        bars: [{ value: 'refresh', label: 'Refresh' }]
+        action: true,
+        backButton: { label: 'Back', onClick: backExternalClick },
+        bars: [{ value: 'refresh', label: 'Refresh', onClick: externalClick }],
+        actionBars: [{ value: 'archive', label: 'Archive', onClick: externalClick }]
       })
 
-      const refreshBtn = host.querySelector('button[data-value="refresh"]') as HTMLButtonElement
-      refreshBtn.click()
+      const archiveButton = host.querySelector('button[data-value="archive"]') as HTMLButtonElement
+      archiveButton.click()
       await nextTick()
 
-      const clickEvent = emitted.find(item => item.event === 'click')
-      expect(clickEvent).toBeDefined()
-      expect(clickEvent?.args[1]).toEqual({ type: 'button', value: 'refresh' })
+      expect(externalClick).toHaveBeenCalledTimes(1)
+      expect(emitted.filter(item => item.event === 'click')).toHaveLength(1)
+      expect(emitted.find(item => item.event === 'click')?.args[1]).toEqual({ type: 'button', value: 'archive' })
+
+      const backButton = host.querySelector('button[data-value="back"]') as HTMLButtonElement
+      backButton.click()
+      await nextTick()
+
+      expect(backExternalClick).toHaveBeenCalledTimes(1)
+      expect(emitted.filter(item => item.event === 'click')).toHaveLength(2)
+      expect(emitted.some(item => item.event === 'update:action' && item.args[0] === false)).toBe(true)
     })
   })
 
