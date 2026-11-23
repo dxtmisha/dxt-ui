@@ -6,18 +6,16 @@ Modal является специализированным компоненто
 
 **Основные возможности:**
 
-- Центрированное позиционирование по умолчанию
-- Полупрозрачный оверлей с блокировкой фона
-- Управление через v-model:open
-- Закрытие по ESC и клику вне области
-- Интеграция со Scrollbar для длинного контента
-- Слоты для заголовка, содержимого и футера
-- События жизненного цикла (preparation, opening, closing)
-- Кнопка закрытия с настраиваемой иконкой
+- **Центрированное отображение:** Предустановленная обертка над `Window` с фиксированным режимом `adaptive: 'modal'` и полупрозрачным оверлеем
+- **Двустороннее управление:** Синхронизация открытия через `v-model:open`, `v-model:modelOpen` или методы `expose`
+- **Интеграция Bars и Actions:** Встроенная шапка `Bars` (`barsLabel`, `barsDescription`, `barsList`, `barsBackHide`) и футер `Actions` (`actionsList`, `actionsSecondary`) с автоматической связью ARIA
+- **Поддержка баннера изображения:** Настраиваемое изображение через `image` и `imagePosition` (`'top' | 'left'`)
+- **Гибкие слоты:** Слоты `#control`, `#title`, `#header`, `#default` и `#footer`
+- **Настройка Window и доступность:** Проброс `windowAttrs` (`persistent`, `closeButton`, `beforeClosing`), захват фокуса, `disableFocusReturn` и закрытие по `ESC`/оверлею
 
 **Отличия от Window:**
 
-Modal - это Window с предустановленным `adaptive: 'modal'`, что упрощает использование для стандартных диалоговых окон без необходимости явно указывать режим адаптивности.
+Modal — это обертка над `Window` с предустановленным `adaptive: 'modal'` и встроенными секциями `Bars` и `Actions`, что упрощает создание стандартных диалоговых окон без ручной настройки позиционирования.
 
 **Типичные сценарии использования:**
 
@@ -45,8 +43,7 @@ const handleBeforeClosing = async () => {
 
   <Modal
     v-model:open="isModalOpen"
-    :beforeClosing="handleBeforeClosing"
-    closeButton
+    :windowAttrs="{ beforeClosing: handleBeforeClosing, closeButton: true }"
   >
     <template #title>
       <h2>Подтверждение действия</h2>
@@ -57,8 +54,8 @@ const handleBeforeClosing = async () => {
       <p>Это действие нельзя будет отменить.</p>
     </template>
 
-    <template #footer="{ classesModal }">
-      <button :class="classesModal.close">Отмена</button>
+    <template #footer="{ classesWindow }">
+      <button :class="classesWindow.close">Отмена</button>
       <button @click="performAction">Подтвердить</button>
     </template>
   </Modal>
@@ -66,3 +63,5 @@ const handleBeforeClosing = async () => {
   `}
     language="html"
 />
+
+> Modal объединяет оверлей, управление фокусом и жизненный цикл Window со встроенными панелями Bars и кнопками Actions для типовых диалоговых сценариев.

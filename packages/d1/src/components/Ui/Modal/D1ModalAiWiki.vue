@@ -20,11 +20,11 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Modal embedded open v-bind="args">
+  <DesignComponent open v-bind="args">
     <template #default>
       <p>This is a modal dialog.</p>
     </template>
-  </D1Modal>
+  </DesignComponent>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

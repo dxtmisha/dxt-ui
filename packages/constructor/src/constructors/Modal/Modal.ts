@@ -29,7 +29,7 @@ export class Modal extends ModalAbstract {
    * @param constructors object with constructor classes / объект с классами конструкторов
    */
   constructor(
-    props: ModalProps,
+    props: Readonly<ModalProps>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
     components?: DesignComp<ModalComponents, ModalProps>,
@@ -46,11 +46,10 @@ export class Modal extends ModalAbstract {
       emits,
       constructors,
       () => ({
-        image: this.props.image,
-
         adaptive: 'modal',
-        imagePosition: this.props.imagePosition,
-        closeButton: this.props.barsBackHide
+        ...(this.props.image !== undefined ? { image: this.props.image } : {}),
+        ...(this.props.imagePosition !== undefined ? { imagePosition: this.props.imagePosition } : {}),
+        ...(this.props.barsBackHide !== undefined ? { closeButton: this.props.barsBackHide } : {})
       })
     )
   }

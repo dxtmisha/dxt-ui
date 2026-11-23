@@ -5,12 +5,14 @@ import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 
 import type { ModelPropsOpen } from '../../types/modelTypes'
 
+/** Token properties for Modal component / Токен-свойства компонента Modal */
 export type ModalPropsToken = {
   // :type [!] System label / Системная метка
   imagePosition?: 'top' | 'left'
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for Modal component / Базовые свойства компонента Modal */
 export type ModalPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic,
   Bars extends BarsPropsBasic = BarsPropsBasic,
@@ -22,8 +24,7 @@ export type ModalPropsBasic<
   & ImagePropsInclude<Image>
   & ModelPropsOpen
   & {
-    /** Status/ Статус */
-    /** Whether the modal is open/ Открыто ли модальное окно */
+    /** Whether the modal is open / Открыто ли модальное окно */
     open?: boolean
   }
 

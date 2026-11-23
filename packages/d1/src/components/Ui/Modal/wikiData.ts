@@ -38,7 +38,7 @@ const slotsNames: StorybookSlots = [
 Основной слот для главного содержимого`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'footer', description: `Footer slot for window bottom/
 Слот подвала для низа окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
-  { name: 'header', description: `Slot for the modal header/ Слот для заголовка модального окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'header', description: `Slot for the modal header / Слот для заголовка модального окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'title', description: `Title slot for window header/
 Слот заголовка для шапки окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка

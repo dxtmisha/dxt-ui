@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from 'vitest'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, reactive } from 'vue'
 
+import { Modal } from '../Modal'
 import { ModalDesign } from '../ModalDesign'
 import type { ModalPropsBasic } from '../props'
 import type {
@@ -14,9 +16,10 @@ const cleanups: Array<() => void> = []
 
 afterEach(() => {
   cleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
 })
 
-describe('ModalDesign', () => {
+describe('ModalDesign (Unit)', () => {
   it('should initialize and provide expose methods within component lifecycle', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
@@ -46,18 +49,23 @@ describe('ModalDesign', () => {
     await nextTick()
 
     expect(exposed).toBeDefined()
+    expect(typeof exposed.getId).toBe('function')
+    expect(typeof exposed.getOpen).toBe('function')
+    expect(typeof exposed.getControl).toBe('function')
     expect(typeof exposed.setOpen).toBe('function')
     expect(typeof exposed.toOpen).toBe('function')
     expect(typeof exposed.toClose).toBe('function')
     expect(typeof exposed.toggle).toBe('function')
+    expect(typeof exposed.getWindowElement).toBe('function')
   })
 
-  it('should generate all required subclasses in initClasses', async () => {
+  it('should generate all required subclasses in initClasses and empty styles in initStyles', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
     let classes!: Partial<ModalClasses>
+    let styles!: Record<string, unknown>
 
     const Component = defineComponent({
       setup() {
@@ -69,7 +77,8 @@ describe('ModalDesign', () => {
           ModalPropsBasic
         >('d1.modal', props)
 
-        classes = (design as any).initClasses()
+        classes = (design as unknown as { initClasses: () => Partial<ModalClasses> }).initClasses()
+        styles = (design as unknown as { initStyles: () => Record<string, unknown> }).initStyles()
         return design.render()
       }
     })
@@ -81,18 +90,20 @@ describe('ModalDesign', () => {
     await nextTick()
 
     expect(classes.main).toBeDefined()
-    expect(classes.title).toContain('title')
-    expect(classes.header).toContain('header')
-    expect(classes.body).toContain('body')
-    expect(classes.footer).toContain('footer')
+    expect(classes.title).toBe('d1-modal__title')
+    expect(classes.header).toBe('d1-modal__header')
+    expect(classes.body).toBe('d1-modal__body')
+    expect(classes.footer).toBe('d1-modal__footer')
+    expect(styles).toEqual({})
   })
 
-  it('should return empty styles object by default', async () => {
+  it('should support overriding ItemConstructor in ModalDesign constructor', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
-    let styles!: Record<string, any>
+    class CustomModal extends Modal {}
+    let itemInstance: unknown
 
     const Component = defineComponent({
       setup() {
@@ -102,9 +113,9 @@ describe('ModalDesign', () => {
           ModalExpose,
           ModalClasses,
           ModalPropsBasic
-        >('d1.modal', props)
+        >('d1.modal', props, undefined, CustomModal)
 
-        styles = (design as any).initStyles()
+        itemInstance = (design as unknown as { item: Modal }).item
         return design.render()
       }
     })
@@ -115,7 +126,7 @@ describe('ModalDesign', () => {
 
     await nextTick()
 
-    expect(styles).toEqual({})
+    expect(itemInstance).toBeInstanceOf(CustomModal)
   })
 
   it('should render slots via sub-render methods inside render function', async () => {
@@ -123,11 +134,11 @@ describe('ModalDesign', () => {
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
-    const renderResults: Record<string, any> = {}
+    const renderResults: Record<string, unknown> = {}
 
     const Component = defineComponent({
       setup() {
-        const props: ModalPropsBasic = reactive({})
+        const props: ModalPropsBasic = reactive({ barsBackHide: true })
         const design = new ModalDesign<
           ModalComponents,
           ModalExpose,
@@ -136,10 +147,11 @@ describe('ModalDesign', () => {
         >('d1.modal', props)
 
         return () => {
-          renderResults.control = design.renderControl({ open: false } as any)
-          renderResults.title = design.renderTitle({ open: false } as any)
-          renderResults.default = design.renderDefault({ open: false } as any)
-          renderResults.footer = design.renderFooter({ open: false } as any)
+          const controlItem = { open: false } as unknown as Parameters<typeof design.renderTitle>[0]
+          renderResults.control = design.renderControl(controlItem)
+          renderResults.title = design.renderTitle(controlItem)
+          renderResults.default = design.renderDefault(controlItem)
+          renderResults.footer = design.renderFooter(controlItem)
           return h('div', 'mounted')
         }
       }
@@ -164,8 +176,8 @@ describe('ModalDesign', () => {
     await nextTick()
 
     expect(renderResults.control).toBeDefined()
-    expect(renderResults.title.length).toBeGreaterThanOrEqual(1)
-    expect(renderResults.default.length).toBe(2)
-    expect(renderResults.footer.length).toBeGreaterThanOrEqual(1)
+    expect((renderResults.title as unknown[]).length).toBe(1)
+    expect((renderResults.default as unknown[]).length).toBe(2)
+    expect((renderResults.footer as unknown[]).length).toBe(1)
   })
 })

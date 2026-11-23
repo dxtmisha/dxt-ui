@@ -28,17 +28,18 @@ export class ModalDesign<
     ModalSlots,
     CLASSES,
     P,
-    Modal
+    Modal,
+    typeof Modal
   > {
   /**
    * Initialization of the main item.
    *
    * Инициализация основного элемента.
-   * @param Item constructor class for Modal / класс конструктора для Modal
+   * @param ItemConstructor constructor class for Modal / класс конструктора для Modal
    * @returns modal instance / экземпляр модального окна
    */
-  protected initItem(Item?: typeof Modal): Modal {
-    return new (Item ?? Modal)(
+  protected initItem(ItemConstructor: typeof Modal = Modal): Modal {
+    return new ItemConstructor(
       this.props,
       this.element,
       this.naming,

@@ -233,3 +233,7 @@ src/constructors/Accordion/Accordion.ts
 src/constructors/Accordion/AccordionDesign.tsx
 src/constructors/Actions/ActionsDesign.tsx
 src/constructors/Actions/ActionsInclude.ts
+src/constructors/Modal/ModalAbstract.ts
+src/constructors/Modal/Modal.ts
+src/constructors/Modal/ModalDesignAbstract.tsx
+src/constructors/Modal/ModalDesign.tsx

@@ -1,8 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isFunction
 } from '@dxtmisha/functional'
 
 import type { WindowControlItem } from '../Window'
@@ -33,7 +34,8 @@ export abstract class ModalDesignAbstract<
   SLOTS extends ModalSlots,
   CLASSES extends ModalClasses,
   P extends ModalPropsBasic,
-  ITEM extends ModalAbstract = ModalAbstract
+  ITEM extends ModalAbstract = ModalAbstract,
+  ITEM_CONSTRUCTOR = unknown
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -47,17 +49,19 @@ export abstract class ModalDesignAbstract<
   protected readonly item: ITEM
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
-   * @param ItemConstructor window item class / класс элемента окна
+   * @param ItemConstructor modal item class / класс элемента модального окна
    */
   constructor(
     name: string,
     props: Readonly<P>,
     options?: ConstrOptions<COMP, EMITS, P>,
-    ItemConstructor?: any
+    ItemConstructor?: ITEM_CONSTRUCTOR
   ) {
     super(
       name,
@@ -75,7 +79,7 @@ export abstract class ModalDesignAbstract<
    * @param ItemConstructor constructor class / класс конструктора
    * @returns item instance / экземпляр элемента
    */
-  protected abstract initItem(ItemConstructor?: any): ITEM
+  protected abstract initItem(ItemConstructor?: ITEM_CONSTRUCTOR): ITEM
 
   /**
    * Initialization of all the necessary properties for work.
@@ -113,11 +117,13 @@ export abstract class ModalDesignAbstract<
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      )
     )
   }
 
@@ -145,13 +151,10 @@ export abstract class ModalDesignAbstract<
     props: WindowControlItem
   ): VNode[] => {
     const children: VNode[] = [
-      ...this.item.i('bars').render()
+      ...this.item.callInstance('bars', item => item.render(), [])
     ]
 
-    if (
-      this.slots
-      && 'title' in this.slots
-    ) {
+    if (isFunction(this.slots?.title)) {
       children.push(
         h(
           'div',
@@ -176,10 +179,7 @@ export abstract class ModalDesignAbstract<
   ): VNode[] => {
     const children: VNode[] = []
 
-    if (
-      this.slots
-      && 'header' in this.slots
-    ) {
+    if (isFunction(this.slots?.header)) {
       children.push(
         h(
           'div',
@@ -189,10 +189,7 @@ export abstract class ModalDesignAbstract<
       )
     }
 
-    if (
-      this.slots
-      && 'default' in this.slots
-    ) {
+    if (isFunction(this.slots?.default)) {
       children.push(
         h(
           'div',
@@ -215,16 +212,11 @@ export abstract class ModalDesignAbstract<
   readonly renderFooter = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: VNode[] = []
+    const children: VNode[] = [
+      ...this.item.callInstance('actions', item => item.render(), [])
+    ]
 
-    if (this.item.i('actions').is) {
-      children.push(...this.item.i('actions').render())
-    }
-
-    if (
-      this.slots
-      && 'footer' in this.slots
-    ) {
+    if (isFunction(this.slots?.footer)) {
       children.push(
         h(
           'div',

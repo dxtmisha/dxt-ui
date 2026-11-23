@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
 import {
   type ConstrEmit,
   type ConstrItems,
@@ -6,7 +6,8 @@ import {
   type DesignName,
   DesignLogicAbstract,
   executeFunctionRef,
-  getElementId
+  getElementId,
+  isFilled
 } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -51,13 +52,31 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
   /** Description identifier for ARIA / Идентификатор описания для ARIA */
   readonly descriptionId: string = getElementId()
 
-  /** Open state reference / Ссылка на состояние открытия */
-  readonly open = ref<boolean>(Boolean(this.props.open))
+  /** Watcher handle for open/modelOpen synchronization / Дескриптор наблюдателя за синхронизацией open/modelOpen */
+  protected stopOpenWatch?: WatchStopHandle
 
   /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
   protected override readonly constructorItems: ConstrItems<ModalConstructors> = {
     actions: {
       item: ActionsInclude,
+      canCreate: () => {
+        if (this.props.actionsHide) {
+          return false
+        }
+
+        const extraActions = executeFunctionRef(
+          executeFunctionRef(this.extraActionsCallback)
+        )
+
+        return Boolean(
+          isFilled(this.props.actionsList)
+          || isFilled(this.props.actionsSecondary)
+          || isFilled(this.props.actionsAttrs?.list)
+          || isFilled(this.props.actionsAttrs?.listSecondary)
+          || isFilled(extraActions?.list)
+          || isFilled(extraActions?.listSecondary)
+        )
+      },
       parameters: () => [
         this.props,
         this.naming,
@@ -69,6 +88,7 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     },
     bars: {
       item: BarsInclude,
+      canCreate: () => Boolean(this.extraBars) || BarsInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -117,13 +137,13 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
    * @param components object for working with components / объект для работы с компонентами
    * @param slots slots / слоты
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with constructor classes / объект с классами конструкторов
    * @param extraWindow additional parameters for WindowInclude / дополнительные параметры для WindowInclude
    * @param extraBars additional parameters for BarsInclude / дополнительные параметры для BarsInclude
    * @param extraActionsCallback additional parameters for ActionsInclude / дополнительные параметры для ActionsInclude
-   * @param constructors object with constructor classes / объект с классами конструкторов
    */
   protected constructor(
-    props: ModalProps,
+    props: Readonly<ModalProps>,
     element: Ref<HTMLElement | undefined>,
     naming: DesignName,
     components?: DesignComp<ModalComponents, ModalProps>,
@@ -145,22 +165,46 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     )
   }
 
+  /** Open state reference / Ссылка на состояние открытия */
+  readonly open = ref<boolean>(this.getOpenProp())
+
+  /**
+   * Updates the open state based on incoming open/modelOpen props.
+   *
+   * Обновляет состояние открытия на основе входящих свойств open/modelOpen.
+   */
+  readonly update = (): void => {
+    this.open.value = this.getOpenProp()
+  }
+
+  /**
+   * Resolves the incoming open state across open and modelOpen props.
+   *
+   * Разрешает входное состояние открытия с учётом свойств open и modelOpen.
+   * @returns resolved open state / разрешённое состояние открытия
+   */
+  protected getOpenProp(): boolean {
+    return Boolean(this.props.open || this.props.modelOpen)
+  }
+
   /**
    * Setup lifecycle listeners and watchers on mount.
    *
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   protected override readonly onMounted = (): void => {
-    watch(() => this.props.open, this.update)
+    this.stopOpenWatch?.()
+    this.stopOpenWatch = watch(() => this.getOpenProp(), this.update)
     this.update()
   }
 
   /**
-   * Updates the open state based on props.
+   * Cleanup lifecycle watchers on unmount.
    *
-   * Обновляет состояние открытия на основе свойств.
+   * Очистка наблюдателей жизненного цикла при размонтировании.
    */
-  readonly update = (): void => {
-    this.open.value = Boolean(this.props.open)
+  protected override readonly onUnmounted = (): void => {
+    this.stopOpenWatch?.()
+    this.stopOpenWatch = undefined
   }
 }

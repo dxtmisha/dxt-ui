@@ -52,7 +52,7 @@ const slotsNames: StorybookSlots = [
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'footer', description: `Footer slot for window bottom/
 Слот подвала для низа окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
-  { name: 'header', description: `Slot for the modal header/ Слот для заголовка модального окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'header', description: `Slot for the modal header / Слот для заголовка модального окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'label', description: `Label slot content/ Содержимое слота метки`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'title', description: `Title slot for window header/
 Слот заголовка для шапки окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] }

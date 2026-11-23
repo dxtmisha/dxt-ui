@@ -80,6 +80,17 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  disableFocusReturn: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Disables automatic focus return to the trigger element when the window closes',
+        ru: 'Отключает автоматический возврат фокуса на элемент-триггер при закрытии окна'
+      }
+    },
+    hide: true
+  },
   embedded: {
     type: StorybookControl.boolean,
     options: {
