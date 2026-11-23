@@ -561,4 +561,49 @@ describe('ActionsDesign (Full Component DOM)', () => {
     expect(rootElement?.getAttribute('role')).toBe('toolbar')
     expect(rootElement?.getAttribute('aria-label')).toBe('Custom Actions Toolbar')
   })
+
+  it('should expose public renderItems method for rendering button lists with merged classes', async () => {
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    cleanups.push(() => host.remove())
+
+    let designInstance!: ActionsDesign<
+      ActionsComponents,
+      ActionsExpose,
+      ActionsClasses,
+      ActionsPropsBasic
+    >
+
+    const TestComponent = defineComponent({
+      setup() {
+        designInstance = new ActionsDesign(
+          'd1.actions',
+          reactive<ActionsPropsBasic>({}),
+          { components: { button: ButtonMock } }
+        )
+
+        return () => h(
+          'div',
+          designInstance.renderItems(
+            [{ label: 'Public Item', value: 'public' }],
+            'd1-actions__list',
+            { palette: 'primary' },
+            'default',
+            'custom'
+          )
+        )
+      }
+    })
+
+    const app = createApp(TestComponent)
+    app.mount(host)
+    cleanups.push(() => app.unmount())
+    await nextTick()
+
+    const button = host.querySelector('button')
+    expect(button?.textContent).toBe('Public Item')
+    expect(button?.getAttribute('data-palette')).toBe('primary')
+    expect(button?.classList.contains('d1-actions__item')).toBe(true)
+    expect(button?.classList.contains('d1-actions__list')).toBe(true)
+  })
 })

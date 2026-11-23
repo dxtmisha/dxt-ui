@@ -144,43 +144,6 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'ActionsFlexible',
-      name: {
-        en: 'Adaptive and flexible layout',
-        ru: 'Адаптивная раскладка'
-      },
-      propsName: ['flexible'],
-      setup: `
-      const list = [
-        { label: 'Cancel', value: 'cancel' },
-        { label: 'Apply', selected: true, value: 'apply' }
-      ]
-      const listSecondary = [
-        { label: 'Delete', icon: 'delete', value: 'delete' }
-      ]
-      return { list, listSecondary }
-      `,
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: true</div>
-            <DesignComponent :list="list" :listSecondary="listSecondary" flexible/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: false</div>
-            <DesignComponent :list="list" :listSecondary="listSecondary" :flexible="false"/>
-          </div>
-        </div>
-      `,
-      play: `
-        const items = canvasElement.querySelectorAll('.design-component')
-        await expect(items.length).toBe(2)
-
-        await expect(items[0]).toHaveClass('design-component--flexible')
-        await expect(items[1]).not.toHaveClass('design-component--flexible')
-      `
-    },
-    {
       id: 'ActionsButtonAttrs',
       name: {
         en: 'Shared button attributes',
@@ -419,7 +382,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         { label: 'Disabled', disabled: true, value: 'disabled' },
         { label: 'Loading', loading: true, value: 'loading' },
         { label: 'With Icon', icon: 'download', value: 'icon' },
-        { label: 'Selected', selected: true, value: 'selected' }
+        { label: 'Selected', selected: true, value: 'selected' },
+        { label: 0, value: 0 }
       ]
       return { stateItems }
       `,
@@ -436,9 +400,9 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         await expect(actionsElement).toBeInTheDocument()
 
         const buttons = actionsElement?.querySelectorAll('.design-component__item')
-        await expect(buttons?.length).toBe(4)
+        await expect(buttons?.length).toBe(5)
 
-        if (buttons && buttons.length >= 4) {
+        if (buttons && buttons.length >= 5) {
           await expect(buttons[0]).toBeDisabled()
           await expect(buttons[1]).toHaveAttribute('aria-disabled', 'true')
           await expect(buttons[1].querySelector('[class*="__loading"]')).toBeTruthy()
@@ -446,6 +410,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
           await expect(buttons[2].textContent).toContain('With Icon')
           await expect(buttons[3]).toHaveAttribute('data-value', 'selected')
           await expect(buttons[3].textContent).toContain('Selected')
+          await expect(buttons[4]).toHaveAttribute('data-value', '0')
+          await expect(buttons[4].textContent).toContain('0')
         }
       `
     },
@@ -546,8 +512,9 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.ActionsAlign}/>
 <Canvas of={Component.ActionsButtonAttrs}/>
 
+<template prop="flexible">
 <StorybookDescriptions componentName={'Actions'} type={'flexible'}/>
-<Canvas of={Component.ActionsFlexible}/>
+</template>
     `,
     events: `
 <Canvas of={Component.ActionsEventClick}/>

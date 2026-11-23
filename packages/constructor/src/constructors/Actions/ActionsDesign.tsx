@@ -218,13 +218,13 @@ export class ActionsDesign<
    * @param keyPrefix key prefix for rendered items / префикс ключа для отрендеренных элементов
    * @returns array of virtual nodes / массив виртуальных узлов
    */
-  protected renderItems(
+  readonly renderItems = (
     list: ActionsPropsBasic['list'],
     className: string | undefined,
     buttonAttrs: ActionsPropsBasic['buttonAttrs'],
     slotName: keyof ActionsSlots,
     keyPrefix: string
-  ): VNode[] {
+  ): VNode[] => {
     const children: VNode[] = []
 
     if (list) {

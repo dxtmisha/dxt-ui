@@ -46,8 +46,6 @@ src/constructors/Window/WindowDesign.tsx
 src/functions/setAreaValue.ts
 src/classes/AreaInclude.ts
 src/constructors/Actions/Actions.ts
-src/constructors/Actions/ActionsDesign.tsx
-src/constructors/Actions/ActionsInclude.ts
 src/constructors/Arrow/ArrowElement.ts
 src/constructors/Arrow/ArrowElementTarget.ts
 src/constructors/Arrow/ArrowParent.ts
@@ -233,3 +231,5 @@ src/constructors/Cell/CellDesign.tsx
 src/constructors/Accordion/AccordionHead.ts
 src/constructors/Accordion/Accordion.ts
 src/constructors/Accordion/AccordionDesign.tsx
+src/constructors/Actions/ActionsDesign.tsx
+src/constructors/Actions/ActionsInclude.ts

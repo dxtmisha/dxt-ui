@@ -123,6 +123,19 @@ describe('ActionsInclude (Embedding Helper)', () => {
       )
       expect(extraOnly.is).toBe(true)
       expect(extraOnly.binds.value.list).toEqual([{ label: 'From Extra' }])
+
+      const attrsOnly = new ActionsInclude(
+        reactive<ActionsPropsInclude>({
+          actionsAttrs: {
+            list: [{ label: 'From Attrs' }],
+            listSecondary: [{ label: 'From Attrs Secondary' }]
+          }
+        }),
+        naming
+      )
+      expect(attrsOnly.is).toBe(true)
+      expect(attrsOnly.binds.value.list).toEqual([{ label: 'From Attrs' }])
+      expect(attrsOnly.binds.value.listSecondary).toEqual([{ label: 'From Attrs Secondary' }])
     })
   })
 
@@ -154,9 +167,9 @@ describe('ActionsInclude (Embedding Helper)', () => {
 
       const boundOnClick = include.binds.value.onClick
       if (Array.isArray(boundOnClick)) {
-        boundOnClick.forEach(fn => fn(mouseEvent, payload))
+        boundOnClick.forEach(handler => handler(mouseEvent, payload))
       } else {
-        (boundOnClick as ((e: MouseEvent, v: EventClickValue) => void) | undefined)?.(mouseEvent, payload)
+        (boundOnClick as ((event: MouseEvent, value: EventClickValue) => void) | undefined)?.(mouseEvent, payload)
       }
 
       expect(customAttrsClick).toHaveBeenCalledTimes(1)

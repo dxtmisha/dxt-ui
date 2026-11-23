@@ -271,6 +271,7 @@ const listMany: ButtonProps[] = [
         <DemoBox>
           <D1Actions
             :list="[
+              { label: 0, outline: true, value: 0 },
               { label: 'Single Action', primary: true, value: 'single' },
               { label: 'Extremely Long Action Button Text For Layout Boundaries', outline: true, value: 'long' }
             ]"
@@ -283,6 +284,7 @@ const listMany: ButtonProps[] = [
         <DemoBox>
           <D1Actions
             :list="listBasic"
+            area="dialog-actions"
             role="toolbar"
             ariaLabel="Document Editing Actions"
           />

@@ -145,43 +145,6 @@ export const ActionsAlign: Story = {
     await expect(items[4]).toHaveClass('d1-actions--align--auto')
   }
 }
-export const ActionsFlexible: Story = {
-  name: 'Адаптивная раскладка',
-  render: () => ({
-    components: { D1Actions },
-    setup() {
-      const list = [
-        { label: 'Cancel', value: 'cancel' },
-        { label: 'Apply', selected: true, value: 'apply' }
-      ]
-      const listSecondary = [
-        { label: 'Delete', icon: 'delete', value: 'delete' }
-      ]
-      return { list, listSecondary }
-    },
-    template: `
-        
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: true</div>
-            <D1Actions :list="list" :listSecondary="listSecondary" flexible/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: false</div>
-            <D1Actions :list="list" :listSecondary="listSecondary" :flexible="false"/>
-          </div>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    const items = canvasElement.querySelectorAll('.d1-actions')
-    await expect(items.length).toBe(2)
-
-    await expect(items[0]).toHaveClass('d1-actions--flexible')
-    await expect(items[1]).not.toHaveClass('d1-actions--flexible')
-  }
-}
 export const ActionsButtonAttrs: Story = {
   name: 'Общие атрибуты кнопок',
   render: () => ({
@@ -413,7 +376,8 @@ export const ActionsTestButtonStates: Story = {
         { label: 'Disabled', disabled: true, value: 'disabled' },
         { label: 'Loading', loading: true, value: 'loading' },
         { label: 'With Icon', icon: 'download', value: 'icon' },
-        { label: 'Selected', selected: true, value: 'selected' }
+        { label: 'Selected', selected: true, value: 'selected' },
+        { label: 0, value: 0 }
       ]
       return { stateItems }
     },
@@ -433,9 +397,9 @@ export const ActionsTestButtonStates: Story = {
     await expect(actionsElement).toBeInTheDocument()
 
     const buttons = actionsElement?.querySelectorAll('.d1-actions__item')
-    await expect(buttons?.length).toBe(4)
+    await expect(buttons?.length).toBe(5)
 
-    if (buttons && buttons.length >= 4) {
+    if (buttons && buttons.length >= 5) {
       await expect(buttons[0]).toBeDisabled()
       await expect(buttons[1]).toHaveAttribute('aria-disabled', 'true')
       await expect(buttons[1].querySelector('[class*="__loading"]')).toBeTruthy()
@@ -443,6 +407,8 @@ export const ActionsTestButtonStates: Story = {
       await expect(buttons[2].textContent).toContain('With Icon')
       await expect(buttons[3]).toHaveAttribute('data-value', 'selected')
       await expect(buttons[3].textContent).toContain('Selected')
+      await expect(buttons[4]).toHaveAttribute('data-value', '0')
+      await expect(buttons[4].textContent).toContain('0')
     }
   }
 }

@@ -49,7 +49,7 @@ const ButtonMock = defineComponent({
   setup(props, { attrs }) {
     const handleClick = (event: MouseEvent) => {
       if (Array.isArray(props.onClick)) {
-        props.onClick.forEach(fn => fn?.(event))
+        props.onClick.forEach(handler => handler?.(event))
       } else {
         props.onClick?.(event)
       }
@@ -177,7 +177,7 @@ describe('Actions (Component Integration)', () => {
 
     // For align: 'right', order is: secondary -> spacer -> primary
     const childrenRight = Array.from(root.children)
-    expect(childrenRight.map(el => el.className)).toEqual([
+    expect(childrenRight.map(element => element.className)).toEqual([
       'd1-actions__item d1-actions__secondary',
       'd1-actions__spacer',
       'd1-actions__item d1-actions__list'
@@ -190,7 +190,7 @@ describe('Actions (Component Integration)', () => {
     await nextTick()
 
     const childrenLeft = Array.from(root.children)
-    expect(childrenLeft.map(el => el.className)).toEqual([
+    expect(childrenLeft.map(element => element.className)).toEqual([
       'd1-actions__item d1-actions__list',
       'd1-actions__spacer',
       'd1-actions__item d1-actions__secondary'
@@ -281,5 +281,37 @@ describe('Actions (Component Integration)', () => {
     await nextTick()
     expect(host.querySelectorAll('button')).toHaveLength(1)
     expect(host.querySelector('button')?.textContent).toBe('Dynamic Save')
+  })
+
+  it('should preserve numeric 0 button labels/values and let item props override shared buttonAttrs', async () => {
+    const { host } = mountActionsComponent({
+      initialProps: {
+        buttonAttrs: {
+          class: 'shared-button',
+          palette: 'primary',
+          size: 'md'
+        },
+        list: [
+          {
+            class: 'item-override',
+            label: 0,
+            palette: 'danger',
+            value: 0
+          }
+        ]
+      }
+    })
+
+    await nextTick()
+
+    const button = host.querySelector('button')
+    expect(button?.textContent).toBe('0')
+    expect(button?.getAttribute('data-value')).toBe('0')
+    expect(button?.getAttribute('data-palette')).toBe('danger')
+    expect(button?.getAttribute('data-size')).toBe('md')
+    expect(button?.classList.contains('d1-actions__item')).toBe(true)
+    expect(button?.classList.contains('d1-actions__list')).toBe(true)
+    expect(button?.classList.contains('shared-button')).toBe(true)
+    expect(button?.classList.contains('item-override')).toBe(true)
   })
 })

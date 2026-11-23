@@ -81,7 +81,7 @@ export class ActionsInclude extends ComponentIncludeAbstract<
    * Handles click events from Actions and emits related events.
    *
    * Обрабатывает клики по действиям и испускает связанные события.
-   * @param event native mouse event / native событие мыши
+   * @param event native mouse event / нативное событие мыши
    * @param value payload with event details / данные события с подробностями
    */
   readonly onClick = (event: MouseEvent, value: EventClickValue): void => {

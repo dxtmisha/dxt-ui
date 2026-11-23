@@ -201,7 +201,8 @@ describe('Actions SSR (Server-Side Rendering)', () => {
           list: [
             { label: '<script>alert("xss")</script>' },
             { label: 'tiếng Việt & diacritics' },
-            { label: 'Подтвердить действие' }
+            { label: 'Подтвердить действие' },
+            { label: 0 }
           ]
         })
 
@@ -227,6 +228,7 @@ describe('Actions SSR (Server-Side Rendering)', () => {
     expect(html).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;')
     expect(html).toContain('tiếng Việt &amp; diacritics')
     expect(html).toContain('Подтвердить действие')
+    expect(html).toContain('>0</button>')
   })
 
   it('should render items in correct layout order based on isLeft() in SSR mode', async () => {
