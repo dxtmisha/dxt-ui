@@ -17,6 +17,7 @@ import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
+  CmsDbUpdateValidator,
   CmsNewPermission,
   CmsPermission
 } from '../../types/cmsDbTypes'
@@ -74,7 +75,20 @@ export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions,
   async update(input: CmsPermissionUpdateInput): Promise<this> {
     CmsVerification.isPositiveInteger(this.data.id)
 
-    return this.updateRecord(CmsPermissionItem.buildUpdateValues(input))
+    return this.updateRecord(this.buildUpdateValues(input))
+  }
+
+  /**
+   * Returns a map of column value validators and normalizers including `createdOrigin`.
+   *
+   * Возвращает карту валидаторов и нормализаторов значений с учётом `createdOrigin`.
+   * @returns Column validator map / Карта валидаторов по имени колонки
+   */
+  protected override getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
+    return {
+      ...super.getUpdateValidators(),
+      createdOrigin: value => normalizeCmsOptionalText(value as string | null | undefined)
+    }
   }
 
   /**
@@ -158,24 +172,5 @@ export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions,
       ...super.buildCreateValues(input),
       createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
-  }
-
-  /**
-   * Builds and validates database update payload from partial update input.
-   *
-   * Формирует и валидирует объект обновления в базе данных из входных данных редактирования права доступа.
-   * @param input Partial permission update payload / Частичные данные для обновления права доступа
-   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
-   */
-  static override buildUpdateValues(
-    input: CmsPermissionUpdateInput
-  ): Partial<CmsNewPermission> {
-    const values: Partial<CmsNewPermission> = super.buildUpdateValues(input)
-
-    if (input.createdOrigin !== undefined) {
-      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
-    }
-
-    return values
   }
 }

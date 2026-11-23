@@ -12,12 +12,15 @@ const testCodeItemsTable = pgTable('test_code_items', {
   code: text('code').notNull().unique(),
   name: text('name').notNull(),
   description: text('description'),
+  extraColumn: text('extra_column'),
   systemStatus: text('system_status').$type<'active' | 'blocked' | 'deleted'>().notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 })
 
-interface TestCodeItemRecord extends CmsDbCodeItemData {}
+interface TestCodeItemRecord extends CmsDbCodeItemData {
+  extraColumn?: string | null
+}
 
 class TestDbCodeItem extends CmsDbCodeItemAbstract<typeof testCodeItemsTable, TestCodeItemRecord> {
   static readonly table = testCodeItemsTable
@@ -30,6 +33,22 @@ class TestDbCodeItem extends CmsDbCodeItemAbstract<typeof testCodeItemsTable, Te
     databaseInstance?: CmsDbInstance
   ) {
     super(TestDbCodeItem.table, data, databaseInstance)
+  }
+}
+
+class TestRestrictedDbCodeItem extends TestDbCodeItem {
+  protected override getForbiddenUpdateColumns(): readonly string[] {
+    return [
+      ...super.getForbiddenUpdateColumns(),
+      'code'
+    ]
+  }
+
+  protected override getUpdateValidators() {
+    return {
+      ...super.getUpdateValidators(),
+      extraColumn: (value: unknown) => (typeof value === 'string' ? value.trim().toUpperCase() : value)
+    }
   }
 }
 
@@ -96,11 +115,14 @@ describe('CmsDbCodeItemAbstract', () => {
     expect(item.getDescription()).toBe('Allows reading items')
   })
 
-  it('validates and builds create/update payloads via CmsVerification', () => {
+  it('validates and builds create/update payloads via CmsVerification and table column checks', () => {
+    const item = new TestDbCodeItem(makeRecord())
+    const restrictedItem = new TestRestrictedDbCodeItem(makeRecord())
+
     expect(() => TestDbCodeItem.buildCreateValues({ code: 'bad code', name: 'Name' })).toThrow('Valid code is required.')
     expect(() => TestDbCodeItem.buildCreateValues({ code: 'users:read', name: '   ' })).toThrow('Valid name is required.')
-    expect(() => TestDbCodeItem.buildUpdateValues({ code: 'bad code' })).toThrow('Valid code is required.')
-    expect(() => TestDbCodeItem.buildUpdateValues({ name: '   ' })).toThrow('Valid name is required.')
+    expect(() => item.buildUpdateValues({ code: 'bad code' })).toThrow('Valid code is required.')
+    expect(() => item.buildUpdateValues({ name: '   ' })).toThrow('Valid name is required.')
 
     expect(TestDbCodeItem.buildCreateValues({
       code: '  users:write  ',
@@ -124,19 +146,34 @@ describe('CmsDbCodeItemAbstract', () => {
       systemStatus: 'blocked'
     })
 
-    expect(TestDbCodeItem.buildUpdateValues({
+    expect(item.buildUpdateValues({
+      id: 999,
+      createdAt: new Date('2020-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2020-01-01T00:00:00.000Z'),
       code: '  users:manage  ',
       name: '  Manage  ',
       description: '   ',
+      extraColumn: 'custom-value',
+      nonExistentColumn: 'ignored',
       systemStatus: 'active'
-    })).toEqual({
+    } as Record<string, unknown>)).toEqual({
       code: 'users:manage',
       name: 'Manage',
       description: null,
+      extraColumn: 'custom-value',
       systemStatus: 'active'
     })
 
-    expect(TestDbCodeItem.buildUpdateValues({})).toEqual({})
+    expect(restrictedItem.buildUpdateValues({
+      code: 'bad code',
+      name: '  Allowed  ',
+      extraColumn: '  custom  '
+    })).toEqual({
+      name: 'Allowed',
+      extraColumn: 'CUSTOM'
+    })
+
+    expect(item.buildUpdateValues({})).toEqual({})
   })
 
   it('resolves IDs by IDs and codes', async () => {

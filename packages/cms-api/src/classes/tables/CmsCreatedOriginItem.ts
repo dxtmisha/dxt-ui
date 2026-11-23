@@ -45,6 +45,6 @@ export class CmsCreatedOriginItem extends CmsDbCodeItemAbstract<typeof createdOr
   async update(input: CmsCreatedOriginUpdateInput): Promise<this> {
     CmsVerification.isPositiveInteger(this.data.id)
 
-    return this.updateRecord(CmsCreatedOriginItem.buildUpdateValues(input))
+    return this.updateRecord(this.buildUpdateValues(input))
   }
 }

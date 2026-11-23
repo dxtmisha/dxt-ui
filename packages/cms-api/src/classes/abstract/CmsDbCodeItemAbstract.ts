@@ -1,4 +1,7 @@
-import { inArray } from 'drizzle-orm'
+import {
+  getTableColumns,
+  inArray
+} from 'drizzle-orm'
 import { uniqueArray } from '@dxtmisha/functional-basic'
 
 import { CmsDbItemAbstract } from './CmsDbItemAbstract'
@@ -10,7 +13,8 @@ import type {
   CmsCodeTable,
   CmsCodeUpdateInput,
   CmsDbCodeItemData,
-  CmsDbExecutor
+  CmsDbExecutor,
+  CmsDbUpdateValidator
 } from '../../types/cmsDbTypes'
 
 /**
@@ -56,6 +60,68 @@ export abstract class CmsDbCodeItemAbstract<
    */
   getDescription(): string | null {
     return this.data.description
+  }
+
+  /**
+   * Builds and validates database update payload from partial update input by checking table column existence, skipping forbidden columns, and applying registered column validators.
+   *
+   * Формирует и валидирует объект обновления в базе данных из входных данных, проверяя наличие колонки в таблице, исключая запрещённые к изменению колонки и применяя зарегистрированные валидаторы по имени поля.
+   * @param input Partial entity update payload / Частичные данные для обновления записи
+   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
+   */
+  buildUpdateValues<TInput extends object = CmsCodeUpdateInput>(
+    input: TInput
+  ): Partial<TTable['$inferInsert']> {
+    const tableColumns = getTableColumns(this.table)
+    const forbiddenColumns = this.getForbiddenUpdateColumns()
+    const validators = this.getUpdateValidators()
+    const values: Record<string, unknown> = {}
+
+    for (const [key, value] of Object.entries(input)) {
+      if (
+        value === undefined
+        || forbiddenColumns.includes(key)
+        || !Object.prototype.hasOwnProperty.call(tableColumns, key)
+      ) {
+        continue
+      }
+
+      const validator = Object.prototype.hasOwnProperty.call(validators, key)
+        ? validators[key]
+        : undefined
+
+      values[key] = validator ? validator(value) : value
+    }
+
+    return values as Partial<TTable['$inferInsert']>
+  }
+
+  /**
+   * Returns the list of column names forbidden from modification during update.
+   *
+   * Возвращает список имён колонок, запрещённых к изменению при обновлении.
+   * @returns List of forbidden column names / Список запрещённых имён колонок
+   */
+  protected getForbiddenUpdateColumns(): readonly string[] {
+    return [
+      'id',
+      'createdAt',
+      'updatedAt'
+    ]
+  }
+
+  /**
+   * Returns a map of column value validators and normalizers keyed by column name.
+   *
+   * Возвращает карту валидаторов и нормализаторов значений по имени колонки.
+   * @returns Column validator map / Карта валидаторов по имени колонки
+   */
+  protected getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
+    return {
+      code: value => CmsVerification.normalizeCode(value as string),
+      name: value => CmsVerification.normalizeName(value as string | null | undefined),
+      description: value => CmsVerification.normalizeOptionalText(value as string | null | undefined)
+    }
   }
 
   /**
@@ -155,36 +221,5 @@ export abstract class CmsDbCodeItemAbstract<
       description: CmsVerification.normalizeOptionalText(input.description),
       ...(input.systemStatus !== undefined ? { systemStatus: input.systemStatus } : {})
     }
-  }
-
-  /**
-   * Builds and validates database update payload from partial update input.
-   *
-   * Формирует и валидирует объект обновления в базе данных из входных данных редактирования записи.
-   * @param input Partial entity update payload / Частичные данные для обновления записи
-   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
-   */
-  static buildUpdateValues(
-    input: CmsCodeUpdateInput
-  ): Partial<CmsCodeInsertValues> {
-    const values: Partial<CmsCodeInsertValues> = {}
-
-    if (input.code !== undefined) {
-      values.code = CmsVerification.normalizeCode(input.code)
-    }
-
-    if (input.name !== undefined) {
-      values.name = CmsVerification.normalizeName(input.name)
-    }
-
-    if (input.description !== undefined) {
-      values.description = CmsVerification.normalizeOptionalText(input.description)
-    }
-
-    if (input.systemStatus !== undefined) {
-      values.systemStatus = input.systemStatus
-    }
-
-    return values
   }
 }

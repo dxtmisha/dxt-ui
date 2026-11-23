@@ -25,6 +25,7 @@ import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
+  CmsDbUpdateValidator,
   CmsNewRole,
   CmsPermission,
   CmsRole
@@ -230,7 +231,7 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
     const roleId = this.data.id
     CmsVerification.isPositiveInteger(roleId)
 
-    const updateValues = CmsRoleItem.buildUpdateValues(input)
+    const updateValues = this.buildUpdateValues(input)
 
     try {
       const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
@@ -276,6 +277,19 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
       return this
     } catch (error) {
       return this.handleError('update', error)
+    }
+  }
+
+  /**
+   * Returns a map of column value validators and normalizers including `createdOrigin`.
+   *
+   * Возвращает карту валидаторов и нормализаторов значений с учётом `createdOrigin`.
+   * @returns Column validator map / Карта валидаторов по имени колонки
+   */
+  protected override getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
+    return {
+      ...super.getUpdateValidators(),
+      createdOrigin: value => normalizeCmsOptionalText(value as string | null | undefined)
     }
   }
 
@@ -646,24 +660,5 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
       ...super.buildCreateValues(input),
       createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
-  }
-
-  /**
-   * Builds and validates database update payload from partial update input.
-   *
-   * Формирует и валидирует объект обновления в базе данных из входных данных редактирования роли.
-   * @param input Partial role update payload / Частичные данные для обновления роли
-   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
-   */
-  static override buildUpdateValues(
-    input: CmsRoleUpdateInput
-  ): Partial<CmsNewRole> {
-    const values: Partial<CmsNewRole> = super.buildUpdateValues(input)
-
-    if (input.createdOrigin !== undefined) {
-      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
-    }
-
-    return values
   }
 }

@@ -94,6 +94,9 @@ export interface CmsCodeInsertValues {
   systemStatus?: CmsSystemStatus
 }
 
+/** Validator/normalizer function applied to a column value before database update / Функция валидации и нормализации значения колонки перед обновлением в базе данных */
+export type CmsDbUpdateValidator = (value: unknown) => unknown
+
 /** Created origin record selected from database / Запись источника создания, полученная из базы данных */
 export type CmsCreatedOrigin = typeof createdOrigins.$inferSelect
 
