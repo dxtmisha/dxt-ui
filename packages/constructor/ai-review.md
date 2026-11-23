@@ -27,8 +27,6 @@ src/constructors/Ripple/RippleDesign.tsx
 src/constructors/Ripple/RippleInclude.ts
 src/constructors/Ripple/RippleItem.ts
 src/functions/getClassTagAStatic.ts
-src/constructors/Cell/Cell.ts
-src/constructors/Cell/CellDesign.tsx
 src/constructors/Scrollbar/ScrollbarBorder.ts
 src/constructors/Scrollbar/Scrollbar.ts
 src/constructors/Scrollbar/ScrollbarDesign.tsx
@@ -45,9 +43,6 @@ src/constructors/Window/WindowOrigin.ts
 src/constructors/Window/WindowStatus.ts
 src/constructors/Window/WindowStyles.ts
 src/constructors/Window/WindowDesign.tsx
-src/constructors/Accordion/AccordionHead.ts
-src/constructors/Accordion/Accordion.ts
-src/constructors/Accordion/AccordionDesign.tsx
 src/functions/setAreaValue.ts
 src/classes/AreaInclude.ts
 src/constructors/Actions/Actions.ts
@@ -233,3 +228,8 @@ src/constructors/InputPhone/InputPhonePaste.ts
 src/constructors/InputPhone/InputPhoneAutofill.ts
 src/constructors/InputPhone/InputPhone.ts
 src/constructors/InputPhone/InputPhoneDesign.tsx
+src/constructors/Cell/Cell.ts
+src/constructors/Cell/CellDesign.tsx
+src/constructors/Accordion/AccordionHead.ts
+src/constructors/Accordion/Accordion.ts
+src/constructors/Accordion/AccordionDesign.tsx

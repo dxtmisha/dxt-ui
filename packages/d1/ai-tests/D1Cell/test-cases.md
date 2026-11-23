@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Cell`, `packages/constructor/src/constructors/Cell`
 - **Целевой URL**: `http://localhost:3000/component-cell`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-14`
+- **Последняя проверка / обновление**: `2026-11-23`
 - **Всего тест-кейсов**: `10`
 
 ---
@@ -34,13 +34,13 @@
 - **Ожидаемый результат**: Все ячейки рендерятся с ненулевыми размерами, корректными отступами, иконками (start/trailing/top) и разделителями.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-### [TC-VIS-002] Теги (`section`, `button`, `a`) и слоты (`caption`, `label`, `description`, `trailing`, `body`)
+### [TC-VIS-002] Теги (`section`, `button`, `a`) и слоты (`default`, `caption`, `description`, `trailing`, `body`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Visual & Design System`
 - **Предусловия**: Страница `http://localhost:3000/component-cell`, вьюпорт `1440×900`.
 - **Шаги**:
   1. Проверить теги элементов в группе `Tags & Links` (`section`, `button`, `a`).
-  2. Проверить рендер всех слотов в группе `Slots` (`#caption`, `#label`, `#description`, `#trailing`, `#body`).
+  2. Проверить рендер всех слотов в группе `Slots` (`#default`, `#caption`, `#description`, `#trailing`, `#body`).
 - **Ожидаемый результат**: Корневые теги соответствуют заданным пропам, слоты рендерятся без смещения вёрстки.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 

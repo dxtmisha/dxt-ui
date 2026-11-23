@@ -8,7 +8,6 @@ import {
   DesignLogicAbstract
 } from '@dxtmisha/functional'
 
-import { AccordionHead } from './AccordionHead'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -17,6 +16,7 @@ import {
   type MotionTransformEmits,
   MotionTransformInclude
 } from '../MotionTransform'
+import { AccordionHead } from './AccordionHead'
 
 import type { AccordionProps } from './props'
 import type {
@@ -56,6 +56,9 @@ export class Accordion extends DesignLogicAbstract<
 > {
   /** Open state reference / Ссылка на состояние открытия */
   readonly open: Ref<boolean> = ref<boolean>(Boolean(this.getOpenProp()))
+
+  /** Cleanup function for open prop watcher / Функция очистки наблюдателя свойства open */
+  protected watchStop?: () => void
 
   /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
   protected override readonly constructorItems: ConstrItems<AccordionConstructors> = {
@@ -130,7 +133,7 @@ export class Accordion extends DesignLogicAbstract<
    * @param constructors object with classes / объект с классами
    */
   constructor(
-    props: AccordionProps,
+    props: Readonly<AccordionProps>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
     components?: DesignComp<AccordionComponents, AccordionProps>,
@@ -152,16 +155,6 @@ export class Accordion extends DesignLogicAbstract<
   }
 
   /**
-   * Setup lifecycle listeners and watchers on mount.
-   *
-   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
-   */
-  protected override readonly onMounted = (): void => {
-    watch(() => this.getOpenProp(), this.update)
-    this.update()
-  }
-
-  /**
    * Computed bindings for the element.
    *
    * Вычисляемые привязки для элемента.
@@ -179,6 +172,15 @@ export class Accordion extends DesignLogicAbstract<
    */
   get bindsCell(): ConstrBind {
     return this.i('head').binds
+  }
+
+  /**
+   * Updates the open state based on props.
+   *
+   * Обновляет состояние открытия на основе свойств.
+   */
+  readonly update = (): void => {
+    this.open.value = Boolean(this.getOpenProp())
   }
 
   /**
@@ -218,6 +220,26 @@ export class Accordion extends DesignLogicAbstract<
   }
 
   /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  protected override readonly onMounted = (): void => {
+    this.resetWatch()
+    this.watchStop = watch(() => this.getOpenProp(), this.update)
+    this.update()
+  }
+
+  /**
+   * Cleanup lifecycle watchers on unmount.
+   *
+   * Очистка наблюдателей жизненного цикла при размонтировании.
+   */
+  protected override readonly onUnmounted = (): void => {
+    this.resetWatch()
+  }
+
+  /**
    * Resolves the incoming open state across open and modelOpen props.
    *
    * Разрешает входное состояние открытия с учётом свойств open и modelOpen.
@@ -235,11 +257,12 @@ export class Accordion extends DesignLogicAbstract<
   }
 
   /**
-   * Updates the open state based on props.
+   * Stops and resets the active open prop watcher.
    *
-   * Обновляет состояние открытия на основе свойств.
+   * Останавливает и сбрасывает активный наблюдатель свойства open.
    */
-  readonly update = (): void => {
-    this.open.value = Boolean(this.getOpenProp())
+  protected resetWatch(): void {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 }

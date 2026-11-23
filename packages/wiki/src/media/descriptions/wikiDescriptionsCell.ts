@@ -57,7 +57,7 @@ await expect(component).toBeInTheDocument()
         en: 'Typography hierarchy & structure',
         ru: 'Иерархия типографики и структура'
       },
-      propsName: ['label', 'caption', 'description', 'body'],
+      propsName: ['label', 'caption', 'description'],
       template: `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <DesignComponent
@@ -487,7 +487,7 @@ await expect(fifthCell).toHaveClass('design-component--dividerLabel--none')
         en: 'Test: Polymorphic tags and anchor link rendering',
         ru: 'Тест: Полиморфные теги и рендеринг ссылок anchor'
       },
-      propsName: ['tag', 'href', 'target'],
+      propsName: ['tag', 'href'],
       template: `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <DesignComponent
@@ -534,7 +534,7 @@ await expect(anchorCell).toHaveAttribute('target', '_blank')
         en: 'Test: Custom roles and accessibility attributes',
         ru: 'Тест: Кастомные роли и атрибуты доступности'
       },
-      propsName: ['role', 'ariaLabel'],
+      propsName: ['role', 'dynamic'],
       template: `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <DesignComponent
@@ -594,7 +594,7 @@ await expect(dynamicCell).toHaveAttribute('tabindex', '0')
           <DesignComponent
             label="Progress with Custom Attrs"
             description="Circular variant inside cell progress"
-            :loading="{ circular: true }"
+            :loading="{ visible: true, circular: true }"
           />
         </div>
       `,
@@ -697,7 +697,6 @@ await expect(canvas.getByText('Nested sub-information')).toBeInTheDocument()
     slots: `
 <Canvas of={Component.CellSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
-<StorybookDescriptions componentName={'Slot'} type={'label'}/>
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Cell'} type={'slots'}/>
@@ -721,7 +720,7 @@ await expect(canvas.getByText('Nested sub-information')).toBeInTheDocument()
     description: `
 Universal list item and container component for building structured rows in menus, settings, and data lists. Provides a standardized row layout with dedicated areas for icons, text hierarchy (label, caption, description), trailing accessories, and expandable body content.
 Features built-in support for interactive states (dynamic hover, focus, selected, readonly, disabled), smooth progress indicators for loading state, tactile Ripple effects, and seamless skeleton loading integration.
-Highly customizable via slots (#default, #label, #caption, #description, #icon, #trailing, #body) and flexible polymorphic rendering via the "tag" prop (div, a, button, section) with automatic ARIA role calculation and anchor link styling.
+Highly customizable via slots (#default, #caption, #description, #trailing, #body) and flexible polymorphic rendering via the "tag" prop (div, a, button, section) with automatic ARIA role calculation and anchor link styling.
     `
   }
 }

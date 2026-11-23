@@ -155,6 +155,8 @@ export class Cell extends DesignLogicAbstract<
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input properties / входные свойства
    * @param element target HTML element / целевой HTML-элемент
    * @param naming component naming helper / помощник именования компонента
@@ -164,7 +166,7 @@ export class Cell extends DesignLogicAbstract<
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
    */
   constructor(
-    props: CellProps,
+    props: Readonly<CellProps>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
     components?: DesignComp<CellComponents, CellProps>,

@@ -5,7 +5,8 @@ import { InputPhoneWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'
-import type { FieldValidationItem, InputPhoneExpose, InputPhoneValidationContext } from '@dxtmisha/constructor'
+import type { FieldValidationItem } from '@dxtmisha/constructor'
+import type { InputPhoneExpose as InputPhoneExposeType, InputPhoneValidationContext } from '@dxtmisha/constructor/InputPhone'
 import { expect, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
@@ -207,7 +208,7 @@ export const InputPhoneExpose: Story = {
   render: () => ({
     components: { D1InputPhone },
     setup() {
-      const phoneRef = ref<InputPhoneExpose | null>(null)
+      const phoneRef = ref<InputPhoneExposeType | null>(null)
       const phoneValue = ref<string>('12025550147')
       const exposeStatus = ref<string>('ready')
 
@@ -407,8 +408,8 @@ export const InputPhoneTestPhoneMatchAndAutocomplete: Story = {
   render: () => ({
     components: { D1InputPhone },
     setup() {
-      const mapPhoneRef = ref<InputPhoneExpose | null>(null)
-      const callbackPhoneRef = ref<InputPhoneExpose | null>(null)
+      const mapPhoneRef = ref<InputPhoneExposeType | null>(null)
+      const callbackPhoneRef = ref<InputPhoneExposeType | null>(null)
       const mapPhoneValue = ref<string>('74951234567')
       const callbackPhoneValue = ref<string>('12025550147')
       const matchSummary = ref<string>('idle')
@@ -419,7 +420,7 @@ export const InputPhoneTestPhoneMatchAndAutocomplete: Story = {
       }
 
       const customValidator = (context: InputPhoneValidationContext): boolean | string => {
-        return context.phone.endsWith('0') ? true : 'Phone must end with 0'
+        return context.phone?.endsWith('0') ? true : 'Phone must end with 0'
       }
 
       const checkBoth = () => {
@@ -501,7 +502,7 @@ export const InputPhoneTestValidation: Story = {
   render: () => ({
     components: { D1InputPhone },
     setup() {
-      const validationTargetRef = ref<InputPhoneExpose | null>(null)
+      const validationTargetRef = ref<InputPhoneExposeType | null>(null)
       const validationSummary = ref('none')
       const triggerCheck = () => {
         validationSummary.value = String(validationTargetRef.value?.checkValidity?.()) + '|' + String(validationTargetRef.value?.getValidationMessage?.())

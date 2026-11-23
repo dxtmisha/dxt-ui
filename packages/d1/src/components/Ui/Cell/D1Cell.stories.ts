@@ -49,6 +49,48 @@ export const Cell: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const CellStructure: Story = {
+  name: 'Иерархия типографики и структура',
+  render: () => ({
+    components: { D1Cell },
+    template: `
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <D1Cell
+            label="Simple Label Only"
+          />
+          <D1Cell
+            label="Storage Space"
+            caption="75% used"
+          />
+          <D1Cell
+            label="Account Security"
+            description="Two-factor authentication is active on all recognized devices"
+          />
+          <D1Cell
+            label="Cloud Backup"
+            caption="Synchronized"
+            description="Last backup completed today at 14:30 from primary workstation"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll<HTMLElement>('.d1-cell')
+    await expect(items.length).toBe(4)
+
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Simple Label Only')).toBeInTheDocument()
+    await expect(canvas.getByText('Storage Space')).toBeInTheDocument()
+    await expect(canvas.getByText('75% used')).toBeInTheDocument()
+    await expect(canvas.getByText('Account Security')).toBeInTheDocument()
+    await expect(canvas.getByText('Two-factor authentication is active on all recognized devices')).toBeInTheDocument()
+    await expect(canvas.getByText('Cloud Backup')).toBeInTheDocument()
+    await expect(canvas.getByText('Synchronized')).toBeInTheDocument()
+    await expect(canvas.getByText('Last backup completed today at 14:30 from primary workstation')).toBeInTheDocument()
+  }
+}
 export const CellIcons: Story = {
   name: 'Иконки и выравнивание по верху',
   render: () => ({
@@ -434,6 +476,96 @@ export const CellTestDividers: Story = {
     await expect(fifthCell).toHaveClass('d1-cell--dividerLabel--none')
   }
 }
+export const CellTestTagsAndLinks: Story = {
+  name: 'Тест: Полиморфные теги и рендеринг ссылок anchor',
+  render: () => ({
+    components: { D1Cell },
+    template: `
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <D1Cell
+            label="Default Div Tag"
+            tag="div"
+          />
+          <D1Cell
+            label="Semantic Section Tag"
+            tag="section"
+          />
+          <D1Cell
+            label="Native Button Tag"
+            tag="button"
+          />
+          <D1Cell
+            label="Anchor Element Link"
+            description="Anchor link reset without default blue color or underline"
+            tag="a"
+            href="https://example.com"
+            target="_blank"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const divCell = canvas.getByText('Default Div Tag').closest('.d1-cell')
+    await expect(divCell?.tagName).toBe('DIV')
+
+    const sectionCell = canvas.getByText('Semantic Section Tag').closest('section')
+    await expect(sectionCell).not.toBeNull()
+
+    const buttonCell = canvas.getByText('Native Button Tag').closest('button')
+    await expect(buttonCell).not.toBeNull()
+
+    const anchorCell = canvas.getByText('Anchor Element Link').closest('a')
+    await expect(anchorCell).not.toBeNull()
+    await expect(anchorCell).toHaveAttribute('href', 'https://example.com')
+    await expect(anchorCell).toHaveAttribute('target', '_blank')
+  }
+}
+export const CellTestRolesAndAria: Story = {
+  name: 'Тест: Кастомные роли и атрибуты доступности',
+  render: () => ({
+    components: { D1Cell },
+    template: `
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <D1Cell
+            label="List Item Role"
+            role="listitem"
+          />
+          <D1Cell
+            label="Custom Button Role"
+            role="button"
+          />
+          <D1Cell
+            label="Accessible Aria Label"
+            ariaLabel="Custom accessibility label for screen readers"
+          />
+          <D1Cell
+            label="Dynamic Automatic Button Role"
+            dynamic
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const listitemCell = canvas.getByText('List Item Role').closest('[role="listitem"]')
+    await expect(listitemCell).not.toBeNull()
+
+    const customButtonCell = canvas.getByText('Custom Button Role').closest('[role="button"]')
+    await expect(customButtonCell).not.toBeNull()
+
+    const ariaCell = canvas.getByText('Accessible Aria Label').closest('[aria-label="Custom accessibility label for screen readers"]')
+    await expect(ariaCell).not.toBeNull()
+
+    const dynamicCell = canvas.getByText('Dynamic Automatic Button Role').closest<HTMLElement>('.d1-cell')
+    await expect(dynamicCell).toHaveAttribute('role', 'button')
+    await expect(dynamicCell).toHaveAttribute('tabindex', '0')
+  }
+}
 export const CellTestProgress: Story = {
   name: 'Тест: Индикатор выполнения прогресс-бара',
   render: () => ({
@@ -455,7 +587,7 @@ export const CellTestProgress: Story = {
           <D1Cell
             label="Progress with Custom Attrs"
             description="Circular variant inside cell progress"
-            :loading="{ circular: true }"
+            :loading="{ visible: true, circular: true }"
           />
         </div>
       

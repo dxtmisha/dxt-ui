@@ -122,18 +122,20 @@ const statusValue = computed<string>(() => {
         <D1Cell
           label="Custom Progress Value"
           description="Configured with explicit progress percentage"
-          :progress="{ value: 65 }"
+          :loading="{ visible: true, value: 65, max: 100 }"
         />
         <D1Cell
           label="Skeleton Mode via isSkeleton"
           description="Placeholder skeleton line layout"
           isSkeleton
         />
-        <D1Cell
-          label="Skeleton Mode via skeleton Object"
-          description="Configured with active skeleton props"
-          :skeleton="{ active: true }"
-        />
+        <D1Skeleton :active="true">
+          <D1Cell
+            label="Skeleton Mode inside D1Skeleton"
+            description="Active skeleton wrapper with isSkeleton enabled"
+            isSkeleton
+          />
+        </D1Skeleton>
         <D1Cell
           label="Loading and Disabled"
           description="Asynchronous operation in disabled state"
@@ -253,7 +255,7 @@ const statusValue = computed<string>(() => {
           <template #caption>
             <span>Custom Caption Slot</span>
           </template>
-          <template #label>
+          <template #default>
             <strong>Custom Bold Label Slot</strong>
           </template>
           <template #description>
@@ -273,9 +275,7 @@ const statusValue = computed<string>(() => {
           description="Includes an expandable full-width body row"
         >
           <template #body>
-            <D1TextDescription>
-              Extended body section rendered below the main cell row.
-            </D1TextDescription>
+            <p>Extended body section rendered below the main cell row.</p>
           </template>
         </D1Cell>
       </D1Group>

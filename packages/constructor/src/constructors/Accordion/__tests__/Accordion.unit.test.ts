@@ -212,5 +212,19 @@ describe('Accordion (Unit)', () => {
 
       expect(accordion.i('head')).toBeInstanceOf(CustomHead)
     })
+
+    it('should stop the open watcher on unmount without reacting to subsequent prop mutations', async () => {
+      const { accordion, props } = createMountedAccordion({ open: false })
+      expect(accordion.open.value).toBe(false)
+
+      // Trigger unmount via cleanup
+      const unmount = cleanups.pop()
+      unmount?.()
+
+      props.open = true
+      await nextTick()
+
+      expect(accordion.open.value).toBe(false)
+    })
   })
 })

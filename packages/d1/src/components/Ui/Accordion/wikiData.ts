@@ -25,12 +25,12 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', description: `Slot for the main body content/ Слот для основного контента тела`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] },
+  { name: 'body', description: `Slot for the main body content / Слот для основного контента тела`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] },
   { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'default', description: `Main expandable content of the accordion / Основное раскрывающееся содержимое аккордеона`, properties: [{ name: 'props', type: '(MotionTransformControlItem) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'label', description: `Label slot content/ Содержимое слота метки`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'trailing', description: `Slot for elements on the right/ Слот для элементов справа`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] }
+  { name: 'trailing', description: `Slot for elements on the right / Слот для элементов справа`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

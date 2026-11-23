@@ -103,19 +103,21 @@ const statusValue = computed<string>(() => {
 
         <D1Accordion
           label="Loading State"
-          description="Displays a spinner indicator inside the header cell."
+          description="Displays an active progress indicator inside the header cell."
           :cellAttrs="{ loading: true }"
         >
           <span>Useful while asynchronous body data is being fetched.</span>
         </D1Accordion>
 
-        <D1Accordion
-          label="Skeleton Loading State"
-          description="Skeleton placeholder animation applied to the header cell."
-          :cellAttrs="{ isSkeleton: true }"
-        >
-          <span>Placeholder for zero-layout-shift loading states.</span>
-        </D1Accordion>
+        <D1Skeleton :active="true">
+          <D1Accordion
+            label="Skeleton Loading State"
+            description="Skeleton placeholder animation applied to the header cell."
+            :cellAttrs="{ isSkeleton: true }"
+          >
+            <span>Placeholder for zero-layout-shift loading states.</span>
+          </D1Accordion>
+        </D1Skeleton>
       </D1Group>
 
       <D1Group label="Icons & Arrow Customization">

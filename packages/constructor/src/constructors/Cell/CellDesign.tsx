@@ -2,7 +2,8 @@ import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isFunction
 } from '@dxtmisha/functional'
 
 import { Cell } from './Cell'
@@ -174,10 +175,7 @@ export class CellDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderTrailing = (): VNode[] => {
-    if (
-      this.slots
-      && 'trailing' in this.slots
-    ) {
+    if (isFunction(this.slots?.trailing)) {
       return [
         h(
           'div',
@@ -197,10 +195,7 @@ export class CellDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderBody = (): VNode[] => {
-    if (
-      this.slots
-      && 'body' in this.slots
-    ) {
+    if (isFunction(this.slots?.body)) {
       return [
         h(
           'div',

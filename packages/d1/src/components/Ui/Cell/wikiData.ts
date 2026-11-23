@@ -46,11 +46,11 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', description: `Slot for displaying the main body content of the cell/ Слот для отображения основного содержимого тела ячейки`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] },
+  { name: 'body', description: `Slot for displaying the main body content of the cell / Слот для отображения основного содержимого тела ячейки`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] },
   { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'trailing', description: `Slot for displaying additional content on the right side of the cell/ Слот для отображения дополнительного контента в правой части ячейки`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] }
+  { name: 'trailing', description: `Slot for displaying additional content on the right side of the cell / Слот для отображения дополнительного контента в правой части ячейки`, properties: [{ name: 'props', type: '(CellClassesSub) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

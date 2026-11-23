@@ -10,6 +10,11 @@ import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 
 import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
+/**
+ * Token properties for Cell.
+ *
+ * Токен-свойства для Cell.
+ */
 export type CellPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -24,6 +29,11 @@ export type CellPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for Cell.
+ *
+ * Базовые свойства для Cell.
+ */
 export type CellPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
@@ -37,12 +47,12 @@ export type CellPropsBasic<
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    /** Style/ Стили */
-    /** HTML tag for the cell container/ HTML-тег для контейнера ячейки */
+    /** Style / Стили */
+    /** HTML tag for the cell container / HTML-тег для контейнера ячейки */
     tag?: string
-    /** Whether to show the divider/ Показывать ли разделитель */
+    /** Whether to show the divider / Показывать ли разделитель */
     divider?: boolean
-    /** Whether the cell has dynamic behavior (hover/active states)/ Имеет ли ячейка динамическое поведение (состояния ховера/активности) */
+    /** Whether the cell has dynamic behavior (hover/active states) / Имеет ли ячейка динамическое поведение (состояния ховера/активности) */
     dynamic?: boolean
   }
 

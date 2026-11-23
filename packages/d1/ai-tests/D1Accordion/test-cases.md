@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Accordion`, `packages/constructor/src/constructors/Accordion`
 - **Целевой URL**: `http://localhost:3000/component-accordion`
 - **Справочные материалы (`materials/`)**: `Отсутствуют`
-- **Последняя проверка / обновление**: `2026-11-15`
+- **Последняя проверка / обновление**: `2026-11-23`
 - **Всего тест-кейсов**: `17`
 
 ---

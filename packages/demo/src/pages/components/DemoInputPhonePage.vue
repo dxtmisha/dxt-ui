@@ -65,7 +65,7 @@ const phoneMatchMapRule = {
 }
 
 const phoneMatchCustomRule = (context: InputPhoneValidationContext): boolean | string => {
-  return context.phone.endsWith('0') ? true : 'Phone must end with 0'
+  return context.phone?.endsWith('0') ? true : 'Phone must end with 0'
 }
 
 const requiredRef = ref<InputPhoneExpose>()

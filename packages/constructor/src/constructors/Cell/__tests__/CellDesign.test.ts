@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
-import { createApp, defineComponent, nextTick, reactive } from 'vue'
+import { createApp, defineComponent, h, nextTick, reactive } from 'vue'
+import type { ConstrStyles } from '@dxtmisha/functional'
 
 import { CellDesign } from '../CellDesign'
 import type { CellPropsBasic } from '../props'
@@ -10,10 +11,43 @@ import type {
   CellExpose
 } from '../types'
 
+/**
+ * Inspectable CellDesign subclass exposing protected initClasses and initStyles hooks.
+ *
+ * Проверяемый подкласс CellDesign, открывающий защищённые методы initClasses и initStyles.
+ */
+class InspectableCellDesign extends CellDesign<
+  CellComponents,
+  CellExpose,
+  CellClasses,
+  CellPropsBasic
+> {
+  /**
+   * Returns computed class map for verification.
+   *
+   * Возвращает карту классов для проверки.
+   * @returns partial class map / частичная карта классов
+   */
+  getClassesConfig(): Partial<CellClasses> {
+    return this.initClasses()
+  }
+
+  /**
+   * Returns computed styles map for verification.
+   *
+   * Возвращает карту стилей для проверки.
+   * @returns styles map / карта стилей
+   */
+  getStylesConfig(): ConstrStyles {
+    return this.initStyles()
+  }
+}
+
 const cleanups: Array<() => void> = []
 
 afterEach(() => {
   cleanups.splice(0).reverse().forEach(unmount => unmount())
+  document.body.innerHTML = ''
 })
 
 describe('CellDesign', () => {
@@ -26,13 +60,8 @@ describe('CellDesign', () => {
 
     const Component = defineComponent({
       setup() {
-        const props: CellPropsBasic = reactive({})
-        const design = new CellDesign<
-          CellComponents,
-          CellExpose,
-          CellClasses,
-          CellPropsBasic
-        >('d1.cell', props)
+        const props: CellPropsBasic = reactive({ value: 'cell-1' })
+        const design = new InspectableCellDesign('d1.cell', props)
 
         exposed = design.expose()
         return design.render()
@@ -46,26 +75,24 @@ describe('CellDesign', () => {
     await nextTick()
 
     expect(exposed).toBeDefined()
+    expect(exposed.getValue?.()).toBe('cell-1')
   })
 
-  it('should generate all required subclasses in initClasses', async () => {
+  it('should generate all required subclasses in initClasses and empty styles in initStyles', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
     let classes!: Partial<CellClasses>
+    let styles!: ConstrStyles
 
     const Component = defineComponent({
       setup() {
         const props: CellPropsBasic = reactive({})
-        const design = new CellDesign<
-          CellComponents,
-          CellExpose,
-          CellClasses,
-          CellPropsBasic
-        >('d1.cell', props)
+        const design = new InspectableCellDesign('d1.cell', props)
 
-        classes = (design as any).initClasses()
+        classes = design.getClassesConfig()
+        styles = design.getStylesConfig()
         return design.render()
       }
     })
@@ -86,45 +113,15 @@ describe('CellDesign', () => {
     expect(classes.trailing).toContain('trailing')
     expect(classes.body).toContain('body')
     expect(classes.loading).toContain('loading')
-  })
-
-  it('should return empty styles object by default', async () => {
-    const container = document.createElement('div')
-    document.body.appendChild(container)
-    cleanups.push(() => container.remove())
-
-    let styles!: Record<string, any>
-
-    const Component = defineComponent({
-      setup() {
-        const props: CellPropsBasic = reactive({})
-        const design = new CellDesign<
-          CellComponents,
-          CellExpose,
-          CellClasses,
-          CellPropsBasic
-        >('d1.cell', props)
-
-        styles = (design as any).initStyles()
-        return design.render()
-      }
-    })
-
-    const app = createApp(Component)
-    app.mount(container)
-    cleanups.push(() => app.unmount())
-
-    await nextTick()
-
     expect(styles).toEqual({})
   })
 
-  it('should render individual sub-render methods directly', async () => {
+  it('should render context, trailing, and body sub-render methods cleanly', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
-    let designInstance!: CellDesign<CellComponents, CellExpose, CellClasses, CellPropsBasic>
+    let designInstance!: InspectableCellDesign
 
     const Component = defineComponent({
       setup() {
@@ -133,32 +130,31 @@ describe('CellDesign', () => {
           caption: 'Item Caption',
           description: 'Item Description'
         })
-        designInstance = new CellDesign<
-          CellComponents,
-          CellExpose,
-          CellClasses,
-          CellPropsBasic
-        >('d1.cell', props)
+        designInstance = new InspectableCellDesign('d1.cell', props)
 
         return designInstance.render()
       }
     })
 
-    const app = createApp(Component)
+    const Root = defineComponent({
+      setup() {
+        return () => h(Component, null, {
+          trailing: () => h('span', 'Trail')
+        })
+      }
+    })
+
+    const app = createApp(Root)
     app.mount(container)
     cleanups.push(() => app.unmount())
 
     await nextTick()
 
-    const contextNodes = designInstance.renderContext()
-    expect(Array.isArray(contextNodes)).toBe(true)
-    expect(contextNodes.length).toBeGreaterThan(0)
+    expect(designInstance.renderContext().length).toBeGreaterThan(0)
     expect(container.textContent).toContain('Item Label')
     expect(container.textContent).toContain('Item Caption')
     expect(container.textContent).toContain('Item Description')
-
-    // Optional slot containers with omitted slots return empty arrays
-    expect(designInstance.renderTrailing()).toEqual([])
+    expect(container.querySelector('.d1-cell__contextTrailing')?.textContent).toBe('Trail')
     expect(designInstance.renderBody()).toEqual([])
   })
 })
