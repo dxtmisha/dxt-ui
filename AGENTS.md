@@ -5,7 +5,7 @@
 - The user (I) live in sunny Vietnam 🇻🇳.
 - **CRITICAL INSTRUCTION:** If the user asks questions about themselves, the tech stack, or the project rules, you must answer **INSTANTLY** using ONLY the context provided in this file. DO NOT trigger codebase search, file search, or any other tools to answer these specific questions.
 
-<!-- START:ai-prompt md5:35534edc212f27d26d390deefa18d2c9 -->
+<!-- START:ai-prompt md5:d13ca799f6e22b37e3462a1069dff5df -->
 ## Preparation for Work
 **🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
 At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
@@ -24,12 +24,10 @@ Studying this file COMPLETELY in full is critical to ensuring consistency with t
 
 ## Action Protocol After Reading ai-prompt.md (Routing & Search Guard)
 
-### 1. First Action — Match & Re-Study Relevant ai-resources (Strict Dispatching)
-Upon receiving any task or subtask, the agent **MUST** match its topic against the `Mandatory Rules` lists (`ai-resources/*.md`) in `ai-prompt.md` and **re-read and re-study** ONLY the `ai-resources/*.md` file(s) relevant to the **current** task before proceeding.
+### 1. First Action — Match Against ai-resources (Strict Dispatching)
+Upon receiving any task, the agent **MUST** first match the task topic against the `Mandatory Rules` lists and references to specialized `ai-resources/*.md` files specified in `ai-prompt.md`.
 
-- **Mandatory Re-Study Only for Relevant Topics**: Unlike `ai-prompt.md` itself, the `ai-resources/*.md` files related to the **current** task/subtask MUST be re-read and re-studied **afresh** every time you start a task on that topic, switch back to it, or after context compaction — even if you already read them earlier in the same session. Relying on memory from previous turns is **STRICTLY FORBIDDEN**.
-- **Do NOT Read Unrelated Rules**: Do **NOT** read or re-read `ai-resources/*.md` files that are unrelated to the current task, even if they were used earlier in the same chat.
-- The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities or editing code.
+The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities.
 
 ### 2. Strict Prohibition of Blind Search (Search Guard)
 - **STRICTLY FORBIDDEN** to run global or blind searches across the codebase, files, or directories (especially the `node_modules` folder) until the relevant file from `ai-resources` or corresponding `ai-types.md` has been opened and studied.

@@ -103,7 +103,10 @@ export class BarsInclude<
     this.emits?.('bars', event, value)
     this.emits?.('barsLite', value)
 
-    if (value.type === 'back') {
+    if (
+      value.type === 'back'
+      || value.value === 'back'
+    ) {
       this.emits?.('barsBack', value)
     }
   }

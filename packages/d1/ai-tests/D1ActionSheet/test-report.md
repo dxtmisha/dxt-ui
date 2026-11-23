@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1ActionSheet`](../../src/components/Ui/ActionSheet), [`ActionSheet`](../../../constructor/src/constructors/ActionSheet), [`DemoActionSheetPage.vue`](../../../demo/src/pages/components/DemoActionSheetPage.vue)
 - **URL демо-стенда:** `http://localhost:3000/component-action-sheet`
 - **Справочные материалы (`materials/`):** `Отсутствуют`
-- **Дата тестирования (UTC):** `2026-11-23T12:07:48Z`
+- **Дата тестирования (UTC):** `2026-11-23T15:58:26Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
 - **Покрытие тест-кейсами:** 12 / 12 (`100%`)
 - **Итог:** **12 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1ActionSheet` корректно отображает все слоты, ширины, интеграцию `D1Bars`/`D1Actions`, touch-обёртку с декоративным `aria-hidden` индикатором, режимы закрытия, `v-model:open`/`v-model:modelOpen`, `expose`, ARIA-связи и трансформацию в нижнюю шторку на мобильных экранах при полном отсутствии ошибок консоли, Vue-предупреждений и сетевых сбоев.

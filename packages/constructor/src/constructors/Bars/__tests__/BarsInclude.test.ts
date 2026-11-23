@@ -92,6 +92,12 @@ describe('BarsInclude (isolated class)', () => {
 
       include.onClick(mouseEvent, { value: 'back', type: 'back', detail: undefined })
       expect(emits).toHaveBeenCalledWith('barsBack', { value: 'back', type: 'back', detail: undefined })
+
+      emits.mockClear()
+      include.onClick(mouseEvent, { value: 'back', type: 'click', detail: undefined })
+      expect(emits).toHaveBeenCalledWith('bars', mouseEvent, { value: 'back', type: 'click', detail: undefined })
+      expect(emits).toHaveBeenCalledWith('barsLite', { value: 'back', type: 'click', detail: undefined })
+      expect(emits).toHaveBeenCalledWith('barsBack', { value: 'back', type: 'click', detail: undefined })
     })
 
     it('should compose external barsAttrs.onClick with internal onClick via mergeProps', () => {
