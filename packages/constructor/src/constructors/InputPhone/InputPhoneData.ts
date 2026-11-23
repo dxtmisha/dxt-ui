@@ -8,7 +8,6 @@ import {
 } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { WindowEmitOptions } from '../Window'
 import type { InputPhoneDetail } from './basicTypes'
@@ -30,10 +29,12 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param country function returning country manager / функция, возвращающая менеджер страны
+   * @param countryList function returning country list manager / функция, возвращающая менеджер списка стран
    * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
-   * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
@@ -41,11 +42,9 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     protected readonly country: () => InputPhoneCountry,
     protected readonly countryList: () => InputPhoneCountryList,
     protected readonly element: () => FieldElementInclude,
-    protected readonly event: () => FieldEventInclude,
     protected readonly value: () => FieldValueInclude<string>
   ) {
     super()
-    void this.event
   }
 
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */

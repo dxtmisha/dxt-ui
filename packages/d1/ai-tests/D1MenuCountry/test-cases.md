@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/MenuCountry` (`packages/constructor/src/constructors/MenuCountry`, `packages/demo/src/pages/components/DemoMenuCountryPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-menu-country`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-18`
-- **Всего тест-кейсов**: `10`
+- **Последняя проверка / обновление**: `2026-11-22`
+- **Всего тест-кейсов**: `11`
 
 ---
 
@@ -13,8 +13,8 @@
 
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуальное соответствие и токены** | `VIS` | `3` | `P0`, `P1` | Базовый список стран, `show-phone-code`, слоты и `embedded` с поиском |
-| **Интерактивность и функционал** | `INT` | `3` | `P0`, `P1` | Выбор страны (`v-model:selected`), фильтрация `list`, смена `language`, `is-selected-by-value`, множественный выбор, `expose`-API |
+| **Визуальное соответствие и токены** | `VIS` | `3` | `P0`, `P1` | Базовый список стран, `show-phone-code` (включая группы альтернативных кодов `DO`/`VA`), слоты и `embedded` с поиском |
+| **Интерактивность и функционал** | `INT` | `4` | `P0`, `P1` | Выбор страны (`v-model:selected` / `v-model:model-selected`), фильтрация `list`, смена `language`, `is-selected-by-value`, группы альтернативных кодов, прямые пропсы поиска (`show-search`, `filter-mode`, `highlight-length-start`), `disable-focus-return`, `expose`-API |
 | **Границы и крайние случаи** | `BND` | `1` | `P1` | Блокировка `disabled`, пустой список `list=[]`, пустой результат поиска |
 | **Адаптивность и вьюпорты** | `RSP` | `1` | `P1` | Проверка на Desktop `1440×900`, Tablet `768×1024`, Mobile `375×812` и `320×568` |
 | **Доступность (A11y)** | `A11Y` | `1` | `P1` | WAI-ARIA атрибуты, навигация клавиатурой (`Enter`, `Escape`, `ArrowDown`) |
@@ -86,6 +86,19 @@
   1. В группе `Events & Expose API` нажать кнопки `toOpen()`, `next()`, `Check Expose`, затем `toClose()`.
 - **Ожидаемый результат**: Окно программно открывается/закрывается, `next()` переключает выбранную страну, а `Check Expose` отображает актуальные `id`, `open`, `selected`, `values`, `names`.
 - **Тип доказательства**: `Лог / DOM` (`—`)
+
+#### [TC-INT-004] Группы альтернативных кодов (`DO`/`VA`), прямые пропсы поиска (`show-search`, `filter-mode`, `highlight-length-start`), `v-model:model-selected` и `disable-focus-return`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функционал`
+- **Предусловия**: Открыта страница `http://localhost:3000/component-menu-country`, разрешение `1440×900`.
+- **Шаги**:
+  1. В группе `Phone Dial Codes & Alternative Code Groups (show-phone-code)` открыть меню, раскрыть группу `Dominican Republic` (`DO`) и выбрать альтернативный подкод `+1-829` (`DO-1-829`).
+  2. В группе `Search Options & Focus Control` открыть меню `Filter Search (min 2)`, ввести `"1829"` (поиск без дефиса) и проверить нахождение подкода `+1-829`.
+  3. Открыть меню `No Search` (`:show-search="false"`) и убедиться, что поле поиска отсутствует.
+  4. В группе `Selection Modes` выбрать страну в `v-model:model-selected` и проверить синхронизацию `selectedModelSelected`.
+  5. Открыть и закрыть меню `Disable Focus Return` (`disable-focus-return`) и проверить, что фокус не возвращается принудительно на кнопку-триггер.
+- **Ожидаемый результат**: Группы альтернативных кодов (`DO`, `VA`) раскрываются и позволяют выбрать подкод (`DO-1-829`); поиск по `"1829"` находит `+1-829`; `:show-search="false"` скрывает поле поиска; `v-model:model-selected` обновляет модель; `disable-focus-return` предотвращает возврат фокуса.
+- **Тип доказательства**: `Скриншот` (`./screenshots/TC-INT-004.png`)
 
 ### 2.3 Границы и крайние случаи (`BND`)
 

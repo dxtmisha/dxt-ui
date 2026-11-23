@@ -69,7 +69,6 @@ function createPaste(
     () => country,
     () => countryList,
     () => mockElement,
-    () => mockEvent,
     () => mockValue
   )
   const paste = new InputPhonePaste(

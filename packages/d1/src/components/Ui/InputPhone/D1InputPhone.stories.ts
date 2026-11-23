@@ -5,7 +5,7 @@ import { InputPhoneWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'
-import type { FieldValidationItem } from '@dxtmisha/constructor'
+import type { FieldValidationItem, InputPhoneExpose, InputPhoneValidationContext } from '@dxtmisha/constructor'
 import { expect, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
@@ -144,7 +144,7 @@ export const InputPhoneCountryReadonly: Story = {
           />
           <D1InputPhone
             country-default="RU"
-            :input-phone-dial-code-attrs="{ menuCountryAttrs: { list: ['RU'] } }"
+            :country-list="['RU']"
             value="79001234567"
             label="Single-country list auto-lock (RU)"
           />
@@ -207,17 +207,24 @@ export const InputPhoneExpose: Story = {
   render: () => ({
     components: { D1InputPhone },
     setup() {
-      const phoneRef = ref<any>(null)
+      const phoneRef = ref<InputPhoneExpose | null>(null)
       const phoneValue = ref<string>('12025550147')
       const exposeStatus = ref<string>('ready')
 
       const runReadState = () => {
-        exposeStatus.value = String(phoneRef.value?.getValue?.()) + '|' + String(phoneRef.value?.checkValidity?.())
+        const detail = phoneRef.value?.getDetail?.()
+        exposeStatus.value = String(phoneRef.value?.getValue?.())
+          + '|' + String(phoneRef.value?.checkValidity?.())
+          + '|' + String(detail?.e164 ?? '')
+          + '|' + String(phoneRef.value?.isChanged?.())
       }
 
       const runSetValue = () => {
         phoneRef.value?.setValue?.('79001234567')
-        exposeStatus.value = 'set:' + String(phoneRef.value?.getValue?.()) + '|' + String(phoneRef.value?.checkValidity?.())
+        const detail = phoneRef.value?.getDetail?.()
+        exposeStatus.value = 'set:' + String(phoneRef.value?.getValue?.())
+          + '|' + String(phoneRef.value?.checkValidity?.())
+          + '|' + String(detail?.item?.value ?? '')
       }
 
       const runClear = () => {
@@ -256,16 +263,16 @@ export const InputPhoneExpose: Story = {
   play: async ({ canvasElement, step }) => {
     const statusOutput = canvasElement.querySelector<HTMLElement>('[data-testid="expose-status"]')
 
-    await step('Call exposed getValue and checkValidity', async () => {
+    await step('Call exposed getValue, checkValidity, getDetail, and isChanged', async () => {
       await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-read"]')!)
       await new Promise(resolve => setTimeout(resolve, 40))
     })
-    await expect(statusOutput).toHaveTextContent('12025550147|true')
+    await expect(statusOutput).toHaveTextContent('12025550147|true|+12025550147|true')
 
     await step('Call exposed setValue and clear methods', async () => {
       await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-set"]')!)
       await new Promise(resolve => setTimeout(resolve, 40))
-      await expect(statusOutput).toHaveTextContent('set:79001234567|true')
+      await expect(statusOutput).toHaveTextContent('set:79001234567|true|RU')
 
       await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-clear"]')!)
       await new Promise(resolve => setTimeout(resolve, 40))
@@ -323,12 +330,178 @@ export const InputPhoneTestDialCodeAndDetection: Story = {
     await expect(valueDisplay).toHaveTextContent('+84-91-2345-678')
   }
 }
+export const InputPhoneTestOutputFormatsAndMultiModel: Story = {
+  name: 'Тест: formatOutput, мульти-модель и countryList',
+  render: () => ({
+    components: { D1InputPhone },
+    setup() {
+      const phoneMask = ref<string>('79001234567')
+      const phoneE164 = ref<string | undefined>('+79001234567')
+      const phoneDigits = ref<string | undefined>('79001234567')
+      const phoneCountry = ref<string>('RU')
+      const formatE164Value = ref<string>('12025550147')
+      const formatDigitsValue = ref<string>('84912345678')
+
+      return {
+        phoneMask,
+        phoneE164,
+        phoneDigits,
+        phoneCountry,
+        formatE164Value,
+        formatDigitsValue
+      }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            v-model="phoneMask"
+            v-model:e164="phoneE164"
+            v-model:digits="phoneDigits"
+            v-model:country="phoneCountry"
+            :country-list="['RU', 'VN', 'DE']"
+            label="Multi-model phone"
+          />
+          <div class="wiki-storybook-flex wiki-storybook-gap">
+            <button data-testid="btn-set-e164" class="wiki-storybook-button" @click="phoneE164 = '+84912345678'">Set VN e164</button>
+            <button data-testid="btn-set-digits" class="wiki-storybook-button" @click="phoneDigits = '493012345678'">Set DE digits</button>
+            <span data-testid="multi-model-summary">{{ phoneE164 }}|{{ phoneDigits }}|{{ phoneCountry }}</span>
+          </div>
+          <D1InputPhone
+            v-model="formatE164Value"
+            format-output="e164"
+            label="E.164 format output"
+          />
+          <D1InputPhone
+            v-model="formatDigitsValue"
+            format-output="digits"
+            label="Digits format output"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement, step }) => {
+    const summaryOutput = canvasElement.querySelector<HTMLElement>('[data-testid="multi-model-summary"]')
+    const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+    await expect(inputs.length).toBe(3)
+    await expect(inputs[0].value).toBe('+7-900-123-45-67')
+
+    await step('Update e164 binding and verify synchronized input, digits, and country', async () => {
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-set-e164"]')!)
+      await new Promise(resolve => setTimeout(resolve, 60))
+    })
+    await expect(inputs[0].value).toBe('+84-91-2345-678')
+    await expect(summaryOutput).toHaveTextContent('+84912345678|84912345678|VN')
+
+    await step('Update digits binding and verify synchronized input, e164, and country', async () => {
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-set-digits"]')!)
+      await new Promise(resolve => setTimeout(resolve, 60))
+    })
+    await expect(inputs[0].value).toBe('+49-301-234-5678')
+    await expect(summaryOutput).toHaveTextContent('+493012345678|493012345678|DE')
+  }
+}
+export const InputPhoneTestPhoneMatchAndAutocomplete: Story = {
+  name: 'Тест: правила phoneMatch, textInvalidPhone и autocomplete',
+  render: () => ({
+    components: { D1InputPhone },
+    setup() {
+      const mapPhoneRef = ref<InputPhoneExpose | null>(null)
+      const callbackPhoneRef = ref<InputPhoneExpose | null>(null)
+      const mapPhoneValue = ref<string>('74951234567')
+      const callbackPhoneValue = ref<string>('12025550147')
+      const matchSummary = ref<string>('idle')
+
+      const countryMatchMap = {
+        RU: /^9/,
+        VN: /^9/
+      }
+
+      const customValidator = (context: InputPhoneValidationContext): boolean | string => {
+        return context.phone.endsWith('0') ? true : 'Phone must end with 0'
+      }
+
+      const checkBoth = () => {
+        matchSummary.value = String(mapPhoneRef.value?.checkValidity?.())
+          + '|' + String(mapPhoneRef.value?.getValidationMessage?.())
+          + '|' + String(callbackPhoneRef.value?.checkValidity?.())
+          + '|' + String(callbackPhoneRef.value?.getValidationMessage?.())
+      }
+
+      const setValidNumbers = () => {
+        mapPhoneValue.value = '79001234567'
+        callbackPhoneValue.value = '12025550140'
+      }
+
+      return {
+        mapPhoneRef,
+        callbackPhoneRef,
+        mapPhoneValue,
+        callbackPhoneValue,
+        matchSummary,
+        countryMatchMap,
+        customValidator,
+        checkBoth,
+        setValidNumbers
+      }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            ref="mapPhoneRef"
+            v-model:value="mapPhoneValue"
+            country-default="RU"
+            autocomplete="tel-national"
+            text-invalid-phone="Mobile prefix required"
+            :phone-match="countryMatchMap"
+            :force-show-message="true"
+            label="Country map phoneMatch"
+          />
+          <D1InputPhone
+            ref="callbackPhoneRef"
+            v-model:value="callbackPhoneValue"
+            country-default="US"
+            :phone-match="customValidator"
+            :force-show-message="true"
+            label="Callback phoneMatch"
+          />
+          <div class="wiki-storybook-flex wiki-storybook-gap">
+            <button data-testid="btn-check-match" class="wiki-storybook-button" @click="checkBoth">Check</button>
+            <button data-testid="btn-fix-match" class="wiki-storybook-button" @click="setValidNumbers">Fix</button>
+            <span data-testid="match-summary">{{ matchSummary }}</span>
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement, step }) => {
+    const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+    const summaryOutput = canvasElement.querySelector<HTMLElement>('[data-testid="match-summary"]')
+    await expect(inputs[0]).toHaveAttribute('autocomplete', 'tel-national')
+
+    await step('Verify initial invalid phoneMatch states', async () => {
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-check-match"]')!)
+      await new Promise(resolve => setTimeout(resolve, 50))
+    })
+    await expect(summaryOutput).toHaveTextContent('false|Mobile prefix required|false|Phone must end with 0')
+
+    await step('Apply valid numbers and verify phoneMatch passes', async () => {
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-fix-match"]')!)
+      await new Promise(resolve => setTimeout(resolve, 60))
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-check-match"]')!)
+      await new Promise(resolve => setTimeout(resolve, 50))
+    })
+    await expect(summaryOutput).toHaveTextContent('true||true|')
+  }
+}
 export const InputPhoneTestValidation: Story = {
   name: 'Тест: Валидация, pattern и пользовательское сообщение',
   render: () => ({
     components: { D1InputPhone },
     setup() {
-      const validationTargetRef = ref<any>(null)
+      const validationTargetRef = ref<InputPhoneExpose | null>(null)
       const validationSummary = ref('none')
       const triggerCheck = () => {
         validationSummary.value = String(validationTargetRef.value?.checkValidity?.()) + '|' + String(validationTargetRef.value?.getValidationMessage?.())
@@ -415,9 +588,9 @@ export const InputPhoneTestStatesAndCancel: Story = {
     const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
     await expect(inputs.length).toBe(4)
     await expect(inputs[0]).toBeDisabled()
-    await expect(inputs[0].value).toBe('79001234567')
+    await expect(inputs[0].value).toBe('+7-900-123-45-67')
     await expect(inputs[1]).toHaveAttribute('readonly')
-    await expect(inputs[1].value).toBe('79001234567')
+    await expect(inputs[1].value).toBe('+7-900-123-45-67')
   }
 }
 export const InputPhoneTestSlotsAndEvents: Story = {

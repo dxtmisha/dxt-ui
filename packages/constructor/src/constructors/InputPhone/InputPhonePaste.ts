@@ -1,12 +1,12 @@
-import { eventStopPropagation, GeoPhone, type GeoPhoneMapInfoFull } from '@dxtmisha/functional'
 import { nextTick } from 'vue'
+import { eventStopPropagation, GeoPhone, type GeoPhoneMapInfoFull } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { InputPhoneResolved } from './basicTypes'
 import type { InputPhoneCountry } from './InputPhoneCountry'
 import type { InputPhoneCountryList } from './InputPhoneCountryList'
-import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import type { InputPhonePropsBasic } from './props'
 
@@ -203,12 +203,12 @@ export class InputPhonePaste {
       this.country().item.value = targetCountry
     }
 
-    this.value().setFull?.(true)
+    this.value().setFull(true)
     this.event().onValue(formattedPhone)
 
     await nextTick()
 
-    const element = this.element().getElement?.()?.value
+    const element = this.element().getElement().value
 
     if (
       element

@@ -140,7 +140,6 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('country'),
         () => this.i('countryList'),
         () => this.i('elementItem'),
-        () => this.i('event'),
         () => this.i('value')
       ]
     },

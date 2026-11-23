@@ -12,6 +12,8 @@ import type { InputPhoneDialCodeProps } from './props'
 export class InputPhoneDialCodeStatus {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input properties / входящие свойства
    */
   constructor(
@@ -47,31 +49,13 @@ export class InputPhoneDialCodeStatus {
   }
 
   /**
-   * Returns `disabled` binding object when the disabled prop is explicitly defined.
+   * Checks whether interaction with the country selector is blocked (disabled or read-only).
    *
-   * Возвращает объект привязки `disabled`, если свойство задано явно.
-   * @returns disabled binding object / объект привязки `disabled`
+   * Проверяет, заблокировано ли взаимодействие с выбором страны (отключено или только для чтения).
+   * @returns true if blocked / true, если взаимодействие заблокировано
    */
-  protected getDisabledBind(): { disabled?: boolean } {
-    if (this.props.disabled !== undefined) {
-      return { disabled: this.props.disabled }
-    }
-
-    return {}
-  }
-
-  /**
-   * Returns `readonly` binding object when read-only mode is active.
-   *
-   * Возвращает объект привязки `readonly`, если активен режим «только для чтения».
-   * @returns readonly binding object / объект привязки `readonly`
-   */
-  protected getReadonlyBind(): { readonly?: boolean } {
-    if (this.isReadonly()) {
-      return { readonly: true }
-    }
-
-    return {}
+  isBlocked(): boolean {
+    return Boolean(this.props.disabled || this.isReadonly())
   }
 
   /**
@@ -100,12 +84,30 @@ export class InputPhoneDialCodeStatus {
   }
 
   /**
-   * Checks whether interaction with the country selector is blocked (disabled or read-only).
+   * Returns `disabled` binding object when the disabled prop is explicitly defined.
    *
-   * Проверяет, заблокировано ли взаимодействие с выбором страны (отключено или только для чтения).
-   * @returns true if blocked / true, если взаимодействие заблокировано
+   * Возвращает объект привязки `disabled`, если свойство задано явно.
+   * @returns disabled binding object / объект привязки `disabled`
    */
-  isBlocked(): boolean {
-    return Boolean(this.props.disabled || this.isReadonly())
+  protected getDisabledBind(): { disabled?: boolean } {
+    if (this.props.disabled !== undefined) {
+      return { disabled: this.props.disabled }
+    }
+
+    return {}
+  }
+
+  /**
+   * Returns `readonly` binding object when read-only mode is active.
+   *
+   * Возвращает объект привязки `readonly`, если активен режим «только для чтения».
+   * @returns readonly binding object / объект привязки `readonly`
+   */
+  protected getReadonlyBind(): { readonly?: boolean } {
+    if (this.isReadonly()) {
+      return { readonly: true }
+    }
+
+    return {}
   }
 }

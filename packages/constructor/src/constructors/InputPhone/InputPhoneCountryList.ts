@@ -13,6 +13,8 @@ import type { InputPhonePropsBasic } from './props'
 export class InputPhoneCountryList {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    */
   constructor(
@@ -37,16 +39,6 @@ export class InputPhoneCountryList {
   })
 
   /**
-   * Returns the first allowed country code from the list, if configured.
-   *
-   * Возвращает первый разрешённый код страны из списка, если список задан.
-   * @returns first allowed country code or undefined / первый разрешённый код страны или undefined
-   */
-  getFirst(): string | undefined {
-    return this.item.value?.[0]
-  }
-
-  /**
    * Checks whether a country code is permitted by the configured country list.
    *
    * Проверяет, разрешён ли код страны заданным списком стран.
@@ -66,6 +58,16 @@ export class InputPhoneCountryList {
 
     const resolved = GeoPhone.get(country)?.value ?? country
     return allowed.includes(resolved)
+  }
+
+  /**
+   * Returns the first allowed country code from the list, if configured.
+   *
+   * Возвращает первый разрешённый код страны из списка, если список задан.
+   * @returns first allowed country code or undefined / первый разрешённый код страны или undefined
+   */
+  getFirst(): string | undefined {
+    return this.item.value?.[0]
   }
 
   /**

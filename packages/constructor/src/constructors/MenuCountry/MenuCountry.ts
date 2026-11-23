@@ -12,12 +12,10 @@ import { ModelInclude } from '../../classes/ModelInclude'
 
 import { MenuInclude, type MenuProps } from '../Menu'
 import { MenuCountryEvent } from './MenuCountryEvent'
-import { MenuCountryList, type MenuCountryListItem } from './MenuCountryList'
+import { MenuCountryList } from './MenuCountryList'
 
 import type { MenuCountryProps } from './props'
 import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
-
-export type { MenuCountryListItem }
 
 /** MenuCountry dependency constructors type / Тип конструкторов зависимостей MenuCountry */
 export type MenuCountryConstructors = {
@@ -106,10 +104,12 @@ export class MenuCountry extends DesignLogicAbstract<
    * @returns menu component bindings / привязки компонента меню
    */
   get binds(): ConstrBind<MenuProps> {
+    const selected = this.props.modelSelected ?? (this.props.selected !== false ? this.props.selected : undefined)
+
     return {
       list: this.i('list').items.value,
-      selected: this.props.selected,
-      isSelectedByValue: this.props.isSelectedByValue,
+      ...(selected !== undefined ? { selected } : {}),
+      ...(this.props.isSelectedByValue !== undefined ? { isSelectedByValue: this.props.isSelectedByValue } : {}),
       ...(this.props.highlightLengthStart !== undefined ? { highlightLengthStart: this.props.highlightLengthStart } : {}),
       ...(this.props.showSearch !== undefined ? { showSearch: this.props.showSearch } : {}),
       ...(this.props.filterMode !== undefined ? { filterMode: this.props.filterMode } : {}),

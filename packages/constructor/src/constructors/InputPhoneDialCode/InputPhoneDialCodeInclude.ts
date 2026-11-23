@@ -39,9 +39,9 @@ export class InputPhoneDialCodeInclude extends ComponentIncludeAbstract<
 
     return mergeProps(
       {
-        disabled: props.disabled,
-        readonly: props.readonly,
-        countryList: props.countryList
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+        ...(props.readonly !== undefined ? { readonly: props.readonly } : {}),
+        ...(props.countryList !== undefined ? { countryList: props.countryList } : {})
       },
       super.toBinds()
     ) as Partial<ConstrBind<InputPhoneDialCodeProps>>

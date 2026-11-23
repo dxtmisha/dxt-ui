@@ -30,6 +30,27 @@ export class InputPhoneAutofill {
   ) { }
 
   /**
+   * Handles CSS animation start events fired when Chrome/Safari applies browser autofill.
+   *
+   * Обрабатывает события начала CSS-анимации, возникающие при автозаполнении в Chrome/Safari.
+   * @param event animation event / событие анимации
+   */
+  readonly onAnimationstart = (event: AnimationEvent): void => {
+    if (
+      !this.event().isEnabled()
+      || !event.animationName.includes('autofill')
+    ) {
+      return
+    }
+
+    const target = event.target as HTMLInputElement | null
+
+    if (target?.value) {
+      this.handleAutofill(event, target.value)
+    }
+  }
+
+  /**
    * Handles input events triggered by browser autofill, `insertReplacementText`, or multi-digit insertion.
    * Normalizes full numbers and strips duplicated active dial code prefixes before Mask runs.
    *
@@ -52,52 +73,6 @@ export class InputPhoneAutofill {
     }
 
     this.handleAutofill(event, target.value)
-  }
-
-  /**
-   * Handles CSS animation start events fired when Chrome/Safari applies browser autofill.
-   *
-   * Обрабатывает события начала CSS-анимации, возникающие при автозаполнении в Chrome/Safari.
-   * @param event animation event / событие анимации
-   */
-  readonly onAnimationstart = (event: AnimationEvent): void => {
-    if (
-      !this.event().isEnabled()
-      || !event.animationName.includes('autofill')
-    ) {
-      return
-    }
-
-    const target = event.target as HTMLInputElement | null
-
-    if (target?.value) {
-      this.handleAutofill(event, target.value)
-    }
-  }
-
-  /**
-   * Resolves autofill value from event payload or full input string and applies it when allowed.
-   *
-   * Определяет номер из данных события автозаполнения или значения поля и применяет его при разрешении.
-   * @param event DOM event / DOM-событие
-   * @param rawValue current input string / текущая строка поля ввода
-   */
-  protected handleAutofill(
-    event: Event,
-    rawValue: string
-  ): void {
-    const eventData = 'data' in event && typeof event.data === 'string'
-      ? event.data
-      : undefined
-    const cleanEventData = eventData ? GeoPhone.cleanPhone(eventData) : ''
-
-    const resolved = (
-      cleanEventData.length > 1
-        ? this.resolveAutofill(eventData as string)
-        : undefined
-    ) ?? this.resolveAutofill(rawValue)
-
-    this.paste().applyResolved(event, resolved)
   }
 
   /**
@@ -136,6 +111,31 @@ export class InputPhoneAutofill {
     }
 
     return false
+  }
+
+  /**
+   * Resolves autofill value from event payload or full input string and applies it when allowed.
+   *
+   * Определяет номер из данных события автозаполнения или значения поля и применяет его при разрешении.
+   * @param event DOM event / DOM-событие
+   * @param rawValue current input string / текущая строка поля ввода
+   */
+  protected handleAutofill(
+    event: Event,
+    rawValue: string
+  ): void {
+    const eventData = 'data' in event && typeof event.data === 'string'
+      ? event.data
+      : undefined
+    const cleanEventData = eventData ? GeoPhone.cleanPhone(eventData) : ''
+
+    const resolved = (
+      cleanEventData.length > 1
+        ? this.resolveAutofill(eventData as string)
+        : undefined
+    ) ?? this.resolveAutofill(rawValue)
+
+    this.paste().applyResolved(event, resolved)
   }
 
   /**

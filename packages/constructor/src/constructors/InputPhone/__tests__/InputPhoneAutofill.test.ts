@@ -71,7 +71,6 @@ function createAutofill(
     () => country,
     () => countryList,
     () => mockElement,
-    () => mockEvent,
     () => mockValue
   )
   const paste = new InputPhonePaste(

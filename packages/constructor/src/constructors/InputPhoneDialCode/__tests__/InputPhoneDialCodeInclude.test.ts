@@ -100,6 +100,24 @@ describe('InputPhoneDialCodeInclude', () => {
     })
   })
 
+  it('should support getter function props and preserve inputPhoneDialCodeAttrs.countryList when props.countryList is undefined', () => {
+    const state = reactive<InputPhoneDialCodePropsInclude<InputPhoneDialCodeProps>>({
+      inputPhoneDialCodeAttrs: {
+        countryList: ['US', 'CA'],
+        readonly: true
+      }
+    })
+    const include = new InputPhoneDialCodeInclude(() => state, naming)
+
+    expect(include.binds.value).toMatchObject({
+      countryList: ['US', 'CA'],
+      readonly: true
+    })
+
+    state.readonly = false
+    expect(include.binds.value.readonly).toBe(true)
+  })
+
   it('should return empty array when components registry is missing', () => {
     const include = new InputPhoneDialCodeInclude({}, naming)
     expect(include.render()).toEqual([])

@@ -47,5 +47,31 @@ describe('MenuCountryEvent', () => {
 
     countryEvent.onClick(new MouseEvent('click'), { type: 'item', value: 'US', detail: undefined })
     expect(emits).toHaveBeenCalledWith('click', expect.any(MouseEvent), { type: 'item', value: 'US' })
+
+    // Falsy boundary values
+    countryEvent.onUpdateValue(0)
+    expect(emits).toHaveBeenCalledWith('updateValue', 0)
+    countryEvent.onUpdateValue(false)
+    expect(emits).toHaveBeenCalledWith('updateValue', false)
+    countryEvent.onUpdateValue('')
+    expect(emits).toHaveBeenCalledWith('updateValue', '')
+  })
+
+  it('should safely handle undefined emits across all event handlers', () => {
+    const eventClick = new EventClickInclude(undefined, undefined, undefined)
+    const model = new ModelInclude<ListSelectedList | undefined>('selected', undefined)
+    const countryEvent = new MenuCountryEvent(() => eventClick, () => model, undefined)
+
+    expect(() => {
+      countryEvent.onClick(new MouseEvent('click'), { type: 'item', value: 'VN', detail: undefined })
+      countryEvent.onUpdateSelected('VN')
+      countryEvent.onUpdateValue('VN')
+      countryEvent.onWindow({
+        id: 'win-no-emit',
+        element: document.createElement('div'),
+        control: document.createElement('button'),
+        open: false
+      })
+    }).not.toThrow()
   })
 })

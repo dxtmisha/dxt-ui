@@ -48,5 +48,14 @@ describe('InputPhoneDialCodeStatus', () => {
 
     props.menuCountryAttrs = { list: [] }
     expect(status.isReadonly()).toBe(true)
+
+    props.countryList = ['US', 'VN']
+    props.menuCountryAttrs = { list: ['RU'] }
+    expect(status.isReadonly()).toBe(false)
+    expect(status.isBlocked()).toBe(false)
+
+    props.countryList = ['ZZ']
+    expect(status.isReadonly()).toBe(true)
+    expect(status.isBlocked()).toBe(true)
   })
 })

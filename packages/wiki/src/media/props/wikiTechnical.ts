@@ -186,6 +186,39 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  modelCountry: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for the active country ISO code (v-model:country)',
+        ru: 'Двусторонняя привязка активного ISO-кода страны (v-model:country)'
+      }
+    },
+    hide: true
+  },
+  modelDigits: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for the digits-only phone number (v-model:digits)',
+        ru: 'Двусторонняя привязка номера телефона в формате только цифр (v-model:digits)'
+      }
+    },
+    hide: true
+  },
+  modelE164: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for the E.164 formatted phone number (v-model:e164)',
+        ru: 'Двусторонняя привязка номера телефона в формате E.164 (v-model:e164)'
+      }
+    },
+    hide: true
+  },
   modelOpen: {
     type: StorybookControl.boolean,
     options: {

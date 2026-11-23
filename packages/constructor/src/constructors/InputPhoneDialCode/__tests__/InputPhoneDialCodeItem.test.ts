@@ -60,6 +60,26 @@ describe('InputPhoneDialCodeItem', () => {
 
       selectedList.value = []
       expect(itemController.binds).toEqual({ icon: undefined, label: undefined })
+
+      props.labelType = undefined
+      selectedList.value = [{ icon: 'flag-us', caption: '+1', label: 'United States', value: 'US' }]
+      expect(itemController.binds).toEqual({ icon: 'flag-us', label: undefined })
+    })
+
+    scope.stop()
+  })
+
+  it('should return undefined bindings safely when menu element is not mounted yet', () => {
+    const scope = effectScope()
+    const mockMenu = {
+      getElement: () => undefined
+    } as unknown as MenuCountryInclude
+
+    scope.run(() => {
+      const itemController = new InputPhoneDialCodeItem({ labelType: 'code' }, () => mockMenu)
+      expect(itemController.list.value).toBeUndefined()
+      expect(itemController.item.value).toBeUndefined()
+      expect(itemController.binds).toEqual({ icon: undefined, label: undefined })
     })
 
     scope.stop()

@@ -71,7 +71,6 @@ function createCountry(
     () => country,
     () => countryList,
     () => mockElement,
-    () => mockEvent,
     () => mockValue
   )
 

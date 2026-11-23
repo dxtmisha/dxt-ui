@@ -48,7 +48,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
    * @param text function returning text localization helper / функция, возвращающая помощник локализации текста
    */
   constructor(
-    protected override readonly props: FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock' | 'phoneMatch'>,
+    protected override readonly props: Readonly<FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock' | 'phoneMatch'>>,
     attributes: () => FieldAttributesInclude,
     value: () => FieldValueInclude,
     protected readonly countryList: () => InputPhoneCountryList,
@@ -116,11 +116,8 @@ export class InputPhoneValidation extends FieldValidationInclude {
     }
 
     if (
-      cleanValue
-      && (
-        !this.value().isFull.value
-        || !this.isAllowedByCountryList(cleanValue)
-      )
+      !this.value().isFull.value
+      || !this.isAllowedByCountryList(cleanValue)
     ) {
       return this.checkIncomplete(value)
     }

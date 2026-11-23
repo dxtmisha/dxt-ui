@@ -24,6 +24,8 @@ import type { MenuCountryEmits } from './types'
 export class MenuCountryEvent {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param eventClick function returning click event helper / функция, возвращающая помощник события клика
    * @param model function returning model helper / функция, возвращающая помощник модели
    * @param emits function called when an event is triggered / функция, вызываемая при возникновении события

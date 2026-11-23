@@ -262,6 +262,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textInvalidPhone: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Validation error text shown when the phone number is incomplete or does not match phoneMatch',
+        ru: 'Текст ошибки валидации при неполном номере телефона или несоответствии правилу phoneMatch'
+      }
+    },
+    hide: true
+  },
   textLast: {
     type: StorybookControl.text,
     options: {

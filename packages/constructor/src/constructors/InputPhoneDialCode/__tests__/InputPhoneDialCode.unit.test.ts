@@ -268,12 +268,48 @@ describe('InputPhoneDialCode (Unit)', () => {
     scope.stop()
   })
 
-  it('should support DI overrides for all constructors', () => {
+  it('should respect explicit disableFocusReturn false and prevent model mutation on click when blocked', () => {
+    const scope = effectScope()
+    const props = reactive<InputPhoneDialCodeProps>({
+      value: 'US',
+      disableFocusReturn: false,
+      readonly: true
+    })
+    const element = ref<HTMLDivElement>()
+    const emits = vi.fn()
+
+    const dialCode = scope.run(() => new InputPhoneDialCode(
+      props,
+      element,
+      naming,
+      undefined,
+      undefined,
+      emits as unknown as ConstrEmit<InputPhoneDialCodeEmits>
+    ))!
+
+    expect(dialCode.bindsMenu.disableFocusReturn).toBe(false)
+    expect(dialCode.bindsMenu.disabled).toBe(true)
+
+    const mouseEvent = new MouseEvent('click')
+    dialCode.i('events').onClick(mouseEvent, { type: 'item', value: 'FR', detail: undefined })
+    expect(dialCode.i('model').get()).toBe('US')
+
+    props.readonly = false
+    dialCode.i('events').onClick(mouseEvent, { type: 'item', value: 'FR', detail: undefined })
+    expect(dialCode.i('model').get()).toBe('FR')
+
+    scope.stop()
+  })
+
+  it('should support DI overrides for all constructors and keep event lazy until click', () => {
     const scope = effectScope()
     const customButton = vi.fn()
     const customEvent = vi.fn()
+    const customEvents = vi.fn()
+    const customItem = vi.fn()
     const customMenu = vi.fn()
     const customModel = vi.fn()
+    const customStatus = vi.fn()
 
     const dialCode = scope.run(() => new InputPhoneDialCode(
       {},
@@ -285,18 +321,30 @@ describe('InputPhoneDialCode (Unit)', () => {
       {
         button: customButton as unknown as InputPhoneDialCodeConstructors['button'],
         event: customEvent as unknown as InputPhoneDialCodeConstructors['event'],
+        events: customEvents as unknown as InputPhoneDialCodeConstructors['events'],
+        item: customItem as unknown as InputPhoneDialCodeConstructors['item'],
         menu: customMenu as unknown as InputPhoneDialCodeConstructors['menu'],
-        model: customModel as unknown as InputPhoneDialCodeConstructors['model']
+        model: customModel as unknown as InputPhoneDialCodeConstructors['model'],
+        status: customStatus as unknown as InputPhoneDialCodeConstructors['status']
       }
     ))!
 
     dialCode.i('button')
     dialCode.i('menu')
     dialCode.i('model')
+    dialCode.i('item')
+    dialCode.i('status')
+    dialCode.i('events')
 
     expect(customButton).toHaveBeenCalledTimes(1)
     expect(customMenu).toHaveBeenCalledTimes(1)
     expect(customModel).toHaveBeenCalledTimes(1)
+    expect(customItem).toHaveBeenCalledTimes(1)
+    expect(customStatus).toHaveBeenCalledTimes(1)
+    expect(customEvents).toHaveBeenCalledTimes(1)
+    expect(customEvent).not.toHaveBeenCalled()
+
+    dialCode.i('event')
     expect(customEvent).toHaveBeenCalledTimes(1)
 
     scope.stop()

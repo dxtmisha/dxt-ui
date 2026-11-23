@@ -88,4 +88,30 @@ describe('MenuCountryInclude', () => {
     expect(typeof expose.next).toBe('function')
     expect(expose.getMenuCountryElement().value).toBeUndefined()
   })
+
+  it('should preserve falsy boundary values and respect extra overrides without emitting undefined keys', () => {
+    const props = reactive<MenuCountryPropsInclude<MenuCountryProps>>({
+      disabled: false,
+      disableFocusReturn: false,
+      highlightLengthStart: 0,
+      showSearch: false,
+      filterMode: false
+    })
+    const include = new MenuCountryInclude(
+      props,
+      naming,
+      undefined,
+      () => ({ disabled: true })
+    )
+
+    expect(include.binds.value).toMatchObject({
+      disabled: true,
+      disableFocusReturn: false,
+      highlightLengthStart: 0,
+      showSearch: false,
+      filterMode: false
+    })
+    expect('list' in include.binds.value).toBe(false)
+    expect(include.render()).toEqual([])
+  })
 })

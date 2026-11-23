@@ -1,8 +1,8 @@
 import type { ListSelectedList } from '@dxtmisha/functional'
 
 import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
-import type { MenuCountryPropsBasic, MenuCountryPropsInclude } from '../MenuCountry'
 import type { IconPropsBasic, IconValue } from '../Icon'
+import type { MenuCountryPropsBasic, MenuCountryPropsInclude } from '../MenuCountry'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
@@ -55,6 +55,7 @@ export type InputPhoneDialCodeProps = InputPhoneDialCodePropsBasic & InputPhoneD
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputPhoneDialCode = {
+  disableFocusReturn: true,
   highlightLengthStart: 1,
   showSearch: true,
   filterMode: false,

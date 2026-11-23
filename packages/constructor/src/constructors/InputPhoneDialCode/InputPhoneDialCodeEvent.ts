@@ -8,6 +8,7 @@ import {
   type NumberOrStringOrBoolean
 } from '@dxtmisha/functional'
 
+import type { EventClickInclude } from '../../classes/EventClickInclude'
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import type { MenuCountryProps } from '../MenuCountry'
@@ -24,10 +25,14 @@ import type { InputPhoneDialCodeEmits } from './types'
 export class InputPhoneDialCodeEvent {
   /**
    * Constructor
+   *
+   * Конструктор
+   * @param event function returning click event helper / функция, возвращающая помощник события клика
    * @param model function returning model value helper / функция, возвращающая помощник значения модели
    * @param emits function called when an event is triggered / функция, вызываемая при возникновении события
    */
   constructor(
+    protected readonly event: () => EventClickInclude,
     protected readonly model: () => ModelValueInclude<ListSelectedList | undefined>,
     protected readonly emits?: ConstrEmit<InputPhoneDialCodeEmits>
   ) {
@@ -69,6 +74,7 @@ export class InputPhoneDialCodeEvent {
     }
 
     this.model().onClick(event, options)
+    this.event().onClick(event, options)
   }
 
   /**

@@ -14,6 +14,8 @@ import type { InputPhoneDialCodeProps } from './props'
 export class InputPhoneDialCodeItem {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input properties / входящие свойства
    * @param menu function returning country menu include instance / функция, возвращающая экземпляр меню выбора страны
    */

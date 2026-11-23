@@ -88,6 +88,18 @@ export const wikiValue: StorybookArgsToList = {
     },
     hide: true
   },
+  country: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Current country code (ISO 3166-1 alpha-2) for two-way binding (v-model:country)',
+        ru: 'Текущий код страны (ISO 3166-1 alpha-2) для двусторонней привязки (v-model:country)'
+      }
+    },
+    hide: true
+  },
   countryDefault: {
     type: StorybookControl.string,
     options: {
@@ -131,6 +143,30 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Additional data is passed by the component when events are triggered',
         ru: 'Дополнительные данные, передаваемые компонентом при срабатывании событий'
+      }
+    },
+    hide: true
+  },
+  digits: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Digits-only phone number value for two-way binding (v-model:digits)',
+        ru: 'Значение номера телефона только из цифр для двусторонней привязки (v-model:digits)'
+      }
+    },
+    hide: true
+  },
+  e164: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Phone number in E.164 format (+countryCode and digits) for two-way binding (v-model:e164)',
+        ru: 'Номер телефона в формате E.164 (+код страны и цифры) для двусторонней привязки (v-model:e164)'
       }
     },
     hide: true

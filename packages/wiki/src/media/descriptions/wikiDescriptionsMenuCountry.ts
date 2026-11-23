@@ -15,16 +15,18 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
     en: [
       'automatic generation of country list via GeoFlagRef',
       'filtering by country codes via list prop',
-      'optional phone dial code captions via showPhoneCode prop',
+      'optional phone dial code captions and alternative dial code groups via showPhoneCode prop',
+      'built-in search, filtering, and highlight threshold via showSearch, filterMode, and highlightLengthStart props',
       'support for internationalized country names via language prop',
-      'all features of the base Menu component and window lifecycle events'
+      'all features of the base Menu component, disableFocusReturn, and window lifecycle events'
     ],
     ru: [
       'автоматическая генерация списка стран через GeoFlagRef',
       'фильтрация по кодам стран через свойство list',
-      'отображение телефонных кодов через свойство showPhoneCode',
+      'отображение телефонных кодов и групп альтернативных префиксов через свойство showPhoneCode',
+      'встроенный поиск, фильтрация и порог подсветки через свойства showSearch, filterMode и highlightLengthStart',
       'поддержка интернационализированных названий стран через свойство language',
-      'все возможности базового компонента Menu и проброс событий окна'
+      'все возможности базового компонента Menu, disableFocusReturn и проброс событий окна'
     ]
   },
   import: [
@@ -468,6 +470,103 @@ await waitFor(async () => {
   await expect(embeddedMenu).toBeInTheDocument()
   const options = Array.from(canvasElement.querySelectorAll<HTMLElement>('[role="option"]'))
   await expect(options.length).toBe(2)
+})
+      `
+    },
+    {
+      id: 'MenuCountryTestSearchAndDialGroups',
+      name: {
+        en: 'Test: Alternative dial code groups, search props, modelSelected, and disableFocusReturn',
+        ru: 'Тест: Группы альтернативных кодов, свойства поиска, modelSelected и disableFocusReturn'
+      },
+      propsName: [
+        'showPhoneCode',
+        'showSearch',
+        'filterMode',
+        'highlightLengthStart',
+        'modelSelected',
+        'disableFocusReturn',
+        'list'
+      ],
+      setup: `
+      return {
+        selectedModel: ref<ListSelectedList>('GB'),
+        selectedGroup: ref<ListSelectedList>('VN')
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-align-center">
+          <DesignComponent
+            v-model:model-selected="selectedModel"
+            :list="['US', 'GB', 'VN']"
+            :show-search="false"
+            language="en"
+            disable-focus-return
+          >
+            <template #control="{ binds, selectedNames }">
+              <button
+                class="wiki-storybook-button"
+                type="button"
+                v-bind="binds"
+                data-testid="test-model-nosearch-trigger"
+              >
+                {{ selectedNames.value[0] || 'None' }}
+              </button>
+            </template>
+          </DesignComponent>
+
+          <DesignComponent
+            v-model:selected="selectedGroup"
+            :list="['VN', 'DO']"
+            :highlight-length-start="2"
+            show-phone-code
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds }">
+              <button
+                class="wiki-storybook-button"
+                type="button"
+                v-bind="binds"
+                data-testid="test-group-search-trigger"
+              >
+                Dial Group: {{ selectedGroup }}
+              </button>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const modelTrigger = canvasElement.querySelector<HTMLButtonElement>('[data-testid="test-model-nosearch-trigger"]')
+await expect(modelTrigger).toHaveTextContent('United Kingdom')
+
+await userEvent.click(modelTrigger!)
+await waitFor(async () => {
+  await expect(document.querySelector('[role="option"][data-value="VN"]')).not.toBeNull()
+})
+const vietnamOption = document.querySelector<HTMLElement>('[role="option"][data-value="VN"]')
+await userEvent.click(vietnamOption!)
+await waitFor(async () => {
+  await expect(modelTrigger).toHaveTextContent('Vietnam')
+})
+
+const groupTrigger = canvasElement.querySelector<HTMLButtonElement>('[data-testid="test-group-search-trigger"]')
+await userEvent.click(groupTrigger!)
+await waitFor(async () => {
+  const searchInput = document.querySelector<HTMLInputElement>('[data-status="open"] input')
+  await expect(searchInput).not.toBeNull()
+})
+
+const searchInput = document.querySelector<HTMLInputElement>('[data-status="open"] input')
+await userEvent.type(searchInput!, '1829')
+await waitFor(async () => {
+  const matchedOption = document.querySelector<HTMLElement>('[role="option"][data-value="DO-1-829"]')
+  await expect(matchedOption).not.toBeNull()
+})
+const matchedOption = document.querySelector<HTMLElement>('[role="option"][data-value="DO-1-829"]')
+await userEvent.click(matchedOption!)
+await waitFor(async () => {
+  await expect(groupTrigger).toHaveTextContent('Dial Group: DO-1-829')
 })
       `
     }

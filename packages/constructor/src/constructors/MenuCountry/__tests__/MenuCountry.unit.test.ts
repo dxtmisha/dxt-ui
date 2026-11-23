@@ -42,9 +42,13 @@ describe('MenuCountry (Logic Orchestrator)', () => {
         expect(menuCountry.instantiatedItems.list).toBeUndefined()
         expect(menuCountry.instantiatedItems.events).toBeUndefined()
 
+        // Instantiating list helper alone does not eagerly instantiate flag until flagList/items are read
+        expect(menuCountry.i('list')).toBeInstanceOf(MenuCountryList)
+        expect(menuCountry.hasInstance('list')).toBe(true)
+        expect(menuCountry.hasInstance('flag')).toBe(false)
+
         const binds = menuCountry.binds
         expect(Array.isArray(binds.list)).toBe(true)
-        expect(menuCountry.hasInstance('list')).toBe(true)
         expect(menuCountry.hasInstance('flag')).toBe(true)
         expect(menuCountry.hasInstance('events')).toBe(true)
         expect(menuCountry.hasInstance('event')).toBe(false)
@@ -184,6 +188,55 @@ describe('MenuCountry (Logic Orchestrator)', () => {
         }
         menuCountry.i('events').onWindow(windowOptions)
         expect(emits).toHaveBeenCalledWith('window', windowOptions)
+      })
+
+      scope.stop()
+    })
+
+    it('should fall back to modelSelected, omit undefined optional keys, and preserve falsy values in binds', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+      const props = reactive<MenuCountryProps>({
+        list: ['VN'],
+        modelSelected: 'VN',
+        isSelectedByValue: false,
+        highlightLengthStart: 0,
+        showSearch: false,
+        filterMode: false
+      })
+
+      scope.run(() => {
+        const menuCountry = new MenuCountry(props, element, naming)
+        const binds = menuCountry.binds
+
+        expect(binds.selected).toBe('VN')
+        expect(binds.isSelectedByValue).toBe(false)
+        expect(binds.highlightLengthStart).toBe(0)
+        expect(binds.showSearch).toBe(false)
+        expect(binds.filterMode).toBe(false)
+
+        // Vue casts omitted Boolean-union props (selected) to false; modelSelected must still take precedence
+        props.selected = false
+        expect(menuCountry.binds.selected).toBe('VN')
+
+        props.modelSelected = undefined
+        expect('selected' in menuCountry.binds).toBe(false)
+
+        props.selected = 'US'
+        expect(menuCountry.binds.selected).toBe('US')
+
+        props.selected = undefined
+        props.isSelectedByValue = undefined
+        props.highlightLengthStart = undefined
+        props.showSearch = undefined
+        props.filterMode = undefined
+
+        const minimalBinds = menuCountry.binds
+        expect('selected' in minimalBinds).toBe(false)
+        expect('isSelectedByValue' in minimalBinds).toBe(false)
+        expect('highlightLengthStart' in minimalBinds).toBe(false)
+        expect('showSearch' in minimalBinds).toBe(false)
+        expect('filterMode' in minimalBinds).toBe(false)
       })
 
       scope.stop()

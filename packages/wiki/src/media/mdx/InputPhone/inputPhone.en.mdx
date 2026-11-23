@@ -1,25 +1,26 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-A phone number input component combining automatic country dial code selection, dynamic phone masking, and built-in validation.
+A phone number input component combining automatic country dial code selection, dynamic phone masking, output formatting, and built-in validation.
 
-InputPhone integrates the Field wrapper, InputPhoneDialCode country selector, and Mask formatting engine into a single component. It automatically detects the country as the user types or pastes a phone number, switches the input mask accordingly, supports selector locking (`countryReadonly`), or restricts input to a local national format when `countryBlock` is enabled.
+InputPhone integrates the Field wrapper, InputPhoneDialCode country selector, and Mask formatting engine into a single component. It automatically detects the country as the user types, pastes, or autofills a phone number, switches the input mask accordingly, supports selector locking (`countryReadonly`), restricts allowed countries (`countryList`), or locks input to a local national format when `countryBlock` is enabled.
 
 **Key features:**
 
-- Automatic country detection by entered or pasted phone number prefix (supports full-selection replacement and normalizing leading `+` + national `within` prefix such as `+8` to `+7`)
-- Built-in `InputPhoneDialCode` selector with searchable country list, flags, and dial codes (supports `XK` Kosovo `+383` and the full ISO country dataset)
+- Automatic country detection by entered, pasted, or browser-autofilled phone number prefix (supports full-selection replacement, autofill prefix deduplication, and normalizing leading `+` + national `within` prefix such as `+8` to `+7`)
+- Built-in `InputPhoneDialCode` selector with searchable country list, flags, dial codes (supports `XK` Kosovo `+383` and the full ISO country dataset), and direct `countryList` filtering
 - Country lock modes: `countryBlock` (hides selector and switches to local format) and `countryReadonly` (locks selector while keeping flag and dial code visible; auto-locks for single-country lists)
-- Dynamic phone mask formatting with `Mask` (`maskAttrs`, `countryDefault`)
-- Built-in validation (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`) and non-blocking warning states (`warning`, `warningMessage`, `warningId`)
-- Events (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`), two-way binding (`v-model`, `v-model:value`), and exposed programmatic API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
+- Output formatting (`formatOutput`: `'mask'` | `'e164'` | `'digits'`) and dedicated multi-model synchronization (`v-model`, `v-model:value`, `v-model:country`, `v-model:e164`, `v-model:digits`)
+- Dynamic phone mask formatting with `Mask` (`maskAttrs`, `countryDefault`, `autocomplete="tel"` by default) and formatted `disabled` / `readonly` display
+- Built-in validation (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`, `textInvalidPhone`), country-specific or custom `phoneMatch` validation rules (matching national phone digits or receiving full `InputPhoneValidationContext`), and non-blocking warning states (`warning`, `warningMessage`, `warningId`)
+- Events (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`, `update:country`, `update:e164`, `update:digits`) enriched with `detail` phone metadata, and exposed programmatic API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`, `getDetail`, `isChanged`)
 - Full slot support (`leading`, `trailing`, `prefix`, `suffix`, `label`) and accessibility (`inputmode="tel"`, ARIA popup controls)
 
 **Common use cases:**
 
 - User registration, checkout, and profile contact forms
-- International phone inputs with country search and dial code selector
-- Region-locked phone inputs for single-country forms (`countryBlock` or `countryReadonly`)
-- Validated contact forms with custom error or non-blocking warning messages
+- International phone inputs with E.164 or digits-only backend payloads
+- Region-locked or whitelist-restricted phone inputs (`countryBlock`, `countryReadonly`, `countryList`)
+- Validated contact forms with country-specific mobile prefix rules (`phoneMatch`), custom error messages, or non-blocking warning states
 
 <Source
     code={`
@@ -27,9 +28,12 @@ InputPhone integrates the Field wrapper, InputPhoneDialCode country selector, an
 import { ref } from 'vue'
 
 const phone = ref('')
+const phoneE164 = ref()
+const country = ref('US')
 
 const handleInput = (event, validation) => {
   console.log('Phone value:', validation.value)
+  console.log('Phone detail:', validation.detail)
   console.log('Is valid:', validation.status)
 }
 </script>
@@ -37,7 +41,10 @@ const handleInput = (event, validation) => {
 <template>
   <InputPhone
     v-model:value="phone"
+    v-model:e164="phoneE164"
+    v-model:country="country"
     country-default="US"
+    format-output="e164"
     label="Phone number"
     helper-message="Enter international phone number"
     required

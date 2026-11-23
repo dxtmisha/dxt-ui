@@ -7,11 +7,12 @@ InputPhoneDialCode is a compact trigger button that opens a **MenuCountry** popu
 **Key features:**
 
 - **Automatic Country Detection:** Detects the default country via `Geo.getCountry()`
-- **Country Popup Selection:** Opens a `MenuCountry` popup displaying country flags, names, and phone dial codes (`showPhoneCode: true`)
+- **Country Popup Selection:** Opens a `MenuCountry` popup displaying country flags, names, grouped alternative dial prefixes (`DO`, `VA`), and phone dial codes (`showPhoneCode: true`)
+- **Direct Filtering & Search:** Supports direct `countryList`, `showSearch`, `filterMode`, and `highlightLengthStart` props for filtering and highlighting countries and dial codes
 - **Configurable Label Modes:** Supports `code` (e.g. `+1`), `name` (country name), or `none` via `labelType`
 - **Trailing Arrow Indicator:** Reflects the popup open/close state via `iconTurn` and supports custom `iconArrowDown` icons
-- **Readonly & Single-Country Lock:** Locks menu interaction via `readonly` (or automatically when `menuCountryAttrs.list` contains only one country/dial code) while keeping the flag and dial code visible
-- **Focus Management:** Configures `disableFocusReturn: true` on the popup window and forwards `window` events so host phone inputs can manage focus on close
+- **Readonly & Single-Country Lock:** Locks menu interaction via `readonly` (or automatically when `countryList` / `menuCountryAttrs.list` contains only one single-code country, while keeping multi-code countries like `DO` interactive) and preserves the flag and dial code display
+- **Focus Management:** Defaults `disableFocusReturn` to `true` (overridable via `:disable-focus-return="false"`) and forwards `window` events so host phone inputs can manage focus on close
 - **Inherited Capabilities:** Inherits `Button` and `MenuCountry` configuration via `buttonAttrs`, `menuCountryAttrs`, `readonly`, and `disabled`
 
 **Common use cases:**

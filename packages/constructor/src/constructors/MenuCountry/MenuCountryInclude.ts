@@ -62,12 +62,12 @@ export class MenuCountryInclude extends ComponentIncludeAbstract<
 
     return mergeProps(
       {
-        disabled: props.disabled,
-        disableFocusReturn: props.disableFocusReturn,
-        list: props.countryList,
-        highlightLengthStart: props.highlightLengthStart,
-        showSearch: props.showSearch,
-        filterMode: props.filterMode
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+        ...(props.disableFocusReturn !== undefined ? { disableFocusReturn: props.disableFocusReturn } : {}),
+        ...(props.countryList !== undefined ? { list: props.countryList } : {}),
+        ...(props.highlightLengthStart !== undefined ? { highlightLengthStart: props.highlightLengthStart } : {}),
+        ...(props.showSearch !== undefined ? { showSearch: props.showSearch } : {}),
+        ...(props.filterMode !== undefined ? { filterMode: props.filterMode } : {})
       },
       super.toBinds()
     ) as Partial<ConstrBind<MenuCountryProps>>

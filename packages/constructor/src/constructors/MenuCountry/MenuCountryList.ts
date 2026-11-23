@@ -2,32 +2,14 @@
 
 import { computed, type ComputedRef, toRef } from 'vue'
 import {
-  type ConstrBind,
   forEach,
   type GeoFlagNational,
   type GeoFlagRef,
-  GeoPhone,
-  type ListType
+  GeoPhone
 } from '@dxtmisha/functional'
 
-import type { ListItemPropsBasic } from '../ListItem'
+import type { MenuCountryListItem } from './basicTypes'
 import type { MenuCountryProps } from './props'
-
-/** MenuCountry item type supporting group entries for alternative codes / Тип элемента MenuCountry с поддержкой групп для альтернативных кодов */
-export type MenuCountryListItem = ConstrBind<
-  ListItemPropsBasic
-  & Partial<Omit<GeoFlagNational, 'value'>>
-  & {
-    /** Optional item type / Опциональный тип элемента */
-    type?: ListType
-    /** Optional item index / Опциональный индекс элемента */
-    index?: string
-    /** Optional search string / Опциональная строка поиска */
-    search?: string
-    /** Country code or nested alternative prefix items / Код страны или вложенные элементы альтернативных префиксов */
-    value?: string | MenuCountryListItem[]
-  }
->
 
 /**
  * Class for generating and managing the localized country and phone dial code list for MenuCountry.
@@ -35,11 +17,13 @@ export type MenuCountryListItem = ConstrBind<
  * Класс для формирования и управления локализованным списком стран и телефонных кодов для MenuCountry.
  */
 export class MenuCountryList {
-  /** List of flags / Список флагов */
-  readonly flagList: ComputedRef<GeoFlagNational[]>
+  /** Cached flag list reference / Кэшированная ссылка на список флагов */
+  protected flagListCache?: ComputedRef<GeoFlagNational[]>
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param flag function returning flag reference instance / функция, возвращающая экземпляр ссылки на флаги
    */
@@ -47,8 +31,16 @@ export class MenuCountryList {
     protected readonly props: Readonly<MenuCountryProps>,
     protected readonly flag: () => GeoFlagRef
   ) {
-    this.flagList = this.initFlagList()
   }
+
+  /** List of flags / Список флагов */
+  readonly flagList = computed<GeoFlagNational[]>(() => {
+    if (!this.flagListCache) {
+      this.flagListCache = this.initFlagList()
+    }
+
+    return this.flagListCache.value
+  })
 
   /** Prepared menu items list / Подготовленный список элементов меню */
   readonly items = computed<MenuCountryListItem[]>(() => {
@@ -58,22 +50,6 @@ export class MenuCountryList {
 
     return this.getList(flag => this.getCountryItem(flag))
   })
-
-  /**
-   * Maps the flag list using the provided item builder callback.
-   *
-   * Преобразует список флагов с помощью переданной функции формирования элемента.
-   * @param callback function to map a country flag to a list item / функция преобразования флага страны в элемент списка
-   * @returns list of mapped menu items / список преобразованных элементов меню
-   */
-  protected getList(
-    callback: (flag: GeoFlagNational) => MenuCountryListItem | undefined
-  ): MenuCountryListItem[] {
-    return forEach(
-      this.flagList.value,
-      callback
-    ) as MenuCountryListItem[]
-  }
 
   /**
    * Builds a menu item for a country with searchable metadata.
@@ -89,6 +65,22 @@ export class MenuCountryList {
       ...flag,
       search: this.getSearch(flag)
     }
+  }
+
+  /**
+   * Maps the flag list using the provided item builder callback.
+   *
+   * Преобразует список флагов с помощью переданной функции формирования элемента.
+   * @param callback function to map a country flag to a list item / функция преобразования флага страны в элемент списка
+   * @returns list of mapped menu items / список преобразованных элементов меню
+   */
+  protected getList(
+    callback: (flag: GeoFlagNational) => MenuCountryListItem | undefined
+  ): MenuCountryListItem[] {
+    return forEach(
+      this.flagList.value,
+      callback
+    ) as MenuCountryListItem[]
   }
 
   /**
@@ -134,7 +126,7 @@ export class MenuCountryList {
    */
   protected getPhoneCodeSubItems(
     flag: GeoFlagNational,
-    codes: string[]
+    codes: readonly string[]
   ): MenuCountryListItem[] {
     return codes.map((code, index) => {
       const value = index === 0 ? flag.value : `${flag.value}-${code}`
@@ -164,7 +156,7 @@ export class MenuCountryList {
    */
   protected getSearch(
     flag: GeoFlagNational,
-    codes?: string[]
+    codes?: readonly string[]
   ): string {
     const parts: string[] = [
       flag.label,
@@ -176,7 +168,7 @@ export class MenuCountryList {
       ...this.getSearchCodes(codes)
     ]
 
-    return parts.join(' ')
+    return parts.filter(Boolean).join(' ')
   }
 
   /**
@@ -186,7 +178,7 @@ export class MenuCountryList {
    * @param codes optional list of phone dial codes / необязательный список телефонных кодов
    * @returns array of formatted phone code search terms / массив строк поиска по телефонным кодам
    */
-  protected getSearchCodes(codes?: string[]): string[] {
+  protected getSearchCodes(codes?: readonly string[]): string[] {
     if (codes) {
       return codes.map((code) => {
         if (code.includes('-')) {

@@ -33,7 +33,7 @@ export class InputPhoneValue extends FieldValueInclude<string> {
    * @param original original value / оригинальное значение
    */
   constructor(
-    protected override readonly props: InputPhonePropsBasic,
+    protected override readonly props: Readonly<InputPhonePropsBasic>,
     protected readonly data: () => InputPhoneData,
     element?: () => FieldElementInclude,
     original?: RefOrNormal<string>

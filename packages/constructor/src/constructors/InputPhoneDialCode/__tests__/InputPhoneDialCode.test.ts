@@ -247,20 +247,20 @@ describe('InputPhoneDialCode (Integration)', () => {
 
     await nextTick()
 
-    const menuEl = container.querySelector('.mock-menu-country') as HTMLElement
-    expect(menuEl).not.toBeNull()
-    expect(menuEl.classList.contains('d1-inputPhoneDialCode')).toBe(true)
-    expect(menuEl.classList.contains('d1-inputPhoneDialCode__menuCountry')).toBe(true)
-    expect(menuEl.getAttribute('data-selected')).toBe('US')
-    expect(menuEl.getAttribute('data-show-phone-code')).toBe('true')
-    expect(menuEl.getAttribute('data-disable-focus-return')).toBe('true')
+    const menuElement = container.querySelector('.mock-menu-country') as HTMLElement
+    expect(menuElement).not.toBeNull()
+    expect(menuElement.classList.contains('d1-inputPhoneDialCode')).toBe(true)
+    expect(menuElement.classList.contains('d1-inputPhoneDialCode__menuCountry')).toBe(true)
+    expect(menuElement.getAttribute('data-selected')).toBe('US')
+    expect(menuElement.getAttribute('data-show-phone-code')).toBe('true')
+    expect(menuElement.getAttribute('data-disable-focus-return')).toBe('true')
 
-    const buttonEl = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
-    expect(buttonEl).not.toBeNull()
-    expect(buttonEl.classList.contains('d1-window__control')).toBe(true)
-    expect(buttonEl.getAttribute('data-icon')).toBe('flag-us')
-    expect(buttonEl.getAttribute('data-icon-trailing')).toBe('keyboard_arrow_down')
-    expect(buttonEl.textContent).toBe('+1')
+    const buttonElement = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    expect(buttonElement).not.toBeNull()
+    expect(buttonElement.classList.contains('d1-window__control')).toBe(true)
+    expect(buttonElement.getAttribute('data-icon')).toBe('flag-us')
+    expect(buttonElement.getAttribute('data-icon-trailing')).toBe('keyboard_arrow_down')
+    expect(buttonElement.textContent).toBe('+1')
 
     expect(lastMenuAttrs.value).toMatchObject({
       showSearch: true
@@ -381,5 +381,23 @@ describe('InputPhoneDialCode (Integration)', () => {
     expect(button.getAttribute('data-icon-trailing')).toBe('')
     expect(button.textContent).toBe('+1')
     expect(container.querySelector('.mock-menu-country')?.getAttribute('data-disabled')).toBe('true')
+  })
+
+  it('should keep menu interactive for single multi-code country and respect explicit disableFocusReturn false', async () => {
+    const { container } = createHarness({
+      value: 'US',
+      labelType: 'code',
+      countryList: ['DO'],
+      disableFocusReturn: false
+    })
+
+    await nextTick()
+
+    const button = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    const menuElement = container.querySelector('.mock-menu-country') as HTMLElement
+    expect(button.getAttribute('data-readonly')).toBe('false')
+    expect(button.getAttribute('data-icon-trailing')).toBe('keyboard_arrow_down')
+    expect(menuElement.getAttribute('data-disabled')).toBe('false')
+    expect(menuElement.getAttribute('data-disable-focus-return')).toBe('false')
   })
 })

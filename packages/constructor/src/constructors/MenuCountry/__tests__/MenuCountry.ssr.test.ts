@@ -118,10 +118,13 @@ describe('MenuCountry (SSR)', () => {
         language: 'en'
       },
       {
-        list: ['VN'],
-        selected: 'VN',
+        list: ['VN', 'DO'],
+        modelSelected: 'VN',
         showPhoneCode: true,
         disabled: true,
+        highlightLengthStart: 0,
+        showSearch: false,
+        filterMode: true,
         language: 'en'
       }
     ]

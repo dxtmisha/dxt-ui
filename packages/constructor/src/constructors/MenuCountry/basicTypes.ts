@@ -1,9 +1,27 @@
 import type { Ref } from 'vue'
-import type { ConstrBind } from '@dxtmisha/functional'
+import type { ConstrBind, GeoFlagNational, ListType } from '@dxtmisha/functional'
+
+import type { ListItemPropsBasic } from '../ListItem'
 import type { MenuExposeInclude } from '../Menu'
 
 import type { MenuCountryExpose } from './types'
 import type { MenuCountryPropsBasic } from './props'
+
+/** MenuCountry item type supporting group entries for alternative codes / Тип элемента MenuCountry с поддержкой групп для альтернативных кодов */
+export type MenuCountryListItem = ConstrBind<
+  ListItemPropsBasic
+  & Partial<Omit<GeoFlagNational, 'value'>>
+  & {
+    /** Optional item type / Опциональный тип элемента */
+    type?: ListType
+    /** Optional item index / Опциональный индекс элемента */
+    index?: string
+    /** Optional search string / Опциональная строка поиска */
+    search?: string
+    /** Country code or nested alternative prefix items / Код страны или вложенные элементы альтернативных префиксов */
+    value?: string | MenuCountryListItem[]
+  }
+>
 
 /**
  * Interface for describing which components need to be connected for MenuCountry work.

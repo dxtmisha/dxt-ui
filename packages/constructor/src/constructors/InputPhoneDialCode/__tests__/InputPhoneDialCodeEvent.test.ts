@@ -11,7 +11,7 @@ import { InputPhoneDialCodeEvent } from '../InputPhoneDialCodeEvent'
 import type { InputPhoneDialCodeEmits } from '../types'
 
 describe('InputPhoneDialCodeEvent', () => {
-  it('should emit window, updateValue, and click events while ignoring group items', () => {
+  it('should emit window, updateValue, and click events while ignoring group and array items', () => {
     const scope = effectScope()
     const emits = vi.fn()
     const valueRef = reactive({ value: 'US' })
@@ -21,10 +21,11 @@ describe('InputPhoneDialCodeEvent', () => {
       const model = new ModelValueInclude<ListSelectedList | undefined>(
         'selected',
         emits as unknown as ConstrEmit,
-        eventClick,
+        undefined,
         computed(() => valueRef.value)
       )
       const dialCodeEvent = new InputPhoneDialCodeEvent(
+        () => eventClick,
         () => model,
         emits as unknown as ConstrEmit<InputPhoneDialCodeEmits>
       )
@@ -47,6 +48,10 @@ describe('InputPhoneDialCodeEvent', () => {
       expect(model.get()).toBe('DE')
       expect(emits).toHaveBeenCalledWith('updateValue', 'DE')
 
+      dialCodeEvent.onUpdate(undefined)
+      expect(model.get()).toBeUndefined()
+      expect(emits).toHaveBeenCalledWith('updateValue', undefined)
+
       const mouseEvent = new MouseEvent('click')
       dialCodeEvent.onClick(mouseEvent, { type: 'item', value: 'FR', detail: { code: '+33' } })
       expect(model.get()).toBe('FR')
@@ -61,6 +66,54 @@ describe('InputPhoneDialCodeEvent', () => {
       })
       expect(model.get()).toBe('FR')
       expect(emits).not.toHaveBeenCalled()
+
+      dialCodeEvent.onClick(mouseEvent, {
+        type: 'item',
+        value: ['DO', 'DO-1-829'],
+        detail: undefined
+      })
+      expect(model.get()).toBe('FR')
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    scope.stop()
+  })
+
+  it('should keep eventClick lazy until a non-group click is dispatched and handle missing emits safely', () => {
+    const scope = effectScope()
+    const eventFactory = vi.fn(() => new EventClickInclude())
+
+    scope.run(() => {
+      const model = new ModelValueInclude<ListSelectedList | undefined>(
+        'selected',
+        undefined,
+        undefined,
+        computed(() => 'US')
+      )
+      const dialCodeEvent = new InputPhoneDialCodeEvent(
+        eventFactory,
+        () => model
+      )
+
+      const mouseEvent = new MouseEvent('click')
+      dialCodeEvent.onClick(mouseEvent, { type: 'group', value: 'DO', detail: undefined })
+      expect(eventFactory).not.toHaveBeenCalled()
+
+      dialCodeEvent.onUpdate('VN')
+      expect(model.get()).toBe('VN')
+      expect(eventFactory).not.toHaveBeenCalled()
+
+      dialCodeEvent.onWindow({
+        id: 'win',
+        element: document.createElement('div'),
+        control: document.createElement('button'),
+        open: false
+      })
+      expect(eventFactory).not.toHaveBeenCalled()
+
+      dialCodeEvent.onClick(mouseEvent, { type: 'item', value: 'JP', detail: undefined })
+      expect(eventFactory).toHaveBeenCalledTimes(1)
+      expect(model.get()).toBe('JP')
     })
 
     scope.stop()

@@ -44,7 +44,7 @@ export class InputPhoneEvent extends FieldEventInclude {
    * @param modelDigits function returning digits model manager / функция, возвращающая менеджер модели цифр номера
    */
   constructor(
-    props: FieldAllProps,
+    props: Readonly<FieldAllProps>,
     change: () => FieldChangeInclude,
     value: () => FieldValueInclude,
     protected readonly data: () => InputPhoneData,

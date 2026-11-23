@@ -76,6 +76,7 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
     events: {
       item: InputPhoneDialCodeEvent,
       parameters: () => [
+        () => this.i('event'),
         () => this.i('model'),
         this.emits
       ]
@@ -101,8 +102,9 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
       parameters: () => [
         'selected',
         this.emits,
-        this.i('event'),
-        computed(() => this.props.modelSelected || this.props.value || Geo.getCountry())
+        undefined,
+        computed(() => this.props.modelSelected || this.props.value || Geo.getCountry()),
+        () => this.i('status').isBlocked()
       ]
     },
     status: {
@@ -141,7 +143,7 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
   get bindsMenu(): ConstrBind<MenuCountryProps> {
     return {
       ...this.i('status').bindsMenu,
-      disableFocusReturn: true,
+      disableFocusReturn: this.props.disableFocusReturn ?? true,
       selected: this.i('model').value.value,
       showPhoneCode: true,
       ...this.i('events').binds

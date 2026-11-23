@@ -52,6 +52,7 @@ describe('InputPhoneDialCode (SSR)', () => {
       expect(menuBinds.showPhoneCode).toBe(true)
       expect(menuBinds.disableFocusReturn).toBe(true)
       expect(dialCode.bindsButton.iconTrailing).toBe('keyboard_arrow_down')
+      expect(dialCode.hasInstance('event')).toBe(false)
     })
 
     scope.stop()
@@ -139,6 +140,12 @@ describe('InputPhoneDialCode (SSR)', () => {
       },
       {
         labelType: 'none'
+      },
+      {
+        value: 'RU',
+        labelType: 'code',
+        countryList: ['RU'],
+        iconArrowDown: 'keyboard_arrow_down'
       }
     ]
 

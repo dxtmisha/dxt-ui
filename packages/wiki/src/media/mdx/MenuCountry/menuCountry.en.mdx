@@ -8,9 +8,10 @@ A specialized menu for selecting countries with automatic flag and localized nam
 
 - **Automatic Country List:** Populates country flags and names via `GeoFlagRef`
 - **Code Filtering:** Restricts available countries via the `list` prop (ISO 3166-1 alpha-2 codes)
-- **Phone Dial Codes:** Displays `+<code>` captions when `showPhoneCode` is enabled
+- **Phone Dial Codes & Groups:** Displays `+<code>` captions and groups countries with multiple alternative area prefixes (e.g., `DO`, `VA`) when `showPhoneCode` is enabled
+- **Built-in Search & Highlighting:** Supports direct `showSearch`, `filterMode`, and `highlightLengthStart` props with searchable localized names, national names, ISO codes, and hyphenated/unhyphenated dial codes
 - **Localization:** Supports dynamic name localization through the `language` prop
-- **Menu Capabilities:** Inherits `Window` popup positioning, `menuAttrs` customization, keyboard navigation, and `expose` API
+- **Menu Capabilities:** Inherits `Window` popup positioning, `disableFocusReturn`, `v-model:selected` / `v-model:model-selected`, `menuAttrs` customization, keyboard navigation, and `expose` API
 
 **Common use cases:**
 

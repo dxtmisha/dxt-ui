@@ -17,6 +17,10 @@ const customList = ref<string[]>(['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'CN', 'JP'
 const shortList = ['US', 'CA', 'MX']
 
 const selectedPhoneCode = ref<ListSelectedList>('VN')
+const selectedModelSelected = ref<ListSelectedList>('GB')
+const selectedSearchMode = ref<ListSelectedList>('DO')
+const selectedNoSearch = ref<ListSelectedList>('US')
+const selectedFocusReturn = ref<ListSelectedList>('VN')
 
 const selectedLanguage = ref<ListSelectedList>('VN')
 const currentLanguage = ref<string>('en')
@@ -115,17 +119,17 @@ const checkExposeState = () => {
         <DemoValue label="selected" :value="selectedCustom"/>
       </D1Group>
 
-      <D1Group label="Phone Dial Codes (show-phone-code)">
+      <D1Group label="Phone Dial Codes & Alternative Code Groups (show-phone-code)">
         <DemoFlex>
           <D1MenuCountry
             v-model:selected="selectedPhoneCode"
-            :list="['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'JP']"
+            :list="['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'JP', 'DO', 'VA']"
             show-phone-code
           >
             <template #control="{ binds, selectedList, selectedNames }">
               <D1Button
                 v-bind="binds"
-                :label="selectedList.value[0]?.phoneCode ? `${selectedNames.value[0]} (+${selectedList.value[0].phoneCode})` : 'Select Phone Code'"
+                :label="selectedList.value[0]?.phoneCode ? `${selectedNames.value[0]} (+${selectedList.value[0].phoneCode})` : String(selectedPhoneCode || 'Select Phone Code')"
                 icon="call"
                 primary
               />
@@ -209,9 +213,79 @@ const checkExposeState = () => {
               />
             </template>
           </D1MenuCountry>
+          <D1MenuCountry
+            v-model:model-selected="selectedModelSelected"
+            :list="['US', 'GB', 'VN']"
+            is-selected-by-value
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`v-model:model-selected: ${selectedNames.value[0] || 'None'}`"
+                icon="sync"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
         </DemoFlex>
         <DemoValue label="selectedByValue" :value="selectedByValue"/>
+        <DemoValue label="selectedModelSelected" :value="selectedModelSelected"/>
         <DemoValue label="selectedMultiple" :value="selectedMultiple"/>
+      </D1Group>
+
+      <D1Group label="Search Options & Focus Control (show-search, filter-mode, highlight-length-start, disable-focus-return)">
+        <DemoFlex>
+          <D1MenuCountry
+            v-model:selected="selectedSearchMode"
+            :list="['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'DO', 'VA']"
+            :highlight-length-start="2"
+            show-phone-code
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Filter Search (min 2): ${selectedNames.value[0] || String(selectedSearchMode)}`"
+                icon="search"
+                primary
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1MenuCountry
+            v-model:selected="selectedNoSearch"
+            :list="['US', 'GB', 'VN', 'JP']"
+            :show-search="false"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`No Search: ${selectedNames.value[0] || 'None'}`"
+                icon="search_off"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1MenuCountry
+            v-model:selected="selectedFocusReturn"
+            :list="['US', 'GB', 'VN']"
+            disable-focus-return
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Disable Focus Return: ${selectedNames.value[0] || 'None'}`"
+                icon="tab_unselected"
+                tonal
+              />
+            </template>
+          </D1MenuCountry>
+        </DemoFlex>
+        <DemoValue label="selectedSearchMode" :value="selectedSearchMode"/>
+        <DemoValue label="selectedNoSearch" :value="selectedNoSearch"/>
+        <DemoValue label="selectedFocusReturn" :value="selectedFocusReturn"/>
       </D1Group>
 
       <D1Group label="Disabled State">

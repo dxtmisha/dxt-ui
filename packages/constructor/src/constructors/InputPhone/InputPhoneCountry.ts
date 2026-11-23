@@ -40,6 +40,8 @@ export class InputPhoneCountry extends DesignLifecycleAbstract {
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param list function returning country list manager / функция, возвращающая менеджер списка стран
    * @param data function returning phone data manager / функция, возвращающая менеджер данных телефона

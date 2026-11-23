@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 import './testWarnings'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { computed, effectScope, reactive, toRef } from 'vue'
-import { type GeoFlagNational, GeoFlagRef } from '@dxtmisha/functional'
+import { type GeoFlagNational, GeoFlagRef, GeoPhone } from '@dxtmisha/functional'
 
+import type { MenuCountryListItem } from '../basicTypes'
 import { MenuCountryList } from '../MenuCountryList'
 import type { MenuCountryProps } from '../props'
 
@@ -121,7 +122,7 @@ describe('MenuCountryList', () => {
     scope.run(() => {
       const flag = new GeoFlagRef(toRef(props, 'language'))
       const countryList = new MenuCountryList(props, () => flag)
-      const items = countryList.items.value as Array<Record<string, any>>
+      const items: MenuCountryListItem[] = countryList.items.value
 
       const usItem = items.find(item => item.value === 'US')
       expect(usItem?.type).toBeUndefined()
@@ -132,27 +133,29 @@ describe('MenuCountryList', () => {
       expect(doGroup?.caption).toBeUndefined()
       expect(doGroup?.search).not.toContain('+1-809')
       expect(doGroup?.search).not.toContain('+1-829')
-      expect(doGroup?.value).toHaveLength(3)
-      expect(doGroup?.value[0]).toMatchObject({
+      const doChildren = Array.isArray(doGroup?.value) ? doGroup.value : []
+      expect(doChildren).toHaveLength(3)
+      expect(doChildren[0]).toMatchObject({
         index: 'DO',
         value: 'DO',
         label: '+1-809',
         detail: { country: 'DO', icon: 'f-do', phone: '1809' }
       })
-      expect(doGroup?.value[1]).toMatchObject({
+      expect(doChildren[1]).toMatchObject({
         index: 'DO-1-829',
         value: 'DO-1-829',
         label: '+1-829',
         detail: { country: 'DO', icon: 'f-do', phone: '1829' }
       })
-      expect(doGroup?.value[1]?.search).toContain('+1-829')
-      expect(doGroup?.value[1]?.search).toContain('+1829')
+      expect(doChildren[1]?.search).toContain('+1-829')
+      expect(doChildren[1]?.search).toContain('+1829')
 
       const vaGroup = items.find(item => item.index === 'VA')
       expect(vaGroup?.type).toBe('group')
       expect(vaGroup?.caption).toBeUndefined()
-      expect(vaGroup?.value).toHaveLength(2)
-      expect(vaGroup?.value[1]).toMatchObject({
+      const vaChildren = Array.isArray(vaGroup?.value) ? vaGroup.value : []
+      expect(vaChildren).toHaveLength(2)
+      expect(vaChildren[1]).toMatchObject({
         index: 'VA-39-06-698',
         value: 'VA-39-06-698',
         label: '+39-06-698',
@@ -160,6 +163,60 @@ describe('MenuCountryList', () => {
       })
     })
 
+    scope.stop()
+  })
+
+  it('should defer flag getter resolution until flagList or items are accessed', () => {
+    const scope = effectScope()
+    const props = reactive<MenuCountryProps>({
+      language: 'en',
+      list: ['VN']
+    })
+
+    scope.run(() => {
+      const flag = new GeoFlagRef(toRef(props, 'language'))
+      const flagGetter = vi.fn(() => flag)
+      const countryList = new MenuCountryList(props, flagGetter)
+
+      expect(flagGetter).not.toHaveBeenCalled()
+      expect(countryList.items.value).toHaveLength(1)
+      expect(flagGetter).toHaveBeenCalledTimes(1)
+
+      // Subsequent reactive reads reuse cached ComputedRef without re-invoking flagGetter
+      props.list = ['US', 'VN']
+      expect(countryList.items.value).toHaveLength(2)
+      expect(flagGetter).toHaveBeenCalledTimes(1)
+    })
+
+    scope.stop()
+  })
+
+  it('should update localized labels reactively when language changes and fall back to phoneCode when GeoPhone.getCodes is empty', () => {
+    const scope = effectScope()
+    const props = reactive<MenuCountryProps>({
+      language: 'en',
+      list: ['VN'],
+      showPhoneCode: true
+    })
+
+    const codesSpy = vi.spyOn(GeoPhone, 'getCodes').mockReturnValue([])
+
+    scope.run(() => {
+      const flag = new GeoFlagRef(toRef(props, 'language'))
+      const countryList = new MenuCountryList(props, () => flag)
+
+      const enItem = countryList.items.value[0]
+      expect(enItem?.caption).toBe('+84')
+      expect(enItem?.search).toContain('+84')
+      expect(enItem?.search).toContain('Vietnam')
+
+      props.language = 'vi'
+      const viItem = countryList.items.value[0]
+      expect(viItem?.search).toContain('Việt Nam')
+      expect(viItem?.search).not.toContain('  ')
+    })
+
+    codesSpy.mockRestore()
     scope.stop()
   })
 })

@@ -1,25 +1,26 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Компонент ввода телефонного номера с автоматическим выбором кода страны, динамической маской и встроенной валидацией.
+Компонент ввода телефонного номера с автоматическим выбором кода страны, динамической маской, форматированием вывода и встроенной валидацией.
 
-InputPhone объединяет обёртку Field, селектор кода страны InputPhoneDialCode и движок маскирования Mask в едином интерфейсе. Компонент автоматически определяет страну по введённым цифрам, применяет соответствующую телефонную маску или фиксирует ввод в национальном формате при включённом `countryBlock`.
+InputPhone объединяет обёртку Field, селектор кода страны InputPhoneDialCode и движок маскирования Mask в едином интерфейсе. Компонент автоматически определяет страну по введённым, вставленным или автозаполненным браузером цифрам, применяет соответствующую телефонную маску, ограничивает допустимые страны (`countryList`) или фиксирует ввод в национальном формате при включённом `countryBlock`.
 
 **Основные возможности:**
 
-- Автоматическое определение страны по введённому или вставленному номеру (поддерживает замену при полном выделении поля и нормализацию ведущего `+` с национальным префиксом `within`, например `+8...` -> `+7...`)
-- Встроенный селектор `InputPhoneDialCode` с поиском по странам, флагами и телефонными кодами (включая `XK` Косово `+383`)
+- Автоматическое определение страны при вводе, вставке или автозаполнении браузером (поддерживает замену при полном выделении поля, дедупликацию префикса при автозаполнении и нормализацию ведущего `+` с национальным префиксом `within`, например `+8...` -> `+7...`)
+- Встроенный селектор `InputPhoneDialCode` с поиском по странам, флагами, телефонными кодами (включая `XK` Косово `+383`) и прямой фильтрацией через `countryList`
 - Режимы фиксации страны: `countryBlock` (скрывает селектор и включает локальный формат) и `countryReadonly` (блокирует выбор, сохраняя видимыми флаг и код; включается автоматически при списке из одной страны)
-- Динамическое форматирование маски через `Mask` (`maskAttrs`, `countryDefault`)
-- Встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`) и неблокирующие предупреждения (`warning`, `warningMessage`, `warningId`)
-- События (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`), двусторонняя привязка (`v-model`, `v-model:value`) и программный API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
+- Форматирование выходного значения (`formatOutput`: `'mask'` | `'e164'` | `'digits'`) и независимая синхронизация моделей (`v-model`, `v-model:value`, `v-model:country`, `v-model:e164`, `v-model:digits`)
+- Динамическое форматирование маски через `Mask` (`maskAttrs`, `countryDefault`, `autocomplete="tel"` по умолчанию) и форматированный вывод для состояний `disabled` и `readonly`
+- Встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`, `textInvalidPhone`), страно-специфичные или пользовательские правила `phoneMatch` (проверка национальных цифр или колбэк с контекстом `InputPhoneValidationContext`) и неблокирующие предупреждения (`warning`, `warningMessage`, `warningId`)
+- События (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`, `update:country`, `update:e164`, `update:digits`), обогащённые метаданными `detail`, и программный API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`, `getDetail`, `isChanged`)
 - Поддержка слотов (`leading`, `trailing`, `prefix`, `suffix`, `label`) и доступность (`inputmode="tel"`, ARIA-атрибуты)
 
 **Типичные сценарии использования:**
 
 - Формы регистрации, оформления заказа и редактирования профиля
-- Поля международного номера с поиском и выбором кода страны
-- Региональные формы с фиксированной страной (`countryBlock`)
-- Поля контактов с обязательной проверкой формата и пользовательскими ошибками
+- Поля международного номера с выгрузкой в формате E.164 или только цифр
+- Региональные формы с фиксированной страной или списком разрешённых стран (`countryBlock`, `countryReadonly`, `countryList`)
+- Поля контактов с проверкой мобильных префиксов по странам (`phoneMatch`), пользовательскими ошибками и предупреждениями
 
 <Source
     code={`
@@ -27,9 +28,12 @@ InputPhone объединяет обёртку Field, селектор кода 
 import { ref } from 'vue'
 
 const phone = ref('')
+const phoneE164 = ref()
+const country = ref('RU')
 
 const handleInput = (event, validation) => {
   console.log('Телефон:', validation.value)
+  console.log('Метаданные:', validation.detail)
   console.log('Валидно:', validation.status)
 }
 </script>
@@ -37,7 +41,10 @@ const handleInput = (event, validation) => {
 <template>
   <InputPhone
     v-model:value="phone"
+    v-model:e164="phoneE164"
+    v-model:country="country"
     country-default="RU"
+    format-output="e164"
     label="Номер телефона"
     helper-message="Введите международный номер телефона"
     required

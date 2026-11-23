@@ -154,7 +154,7 @@ export const InputPhoneDialCodeLabelTypes: Story = {
   }
 }
 export const InputPhoneDialCodeTestStates: Story = {
-  name: 'Тест: Отключённое состояние, readonly, одна страна, стрелка и атрибуты',
+  name: 'Тест: Отключённое состояние, readonly, одна страна, многокодовый список, стрелка и атрибуты',
   render: () => ({
     components: { D1InputPhoneDialCode },
     template: `
@@ -162,15 +162,19 @@ export const InputPhoneDialCodeTestStates: Story = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">disabled</div>
-            <D1InputPhoneDialCode value="US" label-type="code" disabled :menu-country-attrs="{ list: ['US', 'VN'] }"/>
+            <D1InputPhoneDialCode value="US" label-type="code" disabled :country-list="['US', 'VN']"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">readonly</div>
-            <D1InputPhoneDialCode value="RU" label-type="code" readonly icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['US', 'RU'] }"/>
+            <D1InputPhoneDialCode value="RU" label-type="code" readonly icon-arrow-down="expand_more" :country-list="['US', 'RU']"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">single country auto-lock</div>
-            <D1InputPhoneDialCode value="RU" label-type="code" icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['RU'] }"/>
+            <D1InputPhoneDialCode value="RU" label-type="code" icon-arrow-down="expand_more" :country-list="['RU']"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--auto">
+            <div class="wiki-storybook-item__label">single multi-code interactive</div>
+            <D1InputPhoneDialCode value="DO" label-type="code" icon-arrow-down="expand_more" :country-list="['DO']"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">custom arrow & buttonAttrs</div>
@@ -188,16 +192,79 @@ export const InputPhoneDialCodeTestStates: Story = {
   }),
   play: async ({ canvasElement }) => {
     const triggers = canvasElement.querySelectorAll<HTMLButtonElement>('.d1-inputPhoneDialCode__button')
-    await expect(triggers.length).toBe(4)
+    await expect(triggers.length).toBe(5)
 
     await expect(triggers[0]).toBeDisabled()
-    await expect(triggers[1]).toBeDisabled()
     await expect(triggers[1]).toHaveTextContent('+7')
-    await expect(triggers[2]).toBeDisabled()
+    await expect(triggers[1]).not.toHaveTextContent('expand_more')
+    await userEvent.click(triggers[1]!)
+    await expect(triggers[1]).toHaveAttribute('aria-expanded', 'false')
     await expect(triggers[2]).toHaveTextContent('+7')
+    await expect(triggers[2]).not.toHaveTextContent('expand_more')
+    await userEvent.click(triggers[2]!)
+    await expect(triggers[2]).toHaveAttribute('aria-expanded', 'false')
     await expect(triggers[3]).not.toBeDisabled()
-    await expect(triggers[3]).toHaveAttribute('data-custom', 'button-prop')
+    await expect(triggers[3]).toHaveTextContent('+1-809')
     await expect(triggers[3]).toHaveTextContent('expand_more')
+    await expect(triggers[4]).not.toBeDisabled()
+    await expect(triggers[4]).toHaveAttribute('data-custom', 'button-prop')
+    await expect(triggers[4]).toHaveTextContent('expand_more')
+  }
+}
+export const InputPhoneDialCodeTestSearchAndGroups: Story = {
+  name: 'Тест: Прямые свойства поиска, группы альтернативных кодов и disableFocusReturn',
+  render: () => ({
+    components: { D1InputPhoneDialCode },
+    setup() {
+      const selectedAlternative = ref<ListSelectedList | undefined>('DO')
+      return { selectedAlternative }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <D1InputPhoneDialCode
+              v-model:model-selected="selectedAlternative"
+              label-type="code"
+              :country-list="['DO', 'US', 'VN']"
+              :show-search="true"
+              :filter-mode="true"
+              :highlight-length-start="1"
+              :disable-focus-return="false"
+            />
+            <D1InputPhoneDialCode
+              value="US"
+              label-type="code"
+              :country-list="['US', 'VN']"
+              :show-search="false"
+            />
+          </div>
+          <div class="wiki-storybook-card" data-testid="alternative-output">
+            {{ selectedAlternative }}
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const triggers = canvasElement.querySelectorAll<HTMLButtonElement>('.d1-inputPhoneDialCode__button')
+    const output = canvasElement.querySelector<HTMLElement>('[data-testid="alternative-output"]')
+
+    await expect(triggers.length).toBe(2)
+    await expect(output).toHaveTextContent('DO')
+
+    await userEvent.click(triggers[0]!)
+    await waitFor(async () => {
+      await expect(document.querySelector('[role="option"][data-value="DO-1-829"]')).not.toBeNull()
+    })
+
+    const alternativeOption = document.querySelector<HTMLElement>('[role="option"][data-value="DO-1-829"]')
+    await userEvent.click(alternativeOption!)
+
+    await waitFor(async () => {
+      await expect(output).toHaveTextContent('DO-1-829')
+      await expect(triggers[0]).toHaveTextContent('+1-829')
+    })
   }
 }
 export const InputPhoneDialCodeTestEvents: Story = {

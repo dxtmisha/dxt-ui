@@ -281,6 +281,18 @@ export const wikiOption: StorybookArgsToList = {
     },
     hide: true
   },
+  formatOutput: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      options: ['mask', 'e164', 'digits'],
+      description: {
+        en: 'Output value format for v-model and getValue(): mask (formatted), e164 (+digits), or digits (digits only)',
+        ru: 'Формат выходного значения для v-model и getValue(): mask (с маской), e164 (+цифры) или digits (только цифры)'
+      }
+    },
+    hide: true
+  },
   formatting: {
     type: StorybookControl.boolean,
     options: {
@@ -616,6 +628,18 @@ export const wikiOption: StorybookArgsToList = {
       }
     },
     isDemo: true
+  },
+  phoneMatch: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.option,
+      type: 'InputPhoneMatch',
+      description: {
+        en: 'Country-specific RegExp/pattern map (tested against national phone digits) or custom phone validation callback',
+        ru: 'Карта регулярных выражений/паттернов по странам (проверяется по национальным цифрам) или пользовательская функция валидации телефона'
+      }
+    },
+    hide: true
   },
   reduction: {
     type: StorybookControl.boolean,

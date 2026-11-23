@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { InputPhoneExpose } from '@dxtmisha/constructor/InputPhone'
+import type { InputPhoneExpose, InputPhoneValidationContext } from '@dxtmisha/constructor/InputPhone'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoBox from '../../components/DemoBox.vue'
@@ -44,6 +44,30 @@ const dynamicResetKey = ref<number>(0)
 const modelCountryCode = ref<string>('DE')
 const valueModelCountry = ref<string>('')
 
+const valueFormatE164 = ref<string | undefined>('+12025550147')
+const valueFormatDigits = ref<string | undefined>('84912345678')
+const valueMultiMask = ref<string | undefined>('79001234567')
+const valueMultiE164 = ref<string | undefined>('+79001234567')
+const valueMultiDigits = ref<string | undefined>('79001234567')
+const valueMultiCountry = ref<string>('RU')
+const valueRestrictedList = ref<string>('84912345678')
+const valuePhoneMatchMap = ref<string>('74951234567')
+const valuePhoneMatchCustom = ref<string>('12025550147')
+
+const phoneMatchMapRef = ref<InputPhoneExpose>()
+const phoneMatchMapResult = ref<string>('not checked')
+const phoneMatchCustomRef = ref<InputPhoneExpose>()
+const phoneMatchCustomResult = ref<string>('not checked')
+
+const phoneMatchMapRule = {
+  RU: /^9/,
+  VN: /^9/
+}
+
+const phoneMatchCustomRule = (context: InputPhoneValidationContext): boolean | string => {
+  return context.phone.endsWith('0') ? true : 'Phone must end with 0'
+}
+
 const requiredRef = ref<InputPhoneExpose>()
 const requiredValidResult = ref<string>('not checked')
 
@@ -67,6 +91,20 @@ const onCheckIncomplete = (): void => {
   incompleteValidResult.value = `valid=${String(valid)}, message=${message || 'none'}`
 }
 
+const onCheckPhoneMatchMap = (): void => {
+  const valid = phoneMatchMapRef.value?.checkValidity()
+  const message = phoneMatchMapRef.value?.getValidationMessage()
+
+  phoneMatchMapResult.value = `valid=${String(valid)}, message=${message || 'none'}`
+}
+
+const onCheckPhoneMatchCustom = (): void => {
+  const valid = phoneMatchCustomRef.value?.checkValidity()
+  const message = phoneMatchCustomRef.value?.getValidationMessage()
+
+  phoneMatchCustomResult.value = `valid=${String(valid)}, message=${message || 'none'}`
+}
+
 const onResetDynamicCountry = (): void => {
   countryDefaultDynamic.value = undefined
   valueDynamicUntouched.value = ''
@@ -78,8 +116,10 @@ const onReadExposed = (): void => {
   const value = exposedRef.value?.getValue()
   const valid = exposedRef.value?.checkValidity()
   const message = exposedRef.value?.getValidationMessage()
+  const detail = exposedRef.value?.getDetail()
+  const changed = exposedRef.value?.isChanged()
 
-  exposedResult.value = `value=${String(value)}, valid=${String(valid)}, message=${message || 'none'}`
+  exposedResult.value = `value=${String(value)}, valid=${String(valid)}, message=${message || 'none'}, country=${detail?.item?.value || 'none'}, e164=${detail?.e164 || 'none'}, isFull=${String(detail?.isFull)}, changed=${String(changed)}`
 }
 
 const onSetExposed = (): void => {
@@ -224,6 +264,46 @@ const onResetPasteCases = (): void => {
         </DemoFlex>
       </D1Group>
 
+      <D1Group label="Output Formats & Multi-Model (format-output, v-model:e164, v-model:digits)">
+        <DemoFlex direction="column">
+          <DemoFlex>
+            <DemoBox>
+              <D1InputPhone
+                v-model="valueFormatE164"
+                format-output="e164"
+                label="Format Output: e164"
+                helper-message="Emits E.164 format (+12025550147)"
+              />
+              <DemoValue :value="valueFormatE164"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model="valueFormatDigits"
+                format-output="digits"
+                label="Format Output: digits"
+                helper-message="Emits digits-only format (84912345678)"
+              />
+              <DemoValue :value="valueFormatDigits"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model="valueMultiMask"
+                v-model:e164="valueMultiE164"
+                v-model:digits="valueMultiDigits"
+                v-model:country="valueMultiCountry"
+                label="Multi-Model Sync (mask + e164 + digits + country)"
+              />
+              <DemoValue :value="`mask=${valueMultiMask || 'none'} | e164=${valueMultiE164 || 'none'} | digits=${valueMultiDigits || 'none'} | country=${valueMultiCountry}`"/>
+            </DemoBox>
+          </DemoFlex>
+          <DemoFlex>
+            <D1Button label="Set e164 = +84912345678" @click="valueMultiE164 = '+84912345678'"/>
+            <D1Button label="Set digits = 493012345678" @click="valueMultiDigits = '493012345678'"/>
+            <D1Button label="Set e164 = +79001234567" @click="valueMultiE164 = '+79001234567'"/>
+          </DemoFlex>
+        </DemoFlex>
+      </D1Group>
+
       <D1Group label="Country Blocking & Mask Attrs">
         <DemoFlex>
           <DemoBox>
@@ -252,10 +332,22 @@ const onResetPasteCases = (): void => {
               v-model:value="valueSingleCountry"
               country-default="RU"
               label="Single Country List (Auto Readonly)"
-              helper-message="Menu list=['RU'] auto-hides arrow and disables selector click"
-              :input-phone-dial-code-attrs="{ labelType: 'code', menuCountryAttrs: { list: ['RU'] } }"
+              helper-message="country-list=['RU'] auto-hides arrow and disables selector click"
+              :country-list="['RU']"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
             />
             <DemoValue :value="valueSingleCountry"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueRestrictedList"
+              country-default="VN"
+              label="Restricted Country List (US, VN, RU)"
+              helper-message="Direct country-list prop restricts selector and validation"
+              :country-list="['US', 'VN', 'RU']"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valueRestrictedList"/>
           </DemoBox>
           <DemoBox>
             <D1InputPhone
@@ -365,6 +457,35 @@ const onResetPasteCases = (): void => {
               value="79001234567"
             />
           </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              ref="phoneMatchMapRef"
+              v-model:value="valuePhoneMatchMap"
+              country-default="RU"
+              label="phoneMatch (Country Map: RU /^9/, VN /^9/)"
+              text-invalid-phone="Mobile prefix required (national 9...)"
+              :phone-match="phoneMatchMapRule"
+            />
+            <DemoValue :value="phoneMatchMapResult"/>
+            <DemoFlex>
+              <D1Button label="Validate Map" @click="onCheckPhoneMatchMap"/>
+              <D1Button label="Set Valid RU (7900...)" @click="valuePhoneMatchMap = '79001234567'"/>
+            </DemoFlex>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              ref="phoneMatchCustomRef"
+              v-model:value="valuePhoneMatchCustom"
+              country-default="US"
+              label="phoneMatch (Custom Validator Callback)"
+              :phone-match="phoneMatchCustomRule"
+            />
+            <DemoValue :value="phoneMatchCustomResult"/>
+            <DemoFlex>
+              <D1Button label="Validate Callback" @click="onCheckPhoneMatchCustom"/>
+              <D1Button label="Set Ending 0" @click="valuePhoneMatchCustom = '12025550140'"/>
+            </DemoFlex>
+          </DemoBox>
         </DemoFlex>
       </D1Group>
 
@@ -463,6 +584,7 @@ const onResetPasteCases = (): void => {
               <D1InputPhone
                 id="custom-phone-id"
                 name="custom-phone-name"
+                autocomplete="tel-national"
                 label="Custom Attrs"
                 :tabindex="0"
                 :detail="{ origin: 'demo' }"

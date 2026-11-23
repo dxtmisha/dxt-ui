@@ -15,6 +15,7 @@ const selectedLabelType = ref<'name' | 'code' | 'none'>('code')
 const selectedCountryLanguage = ref<ListSelectedList | undefined>('VN')
 const currentLanguage = ref<string>('en')
 const selectedFiltered = ref<ListSelectedList | undefined>('DE')
+const selectedAlternative = ref<ListSelectedList | undefined>('DO')
 const selectedEvents = ref<ListSelectedList | undefined>('US')
 const lastWindowOpen = ref<boolean>(false)
 
@@ -98,23 +99,56 @@ const onWindowEvent = (options: WindowEmitOptions) => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Disabled State">
+      <D1Group label="Disabled & Readonly States">
         <DemoFlex>
           <D1InputPhoneDialCode value="US" label-type="none" disabled/>
           <D1InputPhoneDialCode value="VN" label-type="code" disabled/>
           <D1InputPhoneDialCode value="DE" label-type="name" disabled/>
         </DemoFlex>
+        <DemoFlex>
+          <D1InputPhoneDialCode value="US" label-type="none" readonly/>
+          <D1InputPhoneDialCode value="VN" label-type="code" readonly/>
+          <D1InputPhoneDialCode value="DE" label-type="name" readonly/>
+        </DemoFlex>
       </D1Group>
 
-      <D1Group label="Country Filtering, Search & Localization (menu-country-attrs)">
+      <D1Group label="Country List, Alternative Codes & Auto-Readonly (country-list)">
+        <DemoFlex>
+          <D1InputPhoneDialCode
+            v-model:model-selected="selectedAlternative"
+            label-type="code"
+            :country-list="['DO', 'VA', 'US', 'VN', 'DE']"
+          />
+          <D1InputPhoneDialCode
+            value="RU"
+            label-type="code"
+            :country-list="['RU']"
+          />
+          <D1InputPhoneDialCode
+            value="DO"
+            label-type="code"
+            :country-list="['DO']"
+          />
+        </DemoFlex>
+        <DemoValue label="selectedAlternative (grouped codes DO/VA)" :value="selectedAlternative"/>
+      </D1Group>
+
+      <D1Group label="Search, Highlighting, Focus Return & Localization">
         <DemoFlex>
           <D1InputPhoneDialCode
             v-model:model-selected="selectedFiltered"
             label-type="code"
-            :menu-country-attrs="{
-              list: ['VN', 'US', 'DE', 'GB', 'FR', 'JP'],
-              menuAttrs: { showSearch: true, filterMode: true }
-            }"
+            :country-list="['VN', 'US', 'DE', 'GB', 'FR', 'JP', 'DO']"
+            :show-search="true"
+            :filter-mode="true"
+            :highlight-length-start="1"
+          />
+          <D1InputPhoneDialCode
+            value="US"
+            label-type="code"
+            :country-list="['US', 'VN', 'DE']"
+            :show-search="false"
+            :disable-focus-return="false"
           />
           <D1InputPhoneDialCode
             v-model:model-selected="selectedCountryLanguage"
