@@ -16,10 +16,12 @@ Studying this file COMPLETELY in full is critical to ensuring consistency with t
 
 ## Action Protocol After Reading ai-prompt.md (Routing & Search Guard)
 
-### 1. First Action — Match Against ai-resources (Strict Dispatching)
-Upon receiving any task, the agent **MUST** first match the task topic against the `Mandatory Rules` lists and references to specialized `ai-resources/*.md` files specified in `ai-prompt.md`.
+### 1. First Action — Match & Re-Study Relevant ai-resources (Strict Dispatching)
+Upon receiving any task or subtask, the agent **MUST** match its topic against the `Mandatory Rules` lists (`ai-resources/*.md`) in `ai-prompt.md` and **re-read and re-study** ONLY the `ai-resources/*.md` file(s) relevant to the **current** task before proceeding.
 
-The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities.
+- **Mandatory Re-Study Only for Relevant Topics**: Unlike `ai-prompt.md` itself, the `ai-resources/*.md` files related to the **current** task/subtask MUST be re-read and re-studied **afresh** every time you start a task on that topic, switch back to it, or after context compaction — even if you already read them earlier in the same session. Relying on memory from previous turns is **STRICTLY FORBIDDEN**.
+- **Do NOT Read Unrelated Rules**: Do **NOT** read or re-read `ai-resources/*.md` files that are unrelated to the current task, even if they were used earlier in the same chat.
+- The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities or editing code.
 
 ### 2. Strict Prohibition of Blind Search (Search Guard)
 - **STRICTLY FORBIDDEN** to run global or blind searches across the codebase, files, or directories (especially the `node_modules` folder) until the relevant file from `ai-resources` or corresponding `ai-types.md` has been opened and studied.

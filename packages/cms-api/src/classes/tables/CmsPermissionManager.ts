@@ -98,8 +98,9 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
       return undefined
     }
 
-    const foundRecord = await CmsPermissionItem.findOne(
+    const foundRecord = await findOneCmsRecord<CmsPermission>(
       this.databaseInstance.get(),
+      permissions,
       eq(permissions.id, id)
     )
 
@@ -119,8 +120,9 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
       return undefined
     }
 
-    const foundRecord = await CmsPermissionItem.findOne(
+    const foundRecord = await findOneCmsRecord<CmsPermission>(
       this.databaseInstance.get(),
+      permissions,
       eq(permissions.code, trimmedCode)
     )
 

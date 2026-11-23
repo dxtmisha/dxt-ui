@@ -1,8 +1,7 @@
 import {
   asc,
   eq,
-  inArray,
-  type SQL
+  inArray
 } from 'drizzle-orm'
 import {
   isPositiveInteger,
@@ -10,12 +9,10 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
-import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
-import { CmsDbResolver } from '../CmsDbResolver'
+import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
@@ -33,9 +30,15 @@ import type {
  *
  * Представляет конкретное право доступа CMS и предоставляет методы для чтения и редактирования полей.
  */
-export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, CmsPermission> {
+export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions, CmsPermission> {
+  /** Table schema bound to permission records / Схема таблицы прав доступа */
+  static readonly table = permissions
+
   /** ErrorCenter group name for permission errors / Имя группы ошибок ErrorCenter для прав доступа */
-  protected readonly errorGroup = CMS_PERMISSION_ERROR_GROUP
+  static readonly errorGroup = CMS_PERMISSION_ERROR_GROUP
+
+  /** ErrorCenter group name for permission errors / Имя группы ошибок ErrorCenter для прав доступа */
+  protected readonly errorGroup = CmsPermissionItem.errorGroup
 
   /**
    * Initializes a permission entity wrapper with permission data and database instance manager.
@@ -48,37 +51,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     data: CmsPermission,
     databaseInstance?: CmsDbInstance
   ) {
-    super(permissions, data, databaseInstance)
-  }
-
-  /**
-   * Returns the unique permission code.
-   *
-   * Возвращает уникальный код права доступа.
-   * @returns Permission code / Код права доступа
-   */
-  getCode(): string {
-    return this.data.code
-  }
-
-  /**
-   * Returns the display name or translation key of the permission.
-   *
-   * Возвращает отображаемое название или ключ перевода права доступа.
-   * @returns Permission name / Название права доступа
-   */
-  getName(): string {
-    return this.data.name
-  }
-
-  /**
-   * Returns the permission description or null.
-   *
-   * Возвращает описание права доступа или null.
-   * @returns Permission description or null / Описание права доступа или null
-   */
-  getDescription(): string | null {
-    return this.data.description
+    super(CmsPermissionItem.table, data, databaseInstance)
   }
 
   /**
@@ -102,25 +75,6 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     CmsVerification.isPositiveInteger(this.data.id)
 
     return this.updateRecord(CmsPermissionItem.buildUpdateValues(input))
-  }
-
-  /**
-   * Finds a single permission record matching a SQL predicate.
-   *
-   * Находит одну запись права доступа по SQL-предикату.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param whereCondition SQL predicate / SQL-условие поиска
-   * @returns Permission record or undefined / Запись права доступа или undefined
-   */
-  static async findOne(
-    executor: CmsDbExecutor,
-    whereCondition: SQL | undefined
-  ): Promise<CmsPermission | undefined> {
-    return findOneCmsRecord<CmsPermission>(
-      executor,
-      permissions,
-      whereCondition
-    )
   }
 
   /**
@@ -191,96 +145,17 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
   }
 
   /**
-   * Validates and verifies permission identifiers by their IDs.
-   *
-   * Проверяет и подтверждает идентификаторы прав доступа по их ID.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
-   * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
-   */
-  static async resolveIdsByIds(
-    executor: CmsDbExecutor,
-    permissionIds?: readonly number[]
-  ): Promise<number[]> {
-    return CmsDbResolver.resolveByIds(
-      CMS_PERMISSION_ERROR_GROUP,
-      'notFound',
-      uniqueIds => executor
-        .select({ id: permissions.id })
-        .from(permissions)
-        .where(inArray(permissions.id, uniqueIds)),
-      permissionIds
-    )
-  }
-
-  /**
-   * Resolves and verifies permission identifiers by their unique codes.
-   *
-   * Разрешает и проверяет идентификаторы прав доступа по их уникальным кодам.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
-   * @returns Deduplicated list of resolved permission IDs / Уникальный список найденных ID прав доступа
-   */
-  static async resolveIdsByCodes(
-    executor: CmsDbExecutor,
-    permissionCodes?: readonly string[]
-  ): Promise<number[]> {
-    return CmsDbResolver.resolveByCodes(
-      CMS_PERMISSION_ERROR_GROUP,
-      'notFound',
-      uniqueCodes => executor
-        .select({ id: permissions.id, code: permissions.code })
-        .from(permissions)
-        .where(inArray(permissions.code, uniqueCodes)),
-      permissionCodes
-    )
-  }
-
-  /**
-   * Resolves and validates permission identifiers from permission IDs and/or permission codes.
-   *
-   * Разрешает и валидирует идентификаторы прав доступа из переданных ID и/или кодов прав.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
-   * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
-   * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
-   */
-  static async resolveIds(
-    executor: CmsDbExecutor,
-    permissionIds?: readonly number[],
-    permissionCodes?: readonly string[]
-  ): Promise<number[]> {
-    const resolvedIds: number[] = []
-
-    if (permissionIds !== undefined) {
-      resolvedIds.push(
-        ...await CmsPermissionItem.resolveIdsByIds(executor, permissionIds)
-      )
-    }
-
-    if (permissionCodes !== undefined) {
-      resolvedIds.push(
-        ...await CmsPermissionItem.resolveIdsByCodes(executor, permissionCodes)
-      )
-    }
-
-    return uniqueArray(resolvedIds)
-  }
-
-  /**
    * Builds and validates database insert payload from create input.
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания права доступа.
    * @param input Permission creation payload / Входные данные для создания права доступа
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
-  static buildCreateValues(
+  static override buildCreateValues(
     input: CmsPermissionCreateInput
   ): CmsNewPermission {
     return {
-      code: CmsPermissionItem.normalizeCode(input.code),
-      name: CmsPermissionItem.normalizeName(input.name),
-      description: normalizeCmsOptionalText(input.description),
+      ...super.buildCreateValues(input),
       createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
   }
@@ -292,53 +167,15 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
    * @param input Partial permission update payload / Частичные данные для обновления права доступа
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
-  static buildUpdateValues(
+  static override buildUpdateValues(
     input: CmsPermissionUpdateInput
   ): Partial<CmsNewPermission> {
-    const values: Partial<CmsNewPermission> = {}
-
-    if (input.code !== undefined) {
-      values.code = CmsPermissionItem.normalizeCode(input.code)
-    }
-
-    if (input.name !== undefined) {
-      values.name = CmsPermissionItem.normalizeName(input.name)
-    }
-
-    if (input.description !== undefined) {
-      values.description = normalizeCmsOptionalText(input.description)
-    }
+    const values: Partial<CmsNewPermission> = super.buildUpdateValues(input)
 
     if (input.createdOrigin !== undefined) {
       values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
     }
 
     return values
-  }
-
-  /**
-   * Normalizes and validates a permission code.
-   *
-   * Нормализует и проверяет код права доступа.
-   * @param code Raw permission code / Исходный код права доступа
-   * @returns Trimmed non-empty permission code / Очищенный код права доступа
-   */
-  static normalizeCode(
-    code: string
-  ): string {
-    return CmsVerification.normalizeCode(code)
-  }
-
-  /**
-   * Normalizes and validates a permission display name.
-   *
-   * Нормализует и проверяет название права доступа.
-   * @param name Raw permission name / Исходное название права доступа
-   * @returns Trimmed non-empty permission name / Очищенное название права доступа
-   */
-  static normalizeName(
-    name: string
-  ): string {
-    return CmsVerification.normalizeName(name)
   }
 }

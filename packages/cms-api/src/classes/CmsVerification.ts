@@ -2,7 +2,8 @@ import {
   ErrorCenterThrow,
   executeFunction,
   isPositiveInteger,
-  isString
+  isString,
+  normalizeCmsOptionalText
 } from '@dxtmisha/functional-basic'
 import { CMS_VERIFICATION_ERROR_GROUP } from '../media/errors/cmsVerificationErrorCauseList'
 
@@ -58,27 +59,64 @@ export class CmsVerification {
   }
 
   /**
-   * Normalizes and validates a non-empty entity display name.
+   * Normalizes and validates an entity display name.
    *
-   * Нормализует и проверяет непустое отображаемое название сущности.
+   * Нормализует и проверяет отображаемое название сущности.
    * @param name Raw entity name / Исходное название сущности
+   * @param isRequired Whether a non-empty name is required / Обязательно ли непустое название
    * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
-   * @returns Trimmed non-empty entity name or empty string when invalid and isError is false / Очищенное название сущности или пустая строка при ошибке и isError = false
+   * @returns Trimmed entity name or empty string when empty and allowed or isError is false / Очищенное название сущности или пустая строка, если поле необязательно или isError = false
    */
   static normalizeName(
-    name: string,
+    name?: string | null,
+    isRequired: boolean = true,
     isError: boolean = true
   ): string {
     const normalized = isString(name) ? name.trim() : ''
     const isValid = this.verify(
       isError,
-      normalized.length > 0,
+      !isRequired || normalized.length > 0,
       undefined,
       'invalidName',
       { name }
     )
 
     return isValid ? normalized : ''
+  }
+
+  /**
+   * Normalizes an optional CMS string field, trimming text and converting blank strings to null.
+   * When `isRequired` is enabled, verifies that the normalized value is a non-empty string.
+   *
+   * Нормализует необязательное строковое поле CMS, удаляя пробелы и преобразуя пустые строки в null.
+   * При включённом `isRequired` проверяет, что нормализованное значение является непустой строкой.
+   * @param value Raw optional string or null / Исходная строка, null или undefined
+   * @param isRequired Whether a non-empty string is required / Обязательна ли непустая строка
+   * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
+   * @returns Trimmed string, null, or undefined / Очищенная строка, null или undefined
+   */
+  static normalizeOptionalText(
+    value?: string | null,
+    isRequired: boolean = false,
+    isError: boolean = true
+  ): string | null | undefined {
+    const normalized = normalizeCmsOptionalText(value)
+
+    if (isRequired) {
+      const isValid = this.verify(
+        isError,
+        isString(normalized) && normalized.length > 0,
+        undefined,
+        'invalid',
+        { value }
+      )
+
+      if (!isValid) {
+        return null
+      }
+    }
+
+    return normalized
   }
 
   /**

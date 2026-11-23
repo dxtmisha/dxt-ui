@@ -19,8 +19,7 @@ import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
-import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
-import { CmsDbResolver } from '../CmsDbResolver'
+import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
@@ -41,9 +40,15 @@ import type {
  *
  * Представляет конкретную роль CMS и предоставляет методы для чтения полей, редактирования, управления правами доступа, перезагрузки и удаления.
  */
-export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPermissions> {
+export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWithPermissions> {
+  /** Table schema bound to role records / Схема таблицы ролей */
+  static readonly table = roles
+
   /** ErrorCenter group name for role errors / Имя группы ошибок ErrorCenter для ролей */
-  protected readonly errorGroup = CMS_ROLE_ERROR_GROUP
+  static readonly errorGroup = CMS_ROLE_ERROR_GROUP
+
+  /** ErrorCenter group name for role errors / Имя группы ошибок ErrorCenter для ролей */
+  protected readonly errorGroup = CmsRoleItem.errorGroup
 
   /**
    * Initializes a role entity wrapper with role data and database instance manager.
@@ -56,7 +61,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     data: CmsRoleWithPermissions,
     databaseInstance?: CmsDbInstance
   ) {
-    super(roles, data, databaseInstance)
+    super(CmsRoleItem.table, data, databaseInstance)
   }
 
   /**
@@ -114,36 +119,6 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
       ...super.getData(),
       permissions: [...this.data.permissions]
     }
-  }
-
-  /**
-   * Returns the unique role code.
-   *
-   * Возвращает уникальный код роли.
-   * @returns Role code / Код роли
-   */
-  getCode(): string {
-    return this.data.code
-  }
-
-  /**
-   * Returns the display name or translation key of the role.
-   *
-   * Возвращает отображаемое название или ключ перевода роли.
-   * @returns Role name / Название роли
-   */
-  getName(): string {
-    return this.data.name
-  }
-
-  /**
-   * Returns the role description or null.
-   *
-   * Возвращает описание роли или null.
-   * @returns Role description or null / Описание роли или null
-   */
-  getDescription(): string | null {
-    return this.data.description
   }
 
   /**
@@ -629,83 +604,6 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
   }
 
   /**
-   * Validates and verifies role identifiers by their IDs.
-   *
-   * Проверяет и подтверждает идентификаторы ролей по их ID.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
-   * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
-   */
-  static async resolveIdsByIds(
-    executor: CmsDbExecutor,
-    roleIds?: readonly number[]
-  ): Promise<number[]> {
-    return CmsDbResolver.resolveByIds(
-      CMS_ROLE_ERROR_GROUP,
-      'notFound',
-      uniqueIds => executor
-        .select({ id: roles.id })
-        .from(roles)
-        .where(inArray(roles.id, uniqueIds)),
-      roleIds
-    )
-  }
-
-  /**
-   * Resolves and verifies role identifiers by their unique codes.
-   *
-   * Разрешает и проверяет идентификаторы ролей по их уникальным кодам.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
-   * @returns Deduplicated list of resolved role IDs / Уникальный список найденных ID ролей
-   */
-  static async resolveIdsByCodes(
-    executor: CmsDbExecutor,
-    roleCodes?: readonly string[]
-  ): Promise<number[]> {
-    return CmsDbResolver.resolveByCodes(
-      CMS_ROLE_ERROR_GROUP,
-      'notFound',
-      uniqueCodes => executor
-        .select({ id: roles.id, code: roles.code })
-        .from(roles)
-        .where(inArray(roles.code, uniqueCodes)),
-      roleCodes
-    )
-  }
-
-  /**
-   * Resolves and validates role identifiers from role IDs and/or role codes.
-   *
-   * Разрешает и валидирует идентификаторы ролей из переданных ID и/или кодов ролей.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
-   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
-   * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
-   */
-  static async resolveIds(
-    executor: CmsDbExecutor,
-    roleIds?: readonly number[],
-    roleCodes?: readonly string[]
-  ): Promise<number[]> {
-    const resolvedIds: number[] = []
-
-    if (roleIds !== undefined) {
-      resolvedIds.push(
-        ...await CmsRoleItem.resolveIdsByIds(executor, roleIds)
-      )
-    }
-
-    if (roleCodes !== undefined) {
-      resolvedIds.push(
-        ...await CmsRoleItem.resolveIdsByCodes(executor, roleCodes)
-      )
-    }
-
-    return uniqueArray(resolvedIds)
-  }
-
-  /**
    * Synchronizes role permission assignments by replacing existing links with the provided permission IDs.
    *
    * Синхронизирует связи прав роли, заменяя текущие назначения на переданный список ID прав доступа.
@@ -741,13 +639,11 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
    * @param input Role creation payload / Входные данные для создания роли
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
-  static buildCreateValues(
+  static override buildCreateValues(
     input: CmsRoleCreateInput
   ): CmsNewRole {
     return {
-      code: CmsRoleItem.normalizeCode(input.code),
-      name: CmsRoleItem.normalizeName(input.name),
-      description: normalizeCmsOptionalText(input.description),
+      ...super.buildCreateValues(input),
       createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
   }
@@ -759,53 +655,15 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
    * @param input Partial role update payload / Частичные данные для обновления роли
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
-  static buildUpdateValues(
+  static override buildUpdateValues(
     input: CmsRoleUpdateInput
   ): Partial<CmsNewRole> {
-    const values: Partial<CmsNewRole> = {}
-
-    if (input.code !== undefined) {
-      values.code = CmsRoleItem.normalizeCode(input.code)
-    }
-
-    if (input.name !== undefined) {
-      values.name = CmsRoleItem.normalizeName(input.name)
-    }
-
-    if (input.description !== undefined) {
-      values.description = normalizeCmsOptionalText(input.description)
-    }
+    const values: Partial<CmsNewRole> = super.buildUpdateValues(input)
 
     if (input.createdOrigin !== undefined) {
       values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
     }
 
     return values
-  }
-
-  /**
-   * Normalizes and validates a role code.
-   *
-   * Нормализует и проверяет код роли.
-   * @param code Raw role code / Исходный код роли
-   * @returns Trimmed non-empty role code / Очищенный код роли
-   */
-  static normalizeCode(
-    code: string
-  ): string {
-    return CmsVerification.normalizeCode(code)
-  }
-
-  /**
-   * Normalizes and validates a role display name.
-   *
-   * Нормализует и проверяет название роли.
-   * @param name Raw role name / Исходное название роли
-   * @returns Trimmed non-empty role name / Очищенное название роли
-   */
-  static normalizeName(
-    name: string
-  ): string {
-    return CmsVerification.normalizeName(name)
   }
 }

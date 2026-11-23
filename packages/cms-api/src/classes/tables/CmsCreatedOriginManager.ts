@@ -99,8 +99,9 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
       return undefined
     }
 
-    const foundRecord = await CmsCreatedOriginItem.findOne(
+    const foundRecord = await findOneCmsRecord<CmsCreatedOrigin>(
       this.databaseInstance.get(),
+      createdOrigins,
       eq(createdOrigins.id, id)
     )
 
@@ -120,8 +121,9 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
       return undefined
     }
 
-    const foundRecord = await CmsCreatedOriginItem.findOne(
+    const foundRecord = await findOneCmsRecord<CmsCreatedOrigin>(
       this.databaseInstance.get(),
+      createdOrigins,
       eq(createdOrigins.code, trimmedCode)
     )
 

@@ -134,6 +134,7 @@ describe('CmsVerification', () => {
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
       expect(CmsVerification.normalizeName('  Admin Role  ')).toBe('Admin Role')
+      expect(CmsVerification.normalizeName('Read Users', true, false)).toBe('Read Users')
       expect(CmsVerification.normalizeName('Read Users', false)).toBe('Read Users')
       expect(reportSpy).not.toHaveBeenCalled()
     })
@@ -141,9 +142,19 @@ describe('CmsVerification', () => {
     it('returns empty string without reporting an error for invalid names when isError is false', () => {
       const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
 
+      expect(CmsVerification.normalizeName('   ', true, false)).toBe('')
+      expect(CmsVerification.normalizeName('', true, false)).toBe('')
+      expect(CmsVerification.normalizeName(undefined, true, false)).toBe('')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('returns empty string without reporting an error when isRequired is false', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
       expect(CmsVerification.normalizeName('   ', false)).toBe('')
       expect(CmsVerification.normalizeName('', false)).toBe('')
-      expect(CmsVerification.normalizeName(undefined as unknown as string, false)).toBe('')
+      expect(CmsVerification.normalizeName(null, false)).toBe('')
+      expect(CmsVerification.normalizeName(undefined, false)).toBe('')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -185,6 +196,36 @@ describe('CmsVerification', () => {
         },
         undefined
       )
+    })
+  })
+
+  describe('normalizeOptionalText', () => {
+    it('normalizes optional text, preserving undefined and converting blank strings to null', () => {
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeOptionalText()).toBeUndefined()
+      expect(CmsVerification.normalizeOptionalText(undefined)).toBeUndefined()
+      expect(CmsVerification.normalizeOptionalText(null)).toBeNull()
+      expect(CmsVerification.normalizeOptionalText('')).toBeNull()
+      expect(CmsVerification.normalizeOptionalText('   ')).toBeNull()
+      expect(CmsVerification.normalizeOptionalText('  hello world  ')).toBe('hello world')
+      expect(reportSpy).not.toHaveBeenCalled()
+    })
+
+    it('validates non-empty value when isRequired is true', () => {
+      ErrorCenter.setIsConsole(false)
+      const reportSpy = vi.spyOn(ErrorCenterThrow, 'on')
+
+      expect(CmsVerification.normalizeOptionalText('  hello  ', true)).toBe('hello')
+      expect(CmsVerification.normalizeOptionalText('   ', true, false)).toBeNull()
+      expect(CmsVerification.normalizeOptionalText(undefined, true, false)).toBeNull()
+      expect(reportSpy).not.toHaveBeenCalled()
+
+      expect(() => CmsVerification.normalizeOptionalText('   ', true))
+        .toThrow(ErrorCenterError)
+      expect(() => CmsVerification.normalizeOptionalText(null, true))
+        .toThrow(ErrorCenterError)
+      expect(reportSpy).toHaveBeenCalledTimes(2)
     })
   })
 

@@ -22,6 +22,12 @@ export type CmsIdTable = PgTable & {
   updatedAt?: PgColumn
 }
 
+/** Drizzle PostgreSQL table constraint extending CmsIdTable with a unique code column / Тип таблицы Drizzle PostgreSQL, расширяющий CmsIdTable уникальной колонкой code */
+export type CmsCodeTable = CmsIdTable & {
+  /** Unique record code column / Колонка уникального кода записи */
+  code: PgColumn
+}
+
 /** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */
 export interface CmsTimestampValues {
   /** Creation timestamp / Дата создания */
@@ -40,6 +46,52 @@ export interface CmsDbItemData {
   createdAt: Date
   /** Last update timestamp / Дата последнего обновления */
   updatedAt: Date
+}
+
+/** Base CMS code entity record shape containing code, name, and description fields / Базовая структура записи сущности CMS с полями кода, названия и описания */
+export interface CmsDbCodeItemData extends CmsDbItemData {
+  /** Unique record code / Уникальный код записи */
+  code: string
+  /** Display name or translation key / Отображаемое название или ключ перевода */
+  name: string
+  /** Optional description / Необязательное описание */
+  description: string | null
+}
+
+/** Base input payload for creating a CMS code entity / Базовые входные данные для создания сущности CMS с кодом */
+export interface CmsCodeCreateInput {
+  /** Unique record code / Уникальный код записи */
+  code: string
+  /** Display name or translation key / Отображаемое название или ключ перевода */
+  name: string
+  /** Optional description / Необязательное описание */
+  description?: string | null
+  /** Optional system record status / Необязательный системный статус записи */
+  systemStatus?: CmsSystemStatus
+}
+
+/** Base input payload for updating a CMS code entity / Базовые входные данные для обновления сущности CMS с кодом */
+export interface CmsCodeUpdateInput {
+  /** Unique record code / Уникальный код записи */
+  code?: string
+  /** Display name or translation key / Отображаемое название или ключ перевода */
+  name?: string
+  /** Optional description / Необязательное описание */
+  description?: string | null
+  /** Optional system record status / Необязательный системный статус записи */
+  systemStatus?: CmsSystemStatus
+}
+
+/** Validated Drizzle insert payload for a CMS code entity / Валидированные данные вставки для сущности CMS с кодом */
+export interface CmsCodeInsertValues {
+  /** Normalized unique record code / Нормализованный уникальный код записи */
+  code: string
+  /** Normalized display name / Нормализованное отображаемое название */
+  name: string
+  /** Normalized optional description or null / Нормализованное описание или null */
+  description?: string | null
+  /** Optional system record status / Необязательный системный статус записи */
+  systemStatus?: CmsSystemStatus
 }
 
 /** Created origin record selected from database / Запись источника создания, полученная из базы данных */
