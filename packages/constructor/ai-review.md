@@ -237,3 +237,6 @@ src/constructors/Modal/ModalAbstract.ts
 src/constructors/Modal/Modal.ts
 src/constructors/Modal/ModalDesignAbstract.tsx
 src/constructors/Modal/ModalDesign.tsx
+src/classes/TouchEventInclude.ts
+src/constructors/ActionSheet/ActionSheet.ts
+src/constructors/ActionSheet/ActionSheetDesign.tsx

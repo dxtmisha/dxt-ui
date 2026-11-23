@@ -197,13 +197,18 @@ describe('Button (unit)', () => {
       const scope = effectScope()
       cleanups.push(() => scope.stop())
       const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ icon: 'home' })
+      const props: ButtonPropsBasic = reactive({
+        icon: 'home',
+        iconTrailing: 'arrow_forward'
+      })
 
       scope.run(() => {
         const button = new Button(props, element, naming)
 
         expect(IconTrailingInclude.is(props)).toBe(true)
         expect(button.classes[naming.getStatusClass('icon')]).toBe(true)
+        expect(button.i('icon').iconBind.noPointerEvents).toBe(true)
+        expect(button.i('icon').trailingBind.noPointerEvents).toBeUndefined()
       })
     })
 

@@ -1,16 +1,18 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import type { ConstrBind, ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
 import { TouchEventInclude } from '../../classes/TouchEventInclude'
-
-import type { ActionsInclude } from '../Actions'
-import type { BarsInclude } from '../Bars'
-import { ModalAbstract } from '../Modal'
-import type { WindowInclude } from '../Window'
+import { ModalAbstract, type ModalConstructors } from '../Modal'
 
 import type { TouchEventTypeY } from '../../types/touchEventTypes'
-import type { ActionSheetComponents, ActionSheetEmits, ActionSheetSlots } from './types'
 import type { ActionSheetProps } from './props'
+import type { ActionSheetComponents, ActionSheetEmits, ActionSheetSlots } from './types'
+
+/** ActionSheet dependency constructors type / Тип конструкторов зависимостей ActionSheet */
+export type ActionSheetConstructors = ModalConstructors & {
+  /** Touch event include constructor / Конструктор обработки жестов касания */
+  touchEvent: typeof TouchEventInclude
+}
 
 /**
  * ActionSheet
@@ -19,40 +21,40 @@ import type { ActionSheetProps } from './props'
  * Класс для работы с листом действий.
  */
 export class ActionSheet extends ModalAbstract {
-  /** touch event/ событие касания */
-  readonly touchEvent: TouchEventInclude
+  /** Action sheet input properties / Входные свойства листа действий */
+  protected override readonly props: Readonly<ActionSheetProps>
+
+  /** Touch event constructor for lazy instantiation / Конструктор обработки касаний для ленивой инициализации */
+  protected readonly touchEventConstructor: typeof TouchEventInclude
+
+  /** Lazily instantiated touch event manager / Лениво инициализируемый менеджер событий касания */
+  protected touchEventInstance?: TouchEventInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
+   * Constructor for initializing the action sheet logic and sub-components.
+   *
+   * Конструктор для инициализации логики и подкомпонентов листа действий.
+   * @param props input data / входные данные
+   * @param element target element / целевой элемент
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
-   * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
-   * @param constructors.TouchEventIncludeConstructor class for working with touch event/ класс для работы с событием касания
-   * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with constructor classes / объект с классами конструкторов
    */
   constructor(
-    protected readonly props: ActionSheetProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ActionSheetComponents, ActionSheetProps>,
-    protected readonly slots?: ActionSheetSlots,
-    protected readonly emits?: ConstrEmit<ActionSheetEmits>,
-    constructors: {
-      ActionsConstructor?: typeof ActionsInclude
-      BarsConstructor?: typeof BarsInclude
-      TouchEventIncludeConstructor?: typeof TouchEventInclude
-      WindowConstructor?: typeof WindowInclude
-    } = {}
+    props: Readonly<ActionSheetProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<ActionSheetComponents, ActionSheetProps>,
+    slots?: ActionSheetSlots,
+    emits?: ConstrEmit<ActionSheetEmits>,
+    constructors?: Partial<ActionSheetConstructors>
   ) {
     const {
-      TouchEventIncludeConstructor = TouchEventInclude
-    } = constructors
+      touchEvent = TouchEventInclude,
+      ...modalConstructors
+    } = constructors ?? {}
 
     super(
       props,
@@ -61,15 +63,11 @@ export class ActionSheet extends ModalAbstract {
       components,
       slots,
       emits,
-      {
-        actions: constructors.ActionsConstructor,
-        bars: constructors.BarsConstructor,
-        window: constructors.WindowConstructor
-      },
+      modalConstructors,
       () => ({
         adaptive: 'actionSheetRight',
-        closeButton: this.props.barsBackHide,
-        closeMobileHide: this.props.touchClose
+        ...(this.props.barsBackHide !== undefined ? { closeButton: this.props.barsBackHide } : {}),
+        ...(this.props.touchClose !== undefined ? { closeMobileHide: this.props.touchClose } : {})
       }),
       undefined,
       () => ({
@@ -77,22 +75,41 @@ export class ActionSheet extends ModalAbstract {
       })
     )
 
-    this.touchEvent = new TouchEventIncludeConstructor(
-      undefined,
-      (
-        _,
-        __,
-        ___,
-        clientY: number
-      ) => clientY >= 0,
-      (_, type: TouchEventTypeY) => {
-        if (type === 'bottom') {
-          this.i('window').expose.setOpen(false).then()
-          return false
-        }
+    this.props = props
+    this.touchEventConstructor = touchEvent
+  }
 
-        return true
-      }
-    )
+  /**
+   * Returns touch event handler bindings when swipe-to-close is enabled.
+   *
+   * Возвращает привязки обработчиков касания при включённом закрытии свайпом.
+   * @returns touch event bindings object / объект привязок событий касания
+   */
+  get touchBinds(): ConstrBind {
+    if (!this.props.touchClose) {
+      return {}
+    }
+
+    if (!this.touchEventInstance) {
+      this.touchEventInstance = new this.touchEventConstructor(
+        undefined,
+        (
+          _typeX,
+          _typeY,
+          _clientX,
+          clientY: number
+        ) => clientY >= 0,
+        (_typeX, typeY: TouchEventTypeY) => {
+          if (typeY === 'bottom') {
+            void this.i('window').expose.setOpen(false).catch(() => {})
+            return false
+          }
+
+          return true
+        }
+      )
+    }
+
+    return this.touchEventInstance.onTouch
   }
 }

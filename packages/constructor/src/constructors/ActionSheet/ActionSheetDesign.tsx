@@ -1,22 +1,26 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 
 import { ActionSheet } from './ActionSheet'
 import { ModalDesignAbstract } from '../Modal'
 
-import { type WindowControlItem } from '../Window'
-import {
-  type ActionSheetPropsBasic
-} from './props'
-import {
-  type ActionSheetClasses,
-  type ActionSheetComponents,
-  type ActionSheetEmits,
-  type ActionSheetExpose,
-  type ActionSheetSlots
+import type { WindowControlItem } from '../Window'
+import type { ActionSheetPropsBasic } from './props'
+import type {
+  ActionSheetClasses,
+  ActionSheetComponents,
+  ActionSheetEmits,
+  ActionSheetExpose,
+  ActionSheetSlots
 } from './types'
 
 /**
  * ActionSheetDesign
+ *
+ * Design constructor class for the ActionSheet component.
+ * Extends ModalDesignAbstract with touch swipe handle rendering for bottom sheet dismissal.
+ *
+ * Класс конструктора дизайна для компонента ActionSheet.
+ * Расширяет ModalDesignAbstract рендерингом области свайпа для закрытия нижней панели.
  */
 export class ActionSheetDesign<
   COMP extends ActionSheetComponents,
@@ -30,15 +34,18 @@ export class ActionSheetDesign<
     ActionSheetSlots,
     CLASSES,
     P,
-    ActionSheet
+    ActionSheet,
+    typeof ActionSheet
   > {
   /**
-   * Creates an instance of the item class.
+   * Creates an instance of the action sheet logic class.
    *
-   * Создает экземпляр класса элемента.
+   * Создаёт экземпляр класса логики листа действий.
+   * @param ItemConstructor action sheet logic class / класс логики листа действий
+   * @returns ActionSheet instance / экземпляр ActionSheet
    */
-  protected initItem(): ActionSheet {
-    return new ActionSheet(
+  protected initItem(ItemConstructor: typeof ActionSheet = ActionSheet): ActionSheet {
+    return new ItemConstructor(
       this.props,
       this.element,
       this.naming,
@@ -52,6 +59,7 @@ export class ActionSheetDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns class object / объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -73,6 +81,7 @@ export class ActionSheetDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
     return this.item.i('window').render(
@@ -82,25 +91,28 @@ export class ActionSheetDesign<
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      {
-        ...this.getAttrs(),
-        'class': this.classes?.value.main,
-        'style': this.styles?.value,
-        'data-touch': 'touch'
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          'class': this.classes?.value.main,
+          'style': this.styles?.value,
+          'data-touch': 'touch'
+        }
+      )
     )
   }
 
   /**
-   * Generates data for the header.
+   * Generates data for the header wrapped with a touch swipe container when touchClose is enabled.
    *
-   * Генерирует данные для заголовка.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * Генерирует данные для заголовка, обёрнутого в контейнер свайпа при включённом touchClose.
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns array of VNodes / массив VNode
    */
   readonly renderTitleTouch = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = this.renderTitle(props)
+    const children: VNode[] = this.renderTitle(props)
 
     if (this.props.touchClose) {
       return [h(
@@ -108,10 +120,14 @@ export class ActionSheetDesign<
         {
           key: 'touch',
           class: this.classes?.value.touch,
-          ...this.item.touchEvent.onTouch
+          ...this.item.touchBinds
         },
         [
-          h('div', { class: this.classes?.value.tab }),
+          h('div', {
+            'key': 'tab',
+            'class': this.classes?.value.tab,
+            'aria-hidden': 'true'
+          }),
           ...children
         ]
       )]

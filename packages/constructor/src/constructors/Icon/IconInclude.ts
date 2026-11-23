@@ -74,12 +74,22 @@ export class IconInclude<
           start: executeFunctionRef(this.start),
           end: executeFunctionRef(this.end)
         },
-        this.getExtra() ?? {},
+        this.getExtraIcon() ?? {},
         props.iconAttrs ?? {},
         this.getClasses('icon'),
         this.getEventType()
       ),
       'icon'
     )
+  }
+
+  /**
+   * Returns additional properties for the main icon.
+   *
+   * Возвращает дополнительные свойства для основной иконки.
+   * @returns additional icon properties / дополнительные свойства основной иконки
+   */
+  protected getExtraIcon(): ConstrBind<IconPropsBasic> | undefined {
+    return this.getExtra()
   }
 }

@@ -77,7 +77,8 @@ export class Button extends DesignLogicAbstract<
         this.props,
         this.naming,
         this.components,
-        () => ({ disabled: this.props.disabled })
+        () => ({ disabled: this.props.disabled }),
+        { noPointerEvents: true }
       ]
     },
     label: {

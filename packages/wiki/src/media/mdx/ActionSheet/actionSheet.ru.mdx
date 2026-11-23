@@ -6,14 +6,12 @@ ActionSheet представляет собой специализированн
 
 **Основные возможности:**
 
-- Позиционирование внизу экрана с анимацией выдвижения
-- Поддержка touch-жестов для закрытия свайпом вниз
-- Интеграция с Bars для отображения заголовка
-- Автоматическая блокировка фона при открытии
-- Закрытие по клику на overlay или кнопке закрытия
-- События жизненного цикла (открытие, закрытие)
-- Поддержка слотов для кастомизации контента
-- Адаптивная высота под размер контента
+- **Мобильная шторка и боковая панель:** Построена на базе `Window` с адаптивным позиционированием и плавной анимацией выдвижения
+- **Закрытие свайпом (`touchClose`):** Поддержка touch-жестов с декоративным индикатором перетаскивания (`aria-hidden="true"`)
+- **Двустороннее управление:** Синхронизация состояния через `v-model:open`, `v-model:modelOpen` или методы `expose`
+- **Интеграция Bars и Actions:** Встроенная шапка `Bars` (`barsLabel`, `barsDescription`, `barsList`, `barsBackHide`) и футер `Actions` (`actionsList`, `actionsSecondary`) с автоматической связью ARIA
+- **Гибкие слоты и настройка Window:** Поддержка слотов `#control`, `#title`, `#header`, `#default`, `#footer` и проброс `windowAttrs` (`persistent`, `closeButton`, `adaptive`)
+- **Доступность и управление фокусом:** Захват фокуса, закрытие по `Escape` и управление возвратом фокуса (`disableFocusReturn`)
 
 **Типичные сценарии использования:**
 
@@ -55,12 +53,14 @@ const handleAction = (action) => {
       </div>
     </template>
 
-    <template #footer>
-      <button @click="isOpen = false">Отмена</button>
+    <template #footer="{ classesWindow }">
+      <button :class="classesWindow.close">Отмена</button>
     </template>
   </ActionSheet>
 </template>
   `}
     language="html"
 />
+
+> ActionSheet объединяет возможности Modal, Bars и Actions с закрытием по свайпу вниз для удобных мобильных панелей действий.
 

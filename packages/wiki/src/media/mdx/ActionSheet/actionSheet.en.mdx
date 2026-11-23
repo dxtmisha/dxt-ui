@@ -6,14 +6,12 @@ ActionSheet is a specialized wrapper over the Window component with a preset `ac
 
 **Key features:**
 
-- Positioning at the bottom of the screen with slide-up animation
-- Touch gesture support for closing by swiping down
-- Integration with Bars for header display
-- Automatic background blocking when opened
-- Closing by clicking on overlay or close button
-- Lifecycle events (opening, closing)
-- Slot support for content customization
-- Adaptive height based on content size
+- **Mobile-Optimized Drawer & Bottom Sheet:** Built on `Window` with adaptive sheet positioning and smooth slide animation
+- **Swipe-Down Dismissal (`touchClose`):** Touch gesture support with an accessible decorative drag handle (`aria-hidden="true"`)
+- **Two-Way State Control:** Synchronized state via `v-model:open`, `v-model:modelOpen`, or exposed methods
+- **Integrated Bars & Actions:** Built-in `Bars` header (`barsLabel`, `barsDescription`, `barsList`, `barsBackHide`) and `Actions` footer (`actionsList`, `actionsSecondary`) with automatic ARIA linkage
+- **Flexible Slots & Window Configuration:** Supports `#control`, `#title`, `#header`, `#default`, and `#footer` slots plus full `windowAttrs` forwarding (`persistent`, `closeButton`, `adaptive`)
+- **Accessibility & Focus Management:** Focus trapping, `Escape` dismissal, and `disableFocusReturn` support
 
 **Common use cases:**
 
@@ -55,12 +53,14 @@ const handleAction = (action) => {
       </div>
     </template>
 
-    <template #footer>
-      <button @click="isOpen = false">Cancel</button>
+    <template #footer="{ classesWindow }">
+      <button :class="classesWindow.close">Cancel</button>
     </template>
   </ActionSheet>
 </template>
   `}
     language="html"
 />
+
+> ActionSheet combines Modal's overlay, Bars, and Actions composition with touch-driven swipe dismissal for mobile-first action panels.
 

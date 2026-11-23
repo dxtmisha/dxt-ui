@@ -21,9 +21,11 @@ import {ActionSheetWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'ActionSheet'} type={'actionSheet'}/>
 <StorybookDescriptions componentName={'ActionSheet'} type={'touchClose'}/>
+<Canvas of={ActionSheet.ActionSheetTouchClose}/>
 
 <StorybookDescriptions componentName={'Window'} type={'v-model'}/>
 <Canvas of={ActionSheet.ActionSheetVModel}/>
+<Canvas of={ActionSheet.ActionSheetBarsAndActions}/>
 
 <StorybookDescriptions componentName={'Modal'} type={'differences'}/>
     
@@ -41,6 +43,7 @@ import {ActionSheetWikiStorybook} from './wiki'
 [//]: # (:documentation-expose [!] System label / Системная метка)
 ## Expose
 
+<Canvas of={ActionSheet.ActionSheetExpose}/>
 <StorybookDescriptions componentName={'Window'} type={'expose'}/>
 <StorybookDescriptions componentName={'Window'} type={'getWindowElement'}/>
     

@@ -8,7 +8,11 @@ import type {
   TouchEventTypeY
 } from '../types/touchEventTypes'
 
+/** Distance threshold in pixels for directional swipe detection / Порог смещения в пикселях для определения направления свайпа */
 const MAX_MOVE = 80
+
+/** Delay in milliseconds before resetting CSS touch variables when end callback returns false / Задержка в миллисекундах перед сбросом CSS-переменных касания при возврате false из end-колбэка */
+const RESET_DELAY_MS = 400
 
 /**
  * Class for handling touch and mouse events with gesture detection.
@@ -16,36 +20,13 @@ const MAX_MOVE = 80
  * Класс для обработки событий касания и мыши с определением жестов.
  */
 export class TouchEventInclude {
-  /**
-   * Current touch point
-   *
-   * Текущая точка касания
-   */
-  readonly touche = ref<Touch>()
+  /** Pending reset timer identifier / Идентификатор отложенного таймера сброса */
+  private resetTimer?: ReturnType<typeof setTimeout>
 
   /**
-   * Touchpoint during move
+   * Constructor.
    *
-   * Точка касания во время движения
-   */
-  readonly toucheMove = ref<Touch>()
-
-  /**
-   * Current mouse position
-   *
-   * Текущая позиция мыши
-   */
-  readonly mouse = ref<TouchEventClient>()
-
-  /**
-   * Mouse position during move
-   *
-   * Позиция мыши во время движения
-   */
-  readonly mouseMove = ref<TouchEventClient>()
-
-  /**
-   * Constructor
+   * Конструктор.
    * @param start callback on touch/mouse start / колбэк при начале касания/клика
    * @param move callback on touch/mouse move / колбэк при движении
    * @param end callback on touch/mouse end / колбэк при завершении
@@ -60,55 +41,83 @@ export class TouchEventInclude {
   }
 
   /**
-   * Touch event handlers
-   *
-   * Обработчики событий касания
+   * Current touch point / Текущая точка касания
+   */
+  readonly touche = ref<Touch>()
+
+  /**
+   * Touchpoint during move / Точка касания во время движения
+   */
+  readonly toucheMove = ref<Touch>()
+
+  /**
+   * Current mouse position / Текущая позиция мыши
+   */
+  readonly mouse = ref<TouchEventClient>()
+
+  /**
+   * Mouse position during move / Позиция мыши во время движения
+   */
+  readonly mouseMove = ref<TouchEventClient>()
+
+  /**
+   * Touch event handlers / Обработчики событий касания
    */
   readonly onTouch = {
-    onTouchstart: (event: TouchEvent) => {
+    onTouchstart: (event: TouchEvent): void => {
       this.touche.value = event.targetTouches?.[0]
       this.mouse.value = {
         x: this.touche.value?.clientX ?? 0,
         y: this.touche.value?.clientY ?? 0
       }
 
-      this.update(event.target as HTMLElement)
+      this.update(event.target)
     },
-    onTouchend: (event: TouchEvent) => this.reset(event.target as HTMLElement),
-    onTouchcancel: (event: TouchEvent) => this.reset(event.target as HTMLElement),
-    onTouchmove: (event: TouchEvent) => {
+    onTouchend: (event: TouchEvent): void => this.reset(event.target),
+    onTouchcancel: (event: TouchEvent): void => this.reset(event.target),
+    onTouchmove: (event: TouchEvent): void => {
       this.toucheMove.value = event.targetTouches?.[0]
       this.mouseMove.value = {
         x: this.toucheMove.value?.clientX ?? 0,
         y: this.toucheMove.value?.clientY ?? 0
       }
 
-      this.updateMove(event.target as HTMLElement)
+      this.updateMove(event.target)
     }
   }
 
   /**
-   * Mouse event handlers
-   *
-   * Обработчики событий мыши
+   * Mouse event handlers / Обработчики событий мыши
    */
   readonly onMouse = {
-    onMousedown: (event: MouseEvent) => {
+    onMousedown: (event: MouseEvent): void => {
       this.mouse.value = {
         x: event.clientX,
         y: event.clientY
       }
 
-      this.update(event.target as HTMLElement)
+      this.update(event.target)
     },
-    onMouseup: (event: MouseEvent) => this.reset(event.target as HTMLElement),
-    onMousemove: (event: MouseEvent) => {
+    onMouseup: (event: MouseEvent): void => this.reset(event.target),
+    onMousemove: (event: MouseEvent): void => {
       this.mouseMove.value = {
         x: event.clientX,
         y: event.clientY
       }
 
-      this.updateMove(event.target as HTMLElement)
+      this.updateMove(event.target)
+    }
+  }
+
+  /**
+   * Clears any pending delayed reset timer.
+   *
+   * Очищает активный таймер отложенного сброса.
+   */
+  private clearResetTimer(): void {
+    if (this.resetTimer !== undefined) {
+      clearTimeout(this.resetTimer)
+      this.resetTimer = undefined
     }
   }
 
@@ -116,10 +125,19 @@ export class TouchEventInclude {
    * Gets the target element for touch events.
    *
    * Получает целевой элемент для событий касания.
-   * @param target event target element / целевой элемент события
+   * @param target event target / целевой объект события
+   * @returns resolved HTML element or null / найденный HTML-элемент или null
    */
-  private getElement(target: HTMLElement) {
-    return this.element?.value ?? target.closest<HTMLElement>('[data-touch]')
+  private getElement(target: EventTarget | null): HTMLElement | null {
+    if (this.element?.value) {
+      return this.element.value
+    }
+
+    if (target instanceof HTMLElement) {
+      return target.closest<HTMLElement>('[data-touch]')
+    }
+
+    return null
   }
 
   /**
@@ -127,6 +145,7 @@ export class TouchEventInclude {
    *
    * Определяет тип горизонтального направления из координаты X.
    * @param clientX horizontal coordinate / горизонтальная координата
+   * @returns horizontal direction / горизонтальное направление
    */
   private getTypeX(clientX: number): TouchEventTypeX {
     if (clientX >= MAX_MOVE) {
@@ -145,6 +164,7 @@ export class TouchEventInclude {
    *
    * Определяет тип вертикального направления из координаты Y.
    * @param clientY vertical coordinate / вертикальная координата
+   * @returns vertical direction / вертикальное направление
    */
   private getTypeY(clientY: number): TouchEventTypeY {
     if (clientY >= MAX_MOVE) {
@@ -163,6 +183,7 @@ export class TouchEventInclude {
    *
    * Выполняет колбэк с рассчитанными данными движения.
    * @param callback callback function / функция обратного вызова
+   * @returns delta coordinates if allowed, otherwise undefined / смещение координат при разрешении или undefined
    */
   private async callback(callback?: TouchEventCallback): Promise<TouchEventClient | undefined> {
     const toucheValue = this.mouse.value
@@ -201,32 +222,40 @@ export class TouchEventInclude {
   /**
    * Resets touch/mouse state and CSS properties after interaction ends.
    *
-   * Сбрасывает состояние касания/мыши и CSS свойства после завершения взаимодействия.
+   * Сбрасывает состояние касания/мыши и CSS-свойства после завершения взаимодействия.
    * @param target selected item / выбранный элемент
    */
-  private reset(target: HTMLElement) {
+  private reset(target: EventTarget | null): void {
     const elementValue = this.getElement(target)
 
     this
       .callback(this.end)
       .then((client) => {
         if (elementValue) {
+          this.clearResetTimer()
+
           if (client) {
             this.resetData(elementValue)
           } else {
-            setTimeout(() => this.resetData(elementValue), 400)
+            this.resetTimer = setTimeout(() => {
+              this.resetTimer = undefined
+              this.resetData(elementValue)
+            }, RESET_DELAY_MS)
           }
         }
       })
+      .catch(() => {})
   }
 
   /**
    * Resets all touch/mouse state and removes CSS custom properties.
    *
-   * Сбрасывает все состояния касания/мыши и удаляет CSS кастомные свойства.
+   * Сбрасывает все состояния касания/мыши и удаляет CSS-переменные.
    * @param elementValue target element / целевой элемент
    */
-  private resetData(elementValue: HTMLElement) {
+  private resetData(elementValue: HTMLElement): void {
+    this.clearResetTimer()
+
     this.touche.value = undefined
     this.toucheMove.value = undefined
 
@@ -242,10 +271,10 @@ export class TouchEventInclude {
   /**
    * Updates initial touch/mouse position and sets CSS custom properties.
    *
-   * Обновляет начальную позицию касания/мыши и устанавливает CSS кастомные свойства.
+   * Обновляет начальную позицию касания/мыши и устанавливает CSS-переменные.
    * @param target selected item / выбранный элемент
    */
-  private update(target: HTMLElement) {
+  private update(target: EventTarget | null): void {
     const elementValue = this.getElement(target)
     const toucheValue = this.mouse.value
 
@@ -253,20 +282,22 @@ export class TouchEventInclude {
       elementValue
       && toucheValue
     ) {
+      this.clearResetTimer()
+
       elementValue.style.setProperty('--sys-touch-start-x', `${toucheValue.x}px`)
       elementValue.style.setProperty('--sys-touch-start-y', `${toucheValue.y}px`)
 
-      executePromise(this.start?.(toucheValue, this.touche.value)).then()
+      executePromise(this.start?.(toucheValue, this.touche.value)).catch(() => {})
     }
   }
 
   /**
    * Updates touch/mouse position during movement and sets CSS custom properties.
    *
-   * Обновляет позицию касания/мыши во время движения и устанавливает CSS кастомные свойства.
+   * Обновляет позицию касания/мыши во время движения и устанавливает CSS-переменные.
    * @param target selected item / выбранный элемент
    */
-  private updateMove(target: HTMLElement) {
+  private updateMove(target: EventTarget | null): void {
     const elementValue = this.getElement(target)
 
     this
@@ -280,5 +311,6 @@ export class TouchEventInclude {
           elementValue.style.setProperty('--sys-touch-move-y', `${client.y}px`)
         }
       })
+      .catch(() => {})
   }
 }

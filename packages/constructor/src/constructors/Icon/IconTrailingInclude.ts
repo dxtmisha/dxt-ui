@@ -5,6 +5,7 @@ import {
   type ConstrBind,
   type DesignComponents,
   type DesignName,
+  executeFunctionRef,
   getBind
 } from '@dxtmisha/functional'
 
@@ -42,13 +43,17 @@ export class IconTrailingInclude<
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
-   * @param extra additional parameter / дополнительный параметр
+   * @param extra additional parameter for both icons / дополнительный параметр для обеих иконок
+   * @param extraIcon additional parameter for the main icon / дополнительный параметр для основной иконки
+   * @param extraTrailing additional parameter for the trailing icon / дополнительный параметр для хвостовой иконки
    */
   constructor(
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
-    protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>
+    protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>,
+    protected readonly extraIcon?: ComponentIncludeExtra<IconPropsBasic>,
+    protected readonly extraTrailing?: ComponentIncludeExtra<IconPropsBasic>
   ) {
     super(
       props,
@@ -80,7 +85,7 @@ export class IconTrailingInclude<
           end: true,
           high: true
         },
-        this.getExtra() ?? {},
+        this.getExtraTrailing() ?? {},
         props.iconAttrs ?? {},
         this.getClasses('trailing'),
         this.getEventType('icon-trailing')
@@ -165,5 +170,39 @@ export class IconTrailingInclude<
   protected isTurn(): boolean {
     const props = this.getProps()
     return Boolean(!props.iconTrailing && !props.iconTrailingTurnOnly && props.iconTurn)
+  }
+
+  /**
+   * Returns merged additional properties for the main icon.
+   *
+   * Возвращает объединённые дополнительные свойства для основной иконки.
+   * @returns additional properties for the main icon / дополнительные свойства для основной иконки
+   */
+  protected override getExtraIcon(): ConstrBind<IconPropsBasic> | undefined {
+    const extra = this.getExtra()
+    const extraIcon = executeFunctionRef(this.extraIcon)
+
+    if (extra && extraIcon) {
+      return mergeProps(extra, extraIcon)
+    }
+
+    return extraIcon ?? extra
+  }
+
+  /**
+   * Returns merged additional properties for the trailing icon.
+   *
+   * Возвращает объединённые дополнительные свойства для хвостовой иконки.
+   * @returns additional properties for the trailing icon / дополнительные свойства для хвостовой иконки
+   */
+  protected getExtraTrailing(): ConstrBind<IconPropsBasic> | undefined {
+    const extra = this.getExtra()
+    const extraTrailing = executeFunctionRef(this.extraTrailing)
+
+    if (extra && extraTrailing) {
+      return mergeProps(extra, extraTrailing)
+    }
+
+    return extraTrailing ?? extra
   }
 }

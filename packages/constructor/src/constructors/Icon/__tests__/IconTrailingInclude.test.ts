@@ -202,5 +202,29 @@ describe('IconTrailingInclude', () => {
       expect(include.renderIconTrailing()).toEqual([])
       expect(include.render()).toHaveLength(1)
     })
+
+    it('should apply extraIcon only to iconBind and extraTrailing only to trailingBind while preserving shared extra', () => {
+      const props = createReactiveProps<IconTrailingPropsInclude>({
+        icon: 'home',
+        iconTrailing: 'chevron_right'
+      })
+
+      const include = new IconTrailingInclude(
+        props,
+        naming,
+        undefined,
+        { disabled: true },
+        { noPointerEvents: true },
+        { dynamic: true }
+      )
+
+      expect(include.iconBind.disabled).toBe(true)
+      expect(include.iconBind.noPointerEvents).toBe(true)
+      expect(include.iconBind.dynamic).toBeUndefined()
+
+      expect(include.trailingBind.disabled).toBe(true)
+      expect(include.trailingBind.noPointerEvents).toBeUndefined()
+      expect(include.trailingBind.dynamic).toBe(true)
+    })
   })
 })

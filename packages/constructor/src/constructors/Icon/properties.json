@@ -11,6 +11,7 @@
   "~dir": {},
   "~overlay": {},
   "~dynamic": {},
+  "~no-pointer-events": {},
   "~start": {
     "_category": "order"
   },
