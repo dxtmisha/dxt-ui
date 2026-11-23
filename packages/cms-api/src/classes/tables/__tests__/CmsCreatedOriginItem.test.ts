@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../../media/errors/cmsCreatedOriginErrorCauseList'
 import { CmsCreatedOriginItem } from '../CmsCreatedOriginItem'
@@ -137,7 +137,8 @@ describe('CmsCreatedOriginItem', () => {
         systemStatus: 'blocked'
       })
       const mock = createMockDb({
-        updateQueue: [[updatedRecord]]
+        selectQueue: [[updatedRecord]],
+        updateQueue: [[{ id: 1 }]]
       })
       const item = new CmsCreatedOriginItem(makeCreatedOrigin(), mock.dbInstance)
 
@@ -162,13 +163,14 @@ describe('CmsCreatedOriginItem', () => {
       }))
     })
 
-    it('returns undefined when updating a missing or invalid created origin ID', async () => {
+    it('throws ErrorCenterError when updating an invalid ID and returns this when record is missing', async () => {
       const mock = createMockDb({ updateQueue: [[]] })
       const missingItem = new CmsCreatedOriginItem(makeCreatedOrigin({ id: 404 }), mock.dbInstance)
       const invalidItem = new CmsCreatedOriginItem(makeCreatedOrigin({ id: 0 }), mock.dbInstance)
 
-      expect(await invalidItem.update({ name: 'Test' })).toBeUndefined()
-      expect(await missingItem.update({ name: 'Test' })).toBeUndefined()
+      await expect(invalidItem.update({ name: 'Test' })).rejects.toThrow(ErrorCenterError)
+      expect(await missingItem.update({ name: 'Test' })).toBe(missingItem)
+      expect(missingItem.getName()).toBe('cms-created_origin-admin')
     })
 
     it('validates code and name on update via ErrorCenter', async () => {
@@ -193,10 +195,11 @@ describe('CmsCreatedOriginItem', () => {
       })
       const item = new CmsCreatedOriginItem(makeCreatedOrigin(), mock.dbInstance)
 
-      expect((await item.block())?.getSystemStatus()).toBe('blocked')
-      expect((await item.activate())?.getSystemStatus()).toBe('active')
-      expect((await item.softDelete())?.getSystemStatus()).toBe('deleted')
-      expect(await item.activate()).toBeUndefined()
+      expect((await item.block()).getSystemStatus()).toBe('blocked')
+      expect((await item.activate()).getSystemStatus()).toBe('active')
+      expect((await item.softDelete()).getSystemStatus()).toBe('deleted')
+      expect(await item.activate()).toBe(item)
+      expect(item.getSystemStatus()).toBe('deleted')
     })
 
     it('reloads and deletes the created origin record', async () => {
@@ -209,7 +212,8 @@ describe('CmsCreatedOriginItem', () => {
 
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded origin')
-      expect(await item.reload()).toBeUndefined()
+      expect(await item.reload()).toBe(item)
+      expect(item.getName()).toBe('Reloaded origin')
 
       expect(await item.delete()).toBe(true)
       expect(await item.delete()).toBe(false)

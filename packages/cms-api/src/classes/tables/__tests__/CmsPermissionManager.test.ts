@@ -274,10 +274,11 @@ describe('CmsPermissionManager', () => {
     const mock = createMockDb({
       selectQueue: [
         [existing],
+        [updated],
         [existing],
         []
       ],
-      updateQueue: [[updated]],
+      updateQueue: [[{ id: 3 }]],
       deleteQueue: [[{ id: 3 }]]
     })
     const manager = new CmsPermissionManager(mock.dbInstance)

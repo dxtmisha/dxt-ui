@@ -115,6 +115,10 @@ describe('CmsDbTimestamp', () => {
       expect(await timestamp.getCreatedAt(5)).toEqual(createdAt)
       expect(await timestamp.getUpdatedAt(5)).toEqual(updatedAt)
       expect(raw.select).toHaveBeenCalledTimes(4)
+      expect(raw.select).toHaveBeenCalledWith({
+        createdAt: permissions.createdAt,
+        updatedAt: permissions.updatedAt
+      })
     })
   })
 

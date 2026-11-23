@@ -6,6 +6,9 @@ import {
 } from 'drizzle-orm'
 
 import { useCmsDb } from '../../composables/useCmsDb'
+import { deleteCmsRecord } from '../../functions/deleteCmsRecord'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { updateCmsRecord } from '../../functions/updateCmsRecord'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
 import { CmsDbTimestamp } from '../CmsDbTimestamp'
 import { CmsVerification } from '../CmsVerification'
@@ -111,13 +114,14 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       ? and(eq(baseTable.id, id), condition)
       : eq(baseTable.id, id)
 
-    const found = await this.databaseInstance.get()
-      .select({ id: baseTable.id })
-      .from(baseTable)
-      .where(whereCondition)
-      .limit(1)
+    const found = await findOneCmsRecord<{ id: number }>(
+      this.databaseInstance.get(),
+      baseTable,
+      whereCondition,
+      { id: baseTable.id }
+    )
 
-    return found.length > 0
+    return Boolean(found)
   }
 
   /**
@@ -148,11 +152,33 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    const deletedRows = await this.databaseInstance.get()
-      .delete(baseTable)
-      .where(eq(baseTable.id, id))
-      .returning({ id: baseTable.id })
+    return deleteCmsRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id)
+    )
+  }
 
-    return deletedRows.length > 0
+  /**
+   * Updates a record by identifier in the bound table with automatic `updatedAt` handling.
+   *
+   * Обновляет запись по идентификатору в привязанной таблице с автоматическим обновлением `updatedAt`.
+   * @param id Record identifier / Идентификатор записи
+   * @param values Partial column values to update / Частичные значения колонок для обновления
+   * @returns True if a matching record was updated / True, если запись найдена и обновлена
+   */
+  protected async updateRecordById(
+    id: number,
+    values: Record<string, unknown>
+  ): Promise<boolean> {
+    CmsVerification.isPositiveInteger(id)
+
+    const baseTable = this.getBaseTable()
+    return updateCmsRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id),
+      this.getUpdateValues(values)
+    )
   }
 }

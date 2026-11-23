@@ -2,6 +2,8 @@ import { eq } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
 import { useCmsDb } from '../composables/useCmsDb'
+import { findOneCmsRecord } from '../functions/findOneCmsRecord'
+import { updateCmsRecord } from '../functions/updateCmsRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
@@ -54,13 +56,12 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return undefined
     }
 
-    const rows = await this.databaseInstance.get()
-      .select(selectFields)
-      .from(baseTable)
-      .where(eq(baseTable.id, id))
-      .limit(1)
-
-    return rows[0] as CmsTimestampValues | undefined
+    return findOneCmsRecord<CmsTimestampValues>(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id),
+      selectFields
+    )
   }
 
   /**
@@ -112,13 +113,12 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return false
     }
 
-    const updatedRows = await this.databaseInstance.get()
-      .update(baseTable)
-      .set({ updatedAt } as Partial<typeof baseTable.$inferInsert>)
-      .where(eq(baseTable.id, id))
-      .returning({ id: baseTable.id })
-
-    return updatedRows.length > 0
+    return updateCmsRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id),
+      { updatedAt } as Partial<typeof baseTable.$inferInsert>
+    )
   }
 
   /**

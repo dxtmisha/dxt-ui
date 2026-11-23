@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
@@ -145,7 +145,8 @@ describe('CmsPermissionItem', () => {
         createdOrigin: 'admin'
       })
       const mock = createMockDb({
-        updateQueue: [[updatedRecord]]
+        selectQueue: [[updatedRecord]],
+        updateQueue: [[{ id: 10 }]]
       })
       const item = new CmsPermissionItem(makePermission(), mock.dbInstance)
 
@@ -169,13 +170,14 @@ describe('CmsPermissionItem', () => {
       }))
     })
 
-    it('returns undefined when updating a missing or invalid permission ID', async () => {
+    it('throws ErrorCenterError when updating an invalid ID and returns this when record is missing', async () => {
       const mock = createMockDb({ updateQueue: [[]] })
       const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance)
       const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance)
 
-      expect(await invalidItem.update({ name: 'Test' })).toBeUndefined()
-      expect(await missingItem.update({ name: 'Test' })).toBeUndefined()
+      await expect(invalidItem.update({ name: 'Test' })).rejects.toThrow(ErrorCenterError)
+      expect(await missingItem.update({ name: 'Test' })).toBe(missingItem)
+      expect(missingItem.getName()).toBe('cms-permission-users_read')
     })
 
     it('validates code and name on update via ErrorCenter', async () => {
@@ -200,7 +202,8 @@ describe('CmsPermissionItem', () => {
 
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded name')
-      expect(await item.reload()).toBeUndefined()
+      expect(await item.reload()).toBe(item)
+      expect(item.getName()).toBe('Reloaded name')
 
       expect(await item.delete()).toBe(true)
       expect(await item.delete()).toBe(false)

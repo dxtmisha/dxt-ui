@@ -12,10 +12,11 @@ import {
   isObjectNotArray,
   isPositiveInteger,
   isString,
+  normalizeCmsOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
@@ -23,6 +24,7 @@ import { users } from '../../media/schema/users'
 import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -35,6 +37,7 @@ import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
 import type {
   CmsUserCreateInput,
   CmsUserDeleteOptions,
+  CmsUserPublic,
   CmsUserUpdateInput,
   CmsUserWithRoles
 } from '../../types/cmsUserTypes'
@@ -426,19 +429,16 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    */
   async update(input: CmsUserUpdateInput): Promise<this | undefined> {
     const userId = this.data.id
-    if (!isPositiveInteger(userId)) {
-      return undefined
-    }
+    CmsVerification.isPositiveInteger(userId)
 
     try {
       const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const existingRows = await transaction
-          .select(USER_PUBLIC_COLUMNS)
-          .from(users)
-          .where(and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()))
-          .limit(1)
-
-        const existingUser = existingRows[0]
+        const existingUser = await findOneCmsRecord<CmsUserPublic>(
+          transaction,
+          users,
+          and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()),
+          USER_PUBLIC_COLUMNS
+        )
         if (!existingUser) {
           return undefined
         }
@@ -492,9 +492,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    */
   override async delete(options: CmsUserDeleteOptions = {}): Promise<boolean> {
     const userId = this.data.id
-    if (!isPositiveInteger(userId)) {
-      return false
-    }
+    CmsVerification.isPositiveInteger(userId)
 
     const database = this.databaseInstance.get()
 
@@ -504,16 +502,18 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       }
 
       return await database.transaction(async (transaction) => {
-        const existingRows = await transaction
-          .select({
+        const existingUser = await findOneCmsRecord<{
+          id: number
+          metadata: CmsUserMetadata
+        }>(
+          transaction,
+          users,
+          and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()),
+          {
             id: users.id,
             metadata: users.metadata
-          })
-          .from(users)
-          .where(and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()))
-          .limit(1)
-
-        const existingUser = existingRows[0]
+          }
+        )
         if (!existingUser) {
           return false
         }
@@ -550,21 +550,17 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    *
    * Перезагружает данные, назначенные роли и права доступа этого пользователя из базы данных.
    * @param includeDeleted Include soft-deleted state / Учитывать ли мягко удалённую запись
-   * @returns Reloaded user item or undefined if missing / Обновлённый экземпляр пользователя или undefined, если не найден
+   * @returns Current user item instance / Текущий экземпляр пользователя
    */
-  override async reload(includeDeleted: boolean = false): Promise<this | undefined> {
+  override async reload(includeDeleted: boolean = false): Promise<this> {
     const userId = this.data.id
-    if (!isPositiveInteger(userId)) {
-      return undefined
-    }
+    CmsVerification.isPositiveInteger(userId)
 
     const foundRecord = await this.fetchById(userId, includeDeleted)
-
-    if (!foundRecord) {
-      return undefined
+    if (foundRecord) {
+      this.data = foundRecord
     }
 
-    this.data = foundRecord
     return this
   }
 
@@ -576,19 +572,16 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    */
   async restore(): Promise<this | undefined> {
     const userId = this.data.id
-    if (!isPositiveInteger(userId)) {
-      return undefined
-    }
+    CmsVerification.isPositiveInteger(userId)
 
     try {
       const restoredRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const existingRows = await transaction
-          .select(USER_PUBLIC_COLUMNS)
-          .from(users)
-          .where(eq(users.id, userId))
-          .limit(1)
-
-        const existingUser = existingRows[0]
+        const existingUser = await findOneCmsRecord<CmsUserPublic>(
+          transaction,
+          users,
+          eq(users.id, userId),
+          USER_PUBLIC_COLUMNS
+        )
         if (!existingUser) {
           return undefined
         }
@@ -973,17 +966,12 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsUserWithRoles | undefined> {
-    if (!whereCondition) {
-      return undefined
-    }
-
-    const foundRows = await executor
-      .select(USER_PUBLIC_COLUMNS)
-      .from(users)
-      .where(whereCondition)
-      .limit(1)
-
-    const userRecord = foundRows[0]
+    const userRecord = await findOneCmsRecord<CmsUserPublic>(
+      executor,
+      users,
+      whereCondition,
+      USER_PUBLIC_COLUMNS
+    )
     if (!userRecord) {
       return undefined
     }
@@ -1015,13 +1003,14 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       })
     }
 
-    const foundRows = await executor
-      .select({ id: users.id })
-      .from(users)
-      .where(and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()))
-      .limit(1)
+    const foundUser = await findOneCmsRecord<{ id: number }>(
+      executor,
+      users,
+      and(eq(users.id, userId), CmsUserItem.getNotDeletedCondition()),
+      { id: users.id }
+    )
 
-    if (foundRows.length === 0) {
+    if (!foundUser) {
       ErrorCenterThrow.on({
         group: CMS_USER_ERROR_GROUP,
         code: 'notFound',

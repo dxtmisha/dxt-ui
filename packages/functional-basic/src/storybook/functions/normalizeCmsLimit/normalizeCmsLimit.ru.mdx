@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Числа и вычисления/normalizeCmsLimit - Нормализация лимита списка CMS'/>
+
+# `normalizeCmsLimit`
+
+Ограничивает и нормализует параметр количества записей на странице CMS к целому положительному числу в диапазоне `[1, maxLimit]`. Если `limit` не задан или не является конечным числом (`NaN`, `Infinity`, `-Infinity`), возвращает `defaultLimit`.
+
+**Параметры:**
+- `limit?: number` — Запрошенное количество записей.
+- `defaultLimit: number = 20` — Лимит по умолчанию, если не задан или не является конечным числом.
+- `maxLimit: number = 200` — Максимально допустимый лимит.
+
+**Возвращает:**
+`number` — Нормализованный целочисленный лимит.
+
+```typescript
+import { normalizeCmsLimit } from '@dxtmisha/functional-basic'
+
+console.log(normalizeCmsLimit()) // 20
+console.log(normalizeCmsLimit(0)) // 1
+console.log(normalizeCmsLimit(15.9)) // 15
+console.log(normalizeCmsLimit(500)) // 200
+console.log(normalizeCmsLimit(500, 10, 50)) // 50
+```

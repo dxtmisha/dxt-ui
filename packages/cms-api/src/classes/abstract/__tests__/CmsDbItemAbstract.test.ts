@@ -92,12 +92,13 @@ describe('CmsDbItemAbstract', () => {
 
   it('provides common getters, updateRecord, reload, systemStatus transitions, and delete', async () => {
     const selectQueue = [
+      [makeRecord({ name: 'Updated' })],
       [makeRecord({ name: 'Reloaded' })],
       [makeRecord({ systemStatus: 'blocked' })],
       []
     ]
     const updateQueue = [
-      [makeRecord({ name: 'Updated' })],
+      [{ id: 10 }],
       [{ id: 10 }]
     ]
     const deleteQueue = [[{ id: 10 }]]
@@ -118,15 +119,16 @@ describe('CmsDbItemAbstract', () => {
     expect(item.toJSONString()).toBe(JSON.stringify(item.getData()))
 
     expect((await item.updateName('Updated'))?.getData().name).toBe('Updated')
-    expect((await item.reload())?.getData().name).toBe('Reloaded')
+    expect((await item.reload()).getData().name).toBe('Reloaded')
     expect((await item.block())?.getSystemStatus()).toBe('blocked')
-    expect(await item.reload()).toBeUndefined()
+    expect(await item.reload()).toBe(item)
+    expect(item.getSystemStatus()).toBe('blocked')
     expect(await item.delete()).toBe(true)
 
     const invalidItem = new TestDbItem(makeRecord({ id: 0 }), dbInstance)
-    expect(await invalidItem.updateName('Ignored')).toBeUndefined()
-    expect(await invalidItem.reload()).toBeUndefined()
+    await expect(invalidItem.updateName('Ignored')).rejects.toThrow(ErrorCenterError)
+    await expect(invalidItem.reload()).rejects.toThrow(ErrorCenterError)
     await expect(invalidItem.block()).rejects.toThrow(ErrorCenterError)
-    expect(await invalidItem.delete()).toBe(false)
+    await expect(invalidItem.delete()).rejects.toThrow(ErrorCenterError)
   })
 })

@@ -277,7 +277,8 @@ describe('CmsRoleItem', () => {
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded Role')
       expect(item.getPermissions()).toEqual([perm])
-      expect(await item.reload()).toBeUndefined()
+      expect(await item.reload()).toBe(item)
+      expect(item.getName()).toBe('Reloaded Role')
 
       expect(await item.delete()).toBe(true)
       expect(await item.delete()).toBe(false)

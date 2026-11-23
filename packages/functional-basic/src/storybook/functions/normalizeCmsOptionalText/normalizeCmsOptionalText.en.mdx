@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Strings & Formatting/normalizeCmsOptionalText - Normalizing optional CMS text'/>
+
+# `normalizeCmsOptionalText`
+
+Normalizes optional CMS string fields by trimming whitespace and converting empty or whitespace-only strings to `null`, while preserving `undefined` and `null` inputs.
+
+**Parameters:**
+- `value?: string | null` — Raw optional string, `null`, or `undefined`.
+
+**Returns:**
+`string | null | undefined` — Trimmed string, `null`, or `undefined`.
+
+```typescript
+import { normalizeCmsOptionalText } from '@dxtmisha/functional-basic'
+
+console.log(normalizeCmsOptionalText()) // undefined
+console.log(normalizeCmsOptionalText(null)) // null
+console.log(normalizeCmsOptionalText('   ')) // null
+console.log(normalizeCmsOptionalText('  hello world  ')) // 'hello world'
+```

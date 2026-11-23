@@ -99,6 +99,7 @@ describe('CmsDbSystemStatus', () => {
       expect(await status.get(12)).toBe('blocked')
       expect(await status.get(999)).toBeUndefined()
       expect(raw.select).toHaveBeenCalledTimes(2)
+      expect(raw.select).toHaveBeenCalledWith({ systemStatus: permissions.systemStatus })
     })
   })
 
@@ -130,7 +131,7 @@ describe('CmsDbSystemStatus', () => {
       expect(raw.update).not.toHaveBeenCalled()
     })
 
-    it('updates systemStatus and updatedAt via update, activate, block, and softDelete', async () => {
+    it('updates only systemStatus via update, activate, block, and softDelete when getTimestamp is omitted', async () => {
       const { dbInstance, raw, updateChains } = createMockDb({
         updateQueue: [
           [{ id: 7 }],
@@ -148,30 +149,15 @@ describe('CmsDbSystemStatus', () => {
       expect(await status.softDelete(7)).toBe(true)
       expect(await status.softDelete(888)).toBe(false)
 
-      const minimalTimestamp = new CmsDbTimestamp(permissions, dbInstance)
-      expect(minimalTimestamp).toBeInstanceOf(CmsDbTimestamp)
-
       expect(raw.update).toHaveBeenCalledTimes(5)
-      expect(updateChains[0].set).toHaveBeenCalledWith(expect.objectContaining({
-        systemStatus: 'blocked',
-        updatedAt: expect.any(Date)
-      }))
-      expect(updateChains[1].set).toHaveBeenCalledWith(expect.objectContaining({
-        systemStatus: 'active',
-        updatedAt: expect.any(Date)
-      }))
-      expect(updateChains[2].set).toHaveBeenCalledWith(expect.objectContaining({
-        systemStatus: 'blocked',
-        updatedAt: expect.any(Date)
-      }))
-      expect(updateChains[3].set).toHaveBeenCalledWith(expect.objectContaining({
-        systemStatus: 'deleted',
-        updatedAt: expect.any(Date)
-      }))
+      expect(updateChains[0].set).toHaveBeenCalledWith({ systemStatus: 'blocked' })
+      expect(updateChains[1].set).toHaveBeenCalledWith({ systemStatus: 'active' })
+      expect(updateChains[2].set).toHaveBeenCalledWith({ systemStatus: 'blocked' })
+      expect(updateChains[3].set).toHaveBeenCalledWith({ systemStatus: 'deleted' })
     })
 
-    it('lazily invokes getTimestamp factory only during update operations', async () => {
-      const { dbInstance } = createMockDb({
+    it('lazily invokes getTimestamp factory only during update operations and includes updatedAt', async () => {
+      const { dbInstance, updateChains } = createMockDb({
         selectQueue: [[{ systemStatus: 'active' }]],
         updateQueue: [[{ id: 7 }]]
       })
@@ -184,6 +170,10 @@ describe('CmsDbSystemStatus', () => {
 
       expect(await status.activate(7)).toBe(true)
       expect(timestampFactory).toHaveBeenCalledTimes(1)
+      expect(updateChains[0].set).toHaveBeenCalledWith(expect.objectContaining({
+        systemStatus: 'active',
+        updatedAt: expect.any(Date)
+      }))
     })
   })
 })

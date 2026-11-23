@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Строки и форматирование/normalizeCmsOptionalText - Нормализация необязательного текста CMS'/>
+
+# `normalizeCmsOptionalText`
+
+Нормализует необязательные строковые поля CMS: удаляет начальные и конечные пробелы и преобразует пустые или состоящие только из пробелов строки в `null`, сохраняя значения `undefined` и `null` без изменений.
+
+**Параметры:**
+- `value?: string | null` — Исходная строка, `null` или `undefined`.
+
+**Возвращает:**
+`string | null | undefined` — Очищенная строка, `null` или `undefined`.
+
+```typescript
+import { normalizeCmsOptionalText } from '@dxtmisha/functional-basic'
+
+console.log(normalizeCmsOptionalText()) // undefined
+console.log(normalizeCmsOptionalText(null)) // null
+console.log(normalizeCmsOptionalText('   ')) // null
+console.log(normalizeCmsOptionalText('  hello world  ')) // 'hello world'
+```

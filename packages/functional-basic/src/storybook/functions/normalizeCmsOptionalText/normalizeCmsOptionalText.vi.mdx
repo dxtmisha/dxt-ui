@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Chuỗi & Định dạng/normalizeCmsOptionalText - Chuẩn hóa văn bản tùy chọn CMS'/>
+
+# `normalizeCmsOptionalText`
+
+Chuẩn hóa các trường chuỗi tùy chọn của CMS bằng cách cắt bỏ khoảng trắng ở hai đầu và chuyển đổi chuỗi rỗng hoặc chỉ chứa khoảng trắng thành `null`, đồng thời giữ nguyên giá trị `undefined` và `null`.
+
+**Tham số:**
+- `value?: string | null` — Chuỗi thô tùy chọn, `null`, hoặc `undefined`.
+
+**Trả về:**
+`string | null | undefined` — Chuỗi đã cắt khoảng trắng, `null`, hoặc `undefined`.
+
+```typescript
+import { normalizeCmsOptionalText } from '@dxtmisha/functional-basic'
+
+console.log(normalizeCmsOptionalText()) // undefined
+console.log(normalizeCmsOptionalText(null)) // null
+console.log(normalizeCmsOptionalText('   ')) // null
+console.log(normalizeCmsOptionalText('  hello world  ')) // 'hello world'
+```

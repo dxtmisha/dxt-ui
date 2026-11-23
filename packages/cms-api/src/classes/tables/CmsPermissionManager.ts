@@ -10,20 +10,21 @@ import {
 } from 'drizzle-orm'
 import {
   ErrorCenterThrow,
-  isPositiveInteger,
   isString,
+  normalizeCmsLimit,
+  normalizeCmsOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
 import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type { CmsPermission } from '../../types/cmsDbTypes'
 import type {
@@ -75,13 +76,14 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
       return false
     }
 
-    const found = await this.databaseInstance.get()
-      .select({ id: permissions.id })
-      .from(permissions)
-      .where(eq(permissions.code, trimmedCode))
-      .limit(1)
+    const found = await findOneCmsRecord<{ id: number }>(
+      this.databaseInstance.get(),
+      permissions,
+      eq(permissions.code, trimmedCode),
+      { id: permissions.id }
+    )
 
-    return found.length > 0
+    return Boolean(found)
   }
 
   /**
@@ -92,7 +94,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns CmsPermissionItem instance or undefined / Экземпляр CmsPermissionItem или undefined
    */
   async getById(id: number): Promise<CmsPermissionItem | undefined> {
-    if (!isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
 
@@ -133,7 +135,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns List of matching CmsPermissionItem instances / Список найденных экземпляров CmsPermissionItem
    */
   async getByIds(ids: readonly number[]): Promise<CmsPermissionItem[]> {
-    const validIds = uniqueArray(ids).filter(id => isPositiveInteger(id))
+    const validIds = uniqueArray(ids).filter(id => CmsVerification.isPositiveInteger(id, false))
     if (validIds.length === 0) {
       return []
     }
@@ -329,7 +331,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     }
 
     if (options.roleId !== undefined) {
-      if (!isPositiveInteger(options.roleId)) {
+      if (!CmsVerification.isPositiveInteger(options.roleId, false)) {
         conditions.push(sql`false`)
       } else {
         const roleSubquery = this.databaseInstance.get()

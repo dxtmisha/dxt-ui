@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Số & Toán học/normalizeCmsOffset - Chuẩn hóa độ lệch danh sách CMS'/>
+
+# `normalizeCmsOffset`
+
+Chuẩn hóa tham số độ lệch (offset) của danh sách CMS thành số nguyên không âm. Nếu `offset` bị bỏ qua, không hữu hạn (`NaN`, `Infinity`, `-Infinity`) hoặc âm, hàm trả về `0`. Số thực dương sẽ được cắt bỏ phần thập phân.
+
+**Tham số:**
+- `offset?: number` — Độ lệch được yêu cầu.
+
+**Trả về:**
+`number` — Độ lệch số nguyên không âm.
+
+```typescript
+import { normalizeCmsOffset } from '@dxtmisha/functional-basic'
+
+console.log(normalizeCmsOffset()) // 0
+console.log(normalizeCmsOffset(-10)) // 0
+console.log(normalizeCmsOffset(12.9)) // 12
+console.log(normalizeCmsOffset(40)) // 40
+```

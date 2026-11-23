@@ -92,6 +92,10 @@ class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
   removeRecord(id: number): Promise<boolean> {
     return this.deleteRecordById(id)
   }
+
+  modifyRecord(id: number, values: Record<string, unknown>): Promise<boolean> {
+    return this.updateRecordById(id, values)
+  }
 }
 
 describe('CmsDbAbstract', () => {
@@ -148,5 +152,32 @@ describe('CmsDbAbstract', () => {
     expect(await instance.removeRecord(5)).toBe(true)
     expect(await instance.removeRecord(6)).toBe(false)
     expect(raw.delete).toHaveBeenCalledTimes(2)
+  })
+
+  it('throws ErrorCenterError on invalid ID and updates record on valid ID in updateRecordById', async () => {
+    ErrorCenter.setIsConsole(false)
+    registerCmsErrorCauses()
+    const capturedErrors: Array<{ group?: string, code: string }> = []
+    ErrorCenter.addCallback((cause) => {
+      capturedErrors.push({
+        group: cause.group,
+        code: cause.code
+      })
+    })
+
+    const { dbInstance, raw } = createMockDb([], [[{ id: 5 }], []], [])
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    await expect(instance.modifyRecord(0, { name: 'Updated' })).rejects.toThrow(ErrorCenterError)
+    await expect(instance.modifyRecord(-3, { name: 'Updated' })).rejects.toThrow('Valid positive integer record ID is required.')
+    expect(capturedErrors).toEqual([
+      { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' },
+      { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' }
+    ])
+    expect(raw.update).not.toHaveBeenCalled()
+
+    expect(await instance.modifyRecord(5, { name: 'Updated' })).toBe(true)
+    expect(await instance.modifyRecord(6, { name: 'Updated' })).toBe(false)
+    expect(raw.update).toHaveBeenCalledTimes(2)
   })
 })

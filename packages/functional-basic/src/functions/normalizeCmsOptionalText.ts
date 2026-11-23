@@ -1,4 +1,4 @@
-import { isNull } from '@dxtmisha/functional-basic'
+import { isNull } from './isNull'
 
 /**
  * Normalizes optional CMS string fields, converting blank strings to null.

@@ -11,14 +11,14 @@ import {
 import {
   ErrorCenterThrow,
   isArray,
-  isPositiveInteger,
   isString,
+  normalizeCmsLimit,
+  normalizeCmsOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -30,6 +30,7 @@ import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
 import { CmsUserItem } from './CmsUserItem'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -110,13 +111,14 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    const found = await this.databaseInstance.get()
-      .select({ id: users.id })
-      .from(users)
-      .where(and(...conditions))
-      .limit(1)
+    const found = await findOneCmsRecord<{ id: number }>(
+      this.databaseInstance.get(),
+      users,
+      and(...conditions),
+      { id: users.id }
+    )
 
-    return found.length > 0
+    return Boolean(found)
   }
 
   /**
@@ -159,7 +161,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     id: number,
     includeDeleted: boolean = false
   ): Promise<CmsUserItem | undefined> {
-    if (!isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
 
@@ -448,7 +450,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     if (options.roleId !== undefined) {
-      if (!isPositiveInteger(options.roleId)) {
+      if (!CmsVerification.isPositiveInteger(options.roleId, false)) {
         conditions.push(sql`false`)
       } else {
         const roleSubquery = this.databaseInstance.get()
@@ -472,7 +474,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     if (options.permissionId !== undefined) {
-      if (!isPositiveInteger(options.permissionId)) {
+      if (!CmsVerification.isPositiveInteger(options.permissionId, false)) {
         conditions.push(sql`false`)
       } else {
         const permissionSubquery = this.databaseInstance.get()

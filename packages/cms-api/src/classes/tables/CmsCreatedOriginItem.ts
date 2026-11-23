@@ -3,12 +3,11 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
-  isPositiveInteger,
+  normalizeCmsOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
-import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
 import { CmsDbItemAbstract } from '../abstract/CmsDbItemAbstract'
@@ -83,12 +82,10 @@ export class CmsCreatedOriginItem extends CmsDbItemAbstract<typeof createdOrigin
    *
    * Обновляет поля этого источника создания записей в базе данных.
    * @param input Partial created origin update payload / Частичные данные для обновления источника создания
-   * @returns Updated created origin item or undefined if not found / Обновлённый экземпляр CmsCreatedOriginItem или undefined, если не найден
+   * @returns Current created origin item / Текущий экземпляр CmsCreatedOriginItem
    */
-  async update(input: CmsCreatedOriginUpdateInput): Promise<this | undefined> {
-    if (!isPositiveInteger(this.data.id)) {
-      return undefined
-    }
+  async update(input: CmsCreatedOriginUpdateInput): Promise<this> {
+    CmsVerification.isPositiveInteger(this.data.id)
 
     return this.updateRecord(CmsCreatedOriginItem.buildUpdateValues(input))
   }

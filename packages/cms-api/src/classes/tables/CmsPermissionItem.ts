@@ -6,11 +6,11 @@ import {
 } from 'drizzle-orm'
 import {
   isPositiveInteger,
+  normalizeCmsOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
-import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -96,12 +96,10 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
    *
    * Обновляет поля этого права доступа в базе данных.
    * @param input Partial permission update payload / Частичные данные для обновления права доступа
-   * @returns Updated permission item or undefined if not found / Обновлённый экземпляр права доступа или undefined, если не найден
+   * @returns Current permission item / Текущий экземпляр права доступа
    */
-  async update(input: CmsPermissionUpdateInput): Promise<this | undefined> {
-    if (!isPositiveInteger(this.data.id)) {
-      return undefined
-    }
+  async update(input: CmsPermissionUpdateInput): Promise<this> {
+    CmsVerification.isPositiveInteger(this.data.id)
 
     return this.updateRecord(CmsPermissionItem.buildUpdateValues(input))
   }
@@ -137,7 +135,7 @@ export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, Cms
     executor: CmsDbExecutor,
     roleId: number
   ): Promise<CmsPermission[]> {
-    if (!isPositiveInteger(roleId)) {
+    if (!CmsVerification.isPositiveInteger(roleId, false)) {
       return []
     }
 

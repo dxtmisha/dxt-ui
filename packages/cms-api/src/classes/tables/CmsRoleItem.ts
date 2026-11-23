@@ -9,10 +9,11 @@ import {
   ErrorCenterThrow,
   isPositiveInteger,
   isString,
+  normalizeCmsOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../../functions/normalizeCmsOptionalText'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -26,7 +27,8 @@ import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
   CmsNewRole,
-  CmsPermission
+  CmsPermission,
+  CmsRole
 } from '../../types/cmsDbTypes'
 import type {
   CmsRoleCreateInput,
@@ -251,21 +253,17 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
    */
   async update(input: CmsRoleUpdateInput): Promise<this | undefined> {
     const roleId = this.data.id
-    if (!isPositiveInteger(roleId)) {
-      return undefined
-    }
+    CmsVerification.isPositiveInteger(roleId)
 
     const updateValues = CmsRoleItem.buildUpdateValues(input)
 
     try {
       const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const existingRows = await transaction
-          .select()
-          .from(roles)
-          .where(eq(roles.id, roleId))
-          .limit(1)
-
-        const existingRole = existingRows[0]
+        const existingRole = await findOneCmsRecord<CmsRole>(
+          transaction,
+          roles,
+          eq(roles.id, roleId)
+        )
         if (!existingRole) {
           return undefined
         }
@@ -490,17 +488,11 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsRoleWithPermissions | undefined> {
-    if (!whereCondition) {
-      return undefined
-    }
-
-    const foundRows = await executor
-      .select()
-      .from(roles)
-      .where(whereCondition)
-      .limit(1)
-
-    const roleRecord = foundRows[0]
+    const roleRecord = await findOneCmsRecord<CmsRole>(
+      executor,
+      roles,
+      whereCondition
+    )
     if (!roleRecord) {
       return undefined
     }
@@ -525,7 +517,7 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
     executor: CmsDbExecutor,
     userId: number
   ): Promise<CmsRoleWithPermissions[]> {
-    if (!isPositiveInteger(userId)) {
+    if (!CmsVerification.isPositiveInteger(userId, false)) {
       return []
     }
 
@@ -620,13 +612,14 @@ export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPerm
       })
     }
 
-    const foundRows = await executor
-      .select({ id: roles.id })
-      .from(roles)
-      .where(eq(roles.id, roleId))
-      .limit(1)
+    const foundRole = await findOneCmsRecord<{ id: number }>(
+      executor,
+      roles,
+      eq(roles.id, roleId),
+      { id: roles.id }
+    )
 
-    if (foundRows.length === 0) {
+    if (!foundRole) {
       ErrorCenterThrow.on({
         group: CMS_ROLE_ERROR_GROUP,
         code: 'notFound',

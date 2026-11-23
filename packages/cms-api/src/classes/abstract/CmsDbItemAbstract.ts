@@ -1,11 +1,9 @@
 import { eq } from 'drizzle-orm'
-import {
-  ErrorCenterThrow,
-  isPositiveInteger
-} from '@dxtmisha/functional-basic'
+import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
 import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbItemData,
@@ -95,9 +93,9 @@ export abstract class CmsDbItemAbstract<
    * Marks this entity as active (`systemStatus = 'active'`).
    *
    * Переводит запись в активный системный статус (`systemStatus = 'active'`).
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
-  async activate(): Promise<this | undefined> {
+  async activate(): Promise<this> {
     return this.updateSystemStatus('active')
   }
 
@@ -105,9 +103,9 @@ export abstract class CmsDbItemAbstract<
    * Marks this entity as blocked (`systemStatus = 'blocked'`).
    *
    * Переводит запись в заблокированный системный статус (`systemStatus = 'blocked'`).
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
-  async block(): Promise<this | undefined> {
+  async block(): Promise<this> {
     return this.updateSystemStatus('blocked')
   }
 
@@ -115,9 +113,9 @@ export abstract class CmsDbItemAbstract<
    * Marks this entity as soft-deleted (`systemStatus = 'deleted'`).
    *
    * Помечает запись как мягко удалённую (`systemStatus = 'deleted'`).
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
-  async softDelete(): Promise<this | undefined> {
+  async softDelete(): Promise<this> {
     return this.updateSystemStatus('deleted')
   }
 
@@ -128,13 +126,8 @@ export abstract class CmsDbItemAbstract<
    * @returns True if deleted / True, если запись была удалена
    */
   async delete(): Promise<boolean> {
-    const recordId = this.data.id
-    if (!isPositiveInteger(recordId)) {
-      return false
-    }
-
     try {
-      return await this.deleteRecordById(recordId)
+      return await this.deleteRecordById(this.data.id)
     } catch (error) {
       return this.handleError('delete', error)
     }
@@ -144,20 +137,17 @@ export abstract class CmsDbItemAbstract<
    * Reloads this entity's data from the database.
    *
    * Перезагружает данные этой записи из базы данных.
-   * @returns Reloaded item instance or undefined if missing / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
-  async reload(): Promise<this | undefined> {
+  async reload(): Promise<this> {
     const recordId = this.data.id
-    if (!isPositiveInteger(recordId)) {
-      return undefined
-    }
+    CmsVerification.isPositiveInteger(recordId)
 
     const foundRecord = await this.fetchById(recordId)
-    if (!foundRecord) {
-      return undefined
+    if (foundRecord) {
+      this.data = foundRecord
     }
 
-    this.data = foundRecord
     return this
   }
 
@@ -193,35 +183,14 @@ export abstract class CmsDbItemAbstract<
    *
    * Выполняет обновление полей в таблице по ID записи с автоматическим обновлением updatedAt и обновляет локальное состояние.
    * @param values Partial column values to update / Частичные значения колонок для обновления
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
   protected async updateRecord(
     values: Record<string, unknown>
-  ): Promise<this | undefined> {
-    const recordId = this.data.id
-    if (!isPositiveInteger(recordId)) {
-      return undefined
-    }
-
-    const baseTable = this.getBaseTable()
-
-    try {
-      const updatedRows = await this.databaseInstance.get()
-        .update(baseTable)
-        .set(this.getUpdateValues(values))
-        .where(eq(baseTable.id, recordId))
-        .returning()
-
-      const updatedRecord = updatedRows[0] as TData | undefined
-      if (!updatedRecord) {
-        return undefined
-      }
-
-      this.data = updatedRecord
-      return this
-    } catch (error) {
-      return this.handleError('update', error)
-    }
+  ): Promise<this> {
+    return this.executeUpdate(
+      () => this.updateRecordById(this.data.id, values)
+    )
   }
 
   /**
@@ -229,18 +198,33 @@ export abstract class CmsDbItemAbstract<
    *
    * Обновляет системный статус этой записи и перезагружает её данные.
    * @param systemStatus Target system status / Целевой системный статус
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   * @returns Current item instance / Текущий экземпляр сущности
    */
   protected async updateSystemStatus(
     systemStatus: CmsSystemStatus
-  ): Promise<this | undefined> {
+  ): Promise<this> {
+    return this.executeUpdate(
+      () => this.systemStatus.update(this.data.id, systemStatus)
+    )
+  }
+
+  /**
+   * Executes an update callback, reloads the local snapshot on success, and routes errors through handleError.
+   *
+   * Выполняет callback обновления, перезагружает локальное состояние при успехе и передаёт ошибки в handleError.
+   * @param callback Async update operation returning whether a record was updated / Асинхронная операция обновления, возвращающая признак изменения записи
+   * @returns Current item instance / Текущий экземпляр сущности
+   */
+  protected async executeUpdate(
+    callback: () => Promise<boolean>
+  ): Promise<this> {
     try {
-      const updated = await this.systemStatus.update(this.data.id, systemStatus)
-      if (!updated) {
-        return undefined
+      const updated = await callback()
+      if (updated) {
+        return await this.reload()
       }
 
-      return await this.reload()
+      return this
     } catch (error) {
       return this.handleError('update', error)
     }

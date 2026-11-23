@@ -9,19 +9,20 @@ import {
 } from 'drizzle-orm'
 import {
   ErrorCenterThrow,
-  isPositiveInteger,
   isString,
+  normalizeCmsLimit,
+  normalizeCmsOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../../functions/normalizeCmsOffset'
+import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { seedCmsCreatedOrigins } from '../../functions/seedCmsCreatedOrigins'
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
 import { CmsCreatedOriginItem } from './CmsCreatedOriginItem'
 import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsCreatedOrigin,
@@ -76,13 +77,14 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
       return false
     }
 
-    const found = await this.databaseInstance.get()
-      .select({ id: createdOrigins.id })
-      .from(createdOrigins)
-      .where(eq(createdOrigins.code, trimmedCode))
-      .limit(1)
+    const found = await findOneCmsRecord<{ id: number }>(
+      this.databaseInstance.get(),
+      createdOrigins,
+      eq(createdOrigins.code, trimmedCode),
+      { id: createdOrigins.id }
+    )
 
-    return found.length > 0
+    return Boolean(found)
   }
 
   /**
@@ -93,7 +95,7 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
    * @returns CmsCreatedOriginItem instance or undefined / Экземпляр CmsCreatedOriginItem или undefined
    */
   async getById(id: number): Promise<CmsCreatedOriginItem | undefined> {
-    if (!isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
 
@@ -134,7 +136,7 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
    * @returns List of matching CmsCreatedOriginItem instances / Список найденных экземпляров CmsCreatedOriginItem
    */
   async getByIds(ids: readonly number[]): Promise<CmsCreatedOriginItem[]> {
-    const validIds = uniqueArray(ids).filter(id => isPositiveInteger(id))
+    const validIds = uniqueArray(ids).filter(id => CmsVerification.isPositiveInteger(id, false))
     if (validIds.length === 0) {
       return []
     }

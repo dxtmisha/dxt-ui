@@ -1,9 +1,11 @@
 import { eq } from 'drizzle-orm'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { CmsDbTimestamp } from './CmsDbTimestamp'
+import { findOneCmsRecord } from '../functions/findOneCmsRecord'
+import { updateCmsRecord } from '../functions/updateCmsRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsDbTimestamp } from './CmsDbTimestamp'
 import type {
   CmsIdTable,
   CmsSystemStatus
@@ -15,27 +17,18 @@ import type {
  * Управляет чтением и обновлением колонки `systemStatus` записей в таблице CMS Drizzle.
  */
 export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
-  /** Lazily initialized timestamp manager fallback / Лениво инициализируемый запасной менеджер временных меток */
-  protected timestampInstance?: CmsDbTimestamp<TTable>
-
   /**
-   * Initializes the system status manager with a table schema, CmsDbInstance, and lazy timestamp manager factory.
+   * Initializes the system status manager with a table schema, CmsDbInstance, and optional lazy timestamp manager factory.
    *
-   * Инициализирует менеджер системного статуса со схемой таблицы, экземпляром CmsDbInstance и фабрикой ленивой инициализации менеджера временных меток.
+   * Инициализирует менеджер системного статуса со схемой таблицы, экземпляром CmsDbInstance и необязательной фабрикой ленивого получения менеджера временных меток.
    * @param table Drizzle PostgreSQL table schema with id and systemStatus columns / Схема таблицы Drizzle PostgreSQL с колонками id и systemStatus
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param getTimestamp Lazy factory returning CmsDbTimestamp / Фабрика ленивого получения CmsDbTimestamp
+   * @param getTimestamp Optional lazy factory returning CmsDbTimestamp / Необязательная фабрика ленивого получения CmsDbTimestamp
    */
   constructor(
     protected readonly table: TTable,
     protected readonly databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance,
-    protected readonly getTimestamp: () => CmsDbTimestamp<TTable> = () => {
-      if (!this.timestampInstance) {
-        this.timestampInstance = new CmsDbTimestamp(this.table, this.databaseInstance)
-      }
-
-      return this.timestampInstance
-    }
+    protected readonly getTimestamp?: () => CmsDbTimestamp<TTable>
   ) {}
 
   /**
@@ -51,13 +44,14 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     }
 
     const baseTable = this.getBaseTable()
-    const rows = await this.databaseInstance.get()
-      .select({ systemStatus: baseTable.systemStatus })
-      .from(baseTable)
-      .where(eq(baseTable.id, id))
-      .limit(1)
+    const row = await findOneCmsRecord<{ systemStatus: CmsSystemStatus }>(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id),
+      { systemStatus: baseTable.systemStatus }
+    )
 
-    return rows[0]?.systemStatus as CmsSystemStatus | undefined
+    return row?.systemStatus
   }
 
   /**
@@ -75,13 +69,12 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    const updatedRows = await this.databaseInstance.get()
-      .update(baseTable)
-      .set(this.getTimestamp().buildUpdateValues({ systemStatus }))
-      .where(eq(baseTable.id, id))
-      .returning({ id: baseTable.id })
-
-    return updatedRows.length > 0
+    return updateCmsRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id),
+      this.getUpdateValues(systemStatus)
+    )
   }
 
   /**
@@ -125,5 +118,22 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    */
   protected getBaseTable(): CmsIdTable {
     return this.table
+  }
+
+  /**
+   * Builds the update payload with `systemStatus` and optional `updatedAt` timestamp via `getTimestamp`.
+   *
+   * Формирует объект значений для обновления с `systemStatus` и опциональной меткой времени `updatedAt` через `getTimestamp`.
+   * @param systemStatus Target system status / Целевой системный статус
+   * @returns Update payload object / Объект значений для обновления
+   */
+  protected getUpdateValues(
+    systemStatus: CmsSystemStatus
+  ): Partial<CmsIdTable['$inferInsert']> {
+    if (this.getTimestamp) {
+      return this.getTimestamp().buildUpdateValues({ systemStatus })
+    }
+
+    return { systemStatus } as Partial<CmsIdTable['$inferInsert']>
   }
 }
