@@ -1,18 +1,38 @@
-## Description
+import { Source } from '@storybook/addon-docs/blocks';
 
-An alert component designed to show contextual feedback messages, banners, or notifications.
+An alert component designed to display contextual feedback messages, status banners, or dismissible notifications.
 
-The Alert component is highly configurable, supporting a leading icon, a text label, a description, action buttons, custom lists of action buttons, and inline text links (AlertLink). It can be made dismissible by displaying a close button, which triggers a smooth exit transition.
+The component supports a leading or trailing icon, a title (`label`), descriptive text (`description`), custom body and trailing slots, an optional trailing action button (`button`), inline links (`links`), action button groups (`actionsList` / `actionsSecondary`), and a dismissible close button (`closeButton`) with a smooth opacity exit transition.
+
+<Source
+    code={`
+<template>
+  <Alert
+    icon="info"
+    label="System Update"
+    description="A new release is ready to install."
+    button="Update"
+    close-button
+    @click-lite="onAction"
+    @close="onClose"
+  />
+</template>
+  `}
+    language="html"
+/>
 
 **Key Features:**
 
-- Structured content layout (leading icon, context area with title and description, trailing action/close button)
-- Custom action buttons (actions list) and inline links (alertLink)
-- Dismissible state with animation end event triggers
-- Flexible layout alignment with vertical centering options
+- Structured flex layout with leading icon, context area (`label`, `description`, `#body`, `links`, `actions`), `#trailing` button/slot, and optional `closeButton`
+- Automatic WAI-ARIA wiring (`role`, `aria-live`, `aria-labelledby`, `aria-describedby`, and localized `aria-label` on the close button via `textClose`)
+- Trailing action button supporting string, numeric `0`, or full button bindings with `click` / `clickLite` events
+- Built-in inline links (`links` / `linksAttrs`) and action bar (`actionsList` / `actionsSecondary` / `actionsHide`)
+- Smooth fade-out dismissal that emits `close` after the opacity transition finishes
 
 **Typical Usage Scenarios:**
 
-- Inline status banners (e.g., success, error, warning, informational notices)
-- Page-level notifications or promotional alerts
-- Inline call-to-action cards with quick actions
+- Inline status banners for informational, success, warning, or error notifications
+- Dismissible page-level announcements with contextual links or quick actions
+- Form or section feedback cards with custom `#body` or `#trailing` content
+
+> Use `:item-center="false"` for alerts with multi-line descriptions so the leading icon and close button remain aligned with the first line of content.

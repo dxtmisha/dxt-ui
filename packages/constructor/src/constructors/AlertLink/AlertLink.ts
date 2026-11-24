@@ -1,66 +1,90 @@
-import type { Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 
-import type { AlertLinkComponents, AlertLinkEmits, AlertLinkSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { AlertLinkProps } from './props'
+import type { AlertLinkComponents, AlertLinkEmits, AlertLinkSlots } from './types'
+
+/** AlertLink dependency constructors type / Тип конструкторов зависимостей AlertLink */
+export type AlertLinkConstructors = {
+  /** Click event constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Label constructor / Конструктор метки */
+  label: typeof LabelInclude
+}
 
 /**
  * AlertLink class for managing the business logic of a link in the Alert component.
  *
  * Класс AlertLink для управления бизнес-логикой ссылки в компоненте Alert.
  */
-export class AlertLink {
-  /** Click event control instance / Экземпляр управления событием клика */
-  readonly event: EventClickInclude
-
-  /** Label control instance / Экземпляр управления меткой */
-  readonly label: LabelInclude
+export class AlertLink extends DesignLogicAbstract<
+  HTMLAnchorElement,
+  AlertLinkComponents,
+  AlertLinkEmits,
+  AlertLinkSlots,
+  AlertLinkProps,
+  AlertLinkConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<AlertLinkConstructors> = {
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        undefined,
+        this.emits
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
-   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * Returns list of ARIA attributes for the alert link element.
+   *
+   * Возвращает список ARIA-атрибутов для элемента ссылки оповещения.
+   * @returns list of ARIA attributes / список ARIA-атрибутов
    */
-  constructor(
-    protected readonly props: AlertLinkProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<AlertLinkComponents, AlertLinkProps>,
-    protected readonly slots?: AlertLinkSlots,
-    protected readonly emits?: ConstrEmit<AlertLinkEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      LabelIncludeConstructor = LabelInclude
-    } = constructors
+  get aria(): AriaList {
+    if (!this.isLink()) {
+      return {
+        tabindex: '0',
+        ...AriaStaticInclude.role('button')
+      }
+    }
 
-    this.event = new EventClickIncludeConstructor(
-      props,
-      undefined,
-      emits
-    )
+    return {}
+  }
 
-    this.label = new LabelIncludeConstructor(
-      props,
-      naming,
-      undefined,
-      slots
-    )
+  /**
+   * Returns attributes for the main element.
+   *
+   * Возвращает атрибуты для главного элемента.
+   * @returns main element bindings / привязки главного элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      ...this.i('event').binds,
+      ...this.aria
+    }
   }
 
   /**
@@ -69,9 +93,19 @@ export class AlertLink {
    * Возвращает значения для класса.
    * @returns classes values / значения классов
    */
-  get classes(): ConstrClass {
+  get classes(): ConstrClassObject {
     return {
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
+  }
+
+  /**
+   * Checks whether the link navigates via href or router route.
+   *
+   * Проверяет, выполняет ли ссылка переход через href или маршрут роутера.
+   * @returns true if href or to is defined / true, если заданы href или to
+   */
+  protected isLink(): boolean {
+    return Boolean(this.props.href || this.props.to)
   }
 }

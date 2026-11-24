@@ -27,6 +27,7 @@ export type AlertEmits = AlertLinkEmitsInclude
   & ActionsEmitsInclude
   & EventClickEmits
   & {
+    /** Event triggered after the alert finishes its close transition / Событие, вызываемое после завершения анимации закрытия оповещения */
     close: []
   }
 
@@ -44,7 +45,9 @@ export interface AlertExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface AlertSlots extends LabelSlots, DescriptionSlots {
+  /** Trailing content slot / Слот содержимого правой (хвостовой) области */
   trailing?(props: any): any
+  /** Body content slot / Слот основного содержимого тела оповещения */
   body?(props: any): any
 }
 

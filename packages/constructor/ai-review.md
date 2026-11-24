@@ -240,3 +240,10 @@ src/constructors/Icon/IconInclude.ts
 src/constructors/Icon/IconTrailingInclude.ts
 src/constructors/Button/Button.ts
 src/constructors/Bars/Bars.ts
+src/constructors/AlertLink/AlertLinkInclude.ts
+src/constructors/AlertLink/AlertLinkDesign.tsx
+src/constructors/AlertLink/AlertLink.ts
+src/constructors/Alert/AlertHide.ts
+src/constructors/Alert/AlertEvent.ts
+src/constructors/Alert/Alert.ts
+src/constructors/Alert/AlertDesign.tsx

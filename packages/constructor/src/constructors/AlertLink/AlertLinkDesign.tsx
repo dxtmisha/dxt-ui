@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -78,7 +78,9 @@ export class AlertLinkDesign<
    * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
-    return this.item.event.expose as EXPOSE
+    return {
+      ...this.item.i('event').expose
+    } as EXPOSE
   }
 
   /**
@@ -117,15 +119,17 @@ export class AlertLinkDesign<
   protected initRender(): VNode {
     return h(
       'a',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.event.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
-        ...this.item.label.render()
+        ...this.item.callInstance('label', item => item.render(), [])
       ]
     )
   }

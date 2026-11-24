@@ -5,6 +5,7 @@ import type { AlertLinkPropsBasic } from './props'
 
 /** Type describing components for nested alert links / Тип, описывающий компоненты для вложенных ссылок оповещения */
 export type AlertLinkComponentInclude = {
+  /** AlertLink component configuration / Конфигурация компонента AlertLink */
   alertLink?: object
 }
 

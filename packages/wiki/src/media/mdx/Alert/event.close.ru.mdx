@@ -2,7 +2,11 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ### `close`
 
-Событие срабатывает при нажатии на кнопку закрытия для скрытия баннера оповещения.
+Срабатывает после нажатия на кнопку закрытия (`closeButton`), завершения CSS-перехода скрытия `opacity` и удаления оповещения из DOM.
+
+**Параметры:**
+
+- Нет (`[]`)
 
 <Source
     code={`
@@ -14,7 +18,7 @@ const handleClose = () => {
 
 <template>
   <Alert
-    label="Alert Title"
+    label="Заголовок оповещения"
     close-button
     @close="handleClose"
   />

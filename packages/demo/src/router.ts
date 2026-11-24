@@ -9,6 +9,7 @@ import DemoAccordionPage from './pages/components/DemoAccordionPage.vue'
 import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoAlertPage from './pages/components/DemoAlertPage.vue'
+import DemoAlertLinkPage from './pages/components/DemoAlertLinkPage.vue'
 import DemoAnchorPage from './pages/components/DemoAnchorPage.vue'
 import DemoArrowPage from './pages/components/DemoArrowPage.vue'
 import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
@@ -112,6 +113,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-alert',
     name: 'component-alert',
     component: DemoAlertPage
+  },
+  {
+    path: '/component-alert-link',
+    name: 'component-alert-link',
+    component: DemoAlertLinkPage
   },
   {
     path: '/component-anchor',

@@ -41,10 +41,10 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'body', description: `Body content slot / Слот основного содержимого тела оповещения`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'trailing', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'trailing', description: `Trailing content slot / Слот содержимого правой (хвостовой) области`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
@@ -54,7 +54,7 @@ const eventsNames: StorybookSlots = [
   { name: 'actionsLite', description: `Simple click event for actions / Простое событие клика для действий`, properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'close' },
+  { name: 'close', description: `Event triggered after the alert finishes its close transition / Событие, вызываемое после завершения анимации закрытия оповещения` },
   { name: 'link', description: `Event triggered on clicking an alert link / Событие, вызываемое при клике на ссылку оповещения`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'linkLite', description: `Event triggered on clicking an alert link (without mouse event) / Событие, вызываемое при клике на ссылку оповещения (без события мыши)`, properties: [{ name: 'value', type: 'EventClickValue' }] }
   // :eventsList [!] System label / Системная метка

@@ -14,6 +14,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ActionSheet" name="component-action-sheet"/>
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Alert" name="component-alert"/>
+        <DemoLink label="AlertLink" name="component-alert-link"/>
         <DemoLink label="Anchor" name="component-anchor"/>
         <DemoLink label="Arrow" name="component-arrow"/>
         <DemoLink label="Avatar" name="component-avatar"/>

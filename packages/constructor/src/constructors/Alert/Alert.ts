@@ -1,5 +1,13 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, getBind } from '@dxtmisha/functional'
+import { mergeProps } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract,
+  getBind,
+  isFilled,
+  isNumber
+} from '@dxtmisha/functional'
 
 import { ActionsInclude } from '../Actions'
 import { AlertLinkInclude } from '../AlertLink'
@@ -15,145 +23,238 @@ import { TextInclude } from '../../classes/TextInclude'
 import { AlertEvent } from './AlertEvent'
 import { AlertHide } from './AlertHide'
 
-import type { AlertComponents, AlertEmits, AlertSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { AlertProps } from './props'
+import type { AlertComponents, AlertEmits, AlertSlots } from './types'
+
+/** Alert dependency constructors type / Тип конструкторов зависимостей Alert */
+export type AlertConstructors = {
+  /** Actions manager constructor / Конструктор менеджера действий */
+  actions: typeof ActionsInclude
+  /** Alert events manager constructor / Конструктор менеджера событий Alert */
+  alertEvent: typeof AlertEvent
+  /** Trailing button manager constructor / Конструктор менеджера кнопки */
+  button: typeof ButtonInclude
+  /** Close button manager constructor / Конструктор менеджера кнопки закрытия */
+  buttonClose: typeof ButtonInclude
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Click event manager constructor / Конструктор менеджера событий клика */
+  event: typeof EventClickInclude
+  /** Hidden state manager constructor / Конструктор менеджера скрытого состояния */
+  hide: typeof AlertHide
+  /** Icon manager constructor / Конструктор менеджера иконок */
+  icon: typeof IconTrailingInclude
+  /** Label manager constructor / Конструктор менеджера метки */
+  label: typeof LabelInclude
+  /** Link manager constructor / Конструктор менеджера ссылок */
+  link: typeof AlertLinkInclude
+  /** Text manager constructor / Конструктор менеджера текста */
+  text: typeof TextInclude
+}
 
 /**
  * Alert class for managing the business logic of the Alert component.
  *
  * Класс Alert для управления бизнес-логикой компонента Alert.
  */
-export class Alert {
-  /** Hidden state manager / Менеджер скрытого состояния */
-  readonly hide: AlertHide
+export class Alert extends DesignLogicAbstract<
+  HTMLDivElement,
+  AlertComponents,
+  AlertEmits,
+  AlertSlots,
+  AlertProps,
+  AlertConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<AlertConstructors> = {
+    actions: {
+      item: ActionsInclude,
+      canCreate: () => Boolean(
+        !this.props.actionsHide
+        && (
+          isFilled(this.props.actionsList)
+          || isFilled(this.props.actionsSecondary)
+          || isFilled(this.props.actionsAttrs?.list)
+          || isFilled(this.props.actionsAttrs?.listSecondary)
+        )
+      ),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    alertEvent: {
+      item: AlertEvent,
+      canCreate: () => Boolean(this.props.closeButton) || this.callInstance('hide', item => item.isHide, false),
+      parameters: () => [
+        () => this.i('hide'),
+        this.emits
+      ]
+    },
+    button: {
+      item: ButtonInclude,
+      canCreate: () => isFilled(this.props.button) || isNumber(this.props.button),
+      parameters: () => [
+        undefined,
+        this.naming,
+        this.components,
+        () => {
+          if (isFilled(this.props.button) || isNumber(this.props.button)) {
+            const bind = getBind(this.props.button, undefined, 'label', true)
 
-  /** Click event manager / Менеджер событий клика */
-  readonly event: EventClickInclude
-  /** Alert events manager / Менеджер событий Alert */
-  readonly alertEvent: AlertEvent
+            if (isFilled(bind)) {
+              return mergeProps(
+                { onClick: this.i('event').onClick },
+                bind
+              )
+            }
+          }
 
-  /** Icon manager / Менеджер иконок */
-  readonly icon: IconTrailingInclude
-  /** Label manager / Менеджер метки */
-  readonly label: LabelInclude
-  /** Description manager / Менеджер описания */
-  readonly description: DescriptionInclude
-
-  /** Button manager / Менеджер кнопки */
-  readonly button: ButtonInclude
-  /** Close button manager / Менеджер кнопки закрытия */
-  readonly buttonClose: ButtonInclude
-
-  /** Actions manager / Менеджер действий */
-  readonly actions: ActionsInclude
-  /** Link manager / Менеджер ссылок */
-  readonly link: AlertLinkInclude
-  /** Text manager for alert content / Менеджер текста для содержимого оповещения */
-  readonly text: TextInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ActionsIncludeConstructor class for working with actions / класс для работы с действиями
-   * @param constructors.AlertEventConstructor class for working with alert events / класс для работы со скрытым состоянием
-   * @param constructors.AlertHideConstructor class for working with hidden state / класс для работы со скрытым состоянием
-   * @param constructors.AlertLinkIncludeConstructor class for working with alert links / класс для работы со ссылками оповещения
-   * @param constructors.ButtonIncludeConstructor class for working with buttons / класс для работы с кнопками
-   * @param constructors.DescriptionIncludeConstructor class for working with descriptions / класс для работы с описаниями
-   * @param constructors.EventClickIncludeConstructor class for working with click events / класс для работы с событиями клика
-   * @param constructors.IconTrailingIncludeConstructor class for working with trailing icons / класс для работы с хвостовыми иконками
-   * @param constructors.LabelIncludeConstructor class for working with labels / класс для работы с метками
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
-   */
-  constructor(
-    protected readonly props: AlertProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<AlertComponents, AlertProps>,
-    protected readonly slots?: AlertSlots,
-    protected readonly emits?: ConstrEmit<AlertEmits>,
-    constructors: {
-      ActionsIncludeConstructor?: typeof ActionsInclude
-      AlertEventConstructor?: typeof AlertEvent
-      AlertHideConstructor?: typeof AlertHide
-      AlertLinkIncludeConstructor?: typeof AlertLinkInclude
-      ButtonIncludeConstructor?: typeof ButtonInclude
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      IconTrailingIncludeConstructor?: typeof IconTrailingInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      ActionsIncludeConstructor = ActionsInclude,
-      AlertEventConstructor = AlertEvent,
-      AlertHideConstructor = AlertHide,
-      AlertLinkIncludeConstructor = AlertLinkInclude,
-      ButtonIncludeConstructor = ButtonInclude,
-      DescriptionIncludeConstructor = DescriptionInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      IconTrailingIncludeConstructor = IconTrailingInclude,
-      LabelIncludeConstructor = LabelInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.hide = new AlertHideConstructor(naming)
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    this.alertEvent = new AlertEventConstructor(this.hide, emits)
-
-    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
-    this.label = new LabelIncludeConstructor(props, naming, undefined, slots)
-    this.description = new DescriptionIncludeConstructor(props, naming, slots)
-
-    this.button = new ButtonIncludeConstructor(
-      undefined,
-      naming,
-      components,
-      () => getBind(props.button, 'label')
-    )
-    this.buttonClose = new ButtonIncludeConstructor(
-      undefined,
-      naming,
-      components,
-      () => ({
-        icon: props.iconClose,
-        onClick: this.alertEvent.onClose
-      }),
-      'buttonClose'
-    )
-
-    this.actions = new ActionsIncludeConstructor(
-      props,
-      naming,
-      components,
-      undefined,
-      undefined,
-      emits
-    )
-    this.link = new AlertLinkIncludeConstructor(
-      props,
-      naming,
-      components,
-      emits
-    )
-    this.text = new TextIncludeConstructor(props)
+          return {}
+        }
+      ]
+    },
+    buttonClose: {
+      item: ButtonInclude,
+      canCreate: () => Boolean(this.props.closeButton),
+      parameters: () => [
+        undefined,
+        this.naming,
+        this.components,
+        () => (
+          this.props.closeButton
+            ? {
+                icon: this.props.iconClose,
+                class: this.naming.getSubClass('buttonClose'),
+                onClick: this.i('alertEvent').onClose,
+                ...AriaStaticInclude.label(this.i('text').close)
+              }
+            : {}
+        ),
+        'buttonClose'
+      ]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    hide: {
+      item: AlertHide,
+      canCreate: () => Boolean(this.props.closeButton),
+      parameters: () => [
+        this.naming
+      ]
+    },
+    icon: {
+      item: IconTrailingInclude,
+      canCreate: () => IconTrailingInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    },
+    link: {
+      item: AlertLinkInclude,
+      canCreate: () => AlertLinkInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.emits
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [
+        this.props
+      ]
+    }
   }
 
-  /** ARIA bind for alert / ARIA привязка для оповещения */
-  get ariaBind() {
+  /**
+   * Returns ARIA attributes for the alert element.
+   *
+   * Возвращает ARIA-атрибуты для элемента оповещения.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
     return {
       ...AriaStaticInclude.role(this.props.role),
       ...AriaStaticInclude.live(this.props.ariaLive),
-      ...AriaStaticInclude.labelledby(this.label.is ? this.label.id : undefined),
-      ...AriaStaticInclude.describedby(this.description.is ? this.description.id : undefined)
+      ...AriaStaticInclude.labelledby(this.callInstance('label', item => item.is ? item.id : undefined)),
+      ...AriaStaticInclude.describedby(this.callInstance('description', item => item.is ? item.id : undefined))
     }
+  }
+
+  /**
+   * Returns attributes and event listeners for the main element.
+   *
+   * Возвращает атрибуты и обработчики событий для главного элемента.
+   * @returns main element bindings / привязки главного элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      onTransitionend: this.onTransition,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Returns dynamic status classes for the main element.
+   *
+   * Возвращает динамические классы статусов для главного элемента.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return this.callInstance('hide', item => item.classes, {})
+  }
+
+  /**
+   * Checks whether the alert has completed its hide transition and should be removed from render.
+   *
+   * Проверяет, завершена ли анимация скрытия оповещения и нужно ли убрать его из рендера.
+   * @returns true if alert is destroyed / true, если оповещение скрыто окончательно
+   */
+  isDestroy(): boolean {
+    return this.callInstance('hide', item => item.destroy.value, false)
+  }
+
+  /**
+   * Delegates transitionend events lazily to AlertEvent.
+   *
+   * Лениво делегирует события transitionend в AlertEvent.
+   * @param event native transition event / нативное событие перехода
+   */
+  readonly onTransition = (event: TransitionEvent): void => {
+    this.callInstance('alertEvent', item => item.onTransition(event))
   }
 }

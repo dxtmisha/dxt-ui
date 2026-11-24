@@ -31,7 +31,7 @@ export type AlertPropsBasic<
   & TextClosePropsInclude
   & {
     // Value
-    /** Close button value / Значение для кнопки */
+    /** Trailing button value / Значение для кнопки */
     button?: string | number | ConstrBind<Button>
 
     // Icon

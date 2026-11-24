@@ -13,11 +13,11 @@ import type { AlertEmits } from './types'
 export class AlertEvent {
   /**
    * Constructor
-   * @param hide object for working with hidden state / объект для работы со скрытым состоянием
+   * @param hide lazy getter returning object for working with hidden state / ленивый геттер, возвращающий объект для работы со скрытым состоянием
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly hide: AlertHide,
+    protected readonly hide: () => AlertHide,
     protected readonly emits?: ConstrEmit<AlertEmits>
   ) {
   }
@@ -28,21 +28,25 @@ export class AlertEvent {
    * События при нажатии на закрытие.
    */
   readonly onClose = (): void => {
-    this.hide.setHide(true)
+    this.hide().setHide(true)
   }
 
   /**
-   * Event of animation end when closing the window.
+   * Event of animation end when closing the alert.
    *
-   * Событие окончания анимации при закрытии окна.
-   * @param event native transition event / native событие перехода
+   * Событие окончания анимации при закрытии оповещения.
+   * @param event native transition event / нативное событие перехода
    */
   readonly onTransition = (event: TransitionEvent): void => {
+    const hide = this.hide()
+
     if (
       event.propertyName === 'opacity'
-      && this.hide.isHide
+      && event.target === event.currentTarget
+      && hide.isHide
+      && !hide.destroy.value
     ) {
-      this.hide.setDestroy(true)
+      hide.setDestroy(true)
       this.emits?.('close')
     }
   }

@@ -1,11 +1,10 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Alert } from './Alert'
 
 import {
@@ -88,7 +87,7 @@ export class AlertDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.hide.classes,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         icon: this.naming.getSubClass('icon'),
@@ -125,25 +124,30 @@ export class AlertDesign<
    * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode | undefined {
-    if (this.item.hide.destroy.value) {
+    if (this.item.isDestroy()) {
       return undefined
     }
 
-    const children: any[] = [
-      ...this.item.icon.render(),
+    const children: VNode[] = [
+      ...this.item.callInstance('icon', item => item.render(), []),
       this.renderContext(),
       ...this.renderTrailing(),
-      ...this.renderButtonClose()
+      ...this.item.callInstance('buttonClose', item => item.render(), [])
     ]
 
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      onTransitionend: this.item.alertEvent.onTransition,
-      ...this.item.ariaBind
-    }, children)
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 
   /**
@@ -157,11 +161,11 @@ export class AlertDesign<
       'div',
       this.getKeyClass('context'),
       [
-        ...this.item.label.render(),
-        ...this.item.description.render(),
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.item.callInstance('description', item => item.render(), []),
         ...this.renderBody(),
-        ...this.item.link.render(),
-        ...this.item.actions.render()
+        ...this.item.callInstance('link', item => item.render(), []),
+        ...this.item.callInstance('actions', item => item.render(), [])
       ]
     )
   }
@@ -173,11 +177,8 @@ export class AlertDesign<
    * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderTrailing = (): VNode[] => {
-    const children: any[] = [
-      ...this.item.button.render(
-        undefined,
-        { class: this.classes?.value.button }
-      )
+    const children: VNode[] = [
+      ...this.item.callInstance('button', item => item.render(), [])
     ]
 
     if (
@@ -210,25 +211,6 @@ export class AlertDesign<
         this.getKeyClass('body'),
         this.initSlot('body')
       )]
-    }
-
-    return []
-  }
-
-  /**
-   * Close button rendering.
-   *
-   * Рендер кнопки закрытия.
-   * @returns list of virtual nodes / список виртуальных узлов
-   */
-  readonly renderButtonClose = (): VNode[] => {
-    if (this.props.closeButton) {
-      return this.item.buttonClose.render(undefined, {
-        key: 'buttonClose',
-        class: this.classes?.value.buttonClose,
-        onClick: this.item.alertEvent.onClose,
-        ...AriaStaticInclude.label(this.item.text.close)
-      })
     }
 
     return []

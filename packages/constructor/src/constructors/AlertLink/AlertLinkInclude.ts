@@ -1,17 +1,23 @@
 // ai-none
 
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
   type DesignName,
-  toBinds
+  isFilled
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
+import type { ComponentIncludeProps } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
-import type { AlertLinkEmitsInclude, AlertLinkPropsInclude } from './basicTypes'
+import type {
+  AlertLinkComponentInclude,
+  AlertLinkEmitsInclude,
+  AlertLinkPropsInclude
+} from './basicTypes'
 import type { AlertLinkPropsBasic } from './props'
 import type { AlertLinkExpose, AlertLinkSlots } from './types'
 
@@ -31,10 +37,21 @@ export class AlertLinkInclude<
     AlertLinkExpose,
     AlertLinkSlots
   > {
+  /**
+   * Checks whether alert links are configured.
+   *
+   * Проверяет, заданы ли ссылки оповещения.
+   * @param props input parameter / входной параметр
+   * @returns true if links array is non-empty / true, если массив ссылок не пуст
+   */
+  static is(props?: AlertLinkPropsInclude): boolean {
+    return isFilled(props?.links)
+  }
+
   /** Sub-component name / Название субкомпонента */
-  protected readonly name = 'alertLink'
+  protected override readonly name = 'alertLink'
   /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
-  protected readonly propsAttrsName = 'linksAttrs'
+  protected override readonly propsAttrsName = 'linksAttrs'
 
   /**
    * Constructor
@@ -44,9 +61,9 @@ export class AlertLinkInclude<
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    props: Readonly<Props>,
+    props: ComponentIncludeProps<Props>,
     naming: DesignName,
-    components?: DesignComponents<any, Props>,
+    components?: DesignComponents<AlertLinkComponentInclude, Props>,
     protected readonly emits?: ConstrEmit<AlertLinkEmitsInclude>
   ) {
     super(props, naming, components)
@@ -59,7 +76,7 @@ export class AlertLinkInclude<
    * @returns visibility status / статус видимости
    */
   override get is(): boolean {
-    return Boolean(this.getProps().links)
+    return AlertLinkInclude.is(this.getProps())
   }
 
   /**
@@ -69,7 +86,7 @@ export class AlertLinkInclude<
    * @param event native mouse event / native событие мыши
    * @param value payload with event details / данные события с подробностями
    */
-  readonly onLink = (event: MouseEvent, value: EventClickValue) => {
+  readonly onLink = (event: MouseEvent, value: EventClickValue): void => {
     this.emits?.('link', event, value)
     this.emits?.('linkLite', value)
   }
@@ -79,53 +96,52 @@ export class AlertLinkInclude<
    *
    * Рендерит список компонентов AlertLink внутри контейнера-обертки.
    * @param _slotsChildren slots children / слоты дочерних элементов (не используется)
-   * @param attrs attributes / атрибуты (не используется)
+   * @param attrs attributes / атрибуты
    * @param isShow function returning visibility state / функция, возвращающая видимость компонента
    * @returns rendered virtual node list / отрендеренный список виртуальных нод
    */
   protected override initRender(
     _slotsChildren?: AlertLinkSlots,
-    attrs?: Record<string, any>,
+    attrs?: Partial<ConstrBind<PropsExtra>>,
     isShow: () => boolean = () => this.is
   ): VNode[] {
     if (
       this.components
       && isShow()
     ) {
-      const listElement: any[] = []
+      const listElement: VNode[] = []
+      const propsAttrs = (this.getPropsAttrs() ?? {}) as Record<string, unknown>
 
       this.getProps()
         .links?.forEach((link, index) => {
-          const indexSlot = String(
-            link.href
-            ?? link.label
-            ?? `alertLink-${index}`
-          )
+          const indexSlot = `alertLink-${index}-${link.href ?? link.label ?? ''}`
 
           this.components?.renderAdd(
             listElement,
             this.name,
-            toBinds(
-              this.getPropsAttrs(),
-              link,
+            mergeProps(
               {
                 class: this.naming.getSubClass('links', 'item'),
                 onClick: this.onLink
-              }
+              },
+              propsAttrs,
+              link
             ),
             undefined,
             indexSlot
           )
         })
 
-      return [h(
-        'div',
-        toBinds(
-          attrs,
-          { class: this.naming.getSubClass('links') }
-        ),
-        listElement
-      )]
+      if (listElement.length > 0) {
+        return [h(
+          'div',
+          mergeProps(
+            { class: this.naming.getSubClass('links') },
+            (attrs ?? {}) as Record<string, unknown>
+          ),
+          listElement
+        )]
+      }
     }
 
     return []
