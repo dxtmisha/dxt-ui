@@ -1,29 +1,11 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
-
-import type { ChipComponents, ChipEmits, ChipSlots } from './types'
-import type { ChipPropsBasic } from './props'
+import { Button } from '../Button'
 
 /**
- * Chip
+ * Chip class for managing the business logic of a chip component (orchestrator).
+ * Inherits all interactive, icon, label, progress, ripple, skeleton, and ARIA orchestration from Button.
+ *
+ * Класс Chip для управления бизнес-логикой компонента чипа (оркестратор).
+ * Наследует всю оркестрацию интерактивности, иконок, меток, прогресса, эффекта волны, скелетона и ARIA от Button.
  */
-export class Chip {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: ChipPropsBasic,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ChipComponents, ChipPropsBasic>,
-    protected readonly slots?: ChipSlots,
-    protected readonly emits?: ConstrEmit<ChipEmits>
-  ) {
-  }
+export class Chip extends Button {
 }

@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -35,10 +35,13 @@ export class CarouselItemDesign<
     CLASSES,
     P
   > {
+  /** CarouselItem logic orchestrator instance / Экземпляр оркестратора логики CarouselItem */
   protected readonly item: CarouselItem
 
   /**
-   * Constructor
+   * Constructor for creating a CarouselItemDesign instance.
+   *
+   * Конструктор для создания экземпляра CarouselItemDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -74,9 +77,9 @@ export class CarouselItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      isSelected: () => this.item.data.isSelected(),
-      getSlide: () => this.item.data.slide,
-      ...this.item.event.expose
+      isSelected: () => this.item.i('data').isSelected(),
+      getSlide: () => this.item.i('data').slide,
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -115,23 +118,23 @@ export class CarouselItemDesign<
    * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.item.image.render()
+    const children: VNode[] = [
+      ...this.item.callInstance('image', item => item.render(), [])
     ]
 
-    this.initSlot('default', children, {
-      selected: this.item.data.isSelected(),
-      slide: this.item.data.slide
-    })
+    this.initSlot('default', children, this.item.slotData)
 
     return h(
       this.item.tag,
-      {
-        ...this.item.binds,
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }

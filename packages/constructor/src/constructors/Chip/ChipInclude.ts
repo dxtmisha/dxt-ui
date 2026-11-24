@@ -21,6 +21,9 @@ export class ChipInclude extends ComponentIncludeAbstract<
   ChipExpose,
   ChipSlots
 > {
+  /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
+  protected override readonly hasInitElement: boolean = false
+
   /** Name of the component for style prefixing and resolution / Имя компонента для префикса стилей и разрешения */
   protected override readonly name = 'chip'
 

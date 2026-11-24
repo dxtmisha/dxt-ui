@@ -1,8 +1,7 @@
-import { toRef, type Ref } from 'vue'
+import { computed, toRef } from 'vue'
 import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName,
+  type ConstrItems,
+  DesignLogicAbstract,
   ListDataRef,
   type ListList,
   type ListSelectedList
@@ -11,77 +10,93 @@ import {
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
-import type { ChipGroupComponents, ChipGroupEmits, ChipGroupSlots } from './types'
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { ChipGroupProps } from './props'
+import type { ChipGroupComponents, ChipGroupEmits, ChipGroupSlots } from './types'
+
+/** ChipGroup dependency constructors type / Тип конструкторов зависимостей ChipGroup */
+export type ChipGroupConstructors = {
+  /** List data manager constructor / Конструктор менеджера данных списка */
+  data: typeof ListDataRef
+  /** Click event handler constructor / Конструктор обработчика событий клика */
+  event: typeof EventClickInclude
+  /** Model value manager constructor / Конструктор менеджера значения модели */
+  model: typeof ModelValueInclude<ListSelectedList | undefined>
+}
 
 /**
- * ChipGroup
+ * ChipGroup orchestrator class for managing a collection of chips, selection state,
+ * and click event dispatching.
+ *
+ * Класс-оркестратор ChipGroup для управления коллекцией чипов, состоянием выбора
+ * и обработкой событий клика.
  */
-export class ChipGroup {
-  readonly data: ListDataRef
-  readonly event: EventClickInclude
-  readonly model: ModelValueInclude<ListSelectedList>
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
-   * @param constructors.ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
-   */
-  constructor(
-    protected readonly props: ChipGroupProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ChipGroupComponents, ChipGroupProps>,
-    protected readonly slots?: ChipGroupSlots,
-    protected readonly emits?: ConstrEmit<ChipGroupEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ListDataRefConstructor?: typeof ListDataRef
-      ModelValueIncludeConstructor?: typeof ModelValueInclude
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      ListDataRefConstructor = ListDataRef,
-      ModelValueIncludeConstructor = ModelValueInclude
-    } = constructors
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
-    this.model = new ModelValueIncludeConstructor<ListSelectedList>(
-      'selected',
-      this.emits,
-      this.event,
-      toRef(this.props, 'selected'),
-      () => this.props.readonly,
-      () => this.props.multiple
-    )
-
-    this.data = new ListDataRefConstructor(
-      toRef(this.props, 'list'),
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      this.model.value,
-      toRef(this.props, 'keyValue'),
-      toRef(this.props, 'keyLabel')
-    )
+export class ChipGroup extends DesignLogicAbstract<
+  HTMLDivElement,
+  ChipGroupComponents,
+  ChipGroupEmits,
+  ChipGroupSlots,
+  ChipGroupProps,
+  ChipGroupConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ChipGroupConstructors> = {
+    data: {
+      item: ListDataRef,
+      parameters: () => [
+        toRef(this.props, 'list'),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        computed(() => this.i('model').value.value),
+        toRef(this.props, 'keyValue'),
+        toRef(this.props, 'keyLabel')
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    model: {
+      item: ModelValueInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits,
+        undefined,
+        computed(() => this.props.modelSelected ?? this.props.selected),
+        () => this.props.readonly,
+        () => this.props.multiple
+      ]
+    }
   }
 
   /**
-   * Get list of items.
+   * Returns normalized list of chip items with computed selection states.
    *
-   * Получить список элементов.
+   * Возвращает нормализованный список элементов чипов с вычисленными состояниями выбора.
+   * @returns list of chip items / список элементов чипов
    */
   getList(): ListList {
-    return this.data.fullData.value
+    return this.i('data').fullData.value
+  }
+
+  /**
+   * Handles chip click event, updates selection model when editable, and emits click events.
+   *
+   * Обрабатывает событие клика по чипу, обновляет модель выбора при доступности редактирования и эмитит события клика.
+   * @param event native mouse click event / нативное событие клика мыши
+   * @param options event click payload / данные события клика
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.i('model').onClick(event, options)
+    this.i('event').onClick(event, options)
   }
 }

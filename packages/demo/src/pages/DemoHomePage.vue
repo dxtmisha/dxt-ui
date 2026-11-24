@@ -29,6 +29,8 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="BulletItem" name="component-bullet-item"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="ButtonGroup" name="component-button-group"/>
+        <DemoLink label="CarouselItem" name="component-carousel-item"/>
+        <DemoLink label="CarouselPagination" name="component-carousel-pagination"/>
         <DemoLink label="Cell" name="component-cell"/>
         <DemoLink label="Checkbox" name="component-checkbox"/>
         <DemoLink label="Chip" name="component-chip"/>

@@ -25,7 +25,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Default slot for slide content / Слот по умолчанию для содержимого слайда`, properties: [{ name: 'props', type: '(CarouselItemSlotDefault) | undefined' }] }
+  { name: 'default', description: `Default slot for slide content / Слот по умолчанию для содержимого слайда`, properties: [{ name: 'props', type: '((props: CarouselItemSlotDefault) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

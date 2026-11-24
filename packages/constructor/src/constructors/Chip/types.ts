@@ -43,6 +43,7 @@ export interface ChipSlots extends ButtonSlots {
  * Тип, описывающий подклассы.
  */
 export type ChipClasses = {
+  /** Main element class / Класс главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string

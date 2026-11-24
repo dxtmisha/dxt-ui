@@ -11,7 +11,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'default', description: `Default slot rendered on the client side / Слот по умолчанию, рендерящийся на стороне клиента`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

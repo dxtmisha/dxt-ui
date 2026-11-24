@@ -1,5 +1,5 @@
-import { type Ref } from 'vue'
-import { getRef } from '@dxtmisha/functional'
+import { type Ref, unref } from 'vue'
+import { type ConstrBind, isDomRuntime } from '@dxtmisha/functional'
 
 import type { ControlProps } from '../types/controlTypes'
 
@@ -17,7 +17,7 @@ export abstract class ControlAbstract {
    * @param element reference to container HTML element / ссылка на контейнерный HTML-элемент
    */
   constructor(
-    protected readonly props: ControlProps | undefined,
+    protected readonly props: Readonly<ControlProps> | undefined,
     protected readonly element: Ref<HTMLElement | undefined>
   ) { }
 
@@ -27,7 +27,7 @@ export abstract class ControlAbstract {
    * Возвращает атрибуты привязки для элемента контейнера.
    * @returns binding attributes object / объект атрибутов привязки
    */
-  get binds(): Record<string, unknown> {
+  get binds(): ConstrBind {
     if (this.isFocusable()) {
       return {
         onKeydown: this.onKeydown
@@ -56,20 +56,20 @@ export abstract class ControlAbstract {
   protected abstract getIndex(): number
 
   /**
-   * Returns maximum available index.
-   *
-   * Возвращает максимально доступный индекс.
-   * @returns maximum index / максимальный индекс
-   */
-  protected abstract getMax(): number
-
-  /**
    * Returns minimum available index.
    *
    * Возвращает минимально доступный индекс.
    * @returns minimum index / минимальный индекс
    */
   protected abstract getMin(): number
+
+  /**
+   * Returns maximum available index.
+   *
+   * Возвращает максимально доступный индекс.
+   * @returns maximum index / максимальный индекс
+   */
+  protected abstract getMax(): number
 
   /**
    * Returns DOM query selector for target index element.
@@ -106,10 +106,14 @@ export abstract class ControlAbstract {
    * @param index optional target index / опциональный целевой индекс
    */
   protected focus(index?: number): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     const targetIndex = index ?? this.getIndex()
 
     requestAnimationFrame(() => {
-      const containerElement = getRef(this.element)
+      const containerElement = unref(this.element)
       const targetElement = containerElement?.querySelector<HTMLElement>(
         this.getSelector(targetIndex)
       )
@@ -170,6 +174,10 @@ export abstract class ControlAbstract {
    * @param event native keyboard event / нативное событие клавиатуры
    */
   protected readonly onKeydown = (event: KeyboardEvent): void => {
+    if (event.isComposing) {
+      return
+    }
+
     switch (event.key) {
       case 'ArrowRight':
       case 'ArrowDown':

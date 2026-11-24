@@ -25,9 +25,9 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'fraction', description: `Slot for custom rendering of fraction text / Слот для кастомного рендеринга дроби`, properties: [{ name: 'props', type: '({ binds: CarouselPaginationFractionBinds; active: number; total: number; text: string; }) | undefined' }] },
-  { name: 'item', description: `Slot for custom rendering of each bullet/item / Слот для кастомного рендеринга элемента пагинации`, properties: [{ name: 'props', type: '({ binds: CarouselPaginationItemBinds; item: CarouselPaginationItem; index: number; }) | undefined' }] },
-  { name: 'progress', description: `Slot for custom rendering of progress bar / Слот для кастомного рендеринга полосы прогресса`, properties: [{ name: 'props', type: '({ binds: CarouselPaginationProgressBinds; active: number; total: number; percent: number; }) | undefined' }] }
+  { name: 'fraction', description: `Slot for custom rendering of fraction text / Слот для кастомного рендеринга дроби`, properties: [{ name: 'props', type: '((props: { binds: CarouselPaginationFractionBinds; active: number; total: number; text: string; }) => VNode<RendererNode, RendererElement, { ...; }>[]) | undefined' }] },
+  { name: 'item', description: `Slot for custom rendering of each bullet/item / Слот для кастомного рендеринга элемента пагинации`, properties: [{ name: 'props', type: '((props: { binds: CarouselPaginationItemBinds; item: CarouselPaginationItem; index: number; }) => VNode<RendererNode, RendererElement, { ...; }>[]) | undefined' }] },
+  { name: 'progress', description: `Slot for custom rendering of progress bar / Слот для кастомного рендеринга полосы прогресса`, properties: [{ name: 'props', type: '((props: { binds: CarouselPaginationProgressBinds; active: number; total: number; percent: number; }) => VNode<RendererNode, RendererElement, { ...; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -2,6 +2,7 @@ import type { ControlProps } from '../../types/controlTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 import type { TextPaginationPropsInclude } from '../../types/textTypes'
 
+/** Token-driven component properties / Свойства компонента из токенов */
 type CarouselPaginationPropsToken = {
   // :type [!] System label / Системная метка
   type?: 'bullets' | 'dots' | 'lines' | 'fraction' | 'progressbar'
@@ -10,11 +11,15 @@ type CarouselPaginationPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic incoming properties for CarouselPagination.
+ *
+ * Базовые входящие свойства для CarouselPagination.
+ */
 export type CarouselPaginationPropsBasic = ModelPropsSelected<number | string>
   & TextPaginationPropsInclude
   & ControlProps
   & {
-
     /** Current active slide / Текущий активный слайд */
     selected?: number | string
 

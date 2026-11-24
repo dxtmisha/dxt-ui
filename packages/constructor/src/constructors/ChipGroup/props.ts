@@ -4,37 +4,42 @@ import type { ChipPropsBasic } from '../Chip'
 import type { ChipGroupData } from './basicTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
+/** Token-generated properties / Свойства, сгенерированные из токенов */
 export type ChipGroupPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic incoming properties /
+ * Тип, описывающий базовые входящие свойства
+ */
 export type ChipGroupPropsBasic<
   Chip extends ChipPropsBasic = ChipPropsBasic
 > = ModelPropsSelected<ListSelectedList> & {
-  /** Status/ Статус */
-  /** Whether the group is read-only/ Находится ли группа в режиме «только для чтения» */
+  /** Status / Статус */
+  /** Whether the group is read-only / Находится ли группа в режиме «только для чтения» */
   readonly?: boolean
-  /** List of selected values/ Список выбранных значений */
+  /** List of selected values / Список выбранных значений */
   selected?: ListSelectedList
 
-  /** Values/ Значения */
-  /** Data list for generating chips/ Список данных для генерации чипов */
+  /** Values / Значения */
+  /** Data list for generating chips / Список данных для генерации чипов */
   list?: ChipGroupData
 
-  /** Styles/ Стили */
-  /** Whether to show an icon when a chip is selected/ Показывать ли иконку при выборе чипа */
+  /** Styles / Стили */
+  /** Whether to show an icon when a chip is selected / Показывать ли иконку при выборе чипа */
   iconWhenSelected?: boolean
 
-  /** Whether multiple chips can be selected/ Разрешено ли выбирать несколько чипов */
+  /** Whether multiple chips can be selected / Разрешено ли выбирать несколько чипов */
   multiple?: boolean
 
-  /** Key for the label in the data object/ Ключ для заголовка в объекте данных */
+  /** Key for the label in the data object / Ключ для заголовка в объекте данных */
   keyLabel?: string
-  /** Key for the value in the data object/ Ключ для значения в объекте данных */
+  /** Key for the value in the data object / Ключ для значения в объекте данных */
   keyValue?: string
 
-  /** Additional attributes for the Chip component/ Дополнительные атрибуты для компонента чипа */
+  /** Additional attributes for the Chip component / Дополнительные атрибуты для компонента чипа */
   chipAttrs?: ConstrBind<Chip>
 }
 

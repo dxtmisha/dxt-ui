@@ -1,7 +1,10 @@
 // ai-none
 
+import { isNull } from '@dxtmisha/functional'
+
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import type { AriaList } from '../../types/ariaTypes'
+import type { RoleType } from '../../types/roleTypes'
 import type { CarouselItemProps } from './props'
 
 /**
@@ -11,11 +14,13 @@ import type { CarouselItemProps } from './props'
  */
 export class CarouselItemData {
   /**
-   * Constructor
+   * Constructor for initializing CarouselItemData.
+   *
+   * Конструктор для инициализации CarouselItemData.
    * @param props input reactive properties / входные реактивные свойства
    */
   constructor(
-    protected readonly props: CarouselItemProps
+    protected readonly props: Readonly<CarouselItemProps>
   ) {}
 
   /**
@@ -46,8 +51,14 @@ export class CarouselItemData {
       return this.props.ariaLabel
     }
 
-    if (this.props.slide !== undefined) {
-      if (this.props.total !== undefined) {
+    if (
+      !isNull(this.props.slide)
+      && this.props.slide !== ''
+    ) {
+      if (
+        !isNull(this.props.total)
+        && this.props.total !== ''
+      ) {
         return `${this.props.slide} / ${this.props.total}`
       }
 
@@ -63,8 +74,8 @@ export class CarouselItemData {
    * Возвращает ARIA-роль контейнера слайда.
    * @returns role string / строка роли
    */
-  get role(): string {
-    return this.props.role ?? 'group'
+  get role(): RoleType {
+    return this.props.role || 'group'
   }
 
   /**

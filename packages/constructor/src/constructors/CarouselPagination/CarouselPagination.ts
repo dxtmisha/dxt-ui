@@ -1,94 +1,94 @@
-import type { Ref } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClassObject,
-  type ConstrEmit,
+  type ConstrItems,
   type ConstrStyles,
-  type DesignComp,
-  type DesignName
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
-import type { AriaList } from '../../types/ariaTypes'
 
 import { CarouselPaginationFocus } from './CarouselPaginationFocus'
 import { CarouselPaginationItems } from './CarouselPaginationItems'
 import { CarouselPaginationSelected } from './CarouselPaginationSelected'
-import type { CarouselPaginationComponents, CarouselPaginationEmits, CarouselPaginationSlots } from './types'
+
+import type { AriaList } from '../../types/ariaTypes'
 import type { CarouselPaginationProps } from './props'
+import type {
+  CarouselPaginationComponents,
+  CarouselPaginationEmits,
+  CarouselPaginationSlots
+} from './types'
+
+/** CarouselPagination dependency constructors type / Тип конструкторов зависимостей CarouselPagination */
+export type CarouselPaginationConstructors = {
+  /** Focus management and keyboard navigation constructor / Конструктор управления фокусом и клавиатурной навигацией */
+  focus: typeof CarouselPaginationFocus
+  /** Pagination items calculation constructor / Конструктор расчетов элементов пагинации */
+  items: typeof CarouselPaginationItems
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<number>
+  /** Slide selection manager constructor / Конструктор менеджера выбора слайдов */
+  selected: typeof CarouselPaginationSelected
+  /** Localized text manager constructor / Конструктор менеджера локализованного текста */
+  text: typeof TextInclude
+}
 
 /**
- * CarouselPagination orchestrator class coordinating pagination items, state synchronization, and click interactions.
+ * CarouselPagination orchestrator class coordinating pagination items, state synchronization,
+ * keyboard focus navigation, WAI-ARIA attributes, and click interactions.
  *
- * Класс-оркестратор CarouselPagination, координирующий элементы пагинации, синхронизацию состояния и клик-взаимодействия.
+ * Класс-оркестратор CarouselPagination, координирующий элементы пагинации, синхронизацию состояния,
+ * клавиатурную навигацию фокуса, ARIA-атрибуты и клик-взаимодействия.
  */
-export class CarouselPagination {
-  /** Helper for calculating items, dynamic bullets, fraction, and progress / Вспомогательный класс для расчетов элементов, динамических буллетов, дроби и прогресса */
-  readonly items: CarouselPaginationItems
-
-  /** Slide selection and transition helper / Вспомогательный класс для выбора слайда и навигации */
-  readonly selected: CarouselPaginationSelected
-
-  /** Focus management and keyboard navigation helper / Вспомогательный класс для управления фокусом и клавиатурной навигацией */
-  readonly focus: CarouselPaginationFocus
-
-  /** Text manager for pagination / Менеджер текста для пагинации */
-  readonly text: TextInclude
-
-  /**
-   * Constructor
-   * @param props input configuration properties / входные конфигурационные свойства
-   * @param element main HTML element / главный HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components registry of design components / реестр дизайн-компонентов
-   * @param slots slot functions wrapper / обертка функций слотов
-   * @param emits event emitter callback / функция обратного вызова для генерации событий
-   * @param constructors optional custom implementation class constructors / опциональные пользовательские конструкторы классов
-   * @param constructors.CarouselPaginationFocusConstructor custom focus manager constructor / пользовательский конструктор управления фокусом
-   * @param constructors.CarouselPaginationItemsConstructor custom items calculation constructor / пользовательский конструктор расчета элементов
-   * @param constructors.CarouselPaginationSelectedConstructor custom selection constructor / пользовательский конструктор выбора слайда
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
-   * @param constructors.TextIncludeConstructor class for managing text and translations / класс для управления текстом и переводами
-   */
-  constructor(
-    protected readonly props: CarouselPaginationProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<CarouselPaginationComponents, CarouselPaginationProps>,
-    protected readonly slots?: CarouselPaginationSlots,
-    protected readonly emits?: ConstrEmit<CarouselPaginationEmits>,
-    constructors: {
-      CarouselPaginationFocusConstructor?: typeof CarouselPaginationFocus
-      CarouselPaginationItemsConstructor?: typeof CarouselPaginationItems
-      CarouselPaginationSelectedConstructor?: typeof CarouselPaginationSelected
-      ModelIncludeConstructor?: typeof ModelInclude<number>
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      CarouselPaginationFocusConstructor = CarouselPaginationFocus,
-      CarouselPaginationItemsConstructor = CarouselPaginationItems,
-      CarouselPaginationSelectedConstructor = CarouselPaginationSelected,
-      ModelIncludeConstructor = ModelInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.text = new TextIncludeConstructor(props)
-    this.selected = new CarouselPaginationSelectedConstructor(props, emits)
-    this.items = new CarouselPaginationItemsConstructor(
-      props,
-      this.selected,
-      emits
-    )
-    this.focus = new CarouselPaginationFocusConstructor(
-      props,
-      element,
-      naming,
-      this.selected
-    )
-
-    new ModelIncludeConstructor('selected', emits, this.selected.item)
+export class CarouselPagination extends DesignLogicAbstract<
+  HTMLDivElement,
+  CarouselPaginationComponents,
+  CarouselPaginationEmits,
+  CarouselPaginationSlots,
+  CarouselPaginationProps,
+  CarouselPaginationConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CarouselPaginationConstructors> = {
+    focus: {
+      item: CarouselPaginationFocus,
+      canCreate: () => CarouselPaginationFocus.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('selected')
+      ]
+    },
+    items: {
+      item: CarouselPaginationItems,
+      parameters: () => [
+        this.props,
+        () => this.i('selected'),
+        this.emits
+      ]
+    },
+    model: {
+      item: ModelInclude<number>,
+      parameters: () => [
+        'selected',
+        this.emits
+      ]
+    },
+    selected: {
+      item: CarouselPaginationSelected,
+      parameters: () => [
+        this.props,
+        () => this.i('model'),
+        this.emits
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
   }
 
   /**
@@ -101,7 +101,20 @@ export class CarouselPagination {
     return {
       ...AriaStaticInclude.role('tablist'),
       ...AriaStaticInclude.orientation(this.props.vertical ? 'vertical' : 'horizontal'),
-      ...AriaStaticInclude.label(this.text.pagination)
+      ...AriaStaticInclude.label(this.i('text').pagination)
+    }
+  }
+
+  /**
+   * Returns root element binding attributes combining keyboard focus listeners and WAI-ARIA attributes.
+   *
+   * Возвращает атрибуты привязки для корневого элемента, объединяющие обработчики клавиатурного фокуса и WAI-ARIA атрибуты.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      ...this.callInstance('focus', item => item.binds, {}),
+      ...this.aria
     }
   }
 
@@ -113,7 +126,7 @@ export class CarouselPagination {
    */
   get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass('hide')]: this.items.isHide()
+      [this.naming.getStatusClass('hide')]: this.isHide()
     }
   }
 
@@ -125,7 +138,27 @@ export class CarouselPagination {
    */
   get styles(): ConstrStyles {
     return {
-      [this.naming.getStyle('percent')]: `${this.items.percent}%`
+      [this.naming.getStyle('percent')]: `${this.i('items').percent}%`
     }
+  }
+
+  /**
+   * Returns HTML tag name for the root container element.
+   *
+   * Возвращает имя HTML-тега для корневого контейнерного элемента.
+   * @returns HTML tag name / имя HTML-тега
+   */
+  get tag(): string {
+    return this.props.tag || 'div'
+  }
+
+  /**
+   * Checks whether the pagination should be hidden (e.g. when `hideIfOne` is true and count <= 1).
+   *
+   * Проверяет, должна ли пагинация быть скрыта (например, при `hideIfOne: true` и количестве слайдов <= 1).
+   * @returns true if pagination should be hidden / true, если пагинация должна быть скрыта
+   */
+  isHide(): boolean {
+    return this.i('items').isHide()
   }
 }

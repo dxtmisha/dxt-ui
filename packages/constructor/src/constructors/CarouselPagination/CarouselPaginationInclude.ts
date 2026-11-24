@@ -1,12 +1,10 @@
 // ai-none
 
-import type { ConstrBind } from '@dxtmisha/functional'
-
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { CarouselPaginationPropsInclude } from './basicTypes'
-import type { CarouselPaginationExpose, CarouselPaginationSlots } from './types'
 import type { CarouselPaginationProps } from './props'
+import type { CarouselPaginationExpose, CarouselPaginationSlots } from './types'
 
 /**
  * CarouselPaginationInclude class manages embedding and rendering CarouselPagination within parent components.
@@ -18,25 +16,40 @@ import type { CarouselPaginationProps } from './props'
  */
 export class CarouselPaginationInclude<
   Props extends CarouselPaginationPropsInclude = CarouselPaginationPropsInclude,
-  PropsExtra extends ConstrBind<CarouselPaginationProps> = ConstrBind<CarouselPaginationProps>
+  PropsExtra extends CarouselPaginationProps = CarouselPaginationProps
 > extends ComponentIncludeAbstract<
     Props,
     PropsExtra,
     CarouselPaginationExpose,
-    CarouselPaginationSlots,
-    Record<string, any>
+    CarouselPaginationSlots
   > {
+  /**
+   * Checks whether pagination configuration is provided via properties or extra bindings.
+   *
+   * Проверяет, задана ли конфигурация пагинации через свойства или дополнительные привязки.
+   * @param props input properties / входные свойства
+   * @param extra optional extra attributes / необязательные дополнительные атрибуты
+   * @returns true if pagination should be displayed / true, если пагинация должна отображаться
+   */
+  static is(
+    props?: Readonly<CarouselPaginationPropsInclude>,
+    extra?: unknown
+  ): boolean {
+    return Boolean(props?.carouselPaginationAttrs || extra)
+  }
+
   /** Sub-component name / Название субкомпонента */
-  protected readonly name = 'carouselPagination'
+  protected override readonly name = 'carouselPagination'
   /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
-  protected readonly propsAttrsName = 'carouselPaginationAttrs'
+  protected override readonly propsAttrsName = 'carouselPaginationAttrs'
 
   /**
    * Checks whether the pagination component should be displayed.
    *
    * Проверяет, нужно ли отображать компонент пагинации.
+   * @returns true if pagination should be displayed / true, если пагинация должна отображаться
    */
   override get is(): boolean {
-    return Boolean(this.getProps().carouselPaginationAttrs || this.getExtra())
+    return CarouselPaginationInclude.is(this.getProps(), this.getExtra())
   }
 }

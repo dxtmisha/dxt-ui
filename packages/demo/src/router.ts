@@ -24,6 +24,8 @@ import DemoBulletPage from './pages/components/DemoBulletPage.vue'
 import DemoBulletItemPage from './pages/components/DemoBulletItemPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoButtonGroupPage from './pages/components/DemoButtonGroupPage.vue'
+import DemoCarouselItemPage from './pages/components/DemoCarouselItemPage.vue'
+import DemoCarouselPaginationPage from './pages/components/DemoCarouselPaginationPage.vue'
 import DemoCellPage from './pages/components/DemoCellPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoChipPage from './pages/components/DemoChipPage.vue'
@@ -194,6 +196,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-button-group',
     name: 'component-button-group',
     component: DemoButtonGroupPage
+  },
+  {
+    path: '/component-carousel-item',
+    name: 'component-carousel-item',
+    component: DemoCarouselItemPage
+  },
+  {
+    path: '/component-carousel-pagination',
+    name: 'component-carousel-pagination',
+    component: DemoCarouselPaginationPage
   },
   {
     path: '/component-cell',

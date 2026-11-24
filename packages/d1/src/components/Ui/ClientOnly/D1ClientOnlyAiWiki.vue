@@ -20,11 +20,11 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1ClientOnly v-bind="args">
+  <DesignComponent v-bind="args">
     <h4>Client-Side Content</h4>
     <p>This block is only visible when the component is mounted in the browser.</p>
     <p>Use it for components that depend on window, document, or other browser-specific APIs.</p>
-  </D1ClientOnly>
+  </DesignComponent>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

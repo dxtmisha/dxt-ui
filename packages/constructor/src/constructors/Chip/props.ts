@@ -1,7 +1,12 @@
+import type { ButtonPropsBasic } from '../Button'
 import type { IconPropsBasic } from '../Icon'
 import type { ProgressPropsBasic } from '../Progress'
-import type { ButtonPropsBasic } from '../Button'
 
+/**
+ * Type describing token properties for Chip.
+ *
+ * Тип, описывающий свойства токенов для Chip.
+ */
 export type ChipPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -16,6 +21,11 @@ export type ChipPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Chip component.
+ *
+ * Тип, описывающий базовые свойства компонента Chip.
+ */
 export type ChipPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic

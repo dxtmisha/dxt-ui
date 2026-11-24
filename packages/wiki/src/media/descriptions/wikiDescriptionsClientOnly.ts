@@ -14,26 +14,78 @@ export const wikiDescriptionsClientOnly: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'prevents hydration mismatch errors in SSR/SSG environments',
-      'render client-side only components (e.g. charts, maps)',
+      'renders client-side only components (e.g. charts, maps) after mount',
       'toggleable via "clientOnly" property',
-      'supports default slot for the content'
+      'renders default slot transparently without extra wrapper DOM elements'
     ],
     ru: [
       'предотвращает ошибки рассогласования гидратации в средах SSR/SSG',
-      'рендерит компоненты только для клиента (например, графики, карты)',
+      'рендерит клиентские компоненты (например, графики, карты) только после монтирования',
       'переключается через свойство "clientOnly"',
-      'поддерживает слот default для контента'
+      'прозрачно рендерит слот default без лишних DOM-обёрток'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
-    <DesignComponent>
-      <h4>Client-Side Content</h4>
-      <p>This block is only visible when the component is mounted in the browser.</p>
-      <p>Use it for components that depend on window, document, or other browser-specific APIs.</p>
+    <DesignComponent v-bind="args">
+      <div data-testid="client-only-default">
+        <h4>Client-Side Content</h4>
+        <p>This block is only visible when the component is mounted in the browser.</p>
+      </div>
     </DesignComponent>
   `,
-  stories: [],
+  play: `
+await waitFor(() => {
+  const content = canvasElement.querySelector('[data-testid="client-only-default"]')
+  expect(content).toBeInTheDocument()
+  expect(content).toHaveTextContent('Client-Side Content')
+})
+  `,
+  stories: [
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor Props Only)
+    // =========================================================================
+    {
+      id: 'ClientOnlyTestModes',
+      name: {
+        en: 'Test: clientOnly true/false toggle and empty slot',
+        ru: 'Тест: переключение clientOnly true/false и пустой слот'
+      },
+      propsName: ['clientOnly'],
+      setup: `
+      const clientOnly = ref(true)
+      const toggleMode = () => {
+        clientOnly.value = !clientOnly.value
+      }
+      return { clientOnly, toggleMode }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <button data-testid="co-toggle" class="wiki-storybook-button" @click="toggleMode">Toggle mode</button>
+          <DesignComponent :client-only="clientOnly">
+            <div data-testid="co-content">Mode: {{ clientOnly }}</div>
+          </DesignComponent>
+          <DesignComponent :client-only="false">
+            <div data-testid="co-ssr">SSR enabled</div>
+          </DesignComponent>
+          <DesignComponent />
+        </div>
+      `,
+      play: `
+await waitFor(() => {
+  expect(canvasElement.querySelector('[data-testid="co-content"]')).toHaveTextContent('Mode: true')
+  expect(canvasElement.querySelector('[data-testid="co-ssr"]')).toHaveTextContent('SSR enabled')
+})
+const toggleButton = canvasElement.querySelector('[data-testid="co-toggle"]')
+if (toggleButton) {
+  await userEvent.click(toggleButton)
+}
+await expect(canvasElement.querySelector('[data-testid="co-content"]')).toHaveTextContent('Mode: false')
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'ClientOnly'} type={'clientOnly'}/>
@@ -45,11 +97,11 @@ export const wikiDescriptionsClientOnly: StorybookComponentsDescriptionItem = {
   ai: {
     render: `
 <div :class="classDemo.item">
-  <ClientOnly v-bind="args">
+  <DesignComponent v-bind="args">
     <h4>Client-Side Content</h4>
     <p>This block is only visible when the component is mounted in the browser.</p>
     <p>Use it for components that depend on window, document, or other browser-specific APIs.</p>
-  </ClientOnly>
+  </DesignComponent>
 </div>
     `,
     description: `

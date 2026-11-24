@@ -1,12 +1,12 @@
 // ai-none
 
+import { computed, type ComputedRef } from 'vue'
 import {
   applyTemplate,
   type ConstrEmit,
   type ConstrStyles,
   toNumber
 } from '@dxtmisha/functional'
-import { computed, type ComputedRef } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -19,6 +19,18 @@ import type { CarouselPaginationSelected } from './CarouselPaginationSelected'
 import type { CarouselPaginationProps } from './props'
 import type { CarouselPaginationEmits } from './types'
 
+/** Minimum number of visible bullets in dynamic mode / Минимальное количество видимых буллетов в динамическом режиме */
+const DYNAMIC_VISIBLE_MIN = 3
+
+/** Default number of visible bullets in dynamic mode / Количество видимых буллетов по умолчанию в динамическом режиме */
+const DYNAMIC_VISIBLE_DEFAULT = 5
+
+/** Scale factor for outer edge bullets in dynamic mode / Коэффициент масштаба для крайних буллетов в динамическом режиме */
+const DYNAMIC_EDGE_SCALE = 0.5
+
+/** Scale factor for secondary edge bullets in dynamic mode / Коэффициент масштаба для предкрайних буллетов в динамическом режиме */
+const DYNAMIC_SECONDARY_SCALE = 0.75
+
 /**
  * Helper class for managing calculations of items, dynamic bullets, fraction, and progress.
  *
@@ -26,26 +38,29 @@ import type { CarouselPaginationEmits } from './types'
  */
 export class CarouselPaginationItems {
   /**
-   * Constructor
+   * Constructor for CarouselPaginationItems.
+   *
+   * Конструктор для CarouselPaginationItems.
    * @param props input reactive properties / входные реактивные свойства
-   * @param selected slide selection manager instance / экземпляр менеджера выбора слайдов
+   * @param selected getter returning slide selection manager instance / функция, возвращающая экземпляр менеджера выбора слайдов
    * @param emits event emitter callback / функция обратного вызова для генерации событий
    */
   constructor(
-    protected readonly props: CarouselPaginationProps,
-    protected readonly selected: CarouselPaginationSelected,
+    protected readonly props: Readonly<CarouselPaginationProps>,
+    protected readonly selected: () => CarouselPaginationSelected,
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>
-  ) { }
+  ) {}
 
   /** List of pagination items / Список элементов пагинации */
   readonly list: ComputedRef<CarouselPaginationItem[]> = computed(() => {
-    const totalCount = this.selected.total.value
+    const selectedInstance = this.selected()
+    const totalCount = selectedInstance.total.value
 
     if (totalCount <= 0) {
       return []
     }
 
-    const activeIndex = this.selected.item.value
+    const activeIndex = selectedInstance.item.value
     const isDynamic = this.isDynamic()
     const { windowStart, windowEnd } = this.getWindow()
 
@@ -81,16 +96,20 @@ export class CarouselPaginationItems {
    * @returns formatted fraction string / отформатированная строка дроби
    */
   get fractionText(): string {
+    const selectedInstance = this.selected()
+    const active = selectedInstance.item.value
+    const total = selectedInstance.total.value
+
     return applyTemplate(
       this.props.template || '[active] / [total]',
       {
-        active: this.selected.item.value,
-        total: this.selected.total.value,
-        count: this.selected.total.value,
-        current: this.selected.item.value,
-        item: this.selected.item.value,
-        index: this.selected.item.value,
-        selected: this.selected.item.value
+        active,
+        total,
+        count: total,
+        current: active,
+        item: active,
+        index: active,
+        selected: active
       }
     )
   }
@@ -102,13 +121,14 @@ export class CarouselPaginationItems {
    * @returns progress percentage between 0 and 100 / процент прогресса от 0 до 100
    */
   get percent(): number {
-    const totalCount = this.selected.total.value
+    const selectedInstance = this.selected()
+    const totalCount = selectedInstance.total.value
 
     if (totalCount <= 0) {
       return 0
     }
 
-    return (this.selected.item.value / totalCount) * 100
+    return (selectedInstance.item.value / totalCount) * 100
   }
 
   /**
@@ -128,7 +148,48 @@ export class CarouselPaginationItems {
    * @returns true if pagination should be hidden / true, если пагинация должна быть скрыта
    */
   isHide(): boolean {
-    return Boolean(this.props.hideIfOne && this.selected.total.value <= 1)
+    return Boolean(this.props.hideIfOne && this.selected().total.value <= 1)
+  }
+
+  /**
+   * Returns ARIA attributes for a pagination item.
+   *
+   * Возвращает ARIA-атрибуты для элемента пагинации.
+   * @param index item index / индекс элемента
+   * @param selected whether item is active / активен ли элемент
+   * @returns ARIA attributes / ARIA-атрибуты
+   */
+  getAria(index: number, selected: boolean): AriaList {
+    return {
+      ...AriaStaticInclude.role('tab'),
+      ...AriaStaticInclude.selected(selected),
+      ...AriaStaticInclude.label(`Slide ${index}`),
+      tabindex: this.getTabindex(selected)
+    }
+  }
+
+  /**
+   * Returns binds for a pagination item button.
+   *
+   * Возвращает привязки для кнопки элемента пагинации.
+   * @param index item index / индекс элемента
+   * @param selected whether item is active / активен ли элемент
+   * @param scale scale factor / коэффициент масштаба
+   * @returns binds object / объект привязок
+   */
+  getBinds(
+    index: number,
+    selected: boolean,
+    scale?: number
+  ): CarouselPaginationItemBinds {
+    return {
+      'key': index,
+      'type': 'button',
+      'data-index': index,
+      'style': this.getStyle(scale),
+      ...this.getAria(index, selected),
+      'onClick': (event: MouseEvent) => this.onClick(event, index)
+    }
   }
 
   /**
@@ -167,23 +228,6 @@ export class CarouselPaginationItems {
   }
 
   /**
-   * Returns ARIA attributes for a pagination item.
-   *
-   * Возвращает ARIA-атрибуты для элемента пагинации.
-   * @param index item index / индекс элемента
-   * @param selected whether item is active / активен ли элемент
-   * @returns ARIA attributes / ARIA-атрибуты
-   */
-  getAria(index: number, selected: boolean): AriaList {
-    return {
-      ...AriaStaticInclude.role('tab'),
-      ...AriaStaticInclude.selected(selected),
-      ...AriaStaticInclude.label(`Slide ${index}`),
-      tabindex: this.getTabindex(selected)
-    }
-  }
-
-  /**
    * Handles click on an indicator/bullet.
    *
    * Обрабатывает клик по индикатору/буллету.
@@ -192,34 +236,9 @@ export class CarouselPaginationItems {
    */
   readonly onClick = (event: MouseEvent, index: number): void => {
     if (this.props.control !== false) {
-      this.selected.set(index)
+      this.selected().set(index)
       this.emits?.('click', event, index)
       this.emits?.('clickLite', index)
-    }
-  }
-
-  /**
-   * Returns binds for a pagination item button.
-   *
-   * Возвращает привязки для кнопки элемента пагинации.
-   * @param index item index / индекс элемента
-   * @param selected whether item is active / активен ли элемент
-   * @param scale scale factor / коэффициент масштаба
-   * @returns binds object / объект привязок
-   */
-  getBinds(
-    index: number,
-    selected: boolean,
-    scale?: number
-  ): CarouselPaginationItemBinds {
-    return {
-      'key': index,
-      'type': 'button',
-      'data-index': index,
-      'style': this.getStyle(scale),
-      'tabindex': this.getTabindex(selected),
-      ...this.getAria(index, selected),
-      'onClick': (event: MouseEvent) => this.onClick(event, index)
     }
   }
 
@@ -248,22 +267,22 @@ export class CarouselPaginationItems {
       return 0
     }
 
-    const totalCount = this.selected.total.value
+    const totalCount = this.selected().total.value
 
     if (current === windowStart && windowStart > 1) {
-      return 0.5
+      return DYNAMIC_EDGE_SCALE
     }
 
     if (current === windowEnd && windowEnd < totalCount) {
-      return 0.5
+      return DYNAMIC_EDGE_SCALE
     }
 
     if (current === windowStart + 1 && windowStart > 1) {
-      return 0.75
+      return DYNAMIC_SECONDARY_SCALE
     }
 
     if (current === windowEnd - 1 && windowEnd < totalCount) {
-      return 0.75
+      return DYNAMIC_SECONDARY_SCALE
     }
 
     return 1
@@ -276,7 +295,13 @@ export class CarouselPaginationItems {
    * @returns number of visible items (minimum 3, default 5) / количество видимых элементов (минимум 3, по умолчанию 5)
    */
   protected getVisible(): number {
-    return Math.max(3, toNumber(this.props.visible) || 5)
+    const rawVisible = toNumber(this.props.visible)
+
+    if (Number.isFinite(rawVisible) && rawVisible !== 0) {
+      return Math.max(DYNAMIC_VISIBLE_MIN, Math.floor(rawVisible))
+    }
+
+    return DYNAMIC_VISIBLE_DEFAULT
   }
 
   /**
@@ -286,7 +311,8 @@ export class CarouselPaginationItems {
    * @returns window start and end boundaries / границы начала и конца окна
    */
   protected getWindow(): { windowStart: number, windowEnd: number } {
-    const totalCount = this.selected.total.value
+    const selectedInstance = this.selected()
+    const totalCount = selectedInstance.total.value
     const visibleCount = this.getVisible()
 
     if (
@@ -300,8 +326,8 @@ export class CarouselPaginationItems {
     }
 
     const half = Math.floor(visibleCount / 2)
-    let windowStart = this.selected.item.value - half
-    let windowEnd = this.selected.item.value + half
+    let windowStart = selectedInstance.item.value - half
+    let windowEnd = windowStart + visibleCount - 1
 
     if (windowStart < 1) {
       windowStart = 1

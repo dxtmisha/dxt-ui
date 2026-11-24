@@ -289,4 +289,41 @@ describe('ControlAbstract', () => {
 
     document.body.removeChild(container)
   })
+
+  it('should ignore keydown events during IME composition', () => {
+    const { getCurrentIndex, onKeydown } = createInstance({
+      initialIndex: 2,
+      max: 5
+    })
+
+    const eventRight = new KeyboardEvent('keydown', { key: 'ArrowRight', isComposing: true })
+    const preventDefaultSpy = vi.spyOn(eventRight, 'preventDefault')
+    onKeydown(eventRight)
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled()
+    expect(getCurrentIndex()).toBe(2)
+  })
+
+  it('should handle focus safely when index is 0 or container is missing', () => {
+    const { instance, element } = createInstance({
+      initialIndex: 0,
+      min: 0,
+      max: 3
+    })
+
+    expect(() => instance.focus()).not.toThrow()
+
+    const container = document.createElement('div')
+    const button0 = document.createElement('button')
+    button0.setAttribute('data-index', '0')
+    container.appendChild(button0)
+    document.body.appendChild(container)
+    element.value = container
+
+    const focusSpy = vi.spyOn(button0, 'focus')
+    instance.focus(0)
+    expect(focusSpy).toHaveBeenCalled()
+
+    document.body.removeChild(container)
+  })
 })

@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type {
@@ -60,21 +61,21 @@ export interface CarouselPaginationSlots {
     binds: CarouselPaginationItemBinds
     item: CarouselPaginationItem
     index: number
-  }): any
+  }): VNode[]
   /** Slot for custom rendering of fraction text / Слот для кастомного рендеринга дроби */
   fraction?(props: {
     binds: CarouselPaginationFractionBinds
     active: number
     total: number
     text: string
-  }): any
+  }): VNode[]
   /** Slot for custom rendering of progress bar / Слот для кастомного рендеринга полосы прогресса */
   progress?(props: {
     binds: CarouselPaginationProgressBinds
     active: number
     total: number
     percent: number
-  }): any
+  }): VNode[]
 }
 
 /**
@@ -83,6 +84,7 @@ export interface CarouselPaginationSlots {
  * Тип, описывающий подклассы.
  */
 export type CarouselPaginationClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   item: string

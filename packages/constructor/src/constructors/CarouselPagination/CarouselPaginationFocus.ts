@@ -1,7 +1,6 @@
 // ai-none
 
 import type { Ref } from 'vue'
-import type { DesignName } from '@dxtmisha/functional'
 
 import { ControlAbstract } from '../../classes/ControlAbstract'
 import type { CarouselPaginationSelected } from './CarouselPaginationSelected'
@@ -14,17 +13,30 @@ import type { CarouselPaginationProps } from './props'
  */
 export class CarouselPaginationFocus extends ControlAbstract {
   /**
-   * Constructor
+   * Checks whether keyboard control and focus navigation are enabled for the given pagination properties.
+   *
+   * Проверяет, включены ли клавиатурное управление и навигация фокуса для заданных свойств пагинации.
+   * @param props input configuration properties / входные конфигурационные свойства
+   * @returns true if pagination is focusable / true, если пагинация доступна для фокуса
+   */
+  static is(props?: Readonly<CarouselPaginationProps>): boolean {
+    return props?.control !== false
+      && props?.type !== 'fraction'
+      && props?.type !== 'progressbar'
+  }
+
+  /**
+   * Constructor for CarouselPaginationFocus.
+   *
+   * Конструктор для CarouselPaginationFocus.
    * @param props input configuration properties / входные конфигурационные свойства
    * @param element main HTML element / главный HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param selected slide selection manager instance / экземпляр менеджера выбора слайдов
+   * @param selected getter returning slide selection manager instance / функция, возвращающая экземпляр менеджера выбора слайдов
    */
   constructor(
-    protected readonly props: CarouselPaginationProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly selected: CarouselPaginationSelected
+    protected override readonly props: Readonly<CarouselPaginationProps>,
+    protected override readonly element: Ref<HTMLElement | undefined>,
+    protected readonly selected: () => CarouselPaginationSelected
   ) {
     super(props, element)
   }
@@ -36,9 +48,7 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * @returns true if pagination is focusable / true, если пагинация доступна для фокуса
    */
   protected override isFocusable(): boolean {
-    return super.isFocusable()
-      && this.props.type !== 'fraction'
-      && this.props.type !== 'progressbar'
+    return CarouselPaginationFocus.is(this.props)
   }
 
   /**
@@ -48,7 +58,7 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * @returns current slide index / текущий индекс слайда
    */
   protected override getIndex(): number {
-    return this.selected.item.value
+    return this.selected().item.value
   }
 
   /**
@@ -58,7 +68,7 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * @returns total slide count / общее количество слайдов
    */
   protected override getMax(): number {
-    return this.selected.total.value
+    return this.selected().total.value
   }
 
   /**
@@ -89,6 +99,6 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * @param index target slide index / целевой индекс слайда
    */
   protected override setIndex(index: number): void {
-    this.selected.set(index)
+    this.selected().set(index)
   }
 }

@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { CarouselItemSlotDefault } from './basicTypes'
@@ -27,7 +28,7 @@ export interface CarouselItemExpose extends EventClickExpose {
   /** Checks if the slide is currently selected / Проверяет, выбран ли текущий слайд */
   isSelected(): boolean
   /** Returns the current slide / Возвращает текущий слайд */
-  getSlide(): any
+  getSlide(): number | string | undefined
 }
 
 /**
@@ -37,7 +38,7 @@ export interface CarouselItemExpose extends EventClickExpose {
  */
 export interface CarouselItemSlots {
   /** Default slot for slide content / Слот по умолчанию для содержимого слайда */
-  default?(props: CarouselItemSlotDefault): any
+  default?(props: CarouselItemSlotDefault): VNode[]
 }
 
 /**
@@ -46,6 +47,7 @@ export interface CarouselItemSlots {
  * Тип, описывающий подклассы.
  */
 export type CarouselItemClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   body: string

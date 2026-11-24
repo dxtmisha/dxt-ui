@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -42,10 +42,13 @@ export class CarouselPaginationDesign<
     CLASSES,
     P
   > {
+  /** CarouselPagination logic orchestrator instance / Экземпляр оркестратора логики CarouselPagination */
   protected readonly item: CarouselPagination
 
   /**
-   * Constructor
+   * Constructor for CarouselPaginationDesign.
+   *
+   * Конструктор для CarouselPaginationDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -74,6 +77,117 @@ export class CarouselPaginationDesign<
   }
 
   /**
+   * Renders the list of bullets or lines.
+   *
+   * Рендерит список буллетов или линий.
+   * @returns list of bullet VNodes / список VNode буллетов
+   */
+  readonly renderBullets = (): VNode[] => {
+    const itemClass = this.classes?.value.item ?? ''
+
+    return this.item.i('items').list.value
+      .map((paginationItem: CarouselPaginationItem) => {
+        const binds: CarouselPaginationItemBinds = {
+          ...paginationItem.binds,
+          class: {
+            [itemClass]: Boolean(itemClass),
+            [`${itemClass}--selected`]: Boolean(itemClass) && paginationItem.selected
+          }
+        }
+
+        const slot = this.initSlot('item', undefined, {
+          key: paginationItem.index,
+          binds,
+          item: paginationItem,
+          index: paginationItem.index
+        })
+
+        if (slot) {
+          return slot
+        }
+
+        return h('button', binds)
+      })
+  }
+
+  /**
+   * Renders the fraction display.
+   *
+   * Рендерит отображение дроби.
+   * @returns fraction VNode array / массив VNode дроби
+   */
+  readonly renderFraction = (): VNode[] => {
+    const selectedInstance = this.item.i('selected')
+    const itemsInstance = this.item.i('items')
+    const binds: CarouselPaginationFractionBinds = {
+      ...this.getKeyClass('fraction'),
+      ...AriaStaticInclude.live('polite')
+    }
+
+    const slot = this.initSlot('fraction', undefined, {
+      binds,
+      active: selectedInstance.item.value,
+      total: selectedInstance.total.value,
+      text: itemsInstance.fractionText
+    })
+
+    if (slot) {
+      return [slot]
+    }
+
+    return [
+      h(
+        'div',
+        binds,
+        itemsInstance.fractionText
+      )
+    ]
+  }
+
+  /**
+   * Renders the progress bar.
+   *
+   * Рендерит полосу прогресса.
+   * @returns progress VNode array / массив VNode прогресса
+   */
+  readonly renderProgress = (): VNode[] => {
+    const selectedInstance = this.item.i('selected')
+    const itemsInstance = this.item.i('items')
+    const active = selectedInstance.item.value
+    const total = selectedInstance.total.value
+    const binds: CarouselPaginationProgressBinds = {
+      ...this.getKeyClass('progress'),
+      ...AriaStaticInclude.role('progressbar'),
+      ...AriaStaticInclude.valueMinMax(
+        total > 0 ? active : 0,
+        total > 0 ? 1 : 0,
+        total
+      )
+    }
+
+    const slot = this.initSlot('progress', undefined, {
+      binds,
+      active,
+      total,
+      percent: itemsInstance.percent
+    })
+
+    if (slot) {
+      return [slot]
+    }
+
+    return [
+      h(
+        'div',
+        binds,
+        [
+          h('div', this.getKeyClass('progressBar'))
+        ]
+      )
+    ]
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
@@ -81,11 +195,11 @@ export class CarouselPaginationDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getSelected: this.item.selected.get,
-      getCount: () => this.item.selected.total.value,
-      set: this.item.selected.set,
-      next: this.item.selected.next,
-      previous: this.item.selected.previous
+      getSelected: () => this.item.i('selected').get(),
+      getCount: () => this.item.i('selected').total.value,
+      set: (selected: number) => this.item.i('selected').set(selected),
+      next: () => this.item.i('selected').next(),
+      previous: () => this.item.i('selected').previous()
     } as EXPOSE
   }
 
@@ -97,7 +211,7 @@ export class CarouselPaginationDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         item: this.naming.getSubClass('item'),
@@ -126,7 +240,7 @@ export class CarouselPaginationDesign<
    * @returns rendered virtual node or undefined / отрендеренный виртуальный узел или undefined
    */
   protected initRender(): VNode | undefined {
-    if (this.item.items.isHide()) {
+    if (this.item.isHide()) {
       return undefined
     }
 
@@ -140,6 +254,7 @@ export class CarouselPaginationDesign<
       case 'progressbar':
         children = this.renderProgress()
         break
+      case 'dots':
       case 'lines':
       case 'bullets':
       default:
@@ -148,119 +263,17 @@ export class CarouselPaginationDesign<
     }
 
     return h(
-      this.props.tag || 'div',
-      {
-        ...this.getAttrs(),
-        ...this.item.focus.binds,
-        ...this.item.aria,
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      this.item.tag,
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
-  }
-
-  /**
-   * Renders the list of bullets or lines.
-   *
-   * Рендерит список буллетов или линий.
-   * @returns list of bullet VNodes / список VNode буллетов
-   */
-  readonly renderBullets = (): VNode[] => {
-    return this.item.items.list.value
-      .map((paginationItem: CarouselPaginationItem) => {
-        const binds: CarouselPaginationItemBinds = {
-          ...paginationItem.binds,
-          class: {
-            [`${this.classes?.value.item}`]: true,
-            [`${this.classes?.value.item}--selected`]: paginationItem.selected
-          }
-        }
-
-        const slot = this.initSlot('item', undefined, {
-          key: paginationItem.index,
-          binds,
-          item: paginationItem,
-          index: paginationItem.index
-        })
-
-        if (slot) {
-          return slot
-        }
-
-        return h('button', binds)
-      })
-  }
-
-  /**
-   * Renders the fraction display.
-   *
-   * Рендерит отображение дроби.
-   * @returns fraction VNode array / массив VNode дроби
-   */
-  readonly renderFraction = (): VNode[] => {
-    const binds: CarouselPaginationFractionBinds = {
-      ...this.getKeyClass('fraction'),
-      ...AriaStaticInclude.live('polite')
-    }
-
-    const slot = this.initSlot('fraction', undefined, {
-      binds,
-      active: this.item.selected.item.value,
-      total: this.item.selected.total.value,
-      text: this.item.items.fractionText
-    })
-
-    if (slot) {
-      return [slot]
-    }
-
-    return [
-      h(
-        'div',
-        binds,
-        this.item.items.fractionText
-      )
-    ]
-  }
-
-  /**
-   * Renders the progress bar.
-   *
-   * Рендерит полосу прогресса.
-   * @returns progress VNode array / массив VNode прогресса
-   */
-  readonly renderProgress = (): VNode[] => {
-    const binds: CarouselPaginationProgressBinds = {
-      ...this.getKeyClass('progress'),
-      ...AriaStaticInclude.role('progressbar'),
-      ...AriaStaticInclude.valueMinMax(
-        this.item.selected.item.value,
-        1,
-        this.item.selected.total.value
-      )
-    }
-
-    const slot = this.initSlot('progress', undefined, {
-      binds,
-      active: this.item.selected.item.value,
-      total: this.item.selected.total.value,
-      percent: this.item.items.percent
-    })
-
-    if (slot) {
-      return [slot]
-    }
-
-    return [
-      h(
-        'div',
-        binds,
-        [
-          h('div', this.getKeyClass('progressBar'))
-        ]
-      )
-    ]
   }
 }

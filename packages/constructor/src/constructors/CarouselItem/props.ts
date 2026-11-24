@@ -4,6 +4,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { AriaLabelPropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
+/** Token-generated properties / Свойства, сгенерированные из токенов */
 type CarouselItemPropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
@@ -11,6 +12,10 @@ type CarouselItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic incoming properties /
+ * Тип, описывающий базовые входящие свойства
+ */
 export type CarouselItemPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > = ImagePropsInclude<Image>

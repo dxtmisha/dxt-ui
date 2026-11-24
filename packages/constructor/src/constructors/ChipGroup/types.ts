@@ -1,4 +1,6 @@
+import type { VNode } from 'vue'
 import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
+
 import type { ChipComponentInclude } from '../Chip'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 import type { ModelEmitsSelected } from '../../types/modelTypes'
@@ -31,8 +33,8 @@ export interface ChipGroupExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ChipGroupSlots {
-  /** Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов */
-  default?(props: any): any
+  /** Slot for displaying a custom list of chips / Слот для отображения пользовательского списка чипов */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**
@@ -41,6 +43,7 @@ export interface ChipGroupSlots {
  * Тип, описывающий подклассы.
  */
 export type ChipGroupClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   item: string
