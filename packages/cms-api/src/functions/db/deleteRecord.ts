@@ -14,7 +14,7 @@ import type {
  * @param whereCondition SQL predicate / SQL-условие поиска
  * @returns True if at least one record was deleted / True, если удалена хотя бы одна запись
  */
-export async function deleteCmsRecord(
+export async function deleteRecord(
   executor: CmsDbExecutor,
   table: CmsIdTable,
   whereCondition: SQL | undefined

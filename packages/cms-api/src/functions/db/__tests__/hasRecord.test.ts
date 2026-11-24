@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
-import { hasCmsRecord } from '../hasCmsRecord'
+import { hasRecord } from '../hasRecord'
 import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_has_record', {
@@ -10,12 +10,12 @@ const testTable = pgTable('test_has_record', {
   systemStatus: text('system_status').$type<'active' | 'blocked' | 'deleted'>().notNull()
 })
 
-describe('hasCmsRecord', () => {
+describe('hasRecord', () => {
   it('returns false without querying when whereCondition is undefined', async () => {
     const select = vi.fn()
     const executor = { select } as unknown as CmsDbExecutor
 
-    expect(await hasCmsRecord(executor, testTable, undefined)).toBe(false)
+    expect(await hasRecord(executor, testTable, undefined)).toBe(false)
     expect(select).not.toHaveBeenCalled()
   })
 
@@ -27,8 +27,8 @@ describe('hasCmsRecord', () => {
     const executor = { select } as unknown as CmsDbExecutor
     const condition = eq(testTable.code, 'admin')
 
-    expect(await hasCmsRecord(executor, testTable, condition)).toBe(true)
-    expect(await hasCmsRecord(executor, testTable, condition)).toBe(false)
+    expect(await hasRecord(executor, testTable, condition)).toBe(true)
+    expect(await hasRecord(executor, testTable, condition)).toBe(false)
     expect(select).toHaveBeenCalledWith({ id: testTable.id })
     expect(from).toHaveBeenCalledWith(testTable)
     expect(where).toHaveBeenCalledWith(condition)

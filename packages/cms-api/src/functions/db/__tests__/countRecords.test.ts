@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
-import { countCmsRecords } from '../countCmsRecords'
+import { countRecords } from '../countRecords'
 import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_count_records', {
@@ -10,7 +10,7 @@ const testTable = pgTable('test_count_records', {
   systemStatus: text('system_status').$type<'active' | 'blocked' | 'deleted'>().notNull()
 })
 
-describe('countCmsRecords', () => {
+describe('countRecords', () => {
   it('returns matched record count with and without whereCondition and falls back to 0 on empty rows', async () => {
     const where = vi.fn()
       .mockResolvedValueOnce([{ count: 5 }])
@@ -21,9 +21,9 @@ describe('countCmsRecords', () => {
     const executor = { select } as unknown as CmsDbExecutor
     const condition = eq(testTable.id, 1)
 
-    expect(await countCmsRecords(executor, testTable)).toBe(5)
-    expect(await countCmsRecords(executor, testTable, condition)).toBe(2)
-    expect(await countCmsRecords(executor, testTable, condition)).toBe(0)
+    expect(await countRecords(executor, testTable)).toBe(5)
+    expect(await countRecords(executor, testTable, condition)).toBe(2)
+    expect(await countRecords(executor, testTable, condition)).toBe(0)
 
     expect(select).toHaveBeenCalledTimes(3)
     expect(from).toHaveBeenCalledWith(testTable)

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CmsDbInstance } from '../../classes/CmsDbInstance'
-import * as createCmsDbModule from '../../functions/db/createCmsDb'
+import * as createDbModule from '../../functions/db/createDb'
 import { useCmsDb } from '../useCmsDb'
 import type { CmsDb } from '../../types/cmsDbTypes'
 
@@ -14,7 +14,7 @@ describe('useCmsDb', () => {
   it('returns the shared CmsDbInstance singleton and delegates lifecycle helpers', async () => {
     const endMock = vi.fn().mockResolvedValue(undefined)
     const mockDb = { $client: { end: endMock } } as unknown as CmsDb
-    const createSpy = vi.spyOn(createCmsDbModule, 'createCmsDb').mockReturnValue(mockDb)
+    const createSpy = vi.spyOn(createDbModule, 'createDb').mockReturnValue(mockDb)
 
     const first = useCmsDb()
     const second = useCmsDb()

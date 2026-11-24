@@ -12,20 +12,19 @@ import {
   ErrorCenterThrow,
   isArray,
   isString,
-  toLimit,
-  toOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
+import { findRecords } from '../../functions/db/findRecords'
+import { hasRecord } from '../../functions/db/hasRecord'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
 import { users } from '../../media/schema/users'
-import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
+import { CmsDbManagerAbstract } from '../abstract/CmsDbManagerAbstract'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
@@ -33,7 +32,7 @@ import { CmsUserItem } from './CmsUserItem'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
-  CmsDbExecutor,
+  CmsNewUser,
   CmsUserStatus
 } from '../../types/cmsDbTypes'
 import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
@@ -41,7 +40,6 @@ import type {
   CmsUserCreateInput,
   CmsUserDeleteOptions,
   CmsUserListOptions,
-  CmsUserListResult,
   CmsUserPublic,
   CmsUserUpdateInput,
   CmsUserWithRoles
@@ -52,7 +50,18 @@ import type {
  *
  * Класс для управления списком пользователей CMS: поиск и фильтрация списков, создание записей и оборачивание пользователей в экземпляры CmsUserItem с интеграцией менеджеров ролей и прав доступа.
  */
-export class CmsUserManager extends CmsDbAbstract<typeof users> {
+export class CmsUserManager extends CmsDbManagerAbstract<
+  typeof users,
+  CmsUserWithRoles,
+  CmsUserCreateInput,
+  CmsUserUpdateInput,
+  CmsUserItem,
+  CmsUserListOptions,
+  CmsUserPublic
+> {
+  /** ErrorCenter group name for user errors / Имя группы ошибок ErrorCenter для пользователей */
+  protected readonly errorGroup = CMS_USER_ERROR_GROUP
+
   /** Cached role manager sharing the same database instance / Кэшированный менеджер ролей с общими настройками БД */
   protected roleManager?: CmsRoleManager
 
@@ -83,7 +92,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     id: number,
     includeDeleted: boolean = false
   ): Promise<boolean> {
-    return hasCmsRecord(
+    return hasRecord(
       this.databaseInstance.get(),
       users,
       CmsUserItem.getByIdCondition(id, includeDeleted)
@@ -112,7 +121,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    return hasCmsRecord(
+    return hasRecord(
       this.databaseInstance.get(),
       users,
       and(...conditions)
@@ -155,25 +164,21 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @param includeDeleted Include soft-deleted users / Учитывать ли мягко удалённых пользователей
    * @returns CmsUserItem instance or undefined / Экземпляр CmsUserItem или undefined
    */
-  async getById(
+  override async getById(
     id: number,
     includeDeleted: boolean = false
   ): Promise<CmsUserItem | undefined> {
-    if (!CmsVerification.isPositiveInteger(id, false)) {
+    const idCondition = CmsUserItem.getByIdCondition(id, includeDeleted)
+    if (!idCondition) {
       return undefined
     }
 
-    const conditions: SQL[] = [eq(users.id, id)]
-    if (!includeDeleted) {
-      conditions.push(CmsUserItem.getNotDeletedCondition())
+    const foundRecord = await this.fetchOneRecord(idCondition)
+    if (foundRecord) {
+      return this.wrapItem(foundRecord)
     }
 
-    const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.databaseInstance.get(),
-      and(...conditions)
-    )
-
-    return foundRecord ? this.wrapUserItem(foundRecord) : undefined
+    return undefined
   }
 
   /**
@@ -198,12 +203,12 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.databaseInstance.get(),
-      and(...conditions)
-    )
+    const foundRecord = await this.fetchOneRecord(and(...conditions)!)
+    if (foundRecord) {
+      return this.wrapItem(foundRecord)
+    }
 
-    return foundRecord ? this.wrapUserItem(foundRecord) : undefined
+    return undefined
   }
 
   /**
@@ -228,127 +233,12 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.databaseInstance.get(),
-      and(...conditions)
-    )
-
-    return foundRecord ? this.wrapUserItem(foundRecord) : undefined
-  }
-
-  /**
-   * Returns a paginated and filtered list of users wrapped in CmsUserItem instances.
-   *
-   * Возвращает постраничный отфильтрованный список пользователей в обёртках CmsUserItem.
-   * @param options Filtering and pagination options / Параметры фильтрации и пагинации
-   * @returns Paginated CmsUserItem list and total count / Список CmsUserItem и общее количество записей
-   */
-  async getList(options: CmsUserListOptions = {}): Promise<CmsUserListResult> {
-    const database = this.databaseInstance.get()
-    const limit = toLimit(options.limit)
-    const offset = toOffset(options.offset)
-    const whereCondition = this.buildListWhere(options)
-
-    const total = await this.countRecords(whereCondition)
-    if (total === 0) {
-      return {
-        items: [],
-        total: 0,
-        limit,
-        offset
-      }
+    const foundRecord = await this.fetchOneRecord(and(...conditions)!)
+    if (foundRecord) {
+      return this.wrapItem(foundRecord)
     }
 
-    const userRows = await database
-      .select(CmsUserItem.getPublicColumns())
-      .from(users)
-      .where(whereCondition)
-      .orderBy(desc(users.createdAt), desc(users.id))
-      .limit(limit)
-      .offset(offset)
-
-    const items = await this.attachRoles(database, userRows)
-
-    return {
-      items,
-      total,
-      limit,
-      offset
-    }
-  }
-
-  /**
-   * Updates an existing non-deleted user by ID and returns the updated CmsUserItem.
-   *
-   * Редактирует существующего не удалённого пользователя по ID и возвращает обновлённый CmsUserItem.
-   * @param id User identifier / Идентификатор пользователя
-   * @param input User fields and optional role assignments / Данные пользователя и необязательный список ролей
-   * @returns Updated CmsUserItem or undefined if not found / Обновлённый экземпляр CmsUserItem или undefined, если не найден
-   */
-  async update(
-    id: number,
-    input: CmsUserUpdateInput
-  ): Promise<CmsUserItem | undefined> {
-    const userItem = await this.getById(id)
-    if (!userItem) {
-      return undefined
-    }
-
-    return userItem.update(input)
-  }
-
-  /**
-   * Creates a new CMS user, optionally assigns roles in a transaction, and wraps it in CmsUserItem.
-   *
-   * Создаёт нового пользователя CMS, при необходимости назначает роли в транзакции и возвращает экземпляр CmsUserItem.
-   * @param input New user payload / Данные нового пользователя
-   * @returns Created CmsUserItem instance / Созданный экземпляр CmsUserItem
-   */
-  async create(input: CmsUserCreateInput): Promise<CmsUserItem> {
-    const createValues = CmsUserItem.buildCreateValues(input)
-
-    try {
-      const createdRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const insertedRows = await transaction
-          .insert(users)
-          .values(createValues)
-          .returning(CmsUserItem.getPublicColumns())
-
-        const createdUser = insertedRows[0]
-        if (!createdUser) {
-          ErrorCenterThrow.on({
-            group: CMS_USER_ERROR_GROUP,
-            code: 'create'
-          })
-        }
-
-        let assignedRoles: CmsRoleWithPermissions[] = []
-        if (input.roleIds !== undefined || input.roleCodes !== undefined) {
-          const resolvedRoleIds = await CmsRoleItem.resolveIds(
-            transaction,
-            input.roleIds,
-            input.roleCodes
-          )
-          await CmsUserItem.syncUserRoles(transaction, createdUser.id, resolvedRoleIds)
-          assignedRoles = await CmsRoleItem.fetchByUserId(transaction, createdUser.id)
-        }
-
-        return {
-          ...createdUser,
-          roles: assignedRoles
-        }
-      })
-
-      return this.wrapUserItem(createdRecord)
-    } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: CMS_USER_ERROR_GROUP,
-          code: 'create'
-        },
-        error
-      )
-    }
+    return undefined
   }
 
   /**
@@ -359,7 +249,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @param options Deletion options / Параметры удаления
    * @returns True if a user was deleted / True, если пользователь был удалён
    */
-  async delete(
+  override async delete(
     id: number,
     options: CmsUserDeleteOptions = {}
   ): Promise<boolean> {
@@ -394,18 +284,143 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @param userRecord User record with assigned roles and permissions / Запись пользователя с назначенными ролями и правами доступа
    * @returns Wrapped CmsUserItem instance / Экземпляр CmsUserItem
    */
-  protected wrapUserItem(userRecord: CmsUserWithRoles): CmsUserItem {
+  protected wrapItem(userRecord: CmsUserWithRoles): CmsUserItem {
     return new CmsUserItem(userRecord, this.databaseInstance)
   }
 
   /**
-   * Builds WHERE clause for user list queries.
+   * Builds and validates insert values from user create input.
    *
-   * Формирует условие WHERE для запросов списка пользователей.
-   * @param options Filtering options / Параметры фильтрации
-   * @returns Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
+   * Формирует и валидирует данные для вставки пользователя.
+   * @param input New user payload / Данные нового пользователя
+   * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
-  protected buildListWhere(options: CmsUserListOptions): SQL | undefined {
+  protected prepareCreateValues(input: CmsUserCreateInput): CmsNewUser {
+    return CmsUserItem.buildCreateValues(input)
+  }
+
+  /**
+   * Fetches a single public user record with assigned roles matching a SQL predicate.
+   *
+   * Загружает одну публичную запись пользователя с назначенными ролями по SQL-условию.
+   * @param whereCondition SQL predicate / SQL-условие поиска
+   * @returns User record with roles or undefined / Запись пользователя с ролями или undefined
+   */
+  protected override async fetchOneRecord(whereCondition: SQL): Promise<CmsUserWithRoles | undefined> {
+    return CmsUserItem.findOneWithRoles(
+      this.databaseInstance.get(),
+      whereCondition
+    )
+  }
+
+  /**
+   * Queries non-deleted public user rows by a pre-validated list of user identifiers.
+   *
+   * Запрашивает публичные строки активных пользователей по проверенному списку идентификаторов.
+   * @param validIds Validated positive integer IDs / Проверенные идентификаторы пользователей
+   * @returns Public user rows without password hashes / Публичные записи пользователей без хэша пароля
+   */
+  protected override async selectByIdsRows(validIds: readonly number[]): Promise<CmsUserPublic[]> {
+    return findRecords<CmsUserPublic>(
+      this.databaseInstance.get(),
+      users,
+      and(inArray(users.id, validIds), CmsUserItem.getNotDeletedCondition()),
+      { select: CmsUserItem.getPublicColumns() }
+    )
+  }
+
+  /**
+   * Queries a paginated slice of public user rows sorted by newest creation time.
+   *
+   * Запрашивает страницу публичных записей пользователей с сортировкой от новых к старым.
+   * @param whereCondition Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
+   * @param limit Applied page limit / Применённый лимит выборки
+   * @param offset Applied page offset / Применённое смещение выборки
+   * @returns Public user rows without password hashes / Публичные записи пользователей без хэша пароля
+   */
+  protected override async selectListRows(
+    whereCondition: SQL | undefined,
+    limit: number,
+    offset: number
+  ): Promise<CmsUserPublic[]> {
+    return findRecords<CmsUserPublic>(
+      this.databaseInstance.get(),
+      users,
+      whereCondition,
+      {
+        select: CmsUserItem.getPublicColumns(),
+        orderBy: [desc(users.createdAt), desc(users.id)],
+        limit,
+        offset
+      }
+    )
+  }
+
+  /**
+   * Attaches roles and permissions to selected public user rows and wraps them into CmsUserItem instances.
+   *
+   * Прикрепляет роли и права доступа к выбранным строкам пользователей и оборачивает их в экземпляры CmsUserItem.
+   * @param rows Selected public user rows / Выбранные публичные строки пользователей
+   * @returns List of wrapped CmsUserItem instances / Список экземпляров CmsUserItem
+   */
+  protected override async resolveListItems(
+    rows: readonly CmsUserPublic[]
+  ): Promise<CmsUserItem[]> {
+    return this.attachRoles(rows)
+  }
+
+  /**
+   * Creates a user record in a transaction and optionally assigns roles.
+   *
+   * Создаёт запись пользователя в транзакции и при необходимости назначает роли.
+   * @param createValues Validated user insert values / Валидированные поля для вставки пользователя
+   * @param input Original user creation payload / Исходные данные создания пользователя
+   * @returns Created user record with roles / Созданная запись пользователя с ролями
+   */
+  protected override async createRecord(
+    createValues: Partial<CmsNewUser>,
+    input: CmsUserCreateInput
+  ): Promise<CmsUserWithRoles> {
+    return this.databaseInstance.get().transaction(async (transaction) => {
+      const insertedRows = await transaction
+        .insert(users)
+        .values(createValues as CmsNewUser)
+        .returning(CmsUserItem.getPublicColumns())
+
+      const createdUser = insertedRows[0]
+      if (!createdUser) {
+        ErrorCenterThrow.on({
+          group: this.errorGroup,
+          code: 'create'
+        })
+      }
+
+      let assignedRoles: CmsRoleWithPermissions[] = []
+      if (input.roleIds !== undefined || input.roleCodes !== undefined) {
+        const resolvedRoleIds = await CmsRoleItem.resolveIds(
+          transaction,
+          input.roleIds,
+          input.roleCodes
+        )
+        await CmsUserItem.syncUserRoles(transaction, createdUser.id, resolvedRoleIds)
+        assignedRoles = await CmsRoleItem.fetchByUserId(transaction, createdUser.id)
+      }
+
+      return {
+        ...createdUser,
+        roles: assignedRoles
+      }
+    })
+  }
+
+  /**
+   * Builds SQL filter predicates for user list queries.
+   *
+   * Формирует массив SQL-условий фильтрации для запросов списка пользователей.
+   * @param options Filtering options / Параметры фильтрации
+   * @returns Array of SQL predicates / Массив SQL-условий
+   */
+  protected override buildListConditions(options: CmsUserListOptions): SQL[] {
     const conditions: SQL[] = []
 
     if (!options.includeDeleted) {
@@ -497,19 +512,17 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       }
     }
 
-    return conditions.length > 0 ? and(...conditions) : undefined
+    return conditions
   }
 
   /**
    * Attaches assigned roles and permissions to a list of public user records in batch queries and wraps each in CmsUserItem.
    *
    * Загружает и прикрепляет назначенные роли с правами доступа к списку пользователей пакетными запросами и оборачивает каждую запись в CmsUserItem.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
    * @param usersList List of public user records / Список публичных записей пользователей
    * @returns List of CmsUserItem instances / Список экземпляров CmsUserItem
    */
   protected async attachRoles(
-    executor: CmsDbExecutor,
     usersList: readonly CmsUserPublic[]
   ): Promise<CmsUserItem[]> {
     if (usersList.length === 0) {
@@ -517,11 +530,11 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     const rolesByUserId = await CmsRoleItem.fetchByUserIds(
-      executor,
+      this.databaseInstance.get(),
       usersList.map(userRecord => userRecord.id)
     )
 
-    return usersList.map(userRecord => this.wrapUserItem({
+    return usersList.map(userRecord => this.wrapItem({
       ...userRecord,
       roles: rolesByUserId.get(userRecord.id) ?? []
     }))

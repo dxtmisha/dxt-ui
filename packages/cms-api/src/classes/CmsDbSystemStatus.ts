@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm'
 import { hasKey } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { findOneCmsRecord } from '../functions/db/findOneCmsRecord'
-import { updateCmsRecord } from '../functions/db/updateCmsRecord'
+import { findOneRecord } from '../functions/db/findOneRecord'
+import { updateRecord } from '../functions/db/updateRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsDbTimestamp } from './CmsDbTimestamp'
@@ -45,7 +45,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     }
 
     const baseTable = this.getBaseTable()
-    const row = await findOneCmsRecord<{ systemStatus: CmsSystemStatus }>(
+    const row = await findOneRecord<{ systemStatus: CmsSystemStatus }>(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
@@ -70,7 +70,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    return updateCmsRecord(
+    return updateRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),

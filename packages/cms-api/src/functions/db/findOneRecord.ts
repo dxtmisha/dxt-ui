@@ -16,7 +16,7 @@ import type {
  * @param select Optional selected columns map / Необязательный набор выбираемых колонок
  * @returns Found record or undefined / Найденная запись или undefined
  */
-export async function findOneCmsRecord<TRecord>(
+export async function findOneRecord<TRecord>(
   executor: CmsDbExecutor,
   table: CmsIdTable,
   whereCondition: SQL | undefined,

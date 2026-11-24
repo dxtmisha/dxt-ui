@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
-import { findOneCmsRecord } from '../findOneCmsRecord'
+import { findOneRecord } from '../findOneRecord'
 import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_find_one', {
@@ -10,12 +10,12 @@ const testTable = pgTable('test_find_one', {
   systemStatus: text('system_status').$type<'active' | 'blocked' | 'deleted'>().notNull()
 })
 
-describe('findOneCmsRecord', () => {
+describe('findOneRecord', () => {
   it('returns undefined without querying when whereCondition is undefined', async () => {
     const select = vi.fn()
     const executor = { select } as unknown as CmsDbExecutor
 
-    expect(await findOneCmsRecord(executor, testTable, undefined)).toBeUndefined()
+    expect(await findOneRecord(executor, testTable, undefined)).toBeUndefined()
     expect(select).not.toHaveBeenCalled()
   })
 
@@ -28,8 +28,8 @@ describe('findOneCmsRecord', () => {
     const executor = { select } as unknown as CmsDbExecutor
     const condition = eq(testTable.id, 1)
 
-    expect(await findOneCmsRecord<typeof row>(executor, testTable, condition)).toEqual(row)
-    expect(await findOneCmsRecord<typeof row>(executor, testTable, condition)).toBeUndefined()
+    expect(await findOneRecord<typeof row>(executor, testTable, condition)).toEqual(row)
+    expect(await findOneRecord<typeof row>(executor, testTable, condition)).toBeUndefined()
     expect(select).toHaveBeenCalledWith()
     expect(from).toHaveBeenCalledWith(testTable)
     expect(where).toHaveBeenCalledWith(condition)
@@ -46,7 +46,7 @@ describe('findOneCmsRecord', () => {
     const condition = eq(testTable.id, 1)
     const selectFields = { id: testTable.id }
 
-    expect(await findOneCmsRecord<typeof row>(executor, testTable, condition, selectFields)).toEqual(row)
+    expect(await findOneRecord<typeof row>(executor, testTable, condition, selectFields)).toEqual(row)
     expect(select).toHaveBeenCalledWith(selectFields)
     expect(from).toHaveBeenCalledWith(testTable)
     expect(where).toHaveBeenCalledWith(condition)

@@ -17,7 +17,7 @@ import type {
  * @param whereCondition Optional SQL predicate / Необязательное SQL-условие поиска
  * @returns Number of matching records / Количество найденных записей
  */
-export async function countCmsRecords(
+export async function countRecords(
   executor: CmsDbExecutor,
   table: CmsIdTable,
   whereCondition?: SQL

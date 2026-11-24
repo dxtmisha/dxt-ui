@@ -1,43 +1,34 @@
 import {
-  and,
-  asc,
   eq,
-  ilike,
   inArray,
-  or,
   sql,
   type SQL
 } from 'drizzle-orm'
 import {
   ErrorCenterThrow,
-  isString,
-  toLimit,
-  toOffset,
-  uniqueArray
+  isString
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
-import { CmsDbAbstract } from '../abstract/CmsDbAbstract'
+import { CmsDbCodeManagerAbstract } from '../abstract/CmsDbCodeManagerAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
-  CmsDbExecutor,
+  CmsCodeCreatedOriginInsertValues,
+  CmsNewRole,
   CmsPermission,
   CmsRole
 } from '../../types/cmsDbTypes'
 import type {
   CmsRoleCreateInput,
   CmsRoleListOptions,
-  CmsRoleListResult,
   CmsRoleUpdateInput,
   CmsRoleWithPermissions
 } from '../../types/cmsRoleTypes'
@@ -47,7 +38,17 @@ import type {
  *
  * Класс для управления списком ролей CMS: поиск и фильтрация списков, создание записей и оборачивание ролей с правами доступа в экземпляры CmsRoleItem.
  */
-export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
+export class CmsRoleManager extends CmsDbCodeManagerAbstract<
+  typeof roles,
+  CmsRoleWithPermissions,
+  CmsRoleCreateInput,
+  CmsRoleUpdateInput,
+  CmsRoleItem,
+  CmsRoleListOptions
+> {
+  /** ErrorCenter group name for role errors / Имя группы ошибок ErrorCenter для ролей */
+  protected readonly errorGroup = CMS_ROLE_ERROR_GROUP
+
   /** Cached permission manager sharing the same database instance / Кэшированный менеджер прав доступа с общими настройками БД */
   protected permissionManager?: CmsPermissionManager
 
@@ -61,26 +62,6 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     databaseInstance?: CmsDbInstance
   ) {
     super(roles, databaseInstance)
-  }
-
-  /**
-   * Checks whether a role exists by unique code.
-   *
-   * Проверяет существование роли по уникальному коду.
-   * @param code Role code / Код роли
-   * @returns True if role exists / True, если роль существует
-   */
-  async hasByCode(code: string): Promise<boolean> {
-    const trimmedCode = isString(code) ? code.trim() : ''
-    if (trimmedCode.length === 0) {
-      return false
-    }
-
-    return hasCmsRecord(
-      this.databaseInstance.get(),
-      roles,
-      eq(roles.code, trimmedCode)
-    )
   }
 
   /**
@@ -98,263 +79,107 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Finds a role wrapped in CmsRoleItem by identifier.
-   *
-   * Находит роль в обёртке CmsRoleItem по идентификатору.
-   * @param id Role identifier / Идентификатор роли
-   * @returns CmsRoleItem instance or undefined / Экземпляр CmsRoleItem или undefined
-   */
-  async getById(id: number): Promise<CmsRoleItem | undefined> {
-    if (!CmsVerification.isPositiveInteger(id, false)) {
-      return undefined
-    }
-
-    const foundRecord = await CmsRoleItem.findOneWithPermissions(
-      this.databaseInstance.get(),
-      eq(roles.id, id)
-    )
-
-    return foundRecord ? this.wrapRoleItem(foundRecord) : undefined
-  }
-
-  /**
-   * Finds a role wrapped in CmsRoleItem by unique code.
-   *
-   * Находит роль в обёртке CmsRoleItem по уникальному коду.
-   * @param code Unique role code / Уникальный код роли
-   * @returns CmsRoleItem instance or undefined / Экземпляр CmsRoleItem или undefined
-   */
-  async getByCode(code: string): Promise<CmsRoleItem | undefined> {
-    const trimmedCode = isString(code) ? code.trim() : ''
-    if (trimmedCode.length === 0) {
-      return undefined
-    }
-
-    const foundRecord = await CmsRoleItem.findOneWithPermissions(
-      this.databaseInstance.get(),
-      eq(roles.code, trimmedCode)
-    )
-
-    return foundRecord ? this.wrapRoleItem(foundRecord) : undefined
-  }
-
-  /**
-   * Finds multiple roles with their permissions wrapped in CmsRoleItem by role identifiers.
-   *
-   * Находит список ролей с правами доступа в обёртке CmsRoleItem по массиву идентификаторов.
-   * @param ids Role identifiers / Идентификаторы ролей
-   * @returns List of matching CmsRoleItem instances / Список найденных экземпляров CmsRoleItem
-   */
-  async getByIds(ids: readonly number[]): Promise<CmsRoleItem[]> {
-    const validIds = uniqueArray(ids).filter(id => CmsVerification.isPositiveInteger(id, false))
-    if (validIds.length === 0) {
-      return []
-    }
-
-    const database = this.databaseInstance.get()
-    const roleRows = await database
-      .select()
-      .from(roles)
-      .where(inArray(roles.id, validIds))
-      .orderBy(asc(roles.id))
-
-    return this.attachPermissions(database, roleRows)
-  }
-
-  /**
-   * Finds multiple roles with their permissions wrapped in CmsRoleItem by role codes.
-   *
-   * Находит список ролей с правами доступа в обёртке CmsRoleItem по массиву кодов.
-   * @param codes Role codes / Коды ролей
-   * @returns List of matching CmsRoleItem instances / Список найденных экземпляров CmsRoleItem
-   */
-  async getByCodes(codes: readonly string[]): Promise<CmsRoleItem[]> {
-    const validCodes = uniqueArray(
-      codes
-        .filter(isString)
-        .map(code => code.trim())
-        .filter(code => code.length > 0)
-    )
-    if (validCodes.length === 0) {
-      return []
-    }
-
-    const database = this.databaseInstance.get()
-    const roleRows = await database
-      .select()
-      .from(roles)
-      .where(inArray(roles.code, validCodes))
-      .orderBy(asc(roles.id))
-
-    return this.attachPermissions(database, roleRows)
-  }
-
-  /**
-   * Returns a paginated and filtered list of roles wrapped in CmsRoleItem instances.
-   *
-   * Возвращает постраничный отфильтрованный список ролей в обёртках CmsRoleItem.
-   * @param options Filtering and pagination options / Параметры фильтрации и пагинации
-   * @returns Paginated CmsRoleItem list and total count / Список CmsRoleItem и общее количество записей
-   */
-  async getList(options: CmsRoleListOptions = {}): Promise<CmsRoleListResult> {
-    const database = this.databaseInstance.get()
-    const limit = toLimit(options.limit)
-    const offset = toOffset(options.offset)
-    const whereCondition = this.buildListWhere(options)
-
-    const total = await this.countRecords(whereCondition)
-    if (total === 0) {
-      return {
-        items: [],
-        total: 0,
-        limit,
-        offset
-      }
-    }
-
-    const roleRows = await database
-      .select()
-      .from(roles)
-      .where(whereCondition)
-      .orderBy(asc(roles.id))
-      .limit(limit)
-      .offset(offset)
-
-    const items = await this.attachPermissions(database, roleRows)
-
-    return {
-      items,
-      total,
-      limit,
-      offset
-    }
-  }
-
-  /**
-   * Updates an existing role by ID and returns the updated CmsRoleItem.
-   *
-   * Редактирует существующую роль по ID и возвращает обновлённый CmsRoleItem.
-   * @param id Role identifier / Идентификатор роли
-   * @param input Role fields and optional permission assignments / Данные роли и необязательный список прав доступа
-   * @returns Updated CmsRoleItem or undefined if not found / Обновлённый экземпляр CmsRoleItem или undefined, если не найдена
-   */
-  async update(
-    id: number,
-    input: CmsRoleUpdateInput
-  ): Promise<CmsRoleItem | undefined> {
-    const roleItem = await this.getById(id)
-    if (!roleItem) {
-      return undefined
-    }
-
-    return roleItem.update(input)
-  }
-
-  /**
-   * Creates a new CMS role, optionally assigns permissions in a transaction, and wraps it in CmsRoleItem.
-   *
-   * Создаёт новую роль CMS, при необходимости назначает права доступа в транзакции и возвращает экземпляр CmsRoleItem.
-   * @param input New role payload / Данные новой роли
-   * @returns Created CmsRoleItem instance / Созданный экземпляр CmsRoleItem
-   */
-  async create(input: CmsRoleCreateInput): Promise<CmsRoleItem> {
-    const createValues = CmsRoleItem.buildCreateValues(input)
-
-    try {
-      const createdRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const insertedRows = await transaction
-          .insert(roles)
-          .values(createValues)
-          .returning()
-
-        const createdRole = insertedRows[0]
-        if (!createdRole) {
-          ErrorCenterThrow.on({
-            group: CMS_ROLE_ERROR_GROUP,
-            code: 'create'
-          })
-        }
-
-        let assignedPermissions: CmsPermission[] = []
-        if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
-          const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
-            transaction,
-            input.permissionIds,
-            input.permissionCodes
-          )
-          await CmsRoleItem.syncRolePermissions(transaction, createdRole.id, resolvedPermissionIds)
-          assignedPermissions = await CmsPermissionItem.fetchByRoleId(transaction, createdRole.id)
-        }
-
-        return {
-          ...createdRole,
-          permissions: assignedPermissions
-        }
-      })
-
-      return this.wrapRoleItem(createdRecord)
-    } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: CMS_ROLE_ERROR_GROUP,
-          code: 'create'
-        },
-        error
-      )
-    }
-  }
-
-  /**
-   * Permanently deletes a role by ID from the database.
-   *
-   * Безвозвратно удаляет роль по ID из базы данных.
-   * @param id Role identifier / Идентификатор роли
-   * @returns True if role was deleted / True, если роль была удалена
-   */
-  async delete(id: number): Promise<boolean> {
-    const roleItem = await this.getById(id)
-    if (!roleItem) {
-      return false
-    }
-
-    return roleItem.delete()
-  }
-
-  /**
    * Wraps a plain role record with permissions into a CmsRoleItem instance.
    *
    * Оборачивает запись роли с правами доступа в экземпляр CmsRoleItem.
    * @param roleRecord Role record with assigned permissions / Запись роли с назначенными правами доступа
    * @returns Wrapped CmsRoleItem instance / Экземпляр CmsRoleItem
    */
-  protected wrapRoleItem(roleRecord: CmsRoleWithPermissions): CmsRoleItem {
+  protected wrapItem(roleRecord: CmsRoleWithPermissions): CmsRoleItem {
     return new CmsRoleItem(roleRecord, this.databaseInstance)
   }
 
   /**
-   * Builds WHERE clause for role list queries.
+   * Builds and validates insert values from role create input.
    *
-   * Формирует условие WHERE для запросов списка ролей.
-   * @param options Filtering options / Параметры фильтрации
-   * @returns Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
+   * Формирует и валидирует данные для вставки роли.
+   * @param input New role payload / Данные новой роли
+   * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
-  protected buildListWhere(options: CmsRoleListOptions): SQL | undefined {
-    const conditions: SQL[] = []
+  protected prepareCreateValues(input: CmsRoleCreateInput): CmsCodeCreatedOriginInsertValues {
+    return CmsRoleItem.buildCreateValues(input)
+  }
 
-    if (isString(options.search)) {
-      const trimmedSearch = options.search.trim()
-      if (trimmedSearch.length > 0) {
-        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
-        const searchPredicate = or(
-          ilike(roles.code, pattern),
-          ilike(roles.name, pattern),
-          ilike(roles.description, pattern)
-        )
-        if (searchPredicate) {
-          conditions.push(searchPredicate)
-        }
+  /**
+   * Fetches a single role record with assigned permissions matching a SQL predicate.
+   *
+   * Загружает одну запись роли с назначенными правами доступа по SQL-условию.
+   * @param whereCondition SQL predicate / SQL-условие поиска
+   * @returns Role record with permissions or undefined / Запись роли с правами доступа или undefined
+   */
+  protected override async fetchOneRecord(whereCondition: SQL): Promise<CmsRoleWithPermissions | undefined> {
+    return CmsRoleItem.findOneWithPermissions(
+      this.databaseInstance.get(),
+      whereCondition
+    )
+  }
+
+  /**
+   * Attaches permissions to selected role rows and wraps them into CmsRoleItem instances.
+   *
+   * Прикрепляет права доступа к выбранным строкам ролей и оборачивает их в экземпляры CmsRoleItem.
+   * @param rows Selected role rows / Выбранные строки ролей
+   * @returns List of wrapped CmsRoleItem instances / Список экземпляров CmsRoleItem
+   */
+  protected override async resolveListItems(
+    rows: readonly CmsRole[]
+  ): Promise<CmsRoleItem[]> {
+    return this.attachPermissions(rows)
+  }
+
+  /**
+   * Creates a role record in a transaction and optionally assigns permissions.
+   *
+   * Создаёт запись роли в транзакции и при необходимости назначает права доступа.
+   * @param createValues Validated role insert values / Валидированные поля для вставки роли
+   * @param input Original role creation payload / Исходные данные создания роли
+   * @returns Created role record with permissions / Созданная запись роли с правами доступа
+   */
+  protected override async createRecord(
+    createValues: Partial<CmsNewRole>,
+    input: CmsRoleCreateInput
+  ): Promise<CmsRoleWithPermissions> {
+    return this.databaseInstance.get().transaction(async (transaction) => {
+      const insertedRows = await transaction
+        .insert(roles)
+        .values(createValues as CmsNewRole)
+        .returning()
+
+      const createdRole = insertedRows[0]
+      if (!createdRole) {
+        ErrorCenterThrow.on({
+          group: this.errorGroup,
+          code: 'create'
+        })
       }
-    }
+
+      let assignedPermissions: CmsPermission[] = []
+      if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
+        const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
+          transaction,
+          input.permissionIds,
+          input.permissionCodes
+        )
+        await CmsRoleItem.syncRolePermissions(transaction, createdRole.id, resolvedPermissionIds)
+        assignedPermissions = await CmsPermissionItem.fetchByRoleId(transaction, createdRole.id)
+      }
+
+      return {
+        ...createdRole,
+        permissions: assignedPermissions
+      }
+    })
+  }
+
+  /**
+   * Builds SQL filter predicates for role list queries.
+   *
+   * Формирует массив SQL-условий фильтрации для запросов списка ролей.
+   * @param options Filtering options / Параметры фильтрации
+   * @returns Array of SQL predicates / Массив SQL-условий
+   */
+  protected override buildListConditions(options: CmsRoleListOptions): SQL[] {
+    const conditions = super.buildListConditions(options)
 
     if (isString(options.createdOrigin)) {
       const trimmedCreatedOrigin = options.createdOrigin.trim()
@@ -399,19 +224,17 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       }
     }
 
-    return conditions.length > 0 ? and(...conditions) : undefined
+    return conditions
   }
 
   /**
    * Attaches assigned permissions to a list of role records in a single batch query and wraps each in CmsRoleItem.
    *
    * Загружает и прикрепляет назначенные права доступа к списку ролей одним пакетным запросом и оборачивает каждую запись в CmsRoleItem.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
    * @param rolesList List of role records / Список записей ролей
    * @returns List of CmsRoleItem instances / Список экземпляров CmsRoleItem
    */
   protected async attachPermissions(
-    executor: CmsDbExecutor,
     rolesList: readonly CmsRole[]
   ): Promise<CmsRoleItem[]> {
     if (rolesList.length === 0) {
@@ -419,11 +242,11 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     }
 
     const permissionsByRoleId = await CmsPermissionItem.fetchByRoleIds(
-      executor,
+      this.databaseInstance.get(),
       rolesList.map(roleRecord => roleRecord.id)
     )
 
-    return rolesList.map(roleRecord => this.wrapRoleItem({
+    return rolesList.map(roleRecord => this.wrapItem({
       ...roleRecord,
       permissions: [...(permissionsByRoleId.get(roleRecord.id) ?? [])]
     }))

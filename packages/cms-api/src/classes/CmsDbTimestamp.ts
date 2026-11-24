@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { findOneCmsRecord } from '../functions/db/findOneCmsRecord'
-import { updateCmsRecord } from '../functions/db/updateCmsRecord'
+import { findOneRecord } from '../functions/db/findOneRecord'
+import { updateRecord } from '../functions/db/updateRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
@@ -56,7 +56,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return undefined
     }
 
-    return findOneCmsRecord<CmsTimestampValues>(
+    return findOneRecord<CmsTimestampValues>(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
@@ -113,7 +113,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return false
     }
 
-    return updateCmsRecord(
+    return updateRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),

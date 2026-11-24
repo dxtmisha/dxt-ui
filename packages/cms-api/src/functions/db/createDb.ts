@@ -10,7 +10,7 @@ import type { CmsDb } from '../../types/cmsDbTypes'
  * @param connectionString PostgreSQL connection URI / Строка подключения к PostgreSQL
  * @returns Typed Drizzle database instance / Типизированный экземпляр базы данных Drizzle
  */
-export function createCmsDb(connectionString: string): CmsDb {
+export function createDb(connectionString: string): CmsDb {
   const client = postgres(connectionString)
 
   return drizzle(client, { schema: cmsSchema })

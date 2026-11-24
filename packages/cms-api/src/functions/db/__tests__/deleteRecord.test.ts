@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
-import { deleteCmsRecord } from '../deleteCmsRecord'
+import { deleteRecord } from '../deleteRecord'
 import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_delete_record', {
@@ -10,12 +10,12 @@ const testTable = pgTable('test_delete_record', {
   systemStatus: text('system_status').$type<'active' | 'blocked' | 'deleted'>().notNull()
 })
 
-describe('deleteCmsRecord', () => {
+describe('deleteRecord', () => {
   it('returns false without querying when whereCondition is undefined', async () => {
     const del = vi.fn()
     const executor = { delete: del } as unknown as CmsDbExecutor
 
-    expect(await deleteCmsRecord(executor, testTable, undefined)).toBe(false)
+    expect(await deleteRecord(executor, testTable, undefined)).toBe(false)
     expect(del).not.toHaveBeenCalled()
   })
 
@@ -26,8 +26,8 @@ describe('deleteCmsRecord', () => {
     const executor = { delete: del } as unknown as CmsDbExecutor
     const condition = eq(testTable.id, 1)
 
-    expect(await deleteCmsRecord(executor, testTable, condition)).toBe(true)
-    expect(await deleteCmsRecord(executor, testTable, condition)).toBe(false)
+    expect(await deleteRecord(executor, testTable, condition)).toBe(true)
+    expect(await deleteRecord(executor, testTable, condition)).toBe(false)
     expect(del).toHaveBeenCalledWith(testTable)
     expect(where).toHaveBeenCalledWith(condition)
     expect(returning).toHaveBeenCalledWith({ id: testTable.id })

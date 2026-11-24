@@ -12,7 +12,8 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
+import { findOneRecord } from '../../functions/db/findOneRecord'
+import { toCmsIds } from '../../functions/toCmsIds'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -225,7 +226,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
 
     try {
       const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
-        const existingRole = await findOneCmsRecord<CmsRole>(
+        const existingRole = await findOneRecord<CmsRole>(
           transaction,
           roles,
           eq(roles.id, roleId)
@@ -395,9 +396,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
         const targetIds: number[] = []
 
         if (permissionIds !== undefined) {
-          targetIds.push(
-            ...uniqueArray(permissionIds).filter(permissionId => isPositiveInteger(permissionId))
-          )
+          targetIds.push(...toCmsIds(permissionIds))
         }
 
         if (permissionCodes !== undefined) {
@@ -454,7 +453,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsRoleWithPermissions | undefined> {
-    const roleRecord = await findOneCmsRecord<CmsRole>(
+    const roleRecord = await findOneRecord<CmsRole>(
       executor,
       roles,
       whereCondition
@@ -520,7 +519,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
     userIds: readonly number[]
   ): Promise<Map<number, CmsRoleWithPermissions[]>> {
     const rolesByUserId = new Map<number, CmsRoleWithPermissions[]>()
-    const uniqueUserIds = uniqueArray(userIds).filter(userId => isPositiveInteger(userId))
+    const uniqueUserIds = toCmsIds(userIds)
 
     if (uniqueUserIds.length === 0) {
       return rolesByUserId
@@ -578,7 +577,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
       })
     }
 
-    const foundRole = await findOneCmsRecord<{ id: number }>(
+    const foundRole = await findOneRecord<{ id: number }>(
       executor,
       roles,
       eq(roles.id, roleId),

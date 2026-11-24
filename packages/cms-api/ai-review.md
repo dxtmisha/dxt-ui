@@ -1,7 +1,7 @@
 CmsVerification
-createCmsDb
-findOneCmsRecord
-updateCmsRecord
+createDb
+findOneRecord
+updateRecord
 CmsDbInstance
 useCmsDb
 CmsDbTimestamp

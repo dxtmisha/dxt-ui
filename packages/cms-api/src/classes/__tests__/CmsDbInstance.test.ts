@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CMS_DB_ERROR_GROUP } from '../../media/errors/cmsDbErrorCauseList'
-import * as createCmsDbModule from '../../functions/db/createCmsDb'
+import * as createDbModule from '../../functions/db/createDb'
 import { CmsDbInstance } from '../CmsDbInstance'
 import type { CmsDb } from '../../types/cmsDbTypes'
 
@@ -44,7 +44,7 @@ describe('CmsDbInstance', () => {
     const firstDb = { $client: { end: firstEnd } } as unknown as CmsDb
     const secondDb = { $client: { end: secondEnd } } as unknown as CmsDb
 
-    const createSpy = vi.spyOn(createCmsDbModule, 'createCmsDb')
+    const createSpy = vi.spyOn(createDbModule, 'createDb')
       .mockReturnValueOnce(firstDb)
       .mockReturnValueOnce(secondDb)
 

@@ -65,6 +65,8 @@ function createMockDb(
 }
 
 class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
+  protected readonly errorGroup = CMS_VERIFICATION_ERROR_GROUP
+
   hasSystemStatusInstance(): boolean {
     return this.systemStatusInstance !== undefined
   }
@@ -99,6 +101,10 @@ class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
 
   loadById(id: number) {
     return this.fetchById(id)
+  }
+
+  rethrowError(code: string, error: unknown): never {
+    return this.handleError(code, error)
   }
 }
 
@@ -262,5 +268,25 @@ describe('CmsDbAbstract', () => {
     expect(await instance.hasById(5)).toBe(true)
     expect(await instance.hasById(99)).toBe(false)
     expect(raw.select).toHaveBeenCalledTimes(2)
+  })
+
+  it('routes operational errors through ErrorCenter via handleError', () => {
+    ErrorCenter.setIsConsole(false)
+    registerCmsErrorCauses()
+    const capturedErrors: Array<{ group?: string, code: string }> = []
+    ErrorCenter.addCallback((cause) => {
+      capturedErrors.push({
+        group: cause.group,
+        code: cause.code
+      })
+    })
+
+    const { dbInstance } = createMockDb()
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(() => instance.rethrowError('invalidId', new Error('boom'))).toThrow('Valid positive integer record ID is required.')
+    expect(capturedErrors).toEqual([
+      { group: CMS_VERIFICATION_ERROR_GROUP, code: 'invalidId' }
+    ])
   })
 })

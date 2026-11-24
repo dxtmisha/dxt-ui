@@ -2,12 +2,13 @@ import {
   eq,
   type SQL
 } from 'drizzle-orm'
+import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-import { countCmsRecords } from '../../functions/db/countCmsRecords'
-import { deleteCmsRecord } from '../../functions/db/deleteCmsRecord'
-import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
-import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
-import { updateCmsRecord } from '../../functions/db/updateCmsRecord'
+import { countRecords } from '../../functions/db/countRecords'
+import { deleteRecord } from '../../functions/db/deleteRecord'
+import { findOneRecord } from '../../functions/db/findOneRecord'
+import { hasRecord } from '../../functions/db/hasRecord'
+import { updateRecord } from '../../functions/db/updateRecord'
 import { CmsDbValuesAbstract } from './CmsDbValuesAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsIdTable } from '../../types/cmsDbTypes'
@@ -21,6 +22,9 @@ export abstract class CmsDbAbstract<
   TTable extends CmsIdTable = CmsIdTable,
   TData = TTable['$inferSelect']
 > extends CmsDbValuesAbstract<TTable> {
+  /** ErrorCenter group name for entity errors / Имя группы ошибок ErrorCenter для сущности */
+  protected abstract readonly errorGroup: string
+
   /**
    * Checks whether a record exists in the bound table by identifier.
    *
@@ -34,7 +38,7 @@ export abstract class CmsDbAbstract<
     }
 
     const baseTable = this.getBaseTable()
-    return hasCmsRecord(
+    return hasRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id)
@@ -66,7 +70,7 @@ export abstract class CmsDbAbstract<
     }
 
     const baseTable = this.getBaseTable()
-    return findOneCmsRecord<TData>(
+    return findOneRecord<TData>(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id)
@@ -81,7 +85,7 @@ export abstract class CmsDbAbstract<
    * @returns Number of matching records / Количество найденных записей
    */
   protected async countRecords(whereCondition?: SQL): Promise<number> {
-    return countCmsRecords(
+    return countRecords(
       this.databaseInstance.get(),
       this.getBaseTable(),
       whereCondition
@@ -99,7 +103,7 @@ export abstract class CmsDbAbstract<
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    return deleteCmsRecord(
+    return deleteRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id)
@@ -121,11 +125,28 @@ export abstract class CmsDbAbstract<
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    return updateCmsRecord(
+    return updateRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
       values as Partial<CmsIdTable['$inferInsert']>
+    )
+  }
+
+  /**
+   * Wraps and throws an operational error through ErrorCenterThrow using the entity error group.
+   *
+   * Оборачивает и выбрасывает операционную ошибку через ErrorCenterThrow с группой ошибок сущности.
+   * @param code Error code / Код ошибки
+   * @param error Caught error instance / Перехваченное исключение
+   */
+  protected handleError(code: string, error: unknown): never {
+    return ErrorCenterThrow.handle(
+      {
+        group: this.errorGroup,
+        code
+      },
+      error
     )
   }
 }

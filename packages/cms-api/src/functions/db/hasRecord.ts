@@ -1,6 +1,6 @@
 import type { SQL } from 'drizzle-orm'
 
-import { findOneCmsRecord } from './findOneCmsRecord'
+import { findOneRecord } from './findOneRecord'
 import type {
   CmsDbExecutor,
   CmsIdTable
@@ -15,12 +15,12 @@ import type {
  * @param whereCondition SQL predicate / SQL-условие поиска
  * @returns True if a matching record exists / True, если подходящая запись существует
  */
-export async function hasCmsRecord(
+export async function hasRecord(
   executor: CmsDbExecutor,
   table: CmsIdTable,
   whereCondition: SQL | undefined
 ): Promise<boolean> {
-  const found = await findOneCmsRecord<{ id: number }>(
+  const found = await findOneRecord<{ id: number }>(
     executor,
     table,
     whereCondition,

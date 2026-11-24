@@ -14,16 +14,16 @@ vi.mock('drizzle-orm/postgres-js', () => ({
   drizzle: mockDrizzle
 }))
 
-describe('createCmsDb', () => {
+describe('createDb', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
 
   it('creates a postgres client and binds cmsSchema through drizzle', async () => {
-    const { createCmsDb } = await import('../createCmsDb')
+    const { createDb } = await import('../createDb')
     const uri = 'postgres://user:password@localhost:5432/cms_db'
 
-    const db = createCmsDb(uri)
+    const db = createDb(uri)
 
     expect(mockPostgres).toHaveBeenCalledTimes(1)
     expect(mockPostgres).toHaveBeenCalledWith(uri)

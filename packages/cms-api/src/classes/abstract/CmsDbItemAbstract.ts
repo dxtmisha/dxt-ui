@@ -1,5 +1,3 @@
-import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
-
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
@@ -19,9 +17,6 @@ export abstract class CmsDbItemAbstract<
   TData extends CmsDbItemData = CmsDbItemData,
   TUpdateInput extends object = Partial<TTable['$inferInsert']>
 > extends CmsDbAbstract<TTable, TData> {
-  /** ErrorCenter group name for entity errors / Имя группы ошибок ErrorCenter для сущности */
-  protected abstract readonly errorGroup: string
-
   /**
    * Initializes an entity item wrapper with its table schema, current record snapshot, and optional database instance manager.
    *
@@ -220,22 +215,5 @@ export abstract class CmsDbItemAbstract<
     } catch (error) {
       return this.handleError('update', error)
     }
-  }
-
-  /**
-   * Wraps and throws an operational error through ErrorCenterThrow using the entity error group.
-   *
-   * Оборачивает и выбрасывает операционную ошибку через ErrorCenterThrow с группой ошибок сущности.
-   * @param code Error code / Код ошибки
-   * @param error Caught error instance / Перехваченное исключение
-   */
-  protected handleError(code: string, error: unknown): never {
-    return ErrorCenterThrow.handle(
-      {
-        group: this.errorGroup,
-        code
-      },
-      error
-    )
   }
 }

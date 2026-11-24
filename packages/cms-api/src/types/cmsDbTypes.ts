@@ -22,16 +22,46 @@ export type CmsIdTable = PgTable & {
   updatedAt?: PgColumn
 }
 
-/** Drizzle PostgreSQL table constraint extending CmsIdTable with a unique code column / Тип таблицы Drizzle PostgreSQL, расширяющий CmsIdTable уникальной колонкой code */
+/** Drizzle PostgreSQL table constraint extending CmsIdTable with unique code, name, and description columns / Тип таблицы Drizzle PostgreSQL, расширяющий CmsIdTable колонками code, name и description */
 export type CmsCodeTable = CmsIdTable & {
   /** Unique record code column / Колонка уникального кода записи */
   code: PgColumn
+  /** Display name or translation key column / Колонка отображаемого названия или ключа перевода */
+  name: PgColumn
+  /** Optional description column / Колонка описания */
+  description: PgColumn
 }
 
 /** Drizzle PostgreSQL table constraint extending CmsCodeTable with a createdOrigin column / Тип таблицы Drizzle PostgreSQL, расширяющий CmsCodeTable колонкой createdOrigin */
 export type CmsCodeCreatedOriginTable = CmsCodeTable & {
   /** Creation origin code column / Колонка кода источника создания */
   createdOrigin: PgColumn
+}
+
+/** Base pagination options for CMS entity lists / Базовые параметры пагинации списков сущностей CMS */
+export interface CmsListOptions {
+  /** Maximum number of records to return / Максимальное количество возвращаемых записей */
+  limit?: number
+  /** Number of records to skip / Количество пропускаемых записей */
+  offset?: number
+}
+
+/** Base filtering and pagination options for CMS code entity lists / Базовые параметры фильтрации и пагинации списков сущностей CMS с кодом */
+export interface CmsCodeListOptions extends CmsListOptions {
+  /** Case-insensitive search query across code, name, and description fields / Поисковый запрос без учёта регистра по коду, названию и описанию */
+  search?: string
+}
+
+/** Paginated list result wrapper for CMS entity items / Постраничный список обёрток записей сущностей CMS */
+export interface CmsListResult<TItem> {
+  /** List of entity item wrappers / Список экземпляров сущностей */
+  items: TItem[]
+  /** Total number of matching records / Общее количество найденных записей */
+  total: number
+  /** Applied page limit / Применённый лимит выборки */
+  limit: number
+  /** Applied page offset / Применённое смещение выборки */
+  offset: number
 }
 
 /** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */

@@ -1,5 +1,7 @@
 import type { CmsRoleItem } from '../classes/tables/CmsRoleItem'
 import type {
+  CmsCodeListOptions,
+  CmsListResult,
   CmsNewRole,
   CmsPermission,
   CmsRole
@@ -26,9 +28,7 @@ export type CmsRoleCreateInput = Omit<CmsNewRole, 'id' | 'createdAt' | 'updatedA
 export type CmsRoleUpdateInput = Partial<Omit<CmsNewRole, 'id' | 'createdAt' | 'updatedAt'>> & CmsRolePermissionAssignmentInput
 
 /** Filtering and pagination options for listing CMS roles / Параметры фильтрации и пагинации списка ролей CMS */
-export interface CmsRoleListOptions {
-  /** Case-insensitive search query across code, name, and description fields / Поисковый запрос без учёта регистра по коду, названию и описанию */
-  search?: string
+export interface CmsRoleListOptions extends CmsCodeListOptions {
   /** Filter by creation origin code / Фильтр по коду источника создания */
   createdOrigin?: string
   /** Filter by assigned permission identifier / Фильтр по идентификатору назначенного права доступа */
@@ -37,20 +37,7 @@ export interface CmsRoleListOptions {
   permissionCode?: string
   /** Filter by assigned user identifier / Фильтр по идентификатору пользователя */
   userId?: number
-  /** Maximum number of records to return / Максимальное количество возвращаемых записей */
-  limit?: number
-  /** Number of records to skip / Количество пропускаемых записей */
-  offset?: number
 }
 
 /** Paginated list of CMS roles wrapped in CmsRoleItem with total count / Постраничный список ролей CMS в обёртке CmsRoleItem с общим количеством записей */
-export interface CmsRoleListResult {
-  /** List of role entity wrappers / Список экземпляров ролей */
-  items: CmsRoleItem[]
-  /** Total number of matching roles / Общее количество найденных ролей */
-  total: number
-  /** Applied page limit / Применённый лимит выборки */
-  limit: number
-  /** Applied page offset / Применённое смещение выборки */
-  offset: number
-}
+export type CmsRoleListResult = CmsListResult<CmsRoleItem>

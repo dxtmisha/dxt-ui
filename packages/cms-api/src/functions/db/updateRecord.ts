@@ -15,7 +15,7 @@ import type {
  * @param values Partial column values to set / Частичные значения колонок для обновления
  * @returns True if at least one record was updated / True, если обновлена хотя бы одна запись
  */
-export async function updateCmsRecord(
+export async function updateRecord(
   executor: CmsDbExecutor,
   table: CmsIdTable,
   whereCondition: SQL | undefined,
