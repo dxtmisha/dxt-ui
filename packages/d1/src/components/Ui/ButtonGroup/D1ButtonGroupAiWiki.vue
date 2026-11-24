@@ -18,6 +18,18 @@ defineOptions({
     :component="D1ButtonGroup"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent
+    v-bind="args"
+    aria-label="Action group"
+    :list="[
+      { label: 'Back', value: 'back' },
+      { label: 'Confirm', value: 'confirm' }
+    ]"
+  />
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

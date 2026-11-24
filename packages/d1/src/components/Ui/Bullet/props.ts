@@ -1,4 +1,5 @@
 import { type BulletPropsBasic, defaultsBullet } from '@dxtmisha/constructor/Bullet'
+import type { BulletItemProps } from '../BulletItem'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +14,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type BulletProps = BulletPropsBasic & PropsToken
+export type BulletProps = BulletPropsBasic<BulletItemProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

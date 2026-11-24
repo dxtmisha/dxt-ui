@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,19 +7,23 @@ import {
 
 import { Bullet } from './Bullet'
 
-import {
-  type BulletPropsBasic
+import type {
+  BulletPropsBasic
 } from './props'
-import {
-  type BulletClasses,
-  type BulletComponents,
-  type BulletEmits,
-  type BulletExpose,
-  type BulletSlots
+import type {
+  BulletClasses,
+  BulletComponents,
+  BulletEmits,
+  BulletExpose,
+  BulletSlots
 } from './types'
 
 /**
- * BulletDesign
+ * BulletDesign class constructor for managing classes, styles, and rendering
+ * the semantic `<ul>` bullet list from `list` items, sanitized `html`, or default slot content.
+ *
+ * Класс-конструктор дизайна BulletDesign для управления классами, стилями и рендерингом
+ * семантического маркированного списка `<ul>` из массива `list`, санитизированного `html` или слота по умолчанию.
  */
 export class BulletDesign<
   COMP extends BulletComponents,
@@ -27,7 +31,7 @@ export class BulletDesign<
   CLASSES extends BulletClasses,
   P extends BulletPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLUListElement,
     COMP,
     BulletEmits,
     EXPOSE,
@@ -35,15 +39,17 @@ export class BulletDesign<
     CLASSES,
     P
   > {
-  /** Instance of the Bullet constructor / Экземпляр конструктора Bullet */
+  /** Bullet logic orchestrator instance / Экземпляр оркестратора логики Bullet */
   protected readonly item: Bullet
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a BulletDesign instance.
+   *
+   * Конструктор для создания экземпляра BulletDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -68,9 +74,10 @@ export class BulletDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -80,6 +87,7 @@ export class BulletDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns class dictionary / словарь классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -96,39 +104,42 @@ export class BulletDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns style dictionary / словарь стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the `<ul>` element with HTML markup or `BulletItem` / slot children.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга элемента `<ul>` с HTML-разметкой или дочерними элементами `BulletItem` / слота.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
     const html = this.item.getHtml()
-    const tag = 'ul'
-    const props = {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
+    const rootProps = mergeProps(
+      this.getAttrs(),
+      {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      }
+    )
+
+    if (html !== undefined) {
+      return h('ul', {
+        ...rootProps,
+        innerHTML: html
+      })
     }
-    const children: any[] = [
-      ...this.item.list.render()
+
+    const children: VNode[] = [
+      ...this.item.callInstance('list', item => item.render(), [])
     ]
 
-    if (
-      this.slots
-      && 'default' in this.slots
-    ) {
-      this.initSlot('default', children)
-    }
+    this.initSlot('default', children)
 
-    if (html) {
-      return h(tag, { ...props, innerHTML: html })
-    }
-
-    return h(tag, props, children)
+    return h('ul', rootProps, children)
   }
 }

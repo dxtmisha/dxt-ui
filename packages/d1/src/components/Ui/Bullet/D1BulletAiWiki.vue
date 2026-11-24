@@ -18,6 +18,14 @@ defineOptions({
     :component="D1Bullet"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent
+    v-bind="args"
+    :list="['Structured list item one', 'Structured list item two', 'Structured list item three']"
+  />
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

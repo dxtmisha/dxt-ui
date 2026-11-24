@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,21 +7,23 @@ import {
 
 import { BulletItem } from './BulletItem'
 
-import {
-  type BulletItemPropsBasic
+import type {
+  BulletItemPropsBasic
 } from './props'
-import {
-  type BulletItemClasses,
-  type BulletItemComponents,
-  type BulletItemEmits,
-  type BulletItemExpose,
-  type BulletItemSlots
+import type {
+  BulletItemClasses,
+  BulletItemComponents,
+  BulletItemEmits,
+  BulletItemExpose,
+  BulletItemSlots
 } from './types'
 
 /**
- * BulletItemDesign class responsible for rendering the BulletItem component, mapping props to elements, classes, and sub-components.
+ * BulletItemDesign class responsible for rendering the semantic `<li>` bullet element,
+ * binding root `elementHtml`, and composing description and default slot content.
  *
- * Класс BulletItemDesign, отвечающий за рендеринг компонента BulletItem, сопоставление свойств с элементами, классами и подкомпонентами.
+ * Класс BulletItemDesign, отвечающий за рендеринг семантического элемента маркированного списка `<li>`,
+ * привязку корневого `elementHtml` и компоновку описания и слота по умолчанию.
  */
 export class BulletItemDesign<
   COMP extends BulletItemComponents,
@@ -29,7 +31,7 @@ export class BulletItemDesign<
   CLASSES extends BulletItemClasses,
   P extends BulletItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLLIElement,
     COMP,
     BulletItemEmits,
     EXPOSE,
@@ -37,11 +39,13 @@ export class BulletItemDesign<
     CLASSES,
     P
   > {
-  /** Instance of the BulletItem constructor / Экземпляр конструктора BulletItem */
+  /** BulletItem logic orchestrator instance / Экземпляр оркестратора логики BulletItem */
   protected readonly item: BulletItem
 
   /**
-   * Constructor
+   * Constructor for creating a BulletItemDesign instance.
+   *
+   * Конструктор для создания экземпляра BulletItemDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -106,20 +110,29 @@ export class BulletItemDesign<
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the `<li>` element with description and default slot children.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга элемента `<li>` с описанием и содержимым слота по умолчанию.
    * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
+    const children: VNode[] = [
+      ...this.item.callInstance('description', item => item.render(), [])
+    ]
+
+    this.initSlot('default', children)
+
     return h(
       'li',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
-      this.item.description.render()
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
     )
   }
 }

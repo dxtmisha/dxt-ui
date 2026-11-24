@@ -22,8 +22,11 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Bars" name="component-bars"/>
         <DemoLink label="Bleed" name="component-bleed"/>
+        <DemoLink label="Block" name="component-block"/>
+        <DemoLink label="BreadcrumbItem" name="component-breadcrumb-item"/>
         <DemoLink label="Breadcrumbs" name="component-breadcrumbs"/>
         <DemoLink label="Bullet" name="component-bullet"/>
+        <DemoLink label="BulletItem" name="component-bullet-item"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="ButtonGroup" name="component-button-group"/>
         <DemoLink label="Cell" name="component-cell"/>
@@ -41,6 +44,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="FieldMessage" name="component-field-message"/>
         <DemoLink label="Form" name="component-form"/>
         <DemoLink label="Formatted" name="component-formatted"/>
+        <DemoLink label="Header" name="component-header"/>
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>

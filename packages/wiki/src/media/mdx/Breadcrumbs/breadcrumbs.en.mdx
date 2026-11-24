@@ -1,14 +1,29 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Breadcrumbs` component renders a hierarchical `<nav>` landmark trail of `BreadcrumbItem` elements representing the user's current location within an application.
 
-Navigation helper component showing a hierarchical trail of links.
-
-Breadcrumbs displays a trail of BreadcrumbItem elements representing the path to the current page. It supports automatic list rendering from a structured properties array and automatically configures the final item as static (readonly) to denote the current active page.
+It automatically marks the final item in `list` as the non-interactive current page (`readonly` with `aria-current="page"`), while preserving explicit item-level `readonly` or `disabled` overrides, forwarding shared `itemAttrs` across all steps, localizing the `<nav>` landmark label via `textBreadcrumb`, and propagating item click events.
 
 **Key features:**
 
-- Automatic list rendering based on properties array
-- Last item automatically configured as static/readonly
-- Click event propagation with full details
-- Custom wrapper styles and flex alignment
+- **Semantic Landmark:** Renders a `<nav>` element with a localized `aria-label` (`'Breadcrumb'` by default, customizable via `textBreadcrumb`)
+- **Declarative Trail Rendering:** Builds `BreadcrumbItem` steps from `list` and merges shared `itemAttrs` across all items
+- **Automatic Current-Page State:** Defaults the last item to `readonly` (`<span aria-current="page">`) while honoring explicit `readonly` flags on any step
+- **Unified Click & Skeleton Support:** Forwards `click` and `clickLite` events from interactive steps and synchronizes `isSkeleton` across the trail
+
+<Source
+    code={`
+<template>
+  <Breadcrumbs
+    :list="[
+      { label: 'Home', icon: 'home', to: '/' },
+      { label: 'Catalog', to: '/catalog' },
+      { label: 'Workstations' }
+    ]"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Use `itemAttrs` to apply consistent separator icons or directional settings across every step in the trail.

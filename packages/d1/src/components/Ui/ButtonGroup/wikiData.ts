@@ -6,16 +6,19 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'area', type: 'string' },
+  { name: 'ariaLabel', type: 'string' },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
-  { name: 'list', type: 'ConstrBind<ButtonProps>[]' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'list', type: 'readonly ConstrBind<ButtonProps>[]' },
   { name: 'orientation', type: 'string', option: ['horizontal', 'vertical'] },
+  { name: 'role', type: 'string' },
   { name: 'wrap', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'default', description: `Default slot for custom button elements / Слот по умолчанию для пользовательских кнопок`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

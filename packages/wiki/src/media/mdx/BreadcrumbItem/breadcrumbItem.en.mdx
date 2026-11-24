@@ -1,15 +1,25 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `BreadcrumbItem` component represents an individual navigation step inside a breadcrumbs trail.
 
-Individual navigation link element in a breadcrumbs trail.
-
-BreadcrumbItem represents a single step in a navigation trail. It supports standard text labels, optional prepended or appended icons, active state handling (disabled), static text mode (readonly), back navigation mode, and customizable HTML tags (such as anchor or span) which integrate cleanly with standard router links or native browser routes.
+It automatically switches between an interactive anchor element (`<a>`) for navigable steps and a static current-page element (`<span aria-current="page">`) when `readonly` is enabled, while managing leading icons, directional separator arrows, disabled states, router links, and skeleton placeholders.
 
 **Key features:**
 
-- Text labels and icon customization
-- Disabled (non-interactive) and Readonly (static) states
-- Back navigation mode support
-- Flexible tag customization
-- Integration with standard RouterLink and native links
+- **Automatic Semantic Element:** Renders `<a>` for navigable or disabled steps and `<span aria-current="page">` without a trailing separator when `readonly` is set
+- **Accessible Link & Keyboard Support:** Assigns `role="link"` and `tabindex="0"` with `Enter` activation when no native `href` is present, and `aria-disabled="true"` when disabled
+- **Directional Back Mode:** Switches between `iconArrowRight` and `iconArrowLeft` (with RTL mirroring) and reorders icon placement when `back` is active
+- **Zero-Duplication Skeleton:** Applies skeleton placeholders to both the label and leading icon via `isSkeleton`
+
+<Source
+    code={`
+<template>
+  <BreadcrumbItem label="Home" icon="home" href="/" icon-arrow-right="chevron_right" />
+  <BreadcrumbItem label="Products" to="/products" icon-arrow-right="chevron_right" />
+  <BreadcrumbItem label="Workstations" readonly />
+</template>
+  `}
+    language="html"
+/>
+
+> BreadcrumbItem serves as the atomic building block rendered automatically by `Breadcrumbs` or composed directly in custom trails.

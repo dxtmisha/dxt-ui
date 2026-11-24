@@ -1,76 +1,83 @@
-import type { Ref } from 'vue'
 import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { EventClickInclude } from '../../classes/EventClickInclude'
+import { BreadcrumbItemInclude } from '../BreadcrumbItem'
 import { TextInclude } from '../../classes/TextInclude'
 
-import type { BreadcrumbsComponents, BreadcrumbsEmits, BreadcrumbsSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { BreadcrumbsProps } from './props'
+import type {
+  BreadcrumbsComponents,
+  BreadcrumbsEmits,
+  BreadcrumbsSlots
+} from './types'
+
+/** Breadcrumbs dependency constructors type / Тип конструкторов зависимостей Breadcrumbs */
+export type BreadcrumbsConstructors = {
+  /** BreadcrumbItem list include constructor / Конструктор подключения списка BreadcrumbItem */
+  breadcrumbItem: typeof BreadcrumbItemInclude
+  /** Localized text constructor / Конструктор локализованного текста */
+  text: typeof TextInclude
+}
 
 /**
  * Class representing the business logic and orchestrator of the Breadcrumbs component.
+ * Coordinates localized WAI-ARIA landmark labeling (`aria-label`) via `TextInclude` and
+ * lazy list rendering of `BreadcrumbItem` elements via `BreadcrumbItemInclude`.
  *
  * Класс, представляющий бизнес-логику и оркестратор компонента Breadcrumbs.
+ * Координирует локализованную WAI-ARIA разметку ориентира (`aria-label`) через `TextInclude` и
+ * ленивый рендеринг списка элементов `BreadcrumbItem` через `BreadcrumbItemInclude`.
  */
-export class Breadcrumbs {
-  /** Click event manager / Менеджер событий клика */
-  readonly event: EventClickInclude
-  /** Text controller / Контроллер текста */
-  readonly text: TextInclude
-
-  /**
-   * Constructor for Breadcrumbs.
-   *
-   * Конструктор для Breadcrumbs.
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param element input element / элемент ввода
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param props input data / входные данные
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param constructors object with classes / объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
-   */
-  constructor(
-    protected readonly naming: DesignName,
-    protected readonly components: DesignComp<BreadcrumbsComponents, BreadcrumbsProps> | undefined,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly emits: ConstrEmit<BreadcrumbsEmits> | undefined,
-    protected readonly props: BreadcrumbsProps,
-    protected readonly slots: BreadcrumbsSlots | undefined,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      emits
-    )
-
-    this.text = new TextIncludeConstructor(props)
+export class Breadcrumbs extends DesignLogicAbstract<
+  HTMLElement,
+  BreadcrumbsComponents,
+  BreadcrumbsEmits,
+  BreadcrumbsSlots,
+  BreadcrumbsProps,
+  BreadcrumbsConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<BreadcrumbsConstructors> = {
+    breadcrumbItem: {
+      item: BreadcrumbItemInclude,
+      canCreate: () => BreadcrumbItemInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.emits
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
   }
 
   /**
-   * Returns binding attributes for the container element. /
-   * Возвращает атрибуты привязки для контейнера.
-   * @returns object containing role and label / объект с ролью и меткой
+   * Returns WAI-ARIA attributes (`aria-label`) for the breadcrumb `<nav>` landmark.
+   *
+   * Возвращает WAI-ARIA атрибуты (`aria-label`) для навигационного ориентира `<nav>` хлебных крошек.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  get binds(): Record<string, any> {
+  get aria(): AriaList {
+    return AriaStaticInclude.label(this.i('text').breadcrumb)
+  }
+
+  /**
+   * Returns binding attributes for the container `<nav>` element.
+   *
+   * Возвращает атрибуты привязки для контейнерного элемента `<nav>`.
+   * @returns element bindings / привязки элемента
+   */
+  get binds(): ConstrBind {
     return {
-      ...AriaStaticInclude.label(this.text.breadcrumb)
+      ...this.aria
     }
   }
 }

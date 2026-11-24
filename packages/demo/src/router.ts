@@ -17,8 +17,11 @@ import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
 import DemoBleedPage from './pages/components/DemoBleedPage.vue'
+import DemoBlockPage from './pages/components/DemoBlockPage.vue'
+import DemoBreadcrumbItemPage from './pages/components/DemoBreadcrumbItemPage.vue'
 import DemoBreadcrumbsPage from './pages/components/DemoBreadcrumbsPage.vue'
 import DemoBulletPage from './pages/components/DemoBulletPage.vue'
+import DemoBulletItemPage from './pages/components/DemoBulletItemPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoButtonGroupPage from './pages/components/DemoButtonGroupPage.vue'
 import DemoCellPage from './pages/components/DemoCellPage.vue'
@@ -36,6 +39,7 @@ import DemoFieldLabelPage from './pages/components/DemoFieldLabelPage.vue'
 import DemoFieldMessagePage from './pages/components/DemoFieldMessagePage.vue'
 import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
 import DemoFormPage from './pages/components/DemoFormPage.vue'
+import DemoHeaderPage from './pages/components/DemoHeaderPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
@@ -157,6 +161,16 @@ export const routes: RouteRecordRaw[] = [
     component: DemoBleedPage
   },
   {
+    path: '/component-block',
+    name: 'component-block',
+    component: DemoBlockPage
+  },
+  {
+    path: '/component-breadcrumb-item',
+    name: 'component-breadcrumb-item',
+    component: DemoBreadcrumbItemPage
+  },
+  {
     path: '/component-breadcrumbs',
     name: 'component-breadcrumbs',
     component: DemoBreadcrumbsPage
@@ -165,6 +179,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-bullet',
     name: 'component-bullet',
     component: DemoBulletPage
+  },
+  {
+    path: '/component-bullet-item',
+    name: 'component-bullet-item',
+    component: DemoBulletItemPage
   },
   {
     path: '/component-button',
@@ -250,6 +269,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-form',
     name: 'component-form',
     component: DemoFormPage
+  },
+  {
+    path: '/component-header',
+    name: 'component-header',
+    component: DemoHeaderPage
   },
   {
     path: '/component-horizontal-scroll',

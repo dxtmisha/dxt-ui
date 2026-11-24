@@ -1,5 +1,6 @@
 export * from './BreadcrumbItem'
 export * from './BreadcrumbItemDesign'
+export * from './BreadcrumbItemInclude'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

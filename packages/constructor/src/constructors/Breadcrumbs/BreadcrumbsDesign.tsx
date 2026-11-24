@@ -1,36 +1,37 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { Breadcrumbs } from './Breadcrumbs'
 
-import {
-  type BreadcrumbsProps
+import type {
+  BreadcrumbsPropsBasic
 } from './props'
-import {
-  type BreadcrumbsClasses,
-  type BreadcrumbsComponents,
-  type BreadcrumbsEmits,
-  type BreadcrumbsExpose,
-  type BreadcrumbsSlots
+import type {
+  BreadcrumbsClasses,
+  BreadcrumbsComponents,
+  BreadcrumbsEmits,
+  BreadcrumbsExpose,
+  BreadcrumbsSlots
 } from './types'
 
 /**
- * BreadcrumbsDesign class constructor for managing classes, styles, and rendering the Breadcrumbs component.
+ * BreadcrumbsDesign class constructor for managing classes, styles, and rendering
+ * the semantic `<nav>` landmark and trail of `BreadcrumbItem` components.
  *
- * Класс-конструктор дизайна BreadcrumbsDesign для управления классами, стилями и рендерингом компонента Breadcrumbs.
+ * Класс-конструктор дизайна BreadcrumbsDesign для управления классами, стилями и рендерингом
+ * семантического ориентира `<nav>` и цепочки компонентов `BreadcrumbItem`.
  */
 export class BreadcrumbsDesign<
   COMP extends BreadcrumbsComponents,
   EXPOSE extends BreadcrumbsExpose,
   CLASSES extends BreadcrumbsClasses,
-  P extends BreadcrumbsProps
+  P extends BreadcrumbsPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     BreadcrumbsEmits,
     EXPOSE,
@@ -38,11 +39,13 @@ export class BreadcrumbsDesign<
     CLASSES,
     P
   > {
-  /** Main component instance / Основной экземпляр компонента */
+  /** Breadcrumbs logic orchestrator instance / Экземпляр оркестратора логики Breadcrumbs */
   protected readonly item: Breadcrumbs
 
   /**
-   * Constructor
+   * Constructor for creating a BreadcrumbsDesign instance.
+   *
+   * Конструктор для создания экземпляра BreadcrumbsDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -61,12 +64,12 @@ export class BreadcrumbsDesign<
     )
 
     this.item = new ItemConstructor(
+      this.props,
+      this.element,
       this.naming,
       this.components,
-      this.element,
-      this.emits,
-      this.props,
-      this.slots
+      this.slots,
+      this.emits
     )
   }
 
@@ -108,49 +111,24 @@ export class BreadcrumbsDesign<
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the `<nav>` landmark and included `BreadcrumbItem` trail.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга ориентира `<nav>` и подключённой цепочки `BreadcrumbItem`.
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    return h('nav', {
-      ...this.item.binds,
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.renderChildren())
-  }
-
-  /**
-   * Renders the breadcrumb items.
-   *
-   * Рендерит элементы хлебных крошек.
-   * @returns list of child virtual nodes / список дочерних виртуальных узлов
-   */
-  readonly renderChildren = (): VNode[] => {
-    const children: VNode[] = []
-    const length = (this.props.list?.length ?? 1) - 1
-
-    this.props.list?.forEach((item, key) => {
-      this.components?.renderAdd(
-        children,
-        'breadcrumbItem',
-        toBinds(
-          item,
-          {
-            readonly: key === length,
-            isSkeleton: this.props.isSkeleton,
-            class: this.classes?.value.item,
-            onClick: this.item.event.onClick
-          }
-        ),
-        undefined,
-        item?.value || item?.label || key
-      )
-    })
-
-    return children
+    return h(
+      'nav',
+      mergeProps(
+        this.item.binds,
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      this.item.callInstance('breadcrumbItem', item => item.render(), [])
+    )
   }
 }

@@ -5,7 +5,8 @@ import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 import type { LabelProps } from '../../types/labelTypes'
 
-type BreadcrumbItemPropsToken = {
+/** Token properties generated from properties.json / Токен-свойства, сгенерированные из properties.json */
+export type BreadcrumbItemPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
   readonly?: boolean
@@ -13,6 +14,7 @@ type BreadcrumbItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Base properties for BreadcrumbItem component / Базовые свойства для компонента BreadcrumbItem */
 export type BreadcrumbItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > = LabelProps
@@ -28,18 +30,16 @@ export type BreadcrumbItemPropsBasic<
   }
 
 /**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
+ * Type describing incoming properties /
+ * Тип, описывающий входящие свойства
  */
 export type BreadcrumbItemProps = BreadcrumbItemPropsBasic & BreadcrumbItemPropsToken
 
 /**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
+ * Default value for property /
+ * Значение по умолчанию для свойства
  */
-export const defaultsBreadcrumbItem = {
+export const defaultsBreadcrumbItem: BreadcrumbItemProps = {
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

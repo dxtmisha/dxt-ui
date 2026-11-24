@@ -1,8 +1,9 @@
-import type { ConstrBind } from '@dxtmisha/functional'
+import type { ConstrBind, NumberOrString } from '@dxtmisha/functional'
 import type { BulletItemPropsBasic } from './props'
 
 /** Type describing components for nested bullet items / Тип, описывающий компоненты для вложенных элементов списка */
 export type BulletItemComponentInclude = {
+  /** BulletItem component / Компонент BulletItem */
   bulletItem?: object
 }
 
@@ -10,9 +11,9 @@ export type BulletItemComponentInclude = {
 export type BulletItemPropsInclude<
   BulletItemProps extends BulletItemPropsBasic = BulletItemPropsBasic
 > = {
-  /** List of items / Список настроек элементов */
-  list?: string[]
+  /** List of item descriptions / Список описаний элементов */
+  list?: readonly NumberOrString[]
 
-  /** Additional attributes for item component / Дополнительные атрибуты для компонента элемента */
+  /** Shared attributes for item component / Общие атрибуты для компонента элемента */
   itemAttrs?: ConstrBind<BulletItemProps>
 }

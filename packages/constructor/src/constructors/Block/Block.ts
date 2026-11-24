@@ -1,85 +1,146 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, getElementId } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName,
+  getElementId,
+  isFilled,
+  isNumber
+} from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
-
 import { HeaderInclude } from '../Header'
 
-import type { BlockComponents, BlockEmits, BlockSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { BlockProps } from './props'
+import type { BlockComponents, BlockEmits, BlockSlots } from './types'
+
+/** Block dependency constructors type / Тип конструкторов зависимостей Block */
+export type BlockConstructors = {
+  /** Area manager constructor / Конструктор менеджера области */
+  area: typeof AreaInclude
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Header manager constructor / Конструктор менеджера шапки */
+  header: typeof HeaderInclude
+}
 
 /**
- * Block controller class managing description, headers, labels, tags, and aria-bindings.
+ * Block orchestrator class managing headline, header inclusion, description, polymorphic root tag,
+ * reactive area context, and ARIA section bindings.
  *
- * Класс контроллера Block, управляющий описанием, заголовками, метками, тегами и aria-привязками.
+ * Класс-оркестратор Block, управляющий хедлайном, подключением шапки, описанием, полиморфным корневым тегом,
+ * реактивным контекстом области и ARIA-привязками секции.
  */
-export class Block {
-  /** Object for working with description / Объект для работы с описанием */
-  readonly description: DescriptionInclude
-
-  /** Object for working with header / Объект для работы с шапкой */
-  readonly header: HeaderInclude
-
-  /** Object for working with area value / Объект для работы со значением области */
-  readonly area: AreaInclude
-
-  /** Identifier for the label / Идентификатор для метки */
+export class Block extends DesignLogicAbstract<
+  HTMLDivElement,
+  BlockComponents,
+  BlockEmits,
+  BlockSlots,
+  BlockProps,
+  BlockConstructors
+> {
+  /** Default identifier for the header label / Идентификатор по умолчанию для метки шапки */
   readonly labelId: string = getElementId()
 
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.AreaIncludeConstructor class for working with area value / класс для работы со значением области
-   * @param constructors.DescriptionIncludeConstructor class for working with the description / класс для работы с описанием
-   */
-  constructor(
-    protected readonly props: BlockProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<BlockComponents, BlockProps>,
-    protected readonly slots?: BlockSlots,
-    protected readonly emits?: ConstrEmit<BlockEmits>,
-    constructors: {
-      AreaIncludeConstructor?: typeof AreaInclude
-      HeaderIncludeConstructor?: typeof HeaderInclude
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-    } = {}
-  ) {
-    const {
-      AreaIncludeConstructor = AreaInclude,
-      HeaderIncludeConstructor = HeaderInclude,
-      DescriptionIncludeConstructor = DescriptionInclude
-    } = constructors
-
-    this.header = new HeaderIncludeConstructor(
-      props,
-      naming,
-      components,
-      undefined,
-      undefined,
-      this.labelId
-    )
-
-    this.description = new DescriptionIncludeConstructor(props, naming, slots)
-    this.area = new AreaIncludeConstructor(props)
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<BlockConstructors> = {
+    area: {
+      item: AreaInclude,
+      parameters: () => [this.props]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    header: {
+      item: HeaderInclude,
+      canCreate: () => HeaderInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        this.labelId,
+        this.slots
+      ]
+    }
   }
 
   /**
-   * Tag name.
+   * Constructor for initializing Block orchestrator and area injection context.
    *
-   * Название тега.
-   * @returns tag name / название тега
+   * Конструктор для инициализации оркестратора Block и контекста инъекции области.
+   * @param props input data / входные данные
+   * @param element target HTML element / целевой HTML-элемент
+   * @param naming component naming helper / помощник именования компонента
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits callback function triggered on events / функция обратного вызова при событиях
+   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
    */
-  get tag(): string {
-    return this.props.tag || 'div'
+  constructor(
+    props: Readonly<BlockProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<BlockComponents, BlockProps>,
+    slots?: BlockSlots,
+    emits?: ConstrEmit<BlockEmits>,
+    constructors?: Partial<BlockConstructors>
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
+
+    this.i('area')
+  }
+
+  /**
+   * ARIA attributes linking the block container to its rendered header label and description.
+   *
+   * ARIA-атрибуты, связывающие контейнер блока с его отрисованной меткой шапки и описанием.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    const aria: AriaList = {}
+
+    if (this.hasHeaderLabel()) {
+      Object.assign(
+        aria,
+        AriaStaticInclude.labelledby(this.getHeaderLabelId())
+      )
+    }
+
+    const descriptionId = this.callInstance(
+      'description',
+      item => (item.is ? item.id : undefined)
+    )
+
+    if (descriptionId) {
+      Object.assign(
+        aria,
+        AriaStaticInclude.describedby(descriptionId)
+      )
+    }
+
+    return aria
   }
 
   /**
@@ -88,36 +149,66 @@ export class Block {
    * Вычисляемые привязки для главного элемента.
    * @returns bindings object / объект привязок
    */
-  get binds() {
-    const props = {}
-
-    if (this.props.label) {
-      Object.assign(
-        props,
-        AriaStaticInclude.labelledby(this.labelId)
-      )
+  get binds(): ConstrBind {
+    return {
+      ...this.aria
     }
-
-    if (this.description.is) {
-      Object.assign(
-        props,
-        AriaStaticInclude.describedby(this.description.id)
-      )
-    }
-
-    return props
   }
 
   /**
-   * Checks if the headline exists.
+   * Root HTML tag name.
    *
-   * Проверяет, существует ли заголовок.
-   * @returns true if headline exists / true, если заголовок существует
+   * Имя корневого HTML-тега.
+   * @returns tag name / название тега
+   */
+  get tag(): string {
+    return this.props.tag || 'div'
+  }
+
+  /**
+   * Checks if headline content or slot is provided.
+   *
+   * Проверяет, задано ли содержимое или слот хедлайна.
+   * @returns true if headline exists / true, если хедлайн существует
    */
   isHeadline(): boolean {
     return Boolean(
-      this.props.headline
-      || (this.slots && 'headline' in this.slots)
+      isFilled(this.props.headline, true)
+      || isNumber(this.props.headline)
+      || this.slots?.headline
     )
+  }
+
+  /**
+   * Checks whether the header renders a label element for `aria-labelledby`.
+   *
+   * Проверяет, отрисовывает ли шапка элемент метки для `aria-labelledby`.
+   * @returns true if header label exists / true, если метка шапки существует
+   */
+  protected hasHeaderLabel(): boolean {
+    return Boolean(
+      (
+        this.components?.is('header')
+        && (
+          isFilled(this.props.label, true)
+          || isNumber(this.props.label)
+          || isFilled(this.props.headerAttrs?.label, true)
+          || isNumber(this.props.headerAttrs?.label)
+          || this.slots?.label
+        )
+      )
+    )
+  }
+
+  /**
+   * Resolves the effective DOM `id` of the rendered header label.
+   *
+   * Разрешает фактический DOM `id` отрисованной метки шапки.
+   * @returns header label id / идентификатор метки шапки
+   */
+  protected getHeaderLabelId(): string {
+    return this.props.labelId
+      || (this.props.headerAttrs?.labelId as string | undefined)
+      || this.labelId
   }
 }

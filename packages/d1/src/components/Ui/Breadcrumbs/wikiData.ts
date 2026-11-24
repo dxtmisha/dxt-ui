@@ -6,7 +6,8 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'list', type: 'ConstrBind<BreadcrumbItemProps>[]' },
+  { name: 'itemAttrs', type: 'ConstrBind<BreadcrumbItemProps>' },
+  { name: 'list', type: 'readonly ConstrBind<BreadcrumbItemProps>[]' },
   { name: 'textBreadcrumb', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
 ]

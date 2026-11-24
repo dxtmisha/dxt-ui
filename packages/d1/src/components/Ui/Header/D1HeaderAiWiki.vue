@@ -18,6 +18,11 @@ defineOptions({
     :component="D1Header"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent icon="folder" label="Section Header" caption="12 items" tag="h3" v-bind="args"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

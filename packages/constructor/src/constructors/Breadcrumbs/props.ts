@@ -1,47 +1,32 @@
-import type { ConstrBind } from '@dxtmisha/functional'
-
-import type { BreadcrumbItemProps } from '../BreadcrumbItem'
+import type { BreadcrumbItemProps, BreadcrumbItemPropsInclude } from '../BreadcrumbItem'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { TextBreadcrumbPropsInclude } from '../../types/textTypes'
 
-/**
- * Type describing token properties of the Breadcrumbs component.
- *
- * Тип, описывающий свойства токенов компонента Breadcrumbs.
- */
-type BreadcrumbsPropsToken = {
+/** Token properties generated from properties.json / Токен-свойства, сгенерированные из properties.json */
+export type BreadcrumbsPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-/**
- * Type describing basic properties of the Breadcrumbs component.
- *
- * Тип, описывающий базовые свойства компонента Breadcrumbs.
- */
+/** Base properties for Breadcrumbs component / Базовые свойства для компонента Breadcrumbs */
 export type BreadcrumbsPropsBasic<
   BreadcrumbItem extends BreadcrumbItemProps = BreadcrumbItemProps
 > = TextBreadcrumbPropsInclude
   & SkeletonPropsInclude
-  & {
-    /** List of breadcrumb items / Список элементов хлебных крошек */
-    list?: ConstrBind<BreadcrumbItem>[]
-  }
+  & BreadcrumbItemPropsInclude<BreadcrumbItem>
 
 /**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
+ * Type describing incoming properties /
+ * Тип, описывающий входящие свойства
  */
 export type BreadcrumbsProps = BreadcrumbsPropsBasic & BreadcrumbsPropsToken
 
 /**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
+ * Default value for property /
+ * Значение по умолчанию для свойства
  */
-export const defaultsBreadcrumbs = {
+export const defaultsBreadcrumbs: BreadcrumbsProps = {
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -1,18 +1,17 @@
-## Description
+A semantic `<ul>` bullet list container component designed to present structured, clean bulleted lists.
 
-A bullet list container component designed to present structured, clean lists.
-
-The Bullet component is highly flexible, supporting rendering list items dynamically from a string array, forwarding properties and attributes to child items, or rendering direct HTML content with auto-styling of list items. It integrates seamlessly into standard content layout flows and respects the theme's spacing and list aesthetics.
+The `Bullet` component supports rendering list items dynamically from a string or numeric array (`list`), forwarding shared properties and attributes to child items (`itemAttrs`), rendering sanitized HTML list content (`html`) with automatic injection of `BulletItem` classes onto `<li>` tags, zero-duplication skeleton loading (`isSkeleton`), or custom slot children.
 
 **Key Features:**
 
-- Automated list rendering from a string array (`list` prop)
-- Forwarding custom attributes and settings to child list elements (`itemAttrs` prop)
-- Support for direct HTML lists (`html` prop), parsing `<li>` tags and wrapping them with standard design system class names automatically
-- Default slot to render custom layout structures or nested bullet list items manually
+- Automated list rendering from a string or number array (`list` prop, including numeric `0`)
+- Forwarding shared attributes and settings to child list items (`itemAttrs` prop)
+- Sanitized HTML list rendering (`html` prop), stripping unsafe tags/attributes and injecting design system classes into `<li>` elements while preserving existing custom classes
+- Zero-duplication skeleton loading state (`isSkeleton` prop) forwarded automatically to child items
+- Default slot (`#default`) to render custom `BulletItem` structures manually
 
 **Typical Usage Scenarios:**
 
-- Displaying bulleted lists of text features, rules, or key metrics
-- Displaying formatted lists inside information blocks, cards, or notifications
-- Rendering raw HTML lists from markdown or CMS endpoints while maintaining uniform layout styles
+- Displaying bulleted lists of product features, validation rules, or key metrics
+- Rendering formatted lists inside cards, dialogs, alerts, or documentation sections
+- Rendering rich HTML lists from Markdown or CMS sources with uniform list styling

@@ -1,47 +1,39 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Block` component is a foundational structural container that organizes section content alongside optional headlines, headers, icons, captions, and descriptions.
 
-A versatile structural component that serves as a container with support for labels, descriptions, captions, icons, and headlines.
+It serves as the base layout primitive for higher-level section containers (`Group`, `Section`, `Page`), automatically wiring `aria-labelledby` and `aria-describedby` to rendered header and description elements while providing a reactive layout `area` context (`'block'` by default) to descendant components.
 
-Block provides a flexible foundation for building complex interface components, allowing you to combine various information elements into a single unit. The component supports HTML tag customization and provides slots for content customization.
+**Key features:**
 
-**Key Features:**
+- **Structured Header Anatomy:** Combines an overline `headline`, embedded `Header` (`label`, `caption`, `icon`, `tagHeader`, `#trailing`), and `description` inside a collapsible body header wrapper
+- **Zero-Overhead Minimal Mode:** Omits the header/description wrapper and skips helper instantiation when only default body content is supplied
+- **Polymorphic Root Tag:** Configurable semantic container tag (`div`, `section`, `article`, `aside`) via `tag`
+- **Automatic WAI-ARIA Linking:** Synchronizes `aria-labelledby` and `aria-describedby` with generated or explicit `labelId` and `descriptionId` values
+- **Cascading Area Context:** Injects `area` (`'block'` by default) into body content while preserving `'header'` inside the embedded header
 
-- Display of headline, label, description, and caption
-- Icon support
-- Customizable HTML tag
-- Flexible layout for content organization
-- Slot support for functionality extension
+**Common use cases:**
 
-**Typical Use Cases:**
-
-- Content cards
-- List items
-- Information blocks
-- Sections with headers and descriptions
-- Basic building block for other components
+- Settings cards, dashboard panels, and form sections
+- Structured article or documentation blocks with overline headlines and action buttons
+- Base container for `Group`, `Section`, and `Page` layouts
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-</script>
-
 <template>
   <Block
-    headline="Block Headline"
-    label="Label"
-    description="Block description with detailed information"
-    caption="Caption"
-    icon="info"
+    tag="section"
+    headline="ACCOUNT SECURITY"
+    label="Two-Factor Authentication"
+    caption="Recommended"
+    description="Add an extra verification step when signing in."
+    icon="lock"
   >
-    Main block content
+    <p>Configure your preferred authenticator method.</p>
   </Block>
 </template>
   `}
     language="html"
 />
 
-> Block is a fundamental component for creating structured interfaces.
-
+> Block unifies section headings, descriptions, accessibility relationships, and body content into a single reusable layout primitive.

@@ -1,51 +1,62 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { SkeletonInclude } from '../Skeleton'
 
-import type { BulletItemComponents, BulletItemEmits, BulletItemSlots } from './types'
 import type { BulletItemProps } from './props'
+import type {
+  BulletItemComponents,
+  BulletItemEmits,
+  BulletItemSlots
+} from './types'
+
+/** BulletItem dependency constructors type / Тип конструкторов зависимостей BulletItem */
+export type BulletItemConstructors = {
+  /** Description include constructor / Конструктор подключения описания */
+  description: typeof DescriptionInclude
+  /** Skeleton include constructor / Конструктор подключения скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
- * Class for working with the marking element.<br>
- * Класс для работы с элементом маркировки.
+ * Class representing the business logic and orchestrator of the BulletItem component.
+ * Coordinates lazy instantiation of `DescriptionInclude` (`<span>`) and `SkeletonInclude`.
+ *
+ * Класс, представляющий бизнес-логику и оркестратор компонента BulletItem.
+ * Координирует ленивую инициализацию `DescriptionInclude` (`<span>`) и `SkeletonInclude`.
  */
-export class BulletItem {
-  /** Description include / Подключение описания */
-  readonly description: DescriptionInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.DescriptionConstructor class for creating a description / класс для создания описания
-   */
-  constructor(
-    protected readonly props: BulletItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<BulletItemComponents, BulletItemProps>,
-    protected readonly slots?: BulletItemSlots,
-    protected readonly emits?: ConstrEmit<BulletItemEmits>,
-    constructors: {
-      DescriptionConstructor?: typeof DescriptionInclude
-    } = {}
-  ) {
-    const {
-      DescriptionConstructor = DescriptionInclude
-    } = constructors
-
-    this.description = new DescriptionConstructor(
-      this.props,
-      this.naming,
-      this.slots,
-      undefined,
-      'span'
-    )
+export class BulletItem extends DesignLogicAbstract<
+  HTMLLIElement,
+  BulletItemComponents,
+  BulletItemEmits,
+  BulletItemSlots,
+  BulletItemProps,
+  BulletItemConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<BulletItemConstructors> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots,
+        () => this.callInstance('skeleton', item => item),
+        'span'
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classTextVariant']
+      ]
+    }
   }
 }

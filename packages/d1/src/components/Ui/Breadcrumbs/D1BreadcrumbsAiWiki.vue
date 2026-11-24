@@ -20,10 +20,14 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Breadcrumbs :list="[
-    { label: 'Home', to: '#', icon: 'home' },
-    { label: 'Settings', to: '#settings' }
-  ]" v-bind="args" />
+  <DesignComponent
+    v-bind="args"
+    :list="args.list ?? [
+      { label: 'Home', icon: 'home', href: '#' },
+      { label: 'Catalog', href: '#catalog' },
+      { label: 'Current Page' }
+    ]"
+  />
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

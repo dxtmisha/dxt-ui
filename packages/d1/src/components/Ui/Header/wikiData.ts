@@ -25,7 +25,7 @@ const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'trailing', description: `Slot for trailing content/ Слот для правого контента`, properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'trailing', description: `Slot for trailing content / Слот для правого контента`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

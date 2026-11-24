@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { CaptionProps, CaptionSlots } from '../../types/captionTypes'
@@ -7,16 +8,16 @@ import type { LabelAlternativeSlots, LabelProps } from '../../types/labelTypes'
 import type { HeaderPropsBasic } from './props'
 
 /**
- * Interface for describing which components need to be connected for Header work/
+ * Interface for describing which components need to be connected for Header work /
  * Интерфейс для описания, какие компоненты надо подключить для работы Header
  */
 export type HeaderComponentInclude = {
-  /** Header component/ Компонент Header */
+  /** Header component / Компонент Header */
   header?: object
 }
 
 /**
- * Type for including Header properties/
+ * Type for including Header properties /
  * Тип для подключения свойств Header
  */
 export type HeaderPropsInclude<
@@ -26,18 +27,18 @@ export type HeaderPropsInclude<
   & CaptionProps
   & IconPropsInclude<Icon>
   & {
-    /** HTML tag for the header section/ HTML-тег для секции шапки */
+    /** HTML tag for the header section / HTML-тег для секции шапки */
     tagHeader?: string
 
-    /** Attributes for Header/ Атрибуты для Header */
+    /** Attributes for Header / Атрибуты для Header */
     headerAttrs?: ConstrBind<Header>
   }
 
 /**
- * Type for including Header slots/
+ * Type for including Header slots /
  * Тип для подключения слотов Header
  */
 export interface HeaderSlotsInclude extends LabelAlternativeSlots, CaptionSlots {
-  /** Slot for trailing content/ Слот для правого контента */
-  trailing?(props: any): any
+  /** Slot for trailing content / Слот для правого контента */
+  trailing?(props?: Record<string, unknown>): VNode[]
 }

@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
+  { name: 'isSkeleton', type: 'boolean' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] }
   // :propsList [!] System label / Системная метка
@@ -14,6 +15,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', description: `Default slot for custom inline bullet content / Слот по умолчанию для произвольного содержимого пункта списка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]

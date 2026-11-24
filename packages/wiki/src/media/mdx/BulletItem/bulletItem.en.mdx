@@ -1,12 +1,28 @@
-## Description
+import { Source } from '@storybook/addon-docs/blocks';
 
-An individual item within a bulleted list.
+The `BulletItem` component represents an individual semantic `<li>` entry inside a bulleted list.
 
-The BulletItem component represents a single line or list point inside a structured Bullet list. It supports receiving description text or number directly, custom description slots, and different size options to adapt to various textual contexts.
+It renders a custom bullet marker (`•`) positioned via logical inline-start CSS (`inset-inline-start: 0` for seamless LTR and RTL alignment), supports text or numeric content via `description`, custom markup via `#description` or `#default` slots, explicit `descriptionId` linking, and zero-duplication skeleton loading via `isSkeleton`.
 
-**Key Features:**
+**Key features:**
 
-- Renders a semantic `<li>` tag with custom spacing and positioning
-- Integrates a custom visual marker (a bullet point symbol "•") via CSS pseudo-elements
-- Flexible content customization via the `description` property or slot
-- Support for an optional `descriptionId` for accessibility and linking
+- **Semantic List Item:** Renders a standard `<li>` element with logical RTL/LTR marker alignment
+- **Flexible Content Input:** Supports `description` (string or number, including `0`), `#description` slot, and `#default` slot
+- **Stable Accessibility ID:** Binds explicit or generated `descriptionId` on the inner description element
+- **Zero-Duplication Skeleton:** Applies skeleton text placeholders automatically when `isSkeleton` is enabled
+
+<Source
+    code={`
+<template>
+  <ul>
+    <BulletItem description="First bullet point" />
+    <BulletItem description-id="point-2">
+      <template #description>Second bullet point via slot</template>
+    </BulletItem>
+  </ul>
+</template>
+  `}
+    language="html"
+/>
+
+> BulletItem is rendered automatically for each entry in `Bullet`'s `list` prop or composed directly inside custom `<ul>` / `<Bullet>` containers.

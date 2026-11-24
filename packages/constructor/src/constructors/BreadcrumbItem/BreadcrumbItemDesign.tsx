@@ -1,51 +1,56 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { BreadcrumbItem } from './BreadcrumbItem'
 
-import {
-  type BreadcrumbItemProps
+import type {
+  BreadcrumbItemPropsBasic
 } from './props'
-import {
-  type BreadcrumbItemClasses,
-  type BreadcrumbItemComponents,
-  type BreadcrumbItemEmits,
-  type BreadcrumbItemExpose,
-  type BreadcrumbItemSlots
+import type {
+  BreadcrumbItemClasses,
+  BreadcrumbItemComponents,
+  BreadcrumbItemEmits,
+  BreadcrumbItemExpose,
+  BreadcrumbItemSlots
 } from './types'
 
 /**
- * BreadcrumbItemDesign class constructor for managing classes, styles, and rendering the BreadcrumbItem component.
+ * BreadcrumbItemDesign class constructor for managing classes, styles, and rendering
+ * the BreadcrumbItem component as an interactive link or static current-page span.
  *
- * Класс-конструктор дизайна BreadcrumbItemDesign для управления классами, стилями и рендерингом компонента BreadcrumbItem.
+ * Класс-конструктор дизайна BreadcrumbItemDesign для управления классами, стилями и рендерингом
+ * компонента BreadcrumbItem в виде интерактивной ссылки или статического элемента текущей страницы.
  */
 export class BreadcrumbItemDesign<
   COMP extends BreadcrumbItemComponents,
   EXPOSE extends BreadcrumbItemExpose,
   CLASSES extends BreadcrumbItemClasses,
-  P extends BreadcrumbItemProps
+  P extends BreadcrumbItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLAnchorElement | HTMLSpanElement,
-  COMP,
-  BreadcrumbItemEmits,
-  EXPOSE,
-  BreadcrumbItemSlots,
-  CLASSES,
-  P
+    HTMLAnchorElement | HTMLSpanElement,
+    COMP,
+    BreadcrumbItemEmits,
+    EXPOSE,
+    BreadcrumbItemSlots,
+    CLASSES,
+    P
   > {
-  /** Main component instance / Основной экземпляр компонента */
+  /** BreadcrumbItem logic orchestrator instance / Экземпляр оркестратора логики BreadcrumbItem */
   protected readonly item: BreadcrumbItem
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a BreadcrumbItemDesign instance.
+   *
+   * Конструктор для создания экземпляра BreadcrumbItemDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -70,6 +75,36 @@ export class BreadcrumbItemDesign<
   }
 
   /**
+   * Renders the decorative directional separator arrow icon when non-readonly and configured.
+   *
+   * Рендерит декоративную иконку стрелки-разделителя, если элемент не в режиме readonly и иконка задана.
+   * @returns list of virtual nodes / список виртуальных узлов
+   */
+  readonly renderSeparator = (): VNode[] => {
+    const iconArrow = this.item.iconArrow
+
+    if (
+      this.components
+      && !this.item.isReadonly()
+      && iconArrow
+    ) {
+      return this.components.render(
+        'icon',
+        {
+          icon: iconArrow,
+          dir: true,
+          class: this.classes?.value.iconArrow,
+          ...AriaStaticInclude.hidden()
+        },
+        undefined,
+        'icon-arrow'
+      )
+    }
+
+    return []
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
@@ -77,7 +112,7 @@ export class BreadcrumbItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -109,87 +144,28 @@ export class BreadcrumbItemDesign<
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the root link or span with icon, label, and separator arrow.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга корневой ссылки или span с иконкой, меткой и стрелкой-разделителем.
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    if (this.props.readonly) {
-      return this.renderReadonly()
-    }
-
-    return this.renderLink()
-  }
-
-  /**
-   * Renders the arrow icon component.
-   *
-   * Рендерит компонент иконки стрелки.
-   * @returns list of virtual nodes / список виртуальных узлов
-   */
-  readonly renderIconArrow = (): VNode[] => {
-    if (
-      this.components
-      && !this.item.enabled.isReadonly
-    ) {
-      return this.components.render(
-        'icon',
+    return h(
+      this.item.tag,
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
         {
-          icon: this.props.back ? this.props.iconArrowLeft : this.props.iconArrowRight,
-          dir: true,
-          class: this.classes?.value.iconArrow
-        },
-        undefined,
-        'icon-arrow'
-      )
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the child nodes of the component.
-   *
-   * Рендерит дочерние узлы компонента.
-   * @returns list of child virtual nodes / список дочерних виртуальных узлов
-   */
-  readonly renderChildren = (): any[] => {
-    return [
-      ...this.item.icon.renderIcon(),
-      ...this.item.label.render(),
-      ...this.renderIconArrow()
-    ]
-  }
-
-  /**
-   * Renders the readonly element.
-   *
-   * Рендерит элемент в режиме только для чтения.
-   * @returns rendered virtual node / отрендеренная виртуальная нода
-   */
-  readonly renderReadonly = (): VNode => {
-    return h('span', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.renderChildren())
-  }
-
-  /**
-   * Renders the link element.
-   *
-   * Рендерит элемент ссылки.
-   * @returns rendered virtual node / отрендеренная виртуальная нода
-   */
-  readonly renderLink = (): VNode => {
-    return h('a', {
-      ...this.getAttrs(),
-      ref: this.element,
-      ...this.item.binds,
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.renderChildren())
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      [
+        ...this.item.callInstance('icon', item => item.renderIcon(), []),
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.renderSeparator()
+      ]
+    )
   }
 }

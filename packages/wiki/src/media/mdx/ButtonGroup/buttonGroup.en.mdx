@@ -1,44 +1,45 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for grouping multiple buttons into a single block.
+Container component for grouping multiple buttons into a single accessible action block.
 
-ButtonGroup allows organizing buttons into logical groups with shared styling and alignment. It supports horizontal and vertical orientation, automatic wrapping of elements, and passing shared attributes to all nested buttons.
+`ButtonGroup` organizes related buttons into a logical group (`role="group"` by default) with shared layout context (`area`), orientation, wrapping, skeleton state, and delegated click events.
 
 **Key Features:**
 
-- Horizontal and vertical orientation
-- Automatic wrapping of buttons (wrap) when space is limited
-- Passing shared attributes to all buttons via `buttonAttrs`
-- Flexible management of the button list via the `list` array or the `default` slot
-- Consistent spacing between buttons in the group
+- Horizontal and vertical orientations (`orientation`)
+- Automatic multi-line wrapping (`wrap`) when horizontal space is constrained
+- Forwarding shared attributes to all buttons via `buttonAttrs`
+- Flexible composition via the `list` array or the `#default` slot
+- Accessible `role="group"` semantics with customizable `role` and `ariaLabel`
+- Zero-duplication skeleton loading state (`isSkeleton`) forwarded automatically to child buttons
 
 **Typical Usage Scenarios:**
 
-- Toolbars
-- Groups of switches or actions in forms
-- Navigation blocks
-- Control blocks in cards or lists
-- Option selection (filters, sorting)
+- Formatting and editor toolbars
+- Grouped form or dialog actions
+- Segmented filter, view-switcher, or pagination controls
+- Action bars inside cards, headers, or list items
 
 <Source
     code={`
 <template>
-  <!-- Basic usage via list -->
-  <ButtonGroup 
+  <!-- Basic usage via list with accessible label -->
+  <ButtonGroup
+    ariaLabel="History navigation"
     :list="[
-      { label: 'Back', icon: 'arrow_back' },
-      { label: 'Home', icon: 'home' },
-      { label: 'Forward', iconTrailing: 'arrow_forward' }
-    ]" 
+      { label: 'Back', icon: 'arrow_back', value: 'back' },
+      { label: 'Home', icon: 'home', value: 'home' },
+      { label: 'Forward', iconTrailing: 'arrow_forward', value: 'forward' }
+    ]"
   />
 
-  <!-- With shared attributes and vertical orientation -->
-  <ButtonGroup 
+  <!-- Vertical orientation with shared button attributes -->
+  <ButtonGroup
     orientation="vertical"
     :buttonAttrs="{ inverse: true }"
     :list="[
-      { label: 'Save', icon: 'save' },
-      { label: 'Delete', icon: 'delete' }
+      { label: 'Save', icon: 'save', value: 'save' },
+      { label: 'Delete', icon: 'delete', value: 'delete' }
     ]"
   />
 </template>
