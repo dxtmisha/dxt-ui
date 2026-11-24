@@ -180,4 +180,22 @@ describe('CmsDbAbstract', () => {
     expect(await instance.modifyRecord(6, { name: 'Updated' })).toBe(false)
     expect(raw.update).toHaveBeenCalledTimes(2)
   })
+
+  it('builds update values by checking table columns and skipping forbidden fields', () => {
+    const { dbInstance } = createMockDb()
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(instance.buildUpdateValues({
+      id: 99,
+      createdAt: new Date('2020-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2020-01-01T00:00:00.000Z'),
+      name: 'Permission name',
+      createdOrigin: 'admin',
+      unknownField: 'ignored',
+      description: undefined
+    } as Record<string, unknown>)).toEqual({
+      name: 'Permission name',
+      createdOrigin: 'admin'
+    })
+  })
 })

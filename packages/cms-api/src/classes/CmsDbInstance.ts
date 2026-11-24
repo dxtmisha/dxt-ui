@@ -21,22 +21,6 @@ export class CmsDbInstance {
   ) {}
 
   /**
-   * Updates the PostgreSQL connection URI.
-   *
-   * Обновляет строку подключения PostgreSQL.
-   * @param connectionString PostgreSQL connection URI / Строка подключения PostgreSQL
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  setConnectionString(connectionString?: string): this {
-    if (this.connectionString !== connectionString) {
-      this.connectionString = connectionString
-      void this.close()
-    }
-
-    return this
-  }
-
-  /**
    * Checks whether the database instance has already been created.
    *
    * Проверяет, был ли уже создан экземпляр базы данных.
@@ -65,6 +49,22 @@ export class CmsDbInstance {
     }
 
     return this.instance
+  }
+
+  /**
+   * Updates the PostgreSQL connection URI.
+   *
+   * Обновляет строку подключения PostgreSQL.
+   * @param connectionString PostgreSQL connection URI / Строка подключения PostgreSQL
+   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
+   */
+  setConnectionString(connectionString?: string): this {
+    if (this.connectionString !== connectionString) {
+      this.connectionString = connectionString
+      void this.close()
+    }
+
+    return this
   }
 
   /**

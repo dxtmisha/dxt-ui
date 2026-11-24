@@ -1,9 +1,11 @@
 import {
   and,
   eq,
+  getTableColumns,
   sql,
   type SQL
 } from 'drizzle-orm'
+import { hasKey } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../../composables/useCmsDb'
 import { deleteCmsRecord } from '../../functions/deleteCmsRecord'
@@ -13,7 +15,10 @@ import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
 import { CmsDbTimestamp } from '../CmsDbTimestamp'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
-import type { CmsIdTable } from '../../types/cmsDbTypes'
+import type {
+  CmsDbUpdateValidator,
+  CmsIdTable
+} from '../../types/cmsDbTypes'
 
 /**
  * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenterThrow delegation.
@@ -71,6 +76,40 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
+   * Builds and validates database update payload from partial update input by checking table column existence, skipping forbidden columns, and applying registered column validators.
+   *
+   * Формирует и валидирует объект обновления в базе данных из входных данных, проверяя наличие колонки в таблице, исключая запрещённые к изменению колонки и применяя зарегистрированные валидаторы по имени поля.
+   * @param input Partial entity update payload / Частичные данные для обновления записи
+   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
+   */
+  buildUpdateValues<TInput extends object = Partial<TTable['$inferInsert']>>(
+    input: TInput
+  ): Partial<TTable['$inferInsert']> {
+    const tableColumns = getTableColumns(this.table)
+    const forbiddenColumns = this.getForbiddenUpdateColumns()
+    const validators = this.getUpdateValidators()
+    const values: Record<string, unknown> = {}
+
+    for (const [key, value] of Object.entries(input)) {
+      if (
+        value === undefined
+        || forbiddenColumns.includes(key)
+        || !hasKey(tableColumns, key)
+      ) {
+        continue
+      }
+
+      const validator = hasKey(validators, key)
+        ? validators[key]
+        : undefined
+
+      values[key] = validator ? validator(value) : value
+    }
+
+    return values as Partial<TTable['$inferInsert']>
+  }
+
+  /**
    * Returns the bound table typed as CmsIdTable for shared base queries.
    *
    * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
@@ -91,6 +130,30 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     values: Record<string, unknown> = {}
   ): Partial<CmsIdTable['$inferInsert']> {
     return this.timestamp.buildUpdateValues(values)
+  }
+
+  /**
+   * Returns the list of column names forbidden from modification during update.
+   *
+   * Возвращает список имён колонок, запрещённых к изменению при обновлении.
+   * @returns List of forbidden column names / Список запрещённых имён колонок
+   */
+  protected getForbiddenUpdateColumns(): readonly string[] {
+    return [
+      'id',
+      'createdAt',
+      'updatedAt'
+    ]
+  }
+
+  /**
+   * Returns a map of column value validators and normalizers keyed by column name.
+   *
+   * Возвращает карту валидаторов и нормализаторов значений по имени колонки.
+   * @returns Column validator map / Карта валидаторов по имени колонки
+   */
+  protected getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
+    return {}
   }
 
   /**

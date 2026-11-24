@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { pgTable, serial, text } from 'drizzle-orm/pg-core'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { permissions } from '../../media/schema/permissions'
@@ -73,10 +73,24 @@ const minimalTable = pgTable('minimal_items', {
   systemStatus: text('system_status').$type<CmsSystemStatus>().notNull()
 })
 
+const createdOnlyTable = pgTable('created_only_items', {
+  id: serial('id').primaryKey(),
+  systemStatus: text('system_status').$type<CmsSystemStatus>().notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull()
+})
+
+const updatedOnlyTable = pgTable('updated_only_items', {
+  id: serial('id').primaryKey(),
+  systemStatus: text('system_status').$type<CmsSystemStatus>().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
+})
+
 describe('CmsDbTimestamp', () => {
   afterEach(() => {
     ErrorCenter.reset()
     ErrorCenter.setIsConsole(true)
+    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   describe('get, getCreatedAt, getUpdatedAt', () => {
@@ -120,9 +134,34 @@ describe('CmsDbTimestamp', () => {
         updatedAt: permissions.updatedAt
       })
     })
+
+    it('selects only the timestamp column defined on single-timestamp tables', async () => {
+      const createdAt = new Date('2026-11-18T10:00:00.000Z')
+      const updatedAt = new Date('2026-11-19T08:00:00.000Z')
+      const { dbInstance, raw } = createMockDb({
+        selectQueue: [
+          [{ createdAt }],
+          [{ updatedAt }]
+        ]
+      })
+
+      const createdOnly = new CmsDbTimestamp(createdOnlyTable, dbInstance)
+      expect(await createdOnly.getCreatedAt(3)).toEqual(createdAt)
+      expect(await createdOnly.getUpdatedAt(3)).toBeUndefined()
+      expect(raw.select).toHaveBeenNthCalledWith(1, {
+        createdAt: createdOnlyTable.createdAt
+      })
+
+      const updatedOnly = new CmsDbTimestamp(updatedOnlyTable, dbInstance)
+      expect(await updatedOnly.getUpdatedAt(4)).toEqual(updatedAt)
+      expect(await updatedOnly.getCreatedAt(4)).toBeUndefined()
+      expect(raw.select).toHaveBeenNthCalledWith(2, {
+        updatedAt: updatedOnlyTable.updatedAt
+      })
+    })
   })
 
-  describe('update & buildUpdateValues', () => {
+  describe('update, buildCreateValues, buildTimestampValues & buildUpdateValues', () => {
     it('throws ErrorCenterError on invalid ID without querying database', async () => {
       ErrorCenter.setIsConsole(false)
       registerCmsErrorCauses()
@@ -150,16 +189,103 @@ describe('CmsDbTimestamp', () => {
       expect(raw.update).toHaveBeenCalledTimes(2)
     })
 
-    it('builds update payload with updatedAt only when the table defines updatedAt', () => {
+    it('builds create payload with createdAt and updatedAt only when the table defines them', () => {
+      vi.useFakeTimers()
+      const fixedNow = new Date('2026-11-24T10:00:00.000Z')
+      vi.setSystemTime(fixedNow)
+
       const { dbInstance } = createMockDb()
-      const timestamp = new CmsDbTimestamp(permissions, dbInstance)
-      expect(timestamp.buildUpdateValues({ systemStatus: 'blocked' })).toEqual({
-        systemStatus: 'blocked',
-        updatedAt: expect.any(Date)
+      const timestampManager = new CmsDbTimestamp(permissions, dbInstance)
+      const callerInput = { systemStatus: 'active' as const }
+      const inputSnapshot = { ...callerInput }
+      const createdPayload = timestampManager.buildCreateValues(callerInput)
+
+      expectTypeOf(createdPayload).toEqualTypeOf<Partial<typeof permissions.$inferInsert>>()
+      expect(callerInput).toEqual(inputSnapshot)
+      expect(createdPayload).toEqual({
+        systemStatus: 'active',
+        createdAt: fixedNow,
+        updatedAt: fixedNow
+      })
+      expect(timestampManager.buildCreateValues()).toEqual({
+        createdAt: fixedNow,
+        updatedAt: fixedNow
       })
 
-      const minimalTimestamp = new CmsDbTimestamp(minimalTable, dbInstance)
-      expect(minimalTimestamp.buildUpdateValues({ systemStatus: 'blocked' })).toEqual({
+      const createdOnlyManager = new CmsDbTimestamp(createdOnlyTable, dbInstance)
+      expect(createdOnlyManager.buildCreateValues({ systemStatus: 'active' })).toEqual({
+        systemStatus: 'active',
+        createdAt: fixedNow
+      })
+
+      const minimalManager = new CmsDbTimestamp(minimalTable, dbInstance)
+      expect(minimalManager.buildCreateValues({ systemStatus: 'active' })).toEqual({
+        systemStatus: 'active'
+      })
+    })
+
+    it('builds timestamp payload conditionally via buildTimestampValues and overwrites stale timestamps', () => {
+      vi.useFakeTimers()
+      const fixedNow = new Date('2026-11-24T11:30:00.000Z')
+      vi.setSystemTime(fixedNow)
+
+      const { dbInstance } = createMockDb()
+      const timestampManager = new CmsDbTimestamp(permissions, dbInstance)
+      const staleDate = new Date('2020-01-01T00:00:00.000Z')
+
+      const updatePayload = timestampManager.buildTimestampValues({
+        systemStatus: 'blocked',
+        createdAt: staleDate,
+        updatedAt: staleDate
+      })
+      expectTypeOf(updatePayload).toEqualTypeOf<Partial<typeof permissions.$inferInsert>>()
+      expect(updatePayload).toEqual({
+        systemStatus: 'blocked',
+        createdAt: staleDate,
+        updatedAt: fixedNow
+      })
+
+      const createPayload = timestampManager.buildTimestampValues({
+        systemStatus: 'active',
+        createdAt: staleDate,
+        updatedAt: staleDate
+      }, true)
+      expect(createPayload).toEqual({
+        systemStatus: 'active',
+        createdAt: fixedNow,
+        updatedAt: fixedNow
+      })
+
+      expect(timestampManager.buildTimestampValues()).toEqual({
+        updatedAt: fixedNow
+      })
+    })
+
+    it('builds update payload with updatedAt only when the table defines updatedAt', () => {
+      vi.useFakeTimers()
+      const fixedNow = new Date('2026-11-24T12:00:00.000Z')
+      vi.setSystemTime(fixedNow)
+
+      const { dbInstance } = createMockDb()
+      const timestampManager = new CmsDbTimestamp(permissions, dbInstance)
+      const updatePayload = timestampManager.buildUpdateValues({ systemStatus: 'blocked' })
+
+      expectTypeOf(updatePayload).toEqualTypeOf<Partial<typeof permissions.$inferInsert>>()
+      expect(updatePayload).toEqual({
+        systemStatus: 'blocked',
+        updatedAt: fixedNow
+      })
+      expect(timestampManager.buildUpdateValues()).toEqual({
+        updatedAt: fixedNow
+      })
+
+      const createdOnlyManager = new CmsDbTimestamp(createdOnlyTable, dbInstance)
+      expect(createdOnlyManager.buildUpdateValues({ systemStatus: 'blocked' })).toEqual({
+        systemStatus: 'blocked'
+      })
+
+      const minimalManager = new CmsDbTimestamp(minimalTable, dbInstance)
+      expect(minimalManager.buildUpdateValues({ systemStatus: 'blocked' })).toEqual({
         systemStatus: 'blocked'
       })
     })

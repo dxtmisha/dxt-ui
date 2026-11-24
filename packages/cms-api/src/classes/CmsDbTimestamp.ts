@@ -122,6 +122,51 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
+   * Builds an insert payload by combining the provided values with the current `createdAt` and `updatedAt` timestamps when the bound table defines them.
+   *
+   * Формирует объект значений для создания записи, объединяя переданные поля с текущими метками времени `createdAt` и `updatedAt`, если они присутствуют в таблице.
+   * @param values Partial insert values / Частичные значения для создания записи
+   * @returns Combined insert payload / Объединённый объект значений для вставки
+   */
+  buildCreateValues(
+    values: object = {}
+  ): Partial<TTable['$inferInsert']> {
+    return this.buildTimestampValues(values, true)
+  }
+
+  /**
+   * Builds a payload by combining the provided values with current timestamp columns defined on the bound table.
+   *
+   * Формирует объект значений, объединяя переданные поля с актуальными временными метками колонок, определённых в привязанной таблице.
+   * @param values Partial record values / Частичные значения записи
+   * @param includeCreatedAt Whether to populate `createdAt` when present / Заполнять ли `createdAt` при наличии колонки
+   * @returns Combined record payload / Объединённый объект значений записи
+   */
+  buildTimestampValues(
+    values: object = {},
+    includeCreatedAt: boolean = false
+  ): Partial<TTable['$inferInsert']> {
+    const baseTable = this.getBaseTable()
+    const timestampValues: Record<string, unknown> = {
+      ...values
+    }
+    const currentDate = new Date()
+
+    if (
+      includeCreatedAt
+      && baseTable.createdAt
+    ) {
+      timestampValues.createdAt = currentDate
+    }
+
+    if (baseTable.updatedAt) {
+      timestampValues.updatedAt = currentDate
+    }
+
+    return timestampValues as Partial<TTable['$inferInsert']>
+  }
+
+  /**
    * Builds an update payload by combining the provided values with the current `updatedAt` timestamp when the bound table defines it.
    *
    * Формирует объект значений для обновления, объединяя переданные поля с текущей меткой времени `updatedAt`, если она присутствует в таблице.
@@ -129,17 +174,9 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
    * @returns Combined update payload / Объединённый объект значений для обновления
    */
   buildUpdateValues(
-    values: Record<string, unknown> = {}
-  ): Partial<CmsIdTable['$inferInsert']> {
-    const updateValues: Record<string, unknown> = {
-      ...values
-    }
-
-    if (this.getBaseTable().updatedAt) {
-      updateValues.updatedAt = new Date()
-    }
-
-    return updateValues as Partial<CmsIdTable['$inferInsert']>
+    values: object = {}
+  ): Partial<TTable['$inferInsert']> {
+    return this.buildTimestampValues(values)
   }
 
   /**

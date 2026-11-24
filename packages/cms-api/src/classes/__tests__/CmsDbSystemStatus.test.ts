@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CMS_VERIFICATION_ERROR_GROUP } from '../../media/errors/cmsVerificationErrorCauseList'
@@ -73,6 +73,8 @@ describe('CmsDbSystemStatus', () => {
   afterEach(() => {
     ErrorCenter.reset()
     ErrorCenter.setIsConsole(true)
+    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   describe('get', () => {
@@ -174,6 +176,85 @@ describe('CmsDbSystemStatus', () => {
         systemStatus: 'active',
         updatedAt: expect.any(Date)
       }))
+    })
+  })
+
+  describe('buildCreateValues, buildSystemStatusValues & buildUpdateValues', () => {
+    it('builds create payload with default active systemStatus and optional timestamps without mutating input', () => {
+      vi.useFakeTimers()
+      const fixedNow = new Date('2026-11-24T13:00:00.000Z')
+      vi.setSystemTime(fixedNow)
+
+      const { dbInstance } = createMockDb()
+      const callerInput = { code: 'users:read' }
+      const inputSnapshot = { ...callerInput }
+
+      const statusWithoutTimestamp = new CmsDbSystemStatus(permissions, dbInstance)
+      const createWithoutTimestamp = statusWithoutTimestamp.buildCreateValues(callerInput)
+
+      expectTypeOf(createWithoutTimestamp).toEqualTypeOf<Partial<typeof permissions.$inferInsert>>()
+      expect(callerInput).toEqual(inputSnapshot)
+      expect(createWithoutTimestamp).toEqual({
+        code: 'users:read',
+        systemStatus: 'active'
+      })
+      expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: 'blocked' })).toEqual({
+        systemStatus: 'blocked'
+      })
+      expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: 'blocked' }, 'deleted')).toEqual({
+        systemStatus: 'deleted'
+      })
+
+      const statusWithTimestamp = new CmsDbSystemStatus(
+        permissions,
+        dbInstance,
+        () => new CmsDbTimestamp(permissions, dbInstance)
+      )
+      expect(statusWithTimestamp.buildCreateValues({ code: 'users:write' })).toEqual({
+        code: 'users:write',
+        systemStatus: 'active',
+        createdAt: fixedNow,
+        updatedAt: fixedNow
+      })
+    })
+
+    it('builds update and conditional payloads via buildUpdateValues and buildSystemStatusValues', () => {
+      vi.useFakeTimers()
+      const fixedNow = new Date('2026-11-24T14:00:00.000Z')
+      vi.setSystemTime(fixedNow)
+
+      const { dbInstance } = createMockDb()
+      const statusWithoutTimestamp = new CmsDbSystemStatus(permissions, dbInstance)
+
+      expect(statusWithoutTimestamp.buildUpdateValues({ name: 'Updated' })).toEqual({
+        name: 'Updated'
+      })
+      expect(statusWithoutTimestamp.buildUpdateValues({ name: 'Updated' }, 'blocked')).toEqual({
+        name: 'Updated',
+        systemStatus: 'blocked'
+      })
+
+      const statusWithTimestamp = new CmsDbSystemStatus(
+        permissions,
+        dbInstance,
+        () => new CmsDbTimestamp(permissions, dbInstance)
+      )
+      const updatePayload = statusWithTimestamp.buildUpdateValues({ name: 'Updated' })
+
+      expectTypeOf(updatePayload).toEqualTypeOf<Partial<typeof permissions.$inferInsert>>()
+      expect(updatePayload).toEqual({
+        name: 'Updated',
+        updatedAt: fixedNow
+      })
+      expect(statusWithTimestamp.buildSystemStatusValues({}, undefined, true)).toEqual({
+        systemStatus: 'active',
+        createdAt: fixedNow,
+        updatedAt: fixedNow
+      })
+      expect(statusWithTimestamp.buildSystemStatusValues({}, 'blocked', false)).toEqual({
+        systemStatus: 'blocked',
+        updatedAt: fixedNow
+      })
     })
   })
 })

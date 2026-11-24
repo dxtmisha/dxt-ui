@@ -73,7 +73,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
-      this.getUpdateValues(systemStatus)
+      this.buildUpdateValues({}, systemStatus)
     )
   }
 
@@ -111,6 +111,70 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
+   * Builds an insert payload with `systemStatus` (defaulting to `'active'`) and optional `createdAt`/`updatedAt` timestamps via `getTimestamp`.
+   *
+   * Формирует объект значений для создания записи с полем `systemStatus` (по умолчанию `'active'`) и опциональными метками времени `createdAt`/`updatedAt` через `getTimestamp`.
+   * @param values Partial insert values / Частичные значения для создания записи
+   * @param systemStatus Optional explicit system status override / Необязательный явный системный статус
+   * @returns Combined insert payload / Объединённый объект значений для вставки
+   */
+  buildCreateValues(
+    values: object = {},
+    systemStatus?: CmsSystemStatus
+  ): Partial<TTable['$inferInsert']> {
+    return this.buildSystemStatusValues(values, systemStatus, true)
+  }
+
+  /**
+   * Builds a payload by applying optional `systemStatus` and delegating timestamp fields to `getTimestamp`.
+   *
+   * Формирует объект значений, добавляя системный статус при необходимости и делегируя заполнение временных меток в `getTimestamp`.
+   * @param values Partial record values / Частичные значения записи
+   * @param systemStatus Optional explicit system status / Необязательный явный системный статус
+   * @param isCreate Whether the payload is built for record creation / Формируется ли объект для создания новой записи
+   * @returns Combined record payload / Объединённый объект значений записи
+   */
+  buildSystemStatusValues(
+    values: object = {},
+    systemStatus?: CmsSystemStatus,
+    isCreate: boolean = false
+  ): Partial<TTable['$inferInsert']> {
+    const statusValues: Record<string, unknown> = {
+      ...values
+    }
+
+    if (systemStatus !== undefined) {
+      statusValues.systemStatus = systemStatus
+    } else if (
+      isCreate
+      && statusValues.systemStatus === undefined
+    ) {
+      statusValues.systemStatus = 'active'
+    }
+
+    if (this.getTimestamp) {
+      return this.getTimestamp().buildTimestampValues(statusValues, isCreate)
+    }
+
+    return statusValues as Partial<TTable['$inferInsert']>
+  }
+
+  /**
+   * Builds an update payload with optional `systemStatus` and `updatedAt` timestamp via `getTimestamp`.
+   *
+   * Формирует объект значений для обновления записи с опциональным `systemStatus` и меткой времени `updatedAt` через `getTimestamp`.
+   * @param values Partial update values / Частичные значения для обновления
+   * @param systemStatus Optional explicit system status / Необязательный явный системный статус
+   * @returns Combined update payload / Объединённый объект значений для обновления
+   */
+  buildUpdateValues(
+    values: object = {},
+    systemStatus?: CmsSystemStatus
+  ): Partial<TTable['$inferInsert']> {
+    return this.buildSystemStatusValues(values, systemStatus)
+  }
+
+  /**
    * Returns the bound table typed as CmsIdTable for shared base queries.
    *
    * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
@@ -118,22 +182,5 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    */
   protected getBaseTable(): CmsIdTable {
     return this.table
-  }
-
-  /**
-   * Builds the update payload with `systemStatus` and optional `updatedAt` timestamp via `getTimestamp`.
-   *
-   * Формирует объект значений для обновления с `systemStatus` и опциональной меткой времени `updatedAt` через `getTimestamp`.
-   * @param systemStatus Target system status / Целевой системный статус
-   * @returns Update payload object / Объект значений для обновления
-   */
-  protected getUpdateValues(
-    systemStatus: CmsSystemStatus
-  ): Partial<CmsIdTable['$inferInsert']> {
-    if (this.getTimestamp) {
-      return this.getTimestamp().buildUpdateValues({ systemStatus })
-    }
-
-    return { systemStatus } as Partial<CmsIdTable['$inferInsert']>
   }
 }

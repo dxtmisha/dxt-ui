@@ -83,7 +83,8 @@ describe('CmsVerification', () => {
 
       expect(CmsVerification.normalizeCode('   ', false)).toBe('')
       expect(CmsVerification.normalizeCode('bad code', false)).toBe('')
-      expect(CmsVerification.normalizeCode(null as unknown as string, false)).toBe('')
+      expect(CmsVerification.normalizeCode(null, false)).toBe('')
+      expect(CmsVerification.normalizeCode(undefined, false)).toBe('')
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -95,7 +96,7 @@ describe('CmsVerification', () => {
         .toThrow(ErrorCenterError)
       expect(() => CmsVerification.normalizeCode('bad code'))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeCode(null as unknown as string))
+      expect(() => CmsVerification.normalizeCode(null))
         .toThrow(ErrorCenterError)
 
       expect(reportSpy).toHaveBeenNthCalledWith(
@@ -166,7 +167,7 @@ describe('CmsVerification', () => {
         .toThrow(ErrorCenterError)
       expect(() => CmsVerification.normalizeName(''))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.normalizeName(undefined as unknown as string))
+      expect(() => CmsVerification.normalizeName(undefined))
         .toThrow(ErrorCenterError)
 
       expect(reportSpy).toHaveBeenNthCalledWith(

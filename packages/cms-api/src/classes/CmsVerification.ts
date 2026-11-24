@@ -43,7 +43,7 @@ export class CmsVerification {
    * @returns Trimmed non-empty entity code or empty string when invalid and isError is false / Очищенный код сущности или пустая строка при ошибке и isError = false
    */
   static normalizeCode(
-    code: string,
+    code?: unknown,
     isError: boolean = true
   ): string {
     const normalized = isString(code) ? code.trim() : ''
@@ -68,7 +68,7 @@ export class CmsVerification {
    * @returns Trimmed entity name or empty string when empty and allowed or isError is false / Очищенное название сущности или пустая строка, если поле необязательно или isError = false
    */
   static normalizeName(
-    name?: string | null,
+    name?: unknown,
     isRequired: boolean = true,
     isError: boolean = true
   ): string {
