@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
 
@@ -36,7 +37,7 @@ export interface CollageExpose extends EventClickExpose {
  */
 export interface CollageSlots {
   /** Default slot for custom content / Слот по умолчанию для пользовательского содержимого */
-  default?(props: any): any
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**
@@ -45,6 +46,7 @@ export interface CollageSlots {
  * Тип, описывающий подклассы.
  */
 export type CollageClasses = {
+  /** Main root element class / Класс главного корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   body: string

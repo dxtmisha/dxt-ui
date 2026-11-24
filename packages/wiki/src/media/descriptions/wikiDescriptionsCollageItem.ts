@@ -13,27 +13,31 @@ export const wikiDescriptionsCollageItem: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'rich media presentation with image cropping, scaling, and positioning (coordinator, x, y)',
-      'Bento grid span presets: wide (2:1), tall (1:2), large (1:1), banner (3:1), and huge (3:2)',
+      'rich media presentation with image cropping, scaling, and positioning (size, coordinator, x, y)',
+      'Bento grid span presets: standard, wide (2:1), tall (1:2), large (2:2), banner (3:1), and huge (3:2)',
       'integrated checkmark icon with customizable selection state (selected, iconCheck)',
       'built-in CollageBar integration for titles (label), descriptions, and action buttons',
       'customizable body element HTML tag (defaults to a)',
       'click event handling with routing and detail forwarding',
-      'slots for bar body and trailing components',
-      'image load event forwarding'
+      'slots for bar body and trailing components (barBody, barTrailing)',
+      'image load event forwarding and dimension expose helpers (getWidth, getHeight)'
     ],
     ru: [
-      'отображение медиа с обрезкой, масштабированием и позиционированием изображения (coordinator, x, y)',
-      'пресеты раскладки Bento-сетки: wide (2:1), tall (1:2), large (1:1), banner (3:1) и huge (3:2)',
-      'встроенный индикатор выбора с настраиваемой иконкой и состоянием selected',
+      'отображение медиа с обрезкой, масштабированием и позиционированием изображения (size, coordinator, x, y)',
+      'пресеты раскладки Bento-сетки: standard, wide (2:1), tall (1:2), large (2:2), banner (3:1) и huge (3:2)',
+      'встроенный индикатор выбора с настраиваемой иконкой и состоянием selected (selected, iconCheck)',
       'встроенная панель CollageBar для заголовков (label), описаний и кнопок действий',
       'настраиваемый HTML-тег элемента тела (по умолчанию a)',
       'обработка событий клика с поддержкой маршрутизации и передачи данных',
-      'слоты для тела и замыкающих элементов панели',
-      'передача события загрузки изображения'
+      'слоты для тела и замыкающих элементов панели (barBody, barTrailing)',
+      'передача события загрузки изображения и методы экспорта размеров (getWidth, getHeight)'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\'',
+    'import type { EventClickValue } from \'@dxtmisha/constructor\'',
+    'import { image1, image2 } from \'@dxtmisha/wiki/media\''
+  ],
   render: `
     <div class="wiki-storybook-container">
       <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
@@ -41,78 +45,93 @@ export const wikiDescriptionsCollageItem: StorybookComponentsDescriptionItem = {
       </div>
     </div>
   `,
+  play: `
+const component = canvasElement.querySelector('.design-component')
+await expect(component).toBeInTheDocument()
+await expect(component?.tagName).toBe('FIGURE')
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'CollageItemSpans',
       name: {
         en: 'Bento Spans',
         ru: 'Варианты Bento-охвата'
       },
+      propsName: ['span', 'collageBarPosition', 'selected', 'label', 'description', 'collageBarAttrs'],
+      setup: `
+      return { image1, image2 }
+      `,
       template: `
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
             <DesignComponent
-              image="https://picsum.photos/800/600?random=42"
+              :image="image1"
               span="wide"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="Standard Position"
               description="Static bar placed below the image"
-              :collageBarAttrs="{ button: 'Explore' }"
+              :collage-bar-attrs="{ button: 'Explore' }"
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=43"
+              :image="image2"
               span="wide"
               selected
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=44"
+              :image="image1"
               span="tall"
-              collageBarPosition="top"
+              collage-bar-position="top"
               label="Vertical Panorama"
               description="Top overlay bar"
-              :collageBarAttrs="{ icon: 'bookmark' }"
+              :collage-bar-attrs="{ icon: 'bookmark' }"
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=45"
+              :image="image2"
               span="huge"
-              collageBarPosition="bottom"
+              collage-bar-position="bottom"
               label="Huge Showcase (Enlarged 3x2)"
               description="3 columns x 2 rows enlarged element with action button"
-              :collageBarAttrs="{ button: 'Explore Project' }"
+              :collage-bar-attrs="{ button: 'Explore Project' }"
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=47"
+              :image="image1"
               span="large"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="Large Card"
               description="2 columns x 2 rows with static caption bar"
-              :collageBarAttrs="{ button: 'Details' }"
+              :collage-bar-attrs="{ button: 'Details' }"
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=48"
+              :image="image2"
               span="standard"
-              collageBarPosition="top"
+              collage-bar-position="top"
               selected
               label="Top Label"
             />
             <DesignComponent
-              image="https://picsum.photos/800/600?random=49"
-              span="standard"
-              selected
-              collageBarPosition="bottom"
-              label="Active"
-              :collageBarAttrs="{ icon: 'favorite' }"
-            />
-            <DesignComponent
-              image="https://picsum.photos/800/600?random=50"
-              span="wide"
-              collageBarPosition="bottom"
-              label="Wide Banner"
-              description="2 columns x 1 row bottom bar"
-              :collageBarAttrs="{ button: 'Open' }"
+              :image="image1"
+              span="banner"
+              collage-bar-position="bottom"
+              label="Banner Span"
+              description="3 columns x 1 row banner"
             />
           </div>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(7)
+await expect(items[0]).toHaveClass('design-component--span--wide')
+await expect(items[1]).toHaveClass('design-component--selected')
+await expect(items[2]).toHaveClass('design-component--span--tall')
+await expect(items[2]).toHaveClass('design-component--collageBarPosition--top')
+await expect(items[3]).toHaveClass('design-component--span--huge')
+await expect(items[4]).toHaveClass('design-component--span--large')
+await expect(items[5]).toHaveClass('design-component--span--standard')
+await expect(items[6]).toHaveClass('design-component--span--banner')
       `
     },
     {
@@ -121,47 +140,127 @@ export const wikiDescriptionsCollageItem: StorybookComponentsDescriptionItem = {
         en: 'Display control',
         ru: 'Отображение'
       },
+      propsName: ['size', 'coordinator', 'x', 'y'],
+      setup: `
+      return { image1 }
+      `,
       template: `
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
             <DesignComponent
-              image="https://picsum.photos/800/400?random=55"
+              :image="image1"
               size="cover"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="size: cover (default)"
               description="Fills container, cropping overflow"
             />
             <DesignComponent
-              image="https://picsum.photos/800/400?random=55"
+              :image="image1"
               size="contain"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="size: contain"
               description="Scales image to fit within bounds"
             />
             <DesignComponent
-              image="https://picsum.photos/800/400?random=55"
+              :image="image1"
               size="auto"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="size: auto"
               description="Displays image without scaling"
             />
             <DesignComponent
-              image="https://picsum.photos/800/400?random=55"
+              :image="image1"
               :coordinator="[60, 10, 10, 40]"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="coordinator"
               description="Crops to specified coordinate bounds"
             />
             <DesignComponent
-              image="https://picsum.photos/800/400?random=55"
+              :image="image1"
               x="20%"
               y="-10%"
-              collageBarPosition="static"
+              collage-bar-position="static"
               label="x, y offset"
               description="Custom coordinate shift along axes"
             />
           </div>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(5)
+for (const item of items) {
+  await expect(item.querySelector('.design-component__image')).toBeInTheDocument()
+}
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Automated QA — Constructor Props Only)
+    // =========================================================================
+    {
+      id: 'CollageItemTestStatesSlotsAndEvents',
+      name: {
+        en: 'Test: States, custom tag, slots, numeric zero and click event',
+        ru: 'Тест: Состояния, тег, слоты, числовой 0 и событие клика'
+      },
+      propsName: ['focus', 'compact', 'selected', 'iconCheck', 'tag', 'value'],
+      setup: `
+      const lastClicked = ref('')
+      const onClickLite = (value: EventClickValue) => {
+        lastClicked.value = String(value.value)
+      }
+      return { image1, image2, lastClicked, onClickLite }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <span data-testid="collage-item-test-click">{{ lastClicked }}</span>
+          <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
+            <DesignComponent
+              :image="image1"
+              focus
+              compact
+              selected
+              icon-check="star"
+              tag="div"
+              value="item-99"
+              collage-bar-position="bottom"
+              label="Interactive Card"
+              @click-lite="onClickLite"
+            >
+              <template #barTrailing>TRAIL</template>
+            </DesignComponent>
+            <DesignComponent
+              :image="image2"
+              collage-bar-position="static"
+            >
+              <template #barBody>CUSTOM BODY</template>
+            </DesignComponent>
+            <DesignComponent
+              :image="image1"
+              collage-bar-position="static"
+              :label="0"
+              :description="0"
+            />
+          </div>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(3)
+await expect(items[0]).toHaveClass('design-component--focus')
+await expect(items[0]).toHaveClass('design-component--compact')
+await expect(items[0]).toHaveClass('design-component--selected')
+await expect(items[0].querySelector('.design-component__body')?.tagName).toBe('DIV')
+await expect(items[0]).toHaveTextContent('TRAIL')
+await expect(items[1]).toHaveTextContent('CUSTOM BODY')
+await expect(items[2]).toHaveTextContent('0')
+const body = items[0].querySelector('.design-component__body') as HTMLElement | null
+if (body) {
+  await userEvent.click(body)
+}
+await expect(canvas.getByTestId('collage-item-test-click')).toHaveTextContent('item-99')
       `
     }
   ],
@@ -191,7 +290,7 @@ export const wikiDescriptionsCollageItem: StorybookComponentsDescriptionItem = {
     description: `
 A composite media card component designed for photo galleries, collages, and Bento grid layouts.
 Displays an image with cropping and coordinate positioning, optional title/description bar (CollageBar), and an interactive checkmark indicator when selected.
-Features span presets for Bento grids (wide, tall, large, banner, huge) with responsive aspect ratios.
+Features span presets for Bento grids (standard, wide, tall, large, banner, huge) with responsive aspect ratios.
 Supports semantic HTML tag customization (defaults to a), selection states, click events, and bar slots.
     `,
     hide: true

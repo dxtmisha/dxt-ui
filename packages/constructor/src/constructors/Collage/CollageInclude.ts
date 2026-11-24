@@ -1,8 +1,10 @@
 // ai-none
 
+import { isFilled } from '@dxtmisha/functional'
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { CollagePropsInclude } from './basicTypes'
-import type { CollagePropsBasic } from './props'
+import type { CollageProps } from './props'
 import type { CollageExpose, CollageSlots } from './types'
 
 /**
@@ -12,12 +14,31 @@ import type { CollageExpose, CollageSlots } from './types'
  * Класс CollageInclude предоставляет функциональность для внедрения и условного рендеринга компонентов
  * Collage внутри родительских компонентов.
  */
-export class CollageInclude extends ComponentIncludeAbstract<
-  CollagePropsInclude,
-  CollagePropsBasic,
-  CollageExpose,
-  CollageSlots
-> {
+export class CollageInclude<
+  Props extends CollagePropsInclude = CollagePropsInclude,
+  PropsExtra extends CollageProps = CollageProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    CollageExpose,
+    CollageSlots
+  > {
+  /**
+   * Checks whether collage content or variant configuration is present in properties.
+   *
+   * Проверяет наличие содержимого или конфигурации варианта коллажа в свойствах.
+   * @param props input properties / входные свойства
+   * @returns true if collage should be created or displayed / true, если коллаж должен создаваться или отображаться
+   */
+  static is(props?: Readonly<CollagePropsInclude>): boolean {
+    const attrs = props?.collageAttrs
+
+    return Boolean(
+      isFilled(attrs?.images)
+      || isFilled(attrs?.variant)
+    )
+  }
+
   /** Name of the component for style prefixing and resolution / Имя компонента для префикса стилей и разрешения */
   protected override readonly name = 'collage'
 
@@ -25,7 +46,7 @@ export class CollageInclude extends ComponentIncludeAbstract<
   protected override readonly propsAttrsName = 'collageAttrs'
 
   /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
-  protected readonly hasInitElement: boolean = false
+  protected override readonly hasInitElement: boolean = false
 
   /**
    * Checks whether the collage should be displayed.
@@ -35,8 +56,8 @@ export class CollageInclude extends ComponentIncludeAbstract<
    */
   override get is(): boolean {
     return Boolean(
-      this.binds.value.images
-      || this.binds.value.variant
+      isFilled(this.binds.value.images)
+      || isFilled(this.binds.value.variant)
     )
   }
 }

@@ -16,20 +16,22 @@ import type { ClockDialProps } from './props'
  */
 export class ClockDialControl {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props component input properties / входные свойства компонента
-   * @param emitsItem event emission manager / менеджер эмита событий
-   * @param enabled enabled state helper instance / экземпляр помощника состояния активности
-   * @param list clock dial list manager / менеджер списка циферблата часов
-   * @param valueItem time values manager / менеджер значений времени
+   * @param emit event emission manager factory / фабрика менеджера эмита событий
+   * @param enabled enabled state helper factory / фабрика помощника состояния активности
+   * @param list clock dial list manager factory / фабрика менеджера списка циферблата часов
+   * @param value time values manager factory / фабрика менеджера значений времени
    */
   constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly emitsItem: ClockDialEmit,
-    protected readonly enabled: EnabledInclude,
-    protected readonly list: ClockDialList,
-    protected readonly valueItem: ClockDialValue
-  ) { }
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly emit: () => ClockDialEmit,
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly list: () => ClockDialList,
+    protected readonly value: () => ClockDialValue
+  ) {}
 
   /**
    * Decreases the clock value by one step counterclockwise.
@@ -38,7 +40,7 @@ export class ClockDialControl {
    */
   readonly decrease = (): void => {
     if (
-      !this.enabled.isEnabled
+      !this.enabled().isEnabled
       || this.props.clock
     ) {
       return
@@ -54,7 +56,7 @@ export class ClockDialControl {
    */
   readonly increase = (): void => {
     if (
-      !this.enabled.isEnabled
+      !this.enabled().isEnabled
       || this.props.clock
     ) {
       return
@@ -70,6 +72,13 @@ export class ClockDialControl {
    * @param isEnd flag indicating last mark (true) or first mark (false) / флаг последней метки (true) или первой метки (false)
    */
   readonly toEdge = (isEnd: boolean): void => {
+    if (
+      !this.enabled().isEnabled
+      || this.props.clock
+    ) {
+      return
+    }
+
     const enabledMarks = this.getEnabledMarks()
 
     if (enabledMarks.length === 0) {
@@ -86,40 +95,13 @@ export class ClockDialControl {
   }
 
   /**
-   * Finds the index of the closest mark to the current value.
-   *
-   * Находит индекс ближайшей метки к текущему значению.
-   * @param currentValue current numeric clock value / текущее числовое значение часов
-   * @param enabledMarks array of enabled mark items / массив активных элементов меток
-   * @returns closest mark index / индекс ближайшей метки
-   */
-  protected findClosestIndex(
-    currentValue: number,
-    enabledMarks: ClockDialMarkItem[]
-  ): number {
-    let closestIndex = 0
-    let closestDifference = Infinity
-
-    for (let index = 0; index < enabledMarks.length; index++) {
-      const difference = Math.abs(enabledMarks[index].value - currentValue)
-
-      if (difference < closestDifference) {
-        closestDifference = difference
-        closestIndex = index
-      }
-    }
-
-    return closestIndex
-  }
-
-  /**
    * Returns list of non-disabled clock dial marks.
    *
    * Возвращает список неотключенных меток циферблата часов.
    * @returns array of enabled mark items / массив активных элементов меток
    */
   protected getEnabledMarks(): ClockDialMarkItem[] {
-    return this.list.marks.value.filter(item => !item.disabled)
+    return this.list().marks.value.filter(item => !item.disabled)
   }
 
   /**
@@ -142,6 +124,40 @@ export class ClockDialControl {
   }
 
   /**
+   * Finds the index of the closest mark to the current value.
+   *
+   * Находит индекс ближайшей метки к текущему значению.
+   * @param currentValue current numeric clock value / текущее числовое значение часов
+   * @param enabledMarks array of enabled mark items / массив активных элементов меток
+   * @returns closest mark index / индекс ближайшей метки
+   */
+  protected findClosestIndex(
+    currentValue: number,
+    enabledMarks: readonly ClockDialMarkItem[]
+  ): number {
+    let closestIndex = 0
+    let closestDifference = Infinity
+    const length = enabledMarks.length
+
+    for (let index = 0; index < length; index++) {
+      const mark = enabledMarks[index]
+
+      if (!mark) {
+        continue
+      }
+
+      const difference = Math.abs(mark.value - currentValue)
+
+      if (difference < closestDifference) {
+        closestDifference = difference
+        closestIndex = index
+      }
+    }
+
+    return closestIndex
+  }
+
+  /**
    * Navigates to the next or previous available clock mark.
    *
    * Переходит к следующей или предыдущей доступной метке часов.
@@ -157,7 +173,7 @@ export class ClockDialControl {
       return
     }
 
-    const currentValue = this.valueItem.value
+    const currentValue = this.value().value
     const currentIndex = enabledMarks.findIndex(item => item.value === currentValue)
     const baseIndex = currentIndex !== -1
       ? currentIndex
@@ -180,9 +196,9 @@ export class ClockDialControl {
    */
   protected stepInitial(
     isIncrease: boolean,
-    enabledMarks: ClockDialMarkItem[]
+    enabledMarks: readonly ClockDialMarkItem[]
   ): boolean {
-    if (this.valueItem.isSelectVisible()) {
+    if (this.value().isSelectVisible()) {
       return false
     }
 
@@ -190,7 +206,10 @@ export class ClockDialControl {
       ? enabledMarks[0]
       : enabledMarks[enabledMarks.length - 1]
 
-    this.updateValue(initialItem.value)
+    if (initialItem) {
+      this.updateValue(initialItem.value)
+    }
+
     return true
   }
 
@@ -201,8 +220,10 @@ export class ClockDialControl {
    * @param value numeric value to set / числовое значение для установки
    */
   protected updateValue(value: number): void {
-    this.valueItem.set(value)
-    this.emitsItem.emit('input')
-    this.emitsItem.emit('change')
+    const emit = this.emit()
+
+    this.value().set(value)
+    emit.emit('input')
+    emit.emit('change')
   }
 }

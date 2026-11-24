@@ -13,38 +13,18 @@ import { ClockPeriodType } from './basicTypes'
  */
 export class ClockPeriodEvent {
   /**
-   * Constructor
-   * @param enabled enabled state manager instance / экземпляр менеджера состояния активности
-   * @param value period value manager instance / экземпляр менеджера значения периода
-   * @param eventClick click event manager instance / экземпляр менеджера событий клика
+   * Constructor for ClockPeriodEvent.
+   *
+   * Конструктор для ClockPeriodEvent.
+   * @param enabled getter returning enabled state manager instance / функция, возвращающая экземпляр менеджера состояния активности
+   * @param eventClick getter returning click event manager instance / функция, возвращающая экземпляр менеджера событий клика
+   * @param value getter returning period value manager instance / функция, возвращающая экземпляр менеджера значения периода
    */
   constructor(
-    protected readonly enabled: EnabledInclude,
-    protected readonly value: ClockPeriodValue,
-    protected readonly eventClick: EventClickInclude
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly eventClick: () => EventClickInclude,
+    protected readonly value: () => ClockPeriodValue
   ) { }
-
-  /**
-   * Selects a period and triggers appropriate events.
-   *
-   * Выбирает период и вызывает соответствующие события.
-   * @param period period to select / выбираемый период
-   * @param event native mouse event / нативное событие мыши
-   */
-  select(period: ClockPeriodType, event?: MouseEvent): void {
-    if (
-      !this.enabled.isEnabled
-      || this.value.isSelected(period)
-    ) {
-      return
-    }
-
-    this.value.set(period)
-    this.eventClick.onClick(
-      this.getEvent(event),
-      this.getOptions(period)
-    )
-  }
 
   /**
    * Handles click on a period button.
@@ -55,7 +35,11 @@ export class ClockPeriodEvent {
   readonly onClick = (event: MouseEvent): void => {
     event.stopPropagation()
 
-    const value = (event.target as HTMLElement)?.dataset.value
+    const currentTarget = event.currentTarget as HTMLElement | null
+    const target = event.target as HTMLElement | null
+    const value = currentTarget?.dataset?.value
+      ?? target?.dataset?.value
+      ?? target?.closest?.<HTMLElement>('[data-value]')?.dataset?.value
 
     if (value === ClockPeriodType.am || value === ClockPeriodType.pm) {
       this.select(value, event)
@@ -69,7 +53,11 @@ export class ClockPeriodEvent {
    * @param event native keyboard event / нативное событие клавиатуры
    */
   readonly onKeydown = (event: KeyboardEvent): void => {
-    if (this.enabled.isEnabled) {
+    if (event.isComposing) {
+      return
+    }
+
+    if (this.enabled().isEnabled) {
       switch (event.key) {
         case 'ArrowUp':
         case 'ArrowLeft':
@@ -84,10 +72,32 @@ export class ClockPeriodEvent {
         case ' ':
         case 'Enter':
           event.preventDefault()
-          this.select(this.value.isAm() ? ClockPeriodType.pm : ClockPeriodType.am)
+          this.select(this.value().isAm() ? ClockPeriodType.pm : ClockPeriodType.am)
           break
       }
     }
+  }
+
+  /**
+   * Selects a period and triggers appropriate events.
+   *
+   * Выбирает период и вызывает соответствующие события.
+   * @param period period to select / выбираемый период
+   * @param event native mouse event / нативное событие мыши
+   */
+  select(period: ClockPeriodType, event?: MouseEvent): void {
+    if (
+      !this.enabled().isEnabled
+      || this.value().isSelected(period)
+    ) {
+      return
+    }
+
+    this.value().set(period)
+    this.eventClick().onClick(
+      this.getEvent(event),
+      this.getOptions(period)
+    )
   }
 
   /**

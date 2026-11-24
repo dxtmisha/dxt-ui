@@ -1,7 +1,13 @@
 // ai-none
 
-import type { ConstrEmit, DesignName, ConstrStyles } from '@dxtmisha/functional'
-import { inject, ref } from 'vue'
+import { hasInjectionContext, inject, ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrStyles,
+  type DesignName,
+  isObjectNotArray
+} from '@dxtmisha/functional'
 
 import type { ImageEventData } from '../Image'
 
@@ -15,23 +21,21 @@ import type { CollageItemProps } from './props'
 import type { CollageItemEmits } from './types'
 
 /**
- * Class for managing dimensional properties and aspect ratio calculations for CollageItem. /
- * Класс для управления свойствами размеров и расчетом соотношения сторон для CollageItem.
+ * Class for managing dimensional properties and aspect ratio calculations for CollageItem.
+ * Computes grid track factors from loaded image dimensions, binds data attributes and CSS variables,
+ * and notifies parent Collage containers to recalculate layouts.
+ *
+ * Класс для управления свойствами размеров и расчётом соотношения сторон для CollageItem.
+ * Вычисляет коэффициенты ячеек сетки по размерам загруженного изображения, формирует data-атрибуты
+ * и CSS-переменные, а также уведомляет родительские контейнеры Collage о пересчёте макета.
  */
 export class CollageItemDimensions {
-  /** Reactive reference to calculated height factor / Реактивная ссылка на вычисленный коэффициент высоты */
-  readonly height = ref<number | undefined>()
+  /** Injected callback from parent Collage for layout update / Внедрённый коллбэк от родительского Collage для обновления макета */
+  readonly update: CollageUpdate | undefined = hasInjectionContext()
+    ? inject<CollageUpdate | undefined>(COLLAGE_NAME_UPDATE, undefined)
+    : undefined
 
-  /** Reactive reference to calculated width factor / Реактивная ссылка на вычисленный коэффициент ширины */
-  readonly width = ref<number | undefined>()
-
-  /** Injected callback from parent Collage for layout update / Внедренный коллбэк от родительского Collage для обновления макета */
-  readonly update = inject<CollageUpdate | undefined>(
-    COLLAGE_NAME_UPDATE,
-    undefined
-  )
-
-  /** Property names map / Карта имен свойств */
+  /** Property names map / Карта имён свойств */
   protected readonly property: {
     /** CSS property for item height factor / CSS-свойство для коэффициента высоты элемента */
     height: string
@@ -48,13 +52,47 @@ export class CollageItemDimensions {
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
    */
   constructor(
-    protected readonly props: CollageItemProps,
+    protected readonly props: Readonly<CollageItemProps>,
     protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<CollageItemEmits>
   ) {
     this.property = {
       height: naming.getStyle('height'),
       width: naming.getStyle('width')
+    }
+  }
+
+  /** Reactive reference to calculated height factor / Реактивная ссылка на вычисленный коэффициент высоты */
+  readonly height = ref<number | undefined>()
+
+  /** Reactive reference to calculated width factor / Реактивная ссылка на вычисленный коэффициент ширины */
+  readonly width = ref<number | undefined>()
+
+  /**
+   * Returns bindings and data attributes for the element.
+   *
+   * Возвращает привязки и data-атрибуты для элемента.
+   * @returns dictionary of bindings and attributes / словарь привязок и атрибутов
+   */
+  get binds(): ConstrBind {
+    return {
+      'data-collage-item': 'true',
+      'data-value': this.props.value,
+      'data-height': this.height.value,
+      'data-width': this.width.value
+    }
+  }
+
+  /**
+   * Exported dimensional methods.
+   *
+   * Экспонируемые методы размеров.
+   * @returns object with exported dimensional methods / объект с экспонируемыми методами размеров
+   */
+  get expose(): CollageItemDimensionsExpose {
+    return {
+      getHeight: this.getHeight,
+      getWidth: this.getWidth
     }
   }
 
@@ -76,34 +114,6 @@ export class CollageItemDimensions {
     }
 
     return styles
-  }
-
-  /**
-   * Returns bindings and data attributes for the element.
-   *
-   * Возвращает привязки и data-атрибуты для элемента.
-   * @returns dictionary of bindings and attributes / словарь привязок и атрибутов
-   */
-  get binds(): Record<string, any> {
-    return {
-      'data-collage-item': 'true',
-      'data-value': this.props.value,
-      'data-height': this.height.value,
-      'data-width': this.width.value
-    }
-  }
-
-  /**
-   * Exported dimensional methods.
-   *
-   * Экспонируемые методы размеров.
-   * @returns object with exported dimensional methods / объект с экспонируемыми методами размеров
-   */
-  get expose(): CollageItemDimensionsExpose {
-    return {
-      getHeight: this.getHeight,
-      getWidth: this.getWidth
-    }
   }
 
   /**
@@ -132,18 +142,17 @@ export class CollageItemDimensions {
     const image = event.image
 
     if (
-      typeof image === 'object'
-      && image?.width
-      && image?.height
+      isObjectNotArray(image)
+      && Number.isFinite(image.width)
+      && image.width > 0
+      && Number.isFinite(image.height)
+      && image.height > 0
     ) {
       this.height.value = Math.floor(image.height * COLLAGE_ITEM_SCALE / image.width)
       this.width.value = Math.floor(image.width * COLLAGE_ITEM_SCALE / image.height)
     }
 
-    if (this.update) {
-      this.update()
-    }
-
+    this.update?.()
     this.emits?.('load', event)
   }
 }

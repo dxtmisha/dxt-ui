@@ -1,5 +1,7 @@
-import { ref, watch } from 'vue'
-import { isNumber } from '@dxtmisha/functional'
+import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract, isNumber, isString } from '@dxtmisha/functional'
+
+import type { ModelInclude } from '../../classes/ModelInclude'
 
 import { ClockPeriodType } from './basicTypes'
 import type { ClockPeriodProps } from './props'
@@ -11,26 +13,28 @@ import type { ClockPeriodProps } from './props'
  * Класс для управления значением периода (AM / PM) для ClockPeriod.
  * Синхронизируется со значением модели и предоставляет методы для установки периода по значению или часу.
  */
-export class ClockPeriodValue {
-  /** Reactive reference to the period value ('am' or 'pm') / Реактивная ссылка на значение периода ('am' или 'pm') */
-  readonly value = ref<ClockPeriodType>(ClockPeriodType.am)
+export class ClockPeriodValue extends DesignLifecycleAbstract {
+  /** Stop handle for the reactive props watcher / Функция остановки реактивного наблюдателя свойств */
+  protected stopWatch?: WatchStopHandle
 
   /**
-   * Constructor
+   * Constructor for ClockPeriodValue.
+   *
+   * Конструктор для ClockPeriodValue.
    * @param props component input properties / входные свойства компонента
+   * @param model getter returning model synchronization manager / функция, возвращающая менеджер синхронизации модели
    */
   constructor(
-    protected readonly props: ClockPeriodProps
+    protected readonly props: Readonly<ClockPeriodProps>,
+    protected readonly model?: () => ModelInclude<ClockPeriodType>
   ) {
-    this.value.value = this.initValue()
+    super()
 
-    watch(
-      () => this.props.modelValue ?? this.props.value,
-      () => {
-        this.value.value = this.initValue()
-      }
-    )
+    this.value.value = this.initValue()
   }
+
+  /** Reactive reference to the period value ('am' or 'pm') / Реактивная ссылка на значение периода ('am' или 'pm') */
+  readonly value: Ref<ClockPeriodType> = ref<ClockPeriodType>(ClockPeriodType.am)
 
   /**
    * Checks whether the current period is AM.
@@ -74,24 +78,19 @@ export class ClockPeriodValue {
   }
 
   /**
-   * Sets new period value.
+   * Sets new period value and emits model synchronization when changed.
    *
-   * Устанавливает новое значение периода.
+   * Устанавливает новое значение периода и испускает синхронизацию модели при изменении.
    * @param value period value to set / устанавливаемое значение периода
    */
-  readonly set = (value?: ClockPeriodType): void => {
-    this.value.value = value ?? this.initValue()
-  }
+  readonly set = (value?: ClockPeriodType | string): void => {
+    const nextValue = value !== undefined
+      ? this.normalizeValue(value)
+      : this.initValue()
 
-  /**
-   * Sets period value based on hour.
-   *
-   * Устанавливает значение периода по значению часа.
-   * @param hour hour value / значение часа
-   */
-  readonly setByHour = (hour?: number): void => {
-    if (isNumber(hour)) {
-      this.set(Number(hour) >= 12 ? ClockPeriodType.pm : ClockPeriodType.am)
+    if (this.value.value !== nextValue) {
+      this.value.value = nextValue
+      this.model?.().emit(nextValue)
     }
   }
 
@@ -114,6 +113,41 @@ export class ClockPeriodValue {
   }
 
   /**
+   * Sets period value based on hour.
+   *
+   * Устанавливает значение периода по значению часа.
+   * @param hour hour value / значение часа
+   */
+  readonly setByHour = (hour?: number | string): void => {
+    if (isNumber(hour)) {
+      this.set(Number(hour) >= 12 ? ClockPeriodType.pm : ClockPeriodType.am)
+    }
+  }
+
+  /**
+   * Registers reactive watcher for modelValue and value props on mount.
+   *
+   * Регистрирует реактивный наблюдатель для свойств modelValue и value при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = watch(
+      () => this.props.modelValue ?? this.props.value,
+      this.update
+    )
+  }
+
+  /**
+   * Stops registered reactive watcher on unmount.
+   *
+   * Останавливает зарегистрированный реактивный наблюдатель при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
+  /**
    * Toggles between AM and PM.
    *
    * Переключает между AM и PM.
@@ -123,16 +157,38 @@ export class ClockPeriodValue {
   }
 
   /**
-   * Initializes or calculates the current period value.
+   * Updates internal value from props without triggering feedback model emits.
    *
-   * Инициализирует или рассчитывает текущее значение периода.
+   * Обновляет внутреннее значение из свойств без генерации обратных событий модели.
+   */
+  protected readonly update = (): void => {
+    this.value.value = this.initValue()
+  }
+
+  /**
+   * Initializes or calculates the current period value from props.
+   *
+   * Инициализирует или рассчитывает текущее значение периода из свойств.
    * @returns calculated period value / рассчитанное значение периода
    */
   protected initValue(): ClockPeriodType {
-    const value = this.props.modelValue ?? this.props.value
+    return this.normalizeValue(this.props.modelValue ?? this.props.value)
+  }
 
-    if (value) {
-      return String(value).toLowerCase() as ClockPeriodType
+  /**
+   * Normalizes an incoming period value to a valid ClockPeriodType.
+   *
+   * Нормализует входящее значение периода к допустимому ClockPeriodType.
+   * @param value raw period value / исходное значение периода
+   * @returns normalized period value / нормализованное значение периода
+   */
+  protected normalizeValue(value?: unknown): ClockPeriodType {
+    if (isString(value)) {
+      const normalized = value.trim().toLowerCase()
+
+      if (normalized === ClockPeriodType.pm) {
+        return ClockPeriodType.pm
+      }
     }
 
     return ClockPeriodType.am

@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1CollageBar v-bind="args"/>
+  <DesignComponent v-bind="args"/>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

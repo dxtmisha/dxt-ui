@@ -1,17 +1,13 @@
 import {
-  type Ref
-} from 'vue'
-
-import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { ModelValueInclude } from '../../classes/ModelValueInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import { ClockPeriodEvent } from './ClockPeriodEvent'
@@ -19,136 +15,158 @@ import { ClockPeriodValue } from './ClockPeriodValue'
 
 import type { AriaList } from '../../types/ariaTypes'
 import type { ClockPeriodType } from './basicTypes'
-import type { ClockPeriodComponents, ClockPeriodEmits, ClockPeriodSlots } from './types'
 import type { ClockPeriodProps } from './props'
+import type {
+  ClockPeriodComponents,
+  ClockPeriodEmits,
+  ClockPeriodSlots
+} from './types'
+
+/** ClockPeriod dependency constructors type / Тип конструкторов зависимостей ClockPeriod */
+export type ClockPeriodConstructors = {
+  /** Enabled state manager constructor / Конструктор менеджера состояния активности */
+  enabled: typeof EnabledInclude
+  /** Period interaction event manager constructor / Конструктор менеджера событий взаимодействия периода */
+  event: typeof ClockPeriodEvent
+  /** Click event manager constructor / Конструктор менеджера событий клика */
+  eventClick: typeof EventClickInclude
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<ClockPeriodType>
+  /** Localized text manager constructor / Конструктор менеджера локализованного текста */
+  text: typeof TextInclude
+  /** Period value manager constructor / Конструктор менеджера значения периода */
+  value: typeof ClockPeriodValue
+}
 
 /**
  * ClockPeriod orchestrator class.
- * Coordinates period value (AM / PM), list items, accessibility, and user interactions.
+ * Coordinates period value (AM / PM), accessibility attributes, model synchronization, and user interactions.
  *
  * Оркестраторный класс компонента ClockPeriod.
- * Координирует значение периода (AM / PM), элементы списка, доступность и пользовательские взаимодействия.
+ * Координирует значение периода (AM / PM), атрибуты доступности, синхронизацию модели и пользовательские взаимодействия.
  */
-export class ClockPeriod {
-  /** Enabled state helper instance / Экземпляр помощника состояния активности */
-  readonly enabled: EnabledInclude
-
-  /** Model value include helper / Помощник значения модели */
-  readonly model: ModelValueInclude<ClockPeriodType>
-
-  /** Text manager helper instance / Экземпляр помощника менеджера текста */
-  readonly text: TextInclude
-
-  /** Clock period value manager instance / Экземпляр менеджера значения периода часов */
-  readonly value: ClockPeriodValue
-
-  /** Event click include instance / Экземпляр помощника события клика */
-  readonly eventClick: EventClickInclude
-
-  /** Event manager instance for interactions / Экземпляр менеджера событий для взаимодействий */
-  readonly event: ClockPeriodEvent
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors helper class constructors / конструкторы вспомогательных классов
-   * @param constructors.EnabledIncludeConstructor class for working with enabled state / класс для работы с состоянием активности
-   * @param constructors.ModelValueIncludeConstructor class for working with model value / класс для работы со значением модели
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
-   * @param constructors.ClockPeriodValueConstructor class for working with period values / класс для работы со значениями периода
-   * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
-   * @param constructors.ClockPeriodEventConstructor class for working with events / класс для работы с событиями
-   */
-  constructor(
-    protected readonly props: ClockPeriodProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ClockPeriodComponents, ClockPeriodProps>,
-    protected readonly slots?: ClockPeriodSlots,
-    protected readonly emits?: ConstrEmit<ClockPeriodEmits>,
-    constructors: {
-      EnabledIncludeConstructor?: typeof EnabledInclude
-      ModelValueIncludeConstructor?: typeof ModelValueInclude<ClockPeriodType>
-      TextIncludeConstructor?: typeof TextInclude
-      ClockPeriodValueConstructor?: typeof ClockPeriodValue
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ClockPeriodEventConstructor?: typeof ClockPeriodEvent
-    } = {}
-  ) {
-    const {
-      EnabledIncludeConstructor = EnabledInclude,
-      ModelValueIncludeConstructor = ModelValueInclude,
-      TextIncludeConstructor = TextInclude,
-      ClockPeriodValueConstructor = ClockPeriodValue,
-      EventClickIncludeConstructor = EventClickInclude,
-      ClockPeriodEventConstructor = ClockPeriodEvent
-    } = constructors
-
-    this.text = new TextIncludeConstructor(props)
-    this.enabled = new EnabledIncludeConstructor(props)
-
-    this.value = new ClockPeriodValueConstructor(props)
-
-    this.eventClick = new EventClickIncludeConstructor(
-      undefined,
-      () => this.enabled,
-      emits
-    )
-    this.model = new ModelValueIncludeConstructor(
-      'value',
-      emits,
-      this.eventClick,
-      this.value.value,
-      () => props.readonly
-    )
-
-    this.event = new ClockPeriodEventConstructor(
-      this.enabled,
-      this.value,
-      this.eventClick
-    )
-  }
-
-  /**
-   * Returns ARIA attributes for the clock period component.
-   *
-   * Возвращает ARIA-атрибуты для компонента периода часов.
-   * @returns ARIA attributes record / запись ARIA-атрибутов
-   */
-  get aria(): AriaList {
-    return {
-      ...AriaStaticInclude.role('radiogroup'),
-      ...AriaStaticInclude.orientation(this.props.orientation ?? 'vertical'),
-      ...this.enabled.aria
+export class ClockPeriod extends DesignLogicAbstract<
+  HTMLDivElement,
+  ClockPeriodComponents,
+  ClockPeriodEmits,
+  ClockPeriodSlots,
+  ClockPeriodProps,
+  ClockPeriodConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ClockPeriodConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: ClockPeriodEvent,
+      parameters: () => [
+        () => this.i('enabled'),
+        () => this.i('eventClick'),
+        () => this.i('value')
+      ]
+    },
+    eventClick: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    model: {
+      item: ModelInclude<ClockPeriodType>,
+      parameters: () => [
+        'value',
+        this.emits
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
+    value: {
+      item: ClockPeriodValue,
+      parameters: () => [
+        this.props,
+        () => this.i('model')
+      ]
     }
   }
 
   /**
-   * Returns binding attributes and event listeners for root element.
+   * Returns ARIA attributes for the clock period root element.
+   *
+   * Возвращает ARIA-атрибуты для корневого элемента периода часов.
+   * @returns ARIA attributes dictionary / словарь ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    const enabled = this.i('enabled')
+
+    return {
+      ...AriaStaticInclude.role('radiogroup'),
+      ...AriaStaticInclude.orientation(this.props.orientation ?? 'vertical'),
+      ...AriaStaticInclude.readonly(enabled.isReadonly),
+      ...enabled.aria
+    }
+  }
+
+  /**
+   * Returns binding attributes and event listeners for the root element.
    *
    * Возвращает атрибуты привязки и слушатели событий для корневого элемента.
-   * @returns binds record / запись привязок
+   * @returns root element bindings / привязки корневого элемента
    */
-  get binds(): Record<string, any> {
+  get binds(): ConstrBind {
     return {
       tabindex: this.tabindex,
-      onKeydown: this.event.onKeydown,
+      onKeydown: this.onKeydown,
       ...this.aria
     }
   }
 
   /**
-   * Tabindex value for root element.
+   * Tabindex value for the root element.
    *
    * Значение tabindex для корневого элемента.
-   * @returns tabindex number or undefined / значение tabindex или undefined
+   * @returns tabindex number / значение tabindex
    */
-  get tabindex(): number | undefined {
-    return this.enabled.isEnabled ? 0 : -1
+  get tabindex(): number {
+    return this.i('enabled').isEnabled ? 0 : -1
+  }
+
+  /**
+   * Returns ARIA attributes for a period item button.
+   *
+   * Возвращает ARIA-атрибуты для кнопки элемента периода.
+   * @param period period type / тип периода
+   * @returns ARIA attributes dictionary / словарь ARIA-атрибутов
+   */
+  getItemAria(period: ClockPeriodType): AriaList {
+    return {
+      ...AriaStaticInclude.role('radio'),
+      ...AriaStaticInclude.checked(this.i('value').isSelected(period))
+    }
+  }
+
+  /**
+   * Handles click on a period item button.
+   *
+   * Обрабатывает клик по кнопке элемента периода.
+   * @param event native mouse event / нативное событие мыши
+   */
+  readonly onClick = (event: MouseEvent): void => {
+    this.i('event').onClick(event)
+  }
+
+  /**
+   * Handles keyboard navigation on the root element.
+   *
+   * Обрабатывает клавиатурную навигацию на корневом элементе.
+   * @param event native keyboard event / нативное событие клавиатуры
+   */
+  readonly onKeydown = (event: KeyboardEvent): void => {
+    this.i('event').onKeydown(event)
   }
 }

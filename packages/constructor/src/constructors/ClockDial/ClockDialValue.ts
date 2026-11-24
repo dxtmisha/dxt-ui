@@ -1,6 +1,6 @@
 // ai-none
 
-import { GeoIntl, isNull } from '@dxtmisha/functional'
+import { GeoIntl, isNull, toNumber } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { ClockDialProps } from './props'
@@ -12,14 +12,16 @@ import type { ClockDialProps } from './props'
  */
 export class ClockDialValue {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props component input properties / входные свойства компонента
-   * @param model model value helper instance / экземпляр помощника значения модели
+   * @param model model value helper factory / фабрика помощника значения модели
    */
   constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly model: ModelValueInclude<number>
-  ) { }
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly model: () => ModelValueInclude<number>
+  ) {}
 
   /**
    * Current hour value or 0.
@@ -75,7 +77,7 @@ export class ClockDialValue {
    * @returns selected numeric value / выбранное числовое значение
    */
   get value(): number {
-    return Number(this.model.get() ?? 0)
+    return toNumber(this.model().get())
   }
 
   /**
@@ -125,7 +127,7 @@ export class ClockDialValue {
    * @returns boolean visibility / флаг видимости
    */
   isSelectVisible(): boolean {
-    return !this.props.clock && !isNull(this.model.get())
+    return !this.props.clock && !isNull(this.model().get())
   }
 
   /**
@@ -145,6 +147,6 @@ export class ClockDialValue {
    * @param value numeric value to set / числовое значение для установки
    */
   set(value?: number): void {
-    this.model.set(value)
+    this.model().set(value)
   }
 }

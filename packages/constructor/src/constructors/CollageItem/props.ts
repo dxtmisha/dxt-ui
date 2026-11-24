@@ -4,6 +4,7 @@ import type { CollageBarPropsBasic, CollageBarPropsInclude } from '../CollageBar
 
 import type { EventClickProps } from '../../types/eventClickTypes'
 
+/** Token-generated properties / Свойства, сгенерированные из токенов */
 type CollageItemPropsToken = {
   // :type [!] System label / Системная метка
   compact?: boolean
@@ -13,6 +14,10 @@ type CollageItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic incoming properties /
+ * Тип, описывающий базовые входящие свойства
+ */
 export type CollageItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic,
@@ -25,11 +30,11 @@ export type CollageItemPropsBasic<
     size?: ImageProps['size']
 
     /** Image coordinator for cropping or positioning / Координаты изображения для обрезки или позиционирования */
-    coordinator?: number[] | any
+    coordinator?: ImageProps['coordinator']
     /** Image X position / Позиция изображения по оси X */
-    x?: string | number
+    x?: ImageProps['x']
     /** Image Y position / Позиция изображения по оси Y */
-    y?: string | number
+    y?: ImageProps['y']
 
     /** HTML tag for the body element / HTML-тег для элемента тела */
     tag?: string

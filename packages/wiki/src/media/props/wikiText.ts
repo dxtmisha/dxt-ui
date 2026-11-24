@@ -382,6 +382,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textPage: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Page text',
+        ru: 'Текст страницы'
+      }
+    },
+    hide: true
+  },
   textPagination: {
     type: StorybookControl.text,
     options: {

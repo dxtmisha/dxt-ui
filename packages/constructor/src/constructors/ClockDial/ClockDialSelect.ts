@@ -1,7 +1,7 @@
 // ai-none
 
-import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { EnabledInclude } from '../../classes/EnabledInclude'
+import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { ClockDialMarkItem } from './basicTypes'
 import type { ClockDialList } from './ClockDialList'
 import type { ClockDialProps } from './props'
@@ -16,18 +16,31 @@ export class ClockDialSelect {
   protected readonly itemElements = new Map<number, HTMLElement>()
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props component input properties / входные свойства компонента
-   * @param list clock dial list manager / менеджер списка циферблата часов
-   * @param model model value helper instance / экземпляр помощника значения модели
-   * @param enabled enabled state helper instance / экземпляр помощника состояния активности
+   * @param enabled enabled state helper factory / фабрика помощника состояния активности
+   * @param list clock dial list manager factory / фабрика менеджера списка циферблата часов
+   * @param model model value helper factory / фабрика помощника значения модели
    */
   constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly list: ClockDialList,
-    protected readonly model: ModelValueInclude<number>,
-    protected readonly enabled: EnabledInclude
-  ) { }
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly list: () => ClockDialList,
+    protected readonly model: () => ModelValueInclude<number>
+  ) {}
+
+  /**
+   * Checks if coordinate selection is active for current props.
+   *
+   * Проверяет, активен ли выбор по координатам для текущих свойств.
+   * @param props component input properties / входные свойства компонента
+   * @returns true if selection is enabled / true, если выбор доступен
+   */
+  static is(props?: Readonly<ClockDialProps>): boolean {
+    return !props?.clock
+  }
 
   /**
    * Registers or unregisters a DOM element reference for a clock division.
@@ -67,18 +80,28 @@ export class ClockDialSelect {
     clientX: number,
     clientY: number
   ): ClockDialMarkItem | null => {
-    if (!this.enabled.isEnabled) {
+    if (
+      !this.enabled().isEnabled
+      || this.props.clock
+      || this.itemElements.size === 0
+    ) {
       return null
     }
 
-    const list = this.list.marks.value
+    const marks = this.list().marks.value
+    const length = marks.length
+
+    if (length === 0) {
+      return null
+    }
+
     let closestDistance: number | undefined = undefined
     let closestItem: ClockDialMarkItem | undefined = undefined
 
-    for (let index = 0; index < list.length; index++) {
-      const item = list[index]
+    for (let index = 0; index < length; index++) {
+      const item = marks[index]
 
-      if (item.disabled) {
+      if (!item || item.disabled) {
         continue
       }
 
@@ -88,9 +111,9 @@ export class ClockDialSelect {
         continue
       }
 
-      const rect = itemElement.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
+      const boundingRect = itemElement.getBoundingClientRect()
+      const centerX = boundingRect.left + boundingRect.width / 2
+      const centerY = boundingRect.top + boundingRect.height / 2
 
       const distanceX = clientX - centerX
       const distanceY = clientY - centerY
@@ -102,12 +125,13 @@ export class ClockDialSelect {
       }
     }
 
+    const model = this.model()
+
     if (
       closestItem
-      && !closestItem.disabled
-      && closestItem.value !== this.model.get()
+      && closestItem.value !== model.get()
     ) {
-      this.model.set(closestItem.value)
+      model.set(closestItem.value)
       return closestItem
     }
 

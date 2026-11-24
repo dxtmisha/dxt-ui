@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * CollageBarDesign
+ * CollageBarDesign constructor class responsible for assembling and rendering the CollageBar component.
+ * It coordinates class resolution, styles initialization, and the final DOM VNode rendering tree.
+ *
+ * Класс-конструктор CollageBarDesign, отвечающий за сборку и рендеринг компонента CollageBar.
+ * Координирует разрешение классов, инициализацию стилей и финальное дерево рендеринга VNode DOM.
  */
 export class CollageBarDesign<
   COMP extends CollageBarComponents,
@@ -35,14 +39,17 @@ export class CollageBarDesign<
     CLASSES,
     P
   > {
+  /** CollageBar logic orchestrator instance / Экземпляр оркестратора логики CollageBar */
   protected readonly item: CollageBar
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a CollageBarDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна CollageBar.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,13 +74,14 @@ export class CollageBarDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -81,6 +89,7 @@ export class CollageBarDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -100,6 +109,7 @@ export class CollageBarDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -109,23 +119,26 @@ export class CollageBarDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderContext(),
-      ...this.renderButton()
+      ...this.item.callInstance('button', item => item.render(), [])
     ]
 
     this.initSlot('trailing', children)
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
@@ -134,9 +147,10 @@ export class CollageBarDesign<
    * Content and text area rendering.
    *
    * Рендеринг области контента и текста.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderContext = (): VNode[] => {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderBody()
     ]
 
@@ -157,31 +171,16 @@ export class CollageBarDesign<
    * Body rendering.
    *
    * Рендеринг тела.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderBody = (): VNode[] => {
-    const children: any[] = [
-      ...this.item.label.render(),
-      ...this.item.description.render()
+    const children: VNode[] = [
+      ...this.item.callInstance('label', item => item.render(), []),
+      ...this.item.callInstance('description', item => item.render(), [])
     ]
 
     this.initSlot('body', children)
 
     return children
-  }
-
-  /**
-   * Action button rendering.
-   *
-   * Рендеринг кнопки действия.
-   */
-  readonly renderButton = (): VNode[] => {
-    if (this.item.isButton()) {
-      return this.item.button.render(
-        undefined,
-        { class: this.classes?.value.button }
-      )
-    }
-
-    return []
   }
 }

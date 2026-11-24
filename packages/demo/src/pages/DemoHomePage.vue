@@ -36,7 +36,11 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Chip" name="component-chip"/>
         <DemoLink label="ChipGroup" name="component-chip-group"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>
+        <DemoLink label="ClockDial" name="component-clock-dial"/>
+        <DemoLink label="ClockPeriod" name="component-clock-period"/>
         <DemoLink label="Collage" name="component-collage"/>
+        <DemoLink label="CollageBar" name="component-collage-bar"/>
+        <DemoLink label="CollageItem" name="component-collage-item"/>
         <DemoLink label="ComponentOutlet" name="component-component-outlet"/>
         <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
@@ -72,6 +76,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="MotionSticky" name="component-motion-sticky"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
         <DemoLink label="Page Area" name="component-page-area"/>
+        <DemoLink label="Pagination" name="component-pagination"/>
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="ProgressBar" name="component-progress-bar"/>
         <DemoLink label="Radio" name="component-radio"/>

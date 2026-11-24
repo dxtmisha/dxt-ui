@@ -8,11 +8,13 @@
   justify-content: space-evenly;
 
   &__menuRows,
-  &__navigation{
+  &__navigation {
     @include ui.flexX;
   }
 
   &__navigation {
+    flex-wrap: wrap;
+    justify-content: center;
     gap: inherit;
   }
 

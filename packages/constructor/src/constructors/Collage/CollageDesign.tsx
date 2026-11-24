@@ -1,36 +1,37 @@
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  toBinds
+  getObjectNoUndefined,
+  type ListList
 } from '@dxtmisha/functional'
-import { h, type VNode } from 'vue'
 
 import { Collage } from './Collage'
 
-import {
-  type CollagePropsBasic
-} from './props'
-import {
-  type CollageClasses,
-  type CollageComponents,
-  type CollageEmits,
-  type CollageExpose,
-  type CollageSlots
+import type { CollageProps } from './props'
+import type {
+  CollageClasses,
+  CollageComponents,
+  CollageEmits,
+  CollageExpose,
+  CollageSlots
 } from './types'
 
 /**
  * CollageDesign class for assembling the Collage component VNode tree.
+ * Coordinates root container bindings, body grid layout, item rendering, and slot projection.
  *
  * Класс CollageDesign для сборки дерева виртуальных узлов VNode компонента Collage.
+ * Координирует привязки корневого контейнера, сетку тела, рендеринг элементов и проекцию слотов.
  */
 export class CollageDesign<
   COMP extends CollageComponents,
   EXPOSE extends CollageExpose,
   CLASSES extends CollageClasses,
-  P extends CollagePropsBasic
+  P extends CollageProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     CollageEmits,
     EXPOSE,
@@ -38,6 +39,7 @@ export class CollageDesign<
     CLASSES,
     P
   > {
+  /** Collage logic orchestrator instance / Экземпляр оркестратора логики Collage */
   protected readonly item: Collage
 
   /**
@@ -72,6 +74,74 @@ export class CollageDesign<
   }
 
   /**
+   * Renders the body container wrapping items and default slot content.
+   *
+   * Рендерит контейнер тела, оборачивающий элементы и содержимое слота по умолчанию.
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderBody = (): VNode => {
+    return h(
+      'div',
+      {
+        class: this.classes?.value.body
+      },
+      this.renderList()
+    )
+  }
+
+  /**
+   * Renders a single collage item with merged shared attributes, item properties, and event handlers.
+   *
+   * Рендерит отдельный элемент коллажа с объединёнными общими атрибутами, свойствами элемента и обработчиками событий.
+   * @param item normalized collage item data / нормализованные данные элемента коллажа
+   * @param key fallback item index / резервный индекс элемента
+   * @returns rendered virtual node or undefined / отрендеренный виртуальный узел или undefined
+   */
+  readonly renderItem = (
+    item: ListList[number],
+    key: number
+  ): VNode | undefined => {
+    return this.components?.renderOne(
+      'collageItem',
+      mergeProps(
+        getObjectNoUndefined({
+          class: this.classes?.value.item,
+          onClick: this.item.onClick,
+          ...this.item.getBindsItem()
+        }),
+        getObjectNoUndefined((this.props.collageItemAttrs ?? {}) as Record<string, unknown>),
+        getObjectNoUndefined(item as Record<string, unknown>)
+      ),
+      undefined,
+      String(item.value ?? item.index ?? key)
+    )
+  }
+
+  /**
+   * Renders the list of collage items followed by default slot content.
+   *
+   * Рендерит список элементов коллажа с последующим содержимым слота по умолчанию.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderList = (): VNode[] => {
+    const children: VNode[] = []
+    const list = this.item.getList()
+    const length = list.length
+
+    for (let index = 0; index < length; index++) {
+      const node = this.renderItem(list[index] as ListList[number], index)
+
+      if (node) {
+        children.push(node)
+      }
+    }
+
+    this.initSlot('default', children)
+
+    return children
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
@@ -79,8 +149,9 @@ export class CollageDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose,
-      update: this.item.variant.update
+      getValue: () => this.item.i('event').expose.getValue?.(),
+      getDetail: () => this.item.i('event').expose.getDetail?.(),
+      update: this.item.update
     } as EXPOSE
   }
 
@@ -121,68 +192,16 @@ export class CollageDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.focusDirection.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderBody()
     )
-  }
-
-  /**
-   * Rendering the body container.
-   *
-   * Рендеринг контейнера тела.
-   * @returns virtual node / виртуальный узел
-   */
-  readonly renderBody = (): VNode => {
-    return h(
-      'div',
-      {
-        class: this.classes?.value.body
-      },
-      this.renderList()
-    )
-  }
-
-  /**
-   * List of items rendering.
-   *
-   * Рендеринг списка элементов.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  readonly renderList = (): VNode[] => {
-    const children: any[] = []
-
-    if (this.props.images) {
-      const list = this.item.data.fullData.value
-
-      if (list) {
-        list.forEach((item, key) => {
-          this.components?.renderAdd(
-            children,
-            'collageItem',
-            toBinds(
-              {
-                class: this.classes?.value.item,
-                onClick: this.item.model.onClick,
-                ...this.item.focusDirection.bindsItem()
-              },
-              this.props.collageItemAttrs,
-              item
-            ),
-            undefined,
-            item?.value || item?.index || key
-          )
-        })
-      }
-    }
-
-    this.initSlot('default', children)
-
-    return children
   }
 }

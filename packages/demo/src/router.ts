@@ -31,7 +31,11 @@ import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoChipPage from './pages/components/DemoChipPage.vue'
 import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
+import DemoClockDialPage from './pages/components/DemoClockDialPage.vue'
+import DemoClockPeriodPage from './pages/components/DemoClockPeriodPage.vue'
 import DemoCollagePage from './pages/components/DemoCollagePage.vue'
+import DemoCollageBarPage from './pages/components/DemoCollageBarPage.vue'
+import DemoCollageItemPage from './pages/components/DemoCollageItemPage.vue'
 import DemoComponentOutletPage from './pages/components/DemoComponentOutletPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
@@ -67,6 +71,7 @@ import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
 import DemoMotionStickyPage from './pages/components/DemoMotionStickyPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
+import DemoPaginationPage from './pages/components/DemoPaginationPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoProgressBarPage from './pages/components/DemoProgressBarPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
@@ -233,9 +238,29 @@ export const routes: RouteRecordRaw[] = [
     component: DemoClientOnlyPage
   },
   {
+    path: '/component-clock-dial',
+    name: 'component-clock-dial',
+    component: DemoClockDialPage
+  },
+  {
+    path: '/component-clock-period',
+    name: 'component-clock-period',
+    component: DemoClockPeriodPage
+  },
+  {
     path: '/component-collage',
     name: 'component-collage',
     component: DemoCollagePage
+  },
+  {
+    path: '/component-collage-bar',
+    name: 'component-collage-bar',
+    component: DemoCollageBarPage
+  },
+  {
+    path: '/component-collage-item',
+    name: 'component-collage-item',
+    component: DemoCollageItemPage
   },
   {
     path: '/component-component-outlet',
@@ -411,6 +436,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-page-area',
     name: 'component-page-area',
     component: DemoPageAreaPage
+  },
+  {
+    path: '/component-pagination',
+    name: 'component-pagination',
+    component: DemoPaginationPage
   },
   {
     path: '/component-progress',

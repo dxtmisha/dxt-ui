@@ -1,188 +1,349 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, expectTypeOf, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
+import { type ConstrBind, DesignLifecycleAbstract } from '@dxtmisha/functional'
 import { FocusDirectionInclude } from '../FocusDirectionInclude'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onUnmounted: vi.fn()
-  }
-})
+/**
+ * Helper to mock getBoundingClientRect for deterministic 2D spatial geometry tests.
+ *
+ * Вспомогательная функция для мокирования getBoundingClientRect в детерминированных 2D-тестах.
+ */
+function mockBoundingRect(
+  element: HTMLElement,
+  left: number,
+  top: number,
+  width = 100,
+  height = 100
+): void {
+  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
+    left,
+    top,
+    width,
+    height,
+    right: left + width,
+    bottom: top + height,
+    x: left,
+    y: top,
+    toJSON: () => {}
+  })
+}
 
 describe('FocusDirectionInclude', () => {
   let parentElement: HTMLElement
-  let itemA: HTMLElement
-  let itemB: HTMLElement
-  let itemC: HTMLElement
+  let itemTopLeft: HTMLElement
+  let itemTopRight: HTMLElement
+  let itemBottomLeft: HTMLElement
+  let itemBottomRight: HTMLElement
 
   beforeEach(() => {
     parentElement = document.createElement('div')
-    itemA = document.createElement('div')
-    itemA.className = 'sys-focusDirection__item sys-focusDirection__item--active'
 
-    itemB = document.createElement('div')
-    itemB.className = 'sys-focusDirection__item'
+    itemTopLeft = document.createElement('div')
+    itemTopLeft.className = 'sys-focusDirection__item'
+    itemTopLeft.scrollIntoView = vi.fn()
+    mockBoundingRect(itemTopLeft, 0, 0) // center: (50, 50)
 
-    itemC = document.createElement('div')
-    itemC.className = 'sys-focusDirection__item'
+    itemTopRight = document.createElement('div')
+    itemTopRight.className = 'sys-focusDirection__item'
+    itemTopRight.scrollIntoView = vi.fn()
+    mockBoundingRect(itemTopRight, 100, 0) // center: (150, 50)
 
-    parentElement.appendChild(itemA)
-    parentElement.appendChild(itemB)
-    parentElement.appendChild(itemC)
+    itemBottomLeft = document.createElement('div')
+    itemBottomLeft.className = 'sys-focusDirection__item'
+    itemBottomLeft.scrollIntoView = vi.fn()
+    mockBoundingRect(itemBottomLeft, 0, 100) // center: (50, 150)
+
+    itemBottomRight = document.createElement('div')
+    itemBottomRight.className = 'sys-focusDirection__item'
+    itemBottomRight.scrollIntoView = vi.fn()
+    mockBoundingRect(itemBottomRight, 100, 100) // center: (150, 150)
+
+    parentElement.append(itemTopLeft, itemTopRight, itemBottomLeft, itemBottomRight)
     document.body.appendChild(parentElement)
-
-    // Mock scrollIntoView
-    itemA.scrollIntoView = vi.fn()
-    itemB.scrollIntoView = vi.fn()
-    itemC.scrollIntoView = vi.fn()
-
-    // Mock getBoundingClientRect
-    // Item A center: (50, 50)
-    vi.spyOn(itemA, 'getBoundingClientRect').mockReturnValue({
-      left: 0, top: 0, width: 100, height: 100, right: 100, bottom: 100, x: 0, y: 0, toJSON: () => {}
-    })
-    // Item B center: (50, 150)
-    vi.spyOn(itemB, 'getBoundingClientRect').mockReturnValue({
-      left: 0, top: 100, width: 100, height: 100, right: 100, bottom: 200, x: 0, y: 100, toJSON: () => {}
-    })
-    // Item C center: (150, 50)
-    vi.spyOn(itemC, 'getBoundingClientRect').mockReturnValue({
-      left: 100, top: 0, width: 100, height: 100, right: 200, bottom: 100, x: 100, y: 0, toJSON: () => {}
-    })
   })
 
   afterEach(() => {
-    document.body.removeChild(parentElement)
+    parentElement.remove()
     vi.restoreAllMocks()
   })
 
-  it('should initialize binds correctly', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-    expect(focusDir.binds.tabindex).toBe(0)
-    expect(focusDir.binds.onFocus).toBeDefined()
-    expect(focusDir.binds.onBlur).toBeDefined()
-  })
+  describe('Standard functional requirements (Happy path & 2D spatial navigation)', () => {
+    it('should extend DesignLifecycleAbstract and return typed container/item bindings', () => {
+      const parentRef = ref<HTMLElement | undefined>(parentElement)
+      const focusDirection = new FocusDirectionInclude(parentRef)
 
-  it('should activate default element on focus', () => {
-    const parentRef = ref(parentElement)
-    itemA.classList.remove('sys-focusDirection__item--active')
+      expect(focusDirection).toBeInstanceOf(DesignLifecycleAbstract)
+      expectTypeOf(focusDirection.binds).toEqualTypeOf<ConstrBind>()
+      expectTypeOf(focusDirection.bindsItem()).toEqualTypeOf<ConstrBind>()
 
-    const focusDir = new FocusDirectionInclude(parentRef)
-    focusDir.onFocus()
-
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(true)
-  })
-
-  it('should clear active elements on blur', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-    focusDir.onFocus()
-
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(true)
-
-    focusDir.onBlur()
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(false)
-  })
-
-  it('should navigate focus downwards on ArrowDown keypress', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-    focusDir.onFocus()
-
-    const event = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-    parentElement.dispatchEvent(event)
-
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(false)
-    expect(itemB.classList.contains('sys-focusDirection__item--active')).toBe(true)
-    expect(itemB.scrollIntoView).toHaveBeenCalled()
-  })
-
-  it('should navigate focus rightwards on ArrowRight keypress', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-    focusDir.onFocus()
-
-    const event = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
-    parentElement.dispatchEvent(event)
-
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(false)
-    expect(itemC.classList.contains('sys-focusDirection__item--active')).toBe(true)
-    expect(itemC.scrollIntoView).toHaveBeenCalled()
-  })
-
-  it('should trigger click on active element when Enter key is pressed', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-    focusDir.onFocus()
-
-    const clickSpy = vi.spyOn(itemA, 'click')
-    const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
-    parentElement.dispatchEvent(event)
-
-    expect(clickSpy).toHaveBeenCalled()
-  })
-
-  it('should handle control parameter as boolean and function', () => {
-    const parentRef = ref(parentElement)
-
-    const focusDirDisabled = new FocusDirectionInclude(
-      parentRef,
-      undefined,
-      undefined,
-      undefined,
-      false
-    )
-    expect(focusDirDisabled.is()).toBe(false)
-    expect(focusDirDisabled.binds).toEqual({})
-    expect(focusDirDisabled.bindsItem()).toEqual({})
-    expect(focusDirDisabled.tabindexItem()).toBeUndefined()
-
-    itemA.classList.remove('sys-focusDirection__item--active')
-    focusDirDisabled.activateDefault()
-    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(false)
-
-    let controlState = false
-    const focusDirFunction = new FocusDirectionInclude(
-      parentRef,
-      undefined,
-      undefined,
-      undefined,
-      () => controlState
-    )
-    expect(focusDirFunction.is()).toBe(false)
-    expect(focusDirFunction.binds).toEqual({})
-
-    controlState = true
-    expect(focusDirFunction.is()).toBe(true)
-    expect(focusDirFunction.binds.tabindex).toBe(0)
-    expect(focusDirFunction.bindsItem()).toEqual({ tabindex: -1 })
-    expect(focusDirFunction.tabindexItem()).toBe(-1)
-  })
-
-  it('should return item binds and forbid focus when control is enabled', () => {
-    const parentRef = ref(parentElement)
-    const focusDir = new FocusDirectionInclude(parentRef)
-
-    expect(focusDir.bindsItem()).toEqual({ tabindex: -1 })
-    expect(focusDir.bindsItem({ class: 'test-item' })).toEqual({
-      tabindex: -1,
-      class: 'test-item'
+      expect(focusDirection.is()).toBe(true)
+      expect(focusDirection.binds).toEqual({
+        tabindex: 0,
+        onFocus: focusDirection.onFocus,
+        onBlur: focusDirection.onBlur
+      })
+      expect(focusDirection.bindsItem()).toEqual({ tabindex: -1 })
+      expect(focusDirection.tabindexItem()).toBe(-1)
     })
-    expect(focusDir.tabindexItem()).toBe(-1)
 
-    const focusDirDisabled = new FocusDirectionInclude(
-      parentRef,
-      undefined,
-      undefined,
-      undefined,
-      false
-    )
-    expect(focusDirDisabled.bindsItem()).toEqual({})
-    expect(focusDirDisabled.bindsItem({ class: 'test-item' })).toEqual({
-      class: 'test-item'
+    it('should accept both Ref and getter function for container element', () => {
+      const focusDirection = new FocusDirectionInclude(() => parentElement)
+
+      focusDirection.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+      expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should update aria-activedescendant when active element has an id', () => {
+      itemTopLeft.id = 'focus-item-1'
+      itemTopRight.id = 'focus-item-2'
+
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      expect(focusDirection.binds['aria-activedescendant']).toBeUndefined()
+
+      focusDirection.onFocus()
+      expect(focusDirection.binds['aria-activedescendant']).toBe('focus-item-1')
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+      expect(focusDirection.binds['aria-activedescendant']).toBe('focus-item-2')
+
+      focusDirection.onBlur()
+      expect(focusDirection.binds['aria-activedescendant']).toBeUndefined()
+    })
+
+    it('should activate activeSelector first, falling back to first selector item on focus', () => {
+      itemTopRight.classList.add('custom--selected')
+
+      const focusDirection = new FocusDirectionInclude(
+        ref<HTMLElement | undefined>(parentElement),
+        '.sys-focusDirection__item',
+        '.custom--selected',
+        'custom--focus'
+      )
+
+      focusDirection.onFocus()
+      expect(itemTopRight.classList.contains('custom--focus')).toBe(true)
+      expect(itemTopLeft.classList.contains('custom--focus')).toBe(false)
+
+      focusDirection.onBlur()
+      expect(itemTopRight.classList.contains('custom--focus')).toBe(false)
+
+      itemTopRight.classList.remove('custom--selected')
+      focusDirection.onFocus()
+      expect(itemTopLeft.classList.contains('custom--focus')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should navigate across all 4 arrow directions (Right -> Down -> Left -> Up) and call scrollIntoView', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
+      expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(true)
+      expect(itemTopRight.scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' })
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }))
+      expect(itemBottomRight.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }))
+      expect(itemBottomLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }))
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should prefer aligned candidate over closer misaligned diagonal candidate via cross-axis weight', () => {
+      const misalignedNear = document.createElement('div')
+      misalignedNear.className = 'sys-focusDirection__item'
+      misalignedNear.scrollIntoView = vi.fn()
+      // Center (120, 120): dx=70, dy=70 => weighted ArrowDown distance = 70^2 * 4 + 70^2 = 24500
+      // itemBottomLeft center (50, 150): dx=0, dy=100 => weighted ArrowDown distance = 0 + 100^2 = 10000
+      mockBoundingRect(misalignedNear, 70, 70)
+      parentElement.appendChild(misalignedNear)
+
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
+      expect(itemBottomLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+      expect(misalignedNear.classList.contains('sys-focusDirection__item--active')).toBe(false)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should trigger click and preventDefault on Enter and Space keys', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      const clickSpy = vi.spyOn(itemTopLeft, 'click')
+
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      parentElement.dispatchEvent(enterEvent)
+      expect(enterEvent.defaultPrevented).toBe(true)
+      expect(clickSpy).toHaveBeenCalledTimes(1)
+
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true })
+      parentElement.dispatchEvent(spaceEvent)
+      expect(spaceEvent.defaultPrevented).toBe(true)
+      expect(clickSpy).toHaveBeenCalledTimes(2)
+
+      focusDirection.onUnmounted()
+    })
+  })
+
+  describe('Boundary values, non-destructive merging, and IME composition guard', () => {
+    it('should preserve explicit tabindex 0 and prevent undefined from overwriting tabindex -1 in bindsItem', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      const extra = { class: 'card', tabindex: undefined }
+      const extraCopy = { ...extra }
+
+      expect(focusDirection.bindsItem(extra)).toEqual({ class: 'card', tabindex: -1 })
+      expect(extra).toEqual(extraCopy)
+      expect(focusDirection.bindsItem({ tabindex: 0, class: 'card' })).toEqual({ class: 'card', tabindex: 0 })
+    })
+
+    it('should ignore arrow and Enter keys during active IME composition (isComposing: true)', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      const clickSpy = vi.spyOn(itemTopLeft, 'click')
+
+      const arrowEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', isComposing: true, bubbles: true, cancelable: true })
+      parentElement.dispatchEvent(arrowEvent)
+      expect(arrowEvent.defaultPrevented).toBe(false)
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', isComposing: true, bubbles: true, cancelable: true })
+      parentElement.dispatchEvent(enterEvent)
+      expect(enterEvent.defaultPrevented).toBe(false)
+      expect(clickSpy).not.toHaveBeenCalled()
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should stay put when no candidate exists in direction', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }))
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+  })
+
+  describe('Dynamic control toggling, detached DOM recovery, and empty/undefined containers', () => {
+    it('should return empty binds and skip starting listener when control is false', () => {
+      const addSpy = vi.spyOn(parentElement, 'addEventListener')
+      const focusDirection = new FocusDirectionInclude(
+        ref<HTMLElement | undefined>(parentElement),
+        undefined,
+        undefined,
+        undefined,
+        false
+      )
+
+      expect(focusDirection.is()).toBe(false)
+      expect(focusDirection.binds).toEqual({})
+      expect(focusDirection.tabindexItem()).toBeUndefined()
+      expect(focusDirection.bindsItem({ class: 'item' })).toEqual({ class: 'item' })
+
+      focusDirection.onFocus()
+      expect(addSpy).not.toHaveBeenCalled()
+    })
+
+    it('should stop intercepting keys and clear active state if control flips from true to false while focused', () => {
+      let enabled = true
+      const focusDirection = new FocusDirectionInclude(
+        ref<HTMLElement | undefined>(parentElement),
+        undefined,
+        undefined,
+        undefined,
+        () => enabled
+      )
+
+      focusDirection.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      enabled = false
+      const clickSpy = vi.spyOn(itemTopLeft, 'click')
+      const arrowEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true })
+      parentElement.dispatchEvent(arrowEvent)
+
+      expect(arrowEvent.defaultPrevented).toBe(false)
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(false)
+      expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(false)
+      expect(clickSpy).not.toHaveBeenCalled()
+    })
+
+    it('should recover cleanly when active element is detached from DOM during re-render', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      const detachedClickSpy = vi.spyOn(itemTopLeft, 'click')
+      itemTopLeft.remove()
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }))
+      expect(detachedClickSpy).not.toHaveBeenCalled()
+
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }))
+      expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should recover via activateDefault when container is focused before dynamic items mount', () => {
+      parentElement.innerHTML = ''
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      parentElement.append(itemTopLeft, itemTopRight)
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should handle undefined element ref, empty container, and single item safely without throwing', () => {
+      const emptyRef = ref<HTMLElement | undefined>(undefined)
+      const focusDirection = new FocusDirectionInclude(emptyRef)
+
+      expect(() => focusDirection.activateDefault()).not.toThrow()
+      expect(() => focusDirection.onFocus()).not.toThrow()
+      expect(() => focusDirection.clearActive()).not.toThrow()
+      expect(() => focusDirection.onBlur()).not.toThrow()
+      expect(() => focusDirection.onUnmounted()).not.toThrow()
+    })
+  })
+
+  describe('Lifecycle cleanup and listener leak prevention', () => {
+    it('should detach keydown listener on onUnmounted without leaking listeners', () => {
+      const addSpy = vi.spyOn(parentElement, 'addEventListener')
+      const removeSpy = vi.spyOn(parentElement, 'removeEventListener')
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+
+      focusDirection.onFocus()
+      expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function), undefined)
+
+      focusDirection.onUnmounted()
+      expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function), undefined)
+
+      itemTopLeft.classList.add('sys-focusDirection__item--active')
+      parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+      expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(false)
     })
   })
 })

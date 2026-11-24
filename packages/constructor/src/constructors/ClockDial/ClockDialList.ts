@@ -6,6 +6,18 @@ import { toNumber, type DesignName } from '@dxtmisha/functional'
 import type { ClockDialMarkItem } from './basicTypes'
 import type { ClockDialProps } from './props'
 
+/** Full circle angle in degrees / Полный угол окружности в градусах */
+const FULL_CIRCLE_DEGREES = 360
+
+/** Number of marks for 12-hour clock mode / Количество меток для 12-часового режима */
+const COUNT_12_HOURS = 12
+
+/** Number of marks for 24-hour clock mode / Количество меток для 24-часового режима */
+const COUNT_24_HOURS = 24
+
+/** Number of marks for minute/second clock modes / Количество меток для режимов минут и секунд */
+const COUNT_MINUTES_SECONDS = 60
+
 /**
  * Class for managing and generating clock dial items and tick divisions.
  *
@@ -13,27 +25,40 @@ import type { ClockDialProps } from './props'
  */
 export class ClockDialList {
   /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props component input properties / входные свойства компонента
+   * @param naming component naming helper / помощник именования компонента
+   */
+  constructor(
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly naming: DesignName
+  ) {}
+
+  /**
    * Computed array of clock dial division marks.
    *
    * Вычисляемый массив меток делений циферблата часов.
-   * @returns computed array of clock dial mark items / вычисляемый массив элементов меток циферблата
    */
   readonly marks: ComputedRef<ClockDialMarkItem[]> = computed(() => {
     const items: ClockDialMarkItem[] = []
     const count = this.maxCount
     const rotateStep = this.rotate
     const minimum = toNumber(this.props.min ?? 0)
-    const maximum = toNumber(this.props.max ?? 60)
+    const maximum = toNumber(this.props.max ?? COUNT_MINUTES_SECONDS)
     const step = toNumber(this.props.step ?? 1)
+    const styleProperty = this.naming.getStyle('valueRotate')
+    const isDisabledAll = Boolean(this.props.disabled)
 
     for (let index = 1; index <= count; index++) {
-      const isZeroValue = index === count && count !== 12
+      const isZeroValue = index === count && count !== COUNT_12_HOURS
       const value = isZeroValue ? 0 : index
       const valueRotate = `${rotateStep * index}deg`
       const name = value < 10 ? `0${value}` : `${value}`
-      const section = count === 24 && (value > 12 || value === 0)
+      const section = count === COUNT_24_HOURS && (value > COUNT_12_HOURS || value === 0)
       const isStepValid = step <= 1 || ((value - minimum) % step === 0)
-      const disabled = Boolean(this.props.disabled)
+      const disabled = isDisabledAll
         || value < minimum
         || value > maximum
         || !isStepValid
@@ -43,7 +68,7 @@ export class ClockDialList {
         rotate: valueRotate,
         section,
         style: {
-          [this.naming.getStyle('valueRotate')]: valueRotate
+          [styleProperty]: valueRotate
         },
         value,
         disabled
@@ -54,16 +79,6 @@ export class ClockDialList {
   })
 
   /**
-   * Constructor
-   * @param props component input properties / входные свойства компонента
-   * @param naming component naming helper / помощник именования компонента
-   */
-  constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly naming: DesignName
-  ) { }
-
-  /**
    * Maximum count of divisions for current clock type.
    *
    * Максимальное количество делений для текущего типа часов.
@@ -72,13 +87,13 @@ export class ClockDialList {
   get maxCount(): number {
     switch (this.props.type) {
       case '12':
-        return 12
+        return COUNT_12_HOURS
       case '24':
-        return 24
+        return COUNT_24_HOURS
       case 'minute':
       case 'second':
       default:
-        return 60
+        return COUNT_MINUTES_SECONDS
     }
   }
 
@@ -92,11 +107,11 @@ export class ClockDialList {
     switch (this.props.type) {
       case '12':
       case '24':
-        return 360 / 12
+        return FULL_CIRCLE_DEGREES / COUNT_12_HOURS
       case 'minute':
       case 'second':
       default:
-        return 360 / 60
+        return FULL_CIRCLE_DEGREES / COUNT_MINUTES_SECONDS
     }
   }
 

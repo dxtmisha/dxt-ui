@@ -1,119 +1,119 @@
-import { type Ref } from 'vue'
+import { mergeProps } from 'vue'
 import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName,
-  getBind
+  type ConstrItems,
+  DesignLogicAbstract,
+  getBind,
+  getObjectNoUndefined,
+  isFilled,
+  isNumber
 } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
+
 import { ButtonInclude } from '../Button'
 
-import type { CollageBarComponents, CollageBarEmits, CollageBarSlots } from './types'
 import type { CollageBarProps } from './props'
+import type { CollageBarComponents, CollageBarEmits, CollageBarSlots } from './types'
+
+/** CollageBar dependency constructors type / Тип конструкторов зависимостей CollageBar */
+export type CollageBarConstructors = {
+  /** Button manager constructor / Конструктор менеджера кнопки */
+  button: typeof ButtonInclude
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Click event manager constructor / Конструктор менеджера событий клика */
+  event: typeof EventClickInclude
+  /** Label manager constructor / Конструктор менеджера метки */
+  label: typeof LabelInclude
+}
 
 /**
- * CollageBar controller class managing labels, descriptions, buttons, and click events. /
+ * CollageBar controller class managing labels, descriptions, buttons, and click events.
+ *
  * Класс контроллера CollageBar, управляющий метками, описаниями, кнопками и событиями клика.
  */
-export class CollageBar {
-  /** Label control instance / Экземпляр управления меткой */
-  readonly label: LabelInclude
+export class CollageBar extends DesignLogicAbstract<
+  HTMLElement,
+  CollageBarComponents,
+  CollageBarEmits,
+  CollageBarSlots,
+  CollageBarProps,
+  CollageBarConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CollageBarConstructors> = {
+    button: {
+      item: ButtonInclude,
+      canCreate: () => Boolean(
+        isFilled(this.props.button, true)
+        || isNumber(this.props.button)
+        || isFilled(this.props.icon)
+        || isFilled(this.props.buttonAttrs)
+      ),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => {
+          const extra = getObjectNoUndefined({
+            icon: this.props.icon,
+            detail: this.props.detail,
+            value: this.props.value,
+            ...this.i('event').binds
+          })
 
-  /** Description control instance / Экземпляр управления описанием */
-  readonly description: DescriptionInclude
+          if (
+            isFilled(this.props.button, true)
+            || isNumber(this.props.button)
+          ) {
+            return mergeProps(
+              extra,
+              getObjectNoUndefined(getBind(this.props.button, undefined, 'label', true))
+            )
+          }
 
-  /** Button control instance / Экземпляр управления кнопкой */
-  readonly button: ButtonInclude
-
-  /** Click event control instance / Экземпляр управления событием клика */
-  readonly event: EventClickInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ButtonIncludeConstructor class for working with button / класс для работы с кнопкой
-   * @param constructors.DescriptionIncludeConstructor class for working with description / класс для работы с описанием
-   * @param constructors.EventClickIncludeConstructor class for working with click events / класс для работы с событиями клика
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
-   */
-  constructor(
-    protected readonly props: CollageBarProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<CollageBarComponents, CollageBarProps>,
-    protected readonly slots?: CollageBarSlots,
-    protected readonly emits?: ConstrEmit<CollageBarEmits>,
-    constructors: {
-      ButtonIncludeConstructor?: typeof ButtonInclude
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-    } = {}
-  ) {
-    const {
-      ButtonIncludeConstructor = ButtonInclude,
-      DescriptionIncludeConstructor = DescriptionInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      LabelIncludeConstructor = LabelInclude
-    } = constructors
-
-    this.event = new EventClickIncludeConstructor(props, undefined, emits)
-
-    this.label = new LabelIncludeConstructor(
-      props,
-      naming,
-      undefined,
-      slots
-    )
-
-    this.description = new DescriptionIncludeConstructor(
-      props,
-      naming,
-      slots
-    )
-
-    this.button = new ButtonIncludeConstructor(
-      props,
-      naming,
-      components,
-      () => ({
-        ...getBind(this.props.button, 'label'),
-        icon: this.props.icon,
-        detail: this.props.detail,
-        value: this.props.value,
-        ...this.event.binds
-      })
-    )
+          return extra
+        }
+      ]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        undefined,
+        this.emits
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    }
   }
 
   /**
-   * HTML tag for the container. /
+   * HTML tag for the container.
+   *
    * HTML-тег для контейнера.
+   * @returns tag name / название тега
    */
   get tag(): string {
-    return this.props.tag ?? 'figcaption'
-  }
-
-  /**
-   * Checks if the button needs to be displayed.
-   *
-   * Проверяет, нужно ли отображать кнопку.
-   * @returns true if the button should be displayed / true, если кнопку нужно отобразить
-   */
-  isButton(): boolean {
-    return Boolean(
-      this.props.button
-      || this.props.icon
-      || this.props.buttonAttrs
-    )
+    return this.props.tag || 'figcaption'
   }
 }

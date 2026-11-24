@@ -1,9 +1,9 @@
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
-import { h, type VNode } from 'vue'
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -21,7 +21,13 @@ import {
 } from './types'
 
 /**
- * CollageItemDesign
+ * CollageItemDesign constructor class responsible for assembling and rendering the CollageItem component.
+ * Coordinates figure container markup, interactive body rendering, image and selection icon projection,
+ * and optional CollageBar rendering.
+ *
+ * Класс-конструктор CollageItemDesign, отвечающий за сборку и рендеринг компонента CollageItem.
+ * Координирует разметку контейнера figure, рендеринг интерактивного тела, отображение изображения
+ * и иконки выбора, а также опциональный рендеринг CollageBar.
  */
 export class CollageItemDesign<
   COMP extends CollageItemComponents,
@@ -37,14 +43,17 @@ export class CollageItemDesign<
     CLASSES,
     P
   > {
+  /** CollageItem logic orchestrator instance / Экземпляр оркестратора логики CollageItem */
   protected readonly item: CollageItem
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a CollageItemDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна CollageItem.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -69,14 +78,15 @@ export class CollageItemDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose,
-      ...this.item.dimensions.expose
+      ...this.item.i('event').expose,
+      ...this.item.i('dimensions').expose
     } as EXPOSE
   }
 
@@ -84,6 +94,7 @@ export class CollageItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,38 +114,42 @@ export class CollageItemDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
-    return {
-      ...this.item.dimensions.styles
-    }
+    return this.item.styles
   }
 
   /**
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
     const children: VNode[] = [
       ...this.renderBody(),
-      ...this.item.collageBar.render(
-        {
+      ...this.item.callInstance(
+        'collageBar',
+        item => item.render({
           body: this.slots?.barBody,
           trailing: this.slots?.barTrailing
-        }
+        }),
+        []
       )
     ]
 
     return h(
       'figure',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.dimensions.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
@@ -143,24 +158,27 @@ export class CollageItemDesign<
    * Body area rendering.
    *
    * Рендеринг области тела.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderBody = (): VNode[] => {
-    const tag = this.props.tag ?? 'a'
+    const tag = this.item.tag
     const children: VNode[] = [
-      ...this.item.image.render(),
-      ...this.item.icon.renderIcon()
+      ...this.item.callInstance('image', item => item.render(), []),
+      ...this.item.callInstance('icon', item => item.renderIcon(), [])
     ]
 
     return [
       h(
         tag,
-        {
-          class: [
-            this.classes?.value.body,
-            tag === 'a' ? getClassTagAStatic(this.naming.getDesign()) : undefined
-          ],
-          ...this.item.event.binds
-        },
+        mergeProps(
+          this.item.i('event').binds,
+          {
+            class: [
+              this.classes?.value.body,
+              tag === 'a' ? getClassTagAStatic(this.naming.getDesign()) : undefined
+            ]
+          }
+        ),
         children
       )
     ]

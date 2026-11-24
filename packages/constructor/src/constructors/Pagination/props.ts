@@ -4,19 +4,22 @@ import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { ModelProps } from '../../types/modelTypes'
 import type {
   TextFirstPropsInclude,
-  TextLastPropsInclude,
-  TextMorePropsInclude,
-  TextMorePrevPropsInclude,
-  TextRowsPerPagePropsInclude,
   TextInfoPropsInclude,
+  TextLastPropsInclude,
+  TextMorePrevPropsInclude,
+  TextMorePropsInclude,
+  TextNextPropsInclude,
+  TextPagePropsInclude,
+  TextPaginationPropsInclude,
   TextPreviousPropsInclude,
-  TextNextPropsInclude
+  TextRowsPerPagePropsInclude
 } from '../../types/textTypes'
 
 import type { ButtonPropsBasic } from '../Button'
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { MenuPropsBasic } from '../Menu'
 
+/** Token properties for Pagination / Токен-свойства для Pagination */
 type PaginationPropsToken = {
   // :type [!] System label / Системная метка
   adaptive?: 'lineAlways'
@@ -25,18 +28,21 @@ type PaginationPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for Pagination / Базовые свойства для Pagination */
 export type PaginationPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = TextFirstPropsInclude
-  & TextLastPropsInclude
-  & TextMorePropsInclude
-  & TextMorePrevPropsInclude
-  & TextRowsPerPagePropsInclude
   & TextInfoPropsInclude
-  & TextPreviousPropsInclude
+  & TextLastPropsInclude
+  & TextMorePrevPropsInclude
+  & TextMorePropsInclude
   & TextNextPropsInclude
+  & TextPagePropsInclude
+  & TextPaginationPropsInclude
+  & TextPreviousPropsInclude
+  & TextRowsPerPagePropsInclude
   & AreaPropsInclude
   & ModelProps<number | string>
   & {

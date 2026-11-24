@@ -1,12 +1,11 @@
 // ai-none
 
-import { EventItem } from '@dxtmisha/functional'
+import { watch, type WatchStopHandle } from 'vue'
 import {
-  onMounted,
-  onUnmounted,
-  provide,
-  watch
-} from 'vue'
+  DesignLifecycleAbstract,
+  EventItem,
+  isDomRuntime
+} from '@dxtmisha/functional'
 
 import type { CollageElement } from './CollageElement'
 import type { CollageGrow } from './CollageGrow'
@@ -14,10 +13,6 @@ import type { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
 import type { CollageMasonryVertical } from './CollageMasonryVertical'
 import type { CollageWoven } from './CollageWoven'
 
-import {
-  COLLAGE_NAME_UPDATE,
-  type CollageUpdate
-} from './basicTypes'
 import type { CollageProps } from './props'
 
 /** Debounce delay in milliseconds for resize recalculation / Задержка дебаунса в миллисекундах для пересчета макета */
@@ -28,49 +23,49 @@ export const COLLAGE_RESIZE_DEBOUNCE_MS = 320
  *
  * Класс, управляющий динамическими режимами макета, расчетами при изменении размера и синхронизацией координат для Collage.
  */
-export class CollageVariant {
+export class CollageVariant extends DesignLifecycleAbstract {
+  /**
+   * Checks if the current collage variant requires dynamic resize layout management.
+   *
+   * Проверяет, требует ли текущий вариант коллажа динамического управления перерасчетом макета.
+   * @param props component properties / свойства компонента
+   * @returns true if dynamic variant mode is active / true, если активен динамический режим макета
+   */
+  static is(props?: Readonly<CollageProps>): boolean {
+    return props?.variant === 'woven'
+      || props?.variant === 'masonryHorizontal'
+      || props?.variant === 'masonryVertical'
+  }
+
   /** Timeout identifier for debounced layout updates / Идентификатор таймера для отложенных обновлений макета */
   protected timeoutResize?: ReturnType<typeof setTimeout>
 
   /** Container element resize event listener controller / Контроллер слушателя событий изменения размера элемента контейнера */
   protected eventResize?: EventItem<HTMLElement, Event>
 
+  /** Active reactive property watcher stop handle / Функция остановки активного наблюдателя реактивных свойств */
+  protected watchStop?: WatchStopHandle
+
   /**
    * Constructor for CollageVariant.
    *
    * Конструктор для CollageVariant.
    * @param props input component properties / входные свойства компонента
-   * @param elementItem manager for container DOM elements / менеджер DOM-элементов контейнера
-   * @param woven manager for woven variant layout / менеджер макета варианта woven
-   * @param masonryHorizontal manager for horizontal masonry variant layout / менеджер макета варианта горизонтальной кладки
-   * @param masonryVertical manager for vertical masonry variant layout / менеджер макета варианта вертикальной кладки
-   * @param grow manager for item grow factors and CSS properties / менеджер коэффициентов роста элементов и CSS-свойств
+   * @param elementItem getter returning container DOM elements manager / геттер, возвращающий менеджер DOM-элементов контейнера
+   * @param grow getter returning item grow factors manager / геттер, возвращающий менеджер коэффициентов роста элементов
+   * @param masonryHorizontal getter returning horizontal masonry layout manager / геттер, возвращающий менеджер макета горизонтальной кладки
+   * @param masonryVertical getter returning vertical masonry layout manager / геттер, возвращающий менеджер макета вертикальной кладки
+   * @param woven getter returning woven variant layout manager / геттер, возвращающий менеджер макета варианта woven
    */
   constructor(
-    protected readonly props: CollageProps,
-    protected readonly elementItem: CollageElement,
-    protected readonly woven: CollageWoven,
-    protected readonly masonryHorizontal: CollageMasonryHorizontal,
-    protected readonly masonryVertical: CollageMasonryVertical,
-    protected readonly grow: CollageGrow
+    protected readonly props: Readonly<CollageProps>,
+    protected readonly elementItem: () => CollageElement,
+    protected readonly grow: () => CollageGrow | undefined,
+    protected readonly masonryHorizontal: () => CollageMasonryHorizontal | undefined,
+    protected readonly masonryVertical: () => CollageMasonryVertical | undefined,
+    protected readonly woven: () => CollageWoven | undefined
   ) {
-    provide<CollageUpdate>(COLLAGE_NAME_UPDATE, this.update)
-
-    watch(
-      [
-        () => this.props.variant,
-        () => this.props.columns,
-        () => this.props.cellSize,
-        () => this.props.images
-      ],
-      this.update
-    )
-
-    onMounted(this.update)
-
-    onUnmounted(() => {
-      this.stopEvents()
-    })
+    super()
   }
 
   /**
@@ -79,14 +74,24 @@ export class CollageVariant {
    * Обновляет макет коллажа и инициализирует наблюдатели изменения размера при необходимости.
    */
   readonly update = (): void => {
+    const elementItem = this.elementItem()
+
     if (
-      this.elementItem.is()
+      elementItem.is()
       && this.isResize()
     ) {
-      if (!this.eventResize) {
-        const element = this.elementItem.getElement().value
+      const element = elementItem.getElement().value
 
-        if (element) {
+      if (element) {
+        if (
+          this.eventResize
+          && this.eventResize.getElement() !== element
+        ) {
+          this.eventResize.stop()
+          this.eventResize = undefined
+        }
+
+        if (!this.eventResize) {
           this.eventResize = new EventItem(element, ['resize'], this.updateByTime)
           this.eventResize.start()
         }
@@ -104,24 +109,66 @@ export class CollageVariant {
    * Отложенный перерасчет макета, вызываемый при изменении размера контейнера.
    */
   readonly updateByTime = (): void => {
-    if (this.elementItem.isResize()) {
-      if (this.timeoutResize !== undefined) {
-        clearTimeout(this.timeoutResize)
-      }
-
+    if (
+      isDomRuntime()
+      && this.elementItem().isResize()
+    ) {
+      this.clearTimeoutResize()
       this.timeoutResize = setTimeout(this.resize, COLLAGE_RESIZE_DEBOUNCE_MS)
     }
   }
 
   /**
-   * Checks if the current variant mode requires dynamic resize recalculation. /
+   * Initializes reactive watchers and runs initial layout calculation on mount.
+   *
+   * Инициализирует реактивные наблюдатели и запускает первичный расчёт макета при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.stopWatch()
+
+    this.watchStop = watch(
+      [
+        () => this.props.variant,
+        () => this.props.columns,
+        () => this.props.cellSize,
+        () => this.props.images
+      ],
+      this.update
+    )
+
+    this.update()
+  }
+
+  /**
+   * Stops watchers, resize observers, timers, and layout effects on unmount.
+   *
+   * Останавливает наблюдатели, слушатели изменения размера, таймеры и эффекты макета при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch()
+    this.stopEvents()
+  }
+
+  /**
+   * Checks if the current variant mode requires dynamic resize recalculation.
+   *
    * Проверяет, требует ли текущий вариант динамического перерасчета при изменении размера.
    * @returns true if variant requires resize calculation / true, если вариант требует перерасчета
    */
   protected isResize(): boolean {
-    return this.props.variant === 'woven'
-      || this.props.variant === 'masonryHorizontal'
-      || this.props.variant === 'masonryVertical'
+    return CollageVariant.is(this.props)
+  }
+
+  /**
+   * Clears any pending debounced resize timer.
+   *
+   * Очищает активный таймер отложенного перерасчета макета.
+   */
+  protected clearTimeoutResize(): void {
+    if (this.timeoutResize !== undefined) {
+      clearTimeout(this.timeoutResize)
+      this.timeoutResize = undefined
+    }
   }
 
   /**
@@ -130,26 +177,29 @@ export class CollageVariant {
    * Выполняет перерасчет макета в зависимости от текущего варианта.
    */
   protected readonly resize = (): void => {
-    this.woven.reset()
-    this.grow.resetGrow()
+    this.clearTimeoutResize()
+    this.woven()?.reset()
+    this.masonryHorizontal()?.cancel()
+    this.masonryVertical()?.cancel()
+    this.grow()?.resetGrow()
 
     switch (this.props.variant) {
       case 'woven':
-        this.woven.resize()
+        this.woven()?.resize()
         break
       case 'masonryHorizontal':
-        this.masonryHorizontal.resize()
+        this.masonryHorizontal()?.resize()
         break
       case 'masonryVertical':
-        this.masonryVertical.resize()
+        this.masonryVertical()?.resize()
         break
     }
   }
 
   /**
-   * Stops event listeners and clears active timers.
+   * Stops event listeners, clears active timers, and resets variant layout modifications.
    *
-   * Останавливает слушатели событий и очищает активные таймеры.
+   * Останавливает слушатели событий, очищает активные таймеры и сбрасывает модификации макета вариантов.
    */
   protected stopEvents(): void {
     if (this.eventResize) {
@@ -157,12 +207,22 @@ export class CollageVariant {
       this.eventResize = undefined
     }
 
-    if (this.timeoutResize !== undefined) {
-      clearTimeout(this.timeoutResize)
-      this.timeoutResize = undefined
-    }
+    this.clearTimeoutResize()
+    this.woven()?.reset()
+    this.masonryHorizontal()?.cancel()
+    this.masonryVertical()?.cancel()
+    this.grow()?.resetGrow()
+  }
 
-    this.woven.reset()
-    this.grow.resetGrow()
+  /**
+   * Stops the active reactive property watcher if registered.
+   *
+   * Останавливает активный наблюдатель реактивных свойств, если он зарегистрирован.
+   */
+  protected stopWatch(): void {
+    if (this.watchStop) {
+      this.watchStop()
+      this.watchStop = undefined
+    }
   }
 }

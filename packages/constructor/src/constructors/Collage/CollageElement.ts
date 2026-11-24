@@ -32,7 +32,8 @@ export class CollageElement {
   }
 
   /**
-   * Checks if the container element width has changed and updates previous width. /
+   * Checks if the container element width has changed and updates previous width.
+   *
    * Проверяет, изменилась ли ширина элемента контейнера, и обновляет предыдущую ширину.
    * @returns true if width has changed / true, если ширина изменилась
    */

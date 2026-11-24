@@ -34,8 +34,8 @@
 
       @include ui.subclass('item') {
         &:not(:last-child) {
-          border-right-width: ui.v('??borderWidth', 1px);
-          border-right-style: solid;
+          border-inline-end-width: ui.v('??borderWidth', 1px);
+          border-inline-end-style: solid;
         }
       }
     }

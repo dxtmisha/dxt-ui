@@ -8,7 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'collageBarAttrs', type: 'ConstrBind<CollageBarProps>' },
   { name: 'collageBarPosition', type: 'string', option: ['top', 'bottom', 'static'] },
   { name: 'compact', type: 'boolean' },
-  { name: 'coordinator', type: 'number[] | any' },
+  { name: 'coordinator', type: 'ImageCoordinatorItem' },
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'detail', type: 'Record<string, any>' },

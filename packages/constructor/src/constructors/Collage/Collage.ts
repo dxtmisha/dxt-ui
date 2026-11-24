@@ -1,17 +1,24 @@
 import {
+  computed,
+  getCurrentInstance,
+  provide,
+  type Ref,
+  toRef
+} from 'vue'
+import {
+  type ConstrBind,
   type ConstrEmit,
+  type ConstrItems,
   type ConstrStyles,
-  type DesignComp,
+  type DesignComponents,
+  DesignLogicAbstract,
   type DesignName,
+  isFilled,
   isNumber,
   ListDataRef,
+  type ListList,
   type ListSelectedList
 } from '@dxtmisha/functional'
-import { toRef, type Ref } from 'vue'
-
-import { EventClickInclude } from '../../classes/EventClickInclude'
-import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
-import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { CollageElement } from './CollageElement'
 import { CollageGrow } from './CollageGrow'
@@ -19,161 +26,212 @@ import { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
 import { CollageMasonryVertical } from './CollageMasonryVertical'
 import { CollageVariant } from './CollageVariant'
 import { CollageWoven } from './CollageWoven'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
+import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
+import type { EventClickValue } from '../../types/eventClickTypes'
+import {
+  COLLAGE_NAME_UPDATE,
+  type CollageUpdate
+} from './basicTypes'
 import type { CollageProps } from './props'
 import type { CollageComponents, CollageEmits, CollageSlots } from './types'
 
+/** Collage dependency constructors type / Тип конструкторов зависимостей Collage */
+export type CollageConstructors = {
+  /** List data manager constructor / Конструктор менеджера данных списка */
+  data: typeof ListDataRef
+  /** Container DOM element manager constructor / Конструктор менеджера DOM-элементов контейнера */
+  elementItem: typeof CollageElement
+  /** Click event handler constructor / Конструктор обработчика событий клика */
+  event: typeof EventClickInclude
+  /** Directional keyboard focus navigation constructor / Конструктор клавиатурной навигации по направлениям */
+  focusDirection: typeof FocusDirectionInclude
+  /** Item grow factor manager constructor / Конструктор менеджера коэффициентов роста элементов */
+  grow: typeof CollageGrow
+  /** Horizontal masonry layout manager constructor / Конструктор менеджера горизонтального плиточного макета */
+  masonryHorizontal: typeof CollageMasonryHorizontal
+  /** Vertical masonry layout manager constructor / Конструктор менеджера вертикального плиточного макета */
+  masonryVertical: typeof CollageMasonryVertical
+  /** Model value manager constructor / Конструктор менеджера значения модели */
+  model: typeof ModelValueInclude<ListSelectedList | undefined>
+  /** Dynamic layout variant manager constructor / Конструктор менеджера динамического варианта макета */
+  variant: typeof CollageVariant
+  /** Woven layout manager constructor / Конструктор менеджера варианта макета woven */
+  woven: typeof CollageWoven
+}
+
 /**
- * Collage orchestrator class coordinating data management, layout modes, events, and selections.
+ * Collage orchestrator class coordinating data management, layout modes, events,
+ * directional keyboard focus, and selection states with lazy dependency instantiation.
  *
- * Класс-оркестратор Collage, координирующий управление данными, режимы макета, события и выбор элементов.
+ * Класс-оркестратор Collage, координирующий управление данными, режимы макета, события,
+ * направленную клавиатурную навигацию и состояния выбора с ленивой инициализацией зависимостей.
  */
-export class Collage {
-  /** Reactive list data manager / Реактивный менеджер данных списка */
-  readonly data: ListDataRef
-
-  /** Manager for dynamic layout variant, woven and masonry layouts / Менеджер динамического варианта макета, woven и плиточных макетов */
-  readonly variant: CollageVariant
-
-  /** Manager for collage container DOM elements / Менеджер DOM-элементов контейнера коллажа */
-  readonly elementItem: CollageElement
-
-  /** Manager for horizontal masonry variant layout / Менеджер макета варианта горизонтальной кладки */
-  readonly masonryHorizontal: CollageMasonryHorizontal
-
-  /** Manager for vertical masonry variant layout / Менеджер макета варианта вертикальной кладки */
-  readonly masonryVertical: CollageMasonryVertical
-
-  /** Manager for woven variant layout and item turn classes / Менеджер макета варианта woven и классов поворота элементов */
-  readonly woven: CollageWoven
-
-  /** Manager for item grow factors and CSS properties / Менеджер коэффициентов роста элементов и CSS-свойств */
-  readonly grow: CollageGrow
-
-  /** Click event helper / Помощник событий клика */
-  readonly event: EventClickInclude
-
-  /** Model value synchronizer for selected state / Синхронизатор значения модели для состояния выбора */
-  readonly model: ModelValueInclude<ListSelectedList | undefined>
-
-  /** Instance of FocusDirectionInclude for keyboard directional navigation / Экземпляр FocusDirectionInclude для клавиатурной навигации по направлениям */
-  readonly focusDirection: FocusDirectionInclude
+export class Collage extends DesignLogicAbstract<
+  HTMLElement,
+  CollageComponents,
+  CollageEmits,
+  CollageSlots,
+  CollageProps,
+  CollageConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CollageConstructors> = {
+    data: {
+      item: ListDataRef,
+      canCreate: () => isFilled(this.props.images),
+      parameters: () => [
+        toRef(this.props, 'images'),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        computed(() => this.i('model').value.value),
+        toRef(this.props, 'keyValue'),
+        toRef(this.props, 'keyLabel')
+      ]
+    },
+    elementItem: {
+      item: CollageElement,
+      parameters: () => [
+        this.element
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    focusDirection: {
+      item: FocusDirectionInclude,
+      canCreate: () => Boolean(this.props.control),
+      parameters: () => [
+        this.element,
+        '[data-collage-item]',
+        `.${this.naming.getDesign()}-collageItem--selected`,
+        `${this.naming.getDesign()}-collageItem--focus`,
+        () => this.props.control
+      ]
+    },
+    grow: {
+      item: CollageGrow,
+      canCreate: () => CollageGrow.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('elementItem')
+      ]
+    },
+    masonryHorizontal: {
+      item: CollageMasonryHorizontal,
+      canCreate: () => CollageMasonryHorizontal.is(this.props),
+      parameters: () => [
+        () => this.i('elementItem'),
+        () => this.i('grow')
+      ]
+    },
+    masonryVertical: {
+      item: CollageMasonryVertical,
+      canCreate: () => CollageMasonryVertical.is(this.props),
+      parameters: () => [
+        () => this.i('elementItem'),
+        () => this.i('grow')
+      ]
+    },
+    model: {
+      item: ModelValueInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits,
+        undefined,
+        computed(() => this.props.modelSelected ?? this.props.selected),
+        () => !this.props.control,
+        true
+      ]
+    },
+    variant: {
+      item: CollageVariant,
+      canCreate: () => CollageVariant.is(this.props),
+      conditions: () => CollageVariant.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('elementItem'),
+        () => this.callInstance('grow', item => item),
+        () => this.callInstance('masonryHorizontal', item => item),
+        () => this.callInstance('masonryVertical', item => item),
+        () => this.callInstance('woven', item => item)
+      ]
+    },
+    woven: {
+      item: CollageWoven,
+      canCreate: () => CollageWoven.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('elementItem')
+      ]
+    }
+  }
 
   /**
    * Constructor for Collage.
+   * Provides the layout update callback synchronously during setup for descendant CollageItem components.
    *
    * Конструктор для Collage.
-   * @param props input data / входные данные
+   * Синхронно предоставляет функцию обратного вызова обновления макета во время setup для дочерних компонентов CollageItem.
+   * @param props input properties / входные свойства
    * @param element container element reference / ссылка на элемент контейнера
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes for dependency injection / объект с классами для внедрения зависимостей
-   * @param constructors.CollageVariantConstructor class for managing variant / класс для управления вариантом макета
-   * @param constructors.CollageElementConstructor class for managing container DOM elements / класс для управления DOM-элементами контейнера
-   * @param constructors.CollageMasonryHorizontalConstructor class for managing horizontal masonry layout / класс для управления макетом горизонтальной кладки
-   * @param constructors.CollageMasonryVerticalConstructor class for managing vertical masonry layout / класс для управления макетом вертикальной кладки
-   * @param constructors.CollageGrowConstructor class for managing item grow factors / класс для управления коэффициентами роста элементов
-   * @param constructors.CollageWovenConstructor class for managing woven variant layout / класс для управления макетом варианта woven
-   * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
-   * @param constructors.FocusDirectionIncludeConstructor class for keyboard directional navigation / класс для клавиатурной навигации по направлениям
-   * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
-   * @param constructors.ModelValueIncludeConstructor class for working with model value / класс для работы со значением модели
+   * @param components connected component registry / реестр подключённых компонентов
+   * @param slots named slot registry / реестр именованных слотов
+   * @param emits component event emitter / функция событий компонента
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   * @param hasLifecycle whether to register component lifecycle hooks / регистрировать ли хуки жизненного цикла компонента
    */
   constructor(
-    protected readonly props: CollageProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<CollageComponents, CollageProps>,
-    protected readonly slots?: CollageSlots,
-    protected readonly emits?: ConstrEmit<CollageEmits>,
-    constructors: {
-      CollageVariantConstructor?: typeof CollageVariant
-      CollageElementConstructor?: typeof CollageElement
-      CollageMasonryHorizontalConstructor?: typeof CollageMasonryHorizontal
-      CollageMasonryVerticalConstructor?: typeof CollageMasonryVertical
-      CollageGrowConstructor?: typeof CollageGrow
-      CollageWovenConstructor?: typeof CollageWoven
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      FocusDirectionIncludeConstructor?: typeof FocusDirectionInclude
-      ListDataRefConstructor?: typeof ListDataRef
-      ModelValueIncludeConstructor?: typeof ModelValueInclude<ListSelectedList | undefined>
-    } = {}
+    props: Readonly<CollageProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<CollageComponents, CollageProps>,
+    slots?: CollageSlots,
+    emits?: ConstrEmit<CollageEmits>,
+    constructors?: Partial<CollageConstructors>,
+    hasLifecycle: boolean = true
   ) {
-    const {
-      CollageVariantConstructor = CollageVariant,
-      CollageElementConstructor = CollageElement,
-      CollageMasonryHorizontalConstructor = CollageMasonryHorizontal,
-      CollageMasonryVerticalConstructor = CollageMasonryVertical,
-      CollageGrowConstructor = CollageGrow,
-      CollageWovenConstructor = CollageWoven,
-      EventClickIncludeConstructor = EventClickInclude,
-      FocusDirectionIncludeConstructor = FocusDirectionInclude,
-      ListDataRefConstructor = ListDataRef,
-      ModelValueIncludeConstructor = ModelValueInclude
-    } = constructors
-
-    this.elementItem = new CollageElementConstructor(element)
-    this.grow = new CollageGrowConstructor(naming, this.elementItem)
-    this.woven = new CollageWovenConstructor(naming, this.elementItem)
-    this.masonryHorizontal = new CollageMasonryHorizontalConstructor(
-      this.grow,
-      this.elementItem
-    )
-    this.masonryVertical = new CollageMasonryVerticalConstructor(
-      this.grow,
-      this.elementItem
-    )
-
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      emits
-    )
-
-    this.model = new ModelValueIncludeConstructor(
-      'selected',
-      emits,
-      this.event,
-      toRef(props, 'selected'),
-      () => !this.props.control,
-      true
-    )
-
-    this.data = new ListDataRefConstructor(
-      toRef(this.props, 'images'),
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      this.model.value,
-      toRef(this.props, 'keyValue'),
-      toRef(this.props, 'keyLabel')
-    )
-
-    this.variant = new CollageVariantConstructor(
+    super(
       props,
-      this.elementItem,
-      this.woven,
-      this.masonryHorizontal,
-      this.masonryVertical,
-      this.grow
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors,
+      hasLifecycle
     )
 
-    this.focusDirection = new FocusDirectionIncludeConstructor(
-      this.element,
-      `[data-collage-item]`,
-      `.${this.naming.getDesign()}-collageItem--selected`,
-      `${this.naming.getDesign()}-collageItem--focus`,
-      () => this.props.control
-    )
+    if (getCurrentInstance()) {
+      provide<CollageUpdate>(COLLAGE_NAME_UPDATE, this.update)
+    }
+  }
+
+  /**
+   * Binding attributes for the root container element.
+   *
+   * Атрибуты привязки для корневого элемента контейнера.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    return this.callInstance('focusDirection', item => item.binds, {})
   }
 
   /**
    * Inline styles containing CSS custom properties for grid configuration.
    *
    * Инлайн-стили, содержащие пользовательские CSS-свойства для настройки сетки.
+   * @returns calculated CSS styles object / объект вычисленных CSS-стилей
    */
   get styles(): ConstrStyles {
     const styles: ConstrStyles = {}
@@ -187,19 +245,74 @@ export class Collage {
   }
 
   /**
-   * Returns formatted cell size CSS property value. /
+   * Returns focus navigation bindings for a child collage item element.
+   *
+   * Возвращает привязки навигации фокуса для дочернего элемента коллажа.
+   * @returns child item bindings / привязки дочернего элемента
+   */
+  getBindsItem(): ConstrBind {
+    return this.callInstance('focusDirection', item => item.bindsItem(), {})
+  }
+
+  /**
+   * Returns normalized list of collage items with computed selection states.
+   *
+   * Возвращает нормализованный список элементов коллажа с вычисленными состояниями выбора.
+   * @returns list of collage items / список элементов коллажа
+   */
+  getList(): ListList {
+    return this.callInstance('data', item => item.fullData.value, [])
+  }
+
+  /**
+   * Triggers dynamic layout recalculation when a dynamic variant is active.
+   *
+   * Запускает динамический перерасчет макета при активном динамическом варианте.
+   */
+  readonly update = (): void => {
+    this.callInstance('variant', item => item.update())
+  }
+
+  /**
+   * Handles collage item click event, updates selection model when control mode is enabled,
+   * and emits click events.
+   *
+   * Обрабатывает событие клика по элементу коллажа, обновляет модель выбора при включённом режиме управления
+   * и эмитит события клика.
+   * @param event native mouse click event / нативное событие клика мыши
+   * @param options event click payload / данные события клика
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.i('model').onClick(event, options)
+    this.i('event').onClick(event, options)
+  }
+
+  /**
+   * Returns formatted cell size CSS property value.
+   *
    * Возвращает отформатированное значение свойства CSS размера ячейки.
    * @returns formatted cell size string or undefined / отформатированная строка размера ячейки или undefined
    */
   protected getCellSize(): string | undefined {
-    if (this.props.cellSize !== undefined) {
-      if (isNumber(this.props.cellSize)) {
-        return `${this.props.cellSize}px`
-      }
+    const cellSize = this.props.cellSize
 
-      return String(this.props.cellSize)
+    if (cellSize === undefined) {
+      return undefined
     }
 
-    return undefined
+    if (isNumber(cellSize)) {
+      return `${String(cellSize).trim()}px`
+    }
+
+    if (typeof cellSize === 'number') {
+      return undefined
+    }
+
+    const trimmed = String(cellSize).trim()
+
+    return trimmed ? trimmed : undefined
   }
 }

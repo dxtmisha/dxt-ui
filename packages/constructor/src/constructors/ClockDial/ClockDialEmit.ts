@@ -15,18 +15,20 @@ import type { ClockDialProps } from './props'
  */
 export class ClockDialEmit {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props component input properties / входные свойства компонента
-   * @param list clock dial list manager / менеджер списка циферблата часов
-   * @param valueItem time values manager / менеджер значений времени
+   * @param list clock dial list manager factory / фабрика менеджера списка циферблата часов
+   * @param value time values manager factory / фабрика менеджера значений времени
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly list: ClockDialList,
-    protected readonly valueItem: ClockDialValue,
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly list: () => ClockDialList,
+    protected readonly value: () => ClockDialValue,
     protected readonly emits?: ConstrEmit<ClockDialEmits>
-  ) { }
+  ) {}
 
   /**
    * Emits input or change event with complete clock payload and numeric value.
@@ -35,8 +37,8 @@ export class ClockDialEmit {
    * @param eventType type of event to emit ('input' or 'change') / тип испускаемого события ('input' или 'change')
    */
   emit(eventType: 'input' | 'change' = 'input'): void {
-    const currentValue = this.valueItem.value
-    const currentItem = this.list.find(currentValue)
+    const currentValue = this.value().value
+    const currentItem = this.list().find(currentValue)
 
     const eventItem: ClockDialEventItem = {
       clock: this.props.type,

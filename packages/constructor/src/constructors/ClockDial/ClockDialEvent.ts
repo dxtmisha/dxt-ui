@@ -1,12 +1,19 @@
 // ai-none
 
-import { onUnmounted, type Ref } from 'vue'
-import { getKey, getMouseClient } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  getKey,
+  getMouseClient,
+  isDomRuntime,
+  isFilled
+} from '@dxtmisha/functional'
 
 import type { EnabledInclude } from '../../classes/EnabledInclude'
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { ClockDialControl } from './ClockDialControl'
 import type { ClockDialEmit } from './ClockDialEmit'
+import type { ClockDialList } from './ClockDialList'
 import type { ClockDialSelect } from './ClockDialSelect'
 import type { ClockDialProps } from './props'
 
@@ -15,7 +22,7 @@ import type { ClockDialProps } from './props'
  *
  * Класс для управления взаимодействием пользователя с помощью указателя, касания и клавиатуры на компоненте ClockDial.
  */
-export class ClockDialEvent {
+export class ClockDialEvent extends DesignLifecycleAbstract {
   /** Flag indicating that value was modified during current drag session / Флаг, указывающий на изменение значения во время текущей сессии перетаскивания */
   protected isChanged = false
 
@@ -23,27 +30,51 @@ export class ClockDialEvent {
   protected isDragging = false
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props component input properties / входные свойства компонента
-   * @param control clock dial keyboard and step control manager / менеджер управления клавиатурой и шагами циферблата часов
-   * @param emitsItem event emission manager / менеджер эмита событий
-   * @param enabled enabled state helper instance / экземпляр помощника состояния активности
-   * @param model model value helper instance / экземпляр помощника значения модели
-   * @param select coordinate hit-testing selector / селектор проверки попадания координат
    * @param element container element reference / ссылка на элемент контейнера
+   * @param control clock dial keyboard and step control manager factory / фабрика менеджера управления клавиатурой и шагами циферблата часов
+   * @param emit event emission manager factory / фабрика менеджера эмита событий
+   * @param enabled enabled state helper factory / фабрика помощника состояния активности
+   * @param list clock dial list manager factory / фабрика менеджера списка циферблата часов
+   * @param model model value helper factory / фабрика помощника значения модели
+   * @param select coordinate hit-testing selector factory / фабрика селектора проверки попадания координат
    */
   constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly control: ClockDialControl,
-    protected readonly emitsItem: ClockDialEmit,
-    protected readonly enabled: EnabledInclude,
-    protected readonly model: ModelValueInclude<number>,
-    protected readonly select: ClockDialSelect,
-    protected readonly element?: Ref<HTMLElement | undefined>
+    protected readonly props: Readonly<ClockDialProps>,
+    protected readonly element: Readonly<Ref<HTMLElement | undefined>>,
+    protected readonly control: () => ClockDialControl,
+    protected readonly emit: () => ClockDialEmit,
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly list: () => ClockDialList,
+    protected readonly model: () => ModelValueInclude<number>,
+    protected readonly select: () => ClockDialSelect
   ) {
-    onUnmounted(() => {
-      this.stopListeners()
-    })
+    super()
+  }
+
+  /**
+   * Checks if interactive event handling is enabled for current props.
+   *
+   * Проверяет, включена ли интерактивная обработка событий для текущих свойств.
+   * @param props component input properties / входные свойства компонента
+   * @returns true if event handling is enabled / true, если обработка событий активна
+   */
+  static is(props?: Readonly<ClockDialProps>): boolean {
+    return !props?.clock
+  }
+
+  /**
+   * Cleanup lifecycle listeners and drag state on unmount.
+   *
+   * Очищает слушатели жизненного цикла и состояние перетаскивания при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.isDragging = false
+    this.isChanged = false
+    this.stopListeners()
   }
 
   /**
@@ -53,21 +84,31 @@ export class ClockDialEvent {
    * @param event native mouse event / нативное событие мыши
    */
   readonly onClick = (event: MouseEvent): void => {
-    if (!this.enabled.isEnabled || this.props.clock) {
+    if (
+      !this.enabled().isEnabled
+      || this.props.clock
+    ) {
       return
     }
 
-    this.element?.value?.focus()
+    this.element.value?.focus()
 
-    const target = (event.target as HTMLElement)?.closest<HTMLElement>('[data-value]')
+    const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-value]')
+    const rawValue = target?.dataset?.value
 
-    if (target?.dataset?.value !== undefined) {
-      const value = Number(target.dataset.value)
+    if (isFilled(rawValue)) {
+      const value = Number(rawValue)
 
-      if (!isNaN(value)) {
-        this.model.set(value)
-        this.emitsItem.emit('input')
-        this.emitsItem.emit('change')
+      if (!Number.isNaN(value)) {
+        const mark = this.list().find(value)
+
+        if (mark && !mark.disabled) {
+          const emit = this.emit()
+
+          this.model().set(value)
+          emit.emit('input')
+          emit.emit('change')
+        }
       }
     }
   }
@@ -82,7 +123,8 @@ export class ClockDialEvent {
    */
   readonly onKeydown = (event: KeyboardEvent): void => {
     if (
-      !this.enabled.isEnabled
+      event.isComposing
+      || !this.enabled().isEnabled
       || this.props.clock
     ) {
       return
@@ -94,20 +136,20 @@ export class ClockDialEvent {
       case 'ArrowRight':
       case 'ArrowUp':
         event.preventDefault()
-        this.control.increase()
+        this.control().increase()
         break
       case 'ArrowLeft':
       case 'ArrowDown':
         event.preventDefault()
-        this.control.decrease()
+        this.control().decrease()
         break
       case 'Home':
         event.preventDefault()
-        this.control.toEdge(false)
+        this.control().toEdge(false)
         break
       case 'End':
         event.preventDefault()
-        this.control.toEdge(true)
+        this.control().toEdge(true)
         break
     }
   }
@@ -120,16 +162,19 @@ export class ClockDialEvent {
    */
   readonly onStart = (event: MouseEvent | TouchEvent): void => {
     if (
-      !this.enabled.isEnabled
+      !this.enabled().isEnabled
       || this.props.clock
       || ('button' in event && event.button !== 0)
     ) {
       return
     }
 
-    this.element?.value?.focus()
+    this.element.value?.focus()
 
-    event.preventDefault()
+    if (event.cancelable !== false) {
+      event.preventDefault()
+    }
+
     this.isDragging = true
     this.isChanged = false
 
@@ -138,9 +183,9 @@ export class ClockDialEvent {
   }
 
   /**
-   * Global pointer up/end event listener completing drag session.
+   * Global pointer up/end/cancel/blur event listener completing drag session.
    *
-   * Глобальный слушатель завершения взаимодействия указателя.
+   * Глобальный слушатель завершения или отмены взаимодействия указателя.
    */
   protected readonly onPointerEnd = (): void => {
     if (this.isDragging) {
@@ -148,7 +193,7 @@ export class ClockDialEvent {
       this.stopListeners()
 
       if (this.isChanged) {
-        this.emitsItem.emit('change')
+        this.emit().emit('change')
         this.isChanged = false
       }
     }
@@ -167,16 +212,22 @@ export class ClockDialEvent {
   }
 
   /**
-   * Attaches window-level event listeners for smooth drag tracking.
+   * Attaches window-level event listeners for smooth drag tracking and cancellation cleanup.
    *
-   * Прикрепляет слушатели событий на уровне окна для плавного отслеживания перетаскивания.
+   * Прикрепляет слушатели событий на уровне окна для плавного отслеживания перетаскивания и очистки при отмене.
    */
   protected startListeners(): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     window.addEventListener('mousemove', this.onPointerMove)
     window.addEventListener('mouseup', this.onPointerEnd)
     window.addEventListener('touchmove', this.onPointerMove, { passive: false })
     window.addEventListener('touchend', this.onPointerEnd)
     window.addEventListener('touchcancel', this.onPointerEnd)
+    window.addEventListener('pointercancel', this.onPointerEnd)
+    window.addEventListener('blur', this.onPointerEnd)
   }
 
   /**
@@ -185,11 +236,17 @@ export class ClockDialEvent {
    * Удаляет слушатели событий на уровне окна.
    */
   protected stopListeners(): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     window.removeEventListener('mousemove', this.onPointerMove)
     window.removeEventListener('mouseup', this.onPointerEnd)
     window.removeEventListener('touchmove', this.onPointerMove)
     window.removeEventListener('touchend', this.onPointerEnd)
     window.removeEventListener('touchcancel', this.onPointerEnd)
+    window.removeEventListener('pointercancel', this.onPointerEnd)
+    window.removeEventListener('blur', this.onPointerEnd)
   }
 
   /**
@@ -200,11 +257,11 @@ export class ClockDialEvent {
    */
   protected updateByCoordinates(event: MouseEvent | TouchEvent): void {
     const { x, y } = getMouseClient(event)
-    const selectedItem = this.select.selectByCoordinates(x, y)
+    const selectedItem = this.select().selectByCoordinates(x, y)
 
     if (selectedItem) {
       this.isChanged = true
-      this.emitsItem.emit('input')
+      this.emit().emit('input')
     }
   }
 }

@@ -45,6 +45,7 @@ export interface CollageBarSlots extends LabelSlots, DescriptionSlots {
  * Тип, описывающий подклассы.
  */
 export type CollageBarClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   context: string

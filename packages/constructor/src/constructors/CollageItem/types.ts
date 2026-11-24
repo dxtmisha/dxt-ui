@@ -52,6 +52,7 @@ export interface CollageItemSlots extends CollageBarSlotsInclude {
  * Тип, описывающий подклассы.
  */
 export type CollageItemClasses = {
+  /** Main root element class / Класс главного корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   body: string

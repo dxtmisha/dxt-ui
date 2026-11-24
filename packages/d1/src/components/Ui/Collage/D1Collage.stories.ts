@@ -5,6 +5,9 @@ import { CollageWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'
+import type { EventClickValue } from '@dxtmisha/constructor'
+import { image1, image2 } from '@dxtmisha/wiki/media'
+import { expect, within, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -32,11 +35,13 @@ export const Collage: Story = {
     components: { D1Collage },
     setup: () => ({ args }),
     template: `
-      <div class="wiki-storybook-container">
-      <D1Collage v-bind="args"/>
-    </div>
+      <D1Collage v-bind="args" />
     `
-  })
+  }),
+  play: async ({ canvasElement }) => {
+    const component = canvasElement.querySelector('.d1-collage')
+    await expect(component).toBeInTheDocument()
+  }
   // :story-main [!] System label / Системная метка
 }
 
@@ -45,6 +50,9 @@ export const CollageVariants: Story = {
   name: 'Варианты макета',
   render: () => ({
     components: { D1Collage },
+    setup() {
+      return { image1, image2 }
+    },
     template: `
         
         <div class="wiki-storybook-group">
@@ -54,14 +62,10 @@ export const CollageVariants: Story = {
               variant="standard"
               columns="4"
               :images="[
-                { image: 'https://picsum.photos/600/600?random=1', label: 'Item 1' },
-                { image: 'https://picsum.photos/600/600?random=2', label: 'Item 2' },
-                { image: 'https://picsum.photos/600/600?random=3', label: 'Item 3' },
-                { image: 'https://picsum.photos/600/600?random=4', label: 'Item 4' },
-                { image: 'https://picsum.photos/600/600?random=5', label: 'Item 5' },
-                { image: 'https://picsum.photos/600/600?random=6', label: 'Item 6' },
-                { image: 'https://picsum.photos/600/600?random=7', label: 'Item 7' },
-                { image: 'https://picsum.photos/600/600?random=8', label: 'Item 8' }
+                { image: image1, label: 'Item 1' },
+                { image: image2, label: 'Item 2' },
+                { image: image1, label: 'Item 3' },
+                { image: image2, label: 'Item 4' }
               ]"
             />
           </div>
@@ -72,13 +76,10 @@ export const CollageVariants: Story = {
               variant="quilted"
               columns="4"
               :images="[
-                { image: 'https://picsum.photos/800/800?random=11', span: 'large', label: 'Large (2x2)' },
-                { image: 'https://picsum.photos/600/600?random=12', span: 'standard', label: 'Standard 1' },
-                { image: 'https://picsum.photos/600/1200?random=13', span: 'tall', label: 'Tall (1x2)' },
-                { image: 'https://picsum.photos/600/600?random=14', span: 'standard', label: 'Standard 2' },
-                { image: 'https://picsum.photos/1200/600?random=15', span: 'wide', label: 'Wide (2x1)' },
-                { image: 'https://picsum.photos/600/600?random=16', span: 'standard', label: 'Standard 3' },
-                { image: 'https://picsum.photos/600/600?random=17', span: 'standard', label: 'Standard 4' }
+                { image: image1, span: 'large', label: 'Large (2x2)' },
+                { image: image2, span: 'standard', label: 'Standard 1' },
+                { image: image1, span: 'tall', label: 'Tall (1x2)' },
+                { image: image2, span: 'wide', label: 'Wide (2x1)' }
               ]"
             />
           </div>
@@ -89,12 +90,12 @@ export const CollageVariants: Story = {
               variant="woven"
               columns="3"
               :images="[
-                { image: 'https://picsum.photos/600/800?random=21', label: 'Item 1' },
-                { image: 'https://picsum.photos/600/800?random=22', label: 'Item 2' },
-                { image: 'https://picsum.photos/600/800?random=23', label: 'Item 3' },
-                { image: 'https://picsum.photos/600/800?random=24', label: 'Item 4' },
-                { image: 'https://picsum.photos/600/800?random=25', label: 'Item 5' },
-                { image: 'https://picsum.photos/600/800?random=26', label: 'Item 6' }
+                { image: image1, label: 'Item 1' },
+                { image: image2, label: 'Item 2' },
+                { image: image1, label: 'Item 3' },
+                { image: image2, label: 'Item 4' },
+                { image: image1, label: 'Item 5' },
+                { image: image2, label: 'Item 6' }
               ]"
             />
           </div>
@@ -103,15 +104,11 @@ export const CollageVariants: Story = {
             <div class="wiki-storybook-item__label">variant: masonryHorizontal</div>
             <D1Collage
               variant="masonryHorizontal"
+              cell-size="140px"
               :images="[
-                { image: 'https://picsum.photos/960/540?random=31', label: 'Landscape 16:9' },
-                { image: 'https://picsum.photos/600/600?random=32', label: 'Square 1:1' },
-                { image: 'https://picsum.photos/1000/500?random=33', label: 'Panoramic 2:1' },
-                { image: 'https://picsum.photos/600/800?random=34', label: 'Portrait 3:4' },
-                { image: 'https://picsum.photos/800/500?random=35', label: 'Wide 16:10' },
-                { image: 'https://picsum.photos/800/600?random=36', label: 'Standard 4:3' },
-                { image: 'https://picsum.photos/600/600?random=37', label: 'Square 1:1' },
-                { image: 'https://picsum.photos/1050/450?random=38', label: 'Panoramic 21:9' }
+                { image: image1, label: 'Image 1' },
+                { image: image2, label: 'Image 2' },
+                { image: image1, label: 'Image 3' }
               ]"
             />
           </div>
@@ -120,35 +117,40 @@ export const CollageVariants: Story = {
             <div class="wiki-storybook-item__label">variant: masonryVertical</div>
             <D1Collage
               variant="masonryVertical"
-              columns="4"
+              columns="3"
               :images="[
-                { image: 'https://picsum.photos/540/960?random=41', label: 'Tall Pin' },
-                { image: 'https://picsum.photos/600/600?random=42', label: 'Square' },
-                { image: 'https://picsum.photos/600/800?random=43', label: 'Portrait' },
-                { image: 'https://picsum.photos/800/500?random=44', label: 'Landscape' },
-                { image: 'https://picsum.photos/800/600?random=45', label: 'Standard' },
-                { image: 'https://picsum.photos/600/900?random=46', label: 'Tall Portrait' },
-                { image: 'https://picsum.photos/600/600?random=47', label: 'Square' },
-                { image: 'https://picsum.photos/600/800?random=48', label: 'Portrait' }
+                { image: image1, label: 'Pin 1' },
+                { image: image2, label: 'Pin 2' },
+                { image: image1, label: 'Pin 3' },
+                { image: image2, label: 'Pin 4' }
               ]"
             />
           </div>
         </div>
       
     `
-  })
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll('.d1-collage')
+    await expect(items.length).toBe(5)
+    await expect(items[0]).toHaveClass('d1-collage--variant--standard')
+    await expect(items[1]).toHaveClass('d1-collage--variant--quilted')
+    await expect(items[2]).toHaveClass('d1-collage--variant--woven')
+    await expect(items[3]).toHaveClass('d1-collage--variant--masonryHorizontal')
+    await expect(items[4]).toHaveClass('d1-collage--variant--masonryVertical')
+  }
 }
 export const CollageVModel: Story = {
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({
     components: { D1Collage },
     setup() {
-      const selected = ref(['select-1', 'select-3'])
+      const selected = ref<string[]>(['select-1', 'select-3'])
       const images = [
-        { image: 'https://picsum.photos/600/600?random=51', label: 'Item 1', value: 'select-1' },
-        { image: 'https://picsum.photos/600/600?random=52', label: 'Item 2', value: 'select-2' },
-        { image: 'https://picsum.photos/600/600?random=53', label: 'Item 3', value: 'select-3' },
-        { image: 'https://picsum.photos/600/600?random=54', label: 'Item 4', value: 'select-4' }
+        { image: image1, label: 'Item 1', value: 'select-1' },
+        { image: image2, label: 'Item 2', value: 'select-2' },
+        { image: image1, label: 'Item 3', value: 'select-3' },
+        { image: image2, label: 'Item 4', value: 'select-4' }
       ]
       return { selected, images }
     },
@@ -156,7 +158,7 @@ export const CollageVModel: Story = {
         
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Selected: {{ selected }}</span>
+            <span data-testid="collage-vmodel-value">Selected: {{ selected.join(',') }}</span>
             <button class="wiki-storybook-button" @click="selected = ['select-1', 'select-2']">Select 1, 2</button>
             <button class="wiki-storybook-button wiki-storybook-button--warning" @click="selected = []">Clear</button>
           </div>
@@ -171,6 +173,77 @@ export const CollageVModel: Story = {
         </div>
       
     `
-  })
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected: select-1,select-3')
+    await userEvent.click(canvas.getByText('Select 1, 2'))
+    await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected: select-1,select-2')
+    await userEvent.click(canvas.getByText('Clear'))
+    await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected:')
+  }
+}
+export const CollageTestKeysSlotAndEvents: Story = {
+  name: 'Тест: Ключи keyValue/keyLabel, collageItemAttrs, слот, клик и expose update',
+  render: () => ({
+    components: { D1Collage },
+    setup() {
+      const collageRef = ref<{ update: () => void }>()
+      const lastClicked = ref('')
+      const updated = ref(false)
+      const customImages = [
+        { image: image1, id: 0, title: 'Zero Item' },
+        { image: image2, id: 'custom-2', title: 'Custom Key Item' }
+      ]
+      const onClickLite = (value: EventClickValue) => {
+        lastClicked.value = String(value.value)
+      }
+      const triggerUpdate = () => {
+        collageRef.value?.update()
+        updated.value = true
+      }
+      return { collageRef, customImages, lastClicked, updated, onClickLite, triggerUpdate }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <span data-testid="collage-test-click">{{ lastClicked }}</span>
+            <span data-testid="collage-test-update">{{ updated ? 'updated' : 'idle' }}</span>
+            <button class="wiki-storybook-button" @click="triggerUpdate">Update</button>
+          </div>
+          <D1Collage
+            ref="collageRef"
+            columns="2"
+            variant="standard"
+            cell-size="120px"
+            key-value="id"
+            key-label="title"
+            :images="customImages"
+            :collage-item-attrs="{ collageBarPosition: 'static' }"
+            @click-lite="onClickLite"
+          />
+          <D1Collage columns="2" variant="standard">
+            <div data-testid="collage-test-slot-child">Slot Child</div>
+          </D1Collage>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const collages = canvasElement.querySelectorAll('.d1-collage')
+    await expect(collages.length).toBe(2)
+    await expect(collages[0]).toHaveTextContent('Zero Item')
+    await expect(collages[0]).toHaveTextContent('Custom Key Item')
+    await expect(canvas.getByTestId('collage-test-slot-child')).toBeInTheDocument()
+    await userEvent.click(canvas.getByText('Update'))
+    await expect(canvas.getByTestId('collage-test-update')).toHaveTextContent('updated')
+    const firstBody = collages[0].querySelector('a') as HTMLElement | null
+    if (firstBody) {
+      await userEvent.click(firstBody)
+    }
+    await expect(canvas.getByTestId('collage-test-click')).toHaveTextContent('0')
+  }
 }
 // :story-items [!] System label / Системная метка

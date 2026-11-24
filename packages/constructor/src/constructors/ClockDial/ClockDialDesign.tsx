@@ -1,9 +1,12 @@
-import { h, type VNode } from 'vue'
+import { type ComponentPublicInstance, h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isDomRuntime
 } from '@dxtmisha/functional'
+
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { ClockDial } from './ClockDial'
 
@@ -40,7 +43,9 @@ export class ClockDialDesign<
   protected readonly item: ClockDial
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -76,9 +81,10 @@ export class ClockDialDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: this.item.model.get,
-      setValue: this.item.model.set,
-      selectByCoordinates: this.item.select.selectByCoordinates
+      getValue: () => this.item.i('model').get(),
+      setValue: (value?: number) => this.item.i('model').set(value),
+      selectByCoordinates: (clientX: number, clientY: number) =>
+        this.item.callInstance('select', item => item.selectByCoordinates(clientX, clientY), null)
     } as EXPOSE
   }
 
@@ -90,9 +96,7 @@ export class ClockDialDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        ...this.item.classes
-      },
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         list: this.naming.getSubClass('list'),
@@ -119,9 +123,7 @@ export class ClockDialDesign<
    * @returns custom styles / пользовательские стили
    */
   protected initStyles(): ConstrStyles {
-    return {
-      ...this.item.styles
-    }
+    return {}
   }
 
   /**
@@ -141,12 +143,15 @@ export class ClockDialDesign<
 
     return h(
       'div',
-      {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
@@ -158,13 +163,18 @@ export class ClockDialDesign<
    * @returns VNode[] array of elements / массив элементов VNode
    */
   readonly renderList = (): VNode[] => {
-    const items = this.item.list.marks.value
-    const selectedValue = this.item.valueItem.value
+    const items = this.item.i('list').marks.value
+    const valueItem = this.item.i('value')
+    const isSelectVisible = valueItem.isSelectVisible()
+    const selectedValue = isSelectVisible ? valueItem.value : undefined
+    const valueClass = this.classes?.value.value
 
-    this.item.select.reset()
+    if (this.item.hasInstance('select')) {
+      this.item.i('select').reset()
+    }
 
     const children = items.map((item: ClockDialMarkItem, index: number) => {
-      const isSelected = item.value === selectedValue && this.item.valueItem.isSelectVisible()
+      const isSelected = isSelectVisible && item.value === selectedValue
       const content = this.slots?.item
         ? this.initSlot('item', undefined, { item })
         : item.name
@@ -173,20 +183,30 @@ export class ClockDialDesign<
         'span',
         {
           'key': `${item.value}-${index}`,
-          'class': {
-            [`${this.classes?.value.value}`]: true,
-            [`${this.classes?.value.value}--selected`]: isSelected,
-            [`${this.classes?.value.value}--disabled`]: item.disabled
-          },
+          'class': valueClass
+            ? {
+                [valueClass]: true,
+                [`${valueClass}--selected`]: isSelected,
+                [`${valueClass}--disabled`]: item.disabled
+              }
+            : undefined,
           'data-value': item.value,
           'style': item.style,
-          'onClick': this.item.event.onClick
+          'onClick': item.disabled || this.props.clock ? undefined : this.item.onClick
         },
         [
           h(
             'span',
             {
-              ref: (element: any) => this.item.select.setElement(index, element),
+              ref: (element: Element | ComponentPublicInstance | null) => {
+                this.item.callInstance(
+                  'select',
+                  selectItem => selectItem.setElement(
+                    index,
+                    isDomRuntime() && element instanceof HTMLElement ? element : null
+                  )
+                )
+              },
               class: this.classes?.value.name
             },
             content
@@ -212,50 +232,51 @@ export class ClockDialDesign<
    */
   readonly renderInfo = (): VNode[] => {
     const children: VNode[] = []
+    const valueItem = this.item.i('value')
 
-    if (this.item.valueItem.isArrowSelectVisible()) {
+    if (valueItem.isArrowSelectVisible()) {
       children.push(
         h('span', {
           class: [
             this.classes?.value.arrow,
             this.classes?.value.arrowSelect
           ],
-          style: this.item.arrows.styleSelect
+          style: this.item.i('arrows').styleSelect
         })
       )
     } else if (this.props.clock) {
-      if (this.item.valueItem.isHourVisible()) {
+      if (valueItem.isHourVisible()) {
         children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
               this.classes?.value.arrowHour
             ],
-            style: this.item.arrows.styleHour
+            style: this.item.i('arrows').styleHour
           })
         )
       }
 
-      if (this.item.valueItem.isMinuteVisible()) {
+      if (valueItem.isMinuteVisible()) {
         children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
               this.classes?.value.arrowMinute
             ],
-            style: this.item.arrows.styleMinute
+            style: this.item.i('arrows').styleMinute
           })
         )
       }
 
-      if (this.item.valueItem.isSecondVisible()) {
+      if (valueItem.isSecondVisible()) {
         children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
               this.classes?.value.arrowSecond
             ],
-            style: this.item.arrows.styleSecond
+            style: this.item.i('arrows').styleSecond
           })
         )
       }
@@ -264,7 +285,10 @@ export class ClockDialDesign<
     return [
       h(
         'div',
-        this.getKeyClass('info'),
+        {
+          ...this.getKeyClass('info'),
+          ...AriaStaticInclude.hidden()
+        },
         children
       )
     ]
@@ -278,7 +302,10 @@ export class ClockDialDesign<
    */
   readonly renderPoint = (): VNode[] => {
     return [
-      h('div', this.getKeyClass('point'))
+      h('div', {
+        ...this.getKeyClass('point'),
+        ...AriaStaticInclude.hidden()
+      })
     ]
   }
 
@@ -289,8 +316,9 @@ export class ClockDialDesign<
    * @returns VNode[] array of elements / массив элементов VNode
    */
   readonly renderDial = (): VNode[] => {
+    const valueItem = this.item.i('value')
     const content = this.initSlot('default')
-      ?? (this.item.valueItem.isTextVisible() ? this.item.valueItem.text : undefined)
+      ?? (valueItem.isTextVisible() ? valueItem.text : undefined)
 
     return [
       h(
@@ -308,12 +336,13 @@ export class ClockDialDesign<
    * @returns VNode[] array of elements / массив элементов VNode
    */
   readonly renderCensor = (): VNode[] => {
-    if (this.item.valueItem.isSelectVisible()) {
+    if (this.item.i('value').isSelectVisible()) {
       return [
         h('div', {
           class: this.classes?.value.censor,
-          onMousedown: this.item.event.onStart,
-          onTouchstart: this.item.event.onStart
+          ...AriaStaticInclude.hidden(),
+          onMousedown: this.item.onStart,
+          onTouchstart: this.item.onStart
         })
       ]
     }

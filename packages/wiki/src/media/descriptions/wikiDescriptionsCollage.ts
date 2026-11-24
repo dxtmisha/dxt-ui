@@ -17,6 +17,7 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
       'configurable column count from 1 to 12 columns with responsive sizing',
       'customizable cell size token (cellSize)',
       'batch and single selection management with two-way binding (selected, v-model:selected)',
+      '2D spatial keyboard navigation via control prop and FocusDirectionInclude',
       'shared attribute propagation to child collage items via collageItemAttrs',
       'data-driven rendering via images array with customizable keyValue and keyLabel',
       'dynamic layout recalculation method (update) exposed via component API',
@@ -28,6 +29,7 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
       'настройка количества колонок от 1 до 12 с адаптивным масштабированием',
       'настраиваемый размер базовой ячейки (cellSize)',
       'управление одиночным и множественным выбором с двусторонним связыванием (selected, v-model:selected)',
+      'пространственная 2D-навигация с клавиатуры через свойство control и FocusDirectionInclude',
       'передача общих атрибутов дочерним элементам через collageItemAttrs',
       'рендеринг на основе данных из массива images с настраиваемыми keyValue и keyLabel',
       'метод динамического пересчета макета (update), доступный через API',
@@ -36,15 +38,31 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { EventClickValue } from \'@dxtmisha/constructor\'',
+    'import { image1, image2 } from \'@dxtmisha/wiki/media\''
   ],
+  render: `
+      <DesignComponent v-bind="args" />
+    `,
+  play: `
+const component = canvasElement.querySelector('.design-component')
+await expect(component).toBeInTheDocument()
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'CollageVariants',
       name: {
         en: 'Layout variants',
         ru: 'Варианты макета'
       },
+      propsName: ['variant', 'columns', 'images', 'cellSize'],
+      setup: `
+      return { image1, image2 }
+      `,
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--borderNone">
@@ -53,14 +71,10 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
               variant="standard"
               columns="4"
               :images="[
-                { image: 'https://picsum.photos/600/600?random=1', label: 'Item 1' },
-                { image: 'https://picsum.photos/600/600?random=2', label: 'Item 2' },
-                { image: 'https://picsum.photos/600/600?random=3', label: 'Item 3' },
-                { image: 'https://picsum.photos/600/600?random=4', label: 'Item 4' },
-                { image: 'https://picsum.photos/600/600?random=5', label: 'Item 5' },
-                { image: 'https://picsum.photos/600/600?random=6', label: 'Item 6' },
-                { image: 'https://picsum.photos/600/600?random=7', label: 'Item 7' },
-                { image: 'https://picsum.photos/600/600?random=8', label: 'Item 8' }
+                { image: image1, label: 'Item 1' },
+                { image: image2, label: 'Item 2' },
+                { image: image1, label: 'Item 3' },
+                { image: image2, label: 'Item 4' }
               ]"
             />
           </div>
@@ -71,13 +85,10 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
               variant="quilted"
               columns="4"
               :images="[
-                { image: 'https://picsum.photos/800/800?random=11', span: 'large', label: 'Large (2x2)' },
-                { image: 'https://picsum.photos/600/600?random=12', span: 'standard', label: 'Standard 1' },
-                { image: 'https://picsum.photos/600/1200?random=13', span: 'tall', label: 'Tall (1x2)' },
-                { image: 'https://picsum.photos/600/600?random=14', span: 'standard', label: 'Standard 2' },
-                { image: 'https://picsum.photos/1200/600?random=15', span: 'wide', label: 'Wide (2x1)' },
-                { image: 'https://picsum.photos/600/600?random=16', span: 'standard', label: 'Standard 3' },
-                { image: 'https://picsum.photos/600/600?random=17', span: 'standard', label: 'Standard 4' }
+                { image: image1, span: 'large', label: 'Large (2x2)' },
+                { image: image2, span: 'standard', label: 'Standard 1' },
+                { image: image1, span: 'tall', label: 'Tall (1x2)' },
+                { image: image2, span: 'wide', label: 'Wide (2x1)' }
               ]"
             />
           </div>
@@ -88,12 +99,12 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
               variant="woven"
               columns="3"
               :images="[
-                { image: 'https://picsum.photos/600/800?random=21', label: 'Item 1' },
-                { image: 'https://picsum.photos/600/800?random=22', label: 'Item 2' },
-                { image: 'https://picsum.photos/600/800?random=23', label: 'Item 3' },
-                { image: 'https://picsum.photos/600/800?random=24', label: 'Item 4' },
-                { image: 'https://picsum.photos/600/800?random=25', label: 'Item 5' },
-                { image: 'https://picsum.photos/600/800?random=26', label: 'Item 6' }
+                { image: image1, label: 'Item 1' },
+                { image: image2, label: 'Item 2' },
+                { image: image1, label: 'Item 3' },
+                { image: image2, label: 'Item 4' },
+                { image: image1, label: 'Item 5' },
+                { image: image2, label: 'Item 6' }
               ]"
             />
           </div>
@@ -102,15 +113,11 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
             <div class="wiki-storybook-item__label">variant: masonryHorizontal</div>
             <DesignComponent
               variant="masonryHorizontal"
+              cell-size="140px"
               :images="[
-                { image: 'https://picsum.photos/960/540?random=31', label: 'Landscape 16:9' },
-                { image: 'https://picsum.photos/600/600?random=32', label: 'Square 1:1' },
-                { image: 'https://picsum.photos/1000/500?random=33', label: 'Panoramic 2:1' },
-                { image: 'https://picsum.photos/600/800?random=34', label: 'Portrait 3:4' },
-                { image: 'https://picsum.photos/800/500?random=35', label: 'Wide 16:10' },
-                { image: 'https://picsum.photos/800/600?random=36', label: 'Standard 4:3' },
-                { image: 'https://picsum.photos/600/600?random=37', label: 'Square 1:1' },
-                { image: 'https://picsum.photos/1050/450?random=38', label: 'Panoramic 21:9' }
+                { image: image1, label: 'Image 1' },
+                { image: image2, label: 'Image 2' },
+                { image: image1, label: 'Image 3' }
               ]"
             />
           </div>
@@ -119,20 +126,25 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
             <div class="wiki-storybook-item__label">variant: masonryVertical</div>
             <DesignComponent
               variant="masonryVertical"
-              columns="4"
+              columns="3"
               :images="[
-                { image: 'https://picsum.photos/540/960?random=41', label: 'Tall Pin' },
-                { image: 'https://picsum.photos/600/600?random=42', label: 'Square' },
-                { image: 'https://picsum.photos/600/800?random=43', label: 'Portrait' },
-                { image: 'https://picsum.photos/800/500?random=44', label: 'Landscape' },
-                { image: 'https://picsum.photos/800/600?random=45', label: 'Standard' },
-                { image: 'https://picsum.photos/600/900?random=46', label: 'Tall Portrait' },
-                { image: 'https://picsum.photos/600/600?random=47', label: 'Square' },
-                { image: 'https://picsum.photos/600/800?random=48', label: 'Portrait' }
+                { image: image1, label: 'Pin 1' },
+                { image: image2, label: 'Pin 2' },
+                { image: image1, label: 'Pin 3' },
+                { image: image2, label: 'Pin 4' }
               ]"
             />
           </div>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(5)
+await expect(items[0]).toHaveClass('design-component--variant--standard')
+await expect(items[1]).toHaveClass('design-component--variant--quilted')
+await expect(items[2]).toHaveClass('design-component--variant--woven')
+await expect(items[3]).toHaveClass('design-component--variant--masonryHorizontal')
+await expect(items[4]).toHaveClass('design-component--variant--masonryVertical')
       `
     },
     {
@@ -141,20 +153,21 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
         en: 'Two-way binding (v-model)',
         ru: 'Двусторонняя привязка (v-model)'
       },
+      propsName: ['control', 'selected', 'columns', 'variant', 'images'],
       setup: `
-      const selected = ref(['select-1', 'select-3'])
+      const selected = ref<string[]>(['select-1', 'select-3'])
       const images = [
-        { image: 'https://picsum.photos/600/600?random=51', label: 'Item 1', value: 'select-1' },
-        { image: 'https://picsum.photos/600/600?random=52', label: 'Item 2', value: 'select-2' },
-        { image: 'https://picsum.photos/600/600?random=53', label: 'Item 3', value: 'select-3' },
-        { image: 'https://picsum.photos/600/600?random=54', label: 'Item 4', value: 'select-4' }
+        { image: image1, label: 'Item 1', value: 'select-1' },
+        { image: image2, label: 'Item 2', value: 'select-2' },
+        { image: image1, label: 'Item 3', value: 'select-3' },
+        { image: image2, label: 'Item 4', value: 'select-4' }
       ]
       return { selected, images }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Selected: {{ selected }}</span>
+            <span data-testid="collage-vmodel-value">Selected: {{ selected.join(',') }}</span>
             <button class="wiki-storybook-button" @click="selected = ['select-1', 'select-2']">Select 1, 2</button>
             <button class="wiki-storybook-button wiki-storybook-button--warning" @click="selected = []">Clear</button>
           </div>
@@ -167,6 +180,81 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
             v-model:selected="selected"
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected: select-1,select-3')
+await userEvent.click(canvas.getByText('Select 1, 2'))
+await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected: select-1,select-2')
+await userEvent.click(canvas.getByText('Clear'))
+await expect(canvas.getByTestId('collage-vmodel-value')).toHaveTextContent('Selected:')
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Automated QA — Constructor Props Only)
+    // =========================================================================
+    {
+      id: 'CollageTestKeysSlotAndEvents',
+      name: {
+        en: 'Test: Custom keys, collageItemAttrs, slot, click event and expose update',
+        ru: 'Тест: Ключи keyValue/keyLabel, collageItemAttrs, слот, клик и expose update'
+      },
+      propsName: ['keyValue', 'keyLabel', 'collageItemAttrs', 'cellSize', 'control'],
+      setup: `
+      const collageRef = ref<{ update: () => void }>()
+      const lastClicked = ref('')
+      const updated = ref(false)
+      const customImages = [
+        { image: image1, id: 0, title: 'Zero Item' },
+        { image: image2, id: 'custom-2', title: 'Custom Key Item' }
+      ]
+      const onClickLite = (value: EventClickValue) => {
+        lastClicked.value = String(value.value)
+      }
+      const triggerUpdate = () => {
+        collageRef.value?.update()
+        updated.value = true
+      }
+      return { collageRef, customImages, lastClicked, updated, onClickLite, triggerUpdate }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <span data-testid="collage-test-click">{{ lastClicked }}</span>
+            <span data-testid="collage-test-update">{{ updated ? 'updated' : 'idle' }}</span>
+            <button class="wiki-storybook-button" @click="triggerUpdate">Update</button>
+          </div>
+          <DesignComponent
+            ref="collageRef"
+            columns="2"
+            variant="standard"
+            cell-size="120px"
+            key-value="id"
+            key-label="title"
+            :images="customImages"
+            :collage-item-attrs="{ collageBarPosition: 'static' }"
+            @click-lite="onClickLite"
+          />
+          <DesignComponent columns="2" variant="standard">
+            <div data-testid="collage-test-slot-child">Slot Child</div>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const collages = canvasElement.querySelectorAll('.design-component')
+await expect(collages.length).toBe(2)
+await expect(collages[0]).toHaveTextContent('Zero Item')
+await expect(collages[0]).toHaveTextContent('Custom Key Item')
+await expect(canvas.getByTestId('collage-test-slot-child')).toBeInTheDocument()
+await userEvent.click(canvas.getByText('Update'))
+await expect(canvas.getByTestId('collage-test-update')).toHaveTextContent('updated')
+const firstBody = collages[0].querySelector('a') as HTMLElement | null
+if (firstBody) {
+  await userEvent.click(firstBody)
+}
+await expect(canvas.getByTestId('collage-test-click')).toHaveTextContent('0')
       `
     }
   ],
@@ -193,13 +281,13 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
   ai: {
     render: `
 <div :class="classDemo.item">
-  <Collage v-bind="args"/>
+  <DesignComponent v-bind="args"/>
 </div>
     `,
     description: `
 A responsive media gallery and layout container designed for photo collections, media walls, and Bento grids.
 Arranges media items using CSS Grid with 5 layout variants: standard (uniform columns with span tiles), quilted (dense auto-flow filling gaps), woven (alternating compact rhythmic tiles), masonryHorizontal (row justification via dynamic grow calculation), and masonryVertical (dynamic column masonry).
-Supports configurable column counts (1 to 12), customizable cell dimensions (cellSize), selection tracking (v-model:selected), and batch attribute passing to child items (collageItemAttrs).
+Supports configurable column counts (1 to 12), customizable cell dimensions (cellSize), selection tracking (v-model:selected), 2D keyboard navigation (control), and batch attribute passing to child items (collageItemAttrs).
 Exposes an update() method to trigger layout recalculation upon dynamic container or content changes.
     `
   }

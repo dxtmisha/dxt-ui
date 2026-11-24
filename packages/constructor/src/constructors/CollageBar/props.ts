@@ -7,6 +7,7 @@ import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { LabelProps } from '../../types/labelTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
+/** Token-driven properties for CollageBar / Свойства CollageBar, управляемые дизайн-токенами */
 type CollageBarPropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
@@ -14,6 +15,11 @@ type CollageBarPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for CollageBar component.
+ *
+ * Базовые свойства для компонента CollageBar.
+ */
 export type CollageBarPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic

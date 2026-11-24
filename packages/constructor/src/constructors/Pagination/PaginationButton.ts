@@ -1,22 +1,20 @@
 // ai-none
 
-import { computed } from 'vue'
+import { computed, mergeProps } from 'vue'
 import { type ConstrBind, type ListListInputItem } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { type TextInclude } from '../../classes/TextInclude'
-
+import type { TextInclude } from '../../classes/TextInclude'
 import type { ButtonPropsBasic } from '../Button'
 
-import { type PaginationEvent } from './PaginationEvent'
-import { type PaginationPage } from './PaginationPage'
-
+import type { PaginationEvent } from './PaginationEvent'
+import type { PaginationPage } from './PaginationPage'
 import type { PaginationProps } from './props'
 
 /**
- * Class for managing the button configurations and action handlers of the pagination component.
+ * Class for managing button configurations, visible page ranges, ellipsis flags, and action bindings of the pagination component.
  *
- * Класс для управления конфигурациями кнопок и обработчиками действий компонента пагинации.
+ * Класс для управления конфигурациями кнопок, видимыми диапазонами страниц, флагами многоточий и привязками действий компонента пагинации.
  */
 export class PaginationButton {
   /**
@@ -24,15 +22,15 @@ export class PaginationButton {
    *
    * Конструктор для PaginationButton.
    * @param props input properties / входные свойства
-   * @param page page manager instance / экземпляр менеджера страниц
-   * @param event click event control instance / экземпляр управления событием клика
-   * @param text text manager instance / экземпляр менеджера текстов
+   * @param event lazy getter for click event control / ленивый геттер управления событием клика
+   * @param page lazy getter for page state manager / ленивый геттер менеджера состояния страниц
+   * @param text lazy getter for text manager / ленивый геттер менеджера текстов
    */
   constructor(
-    protected readonly props: PaginationProps,
-    protected readonly page: PaginationPage,
-    protected readonly event?: PaginationEvent,
-    protected readonly text?: TextInclude
+    protected readonly props: Readonly<PaginationProps>,
+    protected readonly event: () => PaginationEvent,
+    protected readonly page: () => PaginationPage,
+    protected readonly text: () => TextInclude
   ) {
   }
 
@@ -43,21 +41,28 @@ export class PaginationButton {
    */
   readonly pagination = computed<ListListInputItem[]>(() => {
     const data: ListListInputItem[] = []
-    const visible = this.page.visible
-    let start = this.page.value - Math.floor(visible / 2)
+    const page = this.page()
+    const pagesCount = page.pagesCount
+    const visible = page.visible
 
-    if (start + visible > this.page.pagesCount) {
-      start = this.page.pagesCount - visible + 1
+    if (pagesCount <= 0 || visible <= 0) {
+      return data
+    }
+
+    let start = page.value - Math.floor(visible / 2)
+
+    if (start + visible > pagesCount) {
+      start = pagesCount - visible + 1
     }
 
     if (start < 1) {
       start = 1
     }
 
-    for (let i = start; i < start + visible; i++) {
-      if (i <= this.page.pagesCount) {
-        data.push(this.getPageItem(i))
-      }
+    const end = Math.min(start + visible - 1, pagesCount)
+
+    for (let pageNumber = start; pageNumber <= end; pageNumber++) {
+      data.push(this.getPageItem(pageNumber))
     }
 
     return data
@@ -69,13 +74,15 @@ export class PaginationButton {
    * Вычисляет список номеров страниц и их состояния для кнопок выбора первых страниц.
    */
   readonly paginationFirst = computed<ListListInputItem[]>(() => {
-    const firstItem = this.pagination.value[0] ?? 0
+    const firstItem = this.pagination.value[0]
     const data: ListListInputItem[] = []
 
     if (this.props.showEnds && firstItem) {
-      const limit = Math.min(this.page.ends, (firstItem.value as number) - 1)
-      for (let i = 1; i <= limit; i++) {
-        data.push(this.getPageItem(i))
+      const firstPage = Number(firstItem.value)
+      const limit = Math.min(this.page().ends, firstPage - 1)
+
+      for (let pageNumber = 1; pageNumber <= limit; pageNumber++) {
+        data.push(this.getPageItem(pageNumber))
       }
     }
 
@@ -88,13 +95,22 @@ export class PaginationButton {
    * Вычисляет список номеров страниц и их состояния для кнопок выбора последних страниц.
    */
   readonly paginationLast = computed<ListListInputItem[]>(() => {
-    const lastItem = this.pagination.value[this.pagination.value.length - 1]
+    const pagination = this.pagination.value
+    const lastItem = pagination[pagination.length - 1]
     const data: ListListInputItem[] = []
 
     if (this.props.showEnds && lastItem) {
-      const from = Math.max((lastItem.value as number) + 1, this.page.pagesCount - this.page.ends + 1)
-      for (let i = from; i <= this.page.pagesCount; i++) {
-        data.push(this.getPageItem(i))
+      const page = this.page()
+      const pagesCount = page.pagesCount
+      const ends = page.ends
+
+      if (ends > 0 && pagesCount > 0) {
+        const lastPage = Number(lastItem.value)
+        const from = Math.max(lastPage + 1, pagesCount - ends + 1)
+
+        for (let pageNumber = from; pageNumber <= pagesCount; pageNumber++) {
+          data.push(this.getPageItem(pageNumber))
+        }
       }
     }
 
@@ -108,10 +124,11 @@ export class PaginationButton {
    */
   readonly showFirstEllipsis = computed<boolean>(() => {
     const firstItem = this.pagination.value[0]
+
     return Boolean(
       this.props.showEnds
       && firstItem
-      && this.page.ends < (firstItem.value as number) - 1
+      && this.page().ends < Number(firstItem.value) - 1
     )
   })
 
@@ -121,11 +138,13 @@ export class PaginationButton {
    * Проверяет, должно ли быть показано последнее многоточие.
    */
   readonly showLastEllipsis = computed<boolean>(() => {
-    const lastItem = this.pagination.value[this.pagination.value.length - 1]
+    const pagination = this.pagination.value
+    const lastItem = pagination[pagination.length - 1]
+
     return Boolean(
       this.props.showEnds
       && lastItem
-      && this.page.pagesCount - this.page.ends > (lastItem.value as number)
+      && this.page().pagesCount - this.page().ends > Number(lastItem.value)
     )
   })
 
@@ -136,16 +155,18 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get back(): ConstrBind<ButtonPropsBasic> {
-    const value = this.page.value
+    const page = this.page()
+    const value = page.value
+    const label = this.text().previous
 
     return {
       ...this.binds,
-      'key': `item__back`,
+      'key': 'item__back',
       'icon': this.props.iconArrowLeft,
-      'value': value - 1,
-      'disabled': value <= 1,
-      'title': this.text?.previous,
-      ...AriaStaticInclude.label(this.text?.previous),
+      'value': Math.max(1, value - 1),
+      'disabled': value <= 1 || page.pagesCount <= 0,
+      'title': label,
+      ...AriaStaticInclude.label(label),
       'data-event-type': 'back'
     }
   }
@@ -157,16 +178,19 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get next(): ConstrBind<ButtonPropsBasic> {
-    const value = this.page.value
+    const page = this.page()
+    const pagesCount = page.pagesCount
+    const value = page.value
+    const label = this.text().next
 
     return {
       ...this.binds,
-      'key': `item__next`,
+      'key': 'item__next',
       'icon': this.props.iconArrowRight,
-      'value': value + 1,
-      'disabled': value >= this.page.pagesCount,
-      'title': this.text?.next,
-      ...AriaStaticInclude.label(this.text?.next),
+      'value': pagesCount > 0 ? Math.min(pagesCount, value + 1) : 1,
+      'disabled': value >= pagesCount,
+      'title': label,
+      ...AriaStaticInclude.label(label),
       'data-event-type': 'next'
     }
   }
@@ -178,14 +202,17 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get first(): ConstrBind<ButtonPropsBasic> {
+    const page = this.page()
+    const label = this.text().first
+
     return {
       ...this.binds,
-      'key': `item__first`,
+      'key': 'item__first',
       'icon': this.props.iconArrowFirst,
       'value': 1,
-      'disabled': this.page.value <= 1,
-      'title': this.text?.first,
-      ...AriaStaticInclude.label(this.text?.first),
+      'disabled': page.value <= 1 || page.pagesCount <= 0,
+      'title': label,
+      ...AriaStaticInclude.label(label),
       'data-event-type': 'first'
     }
   }
@@ -197,51 +224,19 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get last(): ConstrBind<ButtonPropsBasic> {
+    const page = this.page()
+    const pagesCount = page.pagesCount
+    const label = this.text().last
+
     return {
       ...this.binds,
-      'key': `item__last`,
+      'key': 'item__last',
       'icon': this.props.iconArrowLast,
-      'value': this.page.pagesCount,
-      'disabled': this.page.value >= this.page.pagesCount,
-      'title': this.text?.last,
-      ...AriaStaticInclude.label(this.text?.last),
+      'value': Math.max(1, pagesCount),
+      'disabled': page.value >= pagesCount,
+      'title': label,
+      ...AriaStaticInclude.label(label),
       'data-event-type': 'last'
-    }
-  }
-
-  /**
-   * Returns properties and visibility states (hide/show) for the "Show more" loader button.
-   *
-   * Возвращает свойства и состояние видимости (скрыть/показать) для кнопки подгрузки следующей страницы («Показать еще»).
-   * @returns button binding properties / свойства привязки кнопки
-   */
-  get more(): ConstrBind<ButtonPropsBasic> {
-    return {
-      ...this.binds,
-      'key': `item__more`,
-      'label': this.text?.more,
-      'value': this.page.value + 1,
-      ...AriaStaticInclude.label(this.text?.more),
-      'data-event-type': 'more',
-      ...this.props.buttonMoreAttrs
-    }
-  }
-
-  /**
-   * Returns properties and visibility states (hide/show) for the "Show previous" loader button.
-   *
-   * Возвращает свойства и состояние видимости (скрыть/показать) для кнопки подгрузки предыдущей страницы («Показать предыдущие»).
-   * @returns button binding properties / свойства привязки кнопки
-   */
-  get morePrev(): ConstrBind<ButtonPropsBasic> {
-    return {
-      ...this.binds,
-      'key': `item__morePrev`,
-      'label': this.text?.morePrev,
-      'value': this.page.value - 1,
-      ...AriaStaticInclude.label(this.text?.morePrev),
-      'data-event-type': 'morePrev',
-      ...this.props.buttonMorePrevAttrs
     }
   }
 
@@ -252,15 +247,60 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get menu(): ConstrBind<ButtonPropsBasic> {
-    return {
-      ...this.binds,
-      key: 'menuControl',
-      label: this.props.rows?.toString(),
-      iconTrailing: this.props.iconArrowDown,
-      ...AriaStaticInclude.label(this.text?.rowsPerPage),
-      onClick: undefined,
-      ...this.props.buttonMenuAttrs
-    }
+    return mergeProps(
+      this.bindsBase,
+      {
+        key: 'menuControl',
+        label: this.page().rows.toString(),
+        iconTrailing: this.props.iconArrowDown,
+        ...AriaStaticInclude.label(this.text().rowsPerPage)
+      },
+      (this.props.buttonMenuAttrs ?? {}) as Record<string, unknown>
+    ) as ConstrBind<ButtonPropsBasic>
+  }
+
+  /**
+   * Returns properties for the "Show more" loader button.
+   *
+   * Возвращает свойства для кнопки подгрузки следующей страницы («Показать еще»).
+   * @returns button binding properties / свойства привязки кнопки
+   */
+  get more(): ConstrBind<ButtonPropsBasic> {
+    const label = this.text().more
+
+    return mergeProps(
+      this.binds,
+      {
+        'key': 'item__more',
+        'label': label,
+        'value': this.page().value + 1,
+        ...AriaStaticInclude.label(label),
+        'data-event-type': 'more'
+      },
+      (this.props.buttonMoreAttrs ?? {}) as Record<string, unknown>
+    ) as ConstrBind<ButtonPropsBasic>
+  }
+
+  /**
+   * Returns properties for the "Show previous" loader button.
+   *
+   * Возвращает свойства для кнопки подгрузки предыдущей страницы («Показать предыдущие»).
+   * @returns button binding properties / свойства привязки кнопки
+   */
+  get morePrev(): ConstrBind<ButtonPropsBasic> {
+    const label = this.text().morePrev
+
+    return mergeProps(
+      this.binds,
+      {
+        'key': 'item__morePrev',
+        'label': label,
+        'value': Math.max(1, this.page().value - 1),
+        ...AriaStaticInclude.label(label),
+        'data-event-type': 'morePrev'
+      },
+      (this.props.buttonMorePrevAttrs ?? {}) as Record<string, unknown>
+    ) as ConstrBind<ButtonPropsBasic>
   }
 
   /**
@@ -270,10 +310,12 @@ export class PaginationButton {
    * @returns true if the button should be shown / true, если кнопка должна быть показана
    */
   showMore(): boolean {
+    const page = this.page()
+
     return Boolean(
       this.props.showMore
-      && this.page.pagesCount
-      && this.page.value < this.page.pagesCount
+      && page.pagesCount > 0
+      && page.value < page.pagesCount
     )
   }
 
@@ -284,43 +326,65 @@ export class PaginationButton {
    * @returns true if the button should be shown / true, если кнопка должна быть показана
    */
   showMorePrev(): boolean {
+    const page = this.page()
+
     return Boolean(
       this.props.showMorePrev
-      && this.page.pagesCount
-      && this.page.value > 1
+      && page.pagesCount > 0
+      && page.value > 1
     )
   }
 
   /**
-   * Returns the base shared properties applied to all navigation and control buttons (size, rounded shape, minimum width, etc.).
+   * Returns the shared button properties including the pagination click handler.
    *
-   * Возвращает базовые общие свойства, применяемые ко всем кнопкам навигации и управления (размер, скругление, минимальная ширина и т.д.).
+   * Возвращает общие свойства кнопок, включая обработчик клика пагинации.
    * @returns button binding properties / свойства привязки кнопки
    */
   protected get binds(): ConstrBind<ButtonPropsBasic> {
-    return {
-      hasLabelMinWidth: false,
-      onClick: this.event?.onClick,
-      tabindex: -1,
-      ...this.props.buttonAttrs
-    }
+    return mergeProps(
+      this.bindsBase,
+      {
+        onClick: this.event().onClick
+      }
+    ) as ConstrBind<ButtonPropsBasic>
+  }
+
+  /**
+   * Returns the base shared properties applied to all pagination buttons without the page click listener.
+   *
+   * Возвращает базовые общие свойства всех кнопок пагинации без обработчика клика по странице.
+   * @returns base button binding properties / базовые свойства привязки кнопки
+   */
+  protected get bindsBase(): ConstrBind<ButtonPropsBasic> {
+    return mergeProps(
+      {
+        hasLabelMinWidth: false,
+        tabindex: -1
+      },
+      (this.props.buttonAttrs ?? {}) as Record<string, unknown>
+    ) as ConstrBind<ButtonPropsBasic>
   }
 
   /**
    * Generates a page button object structure for the specified page number.
    *
    * Генерирует структуру объекта кнопки страницы для указанного номера страницы.
-   * @param i page number / номер страницы
+   * @param pageNumber page number / номер страницы
    * @returns button configuration item / элемент конфигурации кнопки
    */
-  protected getPageItem(i: number): ListListInputItem {
+  protected getPageItem(pageNumber: number): ListListInputItem {
+    const isSelected = this.page().value === pageNumber
+    const pagePrefix = this.text().page ?? ''
+
     return {
       ...this.binds,
-      'key': `item__${i}`,
-      'label': i.toString(),
-      'value': i,
-      'selected': this.page.value === i,
-      ...AriaStaticInclude.label(`${this.text?.page} ${i}`.trim()),
+      'key': `item__${pageNumber}`,
+      'label': pageNumber.toString(),
+      'value': pageNumber,
+      'selected': isSelected,
+      ...(isSelected ? AriaStaticInclude.current('page') : {}),
+      ...AriaStaticInclude.label(`${pagePrefix} ${pageNumber}`.trim()),
       'data-event-type': 'page'
     }
   }

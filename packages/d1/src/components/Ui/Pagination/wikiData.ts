@@ -45,6 +45,8 @@ const propsNames: StorybookProps = [
   { name: 'textMore', type: 'TextValue' },
   { name: 'textMorePrev', type: 'TextValue' },
   { name: 'textNext', type: 'TextValue' },
+  { name: 'textPage', type: 'TextValue' },
+  { name: 'textPagination', type: 'TextValue' },
   { name: 'textPrevious', type: 'TextValue' },
   { name: 'textRowsPerPage', type: 'TextValue' },
   { name: 'value', type: 'string | number' },
@@ -54,9 +56,9 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'info', description: `Slot in the middle before the spacer / Слот в середине перед разделителем (spacer)`, properties: [{ name: 'props', type: '(() => any) | undefined' }] },
-  { name: 'leading', description: `Slot at the very beginning of the component / Слот в самом начале компонента`, properties: [{ name: 'props', type: '(() => any) | undefined' }] },
-  { name: 'trailing', description: `Slot at the very end of the component / Слот в самом конце компонента`, properties: [{ name: 'props', type: '(() => any) | undefined' }] }
+  { name: 'info', description: `Slot in the middle before the spacer / Слот в середине перед разделителем (spacer)`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] },
+  { name: 'leading', description: `Slot at the very beginning of the component / Слот в самом начале компонента`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] },
+  { name: 'trailing', description: `Slot at the very end of the component / Слот в самом конце компонента`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
@@ -64,15 +66,15 @@ const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'more', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'moreLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'morePrev', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'morePrevLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'rows', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'rowsLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
-  { name: 'update:modelRows', properties: [{ name: 'value', type: 'number' }] },
+  { name: 'more', description: `Show more button click event / Событие клика по кнопке «Показать еще»`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'moreLite', description: `Lightweight show more event / Упрощённое событие «Показать еще»`, properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'morePrev', description: `Show previous button click event / Событие клика по кнопке «Показать предыдущие»`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'morePrevLite', description: `Lightweight show previous event / Упрощённое событие «Показать предыдущие»`, properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'rows', description: `Rows per page selection event / Событие выбора количества строк на странице`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'rowsLite', description: `Lightweight rows selection event / Упрощённое событие выбора количества строк`, properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'update:modelRows', description: `Model rows per page update event / Событие обновления количества строк модели`, properties: [{ name: 'value', type: 'number' }] },
   { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'number' }] },
-  { name: 'update:rows', properties: [{ name: 'value', type: 'number' }] },
+  { name: 'update:rows', description: `Rows per page update event / Событие обновления количества строк на странице`, properties: [{ name: 'value', type: 'number' }] },
   { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'number' }] }
   // :eventsList [!] System label / Системная метка
 ]

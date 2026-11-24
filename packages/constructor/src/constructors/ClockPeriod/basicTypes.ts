@@ -13,24 +13,6 @@ export enum ClockPeriodType {
   pm = 'pm'
 }
 
-/** Clock period item data / Данные элемента периода часов */
-export type ClockPeriodItem = {
-  /** Period value / Значение периода */
-  value: ClockPeriodType
-  /** Display label / Отображаемая метка */
-  label: string
-  /** Selected state / Состояние выбора */
-  selected: boolean
-  /** Disabled state / Состояние отключения */
-  disabled: boolean
-}
-
-/** Clock period slot data payload / Данные для слота элемента периода часов */
-export type ClockPeriodSlotData = {
-  /** Period item data / Данные элемента периода */
-  item: ClockPeriodItem
-}
-
 /** Dependency registration type for parent components / Тип регистрации зависимости для родительских компонентов */
 export type ClockPeriodComponentInclude = {
   /** ClockPeriod component configuration / Конфигурация компонента ClockPeriod */

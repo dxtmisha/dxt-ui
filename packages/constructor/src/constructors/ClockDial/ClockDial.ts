@@ -1,14 +1,9 @@
+import { computed } from 'vue'
 import {
-  computed,
-  type Ref
-} from 'vue'
-
-import {
+  type ConstrBind,
   type ConstrClassObject,
-  type ConstrEmit,
-  type ConstrStyles,
-  type DesignComp,
-  type DesignName
+  type ConstrItems,
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -24,8 +19,34 @@ import { ClockDialSelect } from './ClockDialSelect'
 import { ClockDialValue } from './ClockDialValue'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { ClockDialComponents, ClockDialEmits, ClockDialSlots } from './types'
 import type { ClockDialProps } from './props'
+import type {
+  ClockDialComponents,
+  ClockDialEmits,
+  ClockDialSlots
+} from './types'
+
+/** ClockDial dependency constructors type / Тип конструкторов зависимостей ClockDial */
+export type ClockDialConstructors = {
+  /** Clock hands (arrows) manager constructor / Конструктор менеджера стрелок часов */
+  arrows: typeof ClockDialArrows
+  /** Clock dial keyboard control manager constructor / Конструктор менеджера клавиатурного управления циферблатом */
+  control: typeof ClockDialControl
+  /** Clock dial emit manager constructor / Конструктор менеджера отправки событий циферблата */
+  emit: typeof ClockDialEmit
+  /** Enabled include helper constructor / Конструктор помощника состояния активности */
+  enabled: typeof EnabledInclude
+  /** Pointer, touch, and keyboard event manager constructor / Конструктор менеджера событий указателя, касания и клавиатуры */
+  event: typeof ClockDialEvent
+  /** Clock dial items list manager constructor / Конструктор менеджера списка элементов циферблата */
+  list: typeof ClockDialList
+  /** Model value include helper constructor / Конструктор помощника значения модели */
+  model: typeof ModelValueInclude<number>
+  /** Coordinate hit-testing selector constructor / Конструктор селектора проверки попадания координат */
+  select: typeof ClockDialSelect
+  /** Clock dial time values manager constructor / Конструктор менеджера значений времени циферблата */
+  value: typeof ClockDialValue
+}
 
 /**
  * ClockDial orchestrator class.
@@ -34,120 +55,97 @@ import type { ClockDialProps } from './props'
  * Оркестраторный класс циферблата часов.
  * Управляет элементами циферблата, стрелками часов/минут/секунд, выбором по координатам и взаимодействием указателя.
  */
-export class ClockDial {
-  /** Clock hands (arrows) manager instance / Экземпляр менеджера стрелок часов */
-  readonly arrows: ClockDialArrows
-
-  /** Clock dial control manager instance / Экземпляр менеджера управления циферблатом часов */
-  readonly control: ClockDialControl
-
-  /** Clock dial emit manager instance / Экземпляр менеджера событий циферблата часов */
-  readonly emitsItem: ClockDialEmit
-
-  /** Enabled include helper instance / Экземпляр помощника состояния активности */
-  readonly enabled: EnabledInclude
-
-  /** Pointer and touch event manager instance / Экземпляр менеджера событий указателя и касания */
-  readonly event: ClockDialEvent
-
-  /** Clock dial items list manager instance / Экземпляр менеджера списка элементов циферблата */
-  readonly list: ClockDialList
-
-  /** Model value include helper / Помощник значения модели */
-  readonly model: ModelValueInclude<number>
-
-  /** Coordinate hit-testing selector instance / Экземпляр селектора проверки попадания координат */
-  readonly select: ClockDialSelect
-
-  /** Clock dial time values manager instance / Экземпляр менеджера значений времени циферблата */
-  readonly valueItem: ClockDialValue
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors helper class constructors / конструкторы вспомогательных классов
-   * @param constructors.EnabledIncludeConstructor class for working with enabled state / класс для работы с состоянием активности
-   * @param constructors.ModelValueIncludeConstructor class for working with model value / класс для работы со значением модели
-   * @param constructors.ClockDialListConstructor class for working with clock dial items list / класс для работы со списком элементов циферблата
-   * @param constructors.ClockDialValueConstructor class for working with clock dial time values / класс для работы со значениями времени циферблата
-   * @param constructors.ClockDialArrowsConstructor class for working with clock hands / класс для работы со стрелками часов
-   * @param constructors.ClockDialSelectConstructor class for working with item selection / класс для работы с выбором элементов
-   * @param constructors.ClockDialEmitConstructor class for working with emits / класс для работы с эмитами
-   * @param constructors.ClockDialControlConstructor class for working with control / класс для работы с управлением
-   * @param constructors.ClockDialEventConstructor class for working with events / класс для работы с событиями
-   */
-  constructor(
-    protected readonly props: ClockDialProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ClockDialComponents, ClockDialProps>,
-    protected readonly slots?: ClockDialSlots,
-    protected readonly emits?: ConstrEmit<ClockDialEmits>,
-    constructors: {
-      EnabledIncludeConstructor?: typeof EnabledInclude
-      ModelValueIncludeConstructor?: typeof ModelValueInclude<number>
-      ClockDialListConstructor?: typeof ClockDialList
-      ClockDialValueConstructor?: typeof ClockDialValue
-      ClockDialArrowsConstructor?: typeof ClockDialArrows
-      ClockDialSelectConstructor?: typeof ClockDialSelect
-      ClockDialEmitConstructor?: typeof ClockDialEmit
-      ClockDialControlConstructor?: typeof ClockDialControl
-      ClockDialEventConstructor?: typeof ClockDialEvent
-    } = {}
-  ) {
-    const {
-      EnabledIncludeConstructor = EnabledInclude,
-      ModelValueIncludeConstructor = ModelValueInclude,
-      ClockDialListConstructor = ClockDialList,
-      ClockDialValueConstructor = ClockDialValue,
-      ClockDialArrowsConstructor = ClockDialArrows,
-      ClockDialSelectConstructor = ClockDialSelect,
-      ClockDialEmitConstructor = ClockDialEmit,
-      ClockDialControlConstructor = ClockDialControl,
-      ClockDialEventConstructor = ClockDialEvent
-    } = constructors
-
-    this.enabled = new EnabledIncludeConstructor(props)
-
-    this.model = new ModelValueIncludeConstructor(
-      'value',
-      emits,
-      undefined,
-      computed(() => this.props.modelValue ?? this.props.value),
-      () => props.readonly
-    )
-
-    this.list = new ClockDialListConstructor(props, naming)
-    this.valueItem = new ClockDialValueConstructor(props, this.model)
-    this.arrows = new ClockDialArrowsConstructor(
-      props,
-      naming,
-      this.list,
-      this.valueItem
-    )
-    this.select = new ClockDialSelectConstructor(props, this.list, this.model, this.enabled)
-    this.emitsItem = new ClockDialEmitConstructor(props, this.list, this.valueItem, emits)
-    this.control = new ClockDialControlConstructor(
-      props,
-      this.emitsItem,
-      this.enabled,
-      this.list,
-      this.valueItem
-    )
-    this.event = new ClockDialEventConstructor(
-      props,
-      this.control,
-      this.emitsItem,
-      this.enabled,
-      this.model,
-      this.select,
-      this.element
-    )
+export class ClockDial extends DesignLogicAbstract<
+  HTMLDivElement,
+  ClockDialComponents,
+  ClockDialEmits,
+  ClockDialSlots,
+  ClockDialProps,
+  ClockDialConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ClockDialConstructors> = {
+    arrows: {
+      item: ClockDialArrows,
+      parameters: () => [
+        this.naming,
+        () => this.i('list'),
+        () => this.i('value')
+      ]
+    },
+    control: {
+      item: ClockDialControl,
+      parameters: () => [
+        this.props,
+        () => this.i('emit'),
+        () => this.i('enabled'),
+        () => this.i('list'),
+        () => this.i('value')
+      ]
+    },
+    emit: {
+      item: ClockDialEmit,
+      parameters: () => [
+        this.props,
+        () => this.i('list'),
+        () => this.i('value'),
+        this.emits
+      ]
+    },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props
+      ]
+    },
+    event: {
+      item: ClockDialEvent,
+      canCreate: () => ClockDialEvent.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('control'),
+        () => this.i('emit'),
+        () => this.i('enabled'),
+        () => this.i('list'),
+        () => this.i('model'),
+        () => this.i('select')
+      ]
+    },
+    list: {
+      item: ClockDialList,
+      parameters: () => [
+        this.props,
+        this.naming
+      ]
+    },
+    model: {
+      item: ModelValueInclude<number>,
+      parameters: () => [
+        'value',
+        this.emits,
+        undefined,
+        computed(() => this.props.modelValue ?? this.props.value),
+        () => this.props.readonly
+      ]
+    },
+    select: {
+      item: ClockDialSelect,
+      canCreate: () => ClockDialSelect.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        () => this.i('list'),
+        () => this.i('model')
+      ]
+    },
+    value: {
+      item: ClockDialValue,
+      parameters: () => [
+        this.props,
+        () => this.i('model')
+      ]
+    }
   }
 
   /**
@@ -160,19 +158,20 @@ export class ClockDial {
     if (this.props.clock) {
       return {
         ...AriaStaticInclude.role('timer'),
-        ...AriaStaticInclude.label(this.valueItem.text),
-        ...this.enabled.aria
+        ...AriaStaticInclude.label(this.i('value').text),
+        ...this.i('enabled').aria
       }
     }
 
     return {
       ...AriaStaticInclude.role('slider'),
       ...AriaStaticInclude.valueMinMax(
-        this.valueItem.value,
+        this.i('value').value,
         this.props.min,
         this.props.max
       ),
-      ...this.enabled.aria
+      ...this.i('enabled').aria,
+      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
     }
   }
 
@@ -182,12 +181,17 @@ export class ClockDial {
    * Возвращает атрибуты привязки и слушатели событий для корневого элемента.
    * @returns binds record / запись привязок
    */
-  get binds(): Record<string, any> {
-    return {
+  get binds(): ConstrBind {
+    const binds: ConstrBind = {
       tabindex: this.tabindex,
-      onKeydown: this.event.onKeydown,
       ...this.aria
     }
+
+    if (ClockDialEvent.is(this.props)) {
+      binds.onKeydown = this.onKeydown
+    }
+
+    return binds
   }
 
   /**
@@ -197,20 +201,13 @@ export class ClockDial {
    * @returns computed classes / вычисленные классы
    */
   get classes(): ConstrClassObject {
-    return {
-      [this.naming.getStatusClass('section')]: this.list.isSection(this.valueItem.value),
-      [this.naming.getStatusClass('selected')]: this.valueItem.isSelectVisible()
-    }
-  }
+    const valueItem = this.i('value')
+    const isSelected = valueItem.isSelectVisible()
 
-  /**
-   * Computed CSS custom property styles.
-   *
-   * Вычисляемые стили пользовательских переменных CSS.
-   * @returns style dictionary / словарь стилей
-   */
-  get styles(): ConstrStyles {
-    return {}
+    return {
+      [this.naming.getStatusClass('section')]: isSelected && this.i('list').isSection(valueItem.value),
+      [this.naming.getStatusClass('selected')]: isSelected
+    }
   }
 
   /**
@@ -220,6 +217,36 @@ export class ClockDial {
    * @returns tabindex number or undefined / значение tabindex или undefined
    */
   get tabindex(): number | undefined {
-    return this.props.clock ? undefined : (this.enabled.isEnabled ? 0 : -1)
+    return this.props.clock ? undefined : (this.i('enabled').isEnabled ? 0 : -1)
+  }
+
+  /**
+   * Delegates click event on a clock dial mark element to the lazy event manager.
+   *
+   * Делегирует событие клика по элементу метки циферблата ленивому менеджеру событий.
+   * @param event native mouse event / нативное событие мыши
+   */
+  readonly onClick = (event: MouseEvent): void => {
+    this.callInstance('event', item => item.onClick(event))
+  }
+
+  /**
+   * Delegates keyboard keydown event on the clock dial to the lazy event manager.
+   *
+   * Делегирует событие нажатия клавиши клавиатуры на циферблате ленивому менеджеру событий.
+   * @param event native keyboard event / нативное событие клавиатуры
+   */
+  readonly onKeydown = (event: KeyboardEvent): void => {
+    this.callInstance('event', item => item.onKeydown(event))
+  }
+
+  /**
+   * Delegates drag start event on the censor area to the lazy event manager.
+   *
+   * Делегирует событие начала перетаскивания на области цензора ленивому менеджеру событий.
+   * @param event native mouse or touch event / нативное событие мыши или касания
+   */
+  readonly onStart = (event: MouseEvent | TouchEvent): void => {
+    this.callInstance('event', item => item.onStart(event))
   }
 }

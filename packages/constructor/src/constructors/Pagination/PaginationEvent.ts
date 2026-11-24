@@ -1,36 +1,41 @@
 // ai-none
 
-import { type ConstrEmit } from '@dxtmisha/functional'
+import type { ConstrEmit } from '@dxtmisha/functional'
 
-import { type EventClickInclude } from '../../classes/EventClickInclude'
-import { type ModelInclude } from '../../classes/ModelInclude'
+import type { EventClickInclude } from '../../classes/EventClickInclude'
+import type { ModelInclude } from '../../classes/ModelInclude'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
+import type { PaginationPage } from './PaginationPage'
 import type { PaginationEmits } from './types'
-import type { PaginationProps } from './props'
+
+/** Default numeric fallback for page and rows events / Числовое значение по умолчанию для событий страницы и строк */
+const DEFAULT_EVENT_NUMBER = 1
 
 /**
  * Class for managing event handlers of the pagination component.
+ * Routes click events to show-more loaders, rows-per-page updates, page selection models, and standard click emitters.
  *
  * Класс для управления обработчиками событий компонента пагинации.
+ * Маршрутизирует события клика к кнопкам подгрузки, обновлению количества строк, моделям выбора страницы и стандартным кликам.
  */
 export class PaginationEvent {
   /**
    * Constructor for PaginationEvent.
    *
    * Конструктор для PaginationEvent.
-   * @param props input properties / входные свойства
-   * @param event click event control instance / экземпляр управления событием клика
+   * @param event lazy getter for click event control / ленивый геттер управления событием клика
+   * @param modelRows lazy getter for model rows synchronizer / ленивый геттер синхронизатора строк модели
+   * @param modelValue lazy getter for model value synchronizer / ленивый геттер синхронизатора значения модели
+   * @param page lazy getter for page state manager / ленивый геттер менеджера состояния страниц
    * @param emits callback for event emitter / функция для генерации событий
-   * @param modelValue model value synchronizer / синхронизатор значения модели
-   * @param modelRows model rows synchronizer / синхронизатор строк модели
    */
   constructor(
-    protected readonly props: PaginationProps,
-    protected readonly event: EventClickInclude,
-    protected readonly emits?: ConstrEmit<PaginationEmits>,
-    protected readonly modelValue?: ModelInclude<number>,
-    protected readonly modelRows?: ModelInclude<number>
+    protected readonly event: () => EventClickInclude,
+    protected readonly modelRows: () => ModelInclude<number>,
+    protected readonly modelValue: () => ModelInclude<number>,
+    protected readonly page: () => PaginationPage,
+    protected readonly emits?: ConstrEmit<PaginationEmits>
   ) {
   }
 
@@ -39,7 +44,7 @@ export class PaginationEvent {
    *
    * Общий обработчик события клика.
    * @param event native click event / нативное событие клика
-   * @param options parameters including target value / параметры, содержащие целевое значение страницы
+   * @param options parameters including target type and value / параметры, содержащие целевой тип и значение
    */
   readonly onClick = (
     event: MouseEvent,
@@ -52,16 +57,24 @@ export class PaginationEvent {
       case 'morePrev':
         this.onMorePrev(event, options)
         break
-      case 'rows':
+      case 'rows': {
+        const rows = this.toPositiveNumber(options.value)
+
         this.onRows(event, options)
-        this.modelRows?.emit(options?.value ?? 1)
+        this.page().setRows(rows)
+        this.modelRows().emit(rows)
         break
-      default:
-        this.modelValue?.emit(options?.value ?? 1)
+      }
+      default: {
+        const value = this.toPositiveNumber(options?.value)
+
+        this.page().setValue(value)
+        this.modelValue().emit(value)
         break
+      }
     }
 
-    this.event.onClick(event, options)
+    this.event().onClick(event, options)
   }
 
   /**
@@ -107,5 +120,33 @@ export class PaginationEvent {
   ): void => {
     this.emits?.('rows', event, options)
     this.emits?.('rowsLite', options)
+  }
+
+  /**
+   * Normalizes an arbitrary event option value into a positive integer (>= 1).
+   *
+   * Нормализует произвольное значение параметра события к положительному целому числу (>= 1).
+   * @param value raw event option value / исходное значение параметра события
+   * @returns positive integer page or rows count / положительное целое число страницы или строк
+   */
+  protected toPositiveNumber(value: unknown): number {
+    if (
+      typeof value !== 'number'
+      && typeof value !== 'string'
+    ) {
+      return DEFAULT_EVENT_NUMBER
+    }
+
+    if (typeof value === 'string' && value.trim() === '') {
+      return DEFAULT_EVENT_NUMBER
+    }
+
+    const numeric = Number(value)
+
+    if (Number.isFinite(numeric) && numeric >= 1) {
+      return Math.floor(numeric)
+    }
+
+    return DEFAULT_EVENT_NUMBER
   }
 }

@@ -3,6 +3,11 @@ import type { ListRecord, ListSelectedList } from '@dxtmisha/functional'
 import type { CollageItemPropsBasic, CollageItemPropsInclude } from '../CollageItem'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
+/**
+ * Token-generated properties.
+ *
+ * Свойства, генерируемые из токенов.
+ */
 export type CollagePropsToken = {
   // :type [!] System label / Системная метка
   columns?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
@@ -10,6 +15,11 @@ export type CollagePropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic incoming properties for Collage.
+ *
+ * Базовые входящие свойства для Collage.
+ */
 export type CollagePropsBasic<
   CollageItem extends CollageItemPropsBasic = CollageItemPropsBasic
 > = CollageItemPropsInclude<CollageItem>
