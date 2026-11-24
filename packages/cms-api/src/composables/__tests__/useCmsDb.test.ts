@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CmsDbInstance } from '../../classes/CmsDbInstance'
-import * as createCmsDbModule from '../../functions/createCmsDb'
+import * as createCmsDbModule from '../../functions/db/createCmsDb'
 import { useCmsDb } from '../useCmsDb'
 import type { CmsDb } from '../../types/cmsDbTypes'
 

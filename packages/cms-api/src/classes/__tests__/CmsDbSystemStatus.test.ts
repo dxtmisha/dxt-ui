@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { pgTable, serial, text } from 'drizzle-orm/pg-core'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CMS_VERIFICATION_ERROR_GROUP } from '../../media/errors/cmsVerificationErrorCauseList'
@@ -6,7 +7,7 @@ import { permissions } from '../../media/schema/permissions'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
 import { CmsDbTimestamp } from '../CmsDbTimestamp'
-import type { CmsDb } from '../../types/cmsDbTypes'
+import type { CmsDb, CmsIdTable } from '../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -69,6 +70,11 @@ function createMockDb(plan: MockDatabasePlan = {}) {
   }
 }
 
+const tableWithoutStatus = pgTable('table_without_status', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull()
+}) as unknown as CmsIdTable
+
 describe('CmsDbSystemStatus', () => {
   afterEach(() => {
     ErrorCenter.reset()
@@ -86,6 +92,7 @@ describe('CmsDbSystemStatus', () => {
       expect(await status.get(-5)).toBeUndefined()
       expect(await status.get(1.5)).toBeUndefined()
       expect(await status.get(Number.NaN)).toBeUndefined()
+      expect(await status.get(Number.MAX_SAFE_INTEGER + 1)).toBeUndefined()
       expect(raw.select).not.toHaveBeenCalled()
     })
 
@@ -201,8 +208,15 @@ describe('CmsDbSystemStatus', () => {
       expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: 'blocked' })).toEqual({
         systemStatus: 'blocked'
       })
+      expect(statusWithoutTimestamp.buildCreateValues({ name: 'Test', systemStatus: undefined })).toEqual({
+        name: 'Test',
+        systemStatus: 'active'
+      })
       expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: 'blocked' }, 'deleted')).toEqual({
         systemStatus: 'deleted'
+      })
+      expect(statusWithoutTimestamp.buildCreateValues()).toEqual({
+        systemStatus: 'active'
       })
 
       const statusWithTimestamp = new CmsDbSystemStatus(
@@ -255,6 +269,28 @@ describe('CmsDbSystemStatus', () => {
         systemStatus: 'blocked',
         updatedAt: fixedNow
       })
+      expect(statusWithoutTimestamp.buildUpdateValues()).toEqual({})
+
+      const statusOnTableWithoutColumn = new CmsDbSystemStatus(tableWithoutStatus, dbInstance)
+      expect(statusOnTableWithoutColumn.buildCreateValues({ name: 'Test' })).toEqual({
+        name: 'Test'
+      })
+      expect(statusOnTableWithoutColumn.buildUpdateValues({ name: 'Test' }, 'blocked')).toEqual({
+        name: 'Test'
+      })
     })
+
+    it.each(['active', 'blocked', 'deleted'] as const)(
+      'supports all CmsSystemStatus union variant "%s" consistently across update and builders',
+      async (targetStatus) => {
+        const { dbInstance, updateChains } = createMockDb({ updateQueue: [[{ id: 5 }]] })
+        const statusManager = new CmsDbSystemStatus(permissions, dbInstance)
+
+        expect(await statusManager.update(5, targetStatus)).toBe(true)
+        expect(updateChains[0].set).toHaveBeenCalledWith({ systemStatus: targetStatus })
+        expect(statusManager.buildCreateValues({}, targetStatus)).toEqual({ systemStatus: targetStatus })
+        expect(statusManager.buildUpdateValues({}, targetStatus)).toEqual({ systemStatus: targetStatus })
+      }
+    )
   })
 })

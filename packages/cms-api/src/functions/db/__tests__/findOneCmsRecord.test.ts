@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
 import { findOneCmsRecord } from '../findOneCmsRecord'
-import type { CmsDbExecutor } from '../../types/cmsDbTypes'
+import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_find_one', {
   id: serial('id').primaryKey(),

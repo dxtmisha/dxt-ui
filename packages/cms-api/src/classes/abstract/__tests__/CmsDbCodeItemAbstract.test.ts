@@ -56,6 +56,8 @@ interface MockChain {
   from: ReturnType<typeof vi.fn>
   where: ReturnType<typeof vi.fn>
   limit: ReturnType<typeof vi.fn>
+  set: ReturnType<typeof vi.fn>
+  returning: ReturnType<typeof vi.fn>
   then: (onFulfilled: (value: unknown) => unknown, onRejected?: (reason: unknown) => unknown) => Promise<unknown>
 }
 
@@ -67,6 +69,8 @@ function createChain(resolveValue: () => unknown): MockChain {
     from: vi.fn(() => chain),
     where: vi.fn(() => chain),
     limit: vi.fn(() => chain),
+    set: vi.fn(() => chain),
+    returning: vi.fn(() => chain),
     then: (onFulfilled, onRejected) => {
       if (!done) {
         done = true
@@ -161,7 +165,8 @@ describe('CmsDbCodeItemAbstract', () => {
       name: 'Manage',
       description: null,
       extraColumn: 'custom-value',
-      systemStatus: 'active'
+      systemStatus: 'active',
+      updatedAt: expect.any(Date)
     })
 
     expect(restrictedItem.buildUpdateValues({
@@ -170,10 +175,26 @@ describe('CmsDbCodeItemAbstract', () => {
       extraColumn: '  custom  '
     })).toEqual({
       name: 'Allowed',
-      extraColumn: 'CUSTOM'
+      extraColumn: 'CUSTOM',
+      updatedAt: expect.any(Date)
     })
 
-    expect(item.buildUpdateValues({})).toEqual({})
+    expect(restrictedItem.buildCreateValues({
+      code: '  allowed:code  ',
+      name: '  Allowed  ',
+      extraColumn: '  custom  '
+    })).toEqual({
+      code: 'allowed:code',
+      name: 'Allowed',
+      extraColumn: 'CUSTOM',
+      systemStatus: 'active',
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date)
+    })
+
+    expect(item.buildUpdateValues({})).toEqual({
+      updatedAt: expect.any(Date)
+    })
   })
 
   it('resolves IDs by IDs and codes', async () => {
@@ -190,5 +211,44 @@ describe('CmsDbCodeItemAbstract', () => {
     expect(await TestDbCodeItem.resolveIds(db, [5, 5], [' roles:write ', ''])).toEqual([5, 6])
 
     await expect(TestDbCodeItem.resolveIds(db, [999])).rejects.toThrow('Requested CMS permissions were not found.')
+  })
+
+  it('updates fields in database via inherited update method and validates id', async () => {
+    const selectQueue = [
+      [makeRecord({ code: 'item:updated', name: 'Updated Item', description: null })]
+    ]
+    const updateQueue = [
+      [{ id: 10 }]
+    ]
+
+    const updateChain = createChain(() => updateQueue.shift() ?? [])
+    const db = {
+      select: vi.fn(() => createChain(() => selectQueue.shift() ?? [])),
+      update: vi.fn(() => updateChain)
+    } as unknown as CmsDb
+
+    const dbInstance = new CmsDbInstance()
+    vi.spyOn(dbInstance, 'get').mockReturnValue(db)
+
+    const item = new TestDbCodeItem(makeRecord(), dbInstance)
+    const updated = await item.update({
+      code: '  item:updated  ',
+      name: '  Updated Item  ',
+      description: '   '
+    })
+
+    expect(updated).toBe(item)
+    expect(item.getCode()).toBe('item:updated')
+    expect(item.getName()).toBe('Updated Item')
+    expect(item.getDescription()).toBeNull()
+    expect(updateChain.set).toHaveBeenCalledWith(expect.objectContaining({
+      code: 'item:updated',
+      name: 'Updated Item',
+      description: null,
+      updatedAt: expect.any(Date)
+    }))
+
+    const invalidItem = new TestDbCodeItem(makeRecord({ id: 0 }), dbInstance)
+    await expect(invalidItem.update({ name: 'Test' })).rejects.toThrow('Valid positive integer record ID is required.')
   })
 })

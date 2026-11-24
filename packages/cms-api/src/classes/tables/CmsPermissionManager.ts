@@ -11,13 +11,14 @@ import {
 import {
   ErrorCenterThrow,
   isString,
-  normalizeCmsLimit,
-  normalizeCmsOffset,
+  toLimit,
+  toOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -53,17 +54,6 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
   }
 
   /**
-   * Checks whether a permission exists by identifier.
-   *
-   * Проверяет существование права доступа по идентификатору.
-   * @param id Permission identifier / Идентификатор права доступа
-   * @returns True if permission exists / True, если право доступа существует
-   */
-  async hasById(id: number): Promise<boolean> {
-    return this.existsRecordById(id)
-  }
-
-  /**
    * Checks whether a permission exists by unique code.
    *
    * Проверяет существование права доступа по уникальному коду.
@@ -76,14 +66,11 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
       return false
     }
 
-    const found = await findOneCmsRecord<{ id: number }>(
+    return hasCmsRecord(
       this.databaseInstance.get(),
       permissions,
-      eq(permissions.code, trimmedCode),
-      { id: permissions.id }
+      eq(permissions.code, trimmedCode)
     )
-
-    return Boolean(found)
   }
 
   /**
@@ -187,8 +174,8 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    */
   async getList(options: CmsPermissionListOptions = {}): Promise<CmsPermissionListResult> {
     const database = this.databaseInstance.get()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)

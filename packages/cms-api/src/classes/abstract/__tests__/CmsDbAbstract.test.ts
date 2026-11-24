@@ -96,12 +96,18 @@ class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
   modifyRecord(id: number, values: Record<string, unknown>): Promise<boolean> {
     return this.updateRecordById(id, values)
   }
+
+  loadById(id: number) {
+    return this.fetchById(id)
+  }
 }
 
 describe('CmsDbAbstract', () => {
   afterEach(() => {
     ErrorCenter.reset()
     ErrorCenter.setIsConsole(true)
+    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   it('lazily initializes and caches CmsDbSystemStatus and CmsDbTimestamp via getters', async () => {
@@ -181,9 +187,31 @@ describe('CmsDbAbstract', () => {
     expect(raw.update).toHaveBeenCalledTimes(2)
   })
 
-  it('builds update values by checking table columns and skipping forbidden fields', () => {
+  it('builds create, update, and conditional payloads via buildCreateValues, buildUpdateValues, and buildValues with systemStatus and timestamps', () => {
+    vi.useFakeTimers()
+    const fixedNow = new Date('2026-11-24T15:00:00.000Z')
+    vi.setSystemTime(fixedNow)
+
     const { dbInstance } = createMockDb()
     const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(instance.buildCreateValues({
+      id: 99,
+      createdAt: new Date('2020-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2020-01-01T00:00:00.000Z'),
+      code: 'users:read',
+      name: 'Permission name',
+      createdOrigin: 'admin',
+      unknownField: 'ignored',
+      description: undefined
+    } as Record<string, unknown>)).toEqual({
+      code: 'users:read',
+      name: 'Permission name',
+      createdOrigin: 'admin',
+      systemStatus: 'active',
+      createdAt: fixedNow,
+      updatedAt: fixedNow
+    })
 
     expect(instance.buildUpdateValues({
       id: 99,
@@ -195,7 +223,44 @@ describe('CmsDbAbstract', () => {
       description: undefined
     } as Record<string, unknown>)).toEqual({
       name: 'Permission name',
-      createdOrigin: 'admin'
+      createdOrigin: 'admin',
+      updatedAt: fixedNow
     })
+
+    expect(instance.buildValues({ name: 'Test' }, true)).toEqual({
+      name: 'Test',
+      systemStatus: 'active',
+      createdAt: fixedNow,
+      updatedAt: fixedNow
+    })
+
+    vi.useRealTimers()
+  })
+
+  it('fetches a record by ID via fetchById and skips invalid IDs', async () => {
+    const record = { id: 5, code: 'users:read' }
+    const { dbInstance, raw } = createMockDb([[record], []])
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(await instance.loadById(0)).toBeUndefined()
+    expect(await instance.loadById(-1)).toBeUndefined()
+    expect(raw.select).not.toHaveBeenCalled()
+
+    expect(await instance.loadById(5)).toEqual(record)
+    expect(await instance.loadById(99)).toBeUndefined()
+    expect(raw.select).toHaveBeenCalledTimes(2)
+  })
+
+  it('checks record existence by ID via hasById and skips invalid IDs', async () => {
+    const { dbInstance, raw } = createMockDb([[{ id: 5 }], []])
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(await instance.hasById(0)).toBe(false)
+    expect(await instance.hasById(-1)).toBe(false)
+    expect(raw.select).not.toHaveBeenCalled()
+
+    expect(await instance.hasById(5)).toBe(true)
+    expect(await instance.hasById(99)).toBe(false)
+    expect(raw.select).toHaveBeenCalledTimes(2)
   })
 })

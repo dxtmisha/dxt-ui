@@ -210,6 +210,8 @@ describe('CmsVerification', () => {
       expect(CmsVerification.normalizeOptionalText('')).toBeNull()
       expect(CmsVerification.normalizeOptionalText('   ')).toBeNull()
       expect(CmsVerification.normalizeOptionalText('  hello world  ')).toBe('hello world')
+      expect(CmsVerification.normalizeOptionalText(123)).toBeNull()
+      expect(CmsVerification.normalizeOptionalText({})).toBeNull()
       expect(reportSpy).not.toHaveBeenCalled()
     })
 

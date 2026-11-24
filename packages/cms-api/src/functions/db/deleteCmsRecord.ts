@@ -3,7 +3,7 @@ import type { SQL } from 'drizzle-orm'
 import type {
   CmsDbExecutor,
   CmsIdTable
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 
 /**
  * Deletes records matching a SQL predicate in the specified table and returns whether any rows were deleted.

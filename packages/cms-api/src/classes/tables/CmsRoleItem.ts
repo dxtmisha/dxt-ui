@@ -9,29 +9,25 @@ import {
   ErrorCenterThrow,
   isPositiveInteger,
   isString,
-  normalizeCmsOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
-import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
+import { CmsDbCodeCreatedOriginItemAbstract } from '../abstract/CmsDbCodeCreatedOriginItemAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsDbExecutor,
-  CmsDbUpdateValidator,
-  CmsNewRole,
   CmsPermission,
   CmsRole
 } from '../../types/cmsDbTypes'
 import type {
-  CmsRoleCreateInput,
   CmsRoleUpdateInput,
   CmsRoleWithPermissions
 } from '../../types/cmsRoleTypes'
@@ -41,7 +37,11 @@ import type {
  *
  * Представляет конкретную роль CMS и предоставляет методы для чтения полей, редактирования, управления правами доступа, перезагрузки и удаления.
  */
-export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWithPermissions> {
+export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
+  typeof roles,
+  CmsRoleWithPermissions,
+  CmsRoleUpdateInput
+> {
   /** Table schema bound to role records / Схема таблицы ролей */
   static readonly table = roles
 
@@ -123,16 +123,6 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
   }
 
   /**
-   * Returns the creation origin code or null.
-   *
-   * Возвращает код источника создания записи или null.
-   * @returns Creation origin code or null / Код источника создания или null
-   */
-  getCreatedOrigin(): string | null {
-    return this.data.createdOrigin
-  }
-
-  /**
    * Returns a copy of the role's currently assigned permissions.
    *
    * Возвращает копию текущих назначенных прав доступа роли.
@@ -145,7 +135,7 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
   /**
    * Returns assigned permissions wrapped in CmsPermissionItem instances.
    *
-   * Возвращает назначенные права доступа в виде экземпляров CmsPermissionItem.
+   * Возвращает назначенные права доступа роли в виде экземпляров CmsPermissionItem.
    * @returns List of CmsPermissionItem instances / Список экземпляров CmsPermissionItem
    */
   getPermissionItems(): CmsPermissionItem[] {
@@ -225,9 +215,9 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
    *
    * Редактирует поля этой роли и при необходимости обновляет её права доступа.
    * @param input Role fields and optional permission assignments / Данные роли и необязательный список прав доступа
-   * @returns Updated role item or undefined if not found / Обновлённый экземпляр роли или undefined, если не найдена
+   * @returns Current role item / Текущий экземпляр роли
    */
-  async update(input: CmsRoleUpdateInput): Promise<this | undefined> {
+  override async update(input: CmsRoleUpdateInput): Promise<this> {
     const roleId = this.data.id
     CmsVerification.isPositiveInteger(roleId)
 
@@ -246,7 +236,7 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
 
         const updatedRows = await transaction
           .update(roles)
-          .set(this.getUpdateValues(updateValues))
+          .set(updateValues)
           .where(eq(roles.id, roleId))
           .returning()
 
@@ -270,26 +260,13 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
       })
 
       if (!updatedRecord) {
-        return undefined
+        return this
       }
 
       this.data = updatedRecord
       return this
     } catch (error) {
       return this.handleError('update', error)
-    }
-  }
-
-  /**
-   * Returns a map of column value validators and normalizers including `createdOrigin`.
-   *
-   * Возвращает карту валидаторов и нормализаторов значений с учётом `createdOrigin`.
-   * @returns Column validator map / Карта валидаторов по имени колонки
-   */
-  protected override getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
-    return {
-      ...super.getUpdateValidators(),
-      createdOrigin: value => normalizeCmsOptionalText(value as string | null | undefined)
     }
   }
 
@@ -644,21 +621,5 @@ export class CmsRoleItem extends CmsDbCodeItemAbstract<typeof roles, CmsRoleWith
       .onConflictDoNothing({
         target: [rolePermissions.roleId, rolePermissions.permissionId]
       })
-  }
-
-  /**
-   * Builds and validates database insert payload from create input.
-   *
-   * Формирует и валидирует объект вставки в базу данных из входных данных создания роли.
-   * @param input Role creation payload / Входные данные для создания роли
-   * @returns Validated Drizzle insert payload / Валидированные данные для вставки
-   */
-  static override buildCreateValues(
-    input: CmsRoleCreateInput
-  ): CmsNewRole {
-    return {
-      ...super.buildCreateValues(input),
-      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
-    }
   }
 }

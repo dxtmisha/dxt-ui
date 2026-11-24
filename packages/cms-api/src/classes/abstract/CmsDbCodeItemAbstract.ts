@@ -8,6 +8,7 @@ import type {
   CmsCodeCreateInput,
   CmsCodeInsertValues,
   CmsCodeTable,
+  CmsCodeUpdateInput,
   CmsDbCodeItemData,
   CmsDbExecutor,
   CmsDbUpdateValidator
@@ -20,8 +21,9 @@ import type {
  */
 export abstract class CmsDbCodeItemAbstract<
   TTable extends CmsCodeTable = CmsCodeTable,
-  TData extends CmsDbCodeItemData = CmsDbCodeItemData
-> extends CmsDbItemAbstract<TTable, TData> {
+  TData extends CmsDbCodeItemData = CmsDbCodeItemData,
+  TUpdateInput extends CmsCodeUpdateInput = CmsCodeUpdateInput
+> extends CmsDbItemAbstract<TTable, TData, TUpdateInput> {
   /** Table schema bound to the entity class for static queries / Схема таблицы, привязанная к классу сущности для статических запросов */
   static readonly table: CmsCodeTable
 
@@ -67,9 +69,9 @@ export abstract class CmsDbCodeItemAbstract<
   protected override getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
     return {
       ...super.getUpdateValidators(),
-      code: value => CmsVerification.normalizeCode(value as string),
-      name: value => CmsVerification.normalizeName(value as string | null | undefined),
-      description: value => CmsVerification.normalizeOptionalText(value as string | null | undefined)
+      code: value => CmsVerification.normalizeCode(value),
+      name: value => CmsVerification.normalizeName(value),
+      description: value => CmsVerification.normalizeOptionalText(value)
     }
   }
 

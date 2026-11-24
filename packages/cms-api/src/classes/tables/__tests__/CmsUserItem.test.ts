@@ -387,5 +387,24 @@ describe('CmsUserItem', () => {
       expect(item.isDeleted()).toBe(false)
       expect(item.getMetadata()).toEqual({ locale: 'ru' })
     })
+
+    it('checks whether the user record exists in database with includeDeleted support', async () => {
+      const mock = createMockDb({
+        selectQueue: [
+          [{ id: 1 }],
+          [],
+          [{ id: 1 }]
+        ]
+      })
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance)
+
+      expect(await item.exists()).toBe(true)
+      expect(await item.exists()).toBe(false)
+      expect(await item.exists(true)).toBe(true)
+
+      const invalidItem = new CmsUserItem(makeUserData({ id: 0 }), mock.dbInstance)
+      expect(await invalidItem.exists()).toBe(false)
+      expect(mock.db.select).toHaveBeenCalledTimes(3)
+    })
   })
 })

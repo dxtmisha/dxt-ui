@@ -10,13 +10,14 @@ import {
 import {
   ErrorCenterThrow,
   isString,
-  normalizeCmsLimit,
-  normalizeCmsOffset,
+  toLimit,
+  toOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { seedCmsCreatedOrigins } from '../../functions/seedCmsCreatedOrigins'
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
@@ -54,17 +55,6 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
   }
 
   /**
-   * Checks whether a created origin exists by identifier.
-   *
-   * Проверяет существование источника создания записей по идентификатору.
-   * @param id Created origin identifier / Идентификатор источника создания записей
-   * @returns True if created origin exists / True, если источник создания записей существует
-   */
-  async hasById(id: number): Promise<boolean> {
-    return this.existsRecordById(id)
-  }
-
-  /**
    * Checks whether a created origin exists by unique code.
    *
    * Проверяет существование источника создания записей по уникальному коду.
@@ -77,14 +67,11 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
       return false
     }
 
-    const found = await findOneCmsRecord<{ id: number }>(
+    return hasCmsRecord(
       this.databaseInstance.get(),
       createdOrigins,
-      eq(createdOrigins.code, trimmedCode),
-      { id: createdOrigins.id }
+      eq(createdOrigins.code, trimmedCode)
     )
-
-    return Boolean(found)
   }
 
   /**
@@ -188,8 +175,8 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
    */
   async getList(options: CmsCreatedOriginListOptions = {}): Promise<CmsCreatedOriginListResult> {
     const database = this.databaseInstance.get()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)

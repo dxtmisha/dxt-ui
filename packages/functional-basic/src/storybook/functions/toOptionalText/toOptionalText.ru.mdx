@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Строки и форматирование/toOptionalText - Преобразование необязательного текста'/>
+
+# `toOptionalText`
+
+Преобразует необязательное значение в строку с удалёнными начальными и конечными пробелами. Пустые строки, `null` и нестроковые значения преобразуются в `null`, а `undefined` сохраняется без изменений.
+
+**Параметры:**
+- `value?: unknown` — Исходное значение.
+
+**Возвращает:**
+`string | null | undefined` — Очищенная строка, `null` или `undefined`.
+
+```typescript
+import { toOptionalText } from '@dxtmisha/functional-basic'
+
+console.log(toOptionalText()) // undefined
+console.log(toOptionalText(null)) // null
+console.log(toOptionalText('   ')) // null
+console.log(toOptionalText(123)) // null
+console.log(toOptionalText('  hello world  ')) // 'hello world'
+```

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Số & Toán học/toLimit - Giới hạn kích thước danh sách'/>
+
+# `toLimit`
+
+Giới hạn và chuyển đổi tham số số lượng bản ghi thành số nguyên dương trong khoảng `[1, maxLimit]`. Nếu `limit` bị bỏ qua hoặc không phải là số hữu hạn (`NaN`, `Infinity`, `-Infinity`), hàm trả về `defaultLimit`.
+
+**Tham số:**
+- `limit?: number` — Số lượng bản ghi được yêu cầu.
+- `defaultLimit: number = 20` — Giới hạn mặc định khi bị bỏ qua hoặc không hữu hạn.
+- `maxLimit: number = 200` — Giới hạn tối đa cho phép.
+
+**Trả về:**
+`number` — Giới hạn số nguyên đã được chuẩn hóa.
+
+```typescript
+import { toLimit } from '@dxtmisha/functional-basic'
+
+console.log(toLimit()) // 20
+console.log(toLimit(0)) // 1
+console.log(toLimit(15.9)) // 15
+console.log(toLimit(500)) // 200
+console.log(toLimit(500, 10, 50)) // 50
+```

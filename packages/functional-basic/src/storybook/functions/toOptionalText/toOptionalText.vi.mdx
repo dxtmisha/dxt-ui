@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Chuỗi & Định dạng/toOptionalText - Chuyển đổi văn bản tùy chọn'/>
+
+# `toOptionalText`
+
+Chuyển đổi giá trị tùy chọn thành chuỗi đã cắt bỏ khoảng trắng ở hai đầu. Chuỗi rỗng, chỉ chứa khoảng trắng, `null` và các giá trị không phải chuỗi được chuyển thành `null`, đồng thời giữ nguyên `undefined`.
+
+**Tham số:**
+- `value?: unknown` — Giá trị thô tùy chọn.
+
+**Trả về:**
+`string | null | undefined` — Chuỗi đã cắt khoảng trắng, `null`, hoặc `undefined`.
+
+```typescript
+import { toOptionalText } from '@dxtmisha/functional-basic'
+
+console.log(toOptionalText()) // undefined
+console.log(toOptionalText(null)) // null
+console.log(toOptionalText('   ')) // null
+console.log(toOptionalText(123)) // null
+console.log(toOptionalText('  hello world  ')) // 'hello world'
+```

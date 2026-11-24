@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CMS_DB_ERROR_GROUP } from '../../media/errors/cmsDbErrorCauseList'
-import * as createCmsDbModule from '../../functions/createCmsDb'
+import * as createCmsDbModule from '../../functions/db/createCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
 import type { CmsDb } from '../../types/cmsDbTypes'
 

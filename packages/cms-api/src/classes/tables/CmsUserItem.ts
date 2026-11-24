@@ -12,11 +12,12 @@ import {
   isObjectNotArray,
   isPositiveInteger,
   isString,
-  normalizeCmsOptionalText,
+  toOptionalText,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
@@ -53,7 +54,7 @@ const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ 
  *
  * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями и правами доступа, удаления и восстановления.
  */
-export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRoles> {
+export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRoles, CmsUserUpdateInput> {
   /** ErrorCenter group name for user errors / Имя группы ошибок ErrorCenter для пользователей */
   protected readonly errorGroup = CMS_USER_ERROR_GROUP
 
@@ -155,6 +156,21 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    */
   hasAllPermissions(permissionCodes: readonly string[]): boolean {
     return permissionCodes.every(permissionCode => this.hasPermission(permissionCode))
+  }
+
+  /**
+   * Checks whether this user record exists in the database.
+   *
+   * Проверяет наличие записи этого пользователя в базе данных.
+   * @param includeDeleted Include soft-deleted users / Учитывать ли мягко удалённых пользователей
+   * @returns True if user record exists in the database / True, если запись пользователя существует в базе данных
+   */
+  override async exists(includeDeleted: boolean = false): Promise<boolean> {
+    return hasCmsRecord(
+      this.databaseInstance.get(),
+      users,
+      CmsUserItem.getByIdCondition(this.data.id, includeDeleted)
+    )
   }
 
   /**
@@ -370,9 +386,9 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    *
    * Обновляет статус учётной записи этого пользователя.
    * @param status New account status / Новый статус учётной записи
-   * @returns Updated user item or undefined if not found / Обновлённый экземпляр пользователя или undefined, если не найден
+   * @returns Current user item / Текущий экземпляр пользователя
    */
-  async setStatus(status: CmsUserStatus): Promise<this | undefined> {
+  async setStatus(status: CmsUserStatus): Promise<this> {
     return this.update({ status })
   }
 
@@ -425,9 +441,9 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
    *
    * Редактирует поля этого пользователя и при необходимости обновляет его роли.
    * @param input User fields and optional role assignments / Данные пользователя и необязательный список ролей
-   * @returns Updated user item or undefined if not found or soft-deleted / Обновлённый экземпляр пользователя или undefined, если не найден или удалён
+   * @returns Current user item / Текущий экземпляр пользователя
    */
-  async update(input: CmsUserUpdateInput): Promise<this | undefined> {
+  override async update(input: CmsUserUpdateInput): Promise<this> {
     const userId = this.data.id
     CmsVerification.isPositiveInteger(userId)
 
@@ -449,7 +465,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
         )
         const updatedRows = await transaction
           .update(users)
-          .set(this.getUpdateValues(updateValues))
+          .set(this.timestamp.buildUpdateValues(updateValues))
           .where(eq(users.id, userId))
           .returning(USER_PUBLIC_COLUMNS)
 
@@ -473,7 +489,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       })
 
       if (!updatedRecord) {
-        return undefined
+        return this
       }
 
       this.data = updatedRecord
@@ -838,6 +854,27 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
   }
 
   /**
+   * Builds a SQL condition matching a user by identifier with optional soft-delete exclusion.
+   *
+   * Формирует SQL-условие поиска пользователя по идентификатору с учётом исключения мягко удалённых записей.
+   * @param id User identifier / Идентификатор пользователя
+   * @param includeDeleted Include soft-deleted users / Учитывать ли мягко удалённых пользователей
+   * @returns SQL condition or undefined when identifier is invalid / SQL-условие или undefined при невалидном идентификаторе
+   */
+  static getByIdCondition(
+    id: number,
+    includeDeleted: boolean = false
+  ): SQL | undefined {
+    if (!isPositiveInteger(id)) {
+      return undefined
+    }
+
+    return includeDeleted
+      ? eq(users.id, id)
+      : and(eq(users.id, id), CmsUserItem.getNotDeletedCondition())
+  }
+
+  /**
    * Builds and validates database insert payload from create input.
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания.
@@ -849,7 +886,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
   ): CmsNewUser {
     const email = CmsUserItem.normalizeEmail(input.email)
     const firstName = CmsUserItem.normalizeFirstName(input.firstName)
-    const username = normalizeCmsOptionalText(input.username)
+    const username = toOptionalText(input.username)
     const phone = CmsUserItem.normalizePhone(input.phone)
     const metadata = CmsUserItem.normalizeMetadata(input.metadata)
 
@@ -858,10 +895,10 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       firstName,
       username,
       phone,
-      lastName: normalizeCmsOptionalText(input.lastName),
-      middleName: normalizeCmsOptionalText(input.middleName),
-      avatar: normalizeCmsOptionalText(input.avatar),
-      bio: normalizeCmsOptionalText(input.bio),
+      lastName: toOptionalText(input.lastName),
+      middleName: toOptionalText(input.middleName),
+      avatar: toOptionalText(input.avatar),
+      bio: toOptionalText(input.bio),
       passwordHash: input.passwordHash,
       status: input.status ?? 'active',
       emailVerifiedAt: input.emailVerifiedAt,
@@ -869,7 +906,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
       twoFactorEnabled: input.twoFactorEnabled ?? false,
       lastLoginAt: input.lastLoginAt,
       metadata,
-      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
+      createdOrigin: toOptionalText(input.createdOrigin)
     }
   }
 
@@ -896,7 +933,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
     }
 
     if (input.username !== undefined) {
-      values.username = normalizeCmsOptionalText(input.username)
+      values.username = toOptionalText(input.username)
     }
 
     if (input.phone !== undefined) {
@@ -904,19 +941,19 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
     }
 
     if (input.lastName !== undefined) {
-      values.lastName = normalizeCmsOptionalText(input.lastName)
+      values.lastName = toOptionalText(input.lastName)
     }
 
     if (input.middleName !== undefined) {
-      values.middleName = normalizeCmsOptionalText(input.middleName)
+      values.middleName = toOptionalText(input.middleName)
     }
 
     if (input.avatar !== undefined) {
-      values.avatar = normalizeCmsOptionalText(input.avatar)
+      values.avatar = toOptionalText(input.avatar)
     }
 
     if (input.bio !== undefined) {
-      values.bio = normalizeCmsOptionalText(input.bio)
+      values.bio = toOptionalText(input.bio)
     }
 
     if (input.passwordHash !== undefined) {
@@ -948,7 +985,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
     }
 
     if (input.createdOrigin !== undefined) {
-      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
+      values.createdOrigin = toOptionalText(input.createdOrigin)
     }
 
     return values

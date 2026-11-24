@@ -12,13 +12,13 @@ import {
   ErrorCenterThrow,
   isArray,
   isString,
-  normalizeCmsLimit,
-  normalizeCmsOffset,
+  toLimit,
+  toOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -79,13 +79,14 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @param includeDeleted Include soft-deleted users / Учитывать ли мягко удалённых пользователей
    * @returns True if user exists / True, если пользователь существует
    */
-  async hasById(
+  override async hasById(
     id: number,
     includeDeleted: boolean = false
   ): Promise<boolean> {
-    return this.existsRecordById(
-      id,
-      includeDeleted ? undefined : CmsUserItem.getNotDeletedCondition()
+    return hasCmsRecord(
+      this.databaseInstance.get(),
+      users,
+      CmsUserItem.getByIdCondition(id, includeDeleted)
     )
   }
 
@@ -111,14 +112,11 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    const found = await findOneCmsRecord<{ id: number }>(
+    return hasCmsRecord(
       this.databaseInstance.get(),
       users,
-      and(...conditions),
-      { id: users.id }
+      and(...conditions)
     )
-
-    return Boolean(found)
   }
 
   /**
@@ -247,8 +245,8 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    */
   async getList(options: CmsUserListOptions = {}): Promise<CmsUserListResult> {
     const database = this.databaseInstance.get()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)

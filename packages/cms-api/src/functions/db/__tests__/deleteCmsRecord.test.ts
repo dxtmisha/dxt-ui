@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { pgTable, serial, text } from 'drizzle-orm/pg-core'
 import { deleteCmsRecord } from '../deleteCmsRecord'
-import type { CmsDbExecutor } from '../../types/cmsDbTypes'
+import type { CmsDbExecutor } from '../../../types/cmsDbTypes'
 
 const testTable = pgTable('test_delete_record', {
   id: serial('id').primaryKey(),

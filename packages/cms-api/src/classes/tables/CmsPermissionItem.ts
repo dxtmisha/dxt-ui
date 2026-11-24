@@ -3,35 +3,27 @@ import {
   eq,
   inArray
 } from 'drizzle-orm'
-import {
-  isPositiveInteger,
-  normalizeCmsOptionalText,
-  uniqueArray
-} from '@dxtmisha/functional-basic'
+import { isPositiveInteger, uniqueArray } from '@dxtmisha/functional-basic'
 
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
-import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
+import { CmsDbCodeCreatedOriginItemAbstract } from '../abstract/CmsDbCodeCreatedOriginItemAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
-import type {
-  CmsDbExecutor,
-  CmsDbUpdateValidator,
-  CmsNewPermission,
-  CmsPermission
-} from '../../types/cmsDbTypes'
-import type {
-  CmsPermissionCreateInput,
-  CmsPermissionUpdateInput
-} from '../../types/cmsPermissionTypes'
+import type { CmsDbExecutor, CmsPermission } from '../../types/cmsDbTypes'
+import type { CmsPermissionUpdateInput } from '../../types/cmsPermissionTypes'
 
 /**
  * Represents a single CMS permission entity and provides instance-level methods for reading and editing.
  *
  * Представляет конкретное право доступа CMS и предоставляет методы для чтения и редактирования полей.
  */
-export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions, CmsPermission> {
+export class CmsPermissionItem extends CmsDbCodeCreatedOriginItemAbstract<
+  typeof permissions,
+  CmsPermission,
+  CmsPermissionUpdateInput
+> {
   /** Table schema bound to permission records / Схема таблицы прав доступа */
   static readonly table = permissions
 
@@ -53,42 +45,6 @@ export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions,
     databaseInstance?: CmsDbInstance
   ) {
     super(CmsPermissionItem.table, data, databaseInstance)
-  }
-
-  /**
-   * Returns the creation origin code or null.
-   *
-   * Возвращает код источника создания записи или null.
-   * @returns Creation origin code or null / Код источника создания или null
-   */
-  getCreatedOrigin(): string | null {
-    return this.data.createdOrigin
-  }
-
-  /**
-   * Updates this permission's fields in the database.
-   *
-   * Обновляет поля этого права доступа в базе данных.
-   * @param input Partial permission update payload / Частичные данные для обновления права доступа
-   * @returns Current permission item / Текущий экземпляр права доступа
-   */
-  async update(input: CmsPermissionUpdateInput): Promise<this> {
-    CmsVerification.isPositiveInteger(this.data.id)
-
-    return this.updateRecord(this.buildUpdateValues(input))
-  }
-
-  /**
-   * Returns a map of column value validators and normalizers including `createdOrigin`.
-   *
-   * Возвращает карту валидаторов и нормализаторов значений с учётом `createdOrigin`.
-   * @returns Column validator map / Карта валидаторов по имени колонки
-   */
-  protected override getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
-    return {
-      ...super.getUpdateValidators(),
-      createdOrigin: value => normalizeCmsOptionalText(value as string | null | undefined)
-    }
   }
 
   /**
@@ -156,21 +112,5 @@ export class CmsPermissionItem extends CmsDbCodeItemAbstract<typeof permissions,
     }
 
     return permissionsByRoleId
-  }
-
-  /**
-   * Builds and validates database insert payload from create input.
-   *
-   * Формирует и валидирует объект вставки в базу данных из входных данных создания права доступа.
-   * @param input Permission creation payload / Входные данные для создания права доступа
-   * @returns Validated Drizzle insert payload / Валидированные данные для вставки
-   */
-  static override buildCreateValues(
-    input: CmsPermissionCreateInput
-  ): CmsNewPermission {
-    return {
-      ...super.buildCreateValues(input),
-      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
-    }
   }
 }

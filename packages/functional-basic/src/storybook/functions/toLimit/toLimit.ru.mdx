@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Числа и вычисления/toLimit - Ограничение лимита списка'/>
+
+# `toLimit`
+
+Ограничивает и преобразует параметр количества записей на странице к целому положительному числу в диапазоне `[1, maxLimit]`. Если `limit` не задан или не является конечным числом (`NaN`, `Infinity`, `-Infinity`), возвращает `defaultLimit`.
+
+**Параметры:**
+- `limit?: number` — Запрошенное количество записей.
+- `defaultLimit: number = 20` — Лимит по умолчанию, если не задан или не является конечным числом.
+- `maxLimit: number = 200` — Максимально допустимый лимит.
+
+**Возвращает:**
+`number` — Ограниченный целочисленный лимит.
+
+```typescript
+import { toLimit } from '@dxtmisha/functional-basic'
+
+console.log(toLimit()) // 20
+console.log(toLimit(0)) // 1
+console.log(toLimit(15.9)) // 15
+console.log(toLimit(500)) // 200
+console.log(toLimit(500, 10, 50)) // 50
+```

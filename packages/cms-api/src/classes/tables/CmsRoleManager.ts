@@ -11,13 +11,13 @@ import {
 import {
   ErrorCenterThrow,
   isString,
-  normalizeCmsLimit,
-  normalizeCmsOffset,
+  toLimit,
+  toOffset,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -64,17 +64,6 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Checks whether a role exists by identifier.
-   *
-   * Проверяет существование роли по идентификатору.
-   * @param id Role identifier / Идентификатор роли
-   * @returns True if role exists / True, если роль существует
-   */
-  async hasById(id: number): Promise<boolean> {
-    return this.existsRecordById(id)
-  }
-
-  /**
    * Checks whether a role exists by unique code.
    *
    * Проверяет существование роли по уникальному коду.
@@ -87,14 +76,11 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       return false
     }
 
-    const found = await findOneCmsRecord<{ id: number }>(
+    return hasCmsRecord(
       this.databaseInstance.get(),
       roles,
-      eq(roles.code, trimmedCode),
-      { id: roles.id }
+      eq(roles.code, trimmedCode)
     )
-
-    return Boolean(found)
   }
 
   /**
@@ -212,8 +198,8 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    */
   async getList(options: CmsRoleListOptions = {}): Promise<CmsRoleListResult> {
     const database = this.databaseInstance.get()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)

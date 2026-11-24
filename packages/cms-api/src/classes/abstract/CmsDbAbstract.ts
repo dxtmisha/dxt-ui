@@ -1,112 +1,44 @@
 import {
-  and,
   eq,
-  getTableColumns,
-  sql,
   type SQL
 } from 'drizzle-orm'
-import { hasKey } from '@dxtmisha/functional-basic'
 
-import { useCmsDb } from '../../composables/useCmsDb'
-import { deleteCmsRecord } from '../../functions/deleteCmsRecord'
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
-import { updateCmsRecord } from '../../functions/updateCmsRecord'
-import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
-import { CmsDbTimestamp } from '../CmsDbTimestamp'
+import { countCmsRecords } from '../../functions/db/countCmsRecords'
+import { deleteCmsRecord } from '../../functions/db/deleteCmsRecord'
+import { findOneCmsRecord } from '../../functions/db/findOneCmsRecord'
+import { hasCmsRecord } from '../../functions/db/hasCmsRecord'
+import { updateCmsRecord } from '../../functions/db/updateCmsRecord'
+import { CmsDbValuesAbstract } from './CmsDbValuesAbstract'
 import { CmsVerification } from '../CmsVerification'
-import type { CmsDbInstance } from '../CmsDbInstance'
-import type {
-  CmsDbUpdateValidator,
-  CmsIdTable
-} from '../../types/cmsDbTypes'
+import type { CmsIdTable } from '../../types/cmsDbTypes'
 
 /**
- * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenterThrow delegation.
+ * Abstract base class providing unified CMS table binding, database instance management, and shared record queries/mutations.
  *
- * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и делегирования обработки ошибок в ErrorCenterThrow.
+ * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и общих операций с записями.
  */
-export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
-  /** Lazily initialized system status manager / Лениво инициализируемый менеджер системного статуса */
-  protected systemStatusInstance?: CmsDbSystemStatus<TTable>
-
-  /** Lazily initialized timestamp manager / Лениво инициализируемый менеджер временных меток */
-  protected timestampInstance?: CmsDbTimestamp<TTable>
-
+export abstract class CmsDbAbstract<
+  TTable extends CmsIdTable = CmsIdTable,
+  TData = TTable['$inferSelect']
+> extends CmsDbValuesAbstract<TTable> {
   /**
-   * Initializes the base CMS database handler with a table schema and CmsDbInstance.
+   * Checks whether a record exists in the bound table by identifier.
    *
-   * Инициализирует базовый обработчик БД CMS со схемой таблицы и экземпляром CmsDbInstance.
-   * @param table Drizzle PostgreSQL table schema with a required id column / Схема таблицы Drizzle PostgreSQL с обязательной колонкой id
-   * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
+   * Проверяет существование записи в привязанной таблице по идентификатору.
+   * @param id Record identifier / Идентификатор записи
+   * @returns True if record exists / True, если запись существует
    */
-  constructor(
-    protected table: TTable,
-    protected readonly databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance
-  ) {}
-
-  /**
-   * Lazily initialized CmsDbSystemStatus instance for managing record system statuses /
-   * Лениво инициализируемый экземпляр CmsDbSystemStatus для управления системным статусом записей
-   */
-  protected get systemStatus(): CmsDbSystemStatus<TTable> {
-    if (!this.systemStatusInstance) {
-      this.systemStatusInstance = new CmsDbSystemStatus(
-        this.table,
-        this.databaseInstance,
-        () => this.timestamp
-      )
+  async hasById(id: number): Promise<boolean> {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
+      return false
     }
 
-    return this.systemStatusInstance
-  }
-
-  /**
-   * Lazily initialized CmsDbTimestamp instance for managing record timestamps /
-   * Лениво инициализируемый экземпляр CmsDbTimestamp для управления временными метками записей
-   */
-  protected get timestamp(): CmsDbTimestamp<TTable> {
-    if (!this.timestampInstance) {
-      this.timestampInstance = new CmsDbTimestamp(
-        this.table,
-        this.databaseInstance
-      )
-    }
-
-    return this.timestampInstance
-  }
-
-  /**
-   * Builds and validates database update payload from partial update input by checking table column existence, skipping forbidden columns, and applying registered column validators.
-   *
-   * Формирует и валидирует объект обновления в базе данных из входных данных, проверяя наличие колонки в таблице, исключая запрещённые к изменению колонки и применяя зарегистрированные валидаторы по имени поля.
-   * @param input Partial entity update payload / Частичные данные для обновления записи
-   * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
-   */
-  buildUpdateValues<TInput extends object = Partial<TTable['$inferInsert']>>(
-    input: TInput
-  ): Partial<TTable['$inferInsert']> {
-    const tableColumns = getTableColumns(this.table)
-    const forbiddenColumns = this.getForbiddenUpdateColumns()
-    const validators = this.getUpdateValidators()
-    const values: Record<string, unknown> = {}
-
-    for (const [key, value] of Object.entries(input)) {
-      if (
-        value === undefined
-        || forbiddenColumns.includes(key)
-        || !hasKey(tableColumns, key)
-      ) {
-        continue
-      }
-
-      const validator = hasKey(validators, key)
-        ? validators[key]
-        : undefined
-
-      values[key] = validator ? validator(value) : value
-    }
-
-    return values as Partial<TTable['$inferInsert']>
+    const baseTable = this.getBaseTable()
+    return hasCmsRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id)
+    )
   }
 
   /**
@@ -120,71 +52,25 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Builds an update payload by combining the provided values with the current updatedAt timestamp when the bound table defines it.
+   * Fetches a single entity record by identifier from the bound table.
+   * Subclasses with joined relations can override this method to load related entities.
    *
-   * Формирует объект значений для обновления, объединяя переданные поля с текущей меткой времени updatedAt, если она присутствует в таблице.
-   * @param values Partial update values / Частичные значения для обновления
-   * @returns Combined update payload / Объединённый объект значений для обновления
-   */
-  protected getUpdateValues(
-    values: Record<string, unknown> = {}
-  ): Partial<CmsIdTable['$inferInsert']> {
-    return this.timestamp.buildUpdateValues(values)
-  }
-
-  /**
-   * Returns the list of column names forbidden from modification during update.
-   *
-   * Возвращает список имён колонок, запрещённых к изменению при обновлении.
-   * @returns List of forbidden column names / Список запрещённых имён колонок
-   */
-  protected getForbiddenUpdateColumns(): readonly string[] {
-    return [
-      'id',
-      'createdAt',
-      'updatedAt'
-    ]
-  }
-
-  /**
-   * Returns a map of column value validators and normalizers keyed by column name.
-   *
-   * Возвращает карту валидаторов и нормализаторов значений по имени колонки.
-   * @returns Column validator map / Карта валидаторов по имени колонки
-   */
-  protected getUpdateValidators(): Record<string, CmsDbUpdateValidator> {
-    return {}
-  }
-
-  /**
-   * Checks whether a record exists in the bound table by identifier and optional SQL predicate.
-   *
-   * Проверяет существование записи в привязанной таблице по идентификатору и необязательному SQL-условию.
+   * Загружает запись сущности по идентификатору из привязанной таблицы.
+   * Подклассы со связанными сущностями могут переопределить этот метод.
    * @param id Record identifier / Идентификатор записи
-   * @param condition Optional extra SQL predicate / Необязательное дополнительное SQL-условие
-   * @returns True if record exists / True, если запись существует
+   * @returns Loaded entity record or undefined / Загруженная запись сущности или undefined
    */
-  protected async existsRecordById(
-    id: number,
-    condition?: SQL
-  ): Promise<boolean> {
+  protected async fetchById(id: number): Promise<TData | undefined> {
     if (!CmsVerification.isPositiveInteger(id, false)) {
-      return false
+      return undefined
     }
 
     const baseTable = this.getBaseTable()
-    const whereCondition = condition
-      ? and(eq(baseTable.id, id), condition)
-      : eq(baseTable.id, id)
-
-    const found = await findOneCmsRecord<{ id: number }>(
+    return findOneCmsRecord<TData>(
       this.databaseInstance.get(),
       baseTable,
-      whereCondition,
-      { id: baseTable.id }
+      eq(baseTable.id, id)
     )
-
-    return Boolean(found)
   }
 
   /**
@@ -195,13 +81,11 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * @returns Number of matching records / Количество найденных записей
    */
   protected async countRecords(whereCondition?: SQL): Promise<number> {
-    const baseTable = this.getBaseTable()
-    const countRows = await this.databaseInstance.get()
-      .select({ count: sql<number>`count(*)::int` })
-      .from(baseTable)
-      .where(whereCondition)
-
-    return countRows[0]?.count ?? 0
+    return countCmsRecords(
+      this.databaseInstance.get(),
+      this.getBaseTable(),
+      whereCondition
+    )
   }
 
   /**
@@ -223,16 +107,16 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Updates a record by identifier in the bound table with automatic `updatedAt` handling.
+   * Updates a record by identifier in the bound table.
    *
-   * Обновляет запись по идентификатору в привязанной таблице с автоматическим обновлением `updatedAt`.
+   * Обновляет запись по идентификатору в привязанной таблице.
    * @param id Record identifier / Идентификатор записи
    * @param values Partial column values to update / Частичные значения колонок для обновления
    * @returns True if a matching record was updated / True, если запись найдена и обновлена
    */
   protected async updateRecordById(
     id: number,
-    values: Record<string, unknown>
+    values: Partial<TTable['$inferInsert']>
   ): Promise<boolean> {
     CmsVerification.isPositiveInteger(id)
 
@@ -241,7 +125,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
-      this.getUpdateValues(values)
+      values as Partial<CmsIdTable['$inferInsert']>
     )
   }
 }

@@ -4,7 +4,7 @@ import type { SelectedFields } from 'drizzle-orm/pg-core'
 import type {
   CmsDbExecutor,
   CmsIdTable
-} from '../types/cmsDbTypes'
+} from '../../types/cmsDbTypes'
 
 /**
  * Finds a single entity record matching a SQL predicate in the specified table.

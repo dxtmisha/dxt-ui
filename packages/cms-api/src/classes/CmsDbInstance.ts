@@ -1,5 +1,5 @@
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
-import { createCmsDb } from '../functions/createCmsDb'
+import { createCmsDb } from '../functions/db/createCmsDb'
 import { CMS_DB_ERROR_GROUP } from '../media/errors/cmsDbErrorCauseList'
 import type { CmsDb } from '../types/cmsDbTypes'
 

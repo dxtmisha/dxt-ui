@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { findOneCmsRecord } from '../functions/findOneCmsRecord'
-import { updateCmsRecord } from '../functions/updateCmsRecord'
+import { findOneCmsRecord } from '../functions/db/findOneCmsRecord'
+import { updateCmsRecord } from '../functions/db/updateCmsRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {

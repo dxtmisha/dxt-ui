@@ -5,3 +5,4 @@ updateCmsRecord
 CmsDbInstance
 useCmsDb
 CmsDbTimestamp
+CmsDbSystemStatus

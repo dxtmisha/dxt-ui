@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Numbers & Math/toOffset - Converting offset to non-negative integer'/>
+
+# `toOffset`
+
+Converts an offset parameter to a non-negative integer. If `offset` is omitted, non-finite (`NaN`, `Infinity`, `-Infinity`), or negative, it returns `0`. Positive floats are truncated toward zero.
+
+**Parameters:**
+- `offset?: number` — Requested offset.
+
+**Returns:**
+`number` — Non-negative integer offset.
+
+```typescript
+import { toOffset } from '@dxtmisha/functional-basic'
+
+console.log(toOffset()) // 0
+console.log(toOffset(-10)) // 0
+console.log(toOffset(12.9)) // 12
+console.log(toOffset(40)) // 40
+```

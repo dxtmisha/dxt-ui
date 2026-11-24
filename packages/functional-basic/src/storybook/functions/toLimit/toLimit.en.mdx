@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Numbers & Math/toLimit - Clamping list limit'/>
+
+# `toLimit`
+
+Clamps and converts a limit parameter to a positive integer within the range `[1, maxLimit]`. If `limit` is omitted or non-finite (`NaN`, `Infinity`, `-Infinity`), it returns `defaultLimit`.
+
+**Parameters:**
+- `limit?: number` — Requested limit.
+- `defaultLimit: number = 20` — Default limit when omitted or non-finite.
+- `maxLimit: number = 200` — Maximum allowed limit.
+
+**Returns:**
+`number` — Clamped integer limit.
+
+```typescript
+import { toLimit } from '@dxtmisha/functional-basic'
+
+console.log(toLimit()) // 20
+console.log(toLimit(0)) // 1
+console.log(toLimit(15.9)) // 15
+console.log(toLimit(500)) // 200
+console.log(toLimit(500, 10, 50)) // 50
+```

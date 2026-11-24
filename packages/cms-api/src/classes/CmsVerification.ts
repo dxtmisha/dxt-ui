@@ -3,7 +3,7 @@ import {
   executeFunction,
   isPositiveInteger,
   isString,
-  normalizeCmsOptionalText
+  toOptionalText
 } from '@dxtmisha/functional-basic'
 import { CMS_VERIFICATION_ERROR_GROUP } from '../media/errors/cmsVerificationErrorCauseList'
 
@@ -85,22 +85,22 @@ export class CmsVerification {
   }
 
   /**
-   * Normalizes an optional CMS string field, trimming text and converting blank strings to null.
+   * Normalizes an optional CMS text field, trimming strings and converting blank or non-string values to null.
    * When `isRequired` is enabled, verifies that the normalized value is a non-empty string.
    *
-   * Нормализует необязательное строковое поле CMS, удаляя пробелы и преобразуя пустые строки в null.
+   * Нормализует необязательное текстовое поле CMS, удаляя пробелы и преобразуя пустые или нестроковые значения в null.
    * При включённом `isRequired` проверяет, что нормализованное значение является непустой строкой.
-   * @param value Raw optional string or null / Исходная строка, null или undefined
+   * @param value Raw optional value / Исходное значение
    * @param isRequired Whether a non-empty string is required / Обязательна ли непустая строка
    * @param isError Whether to throw an error when the check fails / Нужно ли выбрасывать ошибку при неудачной проверке
    * @returns Trimmed string, null, or undefined / Очищенная строка, null или undefined
    */
   static normalizeOptionalText(
-    value?: string | null,
+    value?: unknown,
     isRequired: boolean = false,
     isError: boolean = true
   ): string | null | undefined {
-    const normalized = normalizeCmsOptionalText(value)
+    const normalized = toOptionalText(value)
 
     if (isRequired) {
       const isValid = this.verify(

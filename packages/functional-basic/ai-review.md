@@ -210,3 +210,6 @@ isAutofillElement
 isAutofillEvent
 isEventStopped
 isPositiveInteger
+toLimit
+toOffset
+toOptionalText

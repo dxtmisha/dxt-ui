@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Числа и вычисления/toOffset - Преобразование смещения в целое число'/>
+
+# `toOffset`
+
+Преобразует параметр смещения выборки к неотрицательному целому числу. Если `offset` не задан, не является конечным числом (`NaN`, `Infinity`, `-Infinity`) или меньше нуля, возвращает `0`. Положительные дробные числа усекаются до целого.
+
+**Параметры:**
+- `offset?: number` — Запрошенное смещение.
+
+**Возвращает:**
+`number` — Неотрицательное целочисленное смещение.
+
+```typescript
+import { toOffset } from '@dxtmisha/functional-basic'
+
+console.log(toOffset()) // 0
+console.log(toOffset(-10)) // 0
+console.log(toOffset(12.9)) // 12
+console.log(toOffset(40)) // 40
+```

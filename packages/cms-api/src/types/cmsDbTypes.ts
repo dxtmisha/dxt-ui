@@ -28,6 +28,12 @@ export type CmsCodeTable = CmsIdTable & {
   code: PgColumn
 }
 
+/** Drizzle PostgreSQL table constraint extending CmsCodeTable with a createdOrigin column / Тип таблицы Drizzle PostgreSQL, расширяющий CmsCodeTable колонкой createdOrigin */
+export type CmsCodeCreatedOriginTable = CmsCodeTable & {
+  /** Creation origin code column / Колонка кода источника создания */
+  createdOrigin: PgColumn
+}
+
 /** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */
 export interface CmsTimestampValues {
   /** Creation timestamp / Дата создания */
@@ -58,6 +64,12 @@ export interface CmsDbCodeItemData extends CmsDbItemData {
   description: string | null
 }
 
+/** CMS code entity record shape with creation origin / Структура записи сущности CMS с кодом и источником создания */
+export interface CmsDbCodeCreatedOriginItemData extends CmsDbCodeItemData {
+  /** Creation origin code or null / Код источника создания или null */
+  createdOrigin: string | null
+}
+
 /** Base input payload for creating a CMS code entity / Базовые входные данные для создания сущности CMS с кодом */
 export interface CmsCodeCreateInput {
   /** Unique record code / Уникальный код записи */
@@ -68,6 +80,12 @@ export interface CmsCodeCreateInput {
   description?: string | null
   /** Optional system record status / Необязательный системный статус записи */
   systemStatus?: CmsSystemStatus
+}
+
+/** Input payload for creating a CMS code entity with creation origin / Входные данные для создания сущности CMS с кодом и источником создания */
+export interface CmsCodeCreatedOriginCreateInput extends CmsCodeCreateInput {
+  /** Optional creation origin code / Необязательный код источника создания */
+  createdOrigin?: string | null
 }
 
 /** Base input payload for updating a CMS code entity / Базовые входные данные для обновления сущности CMS с кодом */
@@ -82,6 +100,12 @@ export interface CmsCodeUpdateInput {
   systemStatus?: CmsSystemStatus
 }
 
+/** Input payload for updating a CMS code entity with creation origin / Входные данные для обновления сущности CMS с кодом и источником создания */
+export interface CmsCodeCreatedOriginUpdateInput extends CmsCodeUpdateInput {
+  /** Optional creation origin code / Необязательный код источника создания */
+  createdOrigin?: string | null
+}
+
 /** Validated Drizzle insert payload for a CMS code entity / Валидированные данные вставки для сущности CMS с кодом */
 export interface CmsCodeInsertValues {
   /** Normalized unique record code / Нормализованный уникальный код записи */
@@ -92,6 +116,12 @@ export interface CmsCodeInsertValues {
   description?: string | null
   /** Optional system record status / Необязательный системный статус записи */
   systemStatus?: CmsSystemStatus
+}
+
+/** Validated Drizzle insert payload for a CMS code entity with creation origin / Валидированные данные вставки для сущности CMS с кодом и источником создания */
+export interface CmsCodeCreatedOriginInsertValues extends CmsCodeInsertValues {
+  /** Normalized creation origin code or null / Нормализованный код источника создания или null */
+  createdOrigin?: string | null
 }
 
 /** Validator/normalizer function applied to a column value before database update / Функция валидации и нормализации значения колонки перед обновлением в базе данных */

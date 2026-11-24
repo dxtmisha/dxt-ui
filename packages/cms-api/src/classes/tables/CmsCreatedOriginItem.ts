@@ -1,7 +1,6 @@
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
 import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
-import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type { CmsCreatedOrigin } from '../../types/cmsDbTypes'
 import type { CmsCreatedOriginUpdateInput } from '../../types/cmsCreatedOriginTypes'
@@ -11,7 +10,11 @@ import type { CmsCreatedOriginUpdateInput } from '../../types/cmsCreatedOriginTy
  *
  * Представляет конкретный источник создания записей CMS и предоставляет методы для чтения и редактирования полей.
  */
-export class CmsCreatedOriginItem extends CmsDbCodeItemAbstract<typeof createdOrigins, CmsCreatedOrigin> {
+export class CmsCreatedOriginItem extends CmsDbCodeItemAbstract<
+  typeof createdOrigins,
+  CmsCreatedOrigin,
+  CmsCreatedOriginUpdateInput
+> {
   /** Table schema bound to created origin records / Схема таблицы источников создания записей */
   static readonly table = createdOrigins
 
@@ -33,18 +36,5 @@ export class CmsCreatedOriginItem extends CmsDbCodeItemAbstract<typeof createdOr
     databaseInstance?: CmsDbInstance
   ) {
     super(CmsCreatedOriginItem.table, data, databaseInstance)
-  }
-
-  /**
-   * Updates this created origin's fields in the database.
-   *
-   * Обновляет поля этого источника создания записей в базе данных.
-   * @param input Partial created origin update payload / Частичные данные для обновления источника создания
-   * @returns Current created origin item / Текущий экземпляр CmsCreatedOriginItem
-   */
-  async update(input: CmsCreatedOriginUpdateInput): Promise<this> {
-    CmsVerification.isPositiveInteger(this.data.id)
-
-    return this.updateRecord(this.buildUpdateValues(input))
   }
 }

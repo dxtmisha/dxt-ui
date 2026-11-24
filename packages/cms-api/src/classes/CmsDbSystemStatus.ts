@@ -1,8 +1,9 @@
 import { eq } from 'drizzle-orm'
+import { hasKey } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { findOneCmsRecord } from '../functions/findOneCmsRecord'
-import { updateCmsRecord } from '../functions/updateCmsRecord'
+import { findOneCmsRecord } from '../functions/db/findOneCmsRecord'
+import { updateCmsRecord } from '../functions/db/updateCmsRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsDbTimestamp } from './CmsDbTimestamp'
@@ -139,17 +140,20 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     systemStatus?: CmsSystemStatus,
     isCreate: boolean = false
   ): Partial<TTable['$inferInsert']> {
+    const baseTable = this.getBaseTable()
     const statusValues: Record<string, unknown> = {
       ...values
     }
 
-    if (systemStatus !== undefined) {
-      statusValues.systemStatus = systemStatus
-    } else if (
-      isCreate
-      && statusValues.systemStatus === undefined
-    ) {
-      statusValues.systemStatus = 'active'
+    if (hasKey(baseTable, 'systemStatus')) {
+      if (systemStatus !== undefined) {
+        statusValues.systemStatus = systemStatus
+      } else if (
+        isCreate
+        && statusValues.systemStatus === undefined
+      ) {
+        statusValues.systemStatus = 'active'
+      }
     }
 
     if (this.getTimestamp) {

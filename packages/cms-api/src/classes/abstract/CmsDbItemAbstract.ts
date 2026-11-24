@@ -1,7 +1,5 @@
-import { eq } from 'drizzle-orm'
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-import { findOneCmsRecord } from '../../functions/findOneCmsRecord'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'
@@ -18,8 +16,9 @@ import type {
  */
 export abstract class CmsDbItemAbstract<
   TTable extends CmsIdTable = CmsIdTable,
-  TData extends CmsDbItemData = CmsDbItemData
-> extends CmsDbAbstract<TTable> {
+  TData extends CmsDbItemData = CmsDbItemData,
+  TUpdateInput extends object = Partial<TTable['$inferInsert']>
+> extends CmsDbAbstract<TTable, TData> {
   /** ErrorCenter group name for entity errors / Имя группы ошибок ErrorCenter для сущности */
   protected abstract readonly errorGroup: string
 
@@ -37,6 +36,16 @@ export abstract class CmsDbItemAbstract<
     databaseInstance?: CmsDbInstance
   ) {
     super(table, databaseInstance)
+  }
+
+  /**
+   * Checks whether this entity record exists in the database.
+   *
+   * Проверяет наличие этой записи в базе данных.
+   * @returns True if record exists in the database / True, если запись существует в базе данных
+   */
+  async exists(): Promise<boolean> {
+    return this.hasById(this.data.id)
   }
 
   /**
@@ -120,6 +129,21 @@ export abstract class CmsDbItemAbstract<
   }
 
   /**
+   * Updates this entity's fields in the database.
+   *
+   * Обновляет поля этой записи в базе данных.
+   * @param input Partial entity update payload / Частичные данные для обновления записи
+   * @returns Current item instance / Текущий экземпляр сущности
+   */
+  async update(input: TUpdateInput): Promise<this> {
+    const values = this.buildUpdateValues(input)
+
+    return this.executeUpdate(
+      () => this.updateRecordById(this.data.id, values)
+    )
+  }
+
+  /**
    * Permanently deletes this entity record from the database.
    *
    * Безвозвратно удаляет эту запись из базы данных.
@@ -159,38 +183,6 @@ export abstract class CmsDbItemAbstract<
    */
   toJSONString(): string {
     return JSON.stringify(this.getData())
-  }
-
-  /**
-   * Fetches the latest entity snapshot by identifier from the database.
-   * Subclasses with joined relations can override this method to load related entities.
-   *
-   * Загружает актуальное состояние записи по идентификатору из базы данных.
-   * Подклассы со связанными сущностями могут переопределить этот метод.
-   * @param id Record identifier / Идентификатор записи
-   * @returns Loaded entity record or undefined / Загруженная запись сущности или undefined
-   */
-  protected async fetchById(id: number): Promise<TData | undefined> {
-    return findOneCmsRecord<TData>(
-      this.databaseInstance.get(),
-      this.getBaseTable(),
-      eq(this.getBaseTable().id, id)
-    )
-  }
-
-  /**
-   * Executes a single-table update by the entity ID with automatic updatedAt handling and refreshes local snapshot.
-   *
-   * Выполняет обновление полей в таблице по ID записи с автоматическим обновлением updatedAt и обновляет локальное состояние.
-   * @param values Partial column values to update / Частичные значения колонок для обновления
-   * @returns Current item instance / Текущий экземпляр сущности
-   */
-  protected async updateRecord(
-    values: Record<string, unknown>
-  ): Promise<this> {
-    return this.executeUpdate(
-      () => this.updateRecordById(this.data.id, values)
-    )
   }
 
   /**

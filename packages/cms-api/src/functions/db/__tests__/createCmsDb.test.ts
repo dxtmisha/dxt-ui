@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { cmsSchema } from '../../media/schema/cmsSchema'
+import { cmsSchema } from '../../../media/schema/cmsSchema'
 
 const mockClient = { end: vi.fn() }
 const mockDb = { select: vi.fn() }
