@@ -16,11 +16,11 @@ export class CropAreaEmit {
    * Constructor.
    *
    * Конструктор.
-   * @param position position coordinator manager / менеджер координат позиции
+   * @param position getter returning position coordinator manager / функция, возвращающая менеджер координат позиции
    * @param emits event emitter function / функция испускания событий
    */
   constructor(
-    protected readonly position: CropAreaPosition,
+    protected readonly position: () => CropAreaPosition,
     protected readonly emits?: ConstrEmit<CropAreaEmits>
   ) {
   }
@@ -40,7 +40,7 @@ export class CropAreaEmit {
       const parameters: CropAreaEventParameters = {
         direction,
         value,
-        coordinator: this.position.get()
+        coordinator: this.position().get()
       }
 
       this.emits('resize', parameters)

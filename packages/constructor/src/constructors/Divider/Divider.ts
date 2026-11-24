@@ -1,29 +1,42 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
-import type { DividerComponents, DividerEmits, DividerSlots } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
+import type { AriaList } from '../../types/ariaTypes'
 import type { DividerProps } from './props'
+import type { DividerComponents, DividerEmits, DividerSlots } from './types'
+
+/** Divider dependency constructors type / Тип конструкторов зависимостей Divider */
+export type DividerConstructors = {}
 
 /**
- * Divider
+ * Class representing the Divider logic orchestrator.
+ * Encapsulates semantic WAI-ARIA attributes for visual content separation.
+ *
+ * Класс, представляющий оркестратор логики Divider.
+ * Инкапсулирует семантические WAI-ARIA атрибуты для визуального разделения контента.
  */
-export class Divider {
+export class Divider extends DesignLogicAbstract<
+  HTMLElement,
+  DividerComponents,
+  DividerEmits,
+  DividerSlots,
+  DividerProps,
+  DividerConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<DividerConstructors> = {}
+
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Returns semantic WAI-ARIA attributes for the divider element.
+   *
+   * Возвращает семантические WAI-ARIA атрибуты для элемента-разделителя.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  constructor(
-    protected readonly props: DividerProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<DividerComponents, DividerProps>,
-    protected readonly slots?: DividerSlots,
-    protected readonly emits?: ConstrEmit<DividerEmits>
-  ) {
+  get aria(): AriaList {
+    return AriaStaticInclude.role('separator')
   }
 }

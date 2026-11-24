@@ -37,7 +37,10 @@ import DemoCollagePage from './pages/components/DemoCollagePage.vue'
 import DemoCollageBarPage from './pages/components/DemoCollageBarPage.vue'
 import DemoCollageItemPage from './pages/components/DemoCollageItemPage.vue'
 import DemoComponentOutletPage from './pages/components/DemoComponentOutletPage.vue'
+import DemoContainerPage from './pages/components/DemoContainerPage.vue'
+import DemoCropAreaPage from './pages/components/DemoCropAreaPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
+import DemoDividerPage from './pages/components/DemoDividerPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
 import DemoFieldPage from './pages/components/DemoFieldPage.vue'
 import DemoFieldCounterPage from './pages/components/DemoFieldCounterPage.vue'
@@ -268,9 +271,24 @@ export const routes: RouteRecordRaw[] = [
     component: DemoComponentOutletPage
   },
   {
+    path: '/component-container',
+    name: 'component-container',
+    component: DemoContainerPage
+  },
+  {
+    path: '/component-crop-area',
+    name: 'component-crop-area',
+    component: DemoCropAreaPage
+  },
+  {
     path: '/component-dialog',
     name: 'component-dialog',
     component: DemoDialogPage
+  },
+  {
+    path: '/component-divider',
+    name: 'component-divider',
+    component: DemoDividerPage
   },
   {
     path: '/component-draggable-wrapper',

@@ -15,7 +15,7 @@ type CropAreaPropsToken = {
 }
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
-export type CropAreaPropsBasic = ModelProps<any>
+export type CropAreaPropsBasic = ModelProps<CropAreaCoordinator>
   & FieldStepProps
   & {
     /** Initial coordinate values [top, right, bottom, left] / Начальные значения координат [сверху, справа, снизу, слева] */

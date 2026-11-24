@@ -7,10 +7,28 @@ import { D1Badge } from '@dxtmisha/d1/D1Badge'
 import { D1Button } from '@dxtmisha/d1/D1Button'
 import { D1Chip } from '@dxtmisha/d1/D1Chip'
 
+import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
+
+const { eventName, onEvent } = useDemoEvent()
+const composedClicks = ref<string[]>([])
+
+const onAttrsClick = (): void => {
+  composedClicks.value = [...composedClicks.value, 'attrs']
+  onEvent('click:attrs')
+}
+
+const onPropsClick = (): void => {
+  composedClicks.value = [...composedClicks.value, 'props']
+  onEvent('click:props')
+}
+
+const resetComposedClicks = (): void => {
+  composedClicks.value = []
+}
 
 ComponentStorage.add('demo-outlet-button', D1Button, {
   label: 'Default Outlet Button',
@@ -97,7 +115,7 @@ const inspectElement = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Attributes Forwarding">
+      <D1Group label="Attributes Forwarding & Event Composition">
         <DemoFlex align="center">
           <D1ComponentOutlet
             name="demo-outlet-button"
@@ -109,7 +127,20 @@ const inspectElement = (): void => {
             size="lg"
             :props="{ label: 'Large Sized Chip' }"
           />
+          <D1ComponentOutlet
+            name="demo-outlet-button"
+            :props="{ label: 'Composed Click', onClick: onPropsClick }"
+            @click="onAttrsClick"
+          />
+          <D1Button
+            label="Reset Clicks"
+            size="sm"
+            outline
+            @click="resetComposedClicks"
+          />
         </DemoFlex>
+        <DemoValue label="Last Event" :value="eventName"/>
+        <DemoValue label="Composed Handlers" :value="composedClicks"/>
       </D1Group>
 
       <D1Group label="Fallback Content (Default Slot)">

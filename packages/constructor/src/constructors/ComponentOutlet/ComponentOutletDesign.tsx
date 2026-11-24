@@ -1,11 +1,10 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
   type RawSlots,
-  render,
-  toBinds
+  render
 } from '@dxtmisha/functional'
 
 import { ComponentOutlet } from './ComponentOutlet'
@@ -126,14 +125,14 @@ export class ComponentOutletDesign<
     if (component) {
       return render(
         component.component,
-        toBinds(
+        mergeProps(
           this.item.binds,
           this.getAttrs(),
           {
             class: this.classes?.value.main,
             style: this.styles?.value
           },
-          component.props
+          component.props ?? {}
         ),
         this.slots as RawSlots,
         this.props.name

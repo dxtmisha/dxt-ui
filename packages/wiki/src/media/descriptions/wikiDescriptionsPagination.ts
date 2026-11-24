@@ -363,7 +363,7 @@ await step('Click page 4 button updates active page and emits clickLite', async 
   ai: {
     render: `
 <div :class="classDemo.item">
-  <DesignComponent :count="100" :rows="10"/>
+  <DesignComponent v-bind="args" :count="100" :rows="10"/>
 </div>
     `,
     description: `

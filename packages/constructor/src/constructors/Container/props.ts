@@ -6,6 +6,11 @@ type ContainerPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Container component.
+ *
+ * Тип, описывающий основные свойства компонента Container.
+ */
 export type ContainerPropsBasic = AreaPropsInclude & {}
 
 /**

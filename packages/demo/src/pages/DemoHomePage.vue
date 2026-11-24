@@ -42,7 +42,10 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="CollageBar" name="component-collage-bar"/>
         <DemoLink label="CollageItem" name="component-collage-item"/>
         <DemoLink label="ComponentOutlet" name="component-component-outlet"/>
+        <DemoLink label="Container" name="component-container"/>
+        <DemoLink label="CropArea" name="component-crop-area"/>
         <DemoLink label="Dialog" name="component-dialog"/>
+        <DemoLink label="Divider" name="component-divider"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
         <DemoLink label="Field" name="component-field"/>
         <DemoLink label="FieldCounter" name="component-field-counter"/>

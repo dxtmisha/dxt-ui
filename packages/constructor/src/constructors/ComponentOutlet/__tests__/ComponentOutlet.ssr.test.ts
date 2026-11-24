@@ -264,6 +264,63 @@ describe('ComponentOutlet (SSR)', () => {
   })
 
   describe('Metacharacters, escaping, Unicode, and security in SSR', () => {
+    it('should preserve falsy props (0, false, empty string) in SSR output', async () => {
+      const FalsyBadge = defineComponent({
+        props: {
+          count: { type: Number, default: 9 },
+          active: { type: Boolean, default: true },
+          note: { type: String, default: 'default-note' }
+        },
+        setup(badgeProps) {
+          return () => h(
+            'span',
+            {
+              'data-count': String(badgeProps.count),
+              'data-active': String(badgeProps.active),
+              'data-note-length': String(badgeProps.note.length)
+            },
+            badgeProps.note
+          )
+        }
+      })
+
+      ComponentStorage.add('falsy-badge', FalsyBadge, {
+        count: 5,
+        active: true,
+        note: 'stored'
+      })
+
+      const html = await renderOutletSsr({
+        name: 'falsy-badge',
+        props: {
+          count: 0,
+          active: false,
+          note: ''
+        }
+      })
+
+      expect(html).toContain('data-count="0"')
+      expect(html).toContain('data-active="false"')
+      expect(html).toContain('data-note-length="0"')
+      expect(html).not.toContain('stored')
+    })
+
+    it.each([
+      '__proto__',
+      'constructor',
+      'prototype'
+    ])('should safely render fallback slot in SSR for prototype key name %j', async (name) => {
+      const html = await renderOutletSsr(
+        { name },
+        undefined,
+        {
+          default: () => [h('span', { class: 'safe-fallback' }, 'Safe')]
+        }
+      )
+
+      expect(html).toContain('<span class="safe-fallback">Safe</span>')
+    })
+
     it('should safely escape HTML/XSS payloads in props and render multilingual Unicode in SSR', async () => {
       const SafeBanner = defineComponent({
         props: {

@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -28,7 +29,8 @@ export interface ContainerExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ContainerSlots {
-  default?(props: any): any
+  /** Default slot / Слот по умолчанию */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**

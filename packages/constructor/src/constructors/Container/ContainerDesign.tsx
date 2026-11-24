@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,19 +7,23 @@ import {
 
 import { Container } from './Container'
 
-import {
-  type ContainerPropsBasic
+import type {
+  ContainerPropsBasic
 } from './props'
-import {
-  type ContainerClasses,
-  type ContainerComponents,
-  type ContainerEmits,
-  type ContainerExpose,
-  type ContainerSlots
+import type {
+  ContainerClasses,
+  ContainerComponents,
+  ContainerEmits,
+  ContainerExpose,
+  ContainerSlots
 } from './types'
 
 /**
- * ContainerDesign
+ * ContainerDesign class constructor for managing container layout classes, styles,
+ * root element ref binding, and default slot rendering.
+ *
+ * Класс-конструктор дизайна ContainerDesign для управления классами и стилями контейнера,
+ * привязкой ссылки на корневой элемент и рендерингом слота по умолчанию.
  */
 export class ContainerDesign<
   COMP extends ContainerComponents,
@@ -35,14 +39,17 @@ export class ContainerDesign<
     CLASSES,
     P
   > {
+  /** Container logic orchestrator instance / Экземпляр оркестратора логики Container */
   protected readonly item: Container
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a ContainerDesign instance.
+   *
+   * Конструктор для создания экземпляра ContainerDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor container logic constructor class / класс конструктора логики контейнера
    */
   constructor(
     name: string,
@@ -67,9 +74,10 @@ export class ContainerDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -79,6 +87,7 @@ export class ContainerDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -94,28 +103,33 @@ export class ContainerDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the root container `<div>` element and default slot content.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга корневого элемента `<div>` контейнера и содержимого слота по умолчанию.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('default', children)
 
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }

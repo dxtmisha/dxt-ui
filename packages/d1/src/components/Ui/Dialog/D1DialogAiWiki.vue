@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Dialog embedded open label="Dialog Title" description="This is a description text." v-bind="args"/>
+  <DesignComponent embedded open label="Dialog Title" description="This is a description text." v-bind="args"/>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

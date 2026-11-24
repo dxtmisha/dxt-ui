@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional-basic'
 import type { DesignName } from '@dxtmisha/functional'
 
 /**
@@ -43,10 +44,12 @@ export class CropAreaElement {
    * @param status activation status / статус активации
    */
   setBlockSelection(status = false): void {
-    if (status) {
-      document.body.classList.add(this.classBlockSelection)
-    } else {
-      document.body.classList.remove(this.classBlockSelection)
+    if (isDomRuntime() && document.body) {
+      if (status) {
+        document.body.classList.add(this.classBlockSelection)
+      } else {
+        document.body.classList.remove(this.classBlockSelection)
+      }
     }
   }
 }

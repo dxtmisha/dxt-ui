@@ -20,9 +20,9 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Container v-bind="args">
+  <DesignComponent v-bind="args">
     Main content goes here.
-  </D1Container>
+  </DesignComponent>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

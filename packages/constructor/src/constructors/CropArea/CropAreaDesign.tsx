@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,7 +7,7 @@ import {
 
 import { CropArea } from './CropArea'
 
-import type { CropAreaDirection } from './basicTypes'
+import type { CropAreaCoordinator, CropAreaDirection } from './basicTypes'
 import type { CropAreaProps } from './props'
 import type {
   CropAreaClasses,
@@ -73,6 +73,65 @@ export class CropAreaDesign<
   }
 
   /**
+   * Render center column with top handle, active region, and bottom handle.
+   *
+   * Рендер центральной колонки с верхней ручкой, активной областью и нижней ручкой.
+   * @returns center column node / узел центральной колонки
+   */
+  readonly renderCenter = (): VNode => {
+    return h('div', this.getKeyClass('center'), [
+      this.renderMove('top'),
+      h('div', {
+        ...this.getKeyClass('crop'),
+        'data-value': 'center'
+      }),
+      this.renderMove('bottom')
+    ])
+  }
+
+  /**
+   * Render left column of resize handles.
+   *
+   * Рендер левой колонки ручек изменения размера.
+   * @returns left column node / узел левой колонки
+   */
+  readonly renderLeft = (): VNode => {
+    return h('div', this.getKeyClass('left'), [
+      this.renderMove('left-top'),
+      this.renderMove('left'),
+      this.renderMove('left-bottom')
+    ])
+  }
+
+  /**
+   * Render individual move handle element.
+   *
+   * Рендер отдельного элемента ручки перемещения.
+   * @param direction direction name / имя направления
+   * @returns move handle node / узел ручки перемещения
+   */
+  readonly renderMove = (direction: CropAreaDirection): VNode => {
+    return h('div', {
+      ...this.getKeyClass('move'),
+      'data-value': direction
+    })
+  }
+
+  /**
+   * Render right column of resize handles.
+   *
+   * Рендер правой колонки ручек изменения размера.
+   * @returns right column node / узел правой колонки
+   */
+  readonly renderRight = (): VNode => {
+    return h('div', this.getKeyClass('right'), [
+      this.renderMove('right-top'),
+      this.renderMove('right'),
+      this.renderMove('right-bottom')
+    ])
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
@@ -80,9 +139,9 @@ export class CropAreaDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      get: this.item.position.get,
-      set: this.item.position.set,
-      reset: this.item.position.reset
+      get: () => this.item.i('position').get(),
+      set: (coordinator: CropAreaCoordinator) => this.item.i('position').set(coordinator),
+      reset: () => this.item.i('position').reset()
     } as EXPOSE
   }
 
@@ -130,77 +189,20 @@ export class CropAreaDesign<
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
         this.renderLeft(),
         this.renderCenter(),
         this.renderRight()
       ]
     )
-  }
-
-  /**
-   * Render left column of resize handles.
-   *
-   * Рендер левой колонки ручек изменения размера.
-   * @returns left column node / узел левой колонки
-   */
-  protected readonly renderLeft = (): VNode => {
-    return h('div', this.getKeyClass('left'), [
-      this.renderMove('left-top'),
-      this.renderMove('left'),
-      this.renderMove('left-bottom')
-    ])
-  }
-
-  /**
-   * Render center column with top handle, active region, and bottom handle.
-   *
-   * Рендер центральной колонки с верхней ручкой, активной областью и нижней ручкой.
-   * @returns center column node / узел центральной колонки
-   */
-  protected readonly renderCenter = (): VNode => {
-    return h('div', this.getKeyClass('center'), [
-      this.renderMove('top'),
-      h('div', {
-        ...this.getKeyClass('crop'),
-        'data-value': 'center'
-      }),
-      this.renderMove('bottom')
-    ])
-  }
-
-  /**
-   * Render right column of resize handles.
-   *
-   * Рендер правой колонки ручек изменения размера.
-   * @returns right column node / узел правой колонки
-   */
-  protected readonly renderRight = (): VNode => {
-    return h('div', this.getKeyClass('right'), [
-      this.renderMove('right-top'),
-      this.renderMove('right'),
-      this.renderMove('right-bottom')
-    ])
-  }
-
-  /**
-   * Render individual move handle element.
-   *
-   * Рендер отдельного элемента ручки перемещения.
-   * @param direction direction name / имя направления
-   * @returns move handle node / узел ручки перемещения
-   */
-  protected readonly renderMove = (direction: CropAreaDirection): VNode => {
-    return h('div', {
-      ...this.getKeyClass('move'),
-      'data-value': direction
-    })
   }
 }

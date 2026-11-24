@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ModelEmits } from '../../types/modelTypes'
-import type { CropAreaCoordinator, CropAreaEventParameters } from './basicTypes'
+import type { CropAreaCoordinator, CropAreaEmitsInclude } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -16,11 +16,8 @@ export type CropAreaComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type CropAreaEmits = ModelEmits<any>
-  & {
-    /** Event emitted during resizing or moving / Событие, вызываемое при изменении размера или перемещении */
-    resize: [parameters: CropAreaEventParameters]
-  }
+export type CropAreaEmits = ModelEmits<CropAreaCoordinator>
+  & CropAreaEmitsInclude
 
 /**
  * Type describing available properties.

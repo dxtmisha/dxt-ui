@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <DesignComponent :count="100" :rows="10"/>
+  <DesignComponent v-bind="args" :count="100" :rows="10"/>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

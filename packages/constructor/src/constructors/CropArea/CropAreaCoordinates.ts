@@ -18,55 +18,41 @@ import type {
  * Класс, управляющий координатами взаимодействия и расчетами перетаскивания для CropArea.
  */
 export class CropAreaCoordinates {
-  /** Mouse start position / Начальная позиция мыши */
-  protected startMouse: ImageCoordinator = { x: 0, y: 0 }
-
-  /** Initial coordinator snapshot before drag / Снимок начальных координат перед перетаскиванием */
-  protected startCoordinator: CropAreaCoordinator = [0, 0, 0, 0]
-
   /** Currently active drag direction / Текущее активное направление перетаскивания */
   protected activeDirection?: CropAreaDirection
 
   /** Bounding rectangle of the component / Ограничивающий прямоугольник компонента */
   protected rect?: DOMRect
 
+  /** Initial coordinator snapshot before drag / Снимок начальных координат перед перетаскиванием */
+  protected startCoordinator: CropAreaCoordinator = [0, 0, 0, 0]
+
+  /** Mouse start position / Начальная позиция мыши */
+  protected startMouse: ImageCoordinator = { x: 0, y: 0 }
+
   /**
    * Constructor.
    *
    * Конструктор.
-   * @param element element manager / менеджер элемента
-   * @param position position coordinator manager / менеджер координат позиции
-   * @param emit emit manager / менеджер событий
+   * @param element getter returning element manager / функция, возвращающая менеджер элемента
+   * @param emit getter returning emit manager / функция, возвращающая менеджер событий
+   * @param position getter returning position coordinator manager / функция, возвращающая менеджер координат позиции
    */
   constructor(
-    protected readonly element: CropAreaElement,
-    protected readonly position: CropAreaPosition,
-    protected readonly emit: CropAreaEmit
+    protected readonly element: () => CropAreaElement,
+    protected readonly emit: () => CropAreaEmit,
+    protected readonly position: () => CropAreaPosition
   ) {
   }
 
   /**
-   * Starts tracking coordinates on interaction start.
+   * Resets interaction coordinates state.
    *
-   * Начинает отслеживание координат при начале взаимодействия.
-   * @param event mouse or touch event / событие мыши или касания
-   * @param direction interaction direction / направление взаимодействия
-   * @returns true if interaction started / true, если взаимодействие начато
+   * Сбрасывает состояние координат взаимодействия.
    */
-  start(
-    event: MouseEvent | TouchEvent,
-    direction: CropAreaDirection
-  ): boolean {
-    if (this.position.isDirectionDisabled(direction)) {
-      return false
-    }
-
-    this.activeDirection = direction
-    this.rect = this.element.rect
-    this.startCoordinator = [...this.position.get()]
-    this.startMouse = getMouseClient(event)
-
-    return true
+  reset(): void {
+    this.activeDirection = undefined
+    this.rect = undefined
   }
 
   /**
@@ -100,9 +86,14 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   moveByStep(deltaX: number, deltaY: number): void {
-    this.position.moveCenter(this.position.get(), deltaX, deltaY)
+    const position = this.position()
 
-    this.emit.resize('center')
+    if (position.isDirectionDisabled('center')) {
+      return
+    }
+
+    position.moveCenter(position.get(), deltaX, deltaY)
+    this.emit().resize('center')
   }
 
   /**
@@ -118,7 +109,7 @@ export class CropAreaCoordinates {
     deltaY: number,
     isOpposite = false
   ): void {
-    const current = this.position.get()
+    const current = this.position().get()
 
     if (deltaX !== 0) {
       if (isOpposite) {
@@ -138,13 +129,29 @@ export class CropAreaCoordinates {
   }
 
   /**
-   * Resets interaction coordinates state.
+   * Starts tracking coordinates on interaction start.
    *
-   * Сбрасывает состояние координат взаимодействия.
+   * Начинает отслеживание координат при начале взаимодействия.
+   * @param event mouse or touch event / событие мыши или касания
+   * @param direction interaction direction / направление взаимодействия
+   * @returns true if interaction started / true, если взаимодействие начато
    */
-  reset(): void {
-    this.activeDirection = undefined
-    this.rect = undefined
+  start(
+    event: MouseEvent | TouchEvent,
+    direction: CropAreaDirection
+  ): boolean {
+    const position = this.position()
+
+    if (position.isDirectionDisabled(direction)) {
+      return false
+    }
+
+    this.activeDirection = direction
+    this.rect = this.element().rect
+    this.startCoordinator = position.get()
+    this.startMouse = getMouseClient(event)
+
+    return true
   }
 
   /**
@@ -205,10 +212,10 @@ export class CropAreaCoordinates {
     startValue: number,
     delta: number
   ): boolean {
-    const updated = this.position.moveSingle(direction, startValue, delta)
+    const updated = this.position().moveSingle(direction, startValue, delta)
 
     if (updated !== undefined) {
-      this.emit.resize(direction, updated)
+      this.emit().resize(direction, updated)
       return true
     }
 
@@ -263,10 +270,13 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   protected updateRightTop(deltaX: number, deltaY: number): void {
-    const updatedTop = this.position.moveSingle('top', this.startCoordinator[0], deltaY)
-    const updatedRight = this.position.moveSingle('right', this.startCoordinator[1], -deltaX)
+    const position = this.position()
+    const updatedTop = position.moveSingle('top', this.startCoordinator[0], deltaY)
+    const updatedRight = position.moveSingle('right', this.startCoordinator[1], -deltaX)
 
-    this.emit.resize('right-top', updatedTop ?? updatedRight ?? 0)
+    if (updatedTop !== undefined || updatedRight !== undefined) {
+      this.emit().resize('right-top', updatedTop ?? updatedRight ?? 0)
+    }
   }
 
   /**
@@ -277,10 +287,13 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   protected updateRightBottom(deltaX: number, deltaY: number): void {
-    const updatedBottom = this.position.moveSingle('bottom', this.startCoordinator[2], -deltaY)
-    const updatedRight = this.position.moveSingle('right', this.startCoordinator[1], -deltaX)
+    const position = this.position()
+    const updatedBottom = position.moveSingle('bottom', this.startCoordinator[2], -deltaY)
+    const updatedRight = position.moveSingle('right', this.startCoordinator[1], -deltaX)
 
-    this.emit.resize('right-bottom', updatedBottom ?? updatedRight ?? 0)
+    if (updatedBottom !== undefined || updatedRight !== undefined) {
+      this.emit().resize('right-bottom', updatedBottom ?? updatedRight ?? 0)
+    }
   }
 
   /**
@@ -291,10 +304,13 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   protected updateLeftTop(deltaX: number, deltaY: number): void {
-    const updatedTop = this.position.moveSingle('top', this.startCoordinator[0], deltaY)
-    const updatedLeft = this.position.moveSingle('left', this.startCoordinator[3], deltaX)
+    const position = this.position()
+    const updatedTop = position.moveSingle('top', this.startCoordinator[0], deltaY)
+    const updatedLeft = position.moveSingle('left', this.startCoordinator[3], deltaX)
 
-    this.emit.resize('left-top', updatedTop ?? updatedLeft ?? 0)
+    if (updatedTop !== undefined || updatedLeft !== undefined) {
+      this.emit().resize('left-top', updatedTop ?? updatedLeft ?? 0)
+    }
   }
 
   /**
@@ -305,10 +321,13 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   protected updateLeftBottom(deltaX: number, deltaY: number): void {
-    const updatedBottom = this.position.moveSingle('bottom', this.startCoordinator[2], -deltaY)
-    const updatedLeft = this.position.moveSingle('left', this.startCoordinator[3], deltaX)
+    const position = this.position()
+    const updatedBottom = position.moveSingle('bottom', this.startCoordinator[2], -deltaY)
+    const updatedLeft = position.moveSingle('left', this.startCoordinator[3], deltaX)
 
-    this.emit.resize('left-bottom', updatedBottom ?? updatedLeft ?? 0)
+    if (updatedBottom !== undefined || updatedLeft !== undefined) {
+      this.emit().resize('left-bottom', updatedBottom ?? updatedLeft ?? 0)
+    }
   }
 
   /**
@@ -319,8 +338,7 @@ export class CropAreaCoordinates {
    * @param deltaY vertical percentage delta / вертикальное процентное смещение
    */
   protected updateCenter(deltaX: number, deltaY: number): void {
-    this.position.moveCenter(this.startCoordinator, deltaX, deltaY)
-
-    this.emit.resize('center')
+    this.position().moveCenter(this.startCoordinator, deltaX, deltaY)
+    this.emit().resize('center')
   }
 }

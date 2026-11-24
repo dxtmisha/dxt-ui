@@ -1,5 +1,8 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -13,87 +16,95 @@ import { CropAreaStyle } from './CropAreaStyle'
 
 import type { AriaList } from '../../types/ariaTypes'
 import type { CropAreaCoordinator } from './basicTypes'
-import type { CropAreaComponents, CropAreaEmits, CropAreaSlots } from './types'
 import type { CropAreaProps } from './props'
+import type { CropAreaComponents, CropAreaEmits, CropAreaSlots } from './types'
+
+/** CropArea dependency constructors type / Тип конструкторов зависимостей CropArea */
+export type CropAreaConstructors = {
+  /** Coordinates helper constructor / Конструктор помощника по координатам */
+  coordinates: typeof CropAreaCoordinates
+  /** Element helper constructor / Конструктор помощника по элементу */
+  elementItem: typeof CropAreaElement
+  /** Event emit helper constructor / Конструктор помощника по испусканию событий */
+  emit: typeof CropAreaEmit
+  /** Event listeners helper constructor / Конструктор помощника по слушателям событий */
+  events: typeof CropAreaEvents
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<CropAreaCoordinator>
+  /** Position coordinator helper constructor / Конструктор помощника по координатам позиции */
+  position: typeof CropAreaPosition
+  /** Style helper constructor / Конструктор помощника по стилям */
+  style: typeof CropAreaStyle
+}
 
 /**
  * Main orchestrator class for managing CropArea state, positioning, and events.
  *
  * Главный класс-оркестратор для управления состоянием, позиционированием и событиями CropArea.
  */
-export class CropArea {
-  /** Element helper instance / Экземпляр помощника по элементу */
-  readonly elementItem: CropAreaElement
-
-  /** Style helper instance / Экземпляр помощника по стилям */
-  readonly style: CropAreaStyle
-
-  /** Position coordinator helper / Помощник по координатам позиции */
-  readonly position: CropAreaPosition
-
-  /** Event emit helper / Помощник по испусканию событий */
-  readonly emit: CropAreaEmit
-
-  /** Coordinates helper instance / Экземпляр помощника по координатам */
-  readonly coordinates: CropAreaCoordinates
-
-  /** Event listeners helper / Помощник по слушателям событий */
-  readonly events: CropAreaEvents
-
-  /**
-   * Constructor.
-   *
-   * Конструктор.
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.CropAreaElementConstructor class for working with element / класс для работы с элементом
-   * @param constructors.CropAreaStyleConstructor class for working with styles / класс для работы со стилями
-   * @param constructors.CropAreaPositionConstructor class for working with position coordinates / класс для работы с координатами позиции
-   * @param constructors.CropAreaEmitConstructor class for working with emits / класс для работы с событиями
-   * @param constructors.CropAreaCoordinatesConstructor class for working with coordinates / класс для работы с координатами
-   * @param constructors.CropAreaEventsConstructor class for working with events / класс для работы с событиями
-   * @param constructors.ModelIncludeConstructor class for working with model synchronization / класс для работы с синхронизацией модели
-   */
-  constructor(
-    protected readonly props: CropAreaProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<CropAreaComponents, CropAreaProps>,
-    protected readonly slots?: CropAreaSlots,
-    protected readonly emits?: ConstrEmit<CropAreaEmits>,
-    constructors: {
-      CropAreaElementConstructor?: typeof CropAreaElement
-      CropAreaStyleConstructor?: typeof CropAreaStyle
-      CropAreaPositionConstructor?: typeof CropAreaPosition
-      CropAreaEmitConstructor?: typeof CropAreaEmit
-      CropAreaCoordinatesConstructor?: typeof CropAreaCoordinates
-      CropAreaEventsConstructor?: typeof CropAreaEvents
-      ModelIncludeConstructor?: typeof ModelInclude<CropAreaCoordinator>
-    } = {}
-  ) {
-    const {
-      CropAreaElementConstructor = CropAreaElement,
-      CropAreaStyleConstructor = CropAreaStyle,
-      CropAreaPositionConstructor = CropAreaPosition,
-      CropAreaEmitConstructor = CropAreaEmit,
-      CropAreaCoordinatesConstructor = CropAreaCoordinates,
-      CropAreaEventsConstructor = CropAreaEvents,
-      ModelIncludeConstructor = ModelInclude
-    } = constructors
-
-    this.elementItem = new CropAreaElementConstructor(element, naming)
-    this.style = new CropAreaStyleConstructor(element, naming)
-    this.position = new CropAreaPositionConstructor(props, this.style)
-    this.emit = new CropAreaEmitConstructor(this.position, emits)
-    this.coordinates = new CropAreaCoordinatesConstructor(this.elementItem, this.position, this.emit)
-    this.events = new CropAreaEventsConstructor(props, this.elementItem, this.coordinates)
-
-    new ModelIncludeConstructor('value', this.emits, this.position.item)
+export class CropArea extends DesignLogicAbstract<
+  HTMLElement,
+  CropAreaComponents,
+  CropAreaEmits,
+  CropAreaSlots,
+  CropAreaProps,
+  CropAreaConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CropAreaConstructors> = {
+    coordinates: {
+      item: CropAreaCoordinates,
+      parameters: () => [
+        () => this.i('elementItem'),
+        () => this.i('emit'),
+        () => this.i('position')
+      ]
+    },
+    elementItem: {
+      item: CropAreaElement,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    emit: {
+      item: CropAreaEmit,
+      parameters: () => [
+        () => this.i('position'),
+        this.emits
+      ]
+    },
+    events: {
+      item: CropAreaEvents,
+      parameters: () => [
+        this.props,
+        () => this.i('coordinates'),
+        () => this.i('elementItem')
+      ]
+    },
+    model: {
+      item: ModelInclude<CropAreaCoordinator>,
+      parameters: () => [
+        'value',
+        this.emits
+      ]
+    },
+    position: {
+      item: CropAreaPosition,
+      conditions: () => CropAreaPosition.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('model'),
+        () => this.i('style')
+      ]
+    },
+    style: {
+      item: CropAreaStyle,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    }
   }
 
   /**
@@ -103,9 +114,7 @@ export class CropArea {
    * @returns ARIA attributes list / список атрибутов ARIA
    */
   get aria(): AriaList {
-    return {
-      ...AriaStaticInclude.disabled(this.props.disabled)
-    }
+    return AriaStaticInclude.disabled(Boolean(this.props.disabled))
   }
 
   /**
@@ -114,10 +123,10 @@ export class CropArea {
    * Возвращает атрибуты привязки для корневого элемента.
    * @returns element binding properties / свойства привязки элемента
    */
-  get binds(): Record<string, any> {
+  get binds(): ConstrBind {
     return {
       ...this.aria,
-      ...this.events.binds
+      ...this.i('events').binds
     }
   }
 

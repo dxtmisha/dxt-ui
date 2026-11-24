@@ -71,6 +71,6 @@ export class ComponentOutlet extends DesignLogicAbstract<
    * @returns component instance or DOM element / экземпляр компонента или DOM-элемент
    */
   readonly getElement = <T = Element>(): T | undefined => {
-    return this.element.value as T | undefined
+    return (this.element.value ?? undefined) as T | undefined
   }
 }

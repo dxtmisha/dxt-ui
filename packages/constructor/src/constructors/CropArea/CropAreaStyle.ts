@@ -43,6 +43,16 @@ export class CropAreaStyle {
   }
 
   /**
+   * Returns the current wrapper DOM element if mounted.
+   *
+   * Возвращает текущий DOM-элемент обертки, если он смонтирован.
+   * @returns wrapper element or undefined / элемент обертки или undefined
+   */
+  getElement(): HTMLElement | undefined {
+    return this.element.value
+  }
+
+  /**
    * Updates CSS variables on the root DOM element.
    *
    * Обновляет CSS-переменные на корневом DOM-элементе.

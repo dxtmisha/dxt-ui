@@ -3,6 +3,7 @@ type DividerPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for Divider / Базовые свойства для Divider */
 export type DividerPropsBasic = {
 }
 

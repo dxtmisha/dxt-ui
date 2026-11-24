@@ -1,6 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { CropAreaPropsBasic } from './props'
-import type { CropAreaEmits } from './types'
 
 /**
  * Coordinate array format [top, right, bottom, left] in percentages /
@@ -9,20 +8,20 @@ import type { CropAreaEmits } from './types'
 export type CropAreaCoordinator = [number, number, number, number]
 
 /** Single edge direction / Направление отдельного края */
-export type CropAreaDirectionSingle
-  = | 'top'
-    | 'right'
-    | 'bottom'
-    | 'left'
+export type CropAreaDirectionSingle =
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
 
 /** Available crop manipulation directions / Доступные направления манипуляции кадрированием */
-export type CropAreaDirection
-  = | CropAreaDirectionSingle
-    | 'right-top'
-    | 'right-bottom'
-    | 'left-top'
-    | 'left-bottom'
-    | 'center'
+export type CropAreaDirection =
+  | CropAreaDirectionSingle
+  | 'right-top'
+  | 'right-bottom'
+  | 'left-top'
+  | 'left-bottom'
+  | 'center'
 
 /** Position index map item / Элемент карты индексов позиций */
 export type CropAreaPositionItem = {
@@ -63,4 +62,7 @@ export type CropAreaPropsInclude<
  * Emits interface for CropArea inclusion /
  * Интерфейс событий для включения CropArea
  */
-export type CropAreaEmitsInclude = CropAreaEmits
+export type CropAreaEmitsInclude = {
+  /** Event emitted during resizing or moving / Событие, вызываемое при изменении размера или перемещении */
+  resize: [parameters: CropAreaEventParameters]
+}

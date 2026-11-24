@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import './testWarnings'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, createApp, createSSRApp, defineComponent, h, nextTick, reactive } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ComponentStorage, type ComponentStorageReturn } from '@dxtmisha/functional'
@@ -23,13 +23,18 @@ function clearComponentStorage(): void {
   ;(ComponentStorage.getItem() as unknown as { items: Map<string, unknown> }).items.clear()
 }
 
+/** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
+const mountedCleanups: Array<() => void> = []
+
 describe('ComponentOutletDesign', () => {
   beforeEach(() => {
     clearComponentStorage()
   })
 
   afterEach(() => {
+    mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
     clearComponentStorage()
+    vi.restoreAllMocks()
   })
 
   describe('Standard functional requirements (Happy path)', () => {
@@ -133,6 +138,7 @@ describe('ComponentOutletDesign', () => {
       const container = document.createElement('div')
       const app = createApp(RootApp)
       app.mount(container)
+      mountedCleanups.push(() => app.unmount())
 
       const rootElement = container.firstElementChild as HTMLElement
       expect(rootElement).not.toBeNull()
@@ -158,8 +164,50 @@ describe('ComponentOutletDesign', () => {
       const resolvedInstance = exposedValue?.getElement<{ getCardTitle: () => string }>()
       expect(resolvedInstance?.getCardTitle()).toBe('Custom Title:NEW')
       expect(exposedValue?.elementHtml?.value).toBe(resolvedInstance)
+    })
 
-      app.unmount()
+    it('should compose event listeners from both attrs and component.props via mergeProps', () => {
+      const onAttrClick = vi.fn()
+      const onPropClick = vi.fn()
+
+      const ClickableCard = defineComponent({
+        setup() {
+          return () => h('button', { class: 'clickable-card' }, 'Trigger')
+        }
+      })
+
+      ComponentStorage.add('clickable-card', ClickableCard)
+
+      const props = reactive<ComponentOutletProps>({
+        name: 'clickable-card',
+        props: {
+          onClick: onPropClick
+        }
+      })
+
+      const OutletWrapper = defineComponent({
+        setup() {
+          const design = new ComponentOutletDesign('d1.componentOutlet', props)
+          return design.render()
+        }
+      })
+
+      const RootApp = defineComponent({
+        setup() {
+          return () => h(OutletWrapper, { onClick: onAttrClick })
+        }
+      })
+
+      const container = document.createElement('div')
+      const app = createApp(RootApp)
+      app.mount(container)
+      mountedCleanups.push(() => app.unmount())
+
+      const buttonElement = container.querySelector<HTMLButtonElement>('.clickable-card')!
+      buttonElement.click()
+
+      expect(onAttrClick).toHaveBeenCalledTimes(1)
+      expect(onPropClick).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -191,12 +239,11 @@ describe('ComponentOutletDesign', () => {
       const container = document.createElement('div')
       const app = createApp(RootApp)
       app.mount(container)
+      mountedCleanups.push(() => app.unmount())
 
       const fallbackElement = container.querySelector('.fallback-slot')
       expect(fallbackElement).not.toBeNull()
       expect(fallbackElement?.textContent).toBe('Fallback Content')
-
-      app.unmount()
     })
 
     it('should render empty output without errors when component is unregistered and no default slot is provided', () => {
@@ -212,15 +259,14 @@ describe('ComponentOutletDesign', () => {
       const container = document.createElement('div')
       const app = createApp(OutletWrapper)
       app.mount(container)
+      mountedCleanups.push(() => app.unmount())
 
       expect(container.firstElementChild).toBeNull()
       expect(container.textContent).toBe('')
-
-      app.unmount()
     })
   })
 
-  describe('Reactive switching, prop updates, and ItemConstructor override', () => {
+  describe('Reactive switching, key remounting, and ItemConstructor override', () => {
     it('should dynamically switch rendered component and fallback slot when props.name and props.props change', async () => {
       const FirstWidget = defineComponent({
         props: { label: { type: String, default: '' } },
@@ -266,6 +312,7 @@ describe('ComponentOutletDesign', () => {
       const container = document.createElement('div')
       const app = createApp(RootApp)
       app.mount(container)
+      mountedCleanups.push(() => app.unmount())
 
       expect(container.querySelector('.first-widget')?.textContent).toBe('Initial First')
 
@@ -283,11 +330,46 @@ describe('ComponentOutletDesign', () => {
       await nextTick()
       expect(container.querySelector('.second-widget')).toBeNull()
       expect(container.querySelector('.fallback-node')?.textContent).toBe('Fallback Node')
-
-      app.unmount()
     })
 
-    it('should support custom ItemConstructor override', () => {
+    it('should remount when switching between two storage names mapped to the same component', async () => {
+      let setupCount = 0
+
+      const SharedWidget = defineComponent({
+        props: { variant: { type: String, default: '' } },
+        setup(widgetProps) {
+          setupCount += 1
+          const instanceNumber = setupCount
+          return () => h('div', { class: 'shared-widget' }, `${widgetProps.variant}#${instanceNumber}`)
+        }
+      })
+
+      ComponentStorage.add('variant-a', SharedWidget, { variant: 'A' })
+      ComponentStorage.add('variant-b', SharedWidget, { variant: 'B' })
+
+      const props = reactive<ComponentOutletProps>({ name: 'variant-a' })
+
+      const OutletWrapper = defineComponent({
+        setup() {
+          const design = new ComponentOutletDesign('d1.componentOutlet', props)
+          return design.render()
+        }
+      })
+
+      const container = document.createElement('div')
+      const app = createApp(OutletWrapper)
+      app.mount(container)
+      mountedCleanups.push(() => app.unmount())
+
+      expect(container.querySelector('.shared-widget')?.textContent).toBe('A#1')
+
+      props.name = 'variant-b'
+      await nextTick()
+
+      expect(container.querySelector('.shared-widget')?.textContent).toBe('B#2')
+    })
+
+    it('should support custom ItemConstructor override including undefined component.props', () => {
       const InjectedComponent = defineComponent({
         setup() {
           return () => h('section', { class: 'injected-component' }, 'Injected')
@@ -303,7 +385,7 @@ describe('ComponentOutletDesign', () => {
         override get component(): ComponentStorageReturn | undefined {
           return {
             component: InjectedComponent,
-            props: { 'data-injected': 'true' }
+            props: undefined as unknown as ComponentStorageReturn['props']
           }
         }
       }
@@ -331,13 +413,11 @@ describe('ComponentOutletDesign', () => {
       const container = document.createElement('div')
       const app = createApp(HostComponent)
       app.mount(container)
+      mountedCleanups.push(() => app.unmount())
 
       const rootElement = container.querySelector('.injected-component')
       expect(rootElement).not.toBeNull()
-      expect(rootElement?.getAttribute('data-injected')).toBe('true')
       expect(rootElement?.textContent).toBe('Injected')
-
-      app.unmount()
     })
   })
 
