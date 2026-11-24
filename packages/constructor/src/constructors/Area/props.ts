@@ -3,7 +3,13 @@ type AreaPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Area component.
+ *
+ * Тип, описывающий основные свойства компонента Area.
+ */
 export type AreaPropsBasic = {
+  /** Default area slot name when no area is injected / Имя слота области по умолчанию при отсутствии инъекции */
   areaDefault?: string
 }
 

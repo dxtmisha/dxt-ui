@@ -1,23 +1,31 @@
-## Description
+import { Source } from '@storybook/addon-docs/blocks';
 
-A utility component for expanding content beyond the horizontal padding of its parent container using negative margins.
+The `Bleed` component is a layout wrapper that lets content expand beyond the horizontal padding of its parent container using negative inline margins.
 
-Bleed provides an elegant solution for creating "bleed" elements (such as full-width images or banners) inside width-constrained containers. The component automatically calculates the necessary negative margins based on the provided value, allowing content to visually break through parent padding boundaries without requiring layout restructuring.
+It renders a polymorphic HTML element configured via the `tag` prop (defaulting to `div`), merges external attributes, classes, styles, and listeners cleanly with `mergeProps`, and projects inner content through the `default` slot.
 
-**Key Features:**
+**Key features:**
 
-- Automatic application of negative horizontal margins
-- Support for custom HTML tag configuration
-- Preservation of the document's vertical flow
-- Integration with the design token system
-- Responsiveness through dynamic margin management
+- **Negative Horizontal Margins:** Expands child content symmetrically beyond parent container padding
+- **Polymorphic Root Tag:** Renders any semantic HTML tag (`div`, `section`, `article`, `figure`, `aside`) via `tag`
+- **Safe Attribute Merging:** Preserves external `class`, `style`, and event handlers alongside design tokens
+- **SSR & Hydration Safe:** Pure structural wrapper with zero browser-only runtime dependencies
 
-**Typical Usage Scenarios:**
+**Common use cases:**
 
-- Full-width images in articles and long-reads
-- Banners and breakout sections in text blocks
-- Horizontal dividers extending to the edges
-- Integration of third-party widgets requiring more space
-- Decorative elements breaking out of the grid
+- Full-width images, galleries, and figures inside padded article columns
+- Highlight banners and callout blocks spanning edge to edge
+- Horizontal dividers and scrollable strips breaking out of parent padding
 
-> Bleed simplifies complex layout management by allowing content to dynamically expand beyond parent container boundaries while maintaining layout integrity and semantic structure.
+<Source
+    code={`
+<template>
+  <Bleed tag="section">
+    <p>Full-bleed section content extending beyond container padding.</p>
+  </Bleed>
+</template>
+  `}
+    language="html"
+/>
+
+> Bleed provides a lightweight, semantic container for full-bleed layouts without disrupting vertical document flow.

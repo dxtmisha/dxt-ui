@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,19 +7,21 @@ import {
 
 import { Bleed } from './Bleed'
 
-import {
-  type BleedPropsBasic
+import type {
+  BleedPropsBasic
 } from './props'
-import {
-  type BleedClasses,
-  type BleedComponents,
-  type BleedEmits,
-  type BleedExpose,
-  type BleedSlots
+import type {
+  BleedClasses,
+  BleedComponents,
+  BleedEmits,
+  BleedExpose,
+  BleedSlots
 } from './types'
 
 /**
- * BleedDesign
+ * BleedDesign constructor class responsible for rendering the Bleed wrapper element.
+ *
+ * Класс-конструктор BleedDesign, отвечающий за рендеринг элемента-обёртки Bleed.
  */
 export class BleedDesign<
   COMP extends BleedComponents,
@@ -35,14 +37,17 @@ export class BleedDesign<
     CLASSES,
     P
   > {
+  /** Bleed logic orchestrator instance / Экземпляр оркестратора логики Bleed */
   protected readonly item: Bleed
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a BleedDesign instance.
+   *
+   * Конструктор для создания экземпляра BleedDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструктора
    */
   constructor(
     name: string,
@@ -67,9 +72,10 @@ export class BleedDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -79,6 +85,7 @@ export class BleedDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -94,25 +101,29 @@ export class BleedDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the Bleed root element and default slot.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга корневого элемента Bleed и слота по умолчанию.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }

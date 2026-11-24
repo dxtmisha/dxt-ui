@@ -6,7 +6,7 @@
 - **Исходный код:** [`Cell`](packages/d1/src/components/Ui/Cell) ([`constructor`](packages/constructor/src/constructors/Cell), [`demo`](packages/demo/src/pages/components/DemoCellPage.vue))
 - **Демо / целевой URL:** `http://localhost:3000/component-cell`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-23T07:54:52Z`
+- **Дата тестирования (UTC):** `2026-11-24T08:43:00Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Mobile 375x812)`
 - **Покрытие тест-кейсов:** 10 / 10 (`100%`)
 - **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1Cell` успешно прошёл все 10 визуальных, функциональных, адаптивных и A11y-сценариев; исправлены пропы демо (`:loading="{ visible: true, value: 65, max: 100 }"`, `<D1Skeleton :active="true">`, слот `#default` и видимое содержимое слота `#body`), зафиксировано `0` ошибок консоли и `0` предупреждений `[Vue warn]`.

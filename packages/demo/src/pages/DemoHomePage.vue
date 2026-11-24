@@ -16,10 +16,12 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Alert" name="component-alert"/>
         <DemoLink label="AlertLink" name="component-alert-link"/>
         <DemoLink label="Anchor" name="component-anchor"/>
+        <DemoLink label="Area" name="component-area"/>
         <DemoLink label="Arrow" name="component-arrow"/>
         <DemoLink label="Avatar" name="component-avatar"/>
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Bars" name="component-bars"/>
+        <DemoLink label="Bleed" name="component-bleed"/>
         <DemoLink label="Breadcrumbs" name="component-breadcrumbs"/>
         <DemoLink label="Bullet" name="component-bullet"/>
         <DemoLink label="Button" name="component-button"/>

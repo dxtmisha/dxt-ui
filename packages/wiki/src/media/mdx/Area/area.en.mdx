@@ -1,24 +1,21 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Area` component dynamically selects and renders a named slot matching the active area context provided by an ancestor or the `areaDefault` fallback property.
 
-A component for dynamic content switching based on the area context.
+It retrieves the nearest provided area value via injection (`getAreaValue`). When a named slot matching the resolved area exists as an own function property on the slots object, `Area` renders that slot; otherwise it safely falls back to the `default` slot without introducing an extra wrapper DOM element.
 
-Area acts as a smart slot switcher. It retrieves the current area value from the injection context or uses a default value. The component then renders the slot whose name matches the current area value. If no matching slot is found, the default slot is displayed.
+**Key features:**
 
-**Key Features:**
+- **Context-Driven Slot Selection:** Automatically selects a named slot matching the nearest injected area value
+- **Default Fallback (`areaDefault`):** Supports standalone usage or fallback resolution when no ancestor provides an area
+- **Nested Context Inheritance:** Seamlessly inherits outer area values when closer providers resolve to `undefined`
+- **Prototype-Safe Resolution:** Verifies own slot functions via `Object.hasOwn` and `isFunction`, preventing prototype-key lookups
 
-- Automatic slot selection based on the injected area value
-- Ability to specify a default area via the `areaDefault` property
-- Support for nested areas and context inheritance
-- Seamless integration into complex layouts (e.g., Window)
+**Common use cases:**
 
-**Typical Usage Scenarios:**
-
-- Creating dynamic headers and footers
-- Adapting content based on the component's placement
-- Organizing complex layouts with dynamic content zones
-- Implementing extension slots in base components
+- Adapting shared content blocks across header, sidebar, content, and footer layout zones
+- Building context-aware extension slots inside composite containers
+- Rendering conditional layout regions without extra wrapper elements
 
 <Source
     code={`
@@ -39,4 +36,4 @@ Area acts as a smart slot switcher. It retrieves the current area value from the
     language="html"
 />
 
-> Area is an essential tool for creating flexible and extensible interfaces, allowing components to react to their environment.
+> Area provides zero-wrapper, context-aware slot switching with deterministic SSR support and safe fallback resolution.

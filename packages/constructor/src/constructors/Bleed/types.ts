@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -28,7 +29,8 @@ export interface BleedExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface BleedSlots {
-  default? (props: any): any
+  /** Slot for default bleed content / Слот для основного содержимого Bleed */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**

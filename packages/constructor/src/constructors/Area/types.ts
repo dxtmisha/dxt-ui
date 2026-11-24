@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -27,7 +28,7 @@ export interface AreaExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export type AreaSlots = Record<string, (props: any) => any>
+export type AreaSlots = Record<string, (props?: Record<string, unknown>) => VNode[]>
 
 /**
  * Type describing subclasses.

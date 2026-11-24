@@ -20,9 +20,9 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Bleed v-bind="args">
+  <DesignComponent v-bind="args">
     <p>The component allows content to expand beyond the boundaries of the parent container by applying negative horizontal margins.</p>
-  </D1Bleed>
+  </DesignComponent>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

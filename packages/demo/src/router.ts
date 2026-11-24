@@ -11,10 +11,12 @@ import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoAlertPage from './pages/components/DemoAlertPage.vue'
 import DemoAlertLinkPage from './pages/components/DemoAlertLinkPage.vue'
 import DemoAnchorPage from './pages/components/DemoAnchorPage.vue'
+import DemoAreaPage from './pages/components/DemoAreaPage.vue'
 import DemoArrowPage from './pages/components/DemoArrowPage.vue'
 import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
+import DemoBleedPage from './pages/components/DemoBleedPage.vue'
 import DemoBreadcrumbsPage from './pages/components/DemoBreadcrumbsPage.vue'
 import DemoBulletPage from './pages/components/DemoBulletPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
@@ -125,6 +127,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoAnchorPage
   },
   {
+    path: '/component-area',
+    name: 'component-area',
+    component: DemoAreaPage
+  },
+  {
     path: '/component-arrow',
     name: 'component-arrow',
     component: DemoArrowPage
@@ -143,6 +150,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-bars',
     name: 'component-bars',
     component: DemoBarsPage
+  },
+  {
+    path: '/component-bleed',
+    name: 'component-bleed',
+    component: DemoBleedPage
   },
   {
     path: '/component-breadcrumbs',

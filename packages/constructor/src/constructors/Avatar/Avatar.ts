@@ -1,5 +1,9 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -14,113 +18,146 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { AvatarComponents, AvatarEmits, AvatarSlots } from './types'
 import type { AvatarProps } from './props'
 
+/** Avatar dependency constructors type / Тип конструкторов зависимостей Avatar */
+export type AvatarConstructors = {
+  /** Badge include constructor / Конструктор подключения бейджа */
+  badge: typeof BadgeInclude
+  /** Enabled state constructor / Конструктор состояния активности */
+  enabled: typeof EnabledInclude
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Image include constructor / Конструктор подключения изображения */
+  image: typeof ImageInclude
+  /** Label include constructor / Конструктор подключения метки */
+  label: typeof LabelInclude
+  /** Skeleton include constructor / Конструктор подключения скелетона */
+  skeleton: typeof SkeletonInclude
+}
+
 /**
  * Class representing the business logic and structure of the Avatar component.
- * It orchestrates label, image, badge, and skeletal loading states.
+ * It orchestrates label, image, badge, click events, and skeletal loading states.
  *
  * Класс, представляющий бизнес-логику и структуру компонента Avatar.
- * Координирует метку, изображение, бейдж и состояние скелетона при загрузке.
+ * Координирует метку, изображение, бейдж, события клика и состояние скелетона при загрузке.
  */
-export class Avatar {
-  /** Skeleton loading controller / Контроллер скелетона загрузки */
-  readonly skeleton: SkeletonInclude
-
-  /** Enabled state controller / Контроллер состояния активности */
-  readonly enabled: EnabledInclude
-
-  /** Image controller / Контроллер изображения */
-  readonly image: ImageInclude
-
-  /** Label controller / Контроллер метки */
-  readonly label: LabelInclude
-
-  /** Badge controller / Контроллер бейджа */
-  readonly badge: BadgeInclude
-
-  /** Click event controller / Контроллер события клика */
-  readonly event: EventClickInclude
-
-  /**
-   * Constructor for Avatar.
-   *
-   * Конструктор для Avatar.
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.BadgeIncludeConstructor class for working with badge / класс для работы с бейджем
-   * @param constructors.ImageIncludeConstructor class for working with image / класс для работы с изображением
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
-   * @param constructors.EnabledIncludeConstructor class for working with enabled state / класс для работы с состоянием активности
-   */
-  constructor(
-    protected readonly props: AvatarProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<AvatarComponents, AvatarProps>,
-    protected readonly slots?: AvatarSlots,
-    protected readonly emits?: ConstrEmit<AvatarEmits>,
-    constructors: {
-      BadgeIncludeConstructor?: typeof BadgeInclude
-      ImageIncludeConstructor?: typeof ImageInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      EnabledIncludeConstructor?: typeof EnabledInclude
-    } = {}
-  ) {
-    const {
-      BadgeIncludeConstructor = BadgeInclude,
-      ImageIncludeConstructor = ImageInclude,
-      LabelIncludeConstructor = LabelInclude,
-      SkeletonIncludeConstructor = SkeletonInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      EnabledIncludeConstructor = EnabledInclude
-    } = constructors
-
-    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classBackground'])
-    this.enabled = new EnabledIncludeConstructor(props)
-
-    this.image = new ImageIncludeConstructor(
-      props,
-      naming,
-      components,
-      emits,
-      () => ({
-        disabled: this.props.disabled
-      })
-    )
-
-    this.label = new LabelIncludeConstructor(
-      () => this.labelProps,
-      naming,
-      undefined,
-      slots,
-      undefined,
-      undefined,
-      undefined,
-      this.skeleton
-    )
-    this.badge = new BadgeIncludeConstructor(
-      props,
-      naming,
-      components,
-      { overlap: 'circular' }
-    )
-
-    this.event = new EventClickIncludeConstructor(
-      props,
-      () => this.enabled,
-      emits
-    )
+export class Avatar extends DesignLogicAbstract<
+  HTMLDivElement,
+  AvatarComponents,
+  AvatarEmits,
+  AvatarSlots,
+  AvatarProps,
+  AvatarConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<AvatarConstructors> = {
+    badge: {
+      item: BadgeInclude,
+      canCreate: () => BadgeInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        { overlap: 'circular' }
+      ]
+    },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    image: {
+      item: ImageInclude,
+      canCreate: () => ImageInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.emits,
+        () => ({
+          disabled: this.props.disabled
+        })
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.labelProps, this.slots),
+      parameters: () => [
+        () => this.labelProps,
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        undefined,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    }
   }
 
-  /** Tag type / Тип тега */
+  /**
+   * Returns HTML and ARIA attribute bindings for the root avatar element.
+   *
+   * Возвращает привязки HTML и ARIA-атрибутов для корневого элемента аватара.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    const isEnabled = this.i('enabled').isEnabled
+
+    return {
+      ...this.i('event').binds,
+      tabindex: isEnabled ? this.props.tabindex : undefined,
+      ...AriaStaticInclude.role(this.role),
+      ...AriaStaticInclude.label(this.props.ariaLabel ?? this.props.label)
+    }
+  }
+
+  /**
+   * Returns computed classes for the avatar root element.
+   *
+   * Возвращает вычисляемые классы для корневого элемента аватара.
+   * @returns classes object / объект классов
+   */
+  get classes(): ConstrClassObject {
+    return this.callInstance('skeleton', item => item.classes, {})
+  }
+
+  /**
+   * Returns the ARIA role for the root avatar element.
+   *
+   * Возвращает ARIA-роль для корневого элемента аватара.
+   * @returns role attribute or undefined / атрибут role или undefined
+   */
+  get role(): string | undefined {
+    if (this.tag === 'a') {
+      return undefined
+    }
+
+    return this.i('enabled').isEnabled ? 'button' : 'img'
+  }
+
+  /**
+   * Returns the root tag name (`a` when link props are provided, otherwise `div`).
+   *
+   * Возвращает имя корневого тега (`a` при наличии свойств ссылки, иначе `div`).
+   * @returns tag name / имя тега
+   */
   get tag(): string {
     if (
       this.props.to
@@ -133,29 +170,9 @@ export class Avatar {
   }
 
   /**
-   * Values for attributes (including ARIA attributes). /
-   * Возвращает значения для атрибутов (включая ARIA-атрибуты).
-   */
-  get binds(): Record<string, any> {
-    return {
-      ...this.event.binds,
-      tabindex: this.enabled.isEnabled ? this.props.tabindex : undefined,
-      ...AriaStaticInclude.role(this.enabled.isEnabled ? 'button' : 'img'),
-      ...AriaStaticInclude.label(this.props.ariaLabel ?? this.props.label)
-    }
-  }
-
-  /**
-   * Returns classes for the skeleton /
-   * Возвращает список классов для скелетона
-   */
-  get classes() {
-    return this.skeleton.classes
-  }
-
-  /**
-   * Returns properties for the label, taking into account the shortening flag. /
-   * Возвращает свойства для метки с учетом флага сокращения.
+   * Returns properties for the label, taking into account the shortening flag.
+   *
+   * Возвращает свойства для метки с учётом флага сокращения.
    * @returns label properties / свойства метки
    */
   protected get labelProps(): LabelProps {
@@ -166,19 +183,24 @@ export class Avatar {
   }
 
   /**
-   * Returns the label text, shortening it to initials if reduction is enabled. /
+   * Returns the label text, shortening it to initials if reduction is enabled.
+   *
    * Возвращает текст метки, сокращая его до инициалов, если включено сокращение.
    * @returns label or initials / метка или инициалы
    */
   protected getLabel(): string | number | undefined {
-    if (this.props.reduction) {
-      const value = (this.props.label && String(this.props.label).trim()) || undefined
+    if (
+      this.props.reduction
+      && this.props.label !== undefined
+      && this.props.label !== null
+    ) {
+      const value = String(this.props.label).trim()
 
       if (value) {
         return value
           .split(/\s+/)
           .slice(0, 2)
-          .map(word => word.charAt(0).toUpperCase())
+          .map(word => Array.from(word)[0]?.toUpperCase() ?? '')
           .join('')
       }
     }

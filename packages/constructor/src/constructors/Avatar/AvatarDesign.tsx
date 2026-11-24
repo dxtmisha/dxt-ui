@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -18,7 +18,7 @@ import type {
 
 /**
  * Design constructor class representing the visual assembly of the Avatar component.
- * It manages class lists, style lists, exposure options, and h-rendering.
+ * It manages class lists, style lists, exposure options, and VNode rendering.
  *
  * Класс конструктора дизайна, представляющий визуальную сборку компонента аватара.
  * Управляет списками классов, стилей, экспортом свойств и рендерингом виртуальных узлов.
@@ -79,8 +79,8 @@ export class AvatarDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
-    } as unknown as EXPOSE
+      ...this.item.i('event').expose
+    } as EXPOSE
   }
 
   /**
@@ -117,16 +117,22 @@ export class AvatarDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    return h(this.item.tag, {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, [
-      ...this.item.label.render(),
-      ...this.item.image.render(),
-      ...this.item.badge.render()
-    ])
+    return h(
+      this.item.tag,
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      [
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.item.callInstance('image', item => item.render(), []),
+        ...this.item.callInstance('badge', item => item.render(), [])
+      ]
+    )
   }
 }

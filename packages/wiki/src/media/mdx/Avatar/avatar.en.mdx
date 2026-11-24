@@ -1,55 +1,33 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Avatar` component visually represents users, entities, or brands with profile images, automatically reduced initials, status badges, skeleton placeholders, and interactive navigation.
 
-The Avatar component is a versatile UI element used to visually represent users, entities, or brands. It supports multiple presentation fallbacks, status badges, loading skeletons, and interactive states.
-
-When an image URL (`src`) is provided, Avatar attempts to load and render the image. If the image fails to load or isn't specified, the component dynamically falls back to text initials generated from the name `label` prop.
+When an `image` prop is supplied, `Avatar` delegates rendering to the integrated `Image` sub-component; otherwise it displays initials generated from `label` (respecting `reduction` and multi-byte Unicode graphemes) or custom `default` slot content. Interactive link props (`href`, `to`) switch the root element to a native `<a>` tag without conflicting `role="button"` attributes.
 
 **Key features:**
 
-- Fallback initials automatically generated from name labels (e.g., "John Doe" -> "JD")
-- Optional text shortening control (`reduction`) to enforce initials display
-- Image rendering support with error fallbacks
-- Built-in loading state with skeleton animation integration
-- Connected status badge support (e.g. status indicator dot)
-- Fully accessible keyboard navigation and ARIA attributes (e.g., dynamic roles)
-- Fully interactive link navigation supporting standard anchor tags, custom routing (`to` prop), and custom payloads.
+- **Unicode-Safe Initials Reduction:** Automatically condenses multi-word labels to up to two uppercase graphemes (controlled by `reduction`)
+- **Integrated Media & Badges:** Lazy-instantiated `Image` and circular `Badge` inclusions (`image`, `badge`, `badgeDot`)
+- **Zero-Duplication Skeleton Mode:** Applies background skeleton classes via `isSkeleton` inside a `Skeleton` container
+- **Accessible Interactive & Link Modes:** Resolves `role` (`button`, `img`, or native anchor link), `aria-label`, `tabindex`, and click events
 
 **Common use cases:**
 
-- User profile pictures in header menus
-- Chat participant list indicators
-- Team member list profiles
-- Contact lists and cards
-- Interactive user buttons triggering user menus
+- User profile avatars in navigation bars and account menus
+- Chat participant and team member lists with online indicator badges
+- Clickable profile links and interactive account triggers
 
 <Source
     code={`
-<script setup>
-const userImage = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80";
-</script>
-
 <template>
-  <div class="avatar-examples">
-    <!-- Initials fallback avatar -->
-    <Avatar label="John Doe" />
-
-    <!-- Initials with custom reduction disabled (shows full name or fallback) -->
-    <Avatar label="Иван Иванов" :reduction="false" />
-
-    <!-- Profile image avatar -->
-    <Avatar :src="userImage" label="User Profile" />
-
-    <!-- Avatar with active online status indicator -->
-    <Avatar label="Sarah Connor" :badge="{ overlap: 'circular', dot: true }" />
-
-    <!-- Interactive avatar link -->
-    <Avatar label="Link Profile" href="/profile" />
-  </div>
+  <Avatar label="John Doe" />
+  <Avatar label="John Doe" :reduction="false" />
+  <Avatar :image="userImage" label="User Profile" />
+  <Avatar label="Sarah Connor" badge-dot />
+  <Avatar label="Link Profile" href="/profile" />
 </template>
   `}
     language="html"
 />
 
-> Avatar is designed to act as a robust entry point for user identity display, gracefully degrading from profile pictures to initials while maintaining full ARIA accessibility.
+> Avatar combines lazy media and badge composition with Unicode-safe initials reduction and full WAI-ARIA accessibility.

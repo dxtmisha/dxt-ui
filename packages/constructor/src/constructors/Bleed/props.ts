@@ -3,8 +3,14 @@ type BleedPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Bleed component.
+ *
+ * Тип, описывающий основные свойства компонента Bleed.
+ */
 export type BleedPropsBasic = {
   // Style
+  /** HTML tag name for the root element / Имя HTML-тега для корневого элемента */
   tag?: string
 }
 

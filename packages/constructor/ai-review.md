@@ -166,7 +166,6 @@ src/constructors/MotionTransform/MotionTransform.ts
 src/constructors/MotionTransform/MotionTransformDesign.tsx
 src/constructors/Bars/BarsAction.ts
 src/constructors/Bars/BarsDesign.tsx
-src/constructors/Bars/BarsInclude.ts
 src/constructors/Mask/MaskScroll.ts
 src/constructors/Mask/MaskControl.ts
 src/constructors/Mask/MaskMatch.ts
@@ -262,3 +261,11 @@ src/constructors/Anchor/AnchorEvent.ts
 src/constructors/Anchor/AnchorIcon.ts
 src/constructors/Anchor/Anchor.ts
 src/constructors/Anchor/AnchorDesign.tsx
+src/functions/getAreaValue.ts
+src/constructors/Area/Area.ts
+src/constructors/Area/AreaDesign.tsx
+src/constructors/Avatar/Avatar.ts
+src/constructors/Avatar/AvatarDesign.tsx
+src/constructors/Bars/BarsInclude.ts
+src/constructors/Bleed/Bleed.ts
+src/constructors/Bleed/BleedDesign.tsx
