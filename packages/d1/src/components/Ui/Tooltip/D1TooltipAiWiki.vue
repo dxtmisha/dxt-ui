@@ -21,7 +21,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Tooltip open embedded v-bind="args">
+  <D1Tooltip open embedded in-dom v-bind="args">
     <template #control="{ binds }">
       <DxtTestButton v-bind="binds">Hover me</DxtTestButton>
     </template>

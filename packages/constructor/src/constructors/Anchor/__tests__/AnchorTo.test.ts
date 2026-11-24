@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
 import { goScrollSmooth } from '@dxtmisha/functional'
 import { AnchorTo } from '../AnchorTo'
-import { AnchorHref } from '../AnchorHref'
+import type { AnchorHref } from '../AnchorHref'
 
 vi.mock('@dxtmisha/functional', async () => {
-  const actual = await vi.importActual('@dxtmisha/functional') as any
+  const actual = await vi.importActual<typeof import('@dxtmisha/functional')>('@dxtmisha/functional')
   return {
     ...actual,
     goScrollSmooth: vi.fn()
@@ -14,21 +14,27 @@ vi.mock('@dxtmisha/functional', async () => {
 })
 
 describe('AnchorTo', () => {
-  let mockElement: HTMLElement
-  let mockHref: AnchorHref
+  let mockElement: HTMLAnchorElement
+  let mockHref: { get: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
-    mockElement = document.createElement('div')
-    mockHref = { get: () => '#anchor-key' } as any
+    mockElement = document.createElement('a')
+    mockHref = {
+      get: vi.fn().mockReturnValue('#anchor-key')
+    }
     vi.clearAllMocks()
   })
 
-  it('should scroll smoothly and replace history state', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should scroll smoothly and replace history state when element and href exist', () => {
     const replaceStateSpy = vi.spyOn(history, 'replaceState')
     const anchorTo = new AnchorTo(
       { behavior: 'smooth', block: 'start', inline: 'nearest', shift: 10 },
       ref(mockElement),
-      mockHref
+      () => mockHref as unknown as AnchorHref
     )
 
     anchorTo.go()
@@ -41,9 +47,33 @@ describe('AnchorTo', () => {
     expect(replaceStateSpy).toHaveBeenCalledWith({}, '', '#anchor-key')
   })
 
-  it('should do nothing if element value is not set', () => {
+  it('should handle numeric string shift and skip replaceState when href is undefined', () => {
     const replaceStateSpy = vi.spyOn(history, 'replaceState')
-    const anchorTo = new AnchorTo({}, ref(undefined), mockHref)
+    mockHref.get.mockReturnValue(undefined)
+
+    const anchorTo = new AnchorTo(
+      { shift: '0' },
+      ref(mockElement),
+      () => mockHref as unknown as AnchorHref
+    )
+
+    anchorTo.go()
+
+    expect(goScrollSmooth).toHaveBeenCalledWith(
+      mockElement,
+      { behavior: undefined, block: undefined, inline: undefined },
+      0
+    )
+    expect(replaceStateSpy).not.toHaveBeenCalled()
+  })
+
+  it('should do nothing when element ref is undefined', () => {
+    const replaceStateSpy = vi.spyOn(history, 'replaceState')
+    const anchorTo = new AnchorTo(
+      {},
+      ref(undefined),
+      () => mockHref as unknown as AnchorHref
+    )
 
     anchorTo.go()
 

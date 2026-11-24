@@ -2,88 +2,149 @@
 import { ref } from 'vue'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
+import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
 
-const anchorRef = ref<any>(null)
+const anchorRef = ref<{ go: () => void } | null>(null)
+const hiddenAnchorRef = ref<{ go: () => void } | null>(null)
 
-const goHandler = () => {
+const onGoVisible = (): void => {
   anchorRef.value?.go()
+}
+
+const onGoHidden = (): void => {
+  hiddenAnchorRef.value?.go()
 }
 </script>
 
 <template>
-  <DemoLinkBlack />
+  <DemoLinkBlack/>
   <D1Page label="Anchor">
     <D1Section>
-      <D1Group label="Basic Usage">
-        <div class="demo-anchor-page">
-          <D1Anchor label="Basic Anchor" name="basic" />
-          <p>This is a basic anchor. You can navigate to it using its name.</p>
-        </div>
-      </D1Group>
-
-      <D1Group label="With Navigation Link">
+      <D1Group label="Basic Usage & Navigation">
         <div class="demo-anchor-page">
           <D1Anchor
-            label="Section with Link"
-            name="link-section"
-            iconLink="link"
+            label="Basic Anchor"
+            name="basic"
+            label-id="demo-anchor-basic-label"
           />
-          <p>This anchor includes a link icon, which can be used to copy the link to this section if <code>isCopy</code> is enabled.</p>
+          <D1Anchor
+            label="Section with Smooth Center Scroll"
+            name="smooth-center"
+            behavior="smooth"
+            block="center"
+            inline="nearest"
+            :shift="80"
+          />
+          <D1Anchor name="slot-anchor">
+            Default Slot Heading Anchor
+          </D1Anchor>
         </div>
       </D1Group>
 
-      <D1Group label="Copy to Clipboard">
+      <D1Group label="Copy to Clipboard & Tooltip Options">
         <div class="demo-anchor-page">
           <D1Anchor
-            label="Copied Anchor"
+            label="Copy Link Anchor"
             name="copy-anchor"
-            isCopy
+            is-copy
+            :delay-hide="600"
           />
-          <p>Clicking the anchor label or link icon will copy the anchor's URL to the clipboard.</p>
+
+          <D1Anchor
+            name="copy-icon-only"
+            is-copy
+            text-copied-clipboard="Permalink copied!"
+          />
+
+          <D1Anchor
+            label="Custom Tooltip Props & Slot"
+            name="copy-custom-tooltip"
+            is-copy
+            tooltip-label="Copied"
+            :tooltip-attrs="{ arrowShow: true }"
+          >
+            <template #tooltip>
+              <span>Link saved to clipboard</span>
+            </template>
+          </D1Anchor>
         </div>
       </D1Group>
 
-      <D1Group label="Custom Icons">
+      <D1Group label="Custom Icons (String & Object)">
         <div class="demo-anchor-page">
           <D1Anchor
-            label="Custom Icons Anchor"
-            name="custom-icons"
-            iconTag="tag"
-            iconContentCopy="content_copy"
-            isCopy
+            label="Custom Link Icon"
+            name="custom-link-icon"
+            icon-link="bookmark"
+          />
+
+          <D1Anchor
+            label="Custom Copy & Active Icons"
+            name="custom-copy-icons"
+            icon-tag="share"
+            icon-content-copy="check"
+            is-copy
+          />
+
+          <D1Anchor
+            label="Object Icon Configuration"
+            name="object-icon"
+            :icon-link="{ icon: 'link', turn: true }"
           />
         </div>
       </D1Group>
 
-      <D1Group label="Programmatic Navigation (Expose)">
+      <D1Group label="Hidden Anchors & Programmatic Navigation (Expose)">
         <DemoFlex>
-          <D1Button label="Go to Target Anchor" @click="goHandler" />
+          <D1Button label="Go to Visible Target" @click="onGoVisible"/>
+          <D1Button label="Go to Hidden Target" @click="onGoHidden"/>
         </DemoFlex>
-        <div class="demo-anchor-page" style="margin-top: 20px;">
+
+        <DemoBox>
+          <div class="demo-anchor-page">
+            <D1Anchor
+              ref="anchorRef"
+              label="Programmatic Target Anchor"
+              name="target-visible"
+              shift="48"
+            />
+            <D1Anchor
+              ref="hiddenAnchorRef"
+              name="target-hidden"
+              hide
+              :shift="32"
+            />
+            <D1Anchor name="implicit-hidden"/>
+          </div>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Data Types & Boundaries">
+        <div class="demo-anchor-page">
+          <D1Anchor :label="0" name="numeric-zero"/>
           <D1Anchor
-            ref="anchorRef"
-            label="Target Anchor"
-            name="target"
+            label="Multilingual: Привет / Học tiếng Việt / 🚀 <img src=x onerror=alert(1)>"
+            name="unicode-safe"
           />
-          <p>This anchor is used as a target for programmatic navigation via the <code>go()</code> method.</p>
+          <D1Anchor label="Missing Name (Not Rendered)"/>
         </div>
       </D1Group>
 
       <D1Group label="Events">
         <div class="demo-anchor-page">
           <D1Anchor
-            label="Event Tracker"
+            label="Event Tracker Anchor"
             name="events"
-            isCopy
+            is-copy
             @click="onEvent('click')"
           />
+          <DemoValue :value="eventName"/>
         </div>
-        <DemoValue :value="eventName" />
       </D1Group>
     </D1Section>
   </D1Page>
@@ -93,6 +154,7 @@ const goHandler = () => {
 .demo-anchor-page {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 16px;
 }
 </style>

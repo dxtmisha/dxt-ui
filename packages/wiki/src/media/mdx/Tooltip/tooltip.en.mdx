@@ -1,39 +1,36 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying pop-up tooltips that provide additional information about an element on hover or focus.
+The `Tooltip` component displays contextual pop-up hints relative to a trigger element on hover, click, or programmatic state changes.
 
-Tooltip is automatically positioned relative to the target element and can contain a text description or custom content. The component supports configuring show and hide delays, and can be equipped with an indicator (arrow) for visual connection.
+It automatically calculates viewport-safe coordinates (`top` / `bottom` flipping and horizontal edge shifting), supports configurable show/hide delays, optional arrow pointers, interactive hover retention, inline `embedded` rendering, and complete WAI-ARIA bindings.
 
-**Key Features:**
+**Key features:**
 
-- Automatic positioning
-- Support for an indicator (arrow)
-- Configuration of delays (delay, delayHide)
-- Visibility control via properties or events
-- Slot support for content customization
-- Adaptability and accessibility
+- **Automatic Positioning:** Flips between bottom and top placement and shifts horizontally to stay inside the viewport
+- **Optional Arrow Indicator:** Integrates with the `Arrow` constructor via `arrowShow`, `arrowPosition`, and `arrowAttrs`
+- **Configurable Delays:** Fine-grained show delay (`delay`) and automatic hide timeout (`delayHide`)
+- **Controlled & Programmatic Modes:** Control visibility via `:open`, `@tooltip`, or exposed `toggle(open, flash)`
+- **Interactive & Embedded Modes:** Keep tooltip open on hover (`interactive`) or render inline without `Teleport` (`embedded` + `inDom`)
+- **Rich Content & Slots:** Supports `label`, `description` (including numeric `0`), `#control`, `#default`, `#description`, and `#body` slots
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Explanations for icons and buttons
-- Displaying full text for truncated elements
-- Contextual hints for input fields
-- Additional information in the interface
+- Contextual explanations for icon-only buttons and controls
+- Displaying full text for truncated headings or labels
+- Brief helper tips paired with form controls or anchor copy actions
+- Non-blocking interactive hint cards with links or structured body content
 
 <Source
     code={`
-<script setup>
-import { Tooltip } from 'dxt-ui'
-</script>
-
 <template>
-  <div class="p-4">
-    <Tooltip label="Tooltip text">
-      <button>Hover me</button>
-    </Tooltip>
-  </div>
+  <Tooltip label="Tooltip title" description="Additional context" arrow-show>
+    <template #control="{ binds }">
+      <button v-bind="binds" type="button">Hover me</button>
+    </template>
+  </Tooltip>
 </template>
   `}
     language="html"
 />
 
+> Tooltip combines viewport-aware floating placement, lazy lifecycle orchestration, and WAI-ARIA compliance for lightweight contextual hints.

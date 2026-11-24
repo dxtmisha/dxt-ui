@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -6,7 +6,6 @@ import {
 } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Anchor } from './Anchor'
 
 import type { TooltipControl } from '../Tooltip'
@@ -22,7 +21,9 @@ import {
 } from './types'
 
 /**
- * AnchorDesign
+ * AnchorDesign constructor class responsible for assembling and rendering the Anchor component.
+ *
+ * Класс-конструктор AnchorDesign, отвечающий за сборку и рендеринг компонента Anchor.
  */
 export class AnchorDesign<
   COMP extends AnchorComponents,
@@ -30,7 +31,7 @@ export class AnchorDesign<
   CLASSES extends AnchorClasses,
   P extends AnchorPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLAnchorElement,
     COMP,
     AnchorEmits,
     EXPOSE,
@@ -38,14 +39,15 @@ export class AnchorDesign<
     CLASSES,
     P
   > {
+  /** Anchor logic orchestrator instance / Экземпляр оркестратора логики Anchor */
   protected readonly item: Anchor
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the anchor/ класс для работы с якорем
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the anchor / класс для работы с якорем
    */
   constructor(
     name: string,
@@ -70,13 +72,14 @@ export class AnchorDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
     return {
-      go: () => this.item.to.go()
+      go: this.item.go
     } as EXPOSE
   }
 
@@ -84,6 +87,7 @@ export class AnchorDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -100,6 +104,7 @@ export class AnchorDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -109,9 +114,10 @@ export class AnchorDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes or undefined / массив VNode или undefined
    */
   protected initRender(): VNode[] | undefined {
-    if (this.item.href.is()) {
+    if (this.item.isHref()) {
       if (this.item.isHide()) {
         return this.renderItemHide()
       }
@@ -130,12 +136,15 @@ export class AnchorDesign<
    * Rendering the tooltip.
    *
    * Рендеринг подсказки.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderTooltip = (): VNode[] => {
-    return this.item.tooltip.render(
-      {
+    return this.item.callInstance(
+      'tooltip',
+      item => item.render({
         control: (props: TooltipControl): VNode[] => this.renderItem(props)
-      }
+      }),
+      () => this.renderItem()
     )
   }
 
@@ -143,7 +152,8 @@ export class AnchorDesign<
    * Rendering the main item.
    *
    * Рендеринг основного элемента.
-   * @param props additional properties/ дополнительные свойства
+   * @param props additional properties / дополнительные свойства
+   * @returns array of VNodes / массив VNode
    */
   readonly renderItem = (
     props?: TooltipControl
@@ -158,12 +168,18 @@ export class AnchorDesign<
     }
 
     return [
-      h('a', {
-        ...this.getAttrs(),
-        ...this.item.binds,
-        class: classes,
-        style: this.styles?.value
-      }, this.renderChildren())
+      h(
+        'a',
+        mergeProps(
+          this.getAttrs(),
+          this.item.binds,
+          {
+            class: classes,
+            style: this.styles?.value
+          }
+        ),
+        this.renderChildren()
+      )
     ]
   }
 
@@ -171,46 +187,34 @@ export class AnchorDesign<
    * Rendering the hidden item.
    *
    * Рендеринг скрытого элемента.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderItemHide = (): VNode[] => {
     return [
-      h('a', {
-        ...this.getAttrs(),
-        key: 'main-hide',
-        name: this.props.name,
-        ...AriaStaticInclude.hidden()
-      })
+      h(
+        'a',
+        mergeProps(
+          this.getAttrs(),
+          this.item.bindsHide
+        )
+      )
     ]
-  }
-
-  /**
-   * Rendering an icon if it is set.
-   *
-   * Рендеринг иконки, если она задана.
-   */
-  readonly renderIcon = (): VNode[] => {
-    if (this.item.icon.is()) {
-      return this.components?.render('icon', this.item.icon.binds) ?? []
-    }
-
-    return []
   }
 
   /**
    * Rendering children elements.
    *
    * Рендеринг дочерних элементов.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderChildren = (): VNode[] => {
-    const children: VNode[] = []
-
     if (!this.props.hide) {
-      children.push(
-        ...this.renderIcon(),
-        ...this.item.label.render()
-      )
+      return [
+        ...this.item.callInstance('icon', item => this.components?.render('icon', item.binds) ?? [], []),
+        ...this.item.callInstance('label', item => item.render(), [])
+      ]
     }
 
-    return children
+    return []
   }
 }

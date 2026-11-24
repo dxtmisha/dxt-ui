@@ -1,12 +1,12 @@
 // ai-none
 
 import type { VNode } from 'vue'
+import type { ConstrBind, DesignComponents, DesignName } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
-import type { DesignComponents, DesignName } from '@dxtmisha/functional'
 
-import type { TooltipPropsInclude, TooltipSlotsInclude } from './basicTypes'
+import type { TooltipComponentInclude, TooltipPropsInclude, TooltipSlotsInclude } from './basicTypes'
 import type { TooltipExpose, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
@@ -25,10 +25,33 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   TooltipExpose,
   TooltipSlots
 > {
+  /**
+   * Checks whether tooltip content is configured via props, slots, or extra attributes.
+   *
+   * Проверяет, задано ли содержимое тултипа через свойства, слоты или дополнительные атрибуты.
+   * @param props input properties / входные свойства
+   * @param slots tooltip slots / слоты тултипа
+   * @param extra additional tooltip attributes / дополнительные атрибуты тултипа
+   * @returns true if tooltip content is present / true, если содержимое тултипа присутствует
+   */
+  static is(
+    props?: TooltipPropsInclude,
+    slots?: TooltipSlotsInclude,
+    extra?: Partial<ConstrBind<TooltipProps>>
+  ): boolean {
+    return Boolean(
+      props?.tooltipLabel
+      || props?.tooltipDescription
+      || extra?.label
+      || extra?.description
+      || slots?.tooltip
+    )
+  }
+
   /** Component sub-name / Дополнительное имя компонента */
-  protected readonly name = 'tooltip'
+  protected override readonly name = 'tooltip'
   /** Property name for attributes / Имя свойства для атрибутов */
-  protected readonly propsAttrsName = 'tooltipAttrs'
+  protected override readonly propsAttrsName = 'tooltipAttrs'
 
   /**
    * Constructor for initializing TooltipInclude properties.
@@ -44,9 +67,9 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   constructor(
     props: ComponentIncludeProps<TooltipPropsInclude>,
     naming: DesignName,
-    components?: DesignComponents<any, TooltipPropsInclude>,
+    components?: DesignComponents<TooltipComponentInclude, TooltipPropsInclude>,
     protected readonly slots?: TooltipSlotsInclude,
-    extra?: ComponentIncludeExtra<any>,
+    extra?: ComponentIncludeExtra<TooltipProps>,
     index?: string
   ) {
     super(props, naming, components, extra, index)
@@ -56,30 +79,13 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    * Checks whether the component should be displayed.
    *
    * Проверяет, нужно ли отображать компонент.
+   * @returns true if tooltip should be displayed / true, если тултип должен отображаться
    */
   override get is(): boolean {
-    const props = this.getProps()
-    const extra = this.getExtra()
-
     return Boolean(
       this.components?.is('tooltip')
-      && (
-        props.tooltipLabel
-        || props.tooltipDescription
-        || extra?.label
-        || extra?.description
-        || this.slots?.tooltip
-      )
+      && TooltipInclude.is(this.getProps(), this.slots, this.getExtra())
     )
-  }
-
-  /**
-   * Open the tooltip.
-   *
-   * Открыть подсказку.
-   */
-  open() {
-    this.toggle(true)
   }
 
   /**
@@ -87,30 +93,17 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    *
    * Закрыть подсказку.
    */
-  close() {
+  close(): void {
     this.toggle(false)
   }
 
   /**
-   * Toggle the tooltip.
+   * Open the tooltip.
    *
-   * Переключить подсказку.
-   * @param open open status / статус открытия
+   * Открыть подсказку.
    */
-  toggle(open: boolean): void {
-    this.getElement()?.toggle(open)
-  }
-
-  protected toBinds() {
-    const extra = this.getExtra()
-    const props = this.getProps()
-
-    return {
-      ...super.toBinds(),
-
-      label: props.tooltipLabel ?? extra?.label,
-      description: props.tooltipDescription ?? extra?.description
-    }
+  open(): void {
+    this.toggle(true)
   }
 
   /**
@@ -125,16 +118,52 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    */
   override readonly render = (
     slotsChildren?: TooltipSlots,
-    attrs?: any,
+    attrs?: Partial<ConstrBind<TooltipProps>>,
     isShow: () => boolean = () => this.is,
     index?: string
-  ): VNode[] => this.initRender(
-    {
-      ...slotsChildren,
-      body: slotsChildren?.body ?? this.slots?.tooltip
-    },
-    attrs,
-    isShow,
-    index
-  )
+  ): VNode[] => {
+    const slots: TooltipSlots = {
+      ...slotsChildren
+    }
+    const body = slotsChildren?.body ?? this.slots?.tooltip
+
+    if (body) {
+      slots.body = body
+    }
+
+    return this.initRender(
+      slots,
+      attrs,
+      isShow,
+      index
+    )
+  }
+
+  /**
+   * Toggle the tooltip.
+   *
+   * Переключить подсказку.
+   * @param open open status / статус открытия
+   * @param flash immediate display without delay / мгновенное отображение без задержки
+   */
+  toggle(open: boolean, flash?: boolean): void {
+    this.getElement()?.toggle(open, flash)
+  }
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds(): Partial<ConstrBind<TooltipProps>> {
+    const extra = this.getExtra()
+    const props = this.getProps()
+
+    return {
+      ...super.toBinds(),
+      label: props.tooltipLabel ?? extra?.label,
+      description: props.tooltipDescription ?? extra?.description
+    }
+  }
 }

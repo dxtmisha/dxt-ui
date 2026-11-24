@@ -1,8 +1,22 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `tooltip`
 
-Событие срабатывает при изменении состояния видимости (открытие/закрытие).
+Срабатывает при завершении открытия или закрытия подсказки.
 
 **Параметры:**
-- `open: boolean` — состояние открытия (`true` - открыто, `false` - закрыто)
 
+- `open: boolean` — состояние видимости (`true` — открыта, `false` — закрыта)
 
+<Source
+    code={`
+<template>
+  <Tooltip label="Подсказка статуса" @tooltip="(open) => console.log('tooltip:', open)">
+    <template #control="{ binds }">
+      <button v-bind="binds" type="button">Наведите курсор</button>
+    </template>
+  </Tooltip>
+</template>
+  `}
+    language="html"
+/>

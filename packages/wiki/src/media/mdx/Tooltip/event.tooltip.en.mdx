@@ -1,7 +1,22 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `tooltip`
 
-The event is triggered when the visibility state changes (open/close).
+Triggered when the tooltip visibility state finishes opening or closing.
 
 **Parameters:**
-- `open: boolean` — open state (`true` - open, `false` - closed)
 
+- `open: boolean` — visibility state (`true` when opened, `false` when closed)
+
+<Source
+    code={`
+<template>
+  <Tooltip label="Status hint" @tooltip="(open) => console.log('tooltip:', open)">
+    <template #control="{ binds }">
+      <button v-bind="binds" type="button">Hover me</button>
+    </template>
+  </Tooltip>
+</template>
+  `}
+    language="html"
+/>

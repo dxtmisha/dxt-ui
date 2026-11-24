@@ -1,39 +1,38 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for creating anchor links with smooth scrolling and URL copying capabilities.
+The `Anchor` component creates interactive anchor links with smooth scrolling, hash synchronization, and optional click-to-copy permalink feedback.
 
-Anchor provides interactive anchor links for navigating through page sections. The component automatically handles clicks, updates the URL address, supports smooth scrolling with customizable offset, and integrates with Tooltip for displaying copy notifications. It can work both in regular navigation mode and in link copying mode to clipboard.
+It automatically handles navigation clicks, updates the URL hash via the History API without reloading the page, auto-scrolls on mount when `location.hash` matches, and integrates with `Tooltip` and `Icon` for copy-to-clipboard mode.
 
 **Key features:**
 
-- Smooth scrolling to target element with configurable parameters
-- Automatic navigation on page load based on URL hash
-- Copy mode for copying full link to clipboard
-- Tooltip integration for copy notifications
-- Icon support for visual styling
-- Hidden anchors for creating invisible navigation points
-- URL updates via history API without page reload
+- **Smooth Scrolling:** Configurable offset (`shift`) and scroll alignment (`behavior`, `block`, `inline`)
+- **Hash Auto-Navigation:** Automatically scrolls into view on mount when the URL hash matches the anchor `name`
+- **Clipboard Copy Mode (`isCopy`):** Copies the full URL with hash to clipboard, swaps active icon, and opens a temporary tooltip
+- **Keyboard Accessibility:** Supports `aria-current="page"` in navigation mode and `role="button"` with `Enter`/`Space` activation in copy mode
+- **Hidden Scroll Targets (`hide`):** Creates invisible `aria-hidden="true"` anchor points reachable via `#hash` or exposed `go()`
+- **Flexible Icons & Slots:** Supports string or object `IconValue` (`iconLink`, `iconTag`, `iconContentCopy`) and `#default` / `#tooltip` slots
 
-**Typical use cases:**
+**Common use cases:**
 
-- Navigation through documentation sections and long pages
-- Anchors for headings with copy link button
-- Table of contents and page navigation menu
-- "Share link to section" buttons
-- Creating invisible anchor points for programmatic navigation
+- Documentation section headings with copyable permalink icons
+- In-page tables of contents and jump navigation
+- Invisible scroll targets for programmatic `go()` navigation
 
 <Source
     code={`
 <template>
-  <!-- Regular anchor -->
-  <Anchor name="section-1" text="Go to section" />
+  <!-- Regular navigation anchor -->
+  <Anchor name="section-1" label="Go to section" />
 
-  <!-- With copy mode -->
-  <Anchor name="section-2" text="Copy link" isCopy />
+  <!-- Copy permalink mode -->
+  <Anchor name="section-2" label="Copy link" is-copy />
 
-  <!-- Hidden anchor -->
+  <!-- Hidden programmatic target -->
   <Anchor name="section-3" hide />
 </template>
   `}
     language="html"
 />
+
+> Anchor unifies smooth hash navigation, clipboard permalink sharing, and accessible invisible scroll targets in a single lightweight component.

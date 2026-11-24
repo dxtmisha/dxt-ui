@@ -34,7 +34,7 @@ export class TooltipStyle {
     x: number,
     y: number,
     shift: number
-  ) {
+  ): void {
     const element = this.element.value
 
     if (element) {
@@ -46,16 +46,16 @@ export class TooltipStyle {
   }
 
   /**
-   * Changes the preparation status.
+   * Changes the move status.
    *
-   * Изменяет статус подготовки.
+   * Изменяет статус перемещения.
    * @param status the value of the current state / значение текущего состояния
    */
-  setPreparation(status: boolean) {
+  setMove(status: boolean): void {
     const element = this.element.value
 
     if (element) {
-      element.classList.toggle(this.naming.getStatusClass('preparation'), status)
+      element.classList.toggle(this.naming.getStatusClass('move'), status)
     }
   }
 
@@ -65,7 +65,21 @@ export class TooltipStyle {
    * Изменяет статус подготовки.
    * @param status the value of the current state / значение текущего состояния
    */
-  setShow(status: boolean) {
+  setPreparation(status: boolean): void {
+    const element = this.element.value
+
+    if (element) {
+      element.classList.toggle(this.naming.getStatusClass('preparation'), status)
+    }
+  }
+
+  /**
+   * Changes the display status.
+   *
+   * Изменяет статус показа.
+   * @param status the value of the current state / значение текущего состояния
+   */
+  setShow(status: boolean): void {
     const element = this.element.value
 
     if (element) {
@@ -78,31 +92,18 @@ export class TooltipStyle {
   }
 
   /**
-   * Changes the move status.
-   *
-   * Изменяет статус перемещения.
-   * @param status the value of the current state / значение текущего состояния
-   */
-  setMove(status: boolean) {
-    const element = this.element.value
-
-    if (element) {
-      element.classList.toggle(this.naming.getStatusClass('move'), status)
-    }
-  }
-
-  /**
    * Reset all records to the initial state.
    *
    * Сброс всех записей до начального состояния.
    */
-  reset() {
+  reset(): void {
     const element = this.element.value
 
     if (element) {
       element.classList.remove(this.naming.getStatusClass('top'))
       element.classList.remove(this.naming.getStatusClass('preparation'))
       element.classList.remove(this.naming.getStatusClass('show'))
+      element.classList.remove(this.naming.getStatusClass('move'))
 
       element.style.removeProperty(this.naming.getStyle('x'))
       element.style.removeProperty(this.naming.getStyle('y'))
@@ -115,12 +116,13 @@ export class TooltipStyle {
    *
    * Сбрасывает состояние показа.
    */
-  resetShow() {
+  resetShow(): void {
     const element = this.element.value
 
     if (element) {
       element.classList.remove(this.naming.getStatusClass('preparation'))
       element.classList.remove(this.naming.getStatusClass('show'))
+      element.classList.remove(this.naming.getStatusClass('move'))
     }
   }
 }

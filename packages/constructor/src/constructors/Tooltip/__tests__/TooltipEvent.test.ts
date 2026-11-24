@@ -2,19 +2,27 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
 import { TooltipEvent } from '../TooltipEvent'
+import type { TooltipClassesData } from '../TooltipClassesData'
+import type { TooltipOpen } from '../TooltipOpen'
+import type { TooltipStatus } from '../TooltipStatus'
+import type { TooltipStyle } from '../TooltipStyle'
 import type { TooltipProps } from '../props'
 
 describe('TooltipEvent', () => {
   let mockProps: Partial<TooltipProps>
-  let mockClasses: any
-  let mockStyle: any
-  let mockStatus: any
-  let mockOpen: any
+  let mockClasses: { findControlByTarget: ReturnType<typeof vi.fn> }
+  let mockStyle: { setMove: ReturnType<typeof vi.fn> }
+  let mockStatus: { open: ReturnType<typeof ref<boolean>> }
+  let mockOpen: { toggle: ReturnType<typeof vi.fn>, noHide: ReturnType<typeof vi.fn> }
   let tooltipEvent: TooltipEvent
 
   beforeEach(() => {
     vi.useFakeTimers()
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => callback(0))
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0)
+      return 1
+    })
+    vi.stubGlobal('cancelAnimationFrame', vi.fn())
 
     mockProps = {
       embedded: false
@@ -34,73 +42,73 @@ describe('TooltipEvent', () => {
     }
 
     tooltipEvent = new TooltipEvent(
-      mockProps as TooltipProps,
-      mockClasses,
-      mockStyle,
-      mockStatus,
-      mockOpen
+      mockProps as Readonly<TooltipProps>,
+      () => mockClasses as unknown as TooltipClassesData,
+      () => mockOpen as unknown as TooltipOpen,
+      () => mockStatus as unknown as TooltipStatus,
+      () => mockStyle as unknown as TooltipStyle
     )
+    tooltipEvent.onMounted()
   })
 
   afterEach(() => {
+    tooltipEvent.onUnmounted()
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
     vi.useRealTimers()
   })
 
   describe('onClick', () => {
-    it('should toggle tooltip open state when clicking', () => {
+    it('should toggle tooltip open and close states when clicking', () => {
       mockStatus.open.value = false
       tooltipEvent.onClick()
-
       expect(mockOpen.toggle).toHaveBeenCalledWith(true, true)
-    })
 
-    it('should toggle tooltip close state when clicking and open is true', () => {
       mockStatus.open.value = true
       tooltipEvent.onClick()
-
       expect(mockOpen.toggle).toHaveBeenCalledWith(false, true)
     })
 
     it('should do nothing on click if component is embedded', () => {
       mockProps.embedded = true
       tooltipEvent.onClick()
-
       expect(mockOpen.toggle).not.toHaveBeenCalled()
+    })
+
+    it('should ignore click during mouseover debounce window and re-enable after 640ms', async () => {
+      const mockElement = document.createElement('div')
+      mockClasses.findControlByTarget.mockReturnValue(mockElement)
+
+      tooltipEvent.onMouseover({ target: mockElement } as unknown as MouseEvent)
+      await Promise.resolve()
+      mockOpen.toggle.mockClear()
+
+      tooltipEvent.onClick()
+      expect(mockOpen.toggle).not.toHaveBeenCalled()
+
+      vi.advanceTimersByTime(640)
+      tooltipEvent.onClick()
+      expect(mockOpen.toggle).toHaveBeenCalledWith(true, true)
     })
   })
 
   describe('onMouseover', () => {
-    it('should call open toggle with true if mouse target is control', () => {
+    it('should call open toggle with true if mouse target is control and false otherwise', () => {
       const mockElement = document.createElement('div')
-      const mouseEvent = { target: mockElement } as unknown as MouseEvent
       mockClasses.findControlByTarget.mockReturnValue(mockElement)
 
-      tooltipEvent.onMouseover(mouseEvent)
-
+      tooltipEvent.onMouseover({ target: mockElement } as unknown as MouseEvent)
       expect(mockClasses.findControlByTarget).toHaveBeenCalledWith(mockElement)
       expect(mockOpen.toggle).toHaveBeenCalledWith(true)
-    })
 
-    it('should call open toggle with false if mouse target is not control', () => {
-      const mockElement = document.createElement('div')
-      const mouseEvent = { target: mockElement } as unknown as MouseEvent
       mockClasses.findControlByTarget.mockReturnValue(undefined)
-
-      tooltipEvent.onMouseover(mouseEvent)
-
-      expect(mockClasses.findControlByTarget).toHaveBeenCalledWith(mockElement)
+      tooltipEvent.onMouseover({ target: mockElement } as unknown as MouseEvent)
       expect(mockOpen.toggle).toHaveBeenCalledWith(false)
     })
 
     it('should do nothing on mouseover if component is embedded', () => {
       mockProps.embedded = true
-      const mockElement = document.createElement('div')
-      const mouseEvent = { target: mockElement } as unknown as MouseEvent
-
-      tooltipEvent.onMouseover(mouseEvent)
-
+      tooltipEvent.onMouseover({ target: document.createElement('div') } as unknown as MouseEvent)
       expect(mockOpen.toggle).not.toHaveBeenCalled()
     })
   })
@@ -115,60 +123,50 @@ describe('TooltipEvent', () => {
   describe('onMouseout', () => {
     it('should toggle tooltip state based on relatedTarget control check', () => {
       const mockElement = document.createElement('div')
-      const mouseEvent = { relatedTarget: mockElement } as unknown as MouseEvent
       mockClasses.findControlByTarget.mockReturnValue(mockElement)
 
-      tooltipEvent.onMouseout(mouseEvent)
-
+      tooltipEvent.onMouseout({ relatedTarget: mockElement } as unknown as MouseEvent)
       expect(mockClasses.findControlByTarget).toHaveBeenCalledWith(mockElement)
       expect(mockOpen.toggle).toHaveBeenCalledWith(true)
     })
 
-    it('should do nothing on mouseout if relatedTarget is missing', () => {
-      const mouseEvent = { relatedTarget: null } as unknown as MouseEvent
-
-      tooltipEvent.onMouseout(mouseEvent)
-
+    it('should do nothing on mouseout if relatedTarget is missing or embedded is true', () => {
+      tooltipEvent.onMouseout({ relatedTarget: null } as unknown as MouseEvent)
       expect(mockOpen.toggle).not.toHaveBeenCalled()
-    })
 
-    it('should do nothing on mouseout if component is embedded', () => {
       mockProps.embedded = true
-      const mockElement = document.createElement('div')
-      const mouseEvent = { relatedTarget: mockElement } as unknown as MouseEvent
-
-      tooltipEvent.onMouseout(mouseEvent)
-
+      tooltipEvent.onMouseout({ relatedTarget: document.createElement('div') } as unknown as MouseEvent)
       expect(mockOpen.toggle).not.toHaveBeenCalled()
     })
   })
 
   describe('onTransitionend', () => {
-    it('should set style move status to true if transition property is transform and tooltip is open', () => {
+    it('should set style move status to true only when propertyName is transform and open is true', () => {
       mockStatus.open.value = true
-      const transitionEvent = { propertyName: 'transform' } as unknown as TransitionEvent
-
-      tooltipEvent.onTransitionend(transitionEvent)
-
+      tooltipEvent.onTransitionend({ propertyName: 'transform' } as TransitionEvent)
       expect(mockStyle.setMove).toHaveBeenCalledWith(true)
-    })
 
-    it('should not set style move status if transition property is not transform', () => {
-      mockStatus.open.value = true
-      const transitionEvent = { propertyName: 'opacity' } as unknown as TransitionEvent
-
-      tooltipEvent.onTransitionend(transitionEvent)
-
+      mockStyle.setMove.mockClear()
+      tooltipEvent.onTransitionend({ propertyName: 'opacity' } as TransitionEvent)
       expect(mockStyle.setMove).not.toHaveBeenCalled()
-    })
 
-    it('should not set style move status if tooltip is closed', () => {
       mockStatus.open.value = false
-      const transitionEvent = { propertyName: 'transform' } as unknown as TransitionEvent
-
-      tooltipEvent.onTransitionend(transitionEvent)
-
+      tooltipEvent.onTransitionend({ propertyName: 'transform' } as TransitionEvent)
       expect(mockStyle.setMove).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('lifecycle cleanup', () => {
+    it('should ignore events and clear pending frames/timers after onUnmounted', () => {
+      tooltipEvent.onUnmounted()
+
+      tooltipEvent.onClick()
+      tooltipEvent.onMouseover({ target: document.createElement('div') } as unknown as MouseEvent)
+      tooltipEvent.onMouseout({ relatedTarget: document.createElement('div') } as unknown as MouseEvent)
+      tooltipEvent.onMouseoverTooltip()
+
+      expect(mockOpen.toggle).not.toHaveBeenCalled()
+      expect(mockOpen.noHide).not.toHaveBeenCalled()
     })
   })
 })

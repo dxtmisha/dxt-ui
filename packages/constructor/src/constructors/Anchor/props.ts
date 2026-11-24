@@ -5,11 +5,21 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { TextCopiedClipboardPropsInclude } from '../../types/textTypes'
 import type { AnchorScrollProps } from './basicTypes'
 
+/**
+ * Component token properties.
+ *
+ * Токен-свойства компонента.
+ */
 export type AnchorPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties for the anchor component.
+ *
+ * Базовые свойства для компонента якоря.
+ */
 export type AnchorPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Tooltip extends TooltipProps = TooltipProps

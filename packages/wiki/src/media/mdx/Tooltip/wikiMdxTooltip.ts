@@ -4,6 +4,8 @@ import tooltipEn from './tooltip.en.mdx'
 import tooltipRu from './tooltip.ru.mdx'
 import eventTooltipEn from './event.tooltip.en.mdx'
 import eventTooltipRu from './event.tooltip.ru.mdx'
+import exposeToggleEn from './expose.toggle.en.mdx'
+import exposeToggleRu from './expose.toggle.ru.mdx'
 import slotControlEn from './slot.control.en.mdx'
 import slotControlRu from './slot.control.ru.mdx'
 
@@ -22,6 +24,10 @@ export const wikiMdxTooltip: StorybookComponentsMdxItem = {
     'event.tooltip': {
       en: eventTooltipEn,
       ru: eventTooltipRu
+    },
+    'expose.toggle': {
+      en: exposeToggleEn,
+      ru: exposeToggleRu
     },
     'slot.control': {
       en: slotControlEn,

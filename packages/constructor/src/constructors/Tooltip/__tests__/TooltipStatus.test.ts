@@ -7,12 +7,11 @@ import type { TooltipSlots } from '../types'
 function createTooltipStatus(
   properties: Partial<TooltipProps>,
   slots?: TooltipSlots
-) {
-  const tooltipStatus = new TooltipStatus(
-    properties as TooltipProps,
+): TooltipStatus {
+  return new TooltipStatus(
+    properties as Readonly<TooltipProps>,
     slots
   )
-  return tooltipStatus
 }
 
 describe('TooltipStatus', () => {
@@ -29,77 +28,57 @@ describe('TooltipStatus', () => {
       expect(tooltipStatus.isText()).toBe(false)
     })
 
-    it('should return true if label is present and not disabled', () => {
-      const tooltipStatus = createTooltipStatus({ label: 'hello' })
-      expect(tooltipStatus.isText()).toBe(true)
-    })
-
-    it('should return true if description is present and not disabled', () => {
-      const tooltipStatus = createTooltipStatus({ description: 'hello description' })
-      expect(tooltipStatus.isText()).toBe(true)
+    it('should return true for non-empty and numeric 0 label/description', () => {
+      expect(createTooltipStatus({ label: 'hello' }).isText()).toBe(true)
+      expect(createTooltipStatus({ label: 0 }).isText()).toBe(true)
+      expect(createTooltipStatus({ description: 'desc' }).isText()).toBe(true)
+      expect(createTooltipStatus({ description: 0 }).isText()).toBe(true)
     })
 
     it('should return true if slots contain default, description, or body', () => {
-      const statusWithDefault = createTooltipStatus({}, { default: () => {} } as any)
-      expect(statusWithDefault.isText()).toBe(true)
-
-      const statusWithDescription = createTooltipStatus({}, { description: () => {} } as any)
-      expect(statusWithDescription.isText()).toBe(true)
-
-      const statusWithBody = createTooltipStatus({}, { body: () => {} } as any)
-      expect(statusWithBody.isText()).toBe(true)
+      expect(createTooltipStatus({}, { default: () => [] }).isText()).toBe(true)
+      expect(createTooltipStatus({}, { description: () => [] }).isText()).toBe(true)
+      expect(createTooltipStatus({}, { body: () => [] }).isText()).toBe(true)
     })
 
-    it('should return false if no label, description, or valid slots', () => {
-      const tooltipStatus = createTooltipStatus({})
-      expect(tooltipStatus.isText()).toBe(false)
-
-      const statusWithOtherSlot = createTooltipStatus({}, { header: () => {} } as any)
-      expect(statusWithOtherSlot.isText()).toBe(false)
+    it('should return false if no label, description, or valid content slots exist', () => {
+      expect(createTooltipStatus({}).isText()).toBe(false)
+      expect(createTooltipStatus({ label: '' }).isText()).toBe(false)
+      expect(createTooltipStatus({}, { control: () => [] }).isText()).toBe(false)
     })
   })
 
   describe('isShow', () => {
     it('should return false if isText() returns false', () => {
-      const tooltipStatus = createTooltipStatus({ inDom: true }) // no text/slots
+      const tooltipStatus = createTooltipStatus({ inDom: true })
       expect(tooltipStatus.isShow()).toBe(false)
     })
 
-    it('should return true if isText() is true and open is true', () => {
-      const tooltipStatus = createTooltipStatus({ label: 'text' })
-      tooltipStatus.setOpen(true)
-      expect(tooltipStatus.isShow()).toBe(true)
-    })
+    it('should return true if isText() is true and open, show, or inDom is true', () => {
+      const statusOpen = createTooltipStatus({ label: 'text' })
+      statusOpen.setOpen(true)
+      expect(statusOpen.isShow()).toBe(true)
 
-    it('should return true if isText() is true and show is true', () => {
-      const tooltipStatus = createTooltipStatus({ label: 'text' })
-      tooltipStatus.setShow(true)
-      expect(tooltipStatus.isShow()).toBe(true)
-    })
+      const statusShow = createTooltipStatus({ label: 'text' })
+      statusShow.setShow(true)
+      expect(statusShow.isShow()).toBe(true)
 
-    it('should return true if isText() is true and inDom is true', () => {
-      const tooltipStatus = createTooltipStatus({ label: 'text', inDom: true })
-      expect(tooltipStatus.isShow()).toBe(true)
+      const statusInDom = createTooltipStatus({ label: 'text', inDom: true })
+      expect(statusInDom.isShow()).toBe(true)
     })
   })
 
   describe('isArrow', () => {
-    it('should return true if arrowShow is true and preparation is true', () => {
+    it('should return true only when both arrowShow and preparation are true', () => {
       const tooltipStatus = createTooltipStatus({ arrowShow: true })
+      expect(tooltipStatus.isArrow()).toBe(false)
+
       tooltipStatus.setPreparation(true)
       expect(tooltipStatus.isArrow()).toBe(true)
-    })
 
-    it('should return false if arrowShow is false', () => {
-      const tooltipStatus = createTooltipStatus({ arrowShow: false })
-      tooltipStatus.setPreparation(true)
-      expect(tooltipStatus.isArrow()).toBe(false)
-    })
-
-    it('should return false if preparation is false', () => {
-      const tooltipStatus = createTooltipStatus({ arrowShow: true })
-      tooltipStatus.setPreparation(false)
-      expect(tooltipStatus.isArrow()).toBe(false)
+      const disabledArrow = createTooltipStatus({ arrowShow: false })
+      disabledArrow.setPreparation(true)
+      expect(disabledArrow.isArrow()).toBe(false)
     })
   })
 

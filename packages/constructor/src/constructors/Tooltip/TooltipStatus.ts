@@ -1,6 +1,7 @@
 // ai-none
 
 import { ref } from 'vue'
+import { isFilled, isNumber } from '@dxtmisha/functional'
 
 import type { TooltipSlots } from './types'
 import type { TooltipProps } from './props'
@@ -30,40 +31,6 @@ export class TooltipStatus {
   }
 
   /**
-   * Checks if there is text to display.
-   *
-   * Проверяет, есть ли текст для отображения.
-   * @returns true if there is text to display / true, если есть текст для отображения
-   */
-  isText(): boolean {
-    return (
-      !this.props.disabled
-      && Boolean(
-        this.props.label
-        || this.props.description
-        || (
-          this.slots
-          && (
-            'default' in this.slots
-            || 'description' in this.slots
-            || 'body' in this.slots
-          )
-        )
-      )
-    )
-  }
-
-  /**
-   * Checks if the element needs to be displayed.
-   *
-   * Проверяет, нужно ли отображать элемент.
-   * @returns true if the element needs to be displayed / true, если элемент нужно отобразить
-   */
-  isShow(): boolean {
-    return Boolean(this.show.value || this.open.value || this.props.inDom) && this.isText()
-  }
-
-  /**
    * Checks if the arrow needs to be displayed.
    *
    * Проверяет, нужно ли отображать стрелку.
@@ -85,23 +52,49 @@ export class TooltipStatus {
   }
 
   /**
+   * Checks if the element needs to be displayed.
+   *
+   * Проверяет, нужно ли отображать элемент.
+   * @returns true if the element needs to be displayed / true, если элемент нужно отобразить
+   */
+  isShow(): boolean {
+    return Boolean(this.show.value || this.open.value || this.props.inDom) && this.isText()
+  }
+
+  /**
+   * Checks if there is text to display.
+   *
+   * Проверяет, есть ли текст для отображения.
+   * @returns true if there is text to display / true, если есть текст для отображения
+   */
+  isText(): boolean {
+    return (
+      !this.props.disabled
+      && Boolean(
+        isFilled(this.props.label, true)
+        || isNumber(this.props.label)
+        || isFilled(this.props.description, true)
+        || isNumber(this.props.description)
+        || (
+          this.slots
+          && (
+            'default' in this.slots
+            || 'description' in this.slots
+            || 'body' in this.slots
+          )
+        )
+      )
+    )
+  }
+
+  /**
    * Changes the open state.
    *
    * Изменяет состояние открытия.
    * @param open the value of the current state / значение текущего состояния
    */
-  setOpen(open: boolean) {
+  setOpen(open: boolean): void {
     this.open.value = open
-  }
-
-  /**
-   * Changes the display state.
-   *
-   * Изменяет состояние показа.
-   * @param show the value of the current state / значение текущего состояния
-   */
-  setShow(show: boolean) {
-    this.show.value = show
   }
 
   /**
@@ -110,7 +103,17 @@ export class TooltipStatus {
    * Изменяет статус подготовки.
    * @param preparation the value of the current state / значение текущего состояния
    */
-  setPreparation(preparation: boolean) {
+  setPreparation(preparation: boolean): void {
     this.preparation.value = preparation
+  }
+
+  /**
+   * Changes the display state.
+   *
+   * Изменяет состояние показа.
+   * @param show the value of the current state / значение текущего состояния
+   */
+  setShow(show: boolean): void {
+    this.show.value = show
   }
 }

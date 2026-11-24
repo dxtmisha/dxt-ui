@@ -1,5 +1,5 @@
-- `control(props: TooltipControlItem): any` — Слот для элемента управления, вызывающего подсказку.
+- `control(props: TooltipControl): any` — Слот с областью видимости для управляющего элемента, вызывающего подсказку.
 
-> **TooltipControlItem:**
-> - `open: Ref<boolean>` — состояние открытия.
-> - `binds: object` — свойства для элемента управления (class, onclick, onmouseover, onmouseout).
+> **TooltipControl:**
+> - `open: Ref<boolean>` — реактивное состояние открытия.
+> - `binds: TooltipControlBinds` — атрибуты и обработчики событий (`class`, `onClick`, `onMouseover`, `onMouseout`, а также WAI-ARIA атрибуты `aria-expanded`/`aria-controls` или `aria-describedby`).

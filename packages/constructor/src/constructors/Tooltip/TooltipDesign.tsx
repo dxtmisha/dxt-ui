@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -77,7 +77,7 @@ export class TooltipDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      toggle: this.item.open.toggle
+      toggle: (open: boolean, flash?: boolean) => this.item.i('open').toggle(open, flash)
     } as EXPOSE
   }
 
@@ -129,10 +129,14 @@ export class TooltipDesign<
    * Рендеринг слота управления.
    * @returns array of VNodes / массив VNode
    */
-  protected readonly renderControl = (): VNode[] => {
-    return [
-      this.initSlot('control', undefined, this.item.slotData) as VNode
-    ]
+  readonly renderControl = (): VNode[] => {
+    const control = this.initSlot('control', undefined, this.item.slotData)
+
+    if (control) {
+      return [control]
+    }
+
+    return []
   }
 
   /**
@@ -141,28 +145,30 @@ export class TooltipDesign<
    * Рендеринг тултипа.
    * @returns array of VNodes / массив VNode
    */
-  protected readonly renderTooltip = (): VNode[] => {
-    if (this.item.status.isShow()) {
-      const children: any[] = [
-        ...this.item.label.render(),
-        ...this.item.description.render(),
-        ...this.renderBody()
-      ]
-
-      if (this.item.status.isArrow()) {
-        children.push(
-          ...this.item.arrow.render()
+  readonly renderTooltip = (): VNode[] => {
+    if (this.item.isShow()) {
+      const children: VNode[] = [
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.item.callInstance('description', item => item.render(), []),
+        ...this.renderBody(),
+        ...this.item.callInstance(
+          'arrow',
+          item => item.render(undefined, undefined, () => this.item.isArrow()),
+          []
         )
-      }
+      ]
 
       const element = h(
         'div',
-        {
-          ref: this.element,
-          class: this.classes?.value.main,
-          style: this.styles?.value,
-          ...this.item.binds
-        },
+        mergeProps(
+          this.getAttrs(),
+          this.item.binds,
+          {
+            ref: this.element,
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          }
+        ),
         children
       )
 
@@ -170,7 +176,7 @@ export class TooltipDesign<
         return [element]
       }
 
-      return this.item.teleport.render(element)
+      return this.item.i('teleport').render(element)
     }
 
     return []
@@ -182,14 +188,16 @@ export class TooltipDesign<
    * Рендеринг слота тела.
    * @returns array of VNodes / массив VNode
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     if (
       this.slots
       && 'body' in this.slots
     ) {
-      return [
-        this.initSlot('body') as VNode
-      ]
+      const body = this.initSlot('body')
+
+      if (body) {
+        return [body]
+      }
     }
 
     return []

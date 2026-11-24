@@ -1,5 +1,5 @@
-- `control(props: TooltipControlItem): any` — Slot for the control element that triggers the tooltip.
+- `control(props: TooltipControl): any` — Scoped slot for the trigger element that controls the tooltip.
 
-> **TooltipControlItem:**
-> - `open: Ref<boolean>` — open state.
-> - `binds: object` — properties for the control element (class, onclick, onmouseover, onmouseout).
+> **TooltipControl:**
+> - `open: Ref<boolean>` — reactive open state.
+> - `binds: TooltipControlBinds` — attributes and event listeners (`class`, `onClick`, `onMouseover`, `onMouseout`, and WAI-ARIA attributes `aria-expanded`/`aria-controls` or `aria-describedby`).

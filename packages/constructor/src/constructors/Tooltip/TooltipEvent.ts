@@ -1,9 +1,11 @@
 // ai-none
 
-import { TooltipOpen } from './TooltipOpen'
-import { TooltipStatus } from './TooltipStatus'
-import { TooltipClassesData } from './TooltipClassesData'
-import { TooltipStyle } from './TooltipStyle'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
+import type { TooltipClassesData } from './TooltipClassesData'
+import type { TooltipOpen } from './TooltipOpen'
+import type { TooltipStatus } from './TooltipStatus'
+import type { TooltipStyle } from './TooltipStyle'
 
 import type { TooltipProps } from './props'
 
@@ -12,27 +14,55 @@ import type { TooltipProps } from './props'
  *
  * Класс для работы с событиями.
  */
-export class TooltipEvent {
+export class TooltipEvent extends DesignLifecycleAbstract {
   /** Next transition indicator / Флаг следующего перехода */
   protected next: boolean = false
   /** Timeout for focus reset / Таймаут сброса фокуса */
-  protected timeout?: any
+  protected timeout?: ReturnType<typeof setTimeout>
+  /** Animation frame ID for click handler / Идентификатор кадра анимации для обработчика клика */
+  protected frameIdClick?: number
+  /** Animation frame ID for mouseover handler / Идентификатор кадра анимации для обработчика наведения */
+  protected frameIdMouseover?: number
+  /** Sequence counter to cancel stale async handlers / Счётчик последовательности для отмены устаревших асинхронных обработчиков */
+  protected frameSequence: number = 0
+  /** Unmounted flag to prevent post-unmount event actions / Флаг размонтирования для предотвращения действий после размонтирования */
+  protected unmounted: boolean = false
 
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param classes object for working with the class / объект для работы с классом
-   * @param style object for working with styles / объект для работы со стилями
-   * @param status object for working with statuses / объект для работы со статусами
-   * @param open data opening management / управление открытием данных
+   * @param classesData function returning class names manager / функция, возвращающая менеджер имен классов
+   * @param open function returning open state manager / функция, возвращающая менеджер открытия
+   * @param status function returning status manager / функция, возвращающая менеджер статусов
+   * @param style function returning style manager / функция, возвращающая менеджер стилей
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
-    protected readonly classes: TooltipClassesData,
-    protected readonly style: TooltipStyle,
-    protected readonly status: TooltipStatus,
-    protected readonly open: TooltipOpen
+    protected readonly classesData: () => TooltipClassesData,
+    protected readonly open: () => TooltipOpen,
+    protected readonly status: () => TooltipStatus,
+    protected readonly style: () => TooltipStyle
   ) {
+    super()
+  }
+
+  /**
+   * Resets unmounted flag on mount.
+   *
+   * Сбрасывает флаг размонтирования при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.unmounted = false
+  }
+
+  /**
+   * Cleanup pending animation frames and timers on unmount.
+   *
+   * Очистка ожидающих кадров анимации и таймеров при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.unmounted = true
+    this.clearAsync()
   }
 
   /**
@@ -40,15 +70,46 @@ export class TooltipEvent {
    *
    * События при клике на элементе в мобильном приложении.
    */
-  readonly onClick = () => {
-    if (this.isNotEmbedded()) {
-      requestAnimationFrame(async () => {
+  readonly onClick = (): void => {
+    if (this.isNotEmbedded() && !this.unmounted) {
+      const sequence = this.frameSequence
+
+      if (this.frameIdClick !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+        cancelAnimationFrame(this.frameIdClick)
+      }
+
+      this.frameIdClick = requestAnimationFrame(async () => {
+        this.frameIdClick = undefined
+        if (sequence !== this.frameSequence || this.unmounted) {
+          return
+        }
+
         if (!this.next) {
-          clearTimeout(this.timeout)
-          await this.open.toggle(!this.status.open.value, true)
-          this.next = false
+          this.clearTimeout()
+          await this.open().toggle(!this.status().open.value, true)
+          if (sequence === this.frameSequence && !this.unmounted) {
+            this.next = false
+          }
         }
       })
+    }
+  }
+
+  /**
+   * Element management events on losing focus.
+   *
+   * События управления элементом при потере фокуса.
+   * @param event mouse event / событие мыши
+   */
+  readonly onMouseout = ({ relatedTarget }: MouseEvent): void => {
+    if (
+      this.isNotEmbedded()
+      && !this.unmounted
+      && relatedTarget
+    ) {
+      this.open().toggle(
+        Boolean(this.classesData().findControlByTarget(relatedTarget))
+      ).then()
     }
   }
 
@@ -59,16 +120,32 @@ export class TooltipEvent {
    * @param event mouse event / событие мыши
    */
   readonly onMouseover = ({ target }: MouseEvent): void => {
-    if (this.isNotEmbedded()) {
-      clearTimeout(this.timeout)
+    if (this.isNotEmbedded() && !this.unmounted) {
+      this.clearTimeout()
       this.next = true
 
-      requestAnimationFrame(async () => {
-        await this.open.toggle(
-          Boolean(this.classes.findControlByTarget(target as HTMLDivElement))
+      const sequence = this.frameSequence
+
+      if (this.frameIdMouseover !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+        cancelAnimationFrame(this.frameIdMouseover)
+      }
+
+      this.frameIdMouseover = requestAnimationFrame(async () => {
+        this.frameIdMouseover = undefined
+        if (sequence !== this.frameSequence || this.unmounted) {
+          return
+        }
+
+        await this.open().toggle(
+          Boolean(this.classesData().findControlByTarget(target))
         )
 
+        if (sequence !== this.frameSequence || this.unmounted) {
+          return
+        }
+
         this.timeout = setTimeout(() => {
+          this.timeout = undefined
           this.next = false
         }, 640)
       })
@@ -81,23 +158,8 @@ export class TooltipEvent {
    * События управления элементом при получении фокуса на самом тултипе.
    */
   readonly onMouseoverTooltip = (): void => {
-    this.open.noHide()
-  }
-
-  /**
-   * Element management events on losing focus.
-   *
-   * События управления элементом при потере фокуса.
-   * @param event mouse event / событие мыши
-   */
-  readonly onMouseout = ({ relatedTarget }: MouseEvent): void => {
-    if (
-      this.isNotEmbedded()
-      && relatedTarget
-    ) {
-      this.open.toggle(
-        Boolean(this.classes.findControlByTarget(relatedTarget as HTMLDivElement))
-      ).then()
+    if (!this.unmounted) {
+      this.open().noHide()
     }
   }
 
@@ -110,9 +172,9 @@ export class TooltipEvent {
   readonly onTransitionend = (event: TransitionEvent): void => {
     if (
       event.propertyName === 'transform'
-      && this.status.open.value
+      && this.status().open.value
     ) {
-      this.style.setMove(true)
+      this.style().setMove(true)
     }
   }
 
@@ -124,5 +186,38 @@ export class TooltipEvent {
    */
   protected isNotEmbedded(): boolean {
     return Boolean(!this.props.embedded)
+  }
+
+  /**
+   * Clears the pending focus reset timeout.
+   *
+   * Очищает ожидающий таймаут сброса фокуса.
+   */
+  protected clearTimeout(): void {
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout)
+      this.timeout = undefined
+    }
+  }
+
+  /**
+   * Cancels all pending animation frames and timeouts.
+   *
+   * Отменяет все ожидающие кадры анимации и таймауты.
+   */
+  protected clearAsync(): void {
+    this.frameSequence++
+    this.next = false
+    this.clearTimeout()
+
+    if (this.frameIdClick !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(this.frameIdClick)
+      this.frameIdClick = undefined
+    }
+
+    if (this.frameIdMouseover !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(this.frameIdMouseover)
+      this.frameIdMouseover = undefined
+    }
   }
 }

@@ -1,37 +1,37 @@
 // ai-none
 
 import type { Ref } from 'vue'
-import { goScrollSmooth, toNumber } from '@dxtmisha/functional'
+import { goScrollSmooth, isDomRuntime, toNumber } from '@dxtmisha/functional'
 
-import { AnchorHref } from './AnchorHref'
+import type { AnchorHref } from './AnchorHref'
 import type { AnchorProps } from './props'
 
 /**
- * Anchor scroll handler
+ * Anchor scroll handler.
  *
- * Обработчик прокрутки якоря
+ * Обработчик прокрутки якоря.
  */
 export class AnchorTo {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param href href handler / обработчик ссылки
+   * @param element anchor DOM element reference / ссылка на DOM-элемент якоря
+   * @param href function returning href handler / функция, возвращающая обработчик ссылки
    */
   constructor(
-    protected readonly props: AnchorProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly href: AnchorHref
+    protected readonly props: Readonly<AnchorProps>,
+    protected readonly element: Ref<HTMLAnchorElement | undefined>,
+    protected readonly href: () => AnchorHref
   ) {
   }
 
   /**
-   * Scroll to element
+   * Scroll to anchor element and update URL hash.
    *
-   * Прокрутить к элементу
+   * Прокрутить к элементу якоря и обновить хэш URL.
    */
-  go() {
-    if (this.element.value) {
+  go(): void {
+    if (this.element.value && isDomRuntime()) {
       goScrollSmooth(
         this.element.value,
         {
@@ -42,7 +42,11 @@ export class AnchorTo {
         toNumber(this.props.shift)
       )
 
-      history.replaceState({}, '', this.href.get())
+      const href = this.href().get()
+
+      if (href) {
+        history.replaceState({}, '', href)
+      }
     }
   }
 }

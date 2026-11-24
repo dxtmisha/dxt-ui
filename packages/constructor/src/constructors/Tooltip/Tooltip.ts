@@ -1,162 +1,164 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
 import { TeleportInclude } from '../../classes/TeleportInclude'
 
 import { ArrowInclude } from '../Arrow'
 
 import { TooltipClassesData } from './TooltipClassesData'
-import { TooltipStyle } from './TooltipStyle'
-import { TooltipStatus } from './TooltipStatus'
-import { TooltipPosition } from './TooltipPosition'
-import { TooltipOpen } from './TooltipOpen'
 import { TooltipEvent } from './TooltipEvent'
+import { TooltipOpen } from './TooltipOpen'
+import { TooltipPosition } from './TooltipPosition'
+import { TooltipStatus } from './TooltipStatus'
+import { TooltipStyle } from './TooltipStyle'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { RoleType } from '../../types/roleTypes'
 import type { TooltipControl, TooltipControlBinds } from './basicTypes'
-import type { TooltipComponents, TooltipEmits, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
+import type { TooltipComponents, TooltipEmits, TooltipSlots } from './types'
+
+/** Tooltip dependency constructors type / Тип конструкторов зависимостей Tooltip */
+export type TooltipConstructors = {
+  /** Arrow manager constructor / Конструктор менеджера стрелки */
+  arrow: typeof ArrowInclude
+  /** Classes data manager constructor / Конструктор менеджера имен классов */
+  classesData: typeof TooltipClassesData
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Event manager constructor / Конструктор менеджера событий */
+  event: typeof TooltipEvent
+  /** Label manager constructor / Конструктор менеджера метки */
+  label: typeof LabelInclude
+  /** Open state manager constructor / Конструктор менеджера состояния открытия */
+  open: typeof TooltipOpen
+  /** Position manager constructor / Конструктор менеджера позиции */
+  position: typeof TooltipPosition
+  /** Status manager constructor / Конструктор менеджера статусов */
+  status: typeof TooltipStatus
+  /** Style manager constructor / Конструктор менеджера стилей */
+  style: typeof TooltipStyle
+  /** Teleport manager constructor / Конструктор менеджера телепорта */
+  teleport: typeof TeleportInclude
+}
 
 /**
  * Tooltip controller class managing classes, styles, states, position, teleport, and elements.
  *
  * Класс контроллера Tooltip, управляющий классами, стилями, состояниями, позицией, телепортом и элементами.
  */
-export class Tooltip {
-  /** Class manager for tooltip classes / Менеджер классов для подсказки */
-  readonly classes: TooltipClassesData
-  /** Style manager for tooltip styles / Менеджер стилей для подсказки */
-  readonly style: TooltipStyle
-  /** Status manager for tooltip state / Менеджер статуса для состояния подсказки */
-  readonly status: TooltipStatus
-  /** Position manager for tooltip placement / Менеджер позиции для размещения подсказки */
-  readonly position: TooltipPosition
-  /** Open manager for tooltip visibility / Менеджер открытия для видимости подсказки */
-  readonly open: TooltipOpen
-  /** Event manager for tooltip interactions / Менеджер событий для взаимодействий с подсказкой */
-  readonly event: TooltipEvent
-
-  /** Arrow manager / Менеджер стрелки */
-  readonly arrow: ArrowInclude
-  /** Label manager / Менеджер метки */
-  readonly label: LabelInclude
-  /** Description manager / Менеджер описания */
-  readonly description: DescriptionInclude
-
-  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
-  readonly teleport: TeleportInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ArrowIncludeConstructor class for working with arrow / класс для работы со стрелкой
-   * @param constructors.DescriptionIncludeConstructor class for working with description / класс для работы с описанием
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
-   * @param constructors.TeleportIncludeConstructor class for working with teleport / класс для работы с телепортом
-   * @param constructors.TooltipClassesConstructor class for working with classes / класс для работы с классами
-   * @param constructors.TooltipEventConstructor class for working with events / класс для работы с событиями
-   * @param constructors.TooltipOpenConstructor class for working with open state / класс для работы с состоянием открытия
-   * @param constructors.TooltipPositionConstructor class for working with position / класс для работы с позицией
-   * @param constructors.TooltipStatusConstructor class for working with status / класс для работы со статусом
-   * @param constructors.TooltipStyleConstructor class for working with styles / класс для работы со стилями
-   */
-  constructor(
-    protected readonly props: TooltipProps,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TooltipComponents, TooltipProps>,
-    protected readonly slots?: TooltipSlots,
-    protected readonly emits?: ConstrEmit<TooltipEmits>,
-    constructors: {
-      ArrowIncludeConstructor?: typeof ArrowInclude
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-      TeleportIncludeConstructor?: typeof TeleportInclude
-      TooltipClassesConstructor?: typeof TooltipClassesData
-      TooltipEventConstructor?: typeof TooltipEvent
-      TooltipOpenConstructor?: typeof TooltipOpen
-      TooltipPositionConstructor?: typeof TooltipPosition
-      TooltipStatusConstructor?: typeof TooltipStatus
-      TooltipStyleConstructor?: typeof TooltipStyle
-    } = {}
-  ) {
-    const {
-      ArrowIncludeConstructor = ArrowInclude,
-      DescriptionIncludeConstructor = DescriptionInclude,
-      LabelIncludeConstructor = LabelInclude,
-      TeleportIncludeConstructor = TeleportInclude,
-      TooltipClassesConstructor = TooltipClassesData,
-      TooltipEventConstructor = TooltipEvent,
-      TooltipOpenConstructor = TooltipOpen,
-      TooltipPositionConstructor = TooltipPosition,
-      TooltipStatusConstructor = TooltipStatus,
-      TooltipStyleConstructor = TooltipStyle
-    } = constructors
-
-    this.classes = new TooltipClassesConstructor(this.naming)
-    this.style = new TooltipStyleConstructor(this.element, this.naming)
-    this.status = new TooltipStatusConstructor(this.props, this.slots)
-    this.position = new TooltipPositionConstructor(
-      this.props,
-      this.element,
-      this.classes,
-      this.style
-    )
-    this.open = new TooltipOpenConstructor(
-      this.props,
-      this.style,
-      this.status,
-      this.position,
-      this.emits
-    )
-    this.event = new TooltipEventConstructor(
-      this.props,
-      this.classes,
-      this.style,
-      this.status,
-      this.open
-    )
-
-    this.arrow = new ArrowIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      this.classes.getSelectorControl()
-    )
-
-    this.label = new LabelIncludeConstructor(
-      this.props,
-      this.naming,
-      undefined,
-      this.slots
-    )
-    this.description = new DescriptionIncludeConstructor(
-      this.props,
-      this.naming,
-      this.slots
-    )
-
-    this.teleport = new TeleportIncludeConstructor()
+export class Tooltip extends DesignLogicAbstract<
+  HTMLDivElement,
+  TooltipComponents,
+  TooltipEmits,
+  TooltipSlots,
+  TooltipProps,
+  TooltipConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TooltipConstructors> = {
+    arrow: {
+      item: ArrowInclude,
+      canCreate: () => Boolean(this.props.arrowShow) && this.i('status').isArrow(),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        this.i('classesData').getSelectorControl()
+      ]
+    },
+    classesData: {
+      item: TooltipClassesData,
+      parameters: () => [this.naming]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    event: {
+      item: TooltipEvent,
+      parameters: () => [
+        this.props,
+        () => this.i('classesData'),
+        () => this.i('open'),
+        () => this.i('status'),
+        () => this.i('style')
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    },
+    open: {
+      item: TooltipOpen,
+      conditions: () => TooltipOpen.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('position'),
+        () => this.i('status'),
+        () => this.i('style'),
+        this.emits
+      ]
+    },
+    position: {
+      item: TooltipPosition,
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('classesData'),
+        () => this.i('style')
+      ]
+    },
+    status: {
+      item: TooltipStatus,
+      parameters: () => [
+        this.props,
+        this.slots
+      ]
+    },
+    style: {
+      item: TooltipStyle,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    teleport: {
+      item: TeleportInclude
+    }
   }
 
-  /** Computed role for the tooltip / Вычисляемая роль для подсказки */
-  get role(): RoleType {
-    if (this.props.interactive) {
-      return 'region'
+  /**
+   * ARIA attributes for the tooltip element.
+   *
+   * ARIA-атрибуты для элемента подсказки.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role(this.role),
+      ...AriaStaticInclude.labelledby(this.callInstance('label', item => item.is ? item.id : undefined)),
+      ...AriaStaticInclude.describedby(this.callInstance('description', item => item.is ? item.id : undefined))
     }
-
-    return 'tooltip'
   }
 
   /**
@@ -165,15 +167,15 @@ export class Tooltip {
    * Вычисляемые привязки для элемента подсказки.
    * @returns bindings object / объект привязок
    */
-  get binds() {
+  get binds(): ConstrBind {
+    const event = this.i('event')
+
     return {
-      id: this.classes.getIdItem(),
-      onMouseover: this.event.onMouseoverTooltip,
-      onMouseout: this.event.onMouseout,
-      onTransitionend: this.event.onTransitionend,
-      ...AriaStaticInclude.role(this.role),
-      ...AriaStaticInclude.labelledby(this.label.id),
-      ...AriaStaticInclude.describedby(this.description.id)
+      id: this.i('classesData').getIdItem(),
+      onMouseover: event.onMouseoverTooltip,
+      onMouseout: event.onMouseout,
+      onTransitionend: event.onTransitionend,
+      ...this.aria
     }
   }
 
@@ -184,33 +186,76 @@ export class Tooltip {
    * @returns binds control object / объект привязок управления
    */
   get bindsControl(): TooltipControlBinds {
+    const classesData = this.i('classesData')
+    const event = this.i('event')
     const data = {
-      class: this.classes.getControl(),
-      onClick: this.event.onClick,
-      onMouseover: this.event.onMouseover,
-      onMouseout: this.event.onMouseout
+      class: classesData.getControl(),
+      onClick: event.onClick,
+      onMouseover: event.onMouseover,
+      onMouseout: event.onMouseout
     }
 
     if (this.props.interactive) {
       return {
         ...data,
-        ...AriaStaticInclude.expanded(this.status.open.value),
-        ...AriaStaticInclude.controls(this.classes.getIdItem())
+        ...AriaStaticInclude.expanded(this.i('status').open.value),
+        ...AriaStaticInclude.controls(classesData.getIdItem())
       }
     }
 
     return {
       ...data,
-      ...AriaStaticInclude.describedby(this.classes.getIdItem())
+      ...AriaStaticInclude.describedby(classesData.getIdItem())
     }
   }
 
-  /** Data for the control slot / Данные для слота управления */
-  get slotData(): TooltipControl {
-    return {
-      ...this.bindsControl,
-      open: this.status.open,
-      binds: this.bindsControl
+  /**
+   * Computed role for the tooltip.
+   *
+   * Вычисляемая роль для подсказки.
+   * @returns ARIA role / роль ARIA
+   */
+  get role(): RoleType {
+    if (this.props.interactive) {
+      return 'region'
     }
+
+    return 'tooltip'
+  }
+
+  /**
+   * Data for the control slot.
+   *
+   * Данные для слота управления.
+   * @returns control slot data / данные слота управления
+   */
+  get slotData(): TooltipControl {
+    const binds = this.bindsControl
+
+    return {
+      ...binds,
+      open: this.i('status').open,
+      binds
+    }
+  }
+
+  /**
+   * Checks whether the arrow should be displayed.
+   *
+   * Проверяет, должна ли отображаться стрелка.
+   * @returns true if arrow should be displayed / true, если стрелка должна отображаться
+   */
+  isArrow(): boolean {
+    return Boolean(this.props.arrowShow) && this.i('status').isArrow()
+  }
+
+  /**
+   * Checks whether the tooltip element should be rendered.
+   *
+   * Проверяет, должен ли рендериться элемент тултипа.
+   * @returns true if tooltip should be rendered / true, если тултип должен рендериться
+   */
+  isShow(): boolean {
+    return this.i('status').isShow()
   }
 }

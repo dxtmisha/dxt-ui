@@ -27,51 +27,38 @@ describe('TooltipClassesData', () => {
     expect(otherClassesData.getId()).not.toBe(id)
   })
 
-  it('should return correct control class name', () => {
+  it('should return correct control class name, full control value, and selector', () => {
     expect(classesData.getClassControl()).toBe(`${naming.getName()}__control`)
-  })
-
-  it('should return correct control class value with id', () => {
     expect(classesData.getControl()).toBe(`${naming.getName()}__control ${classesData.getId()}`)
-  })
-
-  it('should return correct CSS selector for control element', () => {
     expect(classesData.getSelectorControl()).toBe(`.${naming.getName()}__control.${classesData.getId()}`)
   })
 
-  it('should find control element in the document', () => {
+  it('should find control element in the document or return undefined when missing', () => {
+    expect(classesData.findControl()).toBeUndefined()
+
     const controlElement = document.createElement('div')
-    controlElement.className = `${naming.getName()}__control ${classesData.getId()}`
+    controlElement.className = classesData.getControl()
     document.body.appendChild(controlElement)
 
-    const foundElement = classesData.findControl()
-    expect(foundElement).toBe(controlElement)
+    expect(classesData.findControl()).toBe(controlElement)
   })
 
-  it('should return undefined if control element is not in the document', () => {
-    const foundElement = classesData.findControl()
-    expect(foundElement).toBeUndefined()
-  })
-
-  it('should find control by target using closest ancestor search', () => {
+  it('should find control by target using closest ancestor search and safely ignore non-Element targets', () => {
     const controlElement = document.createElement('div')
-    controlElement.className = `${naming.getName()}__control ${classesData.getId()}`
+    controlElement.className = classesData.getControl()
 
     const nestedChild = document.createElement('span')
     controlElement.appendChild(nestedChild)
     document.body.appendChild(controlElement)
 
-    const foundElement = classesData.findControlByTarget(nestedChild)
-    expect(foundElement).toBe(controlElement)
-  })
+    expect(classesData.findControlByTarget(nestedChild)).toBe(controlElement)
+    expect(classesData.findControlByTarget(null)).toBeUndefined()
+    expect(classesData.findControlByTarget(undefined)).toBeUndefined()
+    expect(classesData.findControlByTarget(window)).toBeUndefined()
+    expect(classesData.findControlByTarget(document.createTextNode('text'))).toBeUndefined()
 
-  it('should return undefined when finding control by target if ancestor does not match selector', () => {
-    const regularContainer = document.createElement('div')
-    const nestedChild = document.createElement('span')
-    regularContainer.appendChild(nestedChild)
-    document.body.appendChild(regularContainer)
-
-    const foundElement = classesData.findControlByTarget(nestedChild)
-    expect(foundElement).toBeUndefined()
+    const unrelated = document.createElement('div')
+    document.body.appendChild(unrelated)
+    expect(classesData.findControlByTarget(unrelated)).toBeUndefined()
   })
 })

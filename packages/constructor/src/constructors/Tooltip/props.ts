@@ -3,6 +3,11 @@ import type { DescriptionProps } from '../../types/descriptionTypes'
 
 import type { ArrowProps, ArrowPropsInclude } from '../Arrow'
 
+/**
+ * Component token properties.
+ *
+ * Токен-свойства компонента.
+ */
 export type TooltipPropsToken = {
   // :type [!] System label / Системная метка
   interactive?: boolean
@@ -10,6 +15,11 @@ export type TooltipPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties for the tooltip component.
+ *
+ * Базовые свойства для компонента тултипа.
+ */
 export type TooltipPropsBasic<
   Arrow extends ArrowProps = ArrowProps
 > = LabelProps

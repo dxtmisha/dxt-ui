@@ -1,9 +1,10 @@
 // ai-none
 
-import { type Ref } from 'vue'
+import type { Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional'
 
-import { TooltipClassesData } from './TooltipClassesData'
-import { TooltipStyle } from './TooltipStyle'
+import type { TooltipClassesData } from './TooltipClassesData'
+import type { TooltipStyle } from './TooltipStyle'
 
 import type { TooltipProps } from './props'
 
@@ -15,16 +16,16 @@ import type { TooltipProps } from './props'
 export class TooltipPosition {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element instance of the element itself/ экземпляр самого элемента
-   * @param classes object for working with the class/ объект для работы с классом
-   * @param style object for working with styles/ объект для работы со стилями
+   * @param props input data / входные данные
+   * @param element instance of the element itself / экземпляр самого элемента
+   * @param classesData function returning class names manager / функция, возвращающая менеджер имен классов
+   * @param style function returning style manager / функция, возвращающая менеджер стилей
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classes: TooltipClassesData,
-    protected readonly style: TooltipStyle
+    protected readonly classesData: () => TooltipClassesData,
+    protected readonly style: () => TooltipStyle
   ) {
   }
 
@@ -33,21 +34,25 @@ export class TooltipPosition {
    *
    * Обновить все размеры.
    */
-  update() {
+  update(): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     const element = this.element.value
-    const control = this.classes.findControl()
+    const control = this.classesData().findControl()
 
     if (
       element
       && control
     ) {
-      const rect = control.getBoundingClientRect()
+      const controlRect = control.getBoundingClientRect()
       const tooltipRect = element.getBoundingClientRect()
       const indent = this.getIndent()
 
-      const top = this.isTop(rect, tooltipRect)
-      const x = rect.left + (rect.width / 2) - (tooltipRect.width / 2)
-      const y = top ? rect.top - tooltipRect.height - indent : rect.bottom + indent
+      const top = this.isTop(controlRect, tooltipRect)
+      const x = controlRect.left + (controlRect.width / 2) - (tooltipRect.width / 2)
+      const y = top ? controlRect.top - tooltipRect.height - indent : controlRect.bottom + indent
 
       let shift = 0
 
@@ -57,7 +62,7 @@ export class TooltipPosition {
         shift = window.innerWidth - (x + tooltipRect.width)
       }
 
-      this.style.set(
+      this.style().set(
         top,
         x,
         y,
@@ -70,23 +75,27 @@ export class TooltipPosition {
    * Checks whether the element should be displayed on top.
    *
    * Проверяет, надо ли отображать элемент сверху.
-   * @param rect the current position of the control element/ данное положение элемента контроля
-   * @param tooltipRect the current position of the element itself/ данное положение самого элемента
+   * @param controlRect the current position of the control element / данное положение элемента контроля
+   * @param tooltipRect the current position of the element itself / данное положение самого элемента
+   * @returns true if displayed on top / true, если отображается сверху
    */
   protected isTop(
-    rect: DOMRect,
+    controlRect: DOMRect,
     tooltipRect: DOMRect
-  ) {
+  ): boolean {
     const indent = this.getIndent()
 
-    return (this.props.top && rect.top - tooltipRect.height - indent >= 0)
-      || (rect.bottom + tooltipRect.height + indent > window.innerHeight)
+    return Boolean(
+      (this.props.top && controlRect.top - tooltipRect.height - indent >= 0)
+      || (controlRect.bottom + tooltipRect.height + indent > window.innerHeight)
+    )
   }
 
   /**
    * Returns the margins for the element.
    *
    * Возвращает отступы для элемента.
+   * @returns indent value in pixels / значение отступа в пикселях
    */
   protected getIndent(): number {
     return this.props.indent ?? 0

@@ -82,6 +82,8 @@ export class TooltipClassesData {
     if (isDomRuntime()) {
       return document.querySelector<HTMLElement>(this.getSelectorControl()) ?? undefined
     }
+
+    return undefined
   }
 
   /**
@@ -91,7 +93,11 @@ export class TooltipClassesData {
    * @param target selected element / выбранный элемент
    * @returns html element or undefined / html-элемент или undefined
    */
-  findControlByTarget(target: HTMLElement): HTMLElement | undefined {
-    return target.closest<HTMLElement>(this.getSelectorControl()) ?? undefined
+  findControlByTarget(target?: EventTarget | null): HTMLElement | undefined {
+    if (isDomRuntime() && target instanceof Element) {
+      return target.closest<HTMLElement>(this.getSelectorControl()) ?? undefined
+    }
+
+    return undefined
   }
 }
