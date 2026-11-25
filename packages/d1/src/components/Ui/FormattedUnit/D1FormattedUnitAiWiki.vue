@@ -18,6 +18,11 @@ defineOptions({
     :component="D1FormattedUnit"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent :value="100" unit="celsius" language="en-US"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

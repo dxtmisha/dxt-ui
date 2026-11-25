@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -78,9 +78,7 @@ export class HeadroomDesign<
    * @returns object with exposed properties / объект с экспортируемыми свойствами
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.headroom.expose
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -118,12 +116,14 @@ export class HeadroomDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }

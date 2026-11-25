@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -32,8 +33,8 @@ export interface GridItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface GridItemSlots {
-  /** Slot for default grid item content/ Слот для основного содержимого элемента сетки */
-  default?(props: any): any
+  /** Slot for default grid item content / Слот для основного содержимого элемента сетки */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**
@@ -42,6 +43,7 @@ export interface GridItemSlots {
  * Тип, описывающий подклассы.
  */
 export type GridItemClasses = {
+  /** Main component class / Основной класс компонента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

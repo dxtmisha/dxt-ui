@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * GridItemDesign
+ * Design constructor class for the GridItem component.
+ * Connects the GridItem logic orchestrator to Vue rendering, classes, styles, and root element binding.
+ *
+ * Класс конструктора дизайна для компонента GridItem.
+ * Связывает логический оркестратор GridItem с рендерингом Vue, классами, стилями и привязкой корневого элемента.
  */
 export class GridItemDesign<
   COMP extends GridItemComponents,
@@ -35,14 +39,17 @@ export class GridItemDesign<
     CLASSES,
     P
   > {
+  /** Logic orchestrator instance / Экземпляр логического оркестратора */
   protected readonly item: GridItem
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,9 +74,10 @@ export class GridItemDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed component properties / экспортируемые свойства компонента
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -79,6 +87,7 @@ export class GridItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes map / частичная карта классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -94,6 +103,7 @@ export class GridItemDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns component styles object / объект стилей компонента
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -103,12 +113,17 @@ export class GridItemDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns VNode element / VNode элемент
    */
   protected initRender(): VNode {
-    return h('div', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.initSlot('default'))
+    return h(
+      'div',
+      mergeProps(this.getAttrs(), {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      }),
+      this.initSlot('default')
+    )
   }
 }

@@ -37,6 +37,7 @@ export interface GroupSlots extends BlockSlots {
  * Тип, описывающий подклассы.
  */
 export type GroupClasses = {
+  /** Main root class / Основной корневой класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   headline: string

@@ -1,8 +1,22 @@
-import { computed, ref, watch, onMounted, onUnmounted, type Ref, nextTick } from 'vue'
-import { EventItem, type DesignName, getElementOrWindow, type ConstrEmit } from '@dxtmisha/functional'
-import type { ElementOrWindow } from '@dxtmisha/functional-basic'
+import { computed, ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  EventItem,
+  getElementOrWindow,
+  type ConstrEmit,
+  type DesignName
+} from '@dxtmisha/functional'
+import { isDomRuntime, type ElementOrWindow } from '@dxtmisha/functional-basic'
 
-import type { HeadroomEmitsInclude, HeadroomEventItem, HeadroomExposeInclude, HeadroomPropsInclude } from '../types/headroomTypes'
+import type {
+  HeadroomEmitsInclude,
+  HeadroomEventItem,
+  HeadroomExposeInclude,
+  HeadroomPropsInclude
+} from '../types/headroomTypes'
+
+/** Extra offset buffer in pixels when hiding element in disappears mode / Дополнительный буфер смещения в пикселях при скрытии элемента в режиме disappears */
+const DISAPPEARS_OFFSET_BUFFER = 64
 
 /**
  * Headroom logic class managing sticky header position and scroll status calculations.
@@ -13,7 +27,40 @@ import type { HeadroomEmitsInclude, HeadroomEventItem, HeadroomExposeInclude, He
  * Обрабатывает привязку событий прокрутки, вычисление состояния прилипания, расчет пользовательских CSS свойств трансформации
  * и обновление смещения в режиме прокрутки disappears.
  */
-export class HeadroomInclude {
+export class HeadroomInclude extends DesignLifecycleAbstract {
+  /**
+   * Checks whether headroom scroll tracking is enabled for the given properties.
+   *
+   * Проверяет, включено ли отслеживание прокрутки headroom для переданных свойств.
+   * @param props input properties / входные свойства
+   * @returns true if tracking is active / true, если отслеживание активно
+   */
+  static is(props?: HeadroomPropsInclude): boolean {
+    return Boolean(props?.disappears || (props?.transformThreshold ?? 0) > 0)
+  }
+
+  /** Scroll event listener instance / Экземпляр слушателя событий прокрутки */
+  protected eventScroll?: EventItem<ElementOrWindow, Event>
+
+  /** Registered watcher stop handles / Зарегистрированные функции остановки наблюдателей */
+  protected watchStops: WatchStopHandle[] = []
+
+  /**
+   * Constructor
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param naming component naming helper / помощник именования компонента
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   */
+  constructor(
+    protected readonly props: Readonly<HeadroomPropsInclude>,
+    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly naming: DesignName,
+    protected readonly emits?: ConstrEmit<HeadroomEmitsInclude>
+  ) {
+    super()
+  }
+
   /** Current scroll position in pixels / Текущая позиция прокрутки в пикселях */
   readonly value = ref<number>(0)
 
@@ -41,44 +88,6 @@ export class HeadroomInclude {
     this.valuePrevious.value - this.value.value
   ))
 
-  /** Scroll event listener instance / Экземпляр слушателя событий прокрутки */
-  protected eventScroll?: EventItem<ElementOrWindow, Event>
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: HeadroomPropsInclude,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly emits?: ConstrEmit<HeadroomEmitsInclude>
-  ) {
-    onMounted(async () => {
-      await nextTick()
-
-      watch(
-        this.isSticky,
-        () => this.emits?.('headroomSticky', this.eventItem)
-      )
-
-      watch(
-        [
-          () => this.props.disappears,
-          () => this.props.transformThreshold,
-          () => this.props.scrollElement
-        ],
-        () => this.toggle(),
-        { immediate: true }
-      )
-    })
-
-    onUnmounted(() => this.stop())
-  }
-
   /**
    * Exported headroom values and methods.
    *
@@ -91,6 +100,43 @@ export class HeadroomInclude {
       getValues: () => this.eventItem,
       update: this.update
     }
+  }
+
+  /**
+   * Registers reactive watchers and starts scroll tracking on mount.
+   *
+   * Регистрирует реактивные наблюдатели и запускает отслеживание прокрутки при монтировании.
+   * @returns void
+   */
+  override readonly onMounted = (): void => {
+    this.stopWatchers()
+
+    this.watchStops.push(
+      watch(
+        this.isSticky,
+        () => this.emits?.('headroomSticky', this.eventItem)
+      ),
+      watch(
+        [
+          () => this.props.disappears,
+          () => this.props.transformThreshold,
+          () => this.props.scrollElement
+        ],
+        () => this.toggle(),
+        { immediate: true }
+      )
+    )
+  }
+
+  /**
+   * Stops watchers and scroll listeners on unmount.
+   *
+   * Останавливает наблюдатели и слушатели прокрутки при размонтировании.
+   * @returns void
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatchers()
+    this.stop()
   }
 
   /**
@@ -110,10 +156,14 @@ export class HeadroomInclude {
    * Returns target element or window for scroll listening.
    *
    * Возвращает целевой элемент или окно для прослушивания прокрутки.
-   * @returns scroll target element or window / элемент или окно для прокрутки
+   * @returns scroll target element or window, or undefined in non-DOM runtime / элемент или окно для прокрутки, либо undefined вне DOM-среды
    */
-  protected get eventElement(): ElementOrWindow {
-    return getElementOrWindow(this.props.scrollElement) ?? window
+  protected get eventElement(): ElementOrWindow | undefined {
+    if (isDomRuntime()) {
+      return getElementOrWindow(this.props.scrollElement) ?? window
+    }
+
+    return undefined
   }
 
   /**
@@ -160,8 +210,9 @@ export class HeadroomInclude {
     const { height, top } = this.getElementRect()
     const currentScroll = this.value.value
     const transformThreshold = this.transformThreshold
-    const elementHeightOffset = (height + 64) * -1
+    const elementHeightOffset = (height + DISAPPEARS_OFFSET_BUFFER) * -1
     const moveOffset = top + this.valueDifference.value
+    const minScrollOffset = currentScroll === 0 ? 0 : currentScroll * -1
 
     if (
       moveOffset > 0
@@ -170,15 +221,7 @@ export class HeadroomInclude {
       return 0
     }
 
-    if (moveOffset < (currentScroll * -1)) {
-      return currentScroll * -1
-    }
-
-    if (moveOffset < elementHeightOffset) {
-      return elementHeightOffset
-    }
-
-    return moveOffset
+    return Math.max(moveOffset, minScrollOffset, elementHeightOffset)
   }
 
   /**
@@ -206,6 +249,22 @@ export class HeadroomInclude {
   }
 
   /**
+   * Returns current scroll position of event target element or window.
+   *
+   * Возвращает текущую позицию прокрутки целевого элемента или окна.
+   * @returns current scroll position in pixels / текущее значение прокрутки в пикселях
+   */
+  protected getScroll(): number {
+    const targetElement = this.eventElement
+
+    if (targetElement) {
+      return 'scrollY' in targetElement ? targetElement.scrollY : targetElement.scrollTop
+    }
+
+    return 0
+  }
+
+  /**
    * Returns top position of scroll element.
    *
    * Возвращает верхнюю позицию элемента прокрутки.
@@ -216,6 +275,7 @@ export class HeadroomInclude {
 
     if (
       scrollElement
+      && isDomRuntime()
       && scrollElement !== window
       && 'getBoundingClientRect' in scrollElement
     ) {
@@ -223,91 +283,6 @@ export class HeadroomInclude {
     }
 
     return 0
-  }
-
-  /**
-   * Returns current scroll position of event target element or window.
-   *
-   * Возвращает текущую позицию прокрутки целевого элемента или окна.
-   * @returns current scroll position in pixels / текущее значение прокрутки в пикселях
-   */
-  protected getScroll(): number {
-    const targetElement = this.eventElement
-    return 'scrollY' in targetElement ? targetElement.scrollY : targetElement.scrollTop
-  }
-
-  /**
-   * Triggers scroll event emit.
-   *
-   * Вызывает генерацию события прокрутки.
-   * @returns this instance / текущий экземпляр
-   */
-  protected readonly onScroll = (): this => {
-    this.update()
-
-    this.emits?.(
-      'headroomScroll',
-      this.eventItem
-    )
-
-    return this
-  }
-
-  /**
-   * Starts scroll event listener.
-   *
-   * Запускает слушатель событий прокрутки.
-   * @returns this instance / текущий экземпляр
-   */
-  protected start(): this {
-    const targetElement = this.eventElement
-    if (this.eventScroll) {
-      this.eventScroll.stop()
-    }
-
-    this.eventScroll = new EventItem(
-      targetElement,
-      'scroll',
-      this.onScroll
-    )
-      .start()
-
-    return this
-  }
-
-  /**
-   * Stops scroll event listener.
-   *
-   * Останавливает слушатель событий прокрутки.
-   * @returns this instance / текущий экземпляр
-   */
-  protected stop(): this {
-    this.eventScroll?.stop()
-    this.eventScroll = undefined
-
-    return this
-  }
-
-  /**
-   * Toggles scroll listening and performs initial state calculation.
-   *
-   * Переключает прослушивание прокрутки и выполняет первоначальный расчет состояния.
-   * @returns this instance / текущий экземпляр
-   */
-  protected toggle(): this {
-    if (
-      this.props.disappears
-      || this.transformThreshold > 0
-    ) {
-      this.updateValue()
-        .update()
-
-      this.start()
-    } else {
-      this.stop()
-    }
-
-    return this
   }
 
   /**
@@ -365,6 +340,7 @@ export class HeadroomInclude {
       )
     } else {
       this.disappearsValue.value = 0
+      mainElement?.style.removeProperty(this.naming.getStyle('top'))
     }
 
     return this
@@ -398,7 +374,99 @@ export class HeadroomInclude {
   protected updateValue(): this {
     this.valuePrevious.value = this.value.value
     this.value.value = this.getScroll()
-    this.getElementRect()
+
+    return this
+  }
+
+  /**
+   * Triggers scroll event emit.
+   *
+   * Вызывает генерацию события прокрутки.
+   * @returns this instance / текущий экземпляр
+   */
+  protected readonly onScroll = (): this => {
+    this.update()
+
+    this.emits?.(
+      'headroomScroll',
+      this.eventItem
+    )
+
+    return this
+  }
+
+  /**
+   * Starts scroll event listener.
+   *
+   * Запускает слушатель событий прокрутки.
+   * @returns this instance / текущий экземпляр
+   */
+  protected start(): this {
+    const targetElement = this.eventElement
+
+    if (this.eventScroll) {
+      this.eventScroll.stop()
+    }
+
+    if (targetElement) {
+      this.eventScroll = new EventItem(
+        targetElement,
+        'scroll',
+        this.onScroll,
+        { passive: true }
+      )
+        .start()
+    } else {
+      this.eventScroll = undefined
+    }
+
+    return this
+  }
+
+  /**
+   * Stops scroll event listener.
+   *
+   * Останавливает слушатель событий прокрутки.
+   * @returns this instance / текущий экземпляр
+   */
+  protected stop(): this {
+    this.eventScroll?.stop()
+    this.eventScroll = undefined
+
+    return this
+  }
+
+  /**
+   * Stops all registered reactive watchers.
+   *
+   * Останавливает все зарегистрированные реактивные наблюдатели.
+   * @returns this instance / текущий экземпляр
+   */
+  protected stopWatchers(): this {
+    this.watchStops.forEach(stop => stop())
+    this.watchStops = []
+
+    return this
+  }
+
+  /**
+   * Toggles scroll listening and performs initial state calculation.
+   *
+   * Переключает прослушивание прокрутки и выполняет первоначальный расчет состояния.
+   * @returns this instance / текущий экземпляр
+   */
+  protected toggle(): this {
+    if (HeadroomInclude.is(this.props)) {
+      this.updateValue()
+        .update()
+
+      this.start()
+    } else {
+      this.stop()
+      this.value.value = 0
+      this.valuePrevious.value = 0
+      this.updateDisappears()
+    }
 
     return this
   }

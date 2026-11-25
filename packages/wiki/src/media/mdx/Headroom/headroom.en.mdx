@@ -1,18 +1,16 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
-
 A component for managing sticky header positioning, scroll metrics calculations, transformation threshold percentages, and disappears scroll mode updates.
 
 Headroom tracks scrolling activity on a target element or window and dynamically updates its sticky state, dataset attributes, transformation properties, and disappearing offset positioning.
 
 **Key features:**
 
-- Automatic scroll tracking and sticky state evaluation
-- Disappears mode that hides the element on scroll down and reveals it on scroll up
-- Dynamic transform custom CSS properties and dataset attributes for styling
-- Customizable container element or target window
-- Configurable HTML tag for rendering
+- Automatic scroll tracking and sticky state evaluation (`data-headroom`, `isSticky`)
+- Disappears mode (`disappears`) that hides the element on scroll down and reveals it on scroll up
+- Dynamic transform CSS custom properties (`--*-sys-top`, `--*-sys-threshold`, `--*-sys-value`, `--*-sys-percent`, `--*-sys-difference`) and dataset attributes
+- Customizable scroll container selector, `HTMLElement`, or target `window` (`scrollElement`)
+- Configurable HTML tag for rendering (`tag`)
 
 **Common use cases:**
 
@@ -25,17 +23,18 @@ Headroom tracks scrolling activity on a target element or window and dynamically
     code={`
 <template>
   <!-- Basic Headroom header -->
-  <Headroom>
-    <header class="header">
-      Headroom Header Content
-    </header>
+  <Headroom tag="header">
+    Headroom Header Content
   </Headroom>
 
-  <!-- Headroom with disappears scroll mode -->
-  <Headroom disappears :transformThreshold="100">
-    <header class="header">
-      Auto-hiding Header Content
-    </header>
+  <!-- Headroom with disappears scroll mode and transform threshold -->
+  <Headroom
+    tag="header"
+    scroll-element="#main-scroller"
+    disappears
+    :transform-threshold="100"
+  >
+    Auto-hiding Header Content
   </Headroom>
 </template>
   `}

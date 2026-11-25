@@ -2,36 +2,39 @@
 
 @mixin mixinGrid {
   display: grid;
-  grid-template-columns: repeat(ui.v('??columns', 12), 1fr);
+  grid-template-columns: repeat(ui.v('??columns', 12), minmax(0, 1fr));
   grid-template-rows: auto;
   align-content: stretch;
 
+  min-width: 0;
+  max-width: 100%;
+
   &--align {
-    &-center {
+    &--center {
       align-items: center;
     }
 
-    &-top {
+    &--top {
       align-items: start;
     }
 
-    &-bottom {
+    &--bottom {
       align-items: end;
     }
 
-    &-stretch {
+    &--stretch {
       align-items: stretch;
     }
 
-    &-baseline {
+    &--baseline {
       align-items: baseline;
     }
 
-    &-start {
+    &--start {
       align-items: start;
     }
 
-    &-end {
+    &--end {
       align-items: end;
     }
   }

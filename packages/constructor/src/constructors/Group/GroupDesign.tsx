@@ -16,7 +16,11 @@ import {
 } from './types'
 
 /**
- * GroupDesign
+ * Design constructor class for the Group component.
+ * Connects the `Group` logic orchestrator with `BlockDesign` rendering, slots, and exposed refs.
+ *
+ * Класс дизайн-конструктора для компонента Group.
+ * Связывает логический оркестратор `Group` с рендерингом, слотами и экспортируемыми ссылками `BlockDesign`.
  */
 export class GroupDesign<
   COMP extends GroupComponents,
@@ -30,11 +34,13 @@ export class GroupDesign<
     P
   > {
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor block item class/ класс элемента блока
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor group item class / класс элемента группы
    */
   constructor(
     name: string,

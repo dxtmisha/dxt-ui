@@ -1,18 +1,24 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Individual item within a Grid component. Controls how many columns the element should occupy and how it aligns within the grid cell.
+The `GridItem` component represents an individual cell inside a `Grid` layout container.
 
-**Key Features:**
+It controls how many columns the element occupies via `base` (`1` to `12`, defaulting to `1`) and how the item aligns along the cross axis within its grid cell via `align`, while automatically forwarding attributes and rendering arbitrary child content through the `default` slot.
 
-- Customizable column span (`base`: `1` to `12`)
-- Configurable item alignment (`align`: `center`, `top`, `bottom`, `stretch`, `baseline`, `start`, `end`)
-- Granular control over grid layout structure
+**Key features:**
+
+- **Column Span Control:** Configurable column span from `1` to `12` columns via the `base` prop
+- **Cell Alignment:** Cross-axis item alignment via `align` (`center`, `top`, `bottom`, `stretch`, `baseline`, `start`, `end`)
+- **Overflow Protection:** Enforces `min-width: 0` so nested flex or text content truncates cleanly without breaking grid tracks
+- **Flexible Slot Content:** Renders any child components or markup via the `default` slot and merges external HTML attributes
+
+**Common use cases:**
+
+- Multi-column form fields and dashboard widget cards inside `Grid`
+- Asymmetric split layouts combining different column spans (for example, `4` + `8` or `6` + `6`)
+- Vertically centering or stretching elements of varying heights within the same grid row
 
 <Source
     code={`
-<script setup>
-</script>
-
 <template>
   <Grid>
     <!-- Two equal 6-column items -->
@@ -21,10 +27,11 @@ Individual item within a Grid component. Controls how many columns the element s
 
     <!-- Aligned 4-column item -->
     <GridItem base="4" align="center">Centered item</GridItem>
+    <GridItem base="8" align="stretch">Stretched item</GridItem>
   </Grid>
 </template>
   `}
     language="html"
 />
 
-> GridItem allows for granular control over element sizing and alignment within a Grid container without custom CSS.
+> GridItem provides declarative control over column spanning and cell alignment inside a Grid container without custom CSS.

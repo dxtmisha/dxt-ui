@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { HeadroomEmitsInclude, HeadroomExposeInclude } from '../../types/headroomTypes'
 
@@ -30,7 +31,8 @@ export type HeadroomExpose = HeadroomExposeInclude
  * Тип, описывающий доступные слоты.
  */
 export interface HeadroomSlots {
-  default? (props: any): any
+  /** Default slot for headroom content / Основной слот для содержимого headroom */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**

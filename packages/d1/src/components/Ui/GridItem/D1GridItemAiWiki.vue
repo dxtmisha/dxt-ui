@@ -21,7 +21,7 @@ defineOptions({
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item" style="min-height: 48px;">
   <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px;">
-    <D1GridItem v-bind="args">Item</D1GridItem>
+    <DesignComponent v-bind="args">Item</DesignComponent>
   </div>
 </div>
     </template>

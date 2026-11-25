@@ -4,6 +4,9 @@
   position: sticky;
   top: 0;
 
+  min-width: 0;
+  max-width: 100%;
+
   &--disappears {
     top: ui.v('??sys-top');
   }

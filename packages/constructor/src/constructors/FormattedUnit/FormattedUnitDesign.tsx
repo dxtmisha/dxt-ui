@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,15 +7,15 @@ import {
 
 import { FormattedUnit } from './FormattedUnit'
 
-import {
-  type FormattedUnitPropsBasic
+import type {
+  FormattedUnitPropsBasic
 } from './props'
-import {
-  type FormattedUnitClasses,
-  type FormattedUnitComponents,
-  type FormattedUnitEmits,
-  type FormattedUnitExpose,
-  type FormattedUnitSlots
+import type {
+  FormattedUnitClasses,
+  FormattedUnitComponents,
+  FormattedUnitEmits,
+  FormattedUnitExpose,
+  FormattedUnitSlots
 } from './types'
 
 /**
@@ -37,13 +37,13 @@ export class FormattedUnitDesign<
     CLASSES,
     P
   > {
-  /** FormattedUnit instance / Экземпляр FormattedUnit */
+  /** FormattedUnit logic orchestrator instance / Экземпляр оркестратора логики FormattedUnit */
   protected readonly item: FormattedUnit
 
   /**
-   * Constructor
+   * Constructor for creating a FormattedUnitDesign instance.
    *
-   * Конструктор
+   * Конструктор для создания экземпляра FormattedUnitDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -108,16 +108,23 @@ export class FormattedUnitDesign<
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the formatted value inside a root `<span>` element.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга отформатированного значения внутри корневого элемента `<span>`.
    * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    return h('span', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.item.item)
+    return h(
+      'span',
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      this.item.item
+    )
   }
 }

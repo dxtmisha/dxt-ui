@@ -5,6 +5,10 @@ type GridItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties for GridItem /
+ * Базовые свойства для GridItem
+ */
 export type GridItemPropsBasic = {
 }
 

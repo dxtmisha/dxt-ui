@@ -51,7 +51,12 @@ import DemoFieldMessagePage from './pages/components/DemoFieldMessagePage.vue'
 import DemoFormPage from './pages/components/DemoFormPage.vue'
 import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
 import DemoFormattedNumberPage from './pages/components/DemoFormattedNumberPage.vue'
+import DemoFormattedUnitPage from './pages/components/DemoFormattedUnitPage.vue'
+import DemoGridPage from './pages/components/DemoGridPage.vue'
+import DemoGridItemPage from './pages/components/DemoGridItemPage.vue'
+import DemoGroupPage from './pages/components/DemoGroupPage.vue'
 import DemoHeaderPage from './pages/components/DemoHeaderPage.vue'
+import DemoHeadroomPage from './pages/components/DemoHeadroomPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
@@ -344,9 +349,34 @@ export const routes: RouteRecordRaw[] = [
     component: DemoFormattedNumberPage
   },
   {
+    path: '/component-formatted-unit',
+    name: 'component-formatted-unit',
+    component: DemoFormattedUnitPage
+  },
+  {
+    path: '/component-grid',
+    name: 'component-grid',
+    component: DemoGridPage
+  },
+  {
+    path: '/component-grid-item',
+    name: 'component-grid-item',
+    component: DemoGridItemPage
+  },
+  {
+    path: '/component-group',
+    name: 'component-group',
+    component: DemoGroupPage
+  },
+  {
     path: '/component-header',
     name: 'component-header',
     component: DemoHeaderPage
+  },
+  {
+    path: '/component-headroom',
+    name: 'component-headroom',
+    component: DemoHeadroomPage
   },
   {
     path: '/component-horizontal-scroll',

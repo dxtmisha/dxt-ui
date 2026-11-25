@@ -1,19 +1,54 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComponents,
+  type DesignName,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { HeadroomInclude } from '../../classes/HeadroomInclude'
 
-import type { HeadroomComponents, HeadroomEmits, HeadroomSlots } from './types'
 import type { HeadroomProps } from './props'
+import type {
+  HeadroomComponents,
+  HeadroomEmits,
+  HeadroomExpose,
+  HeadroomSlots
+} from './types'
+
+/** Headroom dependency constructors type / Тип конструкторов зависимостей Headroom */
+export type HeadroomConstructors = {
+  /** Headroom logic include constructor / Конструктор логики включения headroom */
+  headroom: typeof HeadroomInclude
+}
 
 /**
- * Headroom logic class managing sticky header position and scroll status calculations.
+ * Headroom logic orchestrator class managing sticky header position and scroll status calculations.
  *
- * Класс логики Headroom, управляющий липким положением шапки и вычислениями состояния прокрутки.
+ * Класс-оркестратор логики Headroom, управляющий липким положением шапки и вычислениями состояния прокрутки.
  */
-export class Headroom {
-  /** Headroom include / Подключение headroom */
-  readonly headroom: HeadroomInclude
+export class Headroom extends DesignLogicAbstract<
+  HTMLDivElement,
+  HeadroomComponents,
+  HeadroomEmits,
+  HeadroomSlots,
+  HeadroomProps,
+  HeadroomConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<HeadroomConstructors> = {
+    headroom: {
+      item: HeadroomInclude,
+      conditions: () => HeadroomInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming,
+        this.emits
+      ]
+    }
+  }
 
   /**
    * Constructor
@@ -23,30 +58,36 @@ export class Headroom {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.HeadroomConstructor class for creating a headroom include / класс для создания включения headroom
+   * @param constructors dependency injection overrides object / объект переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: HeadroomProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<HeadroomComponents, HeadroomProps>,
-    protected readonly slots?: HeadroomSlots,
-    protected readonly emits?: ConstrEmit<HeadroomEmits>,
-    constructors: {
-      HeadroomConstructor?: typeof HeadroomInclude
-    } = {}
+    props: Readonly<HeadroomProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<HeadroomComponents, HeadroomProps>,
+    slots?: HeadroomSlots,
+    emits?: ConstrEmit<HeadroomEmits>,
+    constructors?: Partial<HeadroomConstructors>
   ) {
-    const {
-      HeadroomConstructor = HeadroomInclude
-    } = constructors
-
-    this.headroom = new HeadroomConstructor(
-      this.props,
-      this.element,
-      this.naming,
-      this.emits
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
+  }
+
+  /**
+   * Returns exposed headroom values and methods.
+   *
+   * Возвращает экспонируемые значения и методы headroom.
+   * @returns object with exposed properties and methods / объект с экспонируемыми свойствами и методами
+   */
+  get expose(): HeadroomExpose {
+    return this.i('headroom').expose
   }
 
   /**
@@ -56,6 +97,6 @@ export class Headroom {
    * @returns tag name / название тега
    */
   get tag(): string {
-    return this.props.tag ?? 'div'
+    return this.props.tag || 'div'
   }
 }

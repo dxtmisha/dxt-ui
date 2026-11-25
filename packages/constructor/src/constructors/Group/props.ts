@@ -2,11 +2,18 @@ import type { IconPropsBasic } from '../Icon'
 import type { BlockPropsBasic } from '../Block'
 import type { HeaderPropsBasic } from '../Header'
 
+/**
+ * Token-generated properties / Свойства, генерируемые из токенов
+ */
 type GroupPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic property types for the Group component /
+ * Базовые типы свойств для компонента Group
+ */
 export type GroupPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Header extends HeaderPropsBasic = HeaderPropsBasic

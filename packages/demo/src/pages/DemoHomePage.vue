@@ -56,7 +56,12 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Form" name="component-form"/>
         <DemoLink label="Formatted" name="component-formatted"/>
         <DemoLink label="FormattedNumber" name="component-formatted-number"/>
+        <DemoLink label="FormattedUnit" name="component-formatted-unit"/>
+        <DemoLink label="Grid" name="component-grid"/>
+        <DemoLink label="GridItem" name="component-grid-item"/>
+        <DemoLink label="Group" name="component-group"/>
         <DemoLink label="Header" name="component-header"/>
+        <DemoLink label="Headroom" name="component-headroom"/>
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>

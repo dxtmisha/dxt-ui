@@ -18,6 +18,13 @@ defineOptions({
     :component="D1Headroom"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent scroll-element="#container" disappears :transform-threshold="100">
+    Sticky Header
+  </DesignComponent>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

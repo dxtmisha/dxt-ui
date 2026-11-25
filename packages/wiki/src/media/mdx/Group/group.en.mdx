@@ -1,32 +1,25 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Group` component is a structural container designed to group related content with support for headers, descriptions, and flexible layout options. It extends `Block` with a default `<div>` root tag, `<h4>` header level (`tagHeader`), and `'group'` area context.
 
-A structural component designed to group related content with support for headers, descriptions, and flexible layout options. It is a semantic alias for the Block component, with a default header level of h4.
+`Group` provides a standardized way to organize thematic subsections within a page, card, or larger `Block`, automatically linking `aria-labelledby` and `aria-describedby` to rendered header and description elements while supporting icons, captions, and slot-based customization.
 
-Group provides a standardized way to organize information within a page or another component, ensuring a consistent visual hierarchy. It inherits all the capabilities of the Block component, including support for icons, captions, and slot-based customization.
+**Key features:**
 
-**Key Features:**
+- **Standardized Sub-Grouping:** Groups related content using a `<div>` root tag by default (configurable via `tag`)
+- **Heading Hierarchy:** Renders `<h4>` for the header label by default (`tagHeader`), fitting neatly inside `Block` (`h3`) or `Section` (`h2`)
+- **Full Block Capabilities:** Inherits `headline`, `label`, `caption`, `description`, leading `icon`, and all 6 slots (`#default`, `#headline`, `#label`, `#description`, `#caption`, `#trailing`)
+- **Automatic ARIA & Area Context:** Synchronizes `aria-labelledby` and `aria-describedby` and propagates `'group'` as the default reactive `area` context
 
-- Standardized grouping of content using `<div>` tag
-- Support for titles (`h4` by default), labels, descriptions, and captions
-- Icon support
-- Fully inherits Block component capabilities
-- Flexible layout for content organization
+**Common use cases:**
 
-**Typical Use Cases:**
-
-- Subsections within a page
-- Grouping elements within a card or modal
-- Organizing complex forms into thematic areas
-- Creating structured content blocks with smaller headers
+- Subsections within a page or `Block`
+- Grouping elements inside a card or modal
+- Organizing complex forms into logical, titled segments
+- Structuring content blocks with lower-level headings
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-</script>
-
 <template>
   <Group
     headline="Group Headline"

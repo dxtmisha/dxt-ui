@@ -35,7 +35,7 @@ export type HeadroomProps = HeadroomPropsBasic & HeadroomPropsToken
  */
 export const defaultsHeadroom = {
   tag: 'div',
-  transform: 0,
+  transformThreshold: 0,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -1,26 +1,31 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Layout component for creating grid structures with customizable columns.
+The `Grid` component is a layout container built on CSS Grid for organizing child elements into a multi-column structure.
 
-**Key Features:**
+By default, it creates a 12-column grid with `minmax(0, 1fr)` tracks and supports configuring the number of columns via a CSS custom property as well as aligning items along the cross axis using the `align` prop.
 
-- Flexible grid system (defaults to 12 columns)
-- Gap customization
-- Responsive layout building
+**Key features:**
+
+- **12-Column Default Layout:** Uses CSS Grid with 12 equal-width columns by default
+- **Customizable Columns:** Allows overriding the column count via the component CSS variable (`columns`)
+- **Item Alignment:** Supports `center`, `top`, `bottom`, `stretch`, `baseline`, `start`, and `end` values for `align`
+
+**Common use cases:**
+
+- Multi-column page sections and dashboard widget layouts
+- Structured form layouts with varying column spans
+- Aligned card or content grids across responsive viewports
 
 <Source
     code={`
-<script setup>
-</script>
-
 <template>
-  <Grid>
-    <GridItem columnBase="6">Item 1</GridItem>
-    <GridItem columnBase="6">Item 2</GridItem>
+  <Grid align="center">
+    <div style="grid-column: span 6;">Item 1</div>
+    <div style="grid-column: span 6;">Item 2</div>
   </Grid>
 </template>
   `}
     language="html"
 />
 
-> Grid is the foundation for creating aligned and structured layouts across different screen sizes.
+> Grid provides a lightweight, predictable CSS Grid foundation for creating aligned multi-column layouts.

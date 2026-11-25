@@ -1,29 +1,36 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
-import type { GridComponents, GridEmits, GridSlots } from './types'
 import type { GridProps } from './props'
+import type {
+  GridComponents,
+  GridEmits,
+  GridSlots
+} from './types'
 
 /**
- * Grid
+ * Grid dependency constructors type /
+ * Тип конструкторов зависимостей сетки
  */
-export class Grid {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: GridProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<GridComponents, GridProps>,
-    protected readonly slots?: GridSlots,
-    protected readonly emits?: ConstrEmit<GridEmits>
-  ) {
-  }
+export type GridConstructors = {}
+
+/**
+ * Logic orchestrator class for the Grid layout component.
+ * Coordinates reactive properties, element reference, naming, slots, and emits via DesignLogicAbstract.
+ *
+ * Класс логического оркестратора для компонента макета сетки Grid.
+ * Координирует реактивные свойства, ссылку на элемент, именование, слоты и события через DesignLogicAbstract.
+ */
+export class Grid extends DesignLogicAbstract<
+  HTMLDivElement,
+  GridComponents,
+  GridEmits,
+  GridSlots,
+  GridProps,
+  GridConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторов по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<GridConstructors> = {}
 }
