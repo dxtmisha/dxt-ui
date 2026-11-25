@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ListSelectedList } from '@dxtmisha/functional'
+import type { ListSelectedList, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { MenuCountryExpose } from '@dxtmisha/constructor/MenuCountry'
+import type { EventClickValue } from '@dxtmisha/constructor'
 import type { WindowEmitOptions } from '@dxtmisha/constructor/Window'
 
 import { useDemoEvent } from '../../composables/useDemoEvent'
@@ -13,8 +14,8 @@ import DemoValue from '../../components/DemoValue.vue'
 const selectedBasic = ref<ListSelectedList>('VN')
 
 const selectedCustom = ref<ListSelectedList>('RU')
-const customList = ref<string[]>(['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'CN', 'JP'])
-const shortList = ['US', 'CA', 'MX']
+const customCountryList = ref<string[]>(['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'CN', 'JP'])
+const northAmericaList = ['US', 'CA', 'MX']
 
 const selectedPhoneCode = ref<ListSelectedList>('VN')
 const selectedModelSelected = ref<ListSelectedList>('GB')
@@ -32,20 +33,54 @@ const selectedMultiple = ref<ListSelectedList>(['US', 'VN'])
 const selectedDisabled = ref<ListSelectedList>('FR')
 const selectedEmbedded = ref<ListSelectedList>('US')
 const selectedSlots = ref<ListSelectedList>('JP')
+const selectedMutation = ref<ListSelectedList>('US')
+const selectedAccessibility = ref<ListSelectedList>('VN')
 
-const { eventName, eventValue, onEvent } = useDemoEvent()
+const selectedBoundaryEmpty = ref<ListSelectedList>('')
+const selectedBoundarySpaces = ref<ListSelectedList>('   ')
+const selectedBoundaryNullish = ref<ListSelectedList | undefined>(undefined)
+const selectedBoundaryUnknown = ref<ListSelectedList>('ZZ')
+const selectedBoundaryNarrow = ref<ListSelectedList>('VN')
+const highlightBoundaryText = ref<string>('')
+const xssPayload = '<img src=x onerror=alert(1)>'
+const unicodePayload = 'Tiếng Việt / Кириллица / 🚀🔥✨'
+const unbrokenString = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+
+const selectedInDom = ref<ListSelectedList>('US')
+const isLifecycleMounted = ref<boolean>(true)
+const selectedLifecycle = ref<ListSelectedList>('VN')
+
+const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 const lastWindowOpen = ref<boolean>(false)
 
 const menuCountryRef = ref<MenuCountryExpose | null>(null)
 const selectedExpose = ref<ListSelectedList>('US')
 const exposeStatus = ref<string>('Not checked')
 
-const onWindowEvent = (options: WindowEmitOptions) => {
-  lastWindowOpen.value = options.open
-  onEvent('window', `open=${options.open}`)
+const trackEvent = (name: string, payload?: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = payload === undefined ? 'undefined' : JSON.stringify(payload)
 }
 
-const checkExposeState = () => {
+const onWindowEvent = (options: WindowEmitOptions): void => {
+  lastWindowOpen.value = options.open
+  trackEvent('window', { id: options.id, open: options.open })
+}
+
+const onMenuClick = (_event: MouseEvent, options: EventClickValue): void => {
+  trackEvent('click', { type: options.type, value: options.value })
+}
+
+const onMenuClickLite = (options: EventClickValue): void => {
+  trackEvent('clickLite', { type: options.type, value: options.value })
+}
+
+const onMenuUpdateValue = (value?: NumberOrStringOrBoolean): void => {
+  trackEvent('updateValue', value)
+}
+
+const checkExposeState = (): void => {
   if (!menuCountryRef.value) {
     exposeStatus.value = 'Ref not initialized'
     return
@@ -54,7 +89,11 @@ const checkExposeState = () => {
   exposeStatus.value = [
     `id=${menuCountryRef.value.getId()}`,
     `open=${menuCountryRef.value.getOpen()}`,
+    `hasControl=${Boolean(menuCountryRef.value.getControl())}`,
+    `hasMenuElement=${Boolean(menuCountryRef.value.getMenuElement())}`,
+    `loading=${menuCountryRef.value.loading()}`,
     `selected=${menuCountryRef.value.isSelected()}`,
+    `listCount=${menuCountryRef.value.getSelectedList().length}`,
     `values=${JSON.stringify(menuCountryRef.value.getSelectedValues())}`,
     `names=${JSON.stringify(menuCountryRef.value.getSelectedNames())}`
   ].join(', ')
@@ -88,23 +127,23 @@ const checkExposeState = () => {
           <D1Button
             label="8 Countries"
             secondary
-            @click="customList = ['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'CN', 'JP']"
+            @click="customCountryList = ['VN', 'RU', 'US', 'GB', 'FR', 'DE', 'CN', 'JP']"
           />
           <D1Button
             label="North America (3)"
             secondary
-            @click="customList = shortList"
+            @click="customCountryList = northAmericaList"
           />
           <D1Button
             label="Empty List"
             outline
-            @click="customList = []"
+            @click="customCountryList = []"
           />
         </DemoFlex>
         <DemoFlex>
           <D1MenuCountry
             v-model:selected="selectedCustom"
-            :list="customList"
+            :list="customCountryList"
           >
             <template #control="{ binds, selectedNames }">
               <D1Button
@@ -166,7 +205,7 @@ const checkExposeState = () => {
         <DemoValue label="selected" :value="selectedLanguage"/>
       </D1Group>
 
-      <D1Group label="Selection Modes (is-selected-by-value & Array)">
+      <D1Group label="Selection Modes (is-selected-by-value, v-model:model-selected & Array)">
         <DemoFlex>
           <D1MenuCountry
             v-model:selected="selectedByValue"
@@ -213,6 +252,7 @@ const checkExposeState = () => {
               />
             </template>
           </D1MenuCountry>
+
           <D1MenuCountry
             v-model:model-selected="selectedModelSelected"
             :list="['US', 'GB', 'VN']"
@@ -229,8 +269,33 @@ const checkExposeState = () => {
           </D1MenuCountry>
         </DemoFlex>
         <DemoValue label="selectedByValue" :value="selectedByValue"/>
+        <DemoValue label="selectedByKey" :value="selectedByKey"/>
         <DemoValue label="selectedModelSelected" :value="selectedModelSelected"/>
         <DemoValue label="selectedMultiple" :value="selectedMultiple"/>
+      </D1Group>
+
+      <D1Group label="Programmatic v-model Mutation">
+        <DemoFlex>
+          <D1Button label="Set VN" outline @click="selectedMutation = 'VN'"/>
+          <D1Button label="Set JP" outline @click="selectedMutation = 'JP'"/>
+          <D1Button label="Clear Selection" outline @click="selectedMutation = ''"/>
+        </DemoFlex>
+        <DemoFlex>
+          <D1MenuCountry
+            v-model:selected="selectedMutation"
+            :list="['US', 'VN', 'JP', 'GB']"
+          >
+            <template #control="{ binds, selectedNames, selectedValues }">
+              <D1Button
+                v-bind="binds"
+                :label="`Controlled: ${selectedNames.value[0] || 'None'} (${selectedValues.value[0] || 'empty'})`"
+                icon="edit"
+                secondary
+              />
+            </template>
+          </D1MenuCountry>
+        </DemoFlex>
+        <DemoValue label="selectedMutation" :value="selectedMutation"/>
       </D1Group>
 
       <D1Group label="Search Options & Focus Control (show-search, filter-mode, highlight-length-start, disable-focus-return)">
@@ -319,36 +384,207 @@ const checkExposeState = () => {
         <DemoValue label="selectedEmbedded" :value="selectedEmbedded"/>
       </D1Group>
 
-      <D1Group label="Slots (control, title, contextTop, contextBottom, footer)">
+      <D1Group label="Slots & Scoped Bindings (control, title, contextTop, contextBottom, footer)">
         <DemoFlex>
           <D1MenuCountry
             v-model:selected="selectedSlots"
             :list="['VN', 'US', 'JP', 'GB']"
             show-phone-code
           >
-            <template #control="{ binds, selectedNames }">
+            <template #control="{ binds, selectedNames, open, isSelected }">
               <D1Button
                 v-bind="binds"
-                :label="`Slots: ${selectedNames.value[0] || 'Select'}`"
+                :label="`Slots: ${selectedNames.value[0] || 'Select'} (open=${open.value}, selected=${isSelected.value})`"
                 icon="view_quilt"
                 primary
               />
             </template>
-            <template #title>
-              <div class="demo-menu-country-page__slot">Choose Country (title slot)</div>
+            <template #title="{ selectedNames }">
+              <div class="demo-menu-country-page__slot">
+                Choose Country (title slot, current={{ selectedNames.value[0] || 'None' }})
+              </div>
             </template>
-            <template #contextTop>
-              <div class="demo-menu-country-page__slot">Top Context Hint (contextTop)</div>
+            <template #contextTop="{ selectedValues }">
+              <div class="demo-menu-country-page__slot">
+                Top Context Hint (contextTop, code={{ selectedValues.value[0] || 'None' }})
+              </div>
             </template>
             <template #contextBottom>
               <div class="demo-menu-country-page__slot">Bottom Context Hint (contextBottom)</div>
             </template>
-            <template #footer>
-              <div class="demo-menu-country-page__slot">ISO 3166-1 Country List (footer)</div>
+            <template #footer="{ classesWindow }">
+              <div class="demo-menu-country-page__slot">
+                <span>ISO 3166-1 Country List (footer)</span>
+                <D1Button
+                  label="Done"
+                  size="sm"
+                  outline
+                  :class="classesWindow.close"
+                />
+              </div>
             </template>
           </D1MenuCountry>
         </DemoFlex>
         <DemoValue label="selectedSlots" :value="selectedSlots"/>
+      </D1Group>
+
+      <D1Group label="Accessibility (WAI-ARIA & Keyboard Navigation)">
+        <DemoFlex>
+          <D1MenuCountry
+            v-model:selected="selectedAccessibility"
+            :list="['VN', 'US', 'GB', 'FR', 'DE']"
+            :menu-attrs="{ roleList: 'listbox', roleItem: 'option' }"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                aria-label="Accessible country selector"
+                :label="`A11y Country: ${selectedNames.value[0] || 'None'}`"
+                icon="accessibility_new"
+                primary
+              />
+            </template>
+          </D1MenuCountry>
+        </DemoFlex>
+        <DemoValue label="selectedAccessibility" :value="selectedAccessibility"/>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases (Empty, Nullish, Unknown Codes, Unicode, XSS, Narrow)">
+        <DemoFlex>
+          <D1MenuCountry
+            v-model:selected="selectedBoundaryEmpty"
+            :list="['US', 'VN', 'GB']"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Empty '': ${selectedNames.value[0] || 'Fallback'}`"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1MenuCountry
+            v-model:selected="selectedBoundarySpaces"
+            :list="['US', 'VN', 'GB']"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Spaces '   ': ${selectedNames.value[0] || 'Fallback'}`"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1MenuCountry
+            v-model:selected="selectedBoundaryNullish"
+            :list="['US', 'VN', 'GB']"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Undefined: ${selectedNames.value[0] || 'Fallback'}`"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1MenuCountry
+            v-model:selected="selectedBoundaryUnknown"
+            :list="['ZZ', 'XX', 'US', 'VN']"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Unknown Codes (ZZ/XX): ${selectedNames.value[0] || 'None'}`"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+        </DemoFlex>
+
+        <DemoFlex>
+          <D1Button
+            label="Highlight XSS"
+            size="sm"
+            outline
+            @click="highlightBoundaryText = xssPayload"
+          />
+          <D1Button
+            label="Highlight Unicode"
+            size="sm"
+            outline
+            @click="highlightBoundaryText = unicodePayload"
+          />
+          <D1Button
+            label="Clear Highlight"
+            size="sm"
+            outline
+            @click="highlightBoundaryText = ''"
+          />
+        </DemoFlex>
+
+        <DemoBox class="demo-menu-country-page__narrow">
+          <D1MenuCountry
+            v-model:selected="selectedBoundaryNarrow"
+            :list="['VN', 'US', 'GB', 'DO']"
+            :menu-attrs="{
+              embedded: true,
+              showSearch: true,
+              highlight: highlightBoundaryText,
+              windowAttrs: { open: true }
+            }"
+            show-phone-code
+          >
+            <template #title>
+              <div class="demo-menu-country-page__slot">
+                {{ unbrokenString }} | {{ unicodePayload }} | {{ xssPayload }}
+              </div>
+            </template>
+          </D1MenuCountry>
+        </DemoBox>
+        <DemoValue label="selectedBoundaryNarrow" :value="selectedBoundaryNarrow"/>
+      </D1Group>
+
+      <D1Group label="SSR & DOM Lifecycle (in-dom & Conditional Mount)">
+        <DemoFlex>
+          <D1MenuCountry
+            v-model:selected="selectedInDom"
+            :list="['US', 'VN', 'JP']"
+            :menu-attrs="{ windowAttrs: { inDom: true } }"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`In-DOM Menu: ${selectedNames.value[0] || 'Select'}`"
+                icon="memory"
+                outline
+              />
+            </template>
+          </D1MenuCountry>
+
+          <D1Button
+            :label="isLifecycleMounted ? 'Unmount MenuCountry' : 'Mount MenuCountry'"
+            secondary
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+
+          <D1MenuCountry
+            v-if="isLifecycleMounted"
+            v-model:selected="selectedLifecycle"
+            :list="['VN', 'US', 'GB']"
+          >
+            <template #control="{ binds, selectedNames }">
+              <D1Button
+                v-bind="binds"
+                :label="`Mounted: ${selectedNames.value[0] || 'Select'}`"
+                tonal
+              />
+            </template>
+          </D1MenuCountry>
+        </DemoFlex>
+        <DemoValue label="isLifecycleMounted" :value="isLifecycleMounted"/>
       </D1Group>
 
       <D1Group label="Events & Expose API">
@@ -357,8 +593,11 @@ const checkExposeState = () => {
             ref="menuCountryRef"
             v-model:selected="selectedExpose"
             :list="['US', 'VN', 'GB', 'FR']"
-            @click="onEvent('click')"
-            @update-value="(value) => onEvent('updateValue', value)"
+            @click="onMenuClick"
+            @click-lite="onMenuClickLite"
+            @update:selected="(value) => trackEvent('update:selected', value)"
+            @update:model-selected="(value) => trackEvent('update:modelSelected', value)"
+            @update-value="onMenuUpdateValue"
             @window="onWindowEvent"
           >
             <template #control="{ binds, selectedNames }">
@@ -373,6 +612,8 @@ const checkExposeState = () => {
 
           <D1Button label="toOpen()" outline @click="menuCountryRef?.toOpen()"/>
           <D1Button label="toClose()" outline @click="menuCountryRef?.toClose()"/>
+          <D1Button label="setOpen(true)" outline @click="menuCountryRef?.setOpen(true)"/>
+          <D1Button label="setOpen(false)" outline @click="menuCountryRef?.setOpen(false)"/>
           <D1Button label="toggle()" outline @click="menuCountryRef?.toggle()"/>
           <D1Button label="previous()" outline @click="menuCountryRef?.previous()"/>
           <D1Button label="next()" outline @click="menuCountryRef?.next()"/>
@@ -380,7 +621,7 @@ const checkExposeState = () => {
         </DemoFlex>
         <DemoValue label="selectedExpose" :value="selectedExpose"/>
         <DemoValue label="eventName" :value="eventName || 'No events triggered yet'"/>
-        <DemoValue label="eventValue" :value="eventValue"/>
+        <DemoValue label="eventPayload" :value="eventPayload"/>
         <DemoValue label="windowOpen" :value="lastWindowOpen"/>
         <DemoValue label="exposeStatus" :value="exposeStatus"/>
       </D1Group>
@@ -394,6 +635,11 @@ const checkExposeState = () => {
     padding: 8px 16px;
     font-size: 12px;
     opacity: 0.75;
+    overflow-wrap: anywhere;
+  }
+
+  &__narrow {
+    max-width: 240px;
   }
 }
 </style>

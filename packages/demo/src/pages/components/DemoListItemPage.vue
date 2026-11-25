@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { EventClickValue } from '@dxtmisha/constructor'
 import type { ListItemExpose } from '@dxtmisha/constructor/ListItem'
+import type { ListItemProps } from '@dxtmisha/d1/D1ListItem'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoBox from '../../components/DemoBox.vue'
@@ -8,7 +10,45 @@ import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+const paletteList: NonNullable<ListItemProps['palette']>[] = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'black',
+  'white'
+]
+
+const controlPositionList: NonNullable<ListItemProps['controlPosition']>[] = [
+  'start',
+  'end',
+  'autoSm',
+  'autoMd',
+  'autoLg',
+  'autoXl',
+  'auto2xl'
+]
+
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 const filterQuery = ref<string>('app')
 const filterActive = ref<boolean>(true)
@@ -16,8 +56,49 @@ const selectedCheckbox = ref<boolean>(true)
 const selectedRadio = ref<string>('alpha')
 const lazyEnabled = ref<boolean>(true)
 const lazyCacheHeight = ref<boolean>(true)
+
+const isDynamicFocus = ref<boolean>(false)
+const isDynamicOpen = ref<boolean>(false)
+const isDynamicSelected = ref<boolean>(false)
+const isDynamicDisabled = ref<boolean>(false)
+const isDynamicReadonly = ref<boolean>(false)
+const isDynamicLoading = ref<boolean>(false)
+const isSkeletonActive = ref<boolean>(true)
+const isLifecycleMounted = ref<boolean>(true)
+
+const blockedTriggerCount = ref<number>(0)
+const keyboardActivationCount = ref<number>(0)
+
 const exposeTarget = ref<ListItemExpose | null>(null)
 const exposeResult = ref<Record<string, unknown>>({})
+
+const longSentence = 'This is a comprehensive multi-sentence list item label designed to verify wrapping behavior, spacing consistency, and container boundaries across viewports.'
+const unbrokenText = 'A'.repeat(72)
+const xssPayload = '<img src=x onerror=alert(1)>'
+
+const handleClickEvent = (event: MouseEvent, value: EventClickValue): void => {
+  onEvent('click', event, value)
+  eventPayload.value = JSON.stringify({
+    eventType: event.type,
+    value
+  })
+}
+
+const handleClickLiteEvent = (value: EventClickValue): void => {
+  onEvent('clickLite', value)
+  eventPayload.value = JSON.stringify(value)
+}
+
+const handleBlockedTrigger = (): void => {
+  blockedTriggerCount.value += 1
+}
+
+const handleKeyboardActivation = (event: KeyboardEvent): void => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault()
+    keyboardActivationCount.value += 1
+  }
+}
 
 const checkExpose = (): void => {
   exposeResult.value = {
@@ -30,7 +111,7 @@ const checkExpose = (): void => {
 <template>
   <DemoLinkBlack/>
   <D1Page label="ListItem">
-    <D1Section>
+    <D1Section class="demo-list-item-page">
       <D1Group label="Basic & Data Formats">
         <DemoBox>
           <D1ListItem label="Simple Label"/>
@@ -56,23 +137,96 @@ const checkExpose = (): void => {
         </DemoBox>
       </D1Group>
 
-      <D1Group label="States">
+      <D1Group label="States & Blocked Guards">
         <DemoBox>
           <D1ListItem label="Default"/>
           <D1ListItem label="Focus" focus/>
           <D1ListItem label="Open" open/>
           <D1ListItem label="Selected" selected/>
           <D1ListItem label="Selected Child" selected-child/>
-          <D1ListItem label="Readonly" readonly/>
-          <D1ListItem label="Disabled" disabled/>
-          <D1ListItem label="Loading (boolean)" loading/>
-          <D1ListItem label="Loading (object)" :loading="{ visible: true, circular: true }"/>
+          <D1ListItem
+            label="Readonly (guarded)"
+            readonly
+            @click="handleBlockedTrigger"
+          />
+          <D1ListItem
+            label="Disabled (guarded)"
+            disabled
+            @click="handleBlockedTrigger"
+          />
+          <D1ListItem
+            label="Loading Boolean (guarded)"
+            loading
+            @click="handleBlockedTrigger"
+          />
+          <D1ListItem
+            label="Loading Object"
+            :loading="{ visible: true, circular: true }"
+          />
+          <D1ListItem
+            label="Dynamic Controlled Item"
+            description="Controlled via local buttons below"
+            icon="tune"
+            :focus="isDynamicFocus"
+            :open="isDynamicOpen"
+            :selected="isDynamicSelected"
+            :disabled="isDynamicDisabled"
+            :readonly="isDynamicReadonly"
+            :loading="isDynamicLoading"
+          />
         </DemoBox>
+        <DemoFlex>
+          <D1Button
+            :label="isDynamicFocus ? 'focus: true' : 'focus: false'"
+            size="sm"
+            outline
+            @click="isDynamicFocus = !isDynamicFocus"
+          />
+          <D1Button
+            :label="isDynamicOpen ? 'open: true' : 'open: false'"
+            size="sm"
+            outline
+            @click="isDynamicOpen = !isDynamicOpen"
+          />
+          <D1Button
+            :label="isDynamicSelected ? 'selected: true' : 'selected: false'"
+            size="sm"
+            outline
+            @click="isDynamicSelected = !isDynamicSelected"
+          />
+          <D1Button
+            :label="isDynamicDisabled ? 'disabled: true' : 'disabled: false'"
+            size="sm"
+            outline
+            @click="isDynamicDisabled = !isDynamicDisabled"
+          />
+          <D1Button
+            :label="isDynamicReadonly ? 'readonly: true' : 'readonly: false'"
+            size="sm"
+            outline
+            @click="isDynamicReadonly = !isDynamicReadonly"
+          />
+          <D1Button
+            :label="isDynamicLoading ? 'loading: true' : 'loading: false'"
+            size="sm"
+            outline
+            @click="isDynamicLoading = !isDynamicLoading"
+          />
+        </DemoFlex>
+        <DemoValue label="blockedTriggerCount" :value="blockedTriggerCount"/>
       </D1Group>
 
       <D1Group label="Skeleton">
+        <DemoFlex>
+          <D1Button
+            :label="isSkeletonActive ? 'isSkeleton: true' : 'isSkeleton: false'"
+            size="sm"
+            outline
+            @click="isSkeletonActive = !isSkeletonActive"
+          />
+        </DemoFlex>
         <DemoBox>
-          <D1Skeleton :active="true">
+          <D1Skeleton :active="isSkeletonActive">
             <D1ListItem
               is-skeleton
               prefix="01"
@@ -104,8 +258,8 @@ const checkExpose = (): void => {
           <D1ListItem label="Trailing Dir Only" icon="folder" icon-trailing="arrow_forward" icon-dir icon-trailing-dir-only/>
           <D1ListItem label="Trailing Palette" icon="notifications" icon-trailing="circle" icon-trailing-palette/>
           <D1ListItem label="Hidden Icon" icon="lock" icon-hide/>
-          <D1ListItem label="Icon Align Center (default)" icon="settings" icon-align="center"/>
-          <D1ListItem label="Icon Align Edge" icon="settings" icon-align="edge"/>
+          <D1ListItem label="Icon Align Center" icon="settings" icon-align="center"/>
+          <D1ListItem label="Icon Align Edge (default)" icon="settings" icon-align="edge"/>
           <D1ListItem
             label="Icon Top Aligned"
             description="When description wraps onto multiple lines, iconTop aligns the leading and trailing icons to the first line."
@@ -128,6 +282,11 @@ const checkExpose = (): void => {
 
       <D1Group label="Selection Styles & Control Position">
         <DemoBox>
+          <D1ListItem
+            label="Selection None"
+            selection-style="none"
+            selected
+          />
           <D1ListItem
             label="Selection Checkbox (click to toggle)"
             selection-style="checkbox"
@@ -162,22 +321,12 @@ const checkExpose = (): void => {
             icon-checkbox="check"
           />
           <D1ListItem
-            label="Control Position Start"
+            v-for="position in controlPositionList"
+            :key="position"
+            :label="`Control Position: ${position}`"
             selection-style="checkbox"
             selected
-            control-position="start"
-          />
-          <D1ListItem
-            label="Control Position End"
-            selection-style="checkbox"
-            selected
-            control-position="end"
-          />
-          <D1ListItem
-            label="Control Position Auto MD"
-            selection-style="checkbox"
-            selected
-            control-position="autoMd"
+            :control-position="position"
           />
         </DemoBox>
       </D1Group>
@@ -219,7 +368,14 @@ const checkExpose = (): void => {
 
       <D1Group label="Palettes & Custom Fill">
         <DemoBox>
-          <D1ListItem label="Palette Red Selected" palette="red" selected icon="favorite"/>
+          <D1ListItem
+            v-for="palette in paletteList"
+            :key="palette"
+            :label="`Palette: ${palette}`"
+            :palette="palette"
+            selected
+            icon="palette"
+          />
           <D1ListItem label="Palette Blue Open" palette="blue" open icon="info"/>
           <D1ListItem label="Palette Green Focus" palette="green" focus icon="check_circle"/>
           <D1ListItem label="Custom Hex Fill" fill="#ff0000" icon="palette"/>
@@ -228,13 +384,22 @@ const checkExpose = (): void => {
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Tags, Links & ARIA Roles">
+      <D1Group label="Tags & Links">
         <DemoBox>
           <D1ListItem label="Tag Button" tag="button" type="button" icon="smart_button"/>
+          <D1ListItem label="Tag Div (default)" tag="div" icon="crop_square"/>
+          <D1ListItem label="Tag Span" tag="span" icon="text_fields"/>
+          <D1ListItem label="Tag Li" tag="li" icon="format_list_bulleted"/>
           <D1ListItem label="Anchor Link (href)" href="#demo-anchor" icon="link"/>
-          <D1ListItem label="Router Navigation (to)" to="/component-list-item" icon="route"/>
+          <D1ListItem label="Router Navigation (to string)" to="/component-list-item" icon="route"/>
           <D1ListItem label="Router Route Object (to)" :to="{ name: 'component-list-item' }" icon="route"/>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Accessibility (A11y)">
+        <DemoBox>
           <D1ListItem label="Role Option (selected)" role="option" selected/>
+          <D1ListItem label="Role Menuitem" role="menuitem" selected/>
           <D1ListItem label="Role Menuitem Radio (selected)" role="menuitemradio" selected/>
           <D1ListItem label="Role Menuitem Checkbox" role="menuitemcheckbox" :selected="false"/>
           <D1ListItem
@@ -247,7 +412,17 @@ const checkExpose = (): void => {
             description="Custom IDs description"
             description-id="demo-list-item-description-id"
           />
+          <D1ListItem
+            label="Keyboard Focusable Item"
+            description="Focus via Tab and press Enter or Space"
+            icon="keyboard"
+            tabindex="0"
+            role="option"
+            aria-label="Keyboard focusable list item"
+            @keydown="handleKeyboardActivation"
+          />
         </DemoBox>
+        <DemoValue label="keyboardActivationCount" :value="keyboardActivationCount"/>
       </D1Group>
 
       <D1Group label="Lazy Rendering">
@@ -269,8 +444,8 @@ const checkExpose = (): void => {
             <D1ListItem
               v-for="itemIndex in 16"
               :key="itemIndex"
-              :label="'Lazy Item ' + itemIndex"
-              :description="'Deferred content row #' + itemIndex"
+              :label="`Lazy Item ${itemIndex}`"
+              :description="`Deferred content row #${itemIndex}`"
               :lazy="lazyEnabled"
               lazy-margin="64px 0px"
               :lazy-cache-height="lazyCacheHeight"
@@ -328,8 +503,8 @@ const checkExpose = (): void => {
             parent="root-group"
             :list-id="42"
             tabindex="0"
-            @click="(event, value) => onEvent('click', event, value)"
-            @click-lite="(value) => onEvent('clickLite', value)"
+            @click="handleClickEvent"
+            @click-lite="handleClickLiteEvent"
           />
         </DemoBox>
         <DemoFlex>
@@ -337,6 +512,63 @@ const checkExpose = (): void => {
         </DemoFlex>
         <DemoValue label="expose" :value="exposeResult"/>
         <DemoValue label="event" :value="eventName"/>
+        <DemoValue label="payload" :value="eventPayload"/>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <DemoBox>
+          <D1ListItem label="" description="Empty string label"/>
+          <D1ListItem label="   " description="Whitespace-only label"/>
+          <D1ListItem :label="undefined" description="Undefined label"/>
+          <D1ListItem label="A" description="Single character label"/>
+          <D1ListItem :label="longSentence" description="Multi-sentence wrapping check"/>
+          <D1ListItem :label="unbrokenText" description="Unbroken string overflow check"/>
+          <D1ListItem
+            label="Học tiếng Việt / Привет мир 🚀🔥✨"
+            caption="Diacritics & Emoji"
+            description="Unicode rendering verification across scripts"
+            icon="translate"
+          />
+          <D1ListItem
+            :label="xssPayload"
+            description="XSS string rendered safely as escaped text"
+            icon="security"
+          />
+        </DemoBox>
+        <DemoBox>
+          <div class="demo-list-item-page__narrow">
+            <D1ListItem
+              :label="longSentence"
+              prefix="240px"
+              caption="Narrow"
+              suffix="END"
+              description="Constrained 240px container wrapping check"
+              icon="view_column"
+              badge="99+"
+            />
+          </div>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Lifecycle (Mount / Unmount)">
+        <DemoFlex>
+          <D1Button
+            :label="isLifecycleMounted ? 'Unmount Item' : 'Mount Item'"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+          <DemoValue label="mounted" :value="isLifecycleMounted"/>
+        </DemoFlex>
+        <DemoBox>
+          <D1ListItem
+            v-if="isLifecycleMounted"
+            label="Lifecycle Managed Lazy Item"
+            description="Toggled via v-if to verify observer cleanup"
+            lazy
+            icon="autorenew"
+          />
+        </DemoBox>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -347,6 +579,10 @@ const checkExpose = (): void => {
   &__lazy {
     max-height: 200px;
     overflow-y: auto;
+  }
+
+  &__narrow {
+    max-width: 240px;
   }
 }
 </style>

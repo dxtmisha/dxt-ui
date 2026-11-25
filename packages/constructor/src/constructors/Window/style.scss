@@ -34,6 +34,7 @@
     flex-flow: column;
     flex-shrink: 1;
 
+    min-width: 0;
     width: calc(#{ui.v('??width', auto)} * #{ui.v('??menuSizeMultiplier')});
     height: ui.v('??height', auto);
     max-width: 100%;
@@ -51,11 +52,13 @@
 
       flex-flow: column;
       flex-grow: 1;
+      min-width: 0;
     }
 
     &__context {
       flex-grow: 1;
       flex-shrink: 1;
+      min-width: 0;
     }
   }
 
@@ -133,6 +136,8 @@
     @include ui.contentVisibility(visible);
     position: static;
 
+    min-width: 0;
+    max-width: 100%;
     padding: 0;
 
     background-color: transparent;

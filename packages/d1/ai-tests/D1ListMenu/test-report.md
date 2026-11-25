@@ -1,15 +1,15 @@
-# Отчёт о визуальном и функциональном тестировании: D1ListMenu
+# Отчёт о визуальном и функциональном тестировании: `D1ListMenu`
 
-## 1. Итоговое резюме
+## 1. Сводка тестирования
 
 - **Компонент:** `D1ListMenu` (`@dxtmisha/d1`)
-- **Исходный код:** [`ListMenu`](packages/d1/src/components/Ui/ListMenu) ([`constructor`](packages/constructor/src/constructors/ListMenu), [`demo`](packages/demo/src/pages/components/DemoListMenuPage.vue))
-- **Демо / целевой URL:** `http://localhost:3000/component-list-menu`
+- **Исходный код:** [`D1ListMenu`](../../src/components/Ui/ListMenu) ([`ListMenu`](../../../constructor/src/constructors/ListMenu), [`DemoListMenuPage.vue`](../../../demo/src/pages/components/DemoListMenuPage.vue))
+- **Демо / Целевой URL:** `http://localhost:3000/component-list-menu`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-22T15:48:56Z`
+- **Дата тестирования (UTC):** `2026-11-25T08:22:37Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
-- **Покрытие тест-кейсов:** 9 / 9 (`100%`)
-- **Итог:** **9 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1ListMenu` корректно рендерит слоты `#head`/`#list`, синхронизирует состояние через `open`, `autoClose`, `inDom`, `disableFocusReturn` и `expose`, корректно поддерживает вложенные подменю и не вызывает ошибок/предупреждений в консоли.
+- **Покрытие тест-кейсов:** 10 / 10 (`100%`)
+- **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1ListMenu` корректно проходит SSR (`200`), рендерит слоты `#head`/`#list`, поддерживает вложенные подменю, управление через `expose` и жизненный цикл `v-if` (`93 -> 55 -> 93`), удерживает длинный текст в контейнере `240px` (`overflowsBox: false`) и адаптируется на `320px`–`1440px` при `0` ошибках.
 
 ---
 
@@ -19,45 +19,46 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг `D1ListMenu` и открытое встроенное состояние (`open=true`, `embedded=true`) | ✅ | Кнопка `File Options` (`Closed`, `239.67×40.00px`) отображается корректно; встроенное окно `.d1-listMenu--open.d1-listMenu__window` (`1246.00×94.00px`) отображает `Visible Item 1` и `Visible Item 2` без обрезания. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Варианты `axis` (`y`/`x`), `divider` и `disabled` | ✅ | Меню `.d1-listMenu--axis--y` (`384×94px`, `data-status="open"`) и `.d1-listMenu--axis--x` (`data-status="open"`) позиционируются корректно; `.d1-listMenu--divider` применяется; `Disabled Menu` заблокировано и `Unreachable Item` не отображается (`false`). | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-001` | Базовый рендеринг `D1ListMenu` и открытое встроенное состояние | ✅ | Триггер `File Options` (`Closed`) и встроенное открытое меню (`open=true`, `embedded=true`, `Visible Item 1` / `Visible Item 2`) внутри `.d1-listMenu` / `.d1-listMenu__window` отображаются без перекрытий и обрезания. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Варианты `axis`, `divider` и `disabled` | ✅ | Корректно применяются `.d1-listMenu--axis--y`, `.d1-listMenu--axis--x` и `.d1-listMenu--divider`; `Disabled Menu` блокирует открытие и не генерирует события окна. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Интерактивное открытие/закрытие по клику на `#head` и синхронизация слота | ✅ | После клика подпись слота `#head` сменилась с `Closed` на `Open`, пункт `New File` видим; при клике вне окна меню закрылось и подпись вернулась к `Closed`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Управляемый `open`, `auto-close="false"`, `inDom` и `disable-focus-return` | ✅ | `Set open=true` открыл `Controlled Menu` (`Action One` видим); при `auto-close="false"` клик по `Keeps open on item click` не закрыл меню (`true`); при `inDom: true` после закрытия элемент `Kept in DOM after first open` остался в DOM (`true`); `Disable Focus Return` открывается и после закрытия не возвращает фокус на триггер (`true`). | ![TC-INT-002](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | Программное управление через `expose` | ✅ | `toOpen()` -> `open=true`, `toClose()` -> `open=false`, `toggle()` -> `open=true`; `getId()` вернул `window--ui-10056`, `hasControl=true`, `hasWindow=true`. | — |
+| `TC-INT-001` | Интерактивное открытие/закрытие по клику на `#head` и синхронизация слота | ✅ | Клик по `File Options` переключает подпись `#head` (`Closed` <-> `Open`), поворачивает индикатор и раскрывает/скрывает пункты `#list`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Управляемый `open`, `auto-close="false"`, `persistent`, `inDom` и `disable-focus-return` | ✅ | Подтверждена работа управляемого `open`, удержания меню при `auto-close="false"` и `persistent: true`, сохранения узла при `inDom: true` и отсутствия возврата фокуса при `disable-focus-return`. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
+| `TC-INT-003` | Программное управление через `expose` и жизненный цикл `v-if` | ✅ | По телеметрии `exposeText` подтверждены `setOpen`, `toOpen`, `toClose`, `toggle` и состояние `id=window--ui-10054, open=true, hasControl=true, hasWindow=true`; жизненный цикл `v-if` чисто восстановил DOM (`beforeLen: 93 -> unmountedLen: 55 -> remountedLen: 93`). | — |
 
 ### 2.3 Граничные случаи и крайние сценарии (`BND`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Вложенные подменю (`Nested Submenus`) и изоляция `inert`/`closeOnEsc` | ✅ | `Parent Menu` и вложенное `Nested Submenu` (`Submenu Item A` в `x:334, y:528, 374×40px`) открыты одновременно без перекрытия родителя; нажатие `Escape` не закрыло меню (`parentStillVisible: true`, `submenuStillVisible: true`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-001` | Вложенные подменю (`Nested Submenus`) и изоляция `inert`/`closeOnEsc` | ✅ | `Parent Menu` и вложенное `Nested Submenu` открыты одновременно без блокировки родителя (`inert=false`) и не закрываются по `Escape` (`closeOnEsc=false`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Пустой `#list`, длинный/неразрывный текст, Unicode, XSS и узкий контейнер `240px` | ✅ | `Empty List Slot` отображается без сбоев; в `.demo-list-menu-page__narrow` (`scrollWidth: 240 === clientWidth: 240`, `overflowsBox: false`, `overflowChildren: []`) строка `"Học tiếng Việt / Привет мир 🚀🔥✨"`, неразрывная строка `"AAA..."` с переносом и экранированный XSS (`badImgs: 0`, `hasEscapedPayloadText: true`, `dialogs: []`) помещаются в `240px`. | ![TC-BND-002](./screenshots/TC-BND-002.png) |
 
 ### 2.4 Адаптивность (`RSP`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптация `D1ListMenu` на `1440×900`, `768×1024`, `375×812`, `320×568` | ✅ | Горизонтального переполнения нет на всех разрешениях (`scrollWidth === innerWidth`: `1440`, `768`, `375`, `320`); открытое меню на `375×812` полностью читаемо. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-001` | Адаптация `D1ListMenu` на десктопе, планшете и мобильных экранах | ✅ | На всех 4 разрешениях переполнение отсутствует (`overflowX: false`, `offenders: []`): `1440` (`scrollWidth: 1440`), `768` (`scrollWidth: 768`), `375` (`scrollWidth: 375`), `320` (`scrollWidth: 320`); открытое меню читаемо на мобильном экране. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная навигация | ✅ | На окне присутствует `role="menu"`, на триггере `aria-haspopup="menu"` и `aria-expanded="false"` -> `"true"` после активации клавишей `Enter`. | — |
+| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная навигация | ✅ | Проверены `role="menu"`, `aria-haspopup="menu"`, `aria-label`, `aria-expanded`, `tabindex="0"` на триггере и активация пунктов клавишами `Enter`/`Space`. | — |
 
 ### 2.6 Логи и консоль (`LOG`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | Событие `@window`, консоль и отсутствие предупреждений | ✅ | Событие `window` зафиксировано в DOM и консоли (`id=window--ui-10047, open=true` / `open=false`, `2` записи `Event: window`); `consoleErrors`: `[]`, `vueWarnings`: `[]`, `pageErrors`: `[]`, `failedRequests`: `[]`. | — |
+| `TC-LOG-001` | Событие `@window`, консоль и отсутствие предупреждений | ✅ | Ответ SSR: `ssrStatus: 200`; событие `@window` фиксируется с корректным payload (`id`, `open`), а `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`, `dialogs: []` пусты. | — |
 
 ---
 
 ## 3. AI-аудит и рекомендации
 
-1. **Изоляция и вложенность окон (`inert=false`, `closeOnEsc=false`):** При открытии вложенного подменю (`TC-BND-001`) оба уровня `D1ListMenu` остаются интерактивными и не блокируют друг друга, что подтверждает корректность настроек `ListMenu.binds`.
-2. **Семантика `autoClose`, `inDom` и `disableFocusReturn`:** Подтверждена корректная работа `autoClose: false` (удерживает меню открытым при клике по внутренним элементам), `inDom: true` (сохраняет смонтированный DOM после первого открытия) и нового проброса `disableFocusReturn: true` через `WindowInclude`.
-3. **Чистота рантайма:** В ходе всех переходов состояний, переключения вьюпортов и программных вызовов `expose` не зафиксировано ни одной ошибки или предупреждения Vue/браузера.
+1. **Узкий контейнер `240px` и защита от XSS:** Внутри `.demo-list-menu-page__narrow` (`scrollWidth: 240`, `clientWidth: 240`, `overflowsBox: false`, `overflowChildren: []`) выпадающий список аккуратно переносит длинные неразрывные строки `"AAA..."` и Unicode (`"Học tiếng Việt / Привет мир 🚀🔥✨"`), а `<img src=x onerror=alert(1)>` отображается как безопасный текст (`badImgs: 0`, `hasEscapedPayloadText: true`, `dialogs: []`).
+2. **Восстанавливаемость жизненного цикла и `expose` API:** Повторное монтирование `D1ListMenu` через `v-if` полностью восстанавливает содержимое (`beforeLen: 93 -> unmountedLen: 55 -> remountedLen: 93`) без потери ссылок на контрол и окно (`hasControl=true`, `hasWindow=true`).
+3. **Адаптивность, SSR и чистота консоли:** На всех 4 разрешениях (`1440`, `768`, `375`, `320`) `overflowX: false` и `offenders: []`, SSR отдаёт статус `200`, а за время всех проверок не возникло ни одной ошибки консоли, сети или предупреждения Vue (`0`).

@@ -1,28 +1,40 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { MotionTransformExpose } from '@dxtmisha/constructor/MotionTransform'
+import type { MotionTransformEmitOptions, MotionTransformExpose } from '@dxtmisha/constructor/MotionTransform'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
+import DemoBox from '../../components/DemoBox.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
-/** Composable for tracking events / Composable для отслеживания событий */
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
-/** Reactive value for manual v-model control / Реактивное значение для ручного управления v-model */
 const openManual = ref(false)
-
-/** Reactive value for click-open disabled demo / Реактивное значение для демонстрации отключенного клика */
+const openModelOpen = ref(false)
 const openExternal = ref(false)
+const isLifecycleMounted = ref(true)
 
-/** Ref to the MotionTransform component instance / Ссылка на экземпляр компонента MotionTransform */
 const transformRef = ref<MotionTransformExpose | null>(null)
-
-/** Ref to an external ignored element / Ссылка на внешний игнорируемый элемент */
 const ignoreElementRef = ref<HTMLElement | undefined>(undefined)
 
-/** Reactive value for printing the component status / Реактивное значение для вывода статуса компонента */
+const xssPayload = '<img src=x onerror=alert(1)>'
+const unicodePayload = 'Tiếng Việt / Кириллица / 🚀🔥✨'
+const unbrokenText = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+
+const trackEvent = (name: string, payload?: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = payload === undefined ? 'undefined' : JSON.stringify(payload)
+}
+
+const onTransformEvent = (
+  domEvent: Event | undefined,
+  options: MotionTransformEmitOptions
+): void => {
+  trackEvent('transform', { eventType: domEvent?.type ?? 'none', ...options })
+}
+
 const statusValue = computed<string>(() => {
   if (transformRef.value) {
     return `isOpen: ${transformRef.value.getOpen()}, isShow: ${transformRef.value.isShow()}`
@@ -42,7 +54,7 @@ const statusValue = computed<string>(() => {
             <span>Search something... (Click to expand)</span>
           </template>
           <template #body>
-            <D1Input label="Search query" prefix-icon="search" autofocus />
+            <D1Input label="Search query" prefix-icon="search" autofocus/>
           </template>
         </D1MotionTransform>
 
@@ -97,21 +109,21 @@ const statusValue = computed<string>(() => {
           </template>
         </D1MotionTransform>
 
-        <D1MotionTransform adaptive="planeMd">
-          <template #head>
-            <span>Adaptive Plane (planeMd — Static on md and above)</span>
-          </template>
-          <template #body>
-            <span>This layout automatically switches to plane mode on medium screens and above, while providing smooth transform transitions on smaller screens.</span>
-          </template>
-        </D1MotionTransform>
-
         <D1MotionTransform adaptive="planeSm">
           <template #head>
             <span>Adaptive Plane (planeSm — Static on sm and above)</span>
           </template>
           <template #body>
             <span>Switches to static plane mode starting from sm breakpoint and above.</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform adaptive="planeMd">
+          <template #head>
+            <span>Adaptive Plane (planeMd — Static on md and above)</span>
+          </template>
+          <template #body>
+            <span>This layout automatically switches to plane mode on medium screens and above, while providing smooth transform transitions on smaller screens.</span>
           </template>
         </D1MotionTransform>
 
@@ -189,7 +201,7 @@ const statusValue = computed<string>(() => {
           <template #body="{ classes }">
             <span>This component remains open when clicking outside. Use the Close button or press Escape to close it.</span>
             <DemoFlex>
-              <D1Button :class="classes.close" label="Close" />
+              <D1Button :class="classes.close" label="Close"/>
             </DemoFlex>
           </template>
         </D1MotionTransform>
@@ -211,10 +223,10 @@ const statusValue = computed<string>(() => {
 
         <DemoFlex>
           <div id="demo-ignore-id-zone">
-            <D1Button label="Ignored by ID (ignore=&quot;#demo-ignore-id-zone&quot;)" />
+            <D1Button label="Ignored by ID"/>
           </div>
           <div id="demo-ignore-ref-zone" ref="ignoreElementRef">
-            <D1Button label="Ignored by HTMLElement Ref" />
+            <D1Button label="Ignored by HTMLElement Ref"/>
           </div>
         </DemoFlex>
         <D1MotionTransform ignore="#demo-ignore-id-zone">
@@ -255,7 +267,7 @@ const statusValue = computed<string>(() => {
         </D1MotionTransform>
       </D1Group>
 
-      <D1Group label="In-DOM Rendering (SSR & DOM Retention)">
+      <D1Group label="SSR & DOM Lifecycle (in-dom, tagBody & Conditional Mount)">
         <D1MotionTransform in-dom>
           <template #head>
             <span>Rendered In DOM (Always preserved)</span>
@@ -264,9 +276,7 @@ const statusValue = computed<string>(() => {
             <span>The content is always present in the DOM even when closed. This is essential for SSR pre-rendering, search indexing, and retaining form state.</span>
           </template>
         </D1MotionTransform>
-      </D1Group>
 
-      <D1Group label="Custom Body Tag (tagBody)">
         <D1MotionTransform in-dom tag-body="article">
           <template #head>
             <span>Custom Tag: &lt;article&gt;</span>
@@ -275,20 +285,38 @@ const statusValue = computed<string>(() => {
             <span>This body container is rendered using a semantic &lt;article&gt; tag instead of the default &lt;section&gt; element.</span>
           </template>
         </D1MotionTransform>
+
+        <DemoFlex>
+          <D1Button
+            :label="isLifecycleMounted ? 'Unmount Panel' : 'Mount Panel'"
+            secondary
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <D1MotionTransform v-if="isLifecycleMounted">
+          <template #head>
+            <span>Conditional Mount Panel (v-if)</span>
+          </template>
+          <template #body>
+            <span>Verifies clean timer, animation frame, and global click listener cleanup on unmount.</span>
+          </template>
+        </D1MotionTransform>
+        <DemoValue label="isLifecycleMounted" :value="isLifecycleMounted"/>
       </D1Group>
 
-      <D1Group label="Scoped Slots & Built-in Close Trigger">
+      <D1Group label="Scoped Slots & Built-in Classes (classes.click, classes.none, classes.noneGlobal, classes.close)">
         <D1MotionTransform>
-          <template #head="{ isOpen, isShow, classes, idControl, idBody }">
+          <template #head="{ isOpen, isShow, classes, idControl, idBody, binds }">
             <DemoFlex>
               <span>Scoped Header</span>
               <D1Button
                 :label="isOpen ? 'Status: OPEN' : 'Status: CLOSED'"
                 size="sm"
                 secondary
+                :class="classes.click"
               />
               <span :class="classes.none">Ignored in head (classes.none)</span>
-              <span>Show: {{ isShow }} | Control: {{ idControl }} | Body: {{ idBody }}</span>
+              <span>Show: {{ isShow }} | Control: {{ idControl }} | Body: {{ idBody }} | Expanded: {{ binds['aria-expanded'] }}</span>
             </DemoFlex>
           </template>
           <template #body="{ classes, idControl, idBody }">
@@ -305,7 +333,7 @@ const statusValue = computed<string>(() => {
         </D1MotionTransform>
       </D1Group>
 
-      <D1Group label="Accessibility (ARIA Attributes)">
+      <D1Group label="Accessibility (ARIA Attributes & Keyboard Navigation)">
         <span id="demo-mt-aria-label">External ARIA Label</span>
         <span id="demo-mt-aria-desc">Detailed description linked via aria-describedby.</span>
         <D1MotionTransform
@@ -313,19 +341,59 @@ const statusValue = computed<string>(() => {
           aria-describedby="demo-mt-aria-desc"
         >
           <template #head>
-            <span>ARIA Labelled & Described Panel</span>
+            <span>ARIA Labelled & Described Panel (Tab, Enter, Escape)</span>
           </template>
           <template #body>
-            <span>This panel connects aria-labelledby and aria-describedby to external semantic elements.</span>
+            <span>This panel connects aria-labelledby and aria-describedby to external semantic elements and supports Enter/Escape keyboard flows.</span>
           </template>
         </D1MotionTransform>
       </D1Group>
 
-      <D1Group label="Two-Way Binding (v-model:open)">
+      <D1Group label="Boundary & Edge Cases (Empty, 0, Unicode, XSS, Narrow)">
+        <D1MotionTransform>
+          <template #head>
+            <span>{{ '' }}0</span>
+          </template>
+          <template #body>
+            <span>0</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform>
+          <template #head>
+            <span>Unicode & XSS Header: {{ unicodePayload }} | {{ xssPayload }}</span>
+          </template>
+          <template #body>
+            <div class="demo-motion-transform-page__wrap">
+              <p>{{ unicodePayload }}</p>
+              <p>{{ xssPayload }}</p>
+              <p>{{ unbrokenText }}</p>
+            </div>
+          </template>
+        </D1MotionTransform>
+
+        <DemoBox class="demo-motion-transform-page__narrow">
+          <D1MotionTransform adaptive="planeAlways">
+            <template #head>
+              <span class="demo-motion-transform-page__wrap">Narrow Head: {{ unbrokenText }}</span>
+            </template>
+            <template #body>
+              <span class="demo-motion-transform-page__wrap">Narrow Body: {{ unicodePayload }} {{ unbrokenText }}</span>
+            </template>
+          </D1MotionTransform>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Two-Way Binding (v-model:open & v-model:model-open)">
         <DemoFlex>
           <D1Button
-            :label="openManual ? 'Close via Button' : 'Open via Button'"
+            :label="openManual ? 'Close v-model:open' : 'Open v-model:open'"
             @click="openManual = !openManual"
+          />
+          <D1Button
+            :label="openModelOpen ? 'Close v-model:model-open' : 'Open v-model:model-open'"
+            outline
+            @click="openModelOpen = !openModelOpen"
           />
         </DemoFlex>
         <D1MotionTransform v-model:open="openManual">
@@ -336,7 +404,16 @@ const statusValue = computed<string>(() => {
             <span>This component state is two-way synchronized with the openManual ref.</span>
           </template>
         </D1MotionTransform>
-        <DemoValue :value="openManual" />
+        <D1MotionTransform v-model:model-open="openModelOpen">
+          <template #head>
+            <span>Controlled via v-model:model-open</span>
+          </template>
+          <template #body>
+            <span>This component state is two-way synchronized with the openModelOpen ref.</span>
+          </template>
+        </D1MotionTransform>
+        <DemoValue label="openManual" :value="openManual"/>
+        <DemoValue label="openModelOpen" :value="openModelOpen"/>
       </D1Group>
 
       <D1Group label="Programmatic Control via Ref">
@@ -370,23 +447,25 @@ const statusValue = computed<string>(() => {
             <span>Controlled via exposed methods: toOpen, toClose, setOpen, and toggle. Inspecting state via getOpen() and isShow().</span>
           </template>
         </D1MotionTransform>
-        <DemoValue :value="statusValue" />
+        <DemoValue :value="statusValue"/>
       </D1Group>
 
       <D1Group label="Events">
         <D1MotionTransform
-          @update:open="onEvent('update:open')"
-          @transform="onEvent('transform')"
-          @transform-lite="onEvent('transform-lite')"
+          @update:open="(value) => trackEvent('update:open', value)"
+          @update:model-open="(value) => trackEvent('update:modelOpen', value)"
+          @transform="onTransformEvent"
+          @transform-lite="(options) => trackEvent('transformLite', options)"
         >
           <template #head>
-            <span>Event Tracking (@update:open / @transform / @transform-lite)</span>
+            <span>Event Tracking (@update:open / @update:model-open / @transform / @transform-lite)</span>
           </template>
           <template #body>
-            <span>Toggling this component emits update:open, transform and transform-lite events with trigger source options.</span>
+            <span>Toggling this component emits update:open, update:modelOpen, transform and transform-lite events with trigger source options.</span>
           </template>
         </D1MotionTransform>
-        <DemoValue :value="eventName" />
+        <DemoValue label="eventName" :value="eventName || 'No events triggered yet'"/>
+        <DemoValue label="eventPayload" :value="eventPayload"/>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -395,5 +474,13 @@ const statusValue = computed<string>(() => {
 <style lang="scss">
 .demo-motion-transform-page {
   display: block;
+
+  &__wrap {
+    overflow-wrap: anywhere;
+  }
+
+  &__narrow {
+    max-width: 240px;
+  }
 }
 </style>

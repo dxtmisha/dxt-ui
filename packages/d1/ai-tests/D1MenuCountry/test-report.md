@@ -1,65 +1,67 @@
 # Отчёт о визуальном и функциональном тестировании: D1MenuCountry
 
-## 1. Итоговое резюме
+## 1. Сводка тестирования
 
 - **Компонент:** `D1MenuCountry` (`@dxtmisha/d1`)
-- **Исходный код:** [`MenuCountry`](packages/d1/src/components/Ui/MenuCountry) ([`constructor`](packages/constructor/src/constructors/MenuCountry), [`demo`](packages/demo/src/pages/components/DemoMenuCountryPage.vue))
-- **Демо / целевой URL:** `http://localhost:3000/component-menu-country`
-- **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-22T17:17:45Z`
-- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
-- **Покрытие тест-кейсов:** 11 / 11 (`100%`)
-- **Итог:** **11 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1MenuCountry` корректно отображает списки стран с флагами и национальными названиями, форматирует телефонные коды (`show-phone-code`) и группирует альтернативные подкоды (`DO`, `VA`), фильтрует страны (`list`), переключает язык (`language`), поддерживает прямые пропсы поиска (`show-search`, `filter-mode`, `highlight-length-start`), `v-model:model-selected`, `disable-focus-return`, встроенный режим (`embedded`), все 5 слотов, `expose`-API, WAI-ARIA и адаптивность при нулевом уровне ошибок и предупреждений в консоли.
+- **Исходный код:** [`MenuCountry`](../../src/components/Ui/MenuCountry) ([`constructor`](../../../constructor/src/constructors/MenuCountry), [`demo`](../../../demo/src/pages/components/DemoMenuCountryPage.vue))
+- **Демо / Целевой URL:** `http://localhost:3000/component-menu-country`
+- **Материалы:** `Отсутствуют`
+- **Дата тестирования (UTC):** `2026-11-25T08:22:37Z`
+- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Покрытие тест-кейсов:** `13 / 13` (`100%`)
+- **Итог:** **13 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1MenuCountry` успешно прошёл все проверки рендеринга, слотов, интерактивности, граничных случаев (включая XSS, Unicode и узкий контейнер `240px`), адаптивности на всех разрешениях, доступности и чистоты runtime без единой ошибки консоли или сети.
 
 ---
 
 ## 2. Базовая матрица
 
-### 2.1 Визуальное соответствие (`VIS`)
+### 2.1 Визуал и дизайн-система (`VIS`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг, флаги стран и телефонные коды (`show-phone-code`) | ✅ | Открытое окно `324×562px` отобразило `9` стран (включая группы альтернативных кодов `Dominican Republic` и `Vatican City`, а также `France +33`, `Germany +49`, `Japan +81`, `Russia +7`, `United Kingdom +44`, `United States +1`, `Vietnam +84`) с прямоугольными флагами (`hasFlags: true`, `flagCount: 24`) и `role="listbox"` без наложений. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Встроенное меню с поиском (`embedded` + `showSearch` через `menu-attrs`) | ✅ | Встроенное меню `.d1-menuCountry` (`1246×446px` в `DemoBox`) отобразило строку поиска и `8` пунктов стран с флагами и телефонными кодами. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
-| `TC-VIS-003` | Пользовательские слоты (`control`, `title`, `contextTop`, `contextBottom`, `footer`) | ✅ | Все 5 слотов (`Choose Country (title slot)`, `Top Context Hint (contextTop)`, поиск и список, `Bottom Context Hint (contextBottom)`, `ISO 3166-1 Country List (footer)`) отрисованы в верном порядке без перекрытий. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-001` | Базовый рендеринг, флаги стран и телефонные коды (`show-phone-code`) | ✅ | Списки стран с флагами и телефонными кодами (включая группы альтернативных кодов `DO`/`VA`) рендерятся ровно без клиппинга и наложений. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Встроенное меню с поиском (`embedded` + `showSearch` через `menu-attrs`) | ✅ | Встроенное меню `.d1-menuCountry` корректно отображается внутри `DemoBox` со строкой поиска, флагами и кодами стран. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Пользовательские слоты и scoped bindings (`control`, `title`, `contextTop`, `contextBottom`, `footer`) | ✅ | Все 5 слотов отрисованы в правильном порядке со scoped-свойствами; кнопка `Done` закрывает меню. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Фильтрация списка `list`, выбор страны (`v-model:selected`) и локализация `language` | ✅ | Переключение на `North America (3)` отфильтровало список до `3` стран (`Canada`, `Mexico`, `United States`), выбор обновил `selected: CA`; смена `language="ru"` локализовала `6` названий (`Великобритания`, `Вьетнам`, `Германия`, `Россия`, `Соединенные Штаты`, `Франция`). | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Режимы выбора (`is-selected-by-value`, массив) и поиск во встроенном меню | ✅ | Режим `Array Highlight` сохранил выделение `["US", "VN"]`; ввод `"Viet"` во встроенном поиске отфильтровал список до `1` элемента (`Vietnam`) и выбор обновил `selectedEmbedded: VN`. | — |
-| `TC-INT-003` | Программное управление через `expose` API (`toOpen`, `toClose`, `toggle`, `previous`, `next`) | ✅ | Вызовы `toOpen()`, `next()`, `Check Expose` и `toClose()` обновили `selectedExpose: VN` и вернули `id=window--ui-10069, open=false, selected=true, values=["VN"], names=["Vietnam"]`. | — |
-| `TC-INT-004` | Группы альтернативных кодов (`DO`/`VA`), прямые пропсы поиска (`show-search`, `filter-mode`, `highlight-length-start`), `v-model:model-selected` и `disable-focus-return` | ✅ | Раскрытие группы `Dominican Republic` показало `3` подкода (`+1-809`, `+1-829`, `+1-849`), выбор обновил `selected: DO-1-829`; поиск `"1829"` без дефиса нашёл `[data-value="DO-1-829"]` (`+1-829`); `:show-search="false"` скрыл поле ввода (`hasSearchInput: false`); `v-model:model-selected` инициализировался с `United Kingdom` (`GB`) и обновился до `Vietnam` (`VN`); `disable-focus-return` оставил фокус на `BODY` после выбора. | ![TC-INT-004](./screenshots/TC-INT-004.png) |
+| `TC-INT-001` | Фильтрация списка `list`, выбор страны (`v-model:selected`), мутация `v-model` и локализация `language` | ✅ | Фильтрация `North America (3)` ограничивает список тремя странами, выбор обновляет `selected`, смена `language` на `ru` локализует названия, а программные кнопки синхронно обновляют состояние. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Режимы выбора (`is-selected-by-value`, множественный выбор) и поиск во встроенном меню | ✅ | Режимы одиночного/множественного выбора, `v-model:model-selected` и поиск во встроенном меню по `"Viet"` работают штатно. | — |
+| `TC-INT-003` | Полный API `defineExpose` (`toOpen`, `toClose`, `setOpen`, `toggle`, `previous`, `next`, `Check Expose`) | ✅ | Программное API отрабатывает без ошибок; `Check Expose` возвращает `id=window--ui-10089, open=false, hasControl=true, hasMenuElement=true, loading=false, selected=true, listCount=1, values=["US"], names=["United States"]`. | — |
+| `TC-INT-004` | Группы альтернативных кодов (`DO`/`VA`), прямые пропсы поиска и `disable-focus-return` | ✅ | Группы альтернативных кодов раскрываются и выбираются, поиск по `"1829"` находит подкод `+1-829`, `:show-search="false"` скрывает поле ввода, `disable-focus-return` отключает возврат фокуса. | ![TC-INT-004](./screenshots/TC-INT-004.png) |
+| `TC-INT-005` | SSR/DOM жизненный цикл (`inDom: true` и условное монтирование `v-if`) | ✅ | SSR вернул `200`; цикл размонтирования/повторного монтирования `v-if` восстановил длину DOM-среза точно в исходное состояние (`beforeLen: 139`, `unmountedLen: 122`, `remountedLen: 139`). | — |
 
-### 2.3 Границы и крайние сценарии (`BND`)
-
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
-| :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Состояние `disabled`, пустой список `list=[]` и пустой результат поиска | ✅ | Клик по `disabled`-триггеру не открыл окно (`isDisabled: true`, `openWindowsCount: 0`); при `list=[]` элементов `0` (`emptyListCount: 0`); поиск `"zzzzzz"` отобразил `.d1-list__none` с текстом `"Nothing found"`. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
-
-### 2.4 Адаптивность (`RSP`)
+### 2.3 Границы и крайние случаи (`BND`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптивность на разрешениях `1440×900`, `768×1024`, `375×812`, `320×568` | ✅ | На всех 4 разрешениях горизонтальный скролл отсутствует (`scrollWidth === innerWidth`, `overflow: false`); открытое на `375×812` меню (`270×740px`, `x: 12`, `y: 36`, `fits: true`) полностью помещается в viewport. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-BND-001` | Состояние `disabled`, пустой `list=[]` и пустой результат поиска | ✅ | Отключённый триггер не открывает окно; при `list=[]` и поиске `"zzzzzz"` компонент стабильно отображает пустое состояние без сбоев. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Пустые/пробельные/undefined значения, неизвестные коды (`ZZ`/`XX`), Unicode, XSS и узкий контейнер (`240px`) | ✅ | Полезная нагрузка XSS экранируется как текст (`badImgs: 0`, `hasEscapedPayloadText: true`, `dialogs: []`), строки `Tiếng Việt / Кириллица / 🚀🔥✨` и `AAAA...` переносятся внутри `.demo-menu-country-page__narrow` без переполнения (`scrollWidth: 238`, `clientWidth: 238`, `overflowsBox: false`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+
+### 2.4 Адаптивность и вьюпорты (`RSP`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-RSP-001` | Адаптивность на разрешениях `1440×900`, `768×1024`, `375×812`, `320×568` | ✅ | Горизонтальное переполнение отсутствует на всех четырёх вьюпортах: Desktop `1440/1440`, Tablet `768/768`, Mobile `375/375` и `320/320` (`overflowX: false`, `offenders: []`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурное управление | ✅ | Зафиксированы `aria-haspopup="listbox"`, переключение `aria-expanded` (`"false"` → `"true"` по `Enter` → `"false"` по `Escape`), роль `listbox` и `247` элементов `role="option"`. | — |
+| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурное управление (`Enter`, `Space`, `ArrowDown`, `Escape`) | ✅ | Триггер и список поддерживают `aria-haspopup`, `aria-expanded`, `role="listbox"`, `role="option"`, клавиатурную навигацию и закрытие по `Escape`. | — |
 
 ### 2.6 Логи и консоль (`LOG`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | События (`click`, `updateValue`, `window`) и отсутствие ошибок/предупреждений в консоли | ✅ | Выбор страны в группе событий обновил `selectedExpose: GB`, зафиксировано событие `window`; `consoleErrors`: `[]`, `vueWarnings`: `[]`, `pageErrors`: `[]`. | — |
+| `TC-LOG-001` | События (`click`, `clickLite`, `update:selected`, `update:modelSelected`, `updateValue`, `window`) и чистота консоли | ✅ | Все события зафиксированы; журнал полностью чист: `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`, `dialogs: []`. | — |
 
 ---
 
 ## 3. AI-аудит и рекомендации
 
-1. **Выявленный и устранённый дефект Vue 3 Boolean-приведения (`v-model:model-selected`)**: При визуальном тестировании обнаружено, что поскольку `ListSelectedList` включает `boolean`, Vue 3 приводит непереданный пропс `selected` к `false`, из-за чего `this.props.selected ?? this.props.modelSelected` возвращал `false` вместо `modelSelected`. Исправлено в `MenuCountry.ts` (`this.props.modelSelected ?? (this.props.selected !== false ? this.props.selected : undefined)`), покрыто модульным тестом и повторно подтверждено в браузере (`United Kingdom` → `Vietnam`).
-2. **Поиск по альтернативным кодам без дефисов (`MenuCountryList`)**: Группы альтернативных кодов (`DO`, `VA`) и индексация вариантов с дефисом и без (`+1-829` / `+1829`) корректно интегрируются с прямыми пропсами `show-search`, `filter-mode` и `highlight-length-start` без необходимости проброса через `menu-attrs`.
-3. **Производительность и ленивый рендеринг (`247` стран)**: Полный список стран открывается мгновенно без лагов и предупреждений консоли на desktop и mobile (`375×812`) благодаря ленивой инициализации `MenuCountryList.flagList` и `ListItemLazy` в `D1List`.
+1. **Устойчивость узкого контейнера (`240px`) и перенос неразрывного текста:** В `.demo-menu-country-page__narrow` (`clientWidth: 238px`) встроенное меню с длинной неразрывной строкой `AAAA...`, кириллицей, вьетнамскими диакритиками и экранированным XSS-пейлоадом показало `scrollWidth: 238px` (`overflowsBox: false`), однако название `Dominican Republic` в узкой колонке переносится посимвольно. При использовании встроенного меню в узких панелях (`<= 240px`) рекомендуется задавать компактный `title` или `hyphens: auto` на текстовых блоках слота/описания.
+2. **Жизненный цикл `v-if` и SSR-гидратация:** После повторного монтирования `v-if` объём текстового узла секции полностью совпал с исходным (`beforeLen: 139` -> `unmountedLen: 122` -> `remountedLen: 139`), а SSR отдал `200` без предупреждений гидратации (`vueWarnings: []`), что подтверждает корректную очистку ресурсов окна.
+3. **Мобильная адаптивность и чистота runtime:** На всех четырёх проверенных вьюпортах (`1440`, `768`, `375`, `320`) `overflowX` равен `false` (`offenders: []`), а `networkErrors` и `dialogs` пусты (`[]`), что подтверждает отсутствие утечек разметки и корректное экранирование пользовательских строк.

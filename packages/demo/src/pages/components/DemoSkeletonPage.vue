@@ -1,151 +1,105 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
+import { D1Button } from '@dxtmisha/d1/D1Button'
 import type { SkeletonExpose } from '@dxtmisha/constructor/Skeleton'
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
-/** Reactive active state for the basic comparison group / Реактивное состояние активности для базовой группы сравнения */
 const basicActive = ref<boolean>(true)
-
-/** Reactive active state for the scoped slot group / Реактивное состояние активности для группы scoped-слота */
 const slotActive = ref<boolean>(true)
-
-/** Reactive active state for the delays group / Реактивное состояние активности для группы задержек */
 const delaysActive = ref<boolean>(false)
-
-/** Reactive active state for the parent provider skeleton / Реактивное состояние активности родительского скелетона-провайдера */
 const parentActive = ref<boolean>(true)
-
-/** Reactive active state for the nested child skeleton / Реактивное состояние активности вложенного дочернего скелетона */
 const nestedChildActive = ref<boolean>(false)
+const isLifecycleMounted = ref<boolean>(false)
+const isAccessibilityActive = ref<boolean>(true)
+const isAccessibilityInvisible = ref<boolean>(true)
+const blockedClickCount = ref<number>(0)
+const isBoundaryActive = ref<boolean>(false)
 
-/** Mounted state for the delayed lifecycle demonstration / Состояние монтирования демонстрации жизненного цикла с задержкой */
-const lifecycleMounted = ref<boolean>(false)
-
-/** Reference to the controlled D1Skeleton instance / Ссылка на управляемый экземпляр D1Skeleton */
-const skeletonRef = ref<SkeletonExpose | null>(null)
-
-/** Reactive active prop for the expose control group / Реактивный проп active для группы проверки expose */
+const skeletonReference = ref<SkeletonExpose | null>(null)
 const exposeActive = ref<boolean>(true)
-
-/** Reactive delay prop for the expose control group / Реактивный проп delay для группы проверки expose */
 const exposeDelay = ref<number | string>(0)
-
-/** Reactive delayHide prop for the expose control group / Реактивный проп delayHide для группы проверки expose */
 const exposeDelayHide = ref<number | string>(300)
-
-/** Manual snapshot of the exposed isActive() return value / Снимок возвращаемого значения метода isActive() */
 const manualExposeSnapshot = ref<string>('Not read yet')
 
-/** Formatted expose state string / Форматированная строка состояния expose-метода */
+const xssPayload = '<img src=x onerror=alert(1)>'
+const longUnbrokenText = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+const longSentenceText = 'Skeleton loading preserves layout geometry while asynchronous user profile, analytics, and localized content are still loading in the background.'
+
 const exposeStatus = computed<string>(() => {
-  if (skeletonRef.value) {
-    return `isActive(): ${skeletonRef.value.isActive()} | active prop: ${exposeActive.value} | delay: ${exposeDelay.value} | delayHide: ${exposeDelayHide.value} | snapshot: ${manualExposeSnapshot.value}`
+  if (skeletonReference.value) {
+    return `isActive(): ${skeletonReference.value.isActive()} | active prop: ${exposeActive.value} | delay: ${exposeDelay.value} | delayHide: ${exposeDelayHide.value} | snapshot: ${manualExposeSnapshot.value}`
   }
 
-  return 'Ref not initialized'
+  return 'Reference not initialized'
 })
 
-/**
- * Toggles the basic skeleton active state.
- *
- * Переключает состояние активности базового скелетона.
- */
 const toggleBasicActive = (): void => {
   basicActive.value = !basicActive.value
 }
 
-/**
- * Toggles the scoped slot skeleton active state.
- *
- * Переключает состояние активности скелетона со слотом.
- */
 const toggleSlotActive = (): void => {
   slotActive.value = !slotActive.value
 }
 
-/**
- * Toggles the delays demonstration active state.
- *
- * Переключает состояние активности демонстрации задержек.
- */
 const toggleDelaysActive = (): void => {
   delaysActive.value = !delaysActive.value
 }
 
-/**
- * Toggles the parent provider skeleton active state.
- *
- * Переключает состояние активности родительского скелетона-провайдера.
- */
 const toggleParentActive = (): void => {
   parentActive.value = !parentActive.value
 }
 
-/**
- * Toggles the nested child skeleton active state.
- *
- * Переключает состояние активности вложенного дочернего скелетона.
- */
 const toggleNestedChildActive = (): void => {
   nestedChildActive.value = !nestedChildActive.value
 }
 
-/**
- * Mounts or unmounts a skeleton with a pending appearance timer.
- *
- * Монтирует или размонтирует скелетон с таймером отложенного появления.
- */
 const toggleLifecycleMounted = (): void => {
-  lifecycleMounted.value = !lifecycleMounted.value
+  isLifecycleMounted.value = !isLifecycleMounted.value
 }
 
-/**
- * Activates the expose-controlled skeleton immediately without delay.
- *
- * Мгновенно активирует управляемый скелетон без задержки.
- */
+const toggleAccessibilityActive = (): void => {
+  isAccessibilityActive.value = !isAccessibilityActive.value
+}
+
+const toggleAccessibilityInvisible = (): void => {
+  isAccessibilityInvisible.value = !isAccessibilityInvisible.value
+}
+
+const incrementBlockedClickCount = (): void => {
+  blockedClickCount.value += 1
+}
+
+const toggleBoundaryActive = (): void => {
+  isBoundaryActive.value = !isBoundaryActive.value
+}
+
 const activateExposeImmediate = async (): Promise<void> => {
   exposeDelay.value = 0
   exposeDelayHide.value = 300
   exposeActive.value = true
   await nextTick()
-  manualExposeSnapshot.value = String(skeletonRef.value?.isActive())
+  manualExposeSnapshot.value = String(skeletonReference.value?.isActive())
 }
 
-/**
- * Activates the expose-controlled skeleton with a 500ms appearance delay.
- *
- * Активирует управляемый скелетон с задержкой появления 500 мс.
- */
 const activateExposeDelayed = async (): Promise<void> => {
   exposeDelay.value = '500'
   exposeDelayHide.value = '0'
   exposeActive.value = true
   await nextTick()
-  manualExposeSnapshot.value = String(skeletonRef.value?.isActive())
+  manualExposeSnapshot.value = String(skeletonReference.value?.isActive())
 }
 
-/**
- * Deactivates the expose-controlled skeleton.
- *
- * Деактивирует управляемый скелетон.
- */
 const deactivateExpose = async (): Promise<void> => {
   exposeActive.value = false
   await nextTick()
-  manualExposeSnapshot.value = String(skeletonRef.value?.isActive())
+  manualExposeSnapshot.value = String(skeletonReference.value?.isActive())
 }
 
-/**
- * Reads the current value from the exposed isActive() method.
- *
- * Считывает текущее значение из открытого метода isActive().
- */
 const readExposeState = (): void => {
-  manualExposeSnapshot.value = String(skeletonRef.value?.isActive())
+  manualExposeSnapshot.value = String(skeletonReference.value?.isActive())
 }
 </script>
 
@@ -155,8 +109,8 @@ const readExposeState = (): void => {
     <D1Section>
       <D1Group label="Basic & Active States (Interactive, Active, Inactive)">
         <DemoFlex align="center">
-          <D1Button label="Toggle Active" @click="toggleBasicActive" />
-          <DemoValue label="Active" :value="basicActive" />
+          <D1Button label="Toggle Active" @click="toggleBasicActive"/>
+          <DemoValue label="Active" :value="basicActive"/>
         </DemoFlex>
         <DemoFlex>
           <DemoBox size="lg">
@@ -260,8 +214,8 @@ const readExposeState = (): void => {
 
       <D1Group label="Scoped Slot (#default with SkeletonClassesList Props)">
         <DemoFlex align="center">
-          <D1Button label="Toggle Slot Skeleton" @click="toggleSlotActive" />
-          <DemoValue label="Slot Active" :value="slotActive" />
+          <D1Button label="Toggle Slot Skeleton" @click="toggleSlotActive"/>
+          <DemoValue label="Slot Active" :value="slotActive"/>
         </DemoFlex>
         <DemoBox size="lg">
           <D1Skeleton :active="slotActive">
@@ -281,8 +235,8 @@ const readExposeState = (): void => {
               <DemoFlex align="center">
                 <span :class="classText">Scoped Text</span>
                 <span :class="classTextVariant">Scoped Text Variant</span>
-                <div :class="['demo-skeleton-page__block', classBackground]">BG</div>
-                <div :class="['demo-skeleton-page__block', classBackgroundVariant]">BG Variant</div>
+                <div :class="['demo-skeleton-page__block', classBackground]">Background</div>
+                <div :class="['demo-skeleton-page__block', classBackgroundVariant]">Background Variant</div>
                 <div :class="['demo-skeleton-page__pseudo-before', classBackgroundBefore]">Before</div>
                 <div :class="['demo-skeleton-page__pseudo-after', classBackgroundAfter]">After</div>
                 <div :class="['demo-skeleton-page__bordered', classBorder]">Border</div>
@@ -339,7 +293,7 @@ const readExposeState = (): void => {
           </DemoBox>
 
           <DemoBox size="md">
-            <D1Skeleton active :delay="-50" :delayHide="-100">
+            <D1Skeleton active :delay="-50" :delay-hide="-100">
               <div class="d1-skeleton__text">Negative delays (-50 / -100)</div>
               <div>Immediate fallback</div>
             </D1Skeleton>
@@ -349,40 +303,40 @@ const readExposeState = (): void => {
 
       <D1Group label="Delays & Accepted Data Types (number and string for delay / delayHide)">
         <DemoFlex align="center">
-          <D1Button label="Toggle Delays" @click="toggleDelaysActive" />
-          <DemoValue label="Delays Active" :value="delaysActive" />
+          <D1Button label="Toggle Delays" @click="toggleDelaysActive"/>
+          <DemoValue label="Delays Active" :value="delaysActive"/>
         </DemoFlex>
         <DemoFlex>
           <DemoBox size="md">
-            <D1Skeleton :active="delaysActive" :delay="0" :delayHide="0">
+            <D1Skeleton :active="delaysActive" :delay="0" :delay-hide="0">
               <div class="d1-skeleton__text">Number: 0 / 0</div>
               <div class="d1-skeleton__textVariant">Immediate show &amp; hide</div>
             </D1Skeleton>
           </DemoBox>
 
           <DemoBox size="md">
-            <D1Skeleton :active="delaysActive" :delay="360" :delayHide="0">
+            <D1Skeleton :active="delaysActive" :delay="360" :delay-hide="0">
               <div class="d1-skeleton__text">Number: 360 / 0</div>
               <div class="d1-skeleton__textVariant">Standard show delay</div>
             </D1Skeleton>
           </DemoBox>
 
           <DemoBox size="md">
-            <D1Skeleton :active="delaysActive" delay="1000" delayHide="0">
+            <D1Skeleton :active="delaysActive" delay="1000" delay-hide="0">
               <div class="d1-skeleton__text">String: "1000" / "0"</div>
               <div class="d1-skeleton__textVariant">Slow show delay</div>
             </D1Skeleton>
           </DemoBox>
 
           <DemoBox size="md">
-            <D1Skeleton :active="delaysActive" :delay="0" :delayHide="1000">
+            <D1Skeleton :active="delaysActive" :delay="0" :delay-hide="1000">
               <div class="d1-skeleton__text">Number: 0 / 1000</div>
               <div class="d1-skeleton__textVariant">Delayed hiding</div>
             </D1Skeleton>
           </DemoBox>
 
           <DemoBox size="md">
-            <D1Skeleton :active="delaysActive" delay="360" delayHide="800">
+            <D1Skeleton :active="delaysActive" delay="360" delay-hide="800">
               <div class="d1-skeleton__text">String: "360" / "800"</div>
               <div class="d1-skeleton__textVariant">Combined delays</div>
             </D1Skeleton>
@@ -390,12 +344,12 @@ const readExposeState = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Provider Inheritance & Child Components (Nested D1Skeleton, isSkeleton, D1SkeletonItem)">
+      <D1Group label="Provider Inheritance & Companion Components (Nested D1Skeleton, isSkeleton, D1SkeletonItem)">
         <DemoFlex align="center">
-          <D1Button label="Toggle Parent Active" @click="toggleParentActive" />
-          <D1Button label="Toggle Nested Child Active" @click="toggleNestedChildActive" />
-          <DemoValue label="Parent" :value="parentActive" />
-          <DemoValue label="Nested Child" :value="nestedChildActive" />
+          <D1Button label="Toggle Parent Active" @click="toggleParentActive"/>
+          <D1Button label="Toggle Nested Child Active" @click="toggleNestedChildActive"/>
+          <DemoValue label="Parent" :value="parentActive"/>
+          <DemoValue label="Nested Child" :value="nestedChildActive"/>
         </DemoFlex>
         <DemoBox size="lg">
           <D1Skeleton :active="parentActive">
@@ -404,18 +358,30 @@ const readExposeState = (): void => {
               description="Lead Product Designer"
               caption="Online"
               icon="person"
-              iconTrailing="chevron_right"
-              isSkeleton
+              icon-trailing="chevron_right"
+              is-skeleton
             />
             <DemoFlex align="center">
-              <D1Icon icon="home" size="lg" isSkeleton />
-              <D1Button label="Send Message" icon="send" isSkeleton />
-              <D1SkeletonItem text label="Static SkeletonItem Label" />
-              <D1SkeletonItem textVariant :length="4" />
-              <D1SkeletonItem background class="demo-skeleton-page__block" />
-              <D1SkeletonItem backgroundVariant class="demo-skeleton-page__block" />
-              <D1SkeletonItem border class="demo-skeleton-page__bordered" />
-              <D1SkeletonItem borderVariant class="demo-skeleton-page__bordered" />
+              <D1Icon icon="home" size="lg" is-skeleton/>
+              <D1Button label="Send Message" icon="send" is-skeleton/>
+              <D1SkeletonItem tag="h4" text label="Static SkeletonItem Label"/>
+              <D1SkeletonItem tag="span" text :label="42"/>
+              <D1SkeletonItem tag="p" text-variant :length="4"/>
+              <D1SkeletonItem text-variant :length="[2, 5]"/>
+              <D1SkeletonItem text length="Custom string length"/>
+              <D1SkeletonItem
+                text
+                :item-attrs="{ 'data-testid': 'skeleton-item-attrs', 'aria-label': 'Custom item attributes' }"
+              >
+                Default slot content inside SkeletonItem
+              </D1SkeletonItem>
+              <D1SkeletonItem :tag="D1Button" background label="Component Tag" is-skeleton>
+                Component Tag Slot
+              </D1SkeletonItem>
+              <D1SkeletonItem background class="demo-skeleton-page__block"/>
+              <D1SkeletonItem background-variant class="demo-skeleton-page__block"/>
+              <D1SkeletonItem border class="demo-skeleton-page__bordered"/>
+              <D1SkeletonItem border-variant class="demo-skeleton-page__bordered"/>
             </DemoFlex>
             <DemoBox size="sm">
               <D1Skeleton :active="nestedChildActive">
@@ -427,7 +393,35 @@ const readExposeState = (): void => {
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Empty Default Slot">
+      <D1Group label="Accessibility (aria-busy & inert Protection)">
+        <DemoFlex align="center">
+          <D1Button label="Toggle A11y Active" @click="toggleAccessibilityActive"/>
+          <D1Button label="Toggle A11y Invisible" @click="toggleAccessibilityInvisible"/>
+          <DemoValue label="Active" :value="isAccessibilityActive"/>
+          <DemoValue label="Invisible" :value="isAccessibilityInvisible"/>
+          <DemoValue label="Inner Click Count" :value="blockedClickCount"/>
+        </DemoFlex>
+        <DemoBox size="md">
+          <D1Skeleton
+            data-testid="a11y-skeleton"
+            :active="isAccessibilityActive"
+            :invisible="isAccessibilityInvisible"
+          >
+            <div class="d1-skeleton__text">Accessible Status Region</div>
+            <D1Button
+              label="Protected Inner Action"
+              is-skeleton
+              @click="incrementBlockedClickCount"
+            />
+          </D1Skeleton>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases (Empty, Whitespace, 0, Long Text, Unicode, XSS, Narrow Container)">
+        <DemoFlex align="center">
+          <D1Button label="Toggle Boundary Active" @click="toggleBoundaryActive"/>
+          <DemoValue label="Boundary Active" :value="isBoundaryActive"/>
+        </DemoFlex>
         <DemoFlex>
           <DemoBox size="sm">
             <D1Skeleton data-testid="empty-inactive-skeleton"/>
@@ -435,14 +429,35 @@ const readExposeState = (): void => {
           <DemoBox size="sm">
             <D1Skeleton data-testid="empty-active-skeleton" active/>
           </DemoBox>
+          <DemoBox size="sm">
+            <D1Skeleton
+              :active="isBoundaryActive"
+              :delay="undefined"
+              :delay-hide="undefined"
+            >
+              <div class="d1-skeleton__text">{{ '' }}</div>
+              <div class="d1-skeleton__text">{{ '   ' }}</div>
+              <div class="d1-skeleton__text">{{ 0 }}</div>
+            </D1Skeleton>
+          </DemoBox>
+          <DemoBox class="demo-skeleton-page__narrow" size="sm">
+            <D1Skeleton :active="isBoundaryActive">
+              <div class="d1-skeleton__text">{{ longSentenceText }}</div>
+              <div class="demo-skeleton-page__unbroken d1-skeleton__textVariant">{{ longUnbrokenText }}</div>
+              <div class="d1-skeleton__text">Multilingual: Привет / Học tiếng Việt / 🚀</div>
+              <div class="d1-skeleton__textVariant">{{ xssPayload }}</div>
+            </D1Skeleton>
+          </DemoBox>
         </DemoFlex>
       </D1Group>
 
       <D1Group label="Mount and Unmount During Appearance Delay">
-        <D1Button label="Toggle Mount" @click="toggleLifecycleMounted"/>
-        <DemoValue label="Mounted" :value="lifecycleMounted"/>
+        <DemoFlex align="center">
+          <D1Button label="Toggle Mount" @click="toggleLifecycleMounted"/>
+          <DemoValue label="Mounted" :value="isLifecycleMounted"/>
+        </DemoFlex>
         <DemoBox size="md">
-          <D1Skeleton v-if="lifecycleMounted" active :delay="500" data-testid="lifecycle-skeleton">
+          <D1Skeleton v-if="isLifecycleMounted" active :delay="500" data-testid="lifecycle-skeleton">
             <div class="d1-skeleton__text">Delayed content after mount</div>
           </D1Skeleton>
         </DemoBox>
@@ -450,23 +465,23 @@ const readExposeState = (): void => {
 
       <D1Group label="Control via Expose Method (isActive)">
         <DemoFlex align="center">
-          <D1Button label="Activate Immediate" @click="activateExposeImmediate" />
-          <D1Button label="Activate Delayed (500ms)" @click="activateExposeDelayed" />
-          <D1Button label="Deactivate" @click="deactivateExpose" />
-          <D1Button label="Read Expose State" @click="readExposeState" />
+          <D1Button label="Activate Immediate" @click="activateExposeImmediate"/>
+          <D1Button label="Activate Delayed (500ms)" @click="activateExposeDelayed"/>
+          <D1Button label="Deactivate" @click="deactivateExpose"/>
+          <D1Button label="Read Expose State" @click="readExposeState"/>
         </DemoFlex>
         <DemoBox size="md">
           <D1Skeleton
-            ref="skeletonRef"
+            ref="skeletonReference"
             :active="exposeActive"
             :delay="exposeDelay"
-            :delayHide="exposeDelayHide"
+            :delay-hide="exposeDelayHide"
           >
             <div class="d1-skeleton__text">Controlled Skeleton Instance</div>
             <div class="d1-skeleton__textVariant">Inspect exposed isActive() status below</div>
           </D1Skeleton>
         </DemoBox>
-        <DemoValue label="Expose State" :value="exposeStatus" />
+        <DemoValue label="Expose State" :value="exposeStatus"/>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -474,8 +489,6 @@ const readExposeState = (): void => {
 
 <style lang="scss">
 .demo-skeleton-page {
-  display: block;
-
   &__block {
     display: flex;
     align-items: center;
@@ -522,6 +535,14 @@ const readExposeState = (): void => {
       position: absolute;
       inset: 0;
     }
+  }
+
+  &__narrow {
+    max-width: 240px;
+  }
+
+  &__unbroken {
+    overflow-wrap: anywhere;
   }
 }
 </style>

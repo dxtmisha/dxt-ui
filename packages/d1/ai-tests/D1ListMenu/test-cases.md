@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/ListMenu` (`packages/constructor/src/constructors/ListMenu`, `packages/demo/src/pages/components/DemoListMenuPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list-menu`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-22`
-- **Всего тест-кейсов**: `9`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `10`
 
 ---
 
@@ -14,10 +14,10 @@
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
 | **Визуал и токены** | `VIS` | 2 | P0, P1 | Базовый рендеринг `#head`/`#list`, встроенное открытое окно (`embedded`), `axis` (`x`/`y`), `divider`, `disabled` |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Клик по `#head`, управляемый `open`, `auto-close="false"`, `inDom`, методы `expose` (`toOpen`, `toClose`, `toggle`, `getOpen`, `getId`, `getControl`, `getWindowElement`) |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Вложенные подменю (`Nested Submenus`), быстрое переключение, `inert=false`, `closeOnEsc=false` |
+| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Клик по `#head`, управляемый `open`, `auto-close="false"`, `persistent`, `inDom`, `disable-focus-return`, методы `expose` (`setOpen`, `toOpen`, `toClose`, `toggle`, `getOpen`, `getId`, `getControl`, `getWindowElement`), жизненный цикл `v-if` |
+| **Границы и крайние случаи** | `BND` | 2 | P1 | Вложенные подменю (`Nested Submenus`), `inert=false`/`closeOnEsc=false`, пустой слот `#list`, Unicode/кириллица/вьетнамский/Emoji, длинный/неразрывный текст, XSS, узкий контейнер `240px` |
 | **Адаптивность и viewport** | `RSP` | 1 | P1 | Десктоп (`1440×900`), планшет (`768×1024`), мобильные (`375×812`, `320×568`), отсутствие переполнения |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | `role="menu"`, `aria-haspopup`, управление с клавиатуры (`Tab`, `Enter`, `Space`) |
+| **Доступность (A11Y)** | `A11Y` | 1 | P1 | `role="menu"`, `aria-haspopup="menu"`, `aria-expanded`, `aria-label`, управление с клавиатуры (`Tab`, `Enter`, `Space`) |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | Событие `@window`, payload, `0` ошибок `console.error`, `pageerror`, `[Vue warn]` и сетевых ошибок |
 
 ---
@@ -44,7 +44,7 @@
 - **Шаги теста**:
   1. Проверить наличие модификаторов `.d1-listMenu--axis--y`, `.d1-listMenu--axis--x`, `.d1-listMenu--divider`.
   2. Открыть меню `Vertical Axis (axis=y)` и `Horizontal Axis (axis=x)`, затем проверить визуальное позиционирование.
-  3. Проверить состояние `Disabled Menu` (`disabled=true`): клик не должен открывать окно.
+  3. Проверить состояние `Disabled Menu` (`disabled=true`): кликнуть по нему и убедиться, что окно не открывается и `blockedWindowEvents` остаётся `0`.
 - **Ожидаемый результат**: Модификаторы классов корректно применены к корню окна, меню с `axis="y"` и `axis="x"` позиционируются корректно, а `Disabled Menu` визуально неактивно и не открывается при клике.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
@@ -53,7 +53,7 @@
 #### [TC-INT-001] Интерактивное открытие/закрытие по клику на `#head` и синхронизация слота
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и функционал`
-- **Предусловия**: Секция `Basic`, `viewport 1440×900`.
+- **Предусловия**: Секция `Basic`, viewport `1440×900`.
 - **Шаги теста**:
   1. Кликнуть по кнопке `File Options`.
   2. Проверить изменение текста подписи с `Closed` на `Open`, поворот иконки и появление пунктов `New File`, `Duplicate`, `Archive`.
@@ -61,28 +61,27 @@
 - **Ожидаемый результат**: Меню плавно открывается и закрывается, `open.value` в слоте `#head` синхронизируется (`Closed` <-> `Open`), содержимое `#list` отображается при открытии.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] Управляемый `open`, `auto-close="false"`, `inDom` и `disable-focus-return`
+#### [TC-INT-002] Управляемый `open`, `auto-close="false"`, `persistent`, `inDom` и `disable-focus-return`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функционал`
-- **Предусловия**: Секции `Open State` и `Auto Close, Focus Return & Window Attrs (SSR inDom)`.
+- **Предусловия**: Секции `Open State` и `Auto Close, Focus Return, Persistent & SSR inDom`.
 - **Шаги теста**:
-  1. Нажать кнопку `Set open=true` в `Open State` и проверить, что `Controlled Menu` открылось и отображает `Action One` / `Action Two`.
-  2. Нажать `Set open=false` и проверить закрытие.
-  3. Открыть меню `Persistent AutoClose=false (inDom)` и кликнуть по пункту `Keeps open on item click` внутри списка.
-  4. Закрыть меню кликом по его триггеру и проверить, что элемент `Kept in DOM after first open` остаётся в DOM (`inDom: true`).
-  5. Открыть меню `Disable Focus Return`, закрыть его кликом вне окна и проверить, что фокус не возвращается на кнопку-триггер.
-- **Ожидаемый результат**: Внешнее изменение `open` управляет состоянием меню; при `auto-close="false"` клик по пункту внутри меню не закрывает окно; при `inDom: true` окно остаётся смонтированным в DOM после закрытия; при `disable-focus-return` фокус не возвращается на триггер после закрытия.
+  1. Нажать кнопку `Set open=true` в `Open State` и проверить открытие `Controlled Menu`, затем нажать `Set open=false`.
+  2. Открыть `Persistent AutoClose=false (inDom)` и кликнуть по пункту `Keeps open on item click`; закрыть меню по триггеру и проверить сохранение узла в DOM (`inDom: true`).
+  3. Открыть `Disable Focus Return`, закрыть кликом вне окна и убедиться, что фокус не возвращается на триггер.
+  4. Открыть `Persistent Window` (`persistent: true`), кликнуть вне окна и убедиться, что меню остаётся открытым до повторного клика по триггеру.
+- **Ожидаемый результат**: Все режимы поведения окна (`open`, `auto-close`, `inDom`, `disable-focus-return`, `persistent`) работают согласно контракту.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
-#### [TC-INT-003] Программное управление через `expose`
+#### [TC-INT-003] Программное управление через `expose` и жизненный цикл `v-if`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функционал`
-- **Предусловия**: Секция `Expose`.
+- **Предусловия**: Секции `Expose` и `Lifecycle (Mount / Unmount)`.
 - **Шаги теста**:
-  1. Нажать `toOpen()`, затем `Check Expose`.
-  2. Нажать `toggle()`, затем `Check Expose`.
-  3. Нажать `toOpen()` и `toClose()`, затем `Check Expose`.
-- **Ожидаемый результат**: Все методы `expose` (`toOpen`, `toClose`, `toggle`, `getId`, `getOpen`, `getControl`, `getWindowElement`) работают корректно; `DemoValue` отображает непустой `id`, корректный `open` (`true`/`false`), `hasControl=true` и `hasWindow=true` при смонтированном окне.
+  1. Нажать `setOpen(true)`, `Check Expose`, затем `setOpen(false)`, `Check Expose`.
+  2. Нажать `toOpen()`, `toggle()`, `toClose()` и проверять результат через `Check Expose`.
+  3. В секции `Lifecycle (Mount / Unmount)` нажать `Unmount ListMenu` и затем `Mount ListMenu`.
+- **Ожидаемый результат**: Все методы `expose` (`setOpen`, `toOpen`, `toClose`, `toggle`, `getId`, `getOpen`, `getControl`, `getWindowElement`) работают корректно; размонтирование и повторное монтирование `D1ListMenu` проходят без ошибок.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.3 Границы и крайние случаи (`BND`)
@@ -98,6 +97,16 @@
   4. Нажать `Escape` и проверить, что родительское меню не закрывается (`closeOnEsc=false` на `ListMenu`).
 - **Ожидаемый результат**: Вложенное подменю открывается поверх/рядом с родителем без обрезания и без закрытия родительского списка; `Escape` не ломает состояние.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Пустой `#list`, длинный/неразрывный текст, Unicode, XSS и узкий контейнер `240px`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Секция `Boundary & Edge Cases`.
+- **Шаги теста**:
+  1. Открыть `Empty List Slot` (пустой слот `#list`) и убедиться в отсутствии ошибок рендеринга.
+  2. Проверить встроенное меню внутри `.demo-list-menu-page__narrow` (`max-width: 240px`): отображение вьетнамских диакритик, кириллицы и эмодзи (`"Học tiếng Việt / Привет мир 🚀🔥✨"`), неразрывной строки `"AAA..."` и XSS-строки `"<img src=x onerror=alert(1)>"` строго как текста.
+- **Ожидаемый результат**: Пустой список не вызывает исключений; узкий контейнер `240px` не допускает горизонтального выхода элементов; XSS-пейлоад безопасно экранирован.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
 
 ### 2.4 Адаптивность и viewport (`RSP`)
 
@@ -116,11 +125,11 @@
 #### [TC-A11Y-001] WAI-ARIA атрибуты и клавиатурная навигация
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Доступность (A11y)`
-- **Предусловия**: Секция `Basic`, открытое состояние `File Options`.
+- **Предусловия**: Секции `Basic` и `Accessibility (A11y)`.
 - **Шаги теста**:
-  1. Проверить атрибуты на корневом элементе окна (`role="menu"`, `aria-haspopup="menu"`) и на элементе управления (`tabindex` / `aria-expanded` / `aria-controls`).
-  2. Сфокусироваться на триггере `File Options` через `Tab` и нажать `Enter` / `Space`.
-- **Ожидаемый результат**: Корректные ARIA-атрибуты присутствуют, триггер активируется с клавиатуры и синхронизирует состояние открытия.
+  1. Проверить атрибуты на корневом элементе окна (`role="menu"`, `aria-haspopup="menu"`) и на триггере `Accessible Menu Trigger` (`aria-label`, `aria-expanded`, `tabindex="0"`).
+  2. Сфокусироваться на триггере через `Tab` и нажать `Enter`/`Space`, проверив открытие меню и доступность пунктов `role="menuitem"`.
+- **Ожидаемый результат**: Корректные ARIA-атрибуты присутствуют, триггер активируется с клавиатуры и синхронизирует состояние открытия (`Collapsed` <-> `Expanded`).
 - **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)

@@ -1,24 +1,66 @@
-# Отчёт визуального тестирования: `D1Pagination`
+# Отчёт о визуальном и функциональном тестировании: D1Pagination
 
-- **Дата (UTC):** `2026-11-24T16:37:46Z`
-- **Среда:** Headless Google Chrome (CDP `127.0.0.1:9222`), Vite SSR dev server (`http://localhost:3000/component-pagination`)
-- **Итог:** **`9 / 9 ✅ PASS`** (`0` console errors, `0` `[Vue warn]`, `0` `pageerror`)
+## 1. Сводка тестирования
 
-## Найденные и исправленные дефекты во время прогона
+- **Компонент:** `D1Pagination` (`@dxtmisha/d1`)
+- **Исходный код:** [`D1Pagination`](../../src/components/Ui/Pagination) ([`Pagination`](../../../constructor/src/constructors/Pagination), [`DemoPaginationPage.vue`](../../../demo/src/pages/components/DemoPaginationPage.vue))
+- **Демо / Целевой URL:** `http://localhost:3000/component-pagination`
+- **Материалы:** `Отсутствуют`
+- **Дата тестирования (UTC):** `2026-11-25T08:44:42Z`
+- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Покрытие тест-кейсов:** `12 / 12` (`100%`)
+- **Итог:** **12 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — после исправления `min-width: 0`, `max-width: 100%` и `overflow-wrap: anywhere` в `Pagination/style.scss` все 12 сценариев (включая узкий контейнер `240px`, перенос неразрывной метки и все 4 адаптивных разрешения) пройдены без переполнений и ошибок.
 
-1. **Горизонтальное переполнение на мобильном экране (`375×812`, `overflowPx: 292px`)**: блок `.d1-pagination__navigation` в [style.scss](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Pagination/style.scss) не разрешал перенос кнопок (`flex-wrap: nowrap`), из-за чего на узких экранах крайняя кнопка `Last` и расширенный список страниц выходили за границу вьюпорта. Добавлено `flex-wrap: wrap; justify-content: center;` в `&__navigation`, пересобраны `constructor` и `d1` — переполнение снизилось с `292px` до `0px`.
-2. **Плейсхолдер `textInfo` и подписка на `@more-lite`/`@more-prev-lite` в демо**: в [DemoPaginationPage.vue](file:///Users/tung/Documents/GitHub/dxt-ui/packages/demo/src/pages/components/DemoPaginationPage.vue) исправлен шаблон `text-info="[item] / [count]"` (отображается `31-45 / 90`) и добавлены обработчики `@more-lite` / `@more-prev-lite`.
+---
 
-## Результаты по тест-кейсам
+## 2. Базовая матрица
 
-| ID | Статус | Ключевые фактические показатели | Скриншот |
-| --- | :---: | --- | --- |
-| `TC-VIS-001` | ✅ PASS | `role="navigation"`, `aria-label="Pagination"`, `aria-current="page"` = `2`, `info` = `11-20 of 100`, `ellipsis` = `•••` (`aria-hidden="true"`) | [TC-VIS-001.png](./screenshots/TC-VIS-001.png) |
-| `TC-A11Y-001` | ✅ PASS | `tabindex="0"`, фокус `2` -> `ArrowRight` -> `3` -> `Enter` (`page=3, rows=10`), `blur` снимает фокус (`0` активных) | [TC-A11Y-001.png](./screenshots/TC-A11Y-001.png) |
-| `TC-INT-001` | ✅ PASS | `Go to Page 5` (`page=5`, `aria-current="5"`), `Set Rows to 20` (`rows=20`, кнопка меню `20`), `Reset` (`page=2, rows=10`) | [TC-INT-001.png](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | ✅ PASS | `showMore`: `morePage=3 -> 4`; `showMorePrev`: `morePrevPage=4 -> 3` | [TC-INT-002.png](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | ✅ PASS | `more`: `clickLite: more = 4`; `morePrev`: `clickLite: morePrev = 2`; клик по странице `4`: `clickLite: page = 4` | [TC-INT-003.png](./screenshots/TC-INT-003.png) |
-| `TC-VIS-002` | ✅ PASS | Все 3 слота (`leading`, `info`, `trailing`), `aria-label="Custom pages nav"`, `textInfo="31-45 / 90"`, `aria-label="Step 3"` | [TC-VIS-002.png](./screenshots/TC-VIS-002.png) |
-| `TC-BND-001` | ✅ PASS | Строки (`31-45 of 120`, page `3`), `hideIfOne` скрывает и показывает 1 страницу, `count=0` -> `0-0 of 0` (`4/4` кнопок `disabled`) | [TC-BND-001.png](./screenshots/TC-BND-001.png) |
-| `TC-VIS-003` | ✅ PASS | Класс `d1-pagination--adaptive--lineAlways` применён; `dir="rtl"` отображается корректно | [TC-VIS-003.png](./screenshots/TC-VIS-003.png) |
-| `TC-RESP-001` | ✅ PASS | Desktop `1440/1440` (`0px`), Tablet `768/768` (`0px`), Mobile `375/375` (`0px`), `0` ошибок консоли/Vue/page | [TC-RESP-001-mobile.png](./screenshots/TC-RESP-001-mobile.png) |
+### 2.1 Визуал и дизайн-система (`VIS`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-VIS-001` | Базовая пагинация и навигационные опции (`visible`, `ends`, `ellipsis`, `showArrows`, `showFirstLast`, `showRowsPerPageLabel`) | ✅ | Базовая пагинация отображает диапазон `41-50 of 100`, селектор `Rows per page` (`10`), кнопки первой/последней страницы и `•••` без обрезаний и наложений. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Слоты (`#leading`, `#info`, `#trailing`) | ✅ | Все три слота (`leading`, `info`, `trailing`) отображаются в заданном порядке вокруг блока навигации страниц. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Кастомные иконки, проброс атрибутов (`*Attrs`) и текстовые оверрайды (строки и функции) | ✅ | Кастомные иконки, атрибуты кнопок/меню, строковые подписи и функциональные `textMore` / `textInfo` применяются корректно. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+
+### 2.2 Интерактивность и управление состоянием (`INT`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-INT-001` | Двусторонняя привязка (`v-model:value`/`v-model:rows` и `v-model`/`v-model:model-rows`) | ✅ | Нажатие `Go to Page 5` обновляет `Value: page=5, rows=10` и `ariaCurrent: "5"`; обе пары моделей (`value`/`rows` и `modelValue`/`modelRows`) синхронизируются корректно. | — |
+| `TC-INT-002` | Кнопки инкрементальной подгрузки (`showMore` и `showMorePrev`) | ✅ | Инкрементальная подгрузка предыдущих и следующих страниц обновляет счётчики и скрывает кнопки на границах диапазона. | — |
+| `TC-INT-003` | Переключение адаптивных токенов (`adaptive`, `adaptiveMore`, `adaptiveMorePrev`, включая `lineXl`) | ✅ | Переключение модификаторов `lineAlways`, `lineSm`, `lineMd`, `lineLg`, `lineXl`, `line2xl` синхронно обновляет классы и подпись `Value`. | ![TC-INT-003](./screenshots/TC-INT-003.png) |
+| `TC-INT-004` | Условное монтирование и очистка (`v-if`) | ✅ | SSR вернул `200`; размонтирование и повторное монтирование `v-if` полностью восстанавливают секцию без ошибок (`beforeLen: 148`, `unmountedLen: 89`, `remountedLen: 148`). | — |
+
+### 2.3 Границы и крайние случаи (`BND`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-BND-001` | Строковые пропсы, `hideIfOne`, `0` и пустые массивы (`menuRows=[]`) | ✅ | Строковые параметры (`31-45 of 120`), переключатель `hideIfOne` и нулевой случай (`0-0 of 0` с заблокированными кнопками) отрабатывают без ошибок. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Пробельные строки, `count="100000"`, Unicode, XSS и узкий контейнер (`240px`) | ✅ | XSS-текст `<img src=x onerror=alert(1)>` экранирован (`badImgs: 0`, `dialogs: []`), а узкий контейнер `.demo-pagination-page__narrow` после фикса `Pagination/style.scss` не переполняется (`scrollWidth: 238`, `clientWidth: 238`, `overflowsBox: false`, `overflowChildren: []`): длинная неразрывная строка `AAAA...` корректно переносится на несколько строк. | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+
+### 2.4 Адаптивность и вьюпорты (`RSP`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-RSP-001` | Адаптивность на `1440×900`, `768×1024`, `375×812`, `320×568` и режим `dir="rtl"` | ✅ | На всех 4 вьюпортах горизонтальное переполнение отсутствует (`1440/1440`, `768/768`, `375/375`, `320/320`, `overflowX: false`, `offenders: []`), а переключение `Toggle RTL` выставляет `dir="rtl"` без артефактов верстки. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+
+### 2.5 Доступность (`A11Y`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-A11Y-001` | ARIA-ориентир навигации, `aria-current="page"` и направленная клавиатурная навигация (`FocusDirectionInclude`) | ✅ | Обнаружено `16` ориентиров `nav` (`navCount: 16`), активная страница отмечена `ariaCurrent: "5"`, клавиатурная навигация и `aria-hidden="true"` на многоточии работают корректно. | — |
+
+### 2.6 Логи и консоль (`LOG`)
+
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-LOG-001` | Отслеживание всех событий `PaginationEmits` и чистота консоли | ✅ | События пагинации срабатывают штатно; в консоли и сети нет ошибок (`consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`, `dialogs: []`). | — |
+
+---
+
+## 3. AI-аудит и рекомендации
+
+1. **Устранённое переполнение макета в `Pagination/style.scss`:** Добавление `min-width: 0; max-width: 100%;` для корневого блока `&`, flex-контейнеров `&__menuRows`, `&__navigation`, `&__info`, `flex-wrap: wrap;` для `&__menuRows` и `overflow-wrap: anywhere;` для `&__menuRows__label`, `&__info` и `&__ellipsis` полностью устранило горизонтальное переполнение в узком боксе (`238 === 238`) и на всех адаптивных вьюпортах (`1440`, `768`, `375`, `320`).
+2. **Безопасность шаблонов и `v-if` жизненный цикл:** Экранирование XSS-пейлоада `<img src=x onerror=alert(1)>` в `ellipsis` и `textInfo` подтверждено (`badImgs: 0`, `dialogs: []`), а `v-if` переключение чисто размонтирует и восстанавливает DOM (`beforeLen: 148`, `unmountedLen: 89`, `remountedLen: 148`).
+3. **A11y и runtime-гигиена:** На странице присутствуют все `16` навигационных ориентиров (`navCount: 16`) с валидным `aria-current="5"`, SSR возвращает `200`, а ошибки консоли, Vue-предупреждения и сетевые сбои полностью отсутствуют (`[]`).

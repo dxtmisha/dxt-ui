@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ListItemProps } from '@dxtmisha/d1/D1ListItem'
+import type { EventClickValue, ListSelectedList } from '@dxtmisha/constructor'
 import type { MenuExpose } from '@dxtmisha/constructor/Menu'
+import type { WindowEmitOptions } from '@dxtmisha/constructor/Window'
+import type { ListItemProps } from '@dxtmisha/d1/D1ListItem'
+import type { MenuProps } from '@dxtmisha/d1/D1Menu'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
+
+const barsAdaptiveModes: NonNullable<MenuProps['barsAdaptive']>[] = [
+  'showAlways',
+  'showSm',
+  'showMd',
+  'showLg',
+  'showXl',
+  'show2xl'
+]
 
 // 1. Common datasets
 const menuItems = ref([
@@ -46,28 +58,41 @@ const highlightItems = ref([
   { label: 'Next examination notes', value: 'example', icon: 'description' }
 ])
 
+const boundaryItems = ref([
+  { label: 0, value: 0, icon: 'exposure_zero' },
+  { label: '', value: 'empty-label' },
+  { label: '   ', value: 'whitespace-label' },
+  {
+    label: 'Long multi-sentence menu option that verifies text wrapping and layout resilience inside constrained containers.',
+    value: 'long-text'
+  },
+  { label: 'A'.repeat(72), value: 'unbroken-string' },
+  { label: 'Học tiếng Việt / Привет мир 🚀🔥✨', value: 'unicode' },
+  { label: '<img src=x onerror=alert(1)>', value: 'xss-payload' }
+])
+
 // 2. States for variations
-const selectedBasic = ref('play')
-const selectedRecord = ref('beta')
-const selectedCustomKey = ref('k2')
+const selectedBasic = ref<string>('play')
+const selectedRecord = ref<string>('beta')
+const selectedCustomKey = ref<string>('k2')
 
-const selectedNone = ref('play')
-const selectedCheckmark = ref('edit')
-const selectedRadio = ref('delete')
-const selectedCheckbox = ref(['play'])
-const selectedMultiMax = ref(['play', 'edit'])
+const selectedNone = ref<string>('play')
+const selectedCheckmark = ref<string>('edit')
+const selectedRadio = ref<string>('delete')
+const selectedCheckbox = ref<string[]>(['play'])
+const selectedMultiMax = ref<string[]>(['play', 'edit'])
 
-const selectedSearch = ref('cherry')
-const selectedHighlight = ref('experiments')
-const selectedHeader = ref('play')
+const selectedSearch = ref<string>('cherry')
+const selectedHighlight = ref<string>('experiments')
+const selectedHeader = ref<string>('play')
 
-const selectedAutoClose = ref('play')
-const selectedPersistent = ref('play')
-const selectedInDom = ref('play')
+const selectedAutoClose = ref<string>('play')
+const selectedPersistent = ref<string>('play')
+const selectedInDom = ref<string>('play')
 
-const selectedEmbedded = ref('play')
-const selectedIndent = ref('play')
-const selectedLite = ref('apple')
+const selectedEmbedded = ref<string>('play')
+const selectedIndent = ref<string>('play')
+const selectedLite = ref<string>('apple')
 
 const largeIconPool = ['home', 'star', 'folder', 'settings', 'palette', 'bolt', 'favorite', 'bookmark', 'tune', 'work']
 const picturePalettes = [
@@ -144,17 +169,17 @@ const largeMixed512Items = ref(
   })
 )
 
-const selectedLargePlain = ref('plain-1')
-const selectedLargeIcons = ref('icon-1')
-const selectedLargePictures = ref('picture-1')
-const selectedLargeMixed512 = ref('mixed-1')
-const selectedLargeMixed512Lazy = ref('mixed-1')
-const selectedLargeMixed512LazyCustom = ref('mixed-1')
-const selectedLargeMixed512NoLite = ref('mixed-1')
-const selectedLargeMixed512NoLiteLazy = ref('mixed-1')
+const selectedLargePlain = ref<string>('plain-1')
+const selectedLargeIcons = ref<string>('icon-1')
+const selectedLargePictures = ref<string>('picture-1')
+const selectedLargeMixed512 = ref<string>('mixed-1')
+const selectedLargeMixed512Lazy = ref<string>('mixed-1')
+const selectedLargeMixed512LazyCustom = ref<string>('mixed-1')
+const selectedLargeMixed512NoLite = ref<string>('mixed-1')
+const selectedLargeMixed512NoLiteLazy = ref<string>('mixed-1')
 
-const selectedAjax = ref('settings')
-const ajaxFetchCount = ref(0)
+const selectedAjax = ref<string>('settings')
+const ajaxRequestCount = ref<number>(0)
 
 /**
  * Loads the menu items after a simulated request delay.
@@ -163,7 +188,7 @@ const ajaxFetchCount = ref(0)
  * @returns menu items / пункты меню
  */
 const loadMenuData = (): Promise<ListItemProps[]> => {
-  ajaxFetchCount.value += 1
+  ajaxRequestCount.value += 1
 
   return new Promise<ListItemProps[]>(resolve => setTimeout(() => resolve([
     { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
@@ -173,33 +198,59 @@ const loadMenuData = (): Promise<ListItemProps[]> => {
   ]), 300))
 }
 
-const selectedNav = ref('color2')
-const navItems = ref([
+const selectedNavigation = ref<string>('color2')
+const navigationItems = ref([
   { label: 'Red', value: 'color1', icon: 'palette' },
   { label: 'Green', value: 'color2', icon: 'palette' },
   { label: 'Blue', value: 'color3', icon: 'palette' },
   { label: 'Yellow', value: 'color4', icon: 'palette' }
 ])
-const step = ref(1)
+const step = ref<number>(1)
 
-const selectedSlots = ref('play')
-const selectedExpose = ref('edit')
-const menuExposeRef = ref<MenuExpose | null>(null)
-const exposeSummary = ref('Not checked')
-
-const readExposeState = () => {
-  if (menuExposeRef.value) {
-    exposeSummary.value = `id=${menuExposeRef.value.getId()}, open=${menuExposeRef.value.getOpen()}, isSelected=${menuExposeRef.value.isSelected()}, values=${JSON.stringify(menuExposeRef.value.getSelectedValues())}, names=${JSON.stringify(menuExposeRef.value.getSelectedNames())}, loading=${menuExposeRef.value.loading()}`
-  }
-}
+const selectedSlots = ref<string>('play')
+const selectedExpose = ref<string>('edit')
+const selectedBoundary = ref<number | string>(0)
+const isLifecycleMounted = ref<boolean>(true)
+const menuExposeReference = ref<MenuExpose | null>(null)
+const exposeSummary = ref<string>('Not checked')
 
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
+
+const trackEvent = (name: string, payload?: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = payload !== undefined ? JSON.stringify(payload) : 'Triggered'
+}
+
+const handleMenuClick = (event: MouseEvent, options?: EventClickValue): void => {
+  trackEvent('click', {
+    eventType: event.type,
+    options
+  })
+}
+
+const handleWindowEvent = (options: WindowEmitOptions): void => {
+  trackEvent('window', {
+    id: options.id,
+    open: options.open
+  })
+}
+
+const handleSelectedUpdate = (value: ListSelectedList): void => {
+  trackEvent('update:selected', value)
+}
+
+const readExposeState = (): void => {
+  if (menuExposeReference.value) {
+    exposeSummary.value = `id=${menuExposeReference.value.getId()}, open=${menuExposeReference.value.getOpen()}, isSelected=${menuExposeReference.value.isSelected()}, values=${JSON.stringify(menuExposeReference.value.getSelectedValues())}, names=${JSON.stringify(menuExposeReference.value.getSelectedNames())}, listCount=${menuExposeReference.value.getSelectedList().length}, loading=${menuExposeReference.value.loading()}, hasControl=${Boolean(menuExposeReference.value.getControl())}, hasWindow=${Boolean(menuExposeReference.value.getWindowElement())}`
+  }
+}
 </script>
 
 <template>
   <DemoLinkBlack/>
   <D1Page label="Menu">
-    <D1Section>
+    <D1Section class="demo-menu-page">
       <!-- Basic Usage, Record List & Custom Keys -->
       <D1Group label="Basic, Record List & Custom Keys">
         <DemoFlex>
@@ -249,6 +300,10 @@ const { eventName, onEvent } = useDemoEvent()
               />
             </template>
           </D1Menu>
+        </DemoFlex>
+        <DemoFlex>
+          <D1Button label="Select Delete" size="sm" outline @click="selectedBasic = 'delete'"/>
+          <D1Button label="Clear Basic" size="sm" outline @click="selectedBasic = ''"/>
         </DemoFlex>
         <DemoFlex>
           <DemoValue label="basic" :value="selectedBasic"/>
@@ -401,9 +456,9 @@ const { eventName, onEvent } = useDemoEvent()
             bars-description="Select an active category action below"
             :bars-list="[{ icon: 'refresh', label: 'Reset' }]"
             :bars-attrs="{ 'data-demo-bars': 'true' }"
-            @bars="onEvent('bars')"
-            @bars-back="onEvent('barsBack')"
-            @bars-lite="onEvent('barsLite')"
+            @bars="(event, value) => trackEvent('bars', { eventType: event.type, value })"
+            @bars-back="(value) => trackEvent('barsBack', value)"
+            @bars-lite="(value) => trackEvent('barsLite', value)"
           >
             <template #control="{ binds }">
               <D1Button
@@ -433,6 +488,24 @@ const { eventName, onEvent } = useDemoEvent()
               <DemoBox>
                 <span>Custom context without list</span>
               </DemoBox>
+            </template>
+          </D1Menu>
+
+          <D1Menu
+            v-for="adaptiveMode in barsAdaptiveModes"
+            :key="adaptiveMode"
+            :list="menuItems"
+            :bars-hide="false"
+            :bars-adaptive="adaptiveMode"
+            :bars-label="`Adaptive: ${adaptiveMode}`"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                :label="`barsAdaptive: ${adaptiveMode}`"
+                size="sm"
+                outline
+              />
             </template>
           </D1Menu>
         </DemoFlex>
@@ -739,7 +812,7 @@ const { eventName, onEvent } = useDemoEvent()
         </DemoFlex>
         <DemoFlex>
           <DemoValue label="selectedAjax" :value="selectedAjax"/>
-          <DemoValue label="fetchCount" :value="ajaxFetchCount"/>
+          <DemoValue label="requestCount" :value="ajaxRequestCount"/>
         </DemoFlex>
       </D1Group>
 
@@ -750,23 +823,23 @@ const { eventName, onEvent } = useDemoEvent()
             v-model:selected="selectedSlots"
             :list="menuItems"
             is-selected-by-value
-            @click-slot="onEvent('clickSlot')"
+            @click-slot="(value) => trackEvent('clickSlot', value)"
           >
-            <template #control="{ binds, open }">
+            <template #control="{ binds, open, isSelected, selectedNames }">
               <D1Button
                 v-bind="binds"
-                :label="`Open Menu with Slots (${open.value ? 'open' : 'closed'})`"
+                :label="`Open Menu with Slots (${open.value ? 'open' : 'closed'}, selected: ${isSelected.value ? selectedNames.value.join(', ') : 'none'})`"
                 tonal
               />
             </template>
-            <template #title>
+            <template #title="{ selectedValues }">
               <DemoBox>
-                <span>Custom Title Slot</span>
+                <span>Custom Title Slot ({{ selectedValues.value.join(', ') }})</span>
               </DemoBox>
             </template>
-            <template #contextTop>
+            <template #contextTop="{ open }">
               <DemoBox>
-                <span>Context Top Slot</span>
+                <span>Context Top Slot (open={{ open.value }})</span>
               </DemoBox>
             </template>
             <template #contextBottom>
@@ -779,9 +852,9 @@ const { eventName, onEvent } = useDemoEvent()
                 </div>
               </DemoFlex>
             </template>
-            <template #footer>
+            <template #footer="{ selectedNames }">
               <DemoBox>
-                <span>Custom Footer Slot</span>
+                <span>Custom Footer Slot ({{ selectedNames.value.join(', ') }})</span>
               </DemoBox>
             </template>
           </D1Menu>
@@ -797,8 +870,8 @@ const { eventName, onEvent } = useDemoEvent()
         </DemoFlex>
         <DemoFlex>
           <D1Menu
-            v-model:selected="selectedNav"
-            :list="navItems"
+            v-model:selected="selectedNavigation"
+            :list="navigationItems"
             :step="step"
             is-selected-by-value
           >
@@ -820,7 +893,7 @@ const { eventName, onEvent } = useDemoEvent()
           </D1Menu>
         </DemoFlex>
         <DemoFlex>
-          <DemoValue label="selectedNav" :value="selectedNav"/>
+          <DemoValue label="selectedNavigation" :value="selectedNavigation"/>
           <DemoValue label="step" :value="step"/>
         </DemoFlex>
       </D1Group>
@@ -828,24 +901,30 @@ const { eventName, onEvent } = useDemoEvent()
       <!-- Expose API & Events -->
       <D1Group label="Expose API & Events">
         <DemoFlex>
-          <D1Button label="toOpen()" @click="menuExposeRef?.toOpen()"/>
-          <D1Button label="toClose()" @click="menuExposeRef?.toClose()"/>
-          <D1Button label="toggle()" @click="menuExposeRef?.toggle()"/>
-          <D1Button label="previous()" @click="menuExposeRef?.previous()"/>
-          <D1Button label="next()" @click="menuExposeRef?.next()"/>
+          <D1Button label="setOpen(true)" @click="menuExposeReference?.setOpen(true)"/>
+          <D1Button label="setOpen(false)" @click="menuExposeReference?.setOpen(false)"/>
+          <D1Button label="toOpen()" @click="menuExposeReference?.toOpen()"/>
+          <D1Button label="toClose()" @click="menuExposeReference?.toClose()"/>
+          <D1Button label="toggle()" @click="menuExposeReference?.toggle()"/>
+          <D1Button label="previous()" @click="menuExposeReference?.previous()"/>
+          <D1Button label="next()" @click="menuExposeReference?.next()"/>
           <D1Button label="Read Expose" @click="readExposeState"/>
         </DemoFlex>
         <DemoFlex>
           <D1Menu
-            ref="menuExposeRef"
+            ref="menuExposeReference"
             v-model:selected="selectedExpose"
             :list="menuItems"
             is-selected-by-value
-            @click="onEvent('click')"
-            @click-lite="onEvent('clickLite')"
-            @click-slot="onEvent('clickSlot')"
-            @update-value="onEvent('updateValue')"
-            @window="onEvent('window')"
+            @click="handleMenuClick"
+            @click-lite="(options) => trackEvent('clickLite', options)"
+            @click-slot="(value) => trackEvent('clickSlot', value)"
+            @update-value="(value) => trackEvent('updateValue', value)"
+            @update:selected="handleSelectedUpdate"
+            @bars="(event, value) => trackEvent('bars', { eventType: event.type, value })"
+            @bars-back="(value) => trackEvent('barsBack', value)"
+            @bars-lite="(value) => trackEvent('barsLite', value)"
+            @window="handleWindowEvent"
           >
             <template #control="{ binds }">
               <D1Button
@@ -858,9 +937,91 @@ const { eventName, onEvent } = useDemoEvent()
         </DemoFlex>
         <DemoValue label="expose" :value="exposeSummary"/>
         <DemoValue label="lastEvent" :value="eventName || 'No events triggered yet'"/>
+        <DemoValue label="payload" :value="eventPayload"/>
+      </D1Group>
+
+      <!-- Accessibility (A11y) -->
+      <D1Group label="Accessibility (A11y)">
+        <DemoFlex>
+          <D1Menu
+            :list="menuItems"
+            role-list="listbox"
+            role-item="option"
+            tag="button"
+            :menu-attrs="{ 'data-demo-a11y': 'true' }"
+          >
+            <template #control="{ binds, open }">
+              <D1Button
+                v-bind="binds"
+                :label="`Accessible Listbox Menu (${open.value ? 'expanded' : 'collapsed'})`"
+                aria-label="Accessible menu trigger supporting Enter, Space, and ArrowDown"
+                outline
+              />
+            </template>
+          </D1Menu>
+        </DemoFlex>
+      </D1Group>
+
+      <!-- Boundary & Edge Cases -->
+      <D1Group label="Boundary & Edge Cases">
+        <DemoFlex>
+          <D1Menu :list="[]">
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Empty List Menu"
+                outline
+              />
+            </template>
+          </D1Menu>
+        </DemoFlex>
+        <DemoBox>
+          <div class="demo-menu-page__narrow">
+            <D1Menu
+              v-model:selected="selectedBoundary"
+              :list="boundaryItems"
+              is-selected-by-value
+              embedded
+              :window-attrs="{ open: true }"
+            />
+          </div>
+        </DemoBox>
+        <DemoValue label="boundarySelected" :value="selectedBoundary"/>
+      </D1Group>
+
+      <!-- Lifecycle (Mount / Unmount) -->
+      <D1Group label="Lifecycle (Mount / Unmount)">
+        <DemoFlex>
+          <D1Button
+            :label="isLifecycleMounted ? 'Unmount Menu' : 'Mount Menu'"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+          <DemoValue label="mounted" :value="isLifecycleMounted"/>
+        </DemoFlex>
+        <DemoFlex>
+          <D1Menu
+            v-if="isLifecycleMounted"
+            :list="menuItems"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Lifecycle Managed Menu"
+                tonal
+              />
+            </template>
+          </D1Menu>
+        </DemoFlex>
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-menu-page {
+  &__narrow {
+    max-width: 240px;
+  }
+}
+</style>

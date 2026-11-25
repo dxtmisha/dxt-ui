@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Menu` (`packages/constructor/src/constructors/Menu`, `packages/demo/src/pages/components/DemoMenuPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-menu`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-22`
-- **Всего тест-кейсов**: `15`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `17`
 
 ---
 
@@ -13,12 +13,12 @@
 
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуал и токены** | `VIS` | 8 | P0 | Всплывающее и `embedded` меню, `selectionStyle`, `Bars` (`barsAdaptive`), `hideList`, слоты `title`/`contextTop`/`contextBottom`/`footer`, смещение `indent`, большие списки (`60` элементов: обычный, с иконками, с картинками; `512` смешанных элементов: `±lite` × `±lazy` + замеры производительности) |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Выбор `v-model:selected`, `Record`/`keyLabel`/`keyValue`, `max=2`, поиск/подсветка, `liteThreshold`, `ajax` + `cache`, `previous`/`next` (`step`), `expose`, `inDom` |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Блокировка `disabled` меню и пунктов, пустой результат поиска, границы навигации `previous`/`next` |
+| **Визуал и токены** | `VIS` | 8 | P0 | Всплывающее и `embedded` меню, `selectionStyle`, `Bars` (все 6 режимов `barsAdaptive`), `hideList`, слоты `control`/`title`/`contextTop`/`contextBottom`/`footer`, смещение `indent`, большие списки (`60` элементов: обычный, с иконками, с картинками; `512` смешанных элементов: `±lite` × `±lazy` + замеры производительности) |
+| **Интерактивность и функционал** | `INT` | 4 | P0, P1 | Выбор `v-model:selected` + локальные триггеры, `Record`/`keyLabel`/`keyValue`, `max=2`, поиск/подсветка, `liteThreshold`, `ajax` + `cache`, `previous`/`next` (`step`), полный `expose` (`setOpen`, `toOpen`, `toClose`, `toggle`, `getSelectedList`, и др.), `inDom`, жизненный цикл `v-if` |
+| **Границы и крайние случаи** | `BND` | 2 | P1 | Блокировка `disabled`, пустой список `list: []`, нулевой `0`, пустые/пробельные строки, длинный/неразрывный текст, Unicode/вьетнамский/кириллица/Emoji, XSS, узкий контейнер `240px` |
 | **Адаптивность и viewport** | `RSP` | 1 | P1 | Десктоп (`1440×900`), планшет (`768×1024`), мобильные (`375×812`, `320×568`), отсутствие горизонтального переполнения |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | `aria-haspopup="listbox"`, `aria-expanded`, `role="menu"`, `roleList="listbox"`, `roleItem="option"`, клавиатурное открытие/закрытие (`Escape`) |
-| **Консоль и рантайм** | `LOG` | 1 | P0 | События `@click`, `@click-lite`, `@click-slot`, `@update-value`, `@bars`, `@window`, `0` ошибок `console.error`, `pageerror` и `[Vue warn]` |
+| **Доступность (A11y)** | `A11Y` | 1 | P1 | `aria-haspopup="listbox"`, `aria-expanded`, `role="menu"`, `roleList="listbox"`, `roleItem="option"`, клавиатурное открытие/закрытие (`Enter`/`Space`/`ArrowDown`/`Escape`) |
+| **Консоль и рантайм** | `LOG` | 1 | P0 | События `@click`, `@click-lite`, `@click-slot`, `@update-value`, `@update:selected`, `@bars`, `@bars-back`, `@bars-lite`, `@window`, `0` ошибок `console.error`, `pageerror` и `[Vue warn]` |
 
 ---
 
@@ -37,15 +37,15 @@
 - **Ожидаемый результат**: Всплывающее и встроенное меню отображаются без обрезания и наложений, стили выделения (`checkmark`, `radio`, `checkbox`, `none`), атрибуты `data-demo-list`/`data-demo-item` и отступ окна `indent: 24` применяются корректно.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-#### [TC-VIS-002] Панель `Bars` (`barsAdaptive`), `hideList` и пользовательские слоты
+#### [TC-VIS-002] Панель `Bars` (все 6 `barsAdaptive`), `hideList` и пользовательские слоты со scoped-данными
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Визуал и токены`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть меню `Open Menu with Bars` (`barsHide: false`, `barsAdaptive: showAlways`, `barsLabel`, `barsDescription`, `barsBackHide: false`, `barsList`, `barsAttrs`).
+  1. Открыть меню `Open Menu with Bars` (`barsHide: false`, `barsAdaptive: showAlways`, `barsLabel`, `barsDescription`, `barsBackHide: false`, `barsList`, `barsAttrs`) и проверить все 6 адаптивных кнопок `barsAdaptive` (`showAlways`–`show2xl`).
   2. Открыть меню `Open hideList Menu` (`hideList: true`).
-  3. Открыть меню `Open Menu with Slots` со слотами `#title`, `#contextTop`, `#contextBottom`, `#footer`.
-- **Ожидаемый результат**: При `barsAdaptive="showAlways"` панель `.d1-menu__bars` (`data-demo-bars="true"`) отображается с заголовком, описанием и кнопками; при `hideList` список `.d1-menu__list` не рендерится; пользовательские слоты отображаются на своих позициях.
+  3. Открыть меню `Open Menu with Slots` и проверить отображение scoped-данных в слотах `#control`, `#title`, `#contextTop`, `#contextBottom`, `#footer`.
+- **Ожидаемый результат**: При `barsAdaptive="showAlways"` панель `.d1-menu__bars` (`data-demo-bars="true"`) отображается с заголовком, описанием и кнопками; при `hideList` список `.d1-menu__list` не рендерится; пользовательские слоты отображаются со своими scoped-привязками.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
 #### [TC-VIS-003] Большой список (60 элементов, без иконок)
@@ -86,21 +86,21 @@
 - **Категория**: `Визуал и токены`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть `Large List: Mixed 512 (Icons & Pictures)` (`512` пунктов: векторные иконки, картинки и обычный текст вперемешку) и замерить время до полного рендера (`fullRenderMs`), число DOM-узлов и размеры окна.
-  2. Проверить скролл на 50% высоты (`scrollMs`) и поиск `"500"` (`filterMs`).
-  3. Выбрать отфильтрованный пункт `Mixed 512 #500` и замерить время закрытия (`selectAndCloseMs`), проверив обновление `largeMixed512: mixed-500`.
+  1. Открыть `Large List: Mixed 512 (Icons & Pictures)` (`512` пунктов) и замерить время до полного рендера, число DOM-узлов и размеры окна.
+  2. Проверить скролл на 50% высоты и поиск `"500"`.
+  3. Выбрать отфильтрованный пункт `Mixed 512 #500` и проверить обновление `largeMixed512: mixed-500`.
 - **Ожидаемый результат**: Смешанные элементы (иконки, SVG-картинки, обычный текст) отображаются корректно без смещения, скролл/поиск/выбор работают стабильно с нулём ошибок консоли.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-006.png`)
 
-#### [TC-VIS-007] Смешанный большой список (`512` элементов) в режиме `lazy` (`ListItemLazy` / `useLazyItemByMarginRef`)
+#### [TC-VIS-007] Смешанный большой список (`512` элементов) в режиме `lazy` (`ListItemLazy`)
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Визуал и токены`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть `Large List: Mixed 512 (Lazy)` (`lazy: true`) и `Large List: Mixed 512 (Lazy, Custom Margin)` (`lazy-margin="128px 0px"`, `:lazy-cache-height="false"`), замерить время открытия, количество видимых/скрытых строк (`.d1-listItem--lazy--visible` / `--hidden`), общее число DOM-узлов и `scrollHeight`.
+  1. Открыть `Large List: Mixed 512 (Lazy)` (`lazy: true`) и `Large List: Mixed 512 (Lazy, Custom Margin)` (`lazy-margin="128px 0px"`, `:lazy-cache-height="false"`), проверить классы `.d1-listItem--lazy--visible` / `--hidden`, число DOM-узлов и `scrollHeight`.
   2. Прокрутить к середине списка (`50%`) и проверить подгрузку `mixed-256`.
-  3. Выполнить поиск `"500"`, выбрать `mixed-500` и проверить обновление `largeMixed512Lazy: mixed-500` и чистоту консоли.
-- **Ожидаемый результат**: Отображаются только видимые строки (~16 из 512) при сохранении полной высоты скролла (`22596px`), сокращении DOM-узлов и ускорении открытия и фильтрации по сравнению с обычным `512`-списком.
+  3. Выполнить поиск `"500"`, выбрать `mixed-500` и проверить обновление `largeMixed512Lazy: mixed-500`.
+- **Ожидаемый результат**: Отображаются только видимые строки при сохранении полной высоты скролла, сокращении DOM-узлов и ускорении открытия и фильтрации.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-007.png`)
 
 #### [TC-VIS-008] Смешанный большой список (`512` элементов) без упрощённой подгрузки (`:lite-threshold="0"`) и матрица `±lite × ±lazy`
@@ -111,23 +111,23 @@
   1. Открыть `Large List: Mixed 512 (No Lite)` (`:lite-threshold="0"` без `lazy`) и `Large List: Mixed 512 (No Lite, Lazy)` (`:lite-threshold="0" lazy`).
   2. Сравнить время открытия, количество DOM-узлов, ширину окна, скролл и поиск `"500"` со стандартным `liteThreshold: 40` (`±lazy`).
   3. Проверить выбор `mixed-500` и чистоту консоли.
-- **Ожидаемый результат**: Без `lite` и без `lazy` создаётся `3400` DOM-узлов (`278.6 ms`), тогда как с `lazy` число DOM-узлов снижается до `622` (`144.3 ms`), при нуле ошибок консоли.
+- **Ожидаемый результат**: Все 4 комбинации `±lite × ±lazy` корректно рендерят, прокручивают и фильтруют `512` элементов при нуле ошибок консоли.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-008.png`)
 
 ### 2.2 Интерактивность и функционал (`INT`)
 
-#### [TC-INT-001] Выбор элементов, `Record`, `keyLabel`/`keyValue`, `max=2`, `autoClose` и `persistent`
+#### [TC-INT-001] Выбор элементов, `Record`, `keyLabel`/`keyValue`, `max=2`, `autoClose`, `persistent` и мутация `v-model`
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и функционал`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть `Open Basic Menu` и выбрать пункт `Edit`; проверить обновление `basic: edit` и автозакрытие окна.
-  2. Открыть `Record Object List` и выбрать `Record Gamma`; проверить обновление `record: gamma`.
-  3. Открыть `Custom Keys (title/code)` и выбрать `Custom Key Three`; проверить обновление `customKey: k3`.
+  1. Открыть `Open Basic Menu` и выбрать пункт `Edit`, проверить `basic: edit`; затем нажать кнопки `Select Delete` и `Clear Basic` для программной мутации `v-model:selected`.
+  2. Открыть `Record Object List` и выбрать `Record Gamma`; проверить `record: gamma`.
+  3. Открыть `Custom Keys (title/code)` и выбрать `Custom Key Three`; проверить `customKey: k3`.
   4. Открыть `Multiple (max=2)` и кликнуть 3-й пункт при двух уже выбранных; проверить сохранение ограничения `max=2`.
   5. Открыть `autoClose: false` и кликнуть по пункту меню; проверить, что окно остаётся открытым.
-  6. Открыть `disableFocusReturn: true`, закрыть окно кликом вне него и проверить, что фокус не возвращается на кнопку-триггер.
-- **Ожидаемый результат**: Все модели синхронизируются с выбором, ограничение `max=2` соблюдается, `autoClose: false` не закрывает окно после выбора.
+  6. Открыть `persistent: true` и кликнуть вне окна; проверить, что окно остаётся открытым; затем открыть `disableFocusReturn: true` и проверить отсутствие возврата фокуса.
+- **Ожидаемый результат**: Все модели синхронизируются с выбором и программными мутациями, ограничение `max=2` соблюдается, `autoClose: false` и `persistent: true` работают согласно контракту.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
 #### [TC-INT-002] Поиск, подсветка, `liteThreshold`, `ajax` + `cache` и навигация `previous`/`next`
@@ -137,33 +137,54 @@
 - **Шаги теста**:
   1. Открыть `Open Searchable Menu` (`showSearch`, `filterMode`) и ввести `"ch"` в строку поиска.
   2. Открыть `Highlight ('exam')` (`highlight="exam"`, `highlightLengthStart: 4`) и проверить подсветку.
-  3. Открыть `Open AJAX Menu` дважды с задержкой 400мс; проверить загрузку пунктов и повторное использование кэша (`fetchCount: 1`).
+  3. Открыть `Open AJAX Menu` дважды с задержкой 400мс; проверить загрузку пунктов и повторное использование кэша (`requestCount: 1`).
   4. В секции `Navigation & Step` нажать `Next` / `Previous` при `step=1` и `step=2`.
-- **Ожидаемый результат**: Поиск фильтрует список до `Cherry`, подсветка отображается, `ajax` с `cache` загружает данные один раз и сохраняет `fetchCount: 1`, навигация переключает `selectedNav` в соответствии со `step`.
+- **Ожидаемый результат**: Поиск фильтрует список до `Cherry`, подсветка отображается, `ajax` с `cache` загружает данные один раз (`requestCount: 1`), навигация переключает `selectedNavigation` в соответствии со `step`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
 #### [TC-INT-003] Программное управление `expose` и `inDom`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функционал`
-- **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
+- **Предусловия**: Секции `States` и `Expose API & Events`.
 - **Шаги теста**:
-  1. Открыть `SSR inDom: true`, выбрать пункт `Edit` и убедиться, что после закрытия узел `.d1-window` остаётся в DOM (`totalWindows: 2`).
-  2. В секции `Expose API & Events` нажать `toOpen()`, `Read Expose`, `next()`, `previous()`, `toggle()`, `toClose()`.
-- **Ожидаемый результат**: `expose` возвращает актуальные `id`, `open`, `isSelected=true`, `values`, `names`, `loading=false`; методы управления открывают, переключают и закрывают окно.
+  1. Открыть `SSR inDom: true`, выбрать пункт `Edit` и убедиться, что после закрытия узел `.d1-window` остаётся в DOM.
+  2. В секции `Expose API & Events` нажать `setOpen(true)`, `Read Expose`, `next()`, `previous()`, `toggle()`, `setOpen(false)`, `toOpen()`, `toClose()`.
+- **Ожидаемый результат**: `expose` возвращает актуальные `id`, `open`, `isSelected=true`, `values`, `names`, `listCount`, `loading=false`, `hasControl=true`, `hasWindow=true`; методы управления открывают, переключают и закрывают окно.
+- **Тип доказательства**: `Console/Log`
+
+#### [TC-INT-004] Жизненный цикл монтирования/размонтирования (`v-if`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функционал`
+- **Предусловия**: Секция `Lifecycle (Mount / Unmount)`.
+- **Шаги теста**:
+  1. Нажать кнопку `Unmount Menu` и проверить удаление компонента и `mounted: false`.
+  2. Нажать `Mount Menu` и открыть `Lifecycle Managed Menu`.
+- **Ожидаемый результат**: Компонент корректно размонтируется с очисткой наблюдателей/слушателей и повторно монтируется в рабочем состоянии.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.3 Границы и крайние случаи (`BND`)
 
-#### [TC-BND-001] Блокировка `disabled`, отключённый пункт и пустой поиск
+#### [TC-BND-001] Блокировка `disabled`, отключённый пункт и пустой список/поиск
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Границы и крайние случаи`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
   1. Нажать на кнопку `Disabled Menu` (`disabled`); убедиться, что меню не открывается.
   2. В `embedded` меню нажать на отключённый пункт `Settings` (`disabled: true`); убедиться, что `embedded` значение не изменилось.
-  3. В `Open Searchable Menu` ввести `"zzzzzz"` и проверить отображение пустого состояния поиска.
-- **Ожидаемый результат**: Отключённое меню и отключённый пункт не реагируют на клики, пустой запрос поиска корректно отображает заглушку отсутствия результатов без ошибок.
+  3. Открыть `Empty List Menu` (`list: []`) и в `Open Searchable Menu` ввести `"zzzzzz"`.
+- **Ожидаемый результат**: Отключённое меню и отключённый пункт не реагируют на клики, пустой список и пустой результат поиска корректно обрабатываются без ошибок.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Нулевой `0`, пустые/пробельные строки, Unicode, XSS и узкий контейнер `240px`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Прокрутить к группе `Boundary & Edge Cases`.
+- **Шаги теста**:
+  1. Внутри `.demo-menu-page__narrow` (`max-width: 240px`) проверить отображение пункта с `label: 0` / `value: 0`, пустой и пробельной строк.
+  2. Проверить перенос длинного текста, неразрывной строки `"AAA..."`, Unicode (`"Học tiếng Việt / Привет мир 🚀🔥✨"`) и безопасное экранирование `"<img src=x onerror=alert(1)>"`.
+  3. Кликнуть по пункту `0` и по пункту с Unicode и проверить обновление `boundarySelected`.
+- **Ожидаемый результат**: Все граничные элементы отображаются внутри `240px` без горизонтального выхода за пределы блока, `0` выбирается и сохраняется в `boundarySelected`, XSS-строка экранирована.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
 
 ### 2.4 Адаптивность и viewport (`RSP`)
 
@@ -182,25 +203,25 @@
 #### [TC-A11Y-001] WAI-ARIA атрибуты и клавиатурное управление
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Доступность (A11Y)`
-- **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
+- **Предусловия**: Секция `Accessibility (A11y)`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Проверить атрибуты триггера (`aria-haspopup="listbox"`, `aria-expanded`) до и после открытия меню.
-  2. Проверить `role="menu"` на окне и `role="listbox"` / `role="option"` в меню `Multiple (max=2)`.
-  3. Открыть меню клавишей `Enter` на сфокусированном триггере и закрыть/проверить состояние.
+  1. Проверить атрибуты триггера (`aria-haspopup="listbox"`, `aria-expanded`, `aria-label`) до и после открытия меню.
+  2. Проверить `role="menu"` на окне и `role="listbox"` / `role="option"` в списке `Accessible Listbox Menu`.
+  3. Открыть меню клавишами `Enter`, `Space` или `ArrowDown` на сфокусированном триггере и закрыть/проверить возврат фокуса.
 - **Ожидаемый результат**: Все ARIA-атрибуты и роли соответствуют контракту `Menu` (`aria-haspopup="listbox"`, `role="menu"`, `aria-expanded="false" -> "true"`), клавиатурное открытие работает корректно.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)
 
-#### [TC-LOG-001] События (`@click`, `@click-lite`, `@click-slot`, `@update-value`, `@bars`, `@window`) и чистота консоли
+#### [TC-LOG-001] Все события `MenuEmits` и чистота консоли
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Консоль и рантайм`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, очистить накопленные сообщения консоли.
 - **Шаги теста**:
-  1. Проверить срабатывание `@click`/`@click-lite`/`@window` в `Expose & Events`.
+  1. Проверить срабатывание `@click`, `@click-lite`, `@update:selected` и `@window` в `Expose & Events`.
   2. Нажать кнопку `Trigger clickSlot` в `Slots & Slot Click` и проверить событие `clickSlot`.
   3. Нажать `next()` и проверить событие `updateValue`.
-  4. Нажать кнопку в панели `Bars` в `Open Menu with Bars` и проверить `bars`/`barsBack`.
-  5. Проверить все `console.error`, `pageerror` и `[Vue warn]` за весь прогон.
-- **Ожидаемый результат**: Все ожидаемые события фиксируются в `lastEvent` и логе консоли; `consoleErrors: 0`, `pageErrors: 0`, `vueWarnings: 0`.
+  4. Нажать кнопку в панели `Bars` в `Open Menu with Bars` и проверить `bars`/`barsBack`/`barsLite`.
+  5. Проверить `lastEvent`, `payload` и все `console.error`, `pageerror` и `[Vue warn]` за весь прогон.
+- **Ожидаемый результат**: Все ожидаемые события фиксируются в `lastEvent`, `payload` и логе консоли; `consoleErrors: 0`, `pageErrors: 0`, `vueWarnings: 0`.
 - **Тип доказательства**: `Console/Log`
