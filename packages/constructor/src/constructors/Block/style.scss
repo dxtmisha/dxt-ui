@@ -2,8 +2,20 @@
 
 @mixin mixinBlock {
   @include ui.flexStretchY;
+  min-width: 0;
+  max-width: 100%;
+
+  &__body,
+  &__headline,
+  &__description {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
 
   &__header {
     @include ui.flexX;
+    min-width: 0;
+    max-width: 100%;
   }
 }

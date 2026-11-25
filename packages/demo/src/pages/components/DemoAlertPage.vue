@@ -1,16 +1,64 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { AlertProps } from '@dxtmisha/d1/D1Alert'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
+import DemoBox from '../../components/DemoBox.vue'
+import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('none')
+
+const recordEvent = (name: string, ...args: unknown[]): void => {
+  onEvent(name, ...args)
+  try {
+    const serialized = args.map((item) => {
+      if (typeof Event !== 'undefined' && item instanceof Event) {
+        return item.type
+      }
+      return item
+    })
+    eventPayload.value = serialized.length > 0 ? JSON.stringify(serialized) : 'no payload'
+  } catch {
+    eventPayload.value = name
+  }
+}
 
 const dismissibleKey = ref(0)
 const iconTurned = ref(false)
 const iconHidden = ref(false)
 const actionsHidden = ref(false)
+const skeletonActive = ref(true)
+const lifecycleMounted = ref(true)
+
+const palettes: readonly NonNullable<AlertProps['palette']>[] = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'black',
+  'white'
+]
 
 const onRestoreDismissible = (): void => {
   dismissibleKey.value += 1
@@ -53,6 +101,12 @@ const onRestoreDismissible = (): void => {
           icon-trailing="chevron_right"
         />
         <D1Alert
+          label="Object Leading & Trailing Icons"
+          description="Icons configured as objects with semantic palettes."
+          :icon="{ icon: 'verified', palette: 'green' }"
+          :icon-trailing="{ icon: 'arrow_forward', palette: 'blue' }"
+        />
+        <D1Alert
           label="Interactive Icon Modifiers"
           description="Toggle iconTurn and iconHide dynamically."
           icon="expand_more"
@@ -61,7 +115,7 @@ const onRestoreDismissible = (): void => {
           icon-dir
           :icon-attrs="{ size: 'lg' }"
         />
-        <div class="demo-alert__controls">
+        <DemoFlex>
           <D1Button
             label="Toggle Icon Turn"
             secondary
@@ -74,17 +128,17 @@ const onRestoreDismissible = (): void => {
             size="sm"
             @click="iconHidden = !iconHidden"
           />
-        </div>
+        </DemoFlex>
       </D1Group>
 
       <D1Group label="Close Button">
-        <div :key="dismissibleKey" class="demo-alert__stack">
+        <DemoFlex :key="dismissibleKey" direction="column">
           <D1Alert
             label="Dismissible Alert"
             description="Click the close button to fade out and remove this alert."
             icon="info"
             close-button
-            @close="onEvent('close')"
+            @close="recordEvent('close')"
           />
           <D1Alert
             label="Custom Close Icon & Label"
@@ -92,17 +146,17 @@ const onRestoreDismissible = (): void => {
             close-button
             icon-close="cancel"
             text-close="Dismiss notification"
-            @close="onEvent('close')"
+            @close="recordEvent('close')"
           />
-        </div>
-        <div class="demo-alert__controls">
+        </DemoFlex>
+        <DemoFlex>
           <D1Button
             label="Restore Dismissed Alerts"
             secondary
             size="sm"
             @click="onRestoreDismissible"
           />
-        </div>
+        </DemoFlex>
       </D1Group>
 
       <D1Group label="Trailing Button">
@@ -111,36 +165,43 @@ const onRestoreDismissible = (): void => {
           description="Trailing action button passed as a simple string."
           icon="cloud_done"
           button="Undo"
-          @click="(event, value) => onEvent('click', event, value)"
-          @click-lite="(value) => onEvent('clickLite', value)"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
         />
         <D1Alert
           label="Numeric 0 Button"
           description="Trailing button displaying numeric zero."
           :button="0"
-          @click="(event, value) => onEvent('click', event, value)"
-          @click-lite="(value) => onEvent('clickLite', value)"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
         />
         <D1Alert
           label="Object Trailing Button"
           description="Trailing button configured with object props and value."
           icon="sync"
           :button="{ label: 'Retry Sync', primary: true, size: 'sm', value: 'retry-sync' }"
-          @click="(event, value) => onEvent('click', event, value)"
-          @click-lite="(value) => onEvent('clickLite', value)"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
+        />
+        <D1Alert
+          label="Disabled Trailing Button"
+          description="Blocked button state ensures disabled clicks do not fire."
+          :button="{ label: 'Disabled Action', disabled: true, size: 'sm', value: 'disabled-action' }"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
         />
         <D1Alert
           label="Icon-Only Trailing Button"
           description="Trailing button rendered with only an icon and value."
           :button="{ icon: 'arrow_forward', size: 'sm', value: 'open-details', 'aria-label': 'Open details' }"
           close-button
-          @click="(event, value) => onEvent('click', event, value)"
-          @click-lite="(value) => onEvent('clickLite', value)"
-          @close="onEvent('close')"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
+          @close="recordEvent('close')"
         />
       </D1Group>
 
-      <D1Group label="Appearances & Palettes">
+      <D1Group label="Appearances & All 24 Palettes">
         <D1Alert
           label="Primary Alert (Default Palette)"
           description="Alert rendered with primary emphasis."
@@ -154,12 +215,6 @@ const onRestoreDismissible = (): void => {
           secondary
         />
         <D1Alert
-          label="Slate Palette"
-          description="Alert styled with slate palette."
-          palette="slate"
-          icon="info"
-        />
-        <D1Alert
           label="Red Palette (Primary)"
           description="Critical error alert with primary red styling."
           palette="red"
@@ -168,22 +223,12 @@ const onRestoreDismissible = (): void => {
           close-button
         />
         <D1Alert
-          label="Green Palette"
-          description="Success alert with green palette."
-          palette="green"
-          icon="check_circle"
-        />
-        <D1Alert
-          label="Blue Palette"
-          description="Informational alert with blue palette."
-          palette="blue"
-          icon="info"
-        />
-        <D1Alert
-          label="Amber Palette"
-          description="Warning alert with amber palette."
-          palette="amber"
-          icon="warning"
+          v-for="palette in palettes"
+          :key="palette"
+          :label="`Palette: ${palette}`"
+          :description="`Alert styled with ${palette} palette.`"
+          :palette="palette"
+          icon="palette"
         />
       </D1Group>
 
@@ -221,10 +266,20 @@ const onRestoreDismissible = (): void => {
             { label: 'Learn more', value: 'learn-more', outline: true, size: 'sm' }
           ]"
           :actions-hide="actionsHidden"
-          @link="(event, value) => onEvent('link', event, value)"
-          @link-lite="(value) => onEvent('linkLite', value)"
-          @actions="(event, value) => onEvent('actions', event, value)"
-          @actions-lite="(value) => onEvent('actionsLite', value)"
+          @link="(event, value) => recordEvent('link', event, value)"
+          @link-lite="(value) => recordEvent('linkLite', value)"
+          @actions="(event, value) => recordEvent('actions', event, value)"
+          @actions-lite="(value) => recordEvent('actionsLite', value)"
+        />
+        <D1Alert
+          label="Custom actionsAttrs Alignment"
+          description="Forwards actionsAttrs={ align: 'left' } to the embedded D1Actions block."
+          :actions-list="[
+            { label: 'Confirm', value: 'confirm', size: 'sm' }
+          ]"
+          :actions-attrs="{ align: 'left' }"
+          @actions="(event, value) => recordEvent('actions', event, value)"
+          @actions-lite="(value) => recordEvent('actionsLite', value)"
         />
         <D1Alert
           label="Links Without Dividers (linksAttrs)"
@@ -234,17 +289,17 @@ const onRestoreDismissible = (): void => {
             { label: 'Second action', value: 'second' }
           ]"
           :links-attrs="{ divider: false }"
-          @link="(event, value) => onEvent('link', event, value)"
-          @link-lite="(value) => onEvent('linkLite', value)"
+          @link="(event, value) => recordEvent('link', event, value)"
+          @link-lite="(value) => recordEvent('linkLite', value)"
         />
-        <div class="demo-alert__controls">
+        <DemoFlex>
           <D1Button
             label="Toggle Actions Hide"
             secondary
             size="sm"
             @click="actionsHidden = !actionsHidden"
           />
-        </div>
+        </DemoFlex>
       </D1Group>
 
       <D1Group label="Slots">
@@ -256,16 +311,47 @@ const onRestoreDismissible = (): void => {
             <span>Custom description rendered via the description slot.</span>
           </template>
           <template #body>
-            <div class="demo-alert__body-slot">
+            <div class="demo-alert-page__body-slot">
               Custom HTML content rendered inside the body slot.
             </div>
           </template>
           <template #trailing>
-            <span class="demo-alert__trailing-slot">
+            <span class="demo-alert-page__trailing-slot">
               Custom Trailing
             </span>
           </template>
         </D1Alert>
+      </D1Group>
+
+      <D1Group label="Skeleton & Lifecycle">
+        <DemoFlex>
+          <D1Button
+            :label="`Toggle Skeleton (${skeletonActive ? 'on' : 'off'})`"
+            size="sm"
+            outline
+            @click="skeletonActive = !skeletonActive"
+          />
+          <D1Button
+            :label="lifecycleMounted ? 'Unmount Alert' : 'Mount Alert'"
+            size="sm"
+            outline
+            @click="lifecycleMounted = !lifecycleMounted"
+          />
+        </DemoFlex>
+        <D1Skeleton :active="skeletonActive">
+          <D1Alert
+            label="Skeleton Loading Alert"
+            description="Displays skeleton placeholder blocks while active."
+            icon="info"
+          />
+        </D1Skeleton>
+        <D1Alert
+          v-if="lifecycleMounted"
+          label="Conditional Lifecycle Alert"
+          description="Mounted and unmounted cleanly via v-if."
+          icon="check_circle"
+        />
+        <DemoValue label="Mounted" :value="lifecycleMounted" />
       </D1Group>
 
       <D1Group label="Accessibility">
@@ -284,9 +370,25 @@ const onRestoreDismissible = (): void => {
           palette="red"
           icon="error"
         />
+        <D1Alert
+          label="Static Region (aria-live='off')"
+          description="Uses role='region' and aria-live='off' for static notices."
+          role="region"
+          aria-live="off"
+          icon="article"
+        />
       </D1Group>
 
       <D1Group label="Boundary & Edge Cases">
+        <D1Alert />
+        <D1Alert
+          label=""
+          description="   "
+        />
+        <D1Alert
+          label="A"
+          :description="-12.5"
+        />
         <D1Alert
           label="Long Unbroken Content & Overflow Protection"
           description="SuperLongUnbrokenTokenWithoutAnySpacesOrHyphensToVerifyWordWrappingBehavior1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz — alongside a regular multi-sentence paragraph explaining system behavior on narrow viewports."
@@ -296,7 +398,7 @@ const onRestoreDismissible = (): void => {
         />
         <D1Alert
           label="Unicode • Tiếng Việt • Кириллица 🚀"
-          description="Thông báo hệ thống đã được cập nhật thành công — Системное оповещение работает корректно."
+          description="Multilingual notice: Hệ thống hoạt động ổn định — Системное оповещение работает корректно."
           :links="[]"
           icon="translate"
         />
@@ -305,6 +407,14 @@ const onRestoreDismissible = (): void => {
           description="<img src=x onerror=alert(1)> safely escaped as plain text."
           icon="security"
         />
+        <DemoBox class="demo-alert-page__narrow-box">
+          <D1Alert
+            label="Constrained Box Alert"
+            description="Verifies wrapping inside a narrow container."
+            icon="info"
+            close-button
+          />
+        </DemoBox>
       </D1Group>
 
       <D1Group label="Events">
@@ -313,46 +423,39 @@ const onRestoreDismissible = (): void => {
           description="Click the trailing button or close button to inspect click and close events."
           :button="{ label: 'Trigger', size: 'sm', value: 'trigger-click' }"
           close-button
-          @click="(event, value) => onEvent('click', event, value)"
-          @click-lite="(value) => onEvent('clickLite', value)"
-          @close="onEvent('close')"
+          @click="(event, value) => recordEvent('click', event, value)"
+          @click-lite="(value) => recordEvent('clickLite', value)"
+          @close="recordEvent('close')"
         />
         <D1Alert
           label="Links & Actions Event Tracker"
           description="Click the inline link or action button to inspect link and actions events."
           :links="[{ label: 'Sample Link', value: 'sample-link' }]"
           :actions-list="[{ label: 'Sample Action', value: 'sample-action', size: 'sm' }]"
-          @link="(event, value) => onEvent('link', event, value)"
-          @link-lite="(value) => onEvent('linkLite', value)"
-          @actions="(event, value) => onEvent('actions', event, value)"
-          @actions-lite="(value) => onEvent('actionsLite', value)"
+          @link="(event, value) => recordEvent('link', event, value)"
+          @link-lite="(value) => recordEvent('linkLite', value)"
+          @actions="(event, value) => recordEvent('actions', event, value)"
+          @actions-lite="(value) => recordEvent('actionsLite', value)"
         />
         <DemoValue :value="eventName" />
+        <DemoValue label="Payload" :value="eventPayload" />
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
 <style lang="scss">
-.demo-alert {
-  &__stack {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &__controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
+.demo-alert-page {
   &__body-slot {
     padding-top: 8px;
   }
 
   &__trailing-slot {
     font-weight: 600;
+  }
+
+  &__narrow-box {
+    max-width: 280px;
   }
 }
 </style>

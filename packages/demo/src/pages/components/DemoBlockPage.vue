@@ -10,11 +10,14 @@ import DemoValue from '../../components/DemoValue.vue'
 const rootTag = ref<string>('section')
 const headerTag = ref<NonNullable<HeaderProps['tag']>>('h3')
 const iconTurn = ref<boolean>(false)
+const iconHide = ref<boolean>(false)
+const isSelected = ref<boolean>(false)
 const blockArea = ref<string>('block')
 const actionClicks = ref<number>(0)
+const lifecycleMounted = ref<boolean>(true)
 
-const rootTags: string[] = ['div', 'section', 'article', 'aside']
-const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const rootTags: readonly string[] = ['div', 'section', 'article', 'aside']
+const headerTags: readonly NonNullable<HeaderProps['tag']>[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 </script>
 
 <template>
@@ -49,12 +52,12 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
         </DemoFlex>
         <DemoFlex>
           <D1Button
-            v-for="hTag in headerTags"
-            :key="hTag"
-            :label="'header: ' + hTag"
-            :outline="headerTag !== hTag"
+            v-for="headerTagItem in headerTags"
+            :key="headerTagItem"
+            :label="'header: ' + headerTagItem"
+            :outline="headerTag !== headerTagItem"
             size="sm"
-            @click="headerTag = hTag"
+            @click="headerTag = headerTagItem"
           />
         </DemoFlex>
         <DemoValue label="tags" :value="{ rootTag, headerTag }"/>
@@ -73,11 +76,13 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Icons, Decorative Caption & headerAttrs">
+      <D1Group label="Icons, States, Decorative Caption & headerAttrs">
         <DemoFlex>
           <D1Button label="Toggle Icon Turn" size="sm" @click="iconTurn = !iconTurn"/>
+          <D1Button label="Toggle Icon Hide" size="sm" outline @click="iconHide = !iconHide"/>
+          <D1Button label="Toggle Selected" size="sm" outline @click="isSelected = !isSelected"/>
         </DemoFlex>
-        <DemoValue label="iconTurn" :value="iconTurn"/>
+        <DemoValue label="states" :value="{ iconTurn, iconHide, isSelected }"/>
         <DemoBox>
           <D1Block
             data-testid="demo-block-icon-attrs"
@@ -87,6 +92,7 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
             caption-decorative
             icon="expand_more"
             :icon-turn="iconTurn"
+            :icon-hide="iconHide"
             icon-dir
             icon-palette
             :icon-attrs="{ 'data-block-icon': 'repo' }"
@@ -94,6 +100,22 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
           >
             <p>Header attributes merge non-destructively with top-level block properties.</p>
           </D1Block>
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            label="Object & Active State Icon"
+            caption="Selected icon swap"
+            :icon="{ icon: 'star', iconActive: 'favorite', palette: 'amber' }"
+            :selected="isSelected"
+            description="Toggle Selected above to switch between star and favorite."
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            label="Null Icon Block"
+            :icon="null"
+            description="Explicitly passes icon=null without rendering an icon element."
+          />
         </DemoBox>
       </D1Group>
 
@@ -123,21 +145,23 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Body-Only & Numeric Zero Boundaries">
-        <DemoBox>
-          <D1Block data-testid="demo-block-body-only" class="demo-block-custom">
-            <p>Minimal block with default slot only (no .d1-block__body wrapper rendered).</p>
-          </D1Block>
-        </DemoBox>
+      <D1Group label="Compound Integrations">
         <DemoBox>
           <D1Block
-            data-testid="demo-block-zero"
-            :headline="0"
-            :label="0"
-            :caption="0"
-            :description="0"
+            headline="INTEGRATED MODULES"
+            label="Notification Preferences"
+            description="Combines D1Badge in #trailing with D1Bleed and D1Button inside default content."
           >
-            <p>Numeric zero rendered across headline, label, caption, and description.</p>
+            <template #trailing>
+              <D1Badge overlap="static" label="3" palette="blue"/>
+            </template>
+            <D1Bleed>
+              <D1Alert
+                label="Synced across devices"
+                description="Changes apply immediately to all signed-in sessions."
+                icon="sync"
+              />
+            </D1Bleed>
           </D1Block>
         </DemoBox>
       </D1Group>
@@ -175,8 +199,113 @@ const headerTags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h
           </D1Block>
         </DemoBox>
       </D1Group>
+
+      <D1Group label="Accessibility">
+        <DemoBox>
+          <D1Block
+            data-testid="demo-block-a11y"
+            tag="section"
+            role="region"
+            :header-attrs="{ labelId: 'demo-block-header-attrs-id', label: 'Accessible Landmark Section' }"
+            description="Verifies role='region', headerAttrs.labelId fallback for aria-labelledby, and keyboard focus order."
+          >
+            <template #trailing>
+              <D1Button label="Header Action" size="sm" outline/>
+            </template>
+            <D1Button label="Body Action" size="sm"/>
+          </D1Block>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <DemoBox>
+          <D1Block data-testid="demo-block-empty"/>
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            data-testid="demo-block-whitespace"
+            headline="   "
+            label="   "
+            caption="   "
+            description="   "
+          >
+            <p>Whitespace props do not render an empty .d1-block__body wrapper.</p>
+          </D1Block>
+        </DemoBox>
+        <DemoBox>
+          <D1Block data-testid="demo-block-body-only" class="demo-block-custom">
+            <p>Minimal block with default slot only (no .d1-block__body wrapper rendered).</p>
+          </D1Block>
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            data-testid="demo-block-zero"
+            :headline="0"
+            :label="0"
+            :caption="0"
+            :description="0"
+          >
+            <p>Numeric zero rendered across headline, label, caption, and description.</p>
+          </D1Block>
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            :headline="-42"
+            label="A"
+            :caption="99.95"
+            :description="-12.5"
+          >
+            <p>Single-character label with negative and decimal numbers.</p>
+          </D1Block>
+        </DemoBox>
+        <DemoBox>
+          <D1Block
+            headline="Unicode • Tiếng Việt • Кириллица 🚀"
+            label="SuperLongUnbrokenBlockTitleWithoutAnySpacesOrHyphens1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            description="<script>alert('xss')</script> — <img src=x onerror=alert(1)>"
+          >
+            <p>Multilingual text and escaped XSS payloads rendered safely.</p>
+          </D1Block>
+        </DemoBox>
+        <DemoBox class="demo-block-page__narrow-box">
+          <D1Block
+            headline="CONSTRAINED"
+            label="Narrow Container Block"
+            description="Verifies text wrapping inside a 280px container."
+          >
+            <p>Narrow body content.</p>
+          </D1Block>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="SSR & Lifecycle">
+        <DemoFlex align="center">
+          <D1Button
+            :label="lifecycleMounted ? 'Unmount Block' : 'Mount Block'"
+            size="sm"
+            outline
+            @click="lifecycleMounted = !lifecycleMounted"
+          />
+          <DemoValue label="Mounted" :value="lifecycleMounted"/>
+        </DemoFlex>
+        <DemoBox v-if="lifecycleMounted">
+          <D1Block
+            label="Conditional Lifecycle Block"
+            description="Mounted and unmounted cleanly via v-if."
+            icon="check_circle"
+          >
+            <p>Lifecycle content inside D1Block.</p>
+          </D1Block>
+        </DemoBox>
+      </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-block-page {
+  &__narrow-box {
+    max-width: 280px;
+  }
+}
+</style>

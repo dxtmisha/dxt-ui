@@ -1,11 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const activeTag = ref<string>('div')
+const lifecycleMounted = ref<boolean>(true)
+
+const availableTags: readonly string[] = [
+  'div',
+  'section',
+  'article',
+  'figure',
+  'aside',
+  'header',
+  'footer'
+]
 </script>
 
 <template>
@@ -26,10 +38,14 @@ const activeTag = ref<string>('div')
 
       <D1Group label="Semantic HTML Tags">
         <DemoFlex>
-          <D1Button label="div" size="sm" @click="activeTag = 'div'"/>
-          <D1Button label="section" size="sm" @click="activeTag = 'section'"/>
-          <D1Button label="article" size="sm" @click="activeTag = 'article'"/>
-          <D1Button label="figure" size="sm" @click="activeTag = 'figure'"/>
+          <D1Button
+            v-for="tagOption in availableTags"
+            :key="tagOption"
+            :label="tagOption"
+            :outline="activeTag !== tagOption"
+            size="sm"
+            @click="activeTag = tagOption"
+          />
         </DemoFlex>
         <DemoValue label="tag" :value="activeTag"/>
         <DemoBox>
@@ -41,13 +57,93 @@ const activeTag = ref<string>('div')
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Merged Attributes & Nested Components">
+      <D1Group label="Merged Attributes & Compound Integrations">
         <DemoBox>
           <D1Bleed tag="section" class="demo-bleed-page__custom" data-testid="demo-bleed-merged">
             <D1Alert
-              title="Nested Alert Inside Bleed"
+              label="Nested Alert Inside Bleed"
               description="Verifies class merging and child component rendering inside D1Bleed."
             />
+          </D1Bleed>
+        </DemoBox>
+        <DemoBox>
+          <D1Block label="Block With Bleed Header Bar">
+            <D1Bleed>
+              <D1Bars
+                label="Bleed Action Bar"
+                description="Full-bleed D1Bars nested inside D1Block"
+                back-hide
+                :bars="[{ icon: 'share', value: 'share', 'aria-label': 'Share' }]"
+              />
+            </D1Bleed>
+          </D1Block>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Accessibility">
+        <DemoBox>
+          <D1Bleed
+            tag="section"
+            role="region"
+            aria-label="Full-bleed announcement region"
+          >
+            <div class="demo-bleed-page__banner">
+              <DemoFlex align="center" justify="between">
+                <span>Accessible region landmark with keyboard-focusable action.</span>
+                <D1Button label="Focus Action" size="sm"/>
+              </DemoFlex>
+            </div>
+          </D1Bleed>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <DemoBox>
+          <D1Bleed data-testid="demo-bleed-empty"/>
+          <D1Bleed>   </D1Bleed>
+          <D1Bleed>{{ 0 }}</D1Bleed>
+          <D1Bleed>{{ -12.5 }}</D1Bleed>
+          <D1Bleed>A</D1Bleed>
+          <D1Bleed>
+            <div class="demo-bleed-page__banner demo-bleed-page__wrap">
+              SuperLongUnbrokenBleedTokenWithoutAnySpacesOrHyphens1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ
+            </div>
+          </D1Bleed>
+          <D1Bleed>
+            <div class="demo-bleed-page__banner">
+              Unicode • Tiếng Việt • Кириллица 🚀
+            </div>
+          </D1Bleed>
+          <D1Bleed>
+            <div class="demo-bleed-page__banner">
+              &lt;script&gt;alert('xss')&lt;/script&gt; — {{ '<img src=x onerror=alert(1)>' }}
+            </div>
+          </D1Bleed>
+        </DemoBox>
+        <DemoBox class="demo-bleed-page__narrow-box">
+          <D1Bleed>
+            <div class="demo-bleed-page__banner">
+              Narrow container bleed banner.
+            </div>
+          </D1Bleed>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="SSR & Lifecycle">
+        <DemoFlex align="center">
+          <D1Button
+            :label="lifecycleMounted ? 'Unmount Bleed' : 'Mount Bleed'"
+            size="sm"
+            outline
+            @click="lifecycleMounted = !lifecycleMounted"
+          />
+          <DemoValue label="Mounted" :value="lifecycleMounted"/>
+        </DemoFlex>
+        <DemoBox v-if="lifecycleMounted">
+          <D1Bleed>
+            <div class="demo-bleed-page__banner">
+              Conditionally mounted D1Bleed via v-if.
+            </div>
           </D1Bleed>
         </DemoBox>
       </D1Group>
@@ -67,6 +163,14 @@ const activeTag = ref<string>('div')
 
   &__custom {
     outline: 1px dashed currentColor;
+  }
+
+  &__wrap {
+    overflow-wrap: anywhere;
+  }
+
+  &__narrow-box {
+    max-width: 280px;
   }
 }
 </style>

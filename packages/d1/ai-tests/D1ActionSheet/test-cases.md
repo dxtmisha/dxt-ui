@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/ActionSheet`, `packages/constructor/src/constructors/ActionSheet`, `packages/demo/src/pages/components/DemoActionSheetPage.vue`
 - **Целевой URL**: `http://localhost:3000/component-action-sheet`
 - **Справочные материалы (`materials/`)**: `Отсутствуют`
-- **Последняя проверка / обновление**: `2026-11-23`
-- **Всего тест-кейсов**: `12`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `15`
 
 ---
 
@@ -13,10 +13,10 @@
 
 | Категория | Код | Количество | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуал и дизайн-система** | `VIS` | 4 | P0, P1 | Базовый ActionSheet и слоты (`#title`, `#header`, `#default`, `#footer`), ширины (`sm`, `md`, `lg`, `auto`), `D1Bars` + `D1Actions`, `adaptive: 'actionSheetRight'` и touch-ручка |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | `touchClose: false`, `persistent`, `closeButton: false`, `disabled`, `autoClose`, `v-model:open`, `v-model:modelOpen`, `expose`, события (`window`, `actions`, `bars`) |
-| **Граничные случаи и устойчивость** | `BND` | 2 | P1, P2 | Длинный скроллируемый контент, числовой `0` в `barsLabel` и `actionsList` |
-| **Адаптивность и вьюпорты** | `RSP` | 1 | P1 | Адаптация `D1ActionSheet` на `1440×900`, `768×1024`, `375×812`, `320×568` (трансформация в bottom sheet на мобильных) |
+| **Визуал и дизайн-система** | `VIS` | 4 | P0, P1 | Базовый ActionSheet и scoped-слоты (`#title`, `#header`, `#default`, `#footer` с `open`), ширины (`sm`, `md`, `lg`, `auto`), `D1Bars` + `D1Actions`, `barsAttrs`/`actionsAttrs`, `adaptive: 'actionSheetRight'` |
+| **Интерактивность и функционал** | `INT` | 5 | P0, P1 | `touchClose: false`, `persistent`, `closeButton: false`, `disabled`, `autoClose`, `barsHide`/`actionsHide`, `v-model:open`/`v-model:modelOpen`, `expose` (включая `getControl()`), все 8 событий (`update:open`, `update:modelOpen`, `window`, `actions`, `actionsLite`, `bars`, `barsLite`, `barsBack`), асинхронные хуки `beforeOpening`/`beforeClosing`, `v-if` и `inDom` |
+| **Граничные случаи и устойчивость** | `BND` | 3 | P1, P2 | Длинный скроллируемый контент, числовой `0`, пустые `barsLabel=""`/`actionsList=[]`, неразрывная строка, Unicode/XSS |
+| **Адаптивность и вьюпорты** | `RSP` | 1 | P1 | Адаптация `D1ActionSheet` на `1440×900`, `768×1024`, `375×812`, `320×568` |
 | **Доступность (A11Y)** | `A11Y` | 1 | P1 | `aria-labelledby`/`aria-describedby` связь с `D1Bars`, `aria-hidden="true"` на `.d1-actionSheet__tab`, `Escape` и `disableFocusReturn` |
 | **Консоль и стабильность runtime** | `LOG` | 1 | P0 | Отсутствие `[Vue warn]`, `console.error`, `pageerror` и сетевых ошибок (`>= 400`) |
 
@@ -26,14 +26,14 @@
 
 ### 2.1 Визуал и дизайн-система (`VIS`)
 
-#### [TC-VIS-001] Базовый ActionSheet и отображение всех слотов (`#title`, `#header`, `#default`, `#footer`)
+#### [TC-VIS-001] Базовый ActionSheet и отображение scoped-слотов (`#title`, `#header`, `#default`, `#footer`)
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Визуал и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-action-sheet`, вьюпорт `1440×900`.
 - **Шаги проверки**:
   1. Открыть `All Slots Action Sheet` в группе `Basic Usage & Slots`.
-  2. Проверить наличие `.d1-actionSheet`, `data-touch="touch"`, `.d1-actionSheet__touch`, `.d1-actionSheet__tab`, `.d1-actionSheet__title`, `.d1-actionSheet__header`, `.d1-actionSheet__body`, `.d1-actionSheet__footer`.
-- **Ожидаемый результат**: Все 4 слота и touch-обёртка отрендерены корректно без наложений и клиппинга.
+  2. Проверить наличие `.d1-actionSheet`, `data-touch="touch"`, `.d1-actionSheet__touch`, `.d1-actionSheet__tab`, `.d1-actionSheet__title`, `.d1-actionSheet__header`, `.d1-actionSheet__body`, `.d1-actionSheet__footer`, а также отображение `open: true` из scoped-слотов.
+- **Ожидаемый результат**: Все 4 слота со scoped-значениями и touch-обёртка отрендерены корректно без наложений и клиппинга.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
 #### [TC-VIS-002] Варианты ширины (`sm`, `md`, `lg`, `auto`)
@@ -46,14 +46,14 @@
 - **Ожидаемый результат**: Ширины строго возрастают `sm < md < lg`, модификаторы соответствуют пропам.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
-#### [TC-VIS-003] Интеграция `D1Bars` и `D1Actions`
+#### [TC-VIS-003] Интеграция `D1Bars`, `D1Actions`, `barsAttrs` и `actionsAttrs`
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Визуал и дизайн-система`
-- **Предусловия**: Группа `Basic Usage & Slots`.
+- **Предусловия**: Группы `Basic Usage & Slots` и `Bars & Actions Hide / Attrs Customization`.
 - **Шаги проверки**:
-  1. Открыть `Bars & Actions Sheet`.
-  2. Проверить рендеринг `.d1-bars` (кнопка назад, заголовок, описание, кнопка `help`) и `.d1-actions` с `align: 'auto'` и кнопками `Reset`, `Cancel`, `Confirm`.
-- **Ожидаемый результат**: Шапка `D1Bars` и футер `D1Actions` корректно встроены и выровнены.
+  1. Открыть `Bars & Actions Sheet` и проверить `.d1-bars` и `.d1-actions`.
+  2. Открыть `Open Custom Attrs Sheet` и проверить применение `barsAttrs` (`padding: 'lg'`) и `actionsAttrs` (`align: 'center'`, `wrap: true`).
+- **Ожидаемый результат**: Шапка `D1Bars` и футер `D1Actions` корректно встроены, атрибуты применены.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-003.png`)
 
 #### [TC-VIS-004] Боковая адаптация `windowAttrs.adaptive = "actionSheetRight"`
@@ -70,38 +70,54 @@
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
-#### [TC-INT-001] Режимы `touchClose: false`, `persistent`, `closeButton: false`, `disabled`, `autoClose`
+#### [TC-INT-001] Режимы `touchClose: false`, `persistent`, `closeButton: false`, `disabled`, `autoClose` и переключатели `barsHide`/`actionsHide`
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и управление состоянием`
-- **Предусловия**: Группа `Touch Close, Persistent & Dismiss Behavior`.
+- **Предусловия**: Группы `Touch Close, Persistent & Dismiss Behavior` и `Bars & Actions Hide / Attrs Customization`.
 - **Шаги проверки**:
-  1. Открыть `Disable Touch Close` -> проверить отсутствие `.d1-actionSheet__touch`.
-  2. Открыть `Persistent Sheet`, нажать `Escape` -> проверить, что окно не закрылось, затем закрыть кнопкой `Dismiss Explicitly`.
-  3. Открыть `Hide Close Button` -> проверить отсутствие `.d1-window__close`.
-  4. Проверить `disabled` на кнопке `Disabled Sheet`.
-  5. Открыть `Auto Close Sheet` -> кликнуть по телу окна и убедиться, что окно закрылось.
-- **Ожидаемый результат**: Все 5 режимов отрабатывают точно по контракту.
+  1. Проверить `Disable Touch Close`, `Persistent Sheet` + `Escape`, `Hide Close Button`, `Disabled Sheet` и `Auto Close Sheet`.
+  2. Включить `barsHide: true` и `actionsHide: true`, открыть `Open Custom Attrs Sheet` и убедиться в скрытии `.d1-bars` и `.d1-actions`.
+- **Ожидаемый результат**: Все режимы отрабатывают точно по контракту.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] Программное управление `v-model:open`, `v-model:modelOpen` и `expose`
+#### [TC-INT-002] Программное управление `v-model:open`, `v-model:modelOpen` и `expose` (включая `getControl`)
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и управление состоянием`
 - **Предусловия**: Группы `Programmatic Control` и `Control via Expose Methods`.
 - **Шаги проверки**:
-  1. Открыть/закрыть через `Open v-model:open` и `Open v-model:modelOpen`, проверяя синхронизацию `DemoValue`.
-  2. Вызвать `Open (toOpen)` в группе `Control via Expose Methods` и проверить `getId()`, `getOpen(): true`, `hasWindowElement(): true`.
-- **Ожидаемый результат**: Все режимы программного управления синхронно изменяют состояние.
+  1. Открыть/закрыть через `Open v-model:open` и `Open v-model:modelOpen`.
+  2. Вызвать `Open (toOpen)`, `Close (toClose)`, `Toggle (toggle)`, `Open (setOpen)` / `Close (setOpen false)` и проверить `getId()`, `getOpen()`, `hasControl(): true`, `hasWindowElement(): true`.
+- **Ожидаемый результат**: Все методы программного управления синхронно изменяют состояние.
 - **Тип доказательства**: `Console/Log`
 
-#### [TC-INT-003] События (`window`, `actions`, `actionsLite`, `bars`, `barsLite`, `update:open`, `update:modelOpen`)
+#### [TC-INT-003] Все 8 событий (`update:open`, `update:modelOpen`, `window`, `actions`, `actionsLite`, `bars`, `barsLite`, `barsBack`) и `Payload`
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и управление состоянием`
 - **Предусловия**: Группа `Events`.
 - **Шаги проверки**:
-  1. Открыть `Open All Events Action Sheet` -> проверить `open: true, modelOpen: true` и событие `window`.
-  2. Кликнуть по `Confirm` -> проверить `actions`, `actionsLite`.
-  3. Кликнуть по кнопкам `D1Bars` -> проверить `bars`, `barsLite` и закрытие окна.
-- **Ожидаемый результат**: Все события фиксируются и корректно обновляют состояние.
+  1. Открыть `Open All Events Action Sheet` -> проверить `window` / `update:open` / `update:modelOpen`.
+  2. Кликнуть кнопку `help` в `D1Bars` (`bars`, `barsLite`), кнопку назад в `D1Bars` (`barsBack`), затем кнопку `Confirm` в `D1Actions` (`actions`, `actionsLite`) и проверить `DemoValue` (`eventName` и `Payload`).
+- **Ожидаемый результат**: Все 8 событий фиксируются с корректным `Payload`.
+- **Тип доказательства**: `Console/Log`
+
+#### [TC-INT-004] Асинхронные хуки `beforeOpening` / `beforeClosing`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и управление состоянием`
+- **Предусловия**: Группа `SSR, Async Guards & Lifecycle`.
+- **Шаги проверки**:
+  1. Нажать `Async Before-Open / Before-Close`, дождаться разрешения Promise (`beforeOpening: allowed`) и открытия шторки.
+  2. Нажать `Close Async Sheet`, дождаться `beforeClosing: allowed` и закрытия.
+- **Ожидаемый результат**: Открытие и закрытие управляются асинхронными Promise-хуками без ошибок.
+- **Тип доказательства**: `Console/Log`
+
+#### [TC-INT-005] `windowAttrs.inDom` и условный жизненный цикл `v-if`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и управление состоянием`
+- **Предусловия**: Группа `SSR, Async Guards & Lifecycle`.
+- **Шаги проверки**:
+  1. Проверить наличие закрытого `In-DOM Action Sheet` в DOM (`inDom: true`).
+  2. Нажать `Unmount Lifecycle Sheet` (`Mounted: false`), затем `Mount Lifecycle Sheet` (`Mounted: true`).
+- **Ожидаемый результат**: `inDom` сохраняет узел в DOM; `v-if` чисто монтирует и размонтирует компонент.
 - **Тип доказательства**: `Console/Log`
 
 ---
@@ -128,6 +144,16 @@
 - **Ожидаемый результат**: Число `0` не отбрасывается как falsy.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
 
+#### [TC-BND-003] Пустые `barsLabel=""`/`actionsList=[]`, неразрывная строка, Unicode и XSS
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Граничные случаи и устойчивость`
+- **Предусловия**: Группа `Boundary & Scrollable Content`.
+- **Шаги проверки**:
+  1. Открыть `Empty / Unbroken / Unicode / XSS`.
+  2. Проверить рендеринг неразрывного токена, Unicode и экранированного `<img src=x onerror=alert(1)>` без `img` элементов и горизонтального переполнения.
+- **Ожидаемый результат**: Контент корректно переносится и экранируется без ошибок.
+- **Тип доказательства**: `Console/Log`
+
 ---
 
 ### 2.4 Адаптивность и вьюпорты (`RSP`)
@@ -139,7 +165,7 @@
 - **Шаги проверки**:
   1. Измерить ширину и позицию листа на `1440×900`, `768×1024`, `375×812`, `320×568`.
   2. На мобильном вьюпорте (`375×812`) сделать скриншот и проверить привязку к нижней части экрана без горизонтального переполнения.
-- **Ожидаемый результат**: На всех разрешениях ширина окна укладывается во вьюпорт (`width <= viewportWidth`), на мобильных отображается как нижняя шторка.
+- **Ожидаемый результат**: На всех разрешениях ширина окна укладывается во вьюпорт, на мобильных отображается как нижняя шторка.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-RSP-001.png`)
 
 ---

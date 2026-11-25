@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Bullet` (`packages/constructor/src/constructors/Bullet`, `packages/demo/src/pages/components/DemoBulletPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-bullet`
 - **Справочные материалы**: `Нет`
-- **Последняя проверка / обновление**: `2026-11-24`
-- **Всего тест-кейсов**: `10`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `13`
 
 ---
 
@@ -13,11 +13,11 @@
 
 | Категория | Код | Кол-во | Приоритеты | Область проверки |
 | :--- | :--- | :---: | :--- | :--- |
-| **Визуальное соответствие** | `VIS` | 2 | P0, P1 | Базовый список (`list`), HTML-режим (`html`), кастомный слот `#default` и скелетон (`isSkeleton`) |
-| **Интерактивность и функции** | `INT` | 3 | P0, P1 | Реактивное изменение `itemAttrs` (`sm`/`md`/`lg`), переключение RTL (`dir="rtl"`), переключение `isSkeleton` |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Отображение числового `0`, сохранение существующего `class` на `<li class="...">`, ненулевая геометрия |
+| **Визуальное соответствие** | `VIS` | 2 | P0, P1 | Базовый список (`list`), HTML-режим (`html`), кастомный слот `#default` со scoped-привязками и скелетон (`isSkeleton`) |
+| **Интерактивность и функции** | `INT` | 4 | P0, P1 | Реактивное изменение `itemAttrs` (`size` и `palette`), динамическое добавление/удаление `list`, переключение RTL (`dir="rtl"`), переключение `isSkeleton`, `v-if` mount/unmount |
+| **Границы и крайние случаи** | `BND` | 3 | P1 | Пустые входы (`[]`, `""`), числа (`0`, `-15`, `99.5`), сохранение класса на `<li>`, санитизация XSS в `html` и экранирование в `list`, узкий `DemoBox` |
 | **Адаптивность и вьюпорты** | `RSP` | 2 | P1 | Десктоп (`1440×900`), планшет (`768×1024`) и мобильный (`375×812` / `320×568`) |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантическая структура `<ul>` -> `<li>` во всех режимах (`list`, `html`, `#default`) |
+| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантическая структура `<ul>` -> `<li>` во всех режимах (`list`, `html`, `#default`) и `aria-label` |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | Отсутствие ошибок консоли и предупреждений `[Vue warn]` |
 
 ---
@@ -31,14 +31,14 @@
 - **Категория**: `Визуальное соответствие`
 - **Предусловия**: Открыть `http://localhost:3000/component-bullet`, вьюпорт `1440×900`.
 - **Шаги**:
-  1. Проверить рендеринг групп `Basic List`, `HTML Content Parsing` и `Default Slot with Standalone Bullet Items`.
+  1. Проверить рендеринг групп `Basic List, Dynamic Mutations & RTL Direction`, `HTML Content Parsing & XSS Sanitization` и `Default Slot (#default)`.
 - **Ожидаемый результат**: Корневые контейнеры рендерятся как `<ul>` с классом `.d1-bullet`, дочерние пункты — как `<li>` с маркером `•` и системным вертикальным отступом `gap`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
 #### [TC-VIS-002] Состояние загрузки скелетона (`isSkeleton` внутри `D1Skeleton`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Визуальное соответствие`
-- **Предусловия**: Открыта группа `Skeleton Loading State` при `isLoading = true`.
+- **Предусловия**: Открыта группа `Skeleton Loading State` при `isSkeletonActive = true`.
 - **Шаги**:
   1. Проверить `[data-testid="demo-bullet-skeleton"]`.
 - **Ожидаемый результат**: `isSkeleton` пробрасывается всем дочерним `D1BulletItem`, применяя `.d1-skeleton__textVariant` на элементах описания.
@@ -46,22 +46,22 @@
 
 ### 2.2 Интерактивность и функции (`INT`)
 
-#### [TC-INT-001] Реактивная передача общих атрибутов через `itemAttrs` (`sm` -> `lg`)
+#### [TC-INT-001] Реактивная передача общих атрибутов через `itemAttrs` (`size` и `palette`)
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и функции`
 - **Предусловия**: Открыта группа `Shared Item Customization (itemAttrs)`.
 - **Шаги**:
-  1. Нажать `itemAttrs: sm`, затем `itemAttrs: lg`.
-- **Ожидаемый результат**: Все дочерние пункты `[data-testid="demo-bullet-attrs"] > li` синхронно обновляют модификатор `.d1-bulletItem--size--*` и сохраняют палитру `d1-palette--blue`.
+  1. Нажать `[data-testid="demo-bullet-size-sm"]`, `[data-testid="demo-bullet-size-lg"]`, а затем `[data-testid="demo-bullet-palette-green"]` и `[data-testid="demo-bullet-palette-red"]`.
+- **Ожидаемый результат**: Все дочерние пункты `[data-testid="demo-bullet-attrs"] > li` синхронно обновляют `.d1-bulletItem--size--*` и `.d1-palette--*`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] Логическое выравнивание маркеров в режиме RTL (`dir="rtl"`)
+#### [TC-INT-002] Логическое выравнивание маркеров в режиме RTL (`dir="rtl"`) и мутация `list`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функции`
-- **Предусловия**: Открыта группа `Basic List`.
+- **Предусловия**: Открыта первая группа.
 - **Шаги**:
-  1. Нажать `Toggle RTL`.
-- **Ожидаемый результат**: Маркеры `::before` всех пунктов списка выравниваются по логическому началу строки (`insetInlineStart: "0px"`) справа без наложения на текст.
+  1. Нажать `[data-testid="demo-bullet-rtl-toggle"]`, затем `[data-testid="demo-bullet-add-item"]`, `[data-testid="demo-bullet-remove-item"]`, `[data-testid="demo-bullet-reset-list"]`.
+- **Ожидаемый результат**: Маркеры `::before` выравниваются по логическому началу строки (`insetInlineStart: "0px"`) справа; список реактивно добавляет и удаляет пункты.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
 #### [TC-INT-003] Переключение скелетона загрузки (`Toggle Skeleton`)
@@ -69,20 +69,47 @@
 - **Категория**: `Интерактивность и функции`
 - **Предусловия**: Открыта группа `Skeleton Loading State`.
 - **Шаги**:
-  1. Нажать `Toggle Skeleton`.
+  1. Нажать `[data-testid="demo-bullet-skeleton-toggle"]`.
 - **Ожидаемый результат**: Скелетон снимается со всех дочерних пунктов и отображается реальный текст.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-003.png`)
 
+#### [TC-INT-004] Жизненный цикл: условное монтирование и размонтирование (`v-if`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функции`
+- **Предусловия**: Открыта группа `Lifecycle & Conditional Mounting (v-if)`.
+- **Шаги**:
+  1. Нажать `[data-testid="demo-bullet-mount-toggle"]` для размонтирования и повторного монтирования.
+- **Ожидаемый результат**: `<ul>` корректно удаляется и повторно монтируется без ошибок.
+- **Тип доказательства**: `Console/Log`
+
 ### 2.3 Границы и крайние случаи (`BND`)
 
-#### [TC-BND-001] Числовой `0`, сохранение пользовательского класса на `<li>` в `html` и геометрия
+#### [TC-BND-001] Числовые значения (`0`, `-15`, `99.5`), пустые входы и сохранение класса на `<li>` в `html`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Границы и крайние случаи`
-- **Предусловия**: Открыты группы `Basic List` и `HTML Content Parsing`.
+- **Предусловия**: Открыты группы `Basic List`, `HTML Content Parsing` и `Boundary, Edge Cases & Narrow Container`.
 - **Шаги**:
-  1. Проверить третий элемент `Basic List` (`0`), второй элемент `HTML Content Parsing` (`.demo-bullet-custom`) и размеры всех `.d1-bullet` и `.d1-bulletItem`.
-- **Ожидаемый результат**: Числовой `0` отображается как `"0"`, второй HTML-пункт содержит одновременно `.d1-bulletItem`, `.d1-bullet__item` и `.demo-bullet-custom`, `hasZeroSize === false`.
+  1. Проверить `[data-testid="demo-bullet-empty-component"]`, `[data-testid="demo-bullet-empty-list"]`, `[data-testid="demo-bullet-empty-html"]`, `[data-testid="demo-bullet-boundary"]`, а также `.demo-bullet-custom` в `[data-testid="demo-bullet-html"]`.
+- **Ожидаемый результат**: Числа `0`, `-15`, `99.5` отображаются корректно; второй HTML-пункт содержит одновременно `.d1-bulletItem`, `.d1-bullet__item` и `.demo-bullet-custom`; пустые входы не вызывают сбоев.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Санитизация опасного HTML (`<script>`, `onerror`, `javascript:`) и экранирование XSS в `list`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Открыты группы `HTML Content Parsing & XSS Sanitization` и `Boundary, Edge Cases & Narrow Container`.
+- **Шаги**:
+  1. Проверить DOM внутри `[data-testid="demo-bullet-html-sanitized"]` и `[data-testid="demo-bullet-boundary"]`.
+- **Ожидаемый результат**: Теги `<script>`, атрибуты `onerror` и ссылки `javascript:` удалены в `html`-режиме; в `list`-режиме `<img src=x onerror=alert(1)>` отображается как текст; `window.__xss` и `window.__xssImg` равны `undefined`.
+- **Тип доказательства**: `Console/Log`
+
+#### [TC-BND-003] Длинный и неразрывный текст в узком контейнере (`max-width: 240px`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Открыта группа `Boundary, Edge Cases & Narrow Container`.
+- **Шаги**:
+  1. Проверить `[data-testid="demo-bullet-narrow"]` внутри `.demo-bullet-page__narrow`.
+- **Ожидаемый результат**: Длинный текст переносится корректно без поломки вёрстки.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-003.png`)
 
 ### 2.4 Адаптивность (`RSP`)
 
@@ -106,13 +133,13 @@
 
 ### 2.5 Доступность (`A11Y`)
 
-#### [TC-A11Y-001] Семантическая иерархия `<ul>` -> `<li>`
+#### [TC-A11Y-001] Семантическая иерархия `<ul>` -> `<li>` и `aria-label`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Доступность`
 - **Предусловия**: Открыта страница `http://localhost:3000/component-bullet`.
 - **Шаги**:
-  1. Проверить `tagName === 'UL'` для всех `.d1-bullet` и `tagName === 'LI'` для всех прямых потомков.
-- **Ожидаемый результат**: Все списки имеют строго валидную семантическую структуру `UL > LI`.
+  1. Проверить `tagName === 'UL'` для всех `.d1-bullet`, `tagName === 'LI'` для дочерних элементов и `aria-label` на `[data-testid="demo-bullet-a11y"]`.
+- **Ожидаемый результат**: Все списки имеют строго валидную семантическую структуру `UL > LI` и пробрасывают `aria-label`.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)

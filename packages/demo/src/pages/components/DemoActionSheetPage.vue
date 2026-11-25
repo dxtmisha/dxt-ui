@@ -8,10 +8,33 @@ import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
+const lastPayload = ref<string>('none')
+
+const recordEvent = (name: string, ...args: unknown[]): void => {
+  onEvent(name, ...args)
+  try {
+    const serialized = args.map((item) => {
+      if (typeof item === 'object' && item !== null && 'open' in item && 'id' in item) {
+        const windowItem = item as { id: string, open: boolean }
+        return { id: windowItem.id, open: windowItem.open }
+      }
+      if (typeof Event !== 'undefined' && item instanceof Event) {
+        return item.type
+      }
+      return item
+    })
+    lastPayload.value = serialized.length > 0 ? JSON.stringify(serialized) : 'no payload'
+  } catch {
+    lastPayload.value = name
+  }
+}
 
 const openBasic = ref(false)
 const openSlots = ref(false)
 const openBarsActions = ref(false)
+const openCustomAttrs = ref(false)
+const dynamicBarsHide = ref(false)
+const dynamicActionsHide = ref(false)
 
 const openWidthSm = ref(false)
 const openWidthMd = ref(false)
@@ -27,6 +50,12 @@ const openAdaptiveRight = ref(false)
 
 const openScrollable = ref(false)
 const openNumericZero = ref(false)
+const openBoundaryEdge = ref(false)
+const openInDom = ref(false)
+const openAsyncGuards = ref(false)
+const asyncGuardStatus = ref('idle')
+const lifecycleMounted = ref(true)
+const openLifecycle = ref(false)
 
 const openVModel = ref(false)
 const openModelOpen = ref(false)
@@ -40,7 +69,7 @@ const exposeStatus = ref('')
 const syncExposeStatus = (): void => {
   const sheet = exposeSheetRef.value
   exposeStatus.value = sheet
-    ? `getId(): "${sheet.getId()}", getOpen(): ${sheet.getOpen()}, hasWindowElement(): ${Boolean(sheet.getWindowElement())}`
+    ? `getId(): "${sheet.getId()}", getOpen(): ${sheet.getOpen()}, hasControl(): ${Boolean(sheet.getControl())}, hasWindowElement(): ${Boolean(sheet.getWindowElement())}`
     : ''
 }
 
@@ -64,6 +93,20 @@ const onExposeToggle = async (): Promise<void> => {
   syncExposeStatus()
 }
 
+const onBeforeOpeningGuard = async (): Promise<boolean> => {
+  asyncGuardStatus.value = 'beforeOpening: resolving'
+  await new Promise(resolve => setTimeout(resolve, 60))
+  asyncGuardStatus.value = 'beforeOpening: allowed'
+  return true
+}
+
+const onBeforeClosingGuard = async (): Promise<boolean> => {
+  asyncGuardStatus.value = 'beforeClosing: resolving'
+  await new Promise(resolve => setTimeout(resolve, 60))
+  asyncGuardStatus.value = 'beforeClosing: allowed'
+  return true
+}
+
 const actionsList = [
   { label: 'Cancel', value: 'cancel', text: true },
   { label: 'Confirm', value: 'confirm', primary: true }
@@ -82,9 +125,17 @@ const numericZeroActions = [
   { label: 'OK', value: 'ok', primary: true }
 ]
 
-const scrollableParagraphs = Array.from(
+interface ScrollableParagraph {
+  id: string
+  text: string
+}
+
+const scrollableParagraphs: ScrollableParagraph[] = Array.from(
   { length: 14 },
-  (_, index) => `Section ${index + 1}: Scrollable action sheet content verifying divider, scrollbar, and footer stability within viewport limits.`
+  (_, index) => ({
+    id: `section-${index + 1}`,
+    text: `Section ${index + 1}: Scrollable action sheet content verifying divider, scrollbar, and footer stability within viewport limits.`
+  })
 )
 
 const exposeSummary = computed(() => {
@@ -93,7 +144,7 @@ const exposeSummary = computed(() => {
   }
   const sheet = exposeSheetRef.value
   return sheet
-    ? `getId(): "${sheet.getId()}", getOpen(): ${sheet.getOpen()}, hasWindowElement(): ${Boolean(sheet.getWindowElement())}`
+    ? `getId(): "${sheet.getId()}", getOpen(): ${sheet.getOpen()}, hasControl(): ${Boolean(sheet.getControl())}, hasWindowElement(): ${Boolean(sheet.getWindowElement())}`
     : 'Not initialized'
 })
 </script>
@@ -137,21 +188,23 @@ const exposeSummary = computed(() => {
                 v-bind="binds"
               />
             </template>
-            <template #title>
-              <h3 class="demo-action-sheet-page__title">Title Slot Heading</h3>
+            <template #title="{ open }">
+              <h3 class="demo-action-sheet-page__title">Title Slot Heading (open: {{ open }})</h3>
             </template>
-            <template #header>
+            <template #header="{ open }">
               <div class="demo-action-sheet-page__content">
-                <strong>Sticky Header Slot Banner</strong>
+                <strong>Sticky Header Slot Banner (open: {{ open }})</strong>
               </div>
             </template>
-            <div class="demo-action-sheet-page__content">
-              <p>Default body slot content combined with dedicated <code>#title</code>, <code>#header</code>, and <code>#footer</code> slots.</p>
-            </div>
-            <template #footer="{ classesWindow }">
+            <template #default="{ open }">
+              <div class="demo-action-sheet-page__content">
+                <p>Default body slot content combined with dedicated <code>#title</code>, <code>#header</code>, and <code>#footer</code> slots (open: {{ open }}).</p>
+              </div>
+            </template>
+            <template #footer="{ classesWindow, open }">
               <div class="demo-action-sheet-page__footer">
                 <D1Button
-                  label="Close All Slots"
+                  :label="`Close All Slots (${open ? 'open' : 'closed'})`"
                   primary
                   :class="classesWindow.close"
                 />
@@ -180,6 +233,45 @@ const exposeSummary = computed(() => {
             </div>
           </D1ActionSheet>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Bars & Actions Hide / Attrs Customization">
+        <DemoFlex>
+          <D1Button
+            :label="`barsHide: ${dynamicBarsHide}`"
+            size="sm"
+            outline
+            @click="dynamicBarsHide = !dynamicBarsHide"
+          />
+          <D1Button
+            :label="`actionsHide: ${dynamicActionsHide}`"
+            size="sm"
+            outline
+            @click="dynamicActionsHide = !dynamicActionsHide"
+          />
+          <D1ActionSheet
+            v-model:open="openCustomAttrs"
+            barsLabel="Customized Bars Header"
+            barsDescription="Configured with barsAttrs and actionsAttrs"
+            :barsHide="dynamicBarsHide"
+            :actionsHide="dynamicActionsHide"
+            :barsAttrs="{ padding: 'lg' }"
+            :actionsList="actionsList"
+            :actionsAttrs="{ align: 'center', wrap: true }"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                label="Open Custom Attrs Sheet"
+                secondary
+                v-bind="binds"
+              />
+            </template>
+            <div class="demo-action-sheet-page__content">
+              <p>Toggle <code>barsHide</code> and <code>actionsHide</code> above or inspect <code>barsAttrs</code> and <code>actionsAttrs</code> rendering.</p>
+            </div>
+          </D1ActionSheet>
+        </DemoFlex>
+        <DemoValue :value="`barsHide: ${dynamicBarsHide}, actionsHide: ${dynamicActionsHide}`" />
       </D1Group>
 
       <D1Group label="Width Configurations">
@@ -455,6 +547,82 @@ const exposeSummary = computed(() => {
         </DemoFlex>
       </D1Group>
 
+      <D1Group label="SSR, Async Guards & Lifecycle">
+        <DemoFlex>
+          <D1ActionSheet
+            v-model:open="openInDom"
+            barsLabel="In-DOM Action Sheet"
+            :windowAttrs="{ inDom: true }"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                label="In-DOM Persistent Sheet"
+                secondary
+                v-bind="binds"
+              />
+            </template>
+            <div class="demo-action-sheet-page__content">
+              <p>With <code>windowAttrs.inDom = true</code>, the window remains mounted in the DOM for SSR/SEO.</p>
+            </div>
+          </D1ActionSheet>
+
+          <D1ActionSheet
+            v-model:open="openAsyncGuards"
+            barsLabel="Async Guard Sheet"
+            :windowAttrs="{
+              beforeOpening: onBeforeOpeningGuard,
+              beforeClosing: onBeforeClosingGuard
+            }"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                label="Async Before-Open / Before-Close"
+                secondary
+                v-bind="binds"
+              />
+            </template>
+            <div class="demo-action-sheet-page__content">
+              <p>Opening and closing are gated by async Promise callbacks.</p>
+            </div>
+            <template #footer="{ classesWindow }">
+              <div class="demo-action-sheet-page__footer">
+                <D1Button
+                  label="Close Async Sheet"
+                  primary
+                  :class="classesWindow.close"
+                />
+              </div>
+            </template>
+          </D1ActionSheet>
+
+          <D1Button
+            :label="lifecycleMounted ? 'Unmount Lifecycle Sheet' : 'Mount Lifecycle Sheet'"
+            size="sm"
+            outline
+            @click="lifecycleMounted = !lifecycleMounted"
+          />
+
+          <D1ActionSheet
+            v-if="lifecycleMounted"
+            v-model:open="openLifecycle"
+            barsLabel="Conditional Lifecycle Sheet"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                label="Lifecycle Controlled Sheet"
+                outline
+                v-bind="binds"
+              />
+            </template>
+            <div class="demo-action-sheet-page__content">
+              <p>Conditionally mounted via <code>v-if</code>.</p>
+            </div>
+          </D1ActionSheet>
+        </DemoFlex>
+        <DemoValue label="Async Guard" :value="asyncGuardStatus" />
+        <DemoValue label="Mounted" :value="lifecycleMounted" />
+      </D1Group>
+
       <D1Group label="Boundary & Scrollable Content">
         <DemoFlex>
           <D1ActionSheet v-model:open="openScrollable">
@@ -470,10 +638,10 @@ const exposeSummary = computed(() => {
             </template>
             <div class="demo-action-sheet-page__content">
               <p
-                v-for="(paragraph, index) in scrollableParagraphs"
-                :key="index"
+                v-for="paragraph in scrollableParagraphs"
+                :key="paragraph.id"
               >
-                {{ paragraph }}
+                {{ paragraph.text }}
               </p>
             </div>
             <template #footer="{ classesWindow }">
@@ -501,6 +669,25 @@ const exposeSummary = computed(() => {
             </template>
             <div class="demo-action-sheet-page__content">
               <p>Verifies numeric <code>0</code> in both <code>barsLabel</code> and <code>actionsList</code> renders cleanly as "0".</p>
+            </div>
+          </D1ActionSheet>
+
+          <D1ActionSheet
+            v-model:open="openBoundaryEdge"
+            barsLabel=""
+            :actionsList="[]"
+          >
+            <template #control="{ binds }">
+              <D1Button
+                label="Empty / Unbroken / Unicode / XSS"
+                secondary
+                v-bind="binds"
+              />
+            </template>
+            <div class="demo-action-sheet-page__content">
+              <p>UnbrokenActionSheetTokenWithoutSpaces1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+              <p>Unicode: Café • Tiếng Việt • Кириллица 🚀</p>
+              <p>&lt;img src=x onerror=alert(1)&gt;</p>
             </div>
           </D1ActionSheet>
         </DemoFlex>
@@ -565,12 +752,14 @@ const exposeSummary = computed(() => {
             :actionsList="actionsList"
             :barsList="barsList"
             :barsBackHide="false"
-            @window="onEvent('window', $event)"
-            @actions="onEvent('actions', $event)"
-            @actionsLite="onEvent('actionsLite', $event)"
-            @bars="onEvent('bars', $event)"
-            @barsLite="onEvent('barsLite', $event)"
-            @barsBack="onEvent('barsBack', $event)"
+            @update:open="(value) => recordEvent('update:open', value)"
+            @update:model-open="(value) => recordEvent('update:modelOpen', value)"
+            @window="(options) => recordEvent('window', options)"
+            @actions="(event, value) => recordEvent('actions', value ?? event)"
+            @actionsLite="(value) => recordEvent('actionsLite', value)"
+            @bars="(event, value) => recordEvent('bars', value ?? event)"
+            @barsLite="(value) => recordEvent('barsLite', value)"
+            @barsBack="(value) => recordEvent('barsBack', value)"
           >
             <template #control="{ binds }">
               <D1Button
@@ -595,6 +784,7 @@ const exposeSummary = computed(() => {
           </D1ActionSheet>
         </DemoFlex>
         <DemoValue :value="eventName" />
+        <DemoValue label="Payload" :value="lastPayload" />
         <DemoValue :value="`open: ${openEvents}, modelOpen: ${openEventsModelOpen}`" />
       </D1Group>
 
@@ -614,7 +804,7 @@ const exposeSummary = computed(() => {
             <h3 class="demo-action-sheet-page__title">Expose Controlled Sheet</h3>
           </template>
           <div class="demo-action-sheet-page__content">
-            <p>Controlled via exposed methods: <code>toOpen</code>, <code>toClose</code>, <code>setOpen</code>, <code>toggle</code>.</p>
+            <p>Controlled via exposed methods: <code>toOpen</code>, <code>toClose</code>, <code>setOpen</code>, <code>toggle</code>, <code>getControl</code>.</p>
           </div>
           <template #footer="{ classesWindow }">
             <div class="demo-action-sheet-page__footer">

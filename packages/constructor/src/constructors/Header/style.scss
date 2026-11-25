@@ -2,6 +2,8 @@
 
 @mixin mixinHeader {
   @include ui.flexX;
+  min-width: 0;
+  max-width: 100%;
 
   h1,
   h2,
@@ -13,6 +15,13 @@
 
     font: inherit;
     line-height: inherit;
+  }
+
+  &__label,
+  &__caption {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   &__space {

@@ -1,23 +1,23 @@
 # Спецификация тест-кейсов: D1CarouselItem
 
 - **Сущность**: `D1CarouselItem`
-- **Путь к исходному коду**: `packages/d1/src/components/Ui/CarouselItem` (`packages/constructor/src/constructors/CarouselItem`, `packages/demo/src/pages/components/DemoCarouselItemPage.vue`)
+- **Путь к исходному коду**: `packages/d1/src/components/Ui/CarouselItem`, `packages/constructor/src/constructors/CarouselItem`, `packages/demo/src/pages/components/DemoCarouselItemPage.vue`
 - **Целевой URL**: `http://localhost:3000/component-carousel-item`
 - **Справочные материалы**: `Нет`
-- **Последняя проверка / обновление**: `2026-11-24`
-- **Всего тест-кейсов**: `10`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `12`
 
 ---
 
 ## 1. Обзор матрицы покрытия
 
 | Категория | Код | Кол-во | Приоритеты | Фокус проверки |
-| :--- | :--- | :--- | :--- | :--- |
-| **Визуальное соответствие и токены** | `VIS` | 2 | P0, P1 | Базовый рендеринг, `selected`, `snap`, `image`/`imageAttrs`, `isSkeleton` |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Переключение `selected`, клик и события `click`/`clickLite`/`load`, expose API (`isSelected`, `getSlide`), переключение скелетона |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Нулевой `slide=0`/`value=0`, длинный неразрывный текст, Unicode (вьетнамский/кириллица/эмодзи), ненулевая геометрия |
-| **Адаптивность и вьюпорты** | `RSP` | 2 | P1 | Планшет (`768×1024`) и мобильный (`375×812`) без горизонтального переполнения компонента |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантика `role="group"`, `aria-roledescription="slide"`, `aria-label`, `aria-current="true"`, пользовательский `tag`/`role` |
+| :--- | :--- | :---: | :--- | :--- |
+| **Визуальное соответствие и токены** | `VIS` | 2 | P0, P1 | Базовый рендеринг, `selected`, все 4 режима `snap` (`start`, `center`, `end`, `none`), `image`/`imageAttrs`, `isSkeleton` |
+| **Интерактивность и функционал** | `INT` | 4 | P0, P1 | Переключение `selected`, события `click`/`clickLite`/`load` с payload, полный `expose` API (`isSelected`, `getSlide`, `getValue`, `getDetail`), переключение скелетона и `v-if` |
+| **Границы и крайние случаи** | `BND` | 2 | P1 | Пустой компонент, `slide=""`/`image=""`, `slide=0`/`value=0`, отрицательные и дробные числа (`-1`, `-1.5`), длинный неразрывный текст, узкий `DemoBox`, Unicode, XSS-строка, ссылки `href`/`to` |
+| **Адаптивность и вьюпорты** | `RSP` | 2 | P1 | Планшет (`768×1024`) и мобильный (`375×812` / `320×568`) без горизонтального переполнения |
+| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантика `role="group"`, `aria-roledescription="slide"`, `aria-label`, `aria-hidden`, `tabindex`, пользовательский `tag`/`role` |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | Отсутствие ошибок консоли, `[Vue warn]` и необработанных исключений |
 
 ---
@@ -31,20 +31,20 @@
 - **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-carousel-item`, вьюпорт `1440×900`, светлая тема.
 - **Шаги**:
-  1. Проверить секции `Basic & Selection States`, `Snap Alignments` и `Image & Image Attributes`.
-  2. Проверить модификаторы `.d1-carouselItem--selected`, `.d1-carouselItem--snap--*` и вложенные `D1Image`.
-- **Ожидаемый результат**: Все слайды имеют корректную геометрию, классы модификаторов и видимые изображения без обрезания и наложения.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
+  1. Проверить секции `Basic & Selection States (Scoped Default Slot)`, `Snap Alignments (All 4)` и `Image & Image Attributes`.
+  2. Проверить модификаторы `.d1-carouselItem--selected`, `.d1-carouselItem--snap--start`/`center`/`end`/`none` и вложенные `D1Image`.
+- **Ожидаемый результат**: Все слайды имеют корректную геометрию, классы модификаторов, scoped slot-данные (`selected`, `slide`) и видимые изображения.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
 #### [TC-VIS-002] Состояние загрузки скелетона (`isSkeleton` внутри `D1Skeleton`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-carousel-item`, вьюпорт `1440×900`.
 - **Шаги**:
-  1. Найти `[data-testid="demo-ci-skeleton"]` внутри `D1Skeleton`.
+  1. Найти элемент `D1CarouselItem` внутри `D1Skeleton` в секции `Skeleton Loading State`.
   2. Проверить наличие класса `.d1-skeleton__background`.
 - **Ожидаемый результат**: Компонент получает системный класс скелетона без дублирования DOM.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
 ### 2.2 Интерактивность и функциональный контракт (`INT`)
 
@@ -53,42 +53,60 @@
 - **Категория**: `Интерактивность и функциональный контракт`
 - **Предусловия**: В секции `Basic & Selection States` изначально выбран слайд 1.
 - **Шаги**:
-  1. Кликнуть по `[data-testid="demo-ci-select-2"]`, затем по `[data-testid="demo-ci-select-0"]`.
-  2. Проверить перенос класса `.d1-carouselItem--selected` на `[data-testid="demo-ci-zero"]` и обновление `[data-testid="demo-ci-active-output"]`.
-- **Ожидаемый результат**: Активное состояние корректно переключается, включая числовое значение `0`.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-INT-001.png`)
+  1. Нажать `Select Slide 2`, затем `Select Slide 0`.
+  2. Проверить перенос класса `.d1-carouselItem--selected` на нулевой слайд и обновление `Active Slide` в `DemoValue`.
+- **Ожидаемый результат**: Активное состояние и scoped slot `selected` корректно переключаются, включая числовое значение `0`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] События `click` / `clickLite` и проверка Expose API (`isSelected`, `getSlide`, `value`)
+#### [TC-INT-002] События `click` / `clickLite` / `load` и полный `expose` API (`isSelected`, `getSlide`, `getValue`, `getDetail`)
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Интерактивность и функциональный контракт`
-- **Предусловия**: В секции `Events & Exposed API` отображается `[data-testid="demo-ci-events"]`.
+- **Предусловия**: Открыта секция `Events & Expose API`.
 - **Шаги**:
-  1. Кликнуть по `[data-testid="demo-ci-events"]` и проверить вывод в `[data-testid="demo-ci-event-output"]`.
-  2. Нажать `[data-testid="demo-ci-expose-btn"]` и проверить `[data-testid="demo-ci-expose-output"]`.
-- **Ожидаемый результат**: Фиксируется событие клика и возвращается `isSelected=true, getSlide=4, getValue=promo-4`.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-INT-002.png`)
+  1. Проверить событие `load` после загрузки изображения, затем кликнуть по слайду для фиксации `click` / `clickLite` в `Event Name` и `Event Payload`.
+  2. Нажать `Read Expose API` и затем `Toggle Selected & Read`.
+- **Ожидаемый результат**: Фиксируются события и payload, а `Expose Output` возвращает `isSelected` (меняется с `true` на `false`), `getSlide: 4`, `getValue: "promo-4"`, `getDetail: {"section":"hero"}`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
 #### [TC-INT-003] Динамическое отключение скелетона (`Toggle Skeleton`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функциональный контракт`
-- **Предусловия**: `[data-testid="demo-ci-skeleton"]` активен в режиме скелетона.
+- **Предусловия**: В группе `Skeleton Loading State` активен режим скелетона.
 - **Шаги**:
-  1. Нажать `[data-testid="demo-ci-skeleton-toggle"]`.
+  1. Нажать `Toggle Skeleton`.
   2. Проверить снятие `.d1-skeleton__background`.
 - **Ожидаемый результат**: Класс скелетона снимается, контент слайда отображается в обычном режиме.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-INT-003.png`)
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-003.png`)
+
+#### [TC-INT-004] Условное монтирование и размонтирование (`v-if`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыта секция `Lifecycle & Conditional Mount`.
+- **Шаги**:
+  1. Нажать `Toggle Mount`, убедиться в удалении слайда из DOM и значении `Mounted: false`, затем нажать повторно (`Mounted: true`).
+- **Ожидаемый результат**: Компонент монтируется и размонтируется без ошибок консоли.
+- **Тип доказательства**: `Console/Log`
 
 ### 2.3 Границы и крайние случаи (`BND`)
 
-#### [TC-BND-001] Нулевой индекс `0`, длинный текст и Unicode (вьетнамский / кириллица / эмодзи)
+#### [TC-BND-001] Пустой компонент, `0`, отрицательные/дробные числа, XSS-строка, Unicode и узкий `DemoBox`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Границы и крайние случаи`
-- **Предусловия**: Секции `Basic` и `Custom Tag, ARIA & Slots` загружены.
+- **Предусловия**: Открыты секции `Basic & Selection States` и `Boundary & Edge Cases`.
 - **Шаги**:
   1. Проверить `data-value="0"` и `aria-label` слайда с `slide=0`.
-  2. Проверить отсутствие нулевой ширины/высоты и корректное отображение текста с длинной строкой и Unicode в `[data-testid="demo-ci-empty"]`.
-- **Ожидаемый результат**: Значение `0` не теряется как falsy, все элементы имеют ненулевую геометрию и корректный рендеринг Unicode.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+  2. Проверить рендеринг пустого `<D1CarouselItem/>`, пустых строковых пропсов, `-1`/`-1.5`, одиночного символа `A`, экранированной XSS-строки `<img src=x onerror=alert(1)>`, Unicode и неразрывной строки в узком `DemoBox`.
+- **Ожидаемый результат**: Нули и отрицательные числа не теряются, XSS не выполняется, верстка не ломается.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Ссылки (`href`, `to` строкой и объектом) и полиморфный тег `<a>`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Открыта секция `Links & Custom Tags (to, href, tag, role, ariaLabel)`.
+- **Шаги**:
+  1. Проверить, что слайды с `href` и `to` рендерятся с тегом `<a>` и корректным атрибутом `href`.
+- **Ожидаемый результат**: Ссылочные слайды корректно резолвятся в элемент `<a>`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
 
 ### 2.4 Адаптивность и вьюпорты (`RSP`)
 
@@ -98,29 +116,29 @@
 - **Предусловия**: Изменить размер вьюпорта на `768×1024`.
 - **Шаги**:
   1. Проверить ширину страницы и геометрию всех `D1CarouselItem`.
-- **Ожидаемый результат**: Отсутствует нежелательное переполнение страницы, слайды корректно адаптируются.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-RSP-001.png`)
+- **Ожидаемый результат**: Отсутствует нежелательное переполнение страницы (`scrollWidth <= innerWidth`), слайды корректно адаптируются.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-RSP-001.png`)
 
-#### [TC-RSP-002] Мобильный вьюпорт (`375×812`)
+#### [TC-RSP-002] Мобильный вьюпорт (`375×812` и `320×568`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Адаптивность и вьюпорты`
-- **Предусловия**: Изменить размер вьюпорта на `375×812`.
+- **Предусловия**: Изменить размер вьюпорта на `375×812` и `320×568`.
 - **Шаги**:
   1. Проверить геометрию всех `D1CarouselItem` и отсутствие поломки вёрстки.
 - **Ожидаемый результат**: Компонент корректно помещается в ширину контейнера на мобильном экране.
-- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-RSP-002.png`)
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-RSP-002.png`)
 
 ### 2.5 Доступность (`A11Y`)
 
-#### [TC-A11Y-001] Семантика `role`, `aria-roledescription`, `aria-label`, `aria-current` и кастомный `tag`
+#### [TC-A11Y-001] Семантика `role`, `aria-roledescription`, `aria-label`, `aria-hidden`, `tabindex` и кастомный `tag`
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Доступность`
 - **Предусловия**: Страница загружена.
 - **Шаги**:
-  1. Проверить `role="group"`, `aria-roledescription="slide"`, `aria-label="1 / 3"` на базовых слайдах.
-  2. Проверить `tagName === 'ARTICLE'`, `role="listitem"`, `aria-label="Featured promotional slide"` на `[data-testid="demo-ci-custom-aria"]`.
+  1. Проверить `role="group"`, `aria-roledescription="slide"`, `aria-label="1 / 3"` на выбранном слайде и `aria-hidden="true"` / `tabindex="-1"` на невыбранном слайде.
+  2. Проверить `tagName === 'ARTICLE'`, `role="listitem"`, `aria-label="Featured promotional slide"` на слайде с кастомным тегом.
 - **Ожидаемый результат**: Все WAI-ARIA атрибуты и теги строго соответствуют контракту.
-- **Тип подтверждения**: `Console/Log`
+- **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)
 
@@ -131,4 +149,4 @@
 - **Шаги**:
   1. Проверить накопленные ошибки и предупреждения после всех интерактивных проверок.
 - **Ожидаемый результат**: `0` ошибок консоли, `0` `[Vue warn]`, `0` исключений страницы.
-- **Тип подтверждения**: `Console/Log`
+- **Тип доказательства**: `Console/Log`

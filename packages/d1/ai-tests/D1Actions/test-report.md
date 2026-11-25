@@ -3,13 +3,13 @@
 ## 1. Сводка выполнения
 
 - **Компонент:** `D1Actions` (`@dxtmisha/d1`)
-- **Исходный код:** [`D1Actions`](../../src/components/Ui/Actions), [`Actions`](../../../constructor/src/constructors/Actions)
+- **Исходный код:** [`D1Actions`](../../src/components/Ui/Actions), [`Actions`](../../../constructor/src/constructors/Actions), [`DemoActionsPage.vue`](../../../demo/src/pages/components/DemoActionsPage.vue)
 - **Целевой URL:** `http://localhost:3000/component-actions`
 - **Материалы (`materials/`):** `Отсутствуют`
-- **Дата тестирования (UTC):** `2026-11-23T14:37:32Z`
-- **Окружение:** `Headless Chrome (Chrome/157.0.8103.79, Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
-- **Покрытие тест-кейсов:** `14 / 14` (`100%`)
-- **Итог:** **14 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — все визуальные, интерактивные, граничные (включая числовой `label: 0`), адаптивные, A11y и runtime-сценарии `D1Actions` пройдены без единого предупреждения и сетевой ошибки (`vueWarnings: []`, `pageErrors: []`, `consoleErrors: []`, `networkErrors: []`).
+- **Дата тестирования (UTC):** `2026-11-25T04:14:59Z`
+- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Покрытие тест-кейсов:** `17 / 17` (`100%`)
+- **Итог:** **17 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — все 10 режимов `flexible`, состояния блокировки (`disabled`/`readonly`/`loading`), скелетон, события с payload, A11y, граничные кейсы с усечением длинных меток (`ellipsis`) на мобильных вьюпортах и runtime-здоровье пройдены на 100% без ошибок и предупреждений (`consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`).
 
 ---
 
@@ -19,50 +19,53 @@
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг списков (`list`, `list + listSecondary`, `listSecondary`) и спейсера | ✅ | Отрендерено `39` экземпляров `.d1-actions` на странице, в группе `Basic Lists` — `3` блока (`1246×64px`, `gap: 8px`), `.d1-actions__spacer` разделяет группы (`Cancel`/`Apply` справа по умолчанию, `Delete` слева), `scrollWidth: 1440 === innerWidth: 1440`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Варианты выравнивания (`right`, `left`, `center`, `block`, `auto`, `none`) | ✅ | CSS `order` убран, порядок полностью корректен: `align="right"` -> `Delete` слева (`113px`), `Cancel`/`Apply` справа (`1159px`); `align="left"` и `align="none"` -> primary слева (`113px`), secondary справа (`1247px`); `center` (`justifyContent: center`), `block` (`column-reverse`), `auto` (`flexGrow: 1`). | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
-| `TC-VIS-003` | Варианты отступов (`padding`, `paddingByIndent`) и `buttonAttrs` / `buttonSecondaryAttrs` | ✅ | При `:paddingByIndent="false"` варианты `padding` корректно применяются (`sm`: `8/12px`, `md`: `12/16px`, `lg`: `16/20px`, `ySm`: `8/0px`, `yMd`: `12/0px`, `yLg`: `16/0px`, `none`: `0/0px`); при дефолтном `paddingByIndent: true` (`padding="lg"`) подтверждён ожидаемый приоритет `.d1-actions--paddingByIndent` (`8/16px`). `buttonAttrs`/`buttonSecondaryAttrs` применены ко всем `3` блокам. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
-| `TC-VIS-004` | Состояния кнопок, иконки и слоты (`#default`, `#secondary`) | ✅ | В группе `Slots` отрендерены `[2, 1, 2, 5]` кнопок; в группе `Button States & Icons` все `8` состояний (`disabled`, `readonly`, `selected`, `focus`, `loading`, `skeleton`, `icon`, `iconTrailing`) отображены корректно (`disabledCount: 1`, `hasSkeleton: true`), ведущая иконка имеет `pointer-events: none`, хвостовая — `pointer-events: auto`. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
+| `TC-VIS-001` | Базовый рендеринг списков (`list`, `list + listSecondary`, `listSecondary`) и спейсера | ✅ | На странице `50` экземпляров `.d1-actions`, в группе `Basic Lists` — `3` блока и `3` `.d1-actions__spacer`, на десктопе `scrollWidth: 1440 === 1440`; короткие кнопки выровнены чисто. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Варианты выравнивания (`right`, `left`, `center`, `block`, `auto`, `none`) | ✅ | Классы `.d1-actions--align--{right,left,center,block,auto,none}` и направления (`block` -> `column-reverse`, остальные `row`) применены точно. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Варианты отступов (`padding`, `paddingByIndent`) и `buttonAttrs` / `buttonSecondaryAttrs` | ✅ | При `:paddingByIndent="false"` отступы соответствуют токенам (`sm` `8/12px`, `md` `12/16px`, `lg` `16/20px`, `ySm` `8/0px`, `yMd` `12/0px`, `yLg` `16/0px`, `none` `0/0px`); при `paddingByIndent: true` приоритет у `8/16px`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-004` | Состояния кнопок, скелетон `D1Skeleton`, иконки и слоты (`#default`, `#secondary`) | ✅ | Присутствуют `disabledCount: 1`, `readonlyCount: 1`, `selectedCount: 1`, `focusCount: 1`, индикатор загрузки и активный `D1Skeleton` с двумя плейсхолдерами; текст и иконки центрированы без смещения. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Перенос (`wrap` vs `:wrap="false"`) и динамическое переключение выравнивания | ✅ | В `Wrap & Multi-Item Layout` первый блок имеет `.d1-actions--wrap`, второй не имеет. При кликах по `Align Left`, `Align Center`, `Align Block`, `Align Right` целевой блок сменил классы и обновил `DemoValue` (`Value: right (2 items)`). | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Динамическое добавление, очистка и сброс элементов списка | ✅ | Стартово `3` кнопки (`2` items + `1` secondary) -> после `2` кликов `Add Item`: `4`, затем `5` кнопок (`Value: right (4 items)`) -> после `Clear`: `1` кнопка (осталась `secondary`, `Value: right (0 items)`) -> после `Reset`: `3` кнопки (`Value: right (2 items)`). | ![TC-INT-002](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | События `@click`, `@click-lite` и композиция обработчиков (`mergeProps`) | ✅ | Клики по `Apply` и `Delete` зафиксировали консольные логи `Event: click` и `Event: clickLite` (`Value: clickLite`); клик по `Save & Notify` вызвал все 3 обработчика без затирания (`Value: mergedClick` и `Value: emit + buttonAttrs + item`). | ![TC-INT-003](./screenshots/TC-INT-003.png) |
+| `TC-INT-001` | Перенос (`wrap`) и динамическое переключение всех 6 значений `align` | ✅ | Кнопки `Align Left`, `Align Auto`, `Align None`, `Align Right` реактивно обновляют раскладку и `Value: right (2 items, mounted: true)`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Добавление, перестановка (`Reorder`), очистка, сброс и жизненный цикл `v-if` | ✅ | После `Add Item` + `Reorder` кнопки: `["Delete", "Extra 3", "Confirm", "Cancel"]`; `Clear` -> `0 items`; `Unmount Actions` -> `actionsCount: 0, mounted: false`; `Mount Actions` восстанавливает блок. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
+| `TC-INT-003` | События `@click`, `@click-lite`, `Payload` и композиция (`mergeProps`) | ✅ | Зафиксированы `Value: mergedClick`, `Payload: ["click",{"type":"click","value":"save-notify"}]` и `Order: emit + buttonAttrs + item`. | ![TC-INT-003](./screenshots/TC-INT-003.png) |
+| `TC-INT-004` | Блокировка кликов для `disabled`, `readonly`, `loading` и динамических переключателей | ✅ | Клики по `Disabled`, `Readonly`, `Loading` оставили `Last Enabled Click: none`; клик по `Enabled` -> `enabled`; после `Toggle Disabled` клик по `Apply` заблокирован (`enabled`). | — |
+| `TC-INT-005` | Восстановление интерактивности после снятия `Toggle Disabled` | ✅ | После повторного нажатия `Toggle Disabled` клик по `Apply` обновил `Last Enabled Click: apply`. | — |
 
 ### 2.3 Граничные случаи и устойчивость (`BND`)
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Пустые массивы `[]`, пустой компонент, числовой `label: 0` и длинный текст кнопки | ✅ | `<D1Actions />` и `:list="[]" :listSecondary="[]"` отрендерили по `0` кнопок и `1` `.d1-actions__spacer`; третий блок отрендерил `3` кнопки (`"0"`, `"Single Action"`, `"Extremely Long Action Button Text For Layout Boundaries"`) без переполнения (`width: 1246px, scrollWidth: 1246px`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
-| `TC-BND-002` | Устойчивость при серии из 5 быстрых повторных кликов | ✅ | Выполнено `5` быстрых кликов по `Apply`, зафиксировано `10` событий (`click` + `clickLite` на каждый клик), ошибок и деградации DOM нет. | — |
+| `TC-BND-001` | Пустые массивы `[]`, `0`, `-10`, `3.14`, `"A"`, `""`, `"   "` и длинный текст | ✅ | Пустые блоки рендерят `0` кнопок без ошибок; числа `0`, `-10`, `3.14` и `"A"` отображаются корректно. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Устойчивость при серии из 5 быстрых кликов | ✅ | Выполнено `5` быстрых кликов по `Apply`, `consoleErrors: 0`. | — |
+| `TC-BND-003` | Неразрывный токен, длинный заголовок кнопки, Unicode и экранирование XSS | ✅ | На `375×812` (`btnWidth: 301 === btnScrollWidth: 301`, `boxWidth: 351`) и `320×568` (`btnWidth: 246 === btnScrollWidth: 246`, `boxWidth: 296`) длинные и неразрывные метки аккуратно усекаются через `text-overflow: ellipsis` (`display: block`, `overflow: hidden`) без переполнения (`pageScrollWidth === innerWidth`); XSS (`xssImgCount: 0`) экранирован. | ![TC-BND-003](./screenshots/TC-BND-003.png) |
 
 ### 2.4 Адаптивность и вьюпорты (`RSP`)
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптивное поведение `flexible="adaptiveMd"` (`1440`, `768`, `375`, `320`) | ✅ | На `1440×900` и `768×1024`: `flexDirection: row`, `secondaryDisplay: flex`, `spacerDisplay: block`. На `375×812` (`boxWidth: 325, scrollWidth: 325`) и `320×568` (`boxWidth: 270, scrollWidth: 270`): перестроение в `column-reverse`, `secondaryDisplay: none`, `spacerDisplay: none`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
-| `TC-RSP-002` | Контейнерное поведение `flexible="containerMd"` с `DemoBox container` (`1440`, `768`, `375`, `320`) | ✅ | Обе обёртки имеют `parentContainerType: inline-size`. На `1440×900`: широкий `containerMd` (`1246px`) в `row` (`secondaryDisplay: flex`), узкий `480px` (`boxWidth: 446 === scrollWidth: 446`) переключился в `column-reverse` (`secondaryDisplay: none`, `spacerDisplay: none`). На `768×1024`: `adaptiveMd` остался в `row`, а `containerMd` (`702px < 768px`) уже перешёл в `column-reverse`. На `375×812` (`325 === 325`) и `320×568` (`270 === 270`) все блоки в `column-reverse` без переполнения. | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
+| `TC-RSP-001` | Все 5 режимов `adaptive*` (`adaptiveSm`..`adaptive2xl`) на `1440`, `768`, `375`, `320` | ✅ | Переполнение отсутствует на всех 4 вьюпортах: `1440 === 1440`, `768 === 768`, `375 === 375`, `320 === 320`; `adaptiveMd` перестраивается в `column-reverse` на `< 768px`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-002` | Все 5 режимов `container*` (`containerSm`..`container2xl`) внутри `DemoBox container` | ✅ | При `768×1024`: `adaptiveMd` остаётся в `row`, а `containerMd` уже перешёл в `column-reverse`; на `375×812` и `320×568` все блоки адаптируются без переполнения. | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | Проверка `role`, `ariaLabel`, `textActions` и значения по умолчанию | ✅ | Первый блок `Accessibility & Semantics`: `role="toolbar"`, `aria-label="Document Editing Actions"`; второй блок: `aria-label="Custom Actions Landmark"`; базовый блок: `aria-label="Actions"`. | — |
-| `TC-A11Y-002` | Клавиатурная навигация `Tab` и активация `Enter` | ✅ | Переход клавишей `Tab` с `Delete` перевёл фокус на кнопку `Cancel` (`tagName: BUTTON`), нажатие `Enter` вызвало оба события (`Event: click`, `Event: clickLite`). | — |
+| `TC-A11Y-001` | Проверка `role`, `ariaLabel` и `textActions` | ✅ | `firstRole: "toolbar"`, `firstLabel: "Document Editing Actions"`, `secondLabel: "Custom Actions Landmark"`, `defaultLabel: "Actions"`. | — |
+| `TC-A11Y-002` | Клавиатурная навигация `Tab` и активация `Enter` | ✅ | Фокус по `Tab` и нажатие `Enter` вызвали событие (`Value: clickLite`). | — |
 
-### 2.6 Логи и консоль (`LOG`)
+### 2.6 Консоль и стабильность runtime (`LOG`)
 
 | ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | Чистота консоли, Vue-предупреждений и сетевых запросов | ✅ | `vueWarnings: []`, `pageErrors: []`, `consoleErrors: []`, `networkErrors: []` на всех сценариях и вьюпортах. | — |
+| `TC-LOG-001` | Чистота консоли, Vue-предупреждений и сетевых запросов | ✅ | `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`. | — |
 
 ---
 
 ## 3. AI-аудит и рекомендации
 
-1. **Приоритет `paddingByIndent` над `padding`:** В текущей архитектуре `D1Actions` свойство `paddingByIndent` по умолчанию включено (`true`) и объявлено после `.d1-actions--padding--*`, поэтому перебивает `padding` стандартными отступами контейнера (`--d1-layout-paddingX/Y`). Это ожидаемое поведение (явно отражено в демо-примерах и D1-тестах); чтобы применить `padding="sm" | "md" | "lg" | ...`, необходимо передавать `:paddingByIndent="false"`.
-2. **Контейнерные запросы (`@container` / `flexible="container*"`):** Модификаторы `containerSm`..`container2xl` требуют наличия `container-type: inline-size` у родительского контейнера: в `DemoBox.vue` добавлен проп `container` (`.demo-box--container`), а в Storybook для `ActionsFlexible` используется класс `.wiki-storybook-container`.
-3. **Порядок обработчиков в `mergeProps`:** `this.item.i('event').onClick` передаётся первым аргументом в `mergeProps`, поэтому `@click`/`@click-lite` эмит компонента срабатывает перед `buttonAttrs.onClick` и `item.onClick` (`emit + buttonAttrs + item`) без перезатирания.
+1. **Усечение длинных меток в `Button/style.scss` и `Actions/style.scss`:** Ограничение `max-width: 100%` на корневом элементе кнопки, `min-width: 0; max-width: 100%;` в `Actions` и перевод `Button__label` на `display: block; min-width: 0;` включили штатное усечение `text-overflow: ellipsis` (`...`) без обрезания левого/правого краёв и без горизонтального скролла (`scrollWidth === innerWidth` на всех разрешениях от `1440px` до `320px`).
+2. **Изоляция `wrap: false` в демо-стенде:** В `DemoActionsPage.vue` для примера `:wrap="false"` из 8 кнопок добавлен `.demo-actions-page__nowrap-container { overflow-x: auto; }`, чтобы демонстрация намеренного непереноса прокручивалась локально внутри `DemoBox`.
+3. **Полное покрытие `flexible` и блокирующих состояний:** Все 10 значений `flexible` (`adaptiveSm`..`2xl` и `containerSm`..`2xl`) и все состояния блокировки (`disabled`, `readonly`, `loading`) работают корректно.

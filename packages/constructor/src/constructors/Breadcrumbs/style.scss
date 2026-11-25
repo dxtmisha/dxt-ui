@@ -3,4 +3,6 @@
 @mixin mixinBreadcrumbs {
   @include ui.flexX;
   flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
 }

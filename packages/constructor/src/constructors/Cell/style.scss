@@ -17,6 +17,7 @@
     flex-wrap: wrap;
     @include ui.flexDynamic;
     min-width: 0;
+    overflow-wrap: anywhere;
 
     order: 4;
   }
@@ -25,18 +26,26 @@
     @include ui.flex;
     align-self: center;
     flex-basis: auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     gap: inherit;
   }
 
   &__caption {
     align-self: center;
     @include ui.flexDynamic;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   &__description {
     @include ui.flex;
     grid-area: description;
     flex-basis: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     gap: inherit;
   }
 
@@ -50,6 +59,8 @@
 
   &__body {
     flex-basis: 100%;
+    min-width: 0;
+    max-width: 100%;
     order: 1999999;
   }
 

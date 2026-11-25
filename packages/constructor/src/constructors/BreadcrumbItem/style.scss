@@ -2,12 +2,19 @@
 
 @mixin mixinBreadcrumbItem {
   @include ui.flexX;
+  min-width: 0;
+  max-width: 100%;
 
   text-decoration: none;
   color: inherit;
 
   > * {
     order: 4;
+  }
+
+  &__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   &--back {

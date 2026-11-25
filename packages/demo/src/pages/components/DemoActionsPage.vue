@@ -10,12 +10,33 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
-const dynamicAlign = ref<'right' | 'left' | 'center' | 'block'>('right')
+const eventPayload = ref<string>('none')
+const dynamicAlign = ref<'right' | 'left' | 'center' | 'block' | 'auto' | 'none'>('right')
 const dynamicList = shallowRef<ConstrBind<ButtonProps>[]>([
   { label: 'Cancel', text: true, value: 'cancel' },
   { label: 'Confirm', primary: true, value: 'confirm' }
 ])
 const customClickLog = ref<string[]>([])
+const blockedStateLog = ref<string>('none')
+const dynamicDisabled = ref(false)
+const dynamicLoading = ref(false)
+const dynamicSkeleton = ref(false)
+const lifecycleMounted = ref(true)
+
+const recordEvent = (name: string, ...args: unknown[]): void => {
+  onEvent(name, ...args)
+  try {
+    const serialized = args.map((item) => {
+      if (typeof Event !== 'undefined' && item instanceof Event) {
+        return item.type
+      }
+      return item
+    })
+    eventPayload.value = serialized.length > 0 ? JSON.stringify(serialized) : 'no payload'
+  } catch {
+    eventPayload.value = name
+  }
+}
 
 const pushClickLog = (source: string) => {
   customClickLog.value = [...customClickLog.value, source]
@@ -27,6 +48,10 @@ const onAddDynamicItem = () => {
     ...dynamicList.value,
     { label: `Extra ${nextIndex}`, outline: true, value: `extra-${nextIndex}` }
   ]
+}
+
+const onReorderDynamicList = () => {
+  dynamicList.value = [...dynamicList.value].reverse()
 }
 
 const onClearDynamicList = () => {
@@ -75,9 +100,14 @@ const listWithStates: ButtonProps[] = [
   { label: 'Selected', selected: true, value: 'selected' },
   { label: 'Focus', focus: true, value: 'focus' },
   { label: 'Loading', loading: true, value: 'loading' },
-  { label: 'Skeleton', isSkeleton: true, value: 'skeleton' },
+  { label: 'Enabled', outline: true, value: 'enabled' },
   { label: 'With Icon', icon: 'download', outline: true, value: 'download' },
   { label: 'Save', iconTrailing: 'check', primary: true, value: 'save' }
+]
+
+const listSkeleton: ButtonProps[] = [
+  { label: 'Skeleton Primary', isSkeleton: true, value: 'skeleton-primary' },
+  { label: 'Skeleton Secondary', isSkeleton: true, outline: true, value: 'skeleton-secondary' }
 ]
 
 const listMany: ButtonProps[] = [
@@ -90,6 +120,22 @@ const listMany: ButtonProps[] = [
   { label: 'Action 7', outline: true, value: '7' },
   { label: 'Action 8', primary: true, value: '8' }
 ]
+
+const adaptiveFlexibleModes = [
+  'adaptiveSm',
+  'adaptiveMd',
+  'adaptiveLg',
+  'adaptiveXl',
+  'adaptive2xl'
+] as const
+
+const containerFlexibleModes = [
+  'containerSm',
+  'containerMd',
+  'containerLg',
+  'containerXl',
+  'container2xl'
+] as const
 </script>
 
 <template>
@@ -222,34 +268,68 @@ const listMany: ButtonProps[] = [
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Button States & Icons">
+      <D1Group label="Button States, Blocked Actions & Icons">
         <DemoBox>
-          <D1Actions :list="listWithStates" />
+          <D1Actions
+            :list="listWithStates"
+            @click-lite="(value) => { blockedStateLog = String(value?.value ?? 'none') }"
+          />
         </DemoBox>
+        <DemoBox>
+          <D1Skeleton :active="true">
+            <D1Actions :list="listSkeleton" />
+          </D1Skeleton>
+        </DemoBox>
+        <DemoFlex>
+          <D1Button label="Toggle Disabled" size="sm" outline @click="dynamicDisabled = !dynamicDisabled" />
+          <D1Button label="Toggle Loading" size="sm" outline @click="dynamicLoading = !dynamicLoading" />
+          <D1Button label="Toggle Skeleton" size="sm" outline @click="dynamicSkeleton = !dynamicSkeleton" />
+        </DemoFlex>
+        <DemoBox>
+          <D1Skeleton :active="dynamicSkeleton">
+            <D1Actions
+              :list="listBasic"
+              :buttonAttrs="{
+                disabled: dynamicDisabled,
+                loading: dynamicLoading,
+                isSkeleton: dynamicSkeleton
+              }"
+              @click-lite="(value) => { blockedStateLog = String(value?.value ?? 'none') }"
+            />
+          </D1Skeleton>
+        </DemoBox>
+        <DemoValue label="Last Enabled Click" :value="blockedStateLog" />
       </D1Group>
 
       <D1Group label="Wrap & Multi-Item Layout">
         <DemoBox>
           <D1Actions :list="listMany" wrap />
         </DemoBox>
-        <DemoBox>
+        <DemoBox class="demo-actions-page__nowrap-container">
           <D1Actions :list="listMany" :wrap="false" />
         </DemoBox>
       </D1Group>
 
       <D1Group label="Flexibility (Adaptive & Container)">
-        <DemoBox>
+        <DemoBox
+          v-for="mode in adaptiveFlexibleModes"
+          :key="mode"
+        >
           <D1Actions
             :list="listBasic"
             :listSecondary="listSecondary"
-            flexible="adaptiveMd"
+            :flexible="mode"
           />
         </DemoBox>
-        <DemoBox container>
+        <DemoBox
+          v-for="mode in containerFlexibleModes"
+          :key="mode"
+          container
+        >
           <D1Actions
             :list="listBasic"
             :listSecondary="listSecondary"
-            flexible="containerMd"
+            :flexible="mode"
           />
         </DemoBox>
         <DemoBox container class="demo-actions-page__narrow-container">
@@ -272,8 +352,22 @@ const listMany: ButtonProps[] = [
           <D1Actions
             :list="[
               { label: 0, outline: true, value: 0 },
-              { label: 'Single Action', primary: true, value: 'single' },
+              { label: -10, outline: true, value: -10 },
+              { label: 3.14, outline: true, value: 3.14 },
+              { label: 'A', outline: true, value: 'single-char' },
+              { label: '', outline: true, value: 'empty-label' },
+              { label: '   ', outline: true, value: 'whitespace-label' },
               { label: 'Extremely Long Action Button Text For Layout Boundaries', outline: true, value: 'long' }
+            ]"
+            wrap
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions
+            :list="[
+              { label: 'UnbrokenActionTokenWithoutSpaces1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', outline: true, value: 'unbroken' },
+              { label: 'Unicode • Tiếng Việt • Кириллица 🚀', outline: true, value: 'unicode' },
+              { label: '<img src=x onerror=alert(1)>', outline: true, value: 'xss' }
             ]"
             wrap
           />
@@ -297,24 +391,33 @@ const listMany: ButtonProps[] = [
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Dynamic Controls">
+      <D1Group label="Dynamic Controls & Lifecycle">
         <DemoFlex>
           <D1Button label="Align Left" size="sm" outline @click="dynamicAlign = 'left'" />
           <D1Button label="Align Right" size="sm" outline @click="dynamicAlign = 'right'" />
           <D1Button label="Align Center" size="sm" outline @click="dynamicAlign = 'center'" />
           <D1Button label="Align Block" size="sm" outline @click="dynamicAlign = 'block'" />
+          <D1Button label="Align Auto" size="sm" outline @click="dynamicAlign = 'auto'" />
+          <D1Button label="Align None" size="sm" outline @click="dynamicAlign = 'none'" />
           <D1Button label="Add Item" size="sm" outline @click="onAddDynamicItem" />
+          <D1Button label="Reorder" size="sm" outline @click="onReorderDynamicList" />
           <D1Button label="Clear" size="sm" outline @click="onClearDynamicList" />
           <D1Button label="Reset" size="sm" primary @click="onResetDynamicList" />
+          <D1Button
+            :label="lifecycleMounted ? 'Unmount Actions' : 'Mount Actions'"
+            size="sm"
+            secondary
+            @click="lifecycleMounted = !lifecycleMounted"
+          />
         </DemoFlex>
-        <DemoBox>
+        <DemoBox v-if="lifecycleMounted">
           <D1Actions
             :list="dynamicList"
             :listSecondary="listSecondary"
             :align="dynamicAlign"
           />
         </DemoBox>
-        <DemoValue :value="`${dynamicAlign} (${dynamicList.length} items)`" />
+        <DemoValue :value="`${dynamicAlign} (${dynamicList.length} items, mounted: ${lifecycleMounted})`" />
       </D1Group>
 
       <D1Group label="Events & Handler Composition">
@@ -322,8 +425,8 @@ const listMany: ButtonProps[] = [
           <D1Actions
             :list="listBasic"
             :listSecondary="listSecondary"
-            @click="(event, value) => onEvent('click', event, value)"
-            @click-lite="(value) => onEvent('clickLite', value)"
+            @click="(event, value) => recordEvent('click', event, value)"
+            @click-lite="(value) => recordEvent('clickLite', value)"
           />
         </DemoBox>
         <DemoBox>
@@ -332,12 +435,13 @@ const listMany: ButtonProps[] = [
             :buttonAttrs="sharedButtonAttrsWithClick"
             @click="(event, value) => {
               pushClickLog('emit')
-              onEvent('mergedClick', event, value)
+              recordEvent('mergedClick', event, value)
             }"
           />
         </DemoBox>
         <DemoValue :value="eventName" />
-        <DemoValue :value="customClickLog.join(' + ') || 'none'" />
+        <DemoValue label="Payload" :value="eventPayload" />
+        <DemoValue label="Order" :value="customClickLog.join(' + ') || 'none'" />
       </D1Group>
     </D1Section>
   </D1Page>
@@ -347,6 +451,10 @@ const listMany: ButtonProps[] = [
 .demo-actions-page {
   &__narrow-container {
     max-width: 480px;
+  }
+
+  &__nowrap-container {
+    overflow-x: auto;
   }
 }
 </style>

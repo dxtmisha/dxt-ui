@@ -18,6 +18,8 @@
     align-items: center;
     justify-content: center;
     @include ui.absolute;
+    overflow: hidden;
+    border-radius: inherit;
     z-index: 12;
 
     text-align: center;

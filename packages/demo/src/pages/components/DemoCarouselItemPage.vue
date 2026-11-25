@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { CarouselItemExpose } from '@dxtmisha/constructor/CarouselItem'
+import { nextTick, ref } from 'vue'
+import type { CarouselItemExpose, EventClickValue } from '@dxtmisha/constructor/CarouselItem'
+import type { ImageEventData } from '@dxtmisha/constructor/Image'
+import type { CarouselItemProps } from '@dxtmisha/d1/D1CarouselItem'
 import { useDemoEvent } from '../../composables/useDemoEvent'
-
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+const snapModes: NonNullable<CarouselItemProps['snap']>[] = ['start', 'center', 'end', 'none']
+
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 const createSlideDataUri = (title: string, color: string): string => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><rect width="640" height="360" fill="${color}"/><circle cx="520" cy="90" r="56" fill="rgba(255,255,255,0.22)"/><text x="320" y="195" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="36" font-weight="700">${title}</text></svg>`
@@ -21,15 +25,55 @@ const slideImageTertiary = createSlideDataUri('Slide 3', '#7c3aed')
 
 const activeSlide = ref<number>(1)
 const isSkeleton = ref<boolean>(true)
-const exposeRef = ref<CarouselItemExpose>()
+const isExposeSelected = ref<boolean>(true)
+const isLifecycleMounted = ref<boolean>(true)
+
+const exposeReference = ref<CarouselItemExpose | null>(null)
 const exposeOutput = ref<string>('Click a button to inspect exposed API')
 
-const inspectExpose = (): void => {
-  if (!exposeRef.value) {
+const handleClickEvent = (
+  mouseEvent: MouseEvent,
+  clickValue: EventClickValue
+): void => {
+  const payload = {
+    eventType: mouseEvent.type,
+    value: clickValue
+  }
+  onEvent('click', payload)
+  eventPayload.value = JSON.stringify(payload)
+}
+
+const handleClickLiteEvent = (clickValue: EventClickValue): void => {
+  onEvent('clickLite', clickValue)
+  eventPayload.value = JSON.stringify(clickValue)
+}
+
+const handleLoadEvent = (imageEvent: ImageEventData): void => {
+  const payload = {
+    type: imageEvent.type,
+    src: typeof imageEvent.image === 'string' ? imageEvent.image : imageEvent.image?.src
+  }
+  onEvent('load', payload)
+  eventPayload.value = JSON.stringify(payload)
+}
+
+const readAllExpose = async (): Promise<void> => {
+  await nextTick()
+  if (!exposeReference.value) {
     return
   }
 
-  exposeOutput.value = `isSelected=${exposeRef.value.isSelected()}, getSlide=${exposeRef.value.getSlide()}, getValue=${String(exposeRef.value.getValue())}`
+  exposeOutput.value = JSON.stringify({
+    isSelected: exposeReference.value.isSelected(),
+    getSlide: exposeReference.value.getSlide(),
+    getValue: exposeReference.value.getValue?.(),
+    getDetail: exposeReference.value.getDetail?.()
+  })
+}
+
+const toggleExposeSelected = async (): Promise<void> => {
+  isExposeSelected.value = !isExposeSelected.value
+  await readAllExpose()
 }
 </script>
 
@@ -37,11 +81,10 @@ const inspectExpose = (): void => {
   <DemoLinkBlack/>
   <D1Page label="CarouselItem">
     <D1Section>
-      <D1Group label="Basic & Selection States">
-        <div class="demo-carousel-item-page__track" data-testid="demo-ci-basic">
+      <D1Group label="Basic & Selection States (Scoped Default Slot)">
+        <div class="demo-carousel-item-page__track">
           <D1CarouselItem
             class="demo-carousel-item-page__slide"
-            data-testid="demo-ci-selected"
             :slide="1"
             :total="3"
             :selected="activeSlide === 1"
@@ -58,7 +101,6 @@ const inspectExpose = (): void => {
 
           <D1CarouselItem
             class="demo-carousel-item-page__slide"
-            data-testid="demo-ci-unselected"
             :slide="2"
             :total="3"
             :selected="activeSlide === 2"
@@ -75,7 +117,6 @@ const inspectExpose = (): void => {
 
           <D1CarouselItem
             class="demo-carousel-item-page__slide"
-            data-testid="demo-ci-zero"
             :slide="0"
             :total="3"
             :selected="activeSlide === 0"
@@ -83,40 +124,38 @@ const inspectExpose = (): void => {
             :image="slideImageTertiary"
             @click="activeSlide = 0"
           >
-            <template #default="{ slide }">
+            <template #default="{ selected, slide }">
               <div class="demo-carousel-item-page__caption">
-                Numeric zero slide ({{ slide }})
+                Numeric zero slide ({{ slide }}) — {{ selected ? 'Selected' : 'Inactive' }}
               </div>
             </template>
           </D1CarouselItem>
         </div>
         <DemoFlex>
-          <D1Button data-testid="demo-ci-select-1" size="sm" outline label="Select Slide 1" @click="activeSlide = 1" />
-          <D1Button data-testid="demo-ci-select-2" size="sm" outline label="Select Slide 2" @click="activeSlide = 2" />
-          <D1Button data-testid="demo-ci-select-0" size="sm" outline label="Select Slide 0" @click="activeSlide = 0" />
+          <D1Button size="sm" outline label="Select Slide 1" @click="activeSlide = 1"/>
+          <D1Button size="sm" outline label="Select Slide 2" @click="activeSlide = 2"/>
+          <D1Button size="sm" outline label="Select Slide 0" @click="activeSlide = 0"/>
         </DemoFlex>
-        <DemoValue data-testid="demo-ci-active-output" :value="activeSlide" />
+        <DemoValue label="Active Slide" :value="activeSlide"/>
       </D1Group>
 
-      <D1Group label="Snap Alignments">
-        <div class="demo-carousel-item-page__grid" data-testid="demo-ci-snap">
-          <D1CarouselItem snap="start" slide="start" :total="4" selected>
-            <DemoBox>snap="start"</DemoBox>
-          </D1CarouselItem>
-          <D1CarouselItem snap="center" slide="center" :total="4">
-            <DemoBox>snap="center"</DemoBox>
-          </D1CarouselItem>
-          <D1CarouselItem snap="end" slide="end" :total="4">
-            <DemoBox>snap="end"</DemoBox>
-          </D1CarouselItem>
-          <D1CarouselItem snap="none" slide="none" :total="4">
-            <DemoBox>snap="none"</DemoBox>
+      <D1Group label="Snap Alignments (All 4)">
+        <div class="demo-carousel-item-page__grid">
+          <D1CarouselItem
+            v-for="snapMode in snapModes"
+            :key="snapMode"
+            :snap="snapMode"
+            :slide="snapMode"
+            :total="4"
+            :selected="snapMode === 'start'"
+          >
+            <DemoBox>snap="{{ snapMode }}"</DemoBox>
           </D1CarouselItem>
         </div>
       </D1Group>
 
       <D1Group label="Image & Image Attributes">
-        <div class="demo-carousel-item-page__grid" data-testid="demo-ci-images">
+        <div class="demo-carousel-item-page__grid">
           <D1CarouselItem
             class="demo-carousel-item-page__slide"
             :slide="1"
@@ -134,26 +173,46 @@ const inspectExpose = (): void => {
         </div>
       </D1Group>
 
-      <D1Group label="Custom Tag, ARIA & Slots">
-        <div class="demo-carousel-item-page__grid" data-testid="demo-ci-aria">
+      <D1Group label="Links & Custom Tags (to, href, tag, role, ariaLabel)">
+        <div class="demo-carousel-item-page__grid">
           <D1CarouselItem
-            data-testid="demo-ci-custom-aria"
-            tag="article"
-            role="listitem"
-            aria-label="Featured promotional slide"
             :slide="1"
-            :total="5"
+            :total="4"
             selected
+            href="https://example.com"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <DemoBox>Custom tag="article", role="listitem", custom aria-label</DemoBox>
+            <DemoBox>Link Slide (href -> tag a)</DemoBox>
           </D1CarouselItem>
 
           <D1CarouselItem
-            data-testid="demo-ci-empty"
             :slide="2"
-            :total="5"
+            :total="4"
+            selected
+            to="/component-carousel-item"
           >
-            <DemoBox class="demo-carousel-item-page__wrap">Long unbroken text: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA &amp; Tiếng Việt / Кириллица / 🚀</DemoBox>
+            <DemoBox>Router Link String (to -> tag a)</DemoBox>
+          </D1CarouselItem>
+
+          <D1CarouselItem
+            :slide="3"
+            :total="4"
+            selected
+            :to="{ name: 'home' }"
+          >
+            <DemoBox>Router Link Object (to -> tag a)</DemoBox>
+          </D1CarouselItem>
+
+          <D1CarouselItem
+            tag="article"
+            role="listitem"
+            aria-label="Featured promotional slide"
+            :slide="4"
+            :total="4"
+            selected
+          >
+            <DemoBox>Custom tag="article", role="listitem", custom aria-label</DemoBox>
           </D1CarouselItem>
         </div>
       </D1Group>
@@ -161,7 +220,6 @@ const inspectExpose = (): void => {
       <D1Group label="Skeleton Loading State">
         <DemoFlex>
           <D1Button
-            data-testid="demo-ci-skeleton-toggle"
             size="sm"
             outline
             label="Toggle Skeleton"
@@ -172,7 +230,6 @@ const inspectExpose = (): void => {
           <div class="demo-carousel-item-page__grid">
             <D1CarouselItem
               class="demo-carousel-item-page__slide"
-              data-testid="demo-ci-skeleton"
               :is-skeleton="isSkeleton"
               :slide="1"
               :total="2"
@@ -185,30 +242,80 @@ const inspectExpose = (): void => {
         </D1Skeleton>
       </D1Group>
 
-      <D1Group label="Events & Exposed API">
+      <D1Group label="Events & Expose API">
         <div class="demo-carousel-item-page__grid">
           <D1CarouselItem
-            ref="exposeRef"
+            ref="exposeReference"
             class="demo-carousel-item-page__slide"
-            data-testid="demo-ci-events"
             :slide="4"
+            :index="4"
             :total="10"
-            selected
+            :selected="isExposeSelected"
             value="promo-4"
             :detail="{ section: 'hero' }"
             :image="slideImageTertiary"
-            @click="(event, value) => onEvent('click', event, value)"
-            @click-lite="(value) => onEvent('clickLite', value)"
-            @load="(image) => onEvent('load', image)"
+            @click="handleClickEvent"
+            @click-lite="handleClickLiteEvent"
+            @load="handleLoadEvent"
           >
             <div class="demo-carousel-item-page__caption">Click slide to trigger events</div>
           </D1CarouselItem>
         </div>
         <DemoFlex>
-          <D1Button data-testid="demo-ci-expose-btn" size="sm" outline label="Read Expose API" @click="inspectExpose" />
+          <D1Button size="sm" outline label="Read Expose API" @click="readAllExpose"/>
+          <D1Button size="sm" outline label="Toggle Selected & Read" @click="toggleExposeSelected"/>
         </DemoFlex>
-        <DemoValue data-testid="demo-ci-event-output" :value="eventName" />
-        <DemoValue data-testid="demo-ci-expose-output" :value="exposeOutput" />
+        <DemoValue label="Event Name" :value="eventName"/>
+        <DemoValue label="Event Payload" :value="eventPayload"/>
+        <DemoValue label="Expose Output" :value="exposeOutput"/>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <div class="demo-carousel-item-page__grid">
+          <D1CarouselItem/>
+          <D1CarouselItem slide="" total="" image=""/>
+          <D1CarouselItem :slide="-1" :index="-1" :value="-1.5" selected>
+            <DemoBox>Negative / Decimal (-1, -1.5)</DemoBox>
+          </D1CarouselItem>
+          <D1CarouselItem slide="A" :total="1" selected>
+            <DemoBox>A</DemoBox>
+          </D1CarouselItem>
+          <D1CarouselItem :slide="2" :total="5" selected>
+            <DemoBox class="demo-carousel-item-page__wrap">
+              &lt;img src=x onerror=alert(1)&gt; — Tiếng Việt / Кириллица / 🚀
+            </DemoBox>
+          </D1CarouselItem>
+          <DemoBox class="demo-carousel-item-page__narrow" size="sm">
+            <D1CarouselItem :slide="3" :total="5" selected>
+              <DemoBox class="demo-carousel-item-page__wrap">
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              </DemoBox>
+            </D1CarouselItem>
+          </DemoBox>
+        </div>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex>
+          <D1Button
+            size="sm"
+            outline
+            label="Toggle Mount"
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <div v-if="isLifecycleMounted" class="demo-carousel-item-page__grid">
+          <D1CarouselItem
+            class="demo-carousel-item-page__slide"
+            :slide="1"
+            :total="1"
+            selected
+            :image="slideImagePrimary"
+          >
+            <div class="demo-carousel-item-page__caption">Mounted CarouselItem</div>
+          </D1CarouselItem>
+        </div>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -243,6 +350,10 @@ const inspectExpose = (): void => {
   &__wrap {
     overflow-wrap: anywhere;
     min-width: 0;
+  }
+
+  &__narrow {
+    max-width: 180px;
   }
 }
 </style>

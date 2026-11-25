@@ -2,8 +2,17 @@
 
 @mixin mixinBulletItem {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 
   @include ui.paddingY(ui.v('??padding', 0));
+
+  &__description {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
 
   &:before {
     content: "•";
