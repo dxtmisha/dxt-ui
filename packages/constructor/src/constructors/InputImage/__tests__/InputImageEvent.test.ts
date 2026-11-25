@@ -26,9 +26,9 @@ describe('InputImageEvent', () => {
   const createEvent = (
     expose: { open?: () => void } = { open }
   ): InputImageEvent => new InputImageEvent(
-    { setCrop, setFiles } as unknown as InputImageFiles,
-    { expose } as unknown as DropzoneInclude,
-    { onValue, onAndChange } as unknown as FieldEventInclude
+    () => ({ expose }) as unknown as DropzoneInclude,
+    () => ({ onValue, onAndChange }) as unknown as FieldEventInclude,
+    () => ({ setCrop, setFiles }) as unknown as InputImageFiles
   )
 
   /**

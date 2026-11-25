@@ -1,7 +1,12 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { MenuComponentInclude, MenuExposeInclude, MenuSlotInclude } from '../Menu'
 import type { ButtonComponentInclude } from '../Button'
+import type {
+  MenuComponentInclude,
+  MenuControlItem,
+  MenuExposeInclude,
+  MenuSlotInclude
+} from '../Menu'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 
@@ -34,7 +39,8 @@ export interface MenuButtonExpose extends FieldBasicExpose, MenuExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface MenuButtonSlots extends MenuSlotInclude {
-  default?(props: any): any
+  /** Custom trigger button content slot / Пользовательский слот содержимого кнопки-триггера */
+  default?(props: MenuControlItem): any
 }
 
 /**

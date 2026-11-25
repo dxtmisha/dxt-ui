@@ -1,5 +1,3 @@
-// ai-none
-
 import { ref } from 'vue'
 import {
   isObject,
@@ -25,16 +23,19 @@ export class InputImageFiles {
   /** Currently loaded or selected file object / Текущий загруженный или выбранный объект файла */
   readonly file = ref<File | undefined>()
 
+  /** Monotonic request identifier to prevent stale async resolution / Монотонный идентификатор запроса для защиты от устаревших асинхронных результатов */
+  private activeFileRequest = 0
+
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param value field value controller / контроллер значения поля
+   * @param value field value controller getter / геттер контроллера значения поля
    */
   constructor(
-    protected readonly props: InputImageProps,
-    protected readonly value: FieldValueInclude<InputImageItem>
+    protected readonly props: Readonly<InputImageProps>,
+    protected readonly value: () => FieldValueInclude<InputImageItem>
   ) {
   }
 
@@ -59,13 +60,23 @@ export class InputImageFiles {
   }
 
   /**
+   * Checks whether an image is currently loaded.
+   *
+   * Проверяет, загружено ли изображение в данный момент.
+   * @returns true if image is present / true, если изображение присутствует
+   */
+  hasImage(): boolean {
+    return Boolean(this.src)
+  }
+
+  /**
    * Returns current value object with image source and crop coordinates.
    *
    * Возвращает текущий объект значения с источником изображения и координатами кадрирования.
    * @returns image value object or undefined / объект значения изображения или undefined
    */
   get(): FieldFileValue | undefined {
-    const raw = this.value.item.value
+    const raw = this.value().item.value
 
     if (isString(raw) && raw) {
       return {
@@ -79,16 +90,6 @@ export class InputImageFiles {
     }
 
     return undefined
-  }
-
-  /**
-   * Checks whether an image is currently loaded.
-   *
-   * Проверяет, загружено ли изображение в данный момент.
-   * @returns true if image is present / true, если изображение присутствует
-   */
-  hasImage(): boolean {
-    return Boolean(this.src)
   }
 
   /**
@@ -116,6 +117,7 @@ export class InputImageFiles {
    * @returns loaded and resized image source string or undefined / загруженная и масштабированная строка источника изображения или undefined
    */
   async setFile(file?: File): Promise<string | undefined> {
+    const requestId = ++this.activeFileRequest
     this.file.value = file
 
     if (!file) {
@@ -124,8 +126,16 @@ export class InputImageFiles {
 
     const source = await this.processFile(file)
 
+    if (requestId !== this.activeFileRequest) {
+      return undefined
+    }
+
     if (source) {
       const dimensions = await this.getDimensions(source)
+
+      if (requestId !== this.activeFileRequest) {
+        return undefined
+      }
 
       this.updateValue({
         value: source,
@@ -214,12 +224,12 @@ export class InputImageFiles {
   }
 
   /**
-   * Updates field value and triggers field input/change events.
+   * Updates field value.
    *
-   * Обновляет значение поля и вызывает события ввода/изменения поля.
+   * Обновляет значение поля.
    * @param value new image value / новое значение изображения
    */
   protected updateValue(value?: FieldFileValue): void {
-    this.value.item.value = value
+    this.value().item.value = value
   }
 }

@@ -1,7 +1,12 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { MenuComponentInclude, MenuExposeInclude, MenuSlotInclude } from '../Menu'
 import type { ChipComponentInclude } from '../Chip'
+import type {
+  MenuComponentInclude,
+  MenuControlItem,
+  MenuExposeInclude,
+  MenuSlotInclude
+} from '../Menu'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 
@@ -34,7 +39,8 @@ export interface MenuChipExpose extends FieldBasicExpose, MenuExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface MenuChipSlots extends MenuSlotInclude {
-  default?(props: any): any
+  /** Custom trigger chip content slot / Пользовательский слот содержимого чипа-триггера */
+  default?(props: MenuControlItem): any
 }
 
 /**

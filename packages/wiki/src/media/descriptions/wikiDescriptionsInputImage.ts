@@ -44,7 +44,9 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
     `,
   import: [
     'import { ref } from \'vue\'',
-    'import { image1 } from \'@dxtmisha/wiki/media\''
+    'import { image1 } from \'@dxtmisha/wiki/media\'',
+    'import type { InputImageExpose, InputImageItem } from \'@dxtmisha/constructor/InputImage\'',
+    'import { expect, within, userEvent } from \'storybook/test\''
   ],
   stories: [
     {
@@ -56,7 +58,7 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
       setup: `
       return {
         image1,
-        value: ref({
+        value: ref<InputImageItem | undefined>({
           value: image1,
           crop: [10, 15, 10, 15]
         })
@@ -65,9 +67,9 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Current crop: {{ value?.crop }}</span>
-            <button class="wiki-storybook-button" @click="value = undefined">Clear</button>
-            <button class="wiki-storybook-button" @click="value = { value: image1, crop: [20, 20, 20, 20] }">Reset crop</button>
+            <span data-testid="input-image-crop">Current crop: {{ value?.crop }}</span>
+            <button type="button" class="wiki-storybook-button" @click="value = undefined">Clear</button>
+            <button type="button" class="wiki-storybook-button" @click="value = { value: image1, crop: [20, 20, 20, 20] }">Reset crop</button>
           </div>
 
           <DesignComponent
@@ -76,6 +78,14 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
             v-model="value"
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('input-image-crop')).toHaveTextContent('[ 10, 15, 10, 15 ]')
+await userEvent.click(canvas.getByRole('button', { name: 'Clear' }))
+await expect(canvas.getByTestId('input-image-crop')).toHaveTextContent('Current crop:')
+await userEvent.click(canvas.getByRole('button', { name: 'Reset crop' }))
+await expect(canvas.getByTestId('input-image-crop')).toHaveTextContent('[ 20, 20, 20, 20 ]')
       `
     },
     {
@@ -114,6 +124,11 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
             v-model="sizeValue"
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByText('Pixel dimension counter (max 1920px)')).toBeInTheDocument()
+await expect(canvas.getByText('File size counter (max 5MB)')).toBeInTheDocument()
       `
     },
     {
@@ -129,6 +144,10 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
             <DesignComponent isSkeleton />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const fileInput = canvasElement.querySelector('input[type="file"]')
+await expect(fileInput).toBeInTheDocument()
       `
     },
     {
@@ -139,12 +158,95 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
       },
       template: `
         <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
-          <DesignComponent>
+          <DesignComponent label="Image label">
             <template #label>
               <strong>Custom Image Uploader Label</strong>
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByText('Custom Image Uploader Label')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'InputImageTestStatesAndExpose',
+      name: {
+        en: 'Test: States, validation, counterType and expose methods',
+        ru: 'Тест: Состояния, валидация, counterType и методы expose'
+      },
+      propsName: ['disabled', 'readonly', 'counterType', 'validationMessage', 'required', 'textChange', 'textCancel'],
+      setup: `
+      const imageRef = ref<InputImageExpose | null>(null)
+      const val = ref<InputImageItem | undefined>({ value: image1, crop: [0, 0, 0, 0] })
+      const snapshot = ref('')
+      const validResult = ref('')
+      const setSample = () => {
+        imageRef.value?.setValue({ value: image1, crop: [12, 12, 12, 12] })
+        snapshot.value = JSON.stringify(imageRef.value?.getValue()?.crop ?? null)
+      }
+      const clearSample = () => {
+        imageRef.value?.clear()
+        snapshot.value = String(imageRef.value?.getValue() ?? 'empty')
+      }
+      const checkSample = () => {
+        const ok = imageRef.value?.checkValidity()
+        const msg = imageRef.value?.getValidationMessage() ?? ''
+        validResult.value = ok ? 'valid' : 'invalid:' + msg
+      }
+      return {
+        imageRef,
+        val,
+        snapshot,
+        validResult,
+        setSample,
+        clearSample,
+        checkSample
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="setSample">Set via expose</button>
+            <button type="button" class="wiki-storybook-button" @click="clearSample">Clear via expose</button>
+            <button type="button" class="wiki-storybook-button" @click="checkSample">Check validity</button>
+            <span data-testid="input-image-test-snapshot">{{ snapshot }}</span>
+            <span data-testid="input-image-test-validity">{{ validResult }}</span>
+          </div>
+          <DesignComponent
+            ref="imageRef"
+            data-testid="input-image-test-expose"
+            label="Expose field"
+            textChange="Replace"
+            textCancel="Remove"
+            counterType="hide"
+            v-model="val"
+          />
+          <DesignComponent
+            data-testid="input-image-test-validation"
+            label="Required image"
+            :required="true"
+            validationMessage="Image is required"
+          />
+          <DesignComponent data-testid="input-image-test-disabled" :disabled="true" label="Disabled image" />
+          <DesignComponent data-testid="input-image-test-readonly" :readonly="true" label="Readonly image" />
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const validationEl = canvas.getByTestId('input-image-test-validation')
+await expect(validationEl).toHaveAttribute('aria-describedby')
+await expect(canvas.getByText('Image is required')).toBeInTheDocument()
+
+await userEvent.click(canvas.getByRole('button', { name: 'Set via expose' }))
+await expect(canvas.getByTestId('input-image-test-snapshot')).toHaveTextContent('[12,12,12,12]')
+
+await userEvent.click(canvas.getByRole('button', { name: 'Clear via expose' }))
+await expect(canvas.getByTestId('input-image-test-snapshot')).toHaveTextContent('empty')
+
+await userEvent.click(canvas.getByRole('button', { name: 'Check validity' }))
+await expect(canvas.getByTestId('input-image-test-validity')).toHaveTextContent('valid')
       `
     }
   ],

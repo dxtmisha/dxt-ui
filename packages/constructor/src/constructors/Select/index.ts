@@ -1,4 +1,5 @@
 export * from './Select'
+export * from './SelectAbstract'
 export * from './SelectDesign'
 export * from './SelectInput'
 export * from './props'

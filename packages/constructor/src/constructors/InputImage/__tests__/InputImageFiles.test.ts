@@ -2,15 +2,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { reactive, ref } from 'vue'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual<typeof import('vue')>('vue')
-
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 vi.mock('@dxtmisha/functional', async () => {
   const actual = await vi.importActual<typeof import('@dxtmisha/functional')>('@dxtmisha/functional')
 
@@ -51,7 +42,7 @@ const createHelper = (initialProps: Partial<InputImageProps> = {}) => {
 
   const elementItem = new FieldElementInclude(props, ref(undefined))
   const value = new FieldValueInclude<InputImageItem>(props, () => elementItem)
-  const files = new InputImageFiles(props, value)
+  const files = new InputImageFiles(props, () => value)
 
   return { props, value, files }
 }
@@ -335,6 +326,37 @@ describe('InputImageFiles', () => {
         width: undefined,
         height: undefined
       })
+    })
+
+    it('ignores stale async file resolution when a newer setFile call overtakes it', async () => {
+      let resolveFirst: (value: string) => void = () => undefined
+      vi.spyOn(ImageFile, 'isImage').mockReturnValue(true)
+      vi.spyOn(ImageFile, 'getImageDataUrl')
+        .mockImplementationOnce(() => new Promise((resolve) => {
+          resolveFirst = resolve
+        }))
+        .mockResolvedValueOnce('data:image/png;base64,bmV3')
+      vi.spyOn(ImageFile, 'createImage').mockResolvedValue({
+        image: {} as HTMLImageElement,
+        src: 'data:image/png;base64,bmV3',
+        width: 200,
+        height: 200
+      })
+
+      const { files } = createHelper()
+      const firstFile = new File(['old'], 'old.png', { type: 'image/png' })
+      const secondFile = new File(['new'], 'new.png', { type: 'image/png' })
+
+      const firstPromise = files.setFile(firstFile)
+      const secondResult = await files.setFile(secondFile)
+
+      expect(secondResult).toBe('data:image/png;base64,bmV3')
+      expect(files.file.value).toBe(secondFile)
+
+      resolveFirst('data:image/png;base64,b2xk')
+      await expect(firstPromise).resolves.toBeUndefined()
+      expect(files.src).toBe('data:image/png;base64,bmV3')
+      expect(files.file.value).toBe(secondFile)
     })
   })
 

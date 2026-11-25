@@ -1,7 +1,5 @@
-// ai-none
-
-import { onMounted, ref, watch } from 'vue'
-import { isObject } from '@dxtmisha/functional'
+import { ref, watch } from 'vue'
+import { DesignLifecycleAbstract, isObject } from '@dxtmisha/functional'
 
 import { ImageFile } from '../Image'
 
@@ -14,42 +12,59 @@ import type { InputImageProps } from './props'
  *
  * Класс для управления вычислением размера изображения и его состоянием в InputImage.
  */
-export class InputImageSize {
+export class InputImageSize extends DesignLifecycleAbstract {
   /** Reactive current image file size in bytes / Реактивный текущий размер файла изображения в байтах */
   readonly fileSize = ref<number | undefined>()
 
   /** Reactive current image size (max dimension) / Реактивный текущий размер изображения (максимальное измерение) */
   readonly item = ref<number | undefined>()
 
+  /** Cleanup function for reactive watcher / Функция очистки реактивного наблюдателя */
+  protected watchStop?: () => void
+
+  /** Monotonic token to prevent stale async size updates / Монотонный токен для защиты от устаревших асинхронных обновлений размера */
+  private updateToken = 0
+
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props input properties / входные свойства
-   * @param files file manager instance / экземпляр менеджера файлов
+   * @param files file manager getter / геттер менеджера файлов
    */
   constructor(
-    protected readonly props: InputImageProps,
-    protected readonly files: InputImageFiles
+    protected readonly props: Readonly<InputImageProps>,
+    protected readonly files: () => InputImageFiles
   ) {
-    watch(
-      [
-        () => this.files.src,
-        () => this.files.file?.value
-      ],
-      this.update
-    )
-    onMounted(this.update)
+    super()
   }
 
   /**
-   * Returns current maximum image dimension size.
+   * Sets up reactive watchers and runs initial size calculation after mount.
    *
-   * Возвращает текущий максимальный размер измерения изображения.
-   * @returns image size or undefined / размер изображения или undefined
+   * Настраивает реактивные наблюдатели и запускает начальное вычисление размера после монтирования.
    */
-  get(): number | undefined {
-    return this.item.value
+  override readonly onMounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = watch(
+      [
+        () => this.files().src,
+        () => this.files().file.value
+      ],
+      this.update
+    )
+    void this.update()
+  }
+
+  /**
+   * Stops reactive watchers and invalidates pending async updates on unmount.
+   *
+   * Останавливает реактивные наблюдатели и отменяет ожидающие асинхронные обновления при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+    this.updateToken += 1
   }
 
   /**
@@ -86,6 +101,16 @@ export class InputImageSize {
       this.props.maxFileSize
       && !this.props.maxPixel
     )
+  }
+
+  /**
+   * Returns current maximum image dimension size.
+   *
+   * Возвращает текущий максимальный размер измерения изображения.
+   * @returns image size or undefined / размер изображения или undefined
+   */
+  get(): number | undefined {
+    return this.item.value
   }
 
   /**
@@ -157,6 +182,23 @@ export class InputImageSize {
   }
 
   /**
+   * Updates image size by loading image source and file.
+   *
+   * Обновляет размер изображения загрузкой источника изображения и файла.
+   * @param data array of image source and file object / массив источника изображения и объекта файла
+   */
+  readonly update = async (
+    data?: [string | undefined, File | undefined]
+  ): Promise<void> => {
+    const token = ++this.updateToken
+    const files = this.files()
+    const [src, file] = data ?? [files.src, files.file.value]
+
+    this.setFileSize(src, file)
+    await this.setSize(src, token)
+  }
+
+  /**
    * Calculates and sets image file size in bytes from source string or File object.
    *
    * Вычисляет и устанавливает размер файла изображения в байтах из строки источника или объекта File.
@@ -187,10 +229,15 @@ export class InputImageSize {
    *
    * Вычисляет и устанавливает размеры изображения из строки источника.
    * @param src image source string / строка источника изображения
+   * @param token update token / токен обновления
    */
-  protected async setSize(src?: string): Promise<void> {
+  protected async setSize(src?: string, token: number = this.updateToken): Promise<void> {
     if (src) {
       const item = await ImageFile.createImage(src)
+
+      if (token !== this.updateToken) {
+        return
+      }
 
       if (
         isObject(item)
@@ -202,30 +249,8 @@ export class InputImageSize {
       }
     }
 
-    this.item.value = undefined
-  }
-
-  /**
-   * Updates image size by loading image source and file.
-   *
-   * Обновляет размер изображения загрузкой источника изображения и файла.
-   * @param data array of image source and file object / массив источника изображения и объекта файла
-   */
-  readonly update = async (
-    [src, file]: [string | undefined, File | undefined] = [this.files.src, this.files.file?.value]
-  ): Promise<void> => {
-    this.setFileSize(src, file)
-    await this.setSize(src)
-  }
-
-  /**
-   * Initializes image size by loading image source and file.
-   *
-   * Инициализирует размер изображения загрузкой источника изображения и файла.
-   * @param src image source string / строка источника изображения
-   * @param file file object / объект файла
-   */
-  protected async init(src?: string, file?: File): Promise<void> {
-    await this.update([src, file])
+    if (token === this.updateToken) {
+      this.item.value = undefined
+    }
   }
 }

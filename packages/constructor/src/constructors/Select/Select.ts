@@ -1,81 +1,173 @@
 import type { Ref } from 'vue'
-import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
+import type { ConstrEmit, ConstrItems, DesignComp, DesignName, ListSelectedList } from '@dxtmisha/functional'
 
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
+import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
-import { MenuInclude } from '../Menu'
 import { FieldInclude } from '../Field'
+import { MenuInclude } from '../Menu'
 
-import { SelectAbstract } from './SelectAbstract'
+import { SelectAbstract, type SelectAbstractConstructors } from './SelectAbstract'
 import { SelectInput } from './SelectInput'
 
-import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
+import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 
 /**
- * Select constructor class for managing dropdown select components.
- * It coordinates the main field state, dropdown menu behaviors, event management, and validation logic.
+ * Select dependency constructors type.
  *
- * Класс-конструктор Select для управления компонентами выпадающего списка.
- * Координирует основное состояние поля, поведение выпадающего меню, управление событиями и логику валидации.
+ * Тип конструкторов зависимостей Select.
  */
-export class Select extends SelectAbstract {
-  /** Object for working with field / Объект для работы с полем */
-  readonly field: FieldInclude
+export type SelectConstructors = SelectAbstractConstructors & {
+  /** Field include constructor / Конструктор включения поля */
+  field: typeof FieldInclude
+  /** Select input helper constructor / Конструктор помощника ввода выбора */
+  input: typeof SelectInput
+}
 
-  /** Select input manager / Менеджер ввода выбора */
-  readonly input: SelectInput
+/**
+ * Select orchestrator class for managing dropdown select components.
+ * Coordinates field framing, native input handling, dropdown menu behavior, events, and validation.
+ *
+ * Класс-оркестратор Select для управления компонентами выпадающего списка.
+ * Координирует каркас поля, обработку нативного ввода, поведение выпадающего меню, события и валидацию.
+ */
+export class Select extends SelectAbstract<
+  HTMLElement,
+  SelectComponents,
+  SelectEmits,
+  SelectSlots,
+  SelectProps,
+  SelectConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SelectConstructors> = {
+    attributes: {
+      item: FieldAttributesInclude,
+      parameters: () => [this.props]
+    },
+    change: {
+      item: FieldChangeInclude,
+      parameters: () => [this.props]
+    },
+    code: {
+      item: FieldCodeInclude,
+      parameters: () => [this.props]
+    },
+    elementItem: {
+      item: FieldElementInclude,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    event: {
+      item: FieldEventInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('change'),
+        () => this.i('value'),
+        () => this.i('validation'),
+        this.emits,
+        () => this.callInstance('form', item => item)
+      ]
+    },
+    field: {
+      item: FieldInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          iconTrailing: this.iconTrailing,
+          maxlength: this.props.max,
+          cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
+        }),
+        undefined,
+        () => this.i('value'),
+        () => this.i('event'),
+        undefined,
+        undefined,
+        () => this.i('menu').getElement()?.toggle(),
+        () => this.i('menu').getElement()?.next(),
+        () => this.i('menu').getElement()?.previous()
+      ]
+    },
+    form: {
+      item: FieldFormInclude,
+      canCreate: () => FieldFormInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('value'),
+        () => this.i('validation')
+      ]
+    },
+    input: {
+      item: SelectInput,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('event')
+      ]
+    },
+    menu: {
+      item: MenuInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.getMenuExtra()
+      ]
+    },
+    validation: {
+      item: FieldValidationInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('value'),
+        () => this.i('change'),
+        () => this.i('code')
+      ]
+    },
+    value: {
+      item: FieldValueInclude<ListSelectedList>,
+      parameters: () => [
+        this.props,
+        () => this.i('elementItem'),
+        undefined,
+        true,
+        false,
+        true
+      ]
+    }
+  }
 
   /**
    * Constructor for the Select component.
    *
    * Конструктор для компонента Select.
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
+   * @param props input properties / входные свойства
+   * @param element reference to input HTML element / ссылка на HTML-элемент ввода
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
+   * @param components object for working with sub-components / объект для работы с субкомпонентами
    * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
-   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
-   * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
-   * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
-   * @param constructors.SelectInputConstructor class for working with select input / класс для работы с вводом выбора
+   * @param emits event emitter function / функция отправки событий
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    props: SelectProps,
+    props: Readonly<SelectProps>,
     element: Ref<HTMLElement | undefined>,
     naming: DesignName,
     components?: DesignComp<SelectComponents, SelectProps>,
     slots?: SelectSlots,
     emits?: ConstrEmit<SelectEmits>,
-    constructors: {
-      FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
-      FieldChangeIncludeConstructor?: typeof FieldChangeInclude
-      FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldElementIncludeConstructor?: typeof FieldElementInclude
-      FieldEventIncludeConstructor?: typeof FieldEventInclude
-      FieldFormIncludeConstructor?: typeof FieldFormInclude
-      FieldIncludeConstructor?: typeof FieldInclude
-      FieldValidationIncludeConstructor?: typeof FieldValidationInclude
-      FieldValueIncludeConstructor?: typeof FieldValueInclude
-      MenuIncludeConstructor?: typeof MenuInclude
-      SelectInputConstructor?: typeof SelectInput
-    } = {}
+    constructors?: Partial<SelectConstructors>
   ) {
     super(
       props,
@@ -87,44 +179,17 @@ export class Select extends SelectAbstract {
       constructors
     )
 
-    const {
-      FieldIncludeConstructor = FieldInclude,
-      SelectInputConstructor = SelectInput
-    } = constructors
-
-    this.input = new SelectInputConstructor(
-      this.props,
-      this.attributes,
-      this.value,
-      this.event
-    )
-
-    this.field = new FieldIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        iconTrailing: this.iconTrailing,
-        maxlength: this.props.max,
-        cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
-      }),
-      undefined,
-      () => this.value,
-      () => this.event,
-      undefined,
-      undefined,
-      () => this.menu.getElement()?.toggle(),
-      () => this.menu.getElement()?.next(),
-      () => this.menu.getElement()?.previous()
-    )
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
   }
 
   /**
-   * Handles the input value change event to open the menu.
+   * Handles user input on the combobox input to open the dropdown menu.
    *
-   * Обрабатывает событие изменения значения ввода для открытия меню.
+   * Обрабатывает пользовательский ввод в поле combobox для открытия выпадающего меню.
    */
-  readonly onInputValue = () => {
-    this.menu.getElement()?.toOpen()
+  readonly onInputValue = (): void => {
+    this.i('menu').getElement()?.toOpen()
   }
 }

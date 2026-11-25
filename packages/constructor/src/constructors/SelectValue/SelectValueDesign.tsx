@@ -1,23 +1,22 @@
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
+  isFilled,
   toBinds
 } from '@dxtmisha/functional'
-import { h, type VNode } from 'vue'
 
 import { SelectValue } from './SelectValue'
 
 import type { ChipGroupItem } from '../ChipGroup'
-import {
-  type SelectValuePropsBasic
-} from './props'
-import {
-  type SelectValueClasses,
-  type SelectValueComponents,
-  type SelectValueEmits,
-  type SelectValueExpose,
-  type SelectValueSlots
+import type { SelectValuePropsBasic } from './props'
+import type {
+  SelectValueClasses,
+  SelectValueComponents,
+  SelectValueEmits,
+  SelectValueExpose,
+  SelectValueSlots
 } from './types'
 
 /**
@@ -41,7 +40,7 @@ export class SelectValueDesign<
     CLASSES,
     P
   > {
-  /** SelectValue helper instance / Вспомогательный экземпляр SelectValue */
+  /** SelectValue logic instance / Экземпляр логики SelectValue */
   protected readonly item: SelectValue
 
   /**
@@ -120,11 +119,14 @@ export class SelectValueDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderData()
     )
   }
@@ -135,7 +137,7 @@ export class SelectValueDesign<
    * Рендеринг данных.
    * @returns array of VNodes or strings / массив VNode или строк
    */
-  readonly renderData = (): (VNode | string)[] => {
+  protected readonly renderData = (): (VNode | string)[] => {
     if (this.item.isPlaceholder()) {
       return [String(this.props.placeholder)]
     }
@@ -148,7 +150,7 @@ export class SelectValueDesign<
       const label = this.props.value[0]?.label
         ?? this.props.value[0]?.value
 
-      if (label) {
+      if (label === 0 || isFilled(label, true)) {
         return [String(label)]
       }
     }
@@ -160,18 +162,18 @@ export class SelectValueDesign<
    * List rendering.
    *
    * Рендеринг списка.
-   * @returns array of VNodes / массив VNode
+   * @returns array of VNodes or strings / массив VNode или строк
    */
-  readonly renderList = (): VNode[] => {
-    const children: any[] = []
+  protected readonly renderList = (): (VNode | string)[] => {
+    const children: (VNode | string)[] = []
 
     this.props.value?.forEach((item) => {
       const chip = this.renderItem(item)
 
       if (chip) {
         children.push(chip)
-      } else {
-        children.push(item.label)
+      } else if (item.label === 0 || isFilled(item.label, true)) {
+        children.push(String(item.label))
       }
     })
 
@@ -185,7 +187,7 @@ export class SelectValueDesign<
    * @param item selected element / выбранный элемент
    * @returns chip VNode or undefined / VNode чипа или undefined
    */
-  readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
+  protected readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
     return this.components?.renderOne(
       'chip',
       toBinds(

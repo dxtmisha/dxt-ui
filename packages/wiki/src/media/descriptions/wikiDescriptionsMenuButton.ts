@@ -31,10 +31,23 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
       'стандартная интеграция данных формы через скрытый элемент ввода input'
     ]
   },
+  render: `
+      <DesignComponent v-bind="args" />
+    `,
+  play: `
+const triggerButton = canvasElement.querySelector<HTMLButtonElement>('button')
+const hiddenInput = canvasElement.querySelector<HTMLInputElement>('input[type="hidden"]')
+await expect(triggerButton).toBeInTheDocument()
+await expect(hiddenInput).toBeInTheDocument()
+  `,
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { MenuButtonExpose } from \'@dxtmisha/constructor/MenuButton\''
   ],
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'MenuButtonBasic',
       name: {
@@ -48,36 +61,40 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
         { label: 'Vietnamese', value: 'vi' },
         { label: 'Spanish', value: 'es' }
       ])
-      const value1 = ref('en')
-      const value2 = ref('ru')
-      const value3 = ref('vi')
+      const primaryValue = ref('en')
+      const searchValue = ref('ru')
+      const iconOnlyValue = ref('vi')
 
-      return { options, value1, value2, value3 }
+      return { options, primaryValue, searchValue, iconOnlyValue }
       `,
       template: `
         <div class="wiki-storybook-flex">
           <DesignComponent
-            v-model="value1"
-            type="menuButton"
+            v-model="primaryValue"
             label="Language"
             :option="options"
           />
           <DesignComponent
-            v-model="value2"
-            type="menuButton"
+            v-model="searchValue"
             label="With search"
-            showSearch
+            show-search
             :option="options"
           />
           <DesignComponent
-            v-model="value3"
-            type="menuButton"
+            v-model="iconOnlyValue"
             label="Hide value if icon"
             icon="settings"
-            hideValueIcon
+            hide-value-icon
             :option="options"
           />
         </div>
+      `,
+      play: `
+const buttons = canvasElement.querySelectorAll<HTMLButtonElement>('button')
+await expect(buttons.length).toBe(3)
+await expect(buttons[0].textContent).toContain('English')
+await expect(buttons[1].textContent).toContain('Russian')
+await expect(buttons[2].textContent).toContain('Hide value if icon')
       `
     },
     {
@@ -87,46 +104,60 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
         ru: 'Двусторонняя привязка (v-model)'
       },
       setup: `
-      const valueSingle = ref('option2')
-      const valueMultiple = ref(['option1', 'option3'])
+      const singleValue = ref('option2')
+      const multipleValue = ref(['option1', 'option3'])
       const options = [
         { label: 'First option', value: 'option1' },
         { label: 'Second option', value: 'option2' },
         { label: 'Third option', value: 'option3' }
       ]
 
-      return { valueSingle, valueMultiple, options }
+      return { singleValue, multipleValue, options }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Value: <strong>{{ valueSingle }}</strong></span>
-            <button class="wiki-storybook-button" @click="valueSingle = 'option1'">option 1</button>
-            <button class="wiki-storybook-button" @click="valueSingle = 'option2'">option 2</button>
-            <button class="wiki-storybook-button" @click="valueSingle = 'option3'">option 3</button>
+            <span data-testid="menu-button-single-value">Value: <strong>{{ singleValue }}</strong></span>
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-set-first" @click="singleValue = 'option1'">Option 1</button>
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-set-second" @click="singleValue = 'option2'">Option 2</button>
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-set-third" @click="singleValue = 'option3'">Option 3</button>
           </div>
 
           <DesignComponent
-            v-model="valueSingle"
-            type="menuButton"
+            v-model="singleValue"
             label="Single select"
             :option="options"
           />
 
           <div class="wiki-storybook-flex-align-center">
-            <span>Value: <strong>{{ valueMultiple }}</strong></span>
-            <button class="wiki-storybook-button" @click="valueMultiple = ['option1', 'option2']">option 1, 2</button>
-            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="valueMultiple = []">Clear</button>
+            <span data-testid="menu-button-multiple-value">Value: <strong>{{ multipleValue }}</strong></span>
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-set-multiple" @click="multipleValue = ['option1', 'option2']">Option 1, 2</button>
+            <button type="button" class="wiki-storybook-button wiki-storybook-button--warning" data-testid="menu-button-clear-multiple" @click="multipleValue = []">Clear</button>
           </div>
 
           <DesignComponent
-            v-model="valueMultiple"
-            type="menuButton"
+            v-model="multipleValue"
             label="Multiple select"
             multiple
             :option="options"
           />
         </div>
+      `,
+      play: `
+const singleDisplay = canvasElement.querySelector<HTMLElement>('[data-testid="menu-button-single-value"]')
+const multipleDisplay = canvasElement.querySelector<HTMLElement>('[data-testid="menu-button-multiple-value"]')
+const setFirstButton = canvasElement.querySelector<HTMLButtonElement>('[data-testid="menu-button-set-first"]')
+const clearMultipleButton = canvasElement.querySelector<HTMLButtonElement>('[data-testid="menu-button-clear-multiple"]')
+
+await expect(singleDisplay).toHaveTextContent('Value: option2')
+await step('Update single MenuButton value', async () => {
+  await userEvent.click(setFirstButton!)
+  await expect(singleDisplay).toHaveTextContent('Value: option1')
+})
+await step('Clear multiple MenuButton value', async () => {
+  await userEvent.click(clearMultipleButton!)
+  await expect(multipleDisplay).toHaveTextContent('Value: []')
+})
       `
     },
     {
@@ -140,17 +171,99 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
         <DesignSkeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex-column">
             <DesignComponent
-              type="menuButton"
               label="Loading menu button"
               :option="[
                 { label: 'First option', value: 'option1' },
                 { label: 'Second option', value: 'option2' },
                 { label: 'Third option', value: 'option3' }
               ]"
-              :buttonAttrs="{isSkeleton: true}"
+              :button-attrs="{ isSkeleton: true }"
             />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+await expect(canvasElement.textContent).toContain('Loading menu button')
+      `
+    },
+    // =========================================================================
+    // TIER 2: COMPREHENSIVE INTERACTION TEST STORIES (NOT IN MDX)
+    // =========================================================================
+    {
+      id: 'MenuButtonTestLabelsStatesSlotsAndExpose',
+      name: {
+        en: 'Test: Label formatting, hidden input, slots, states and expose',
+        ru: 'Тест: Форматирование метки, скрытый input, слоты, состояния и expose'
+      },
+      propsName: ['label', 'hideLabelValue', 'hideValueIcon', 'labelSeparator', 'icon', 'iconArrowDown', 'disabled', 'readonly', 'name', 'value', 'filterMode', 'hideList', 'max', 'selectionStyle'],
+      setup: `
+      const menuButtonReference = ref<MenuButtonExpose | null>(null)
+      const selectedValue = ref('en')
+      const exposedSnapshot = ref('')
+      const options = [
+        { label: 'English', value: 'en' },
+        { label: 'Russian', value: 'ru' }
+      ]
+      const selectRussian = () => {
+        menuButtonReference.value?.setValue('ru')
+        exposedSnapshot.value = String(menuButtonReference.value?.getValue() ?? '')
+      }
+      const clearSelectedValue = () => {
+        menuButtonReference.value?.clear()
+        exposedSnapshot.value = String(menuButtonReference.value?.getValue() ?? 'empty')
+      }
+      return { menuButtonReference, selectedValue, exposedSnapshot, options, selectRussian, clearSelectedValue }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-set-russian" @click="selectRussian">Set Russian</button>
+            <button type="button" class="wiki-storybook-button" data-testid="menu-button-clear-expose" @click="clearSelectedValue">Clear via expose</button>
+            <span data-testid="menu-button-expose-snapshot">{{ exposedSnapshot }}</span>
+          </div>
+          <DesignComponent
+            ref="menuButtonReference"
+            v-model="selectedValue"
+            name="localeField"
+            label="Locale"
+            :hide-label-value="false"
+            label-separator=" -> "
+            :icon-arrow-down="undefined"
+            :filter-mode="true"
+            selection-style="radio"
+            :option="options"
+          />
+          <DesignComponent label="Disabled button" :disabled="true" value="en" :option="options" />
+          <DesignComponent label="Readonly button" :readonly="true" value="en" :option="options" />
+          <DesignComponent value="en" :option="options">
+            <template #default="{ selectedNames }">
+              <span data-testid="menu-button-custom-slot">Slot: {{ selectedNames?.value?.join(', ') }}</span>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const snapshotElement = canvasElement.querySelector<HTMLElement>('[data-testid="menu-button-expose-snapshot"]')
+const setRussianButton = canvasElement.querySelector<HTMLButtonElement>('[data-testid="menu-button-set-russian"]')
+const clearButton = canvasElement.querySelector<HTMLButtonElement>('[data-testid="menu-button-clear-expose"]')
+const hiddenInput = canvasElement.querySelector<HTMLInputElement>('input[type="hidden"][name="localeField"]')
+const disabledButton = canvasElement.querySelector<HTMLButtonElement>('button:disabled')
+
+await step('Verify label separator, hidden input, disabled visibility, and #default slot', async () => {
+  await expect(canvasElement.textContent).toContain('Locale')
+  await expect(canvasElement.textContent).toContain('->')
+  await expect(hiddenInput).toBeInTheDocument()
+  await expect(hiddenInput?.value).toBe('en')
+  await expect(disabledButton).toBeInTheDocument()
+  await expect(canvasElement.querySelector('[data-testid="menu-button-custom-slot"]')).toHaveTextContent('Slot: English')
+})
+
+await step('Verify expose setValue and clear methods', async () => {
+  await userEvent.click(setRussianButton!)
+  await expect(snapshotElement).toHaveTextContent('ru')
+  await userEvent.click(clearButton!)
+  await expect(snapshotElement).toHaveTextContent('empty')
+})
       `
     }
   ],

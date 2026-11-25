@@ -1,7 +1,7 @@
-import { onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
-import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 
 import type { InputSearchProps } from './props'
 
@@ -10,9 +10,12 @@ import type { InputSearchProps } from './props'
  *
  * Класс для управления поисковыми запросами ввода, задержкой debounce и жизненным циклом поиска.
  */
-export class InputSearchQuery {
+export class InputSearchQuery extends DesignLifecycleAbstract {
   /** Search debounce loading status / Статус ожидания задержки поиска */
   readonly loading = ref<boolean>(false)
+
+  /** Pending debounced input text preserving DOM input during re-renders / Незафиксированный текст поиска во время задержки debounce */
+  readonly draft = ref<string | undefined>()
 
   /** Active delay timer identifier / Идентификатор активного таймера задержки */
   protected timer: ReturnType<typeof setTimeout> | undefined = undefined
@@ -21,24 +24,29 @@ export class InputSearchQuery {
   protected eventItem?: InputEvent = undefined
 
   /** Cached input data / Кэшированные данные ввода */
-  protected data?: Record<string, any> = undefined
+  protected data?: Record<string, unknown> = undefined
 
   /**
-   * Constructor
+   * Constructor.
    *
-   * Конструктор
+   * Конструктор.
    * @param props input data / входные данные
-   * @param value object for working with values / объект для работы со значениями
-   * @param event object for working with field events / объект для работы с событиями поля
+   * @param event object getter for working with field events / геттер объекта для работы с событиями поля
    */
   constructor(
-    protected readonly props: InputSearchProps,
-    protected readonly value: FieldValueInclude<string>,
-    protected readonly event: FieldEventInclude
+    protected readonly props: Readonly<InputSearchProps>,
+    protected readonly event: () => FieldEventInclude
   ) {
-    onUnmounted(() => {
-      this.stopTimer()
-    })
+    super()
+  }
+
+  /**
+   * Cleans up active timers when the component unmounts.
+   *
+   * Очищает активные таймеры при размонтировании компонента.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopTimer()
   }
 
   /**
@@ -52,7 +60,7 @@ export class InputSearchQuery {
       this.emitInput()
     }
 
-    this.event.onChange(event)
+    this.event().onChange(event)
   }
 
   /**
@@ -63,7 +71,7 @@ export class InputSearchQuery {
    */
   readonly onClear = (event?: MouseEvent): void => {
     this.stopTimer()
-    this.event.onClear(event)
+    this.event().onClear(event)
   }
 
   /**
@@ -75,7 +83,7 @@ export class InputSearchQuery {
    */
   readonly onInput = (
     event: InputEvent,
-    data?: Record<string, any>
+    data?: Record<string, unknown>
   ): void => {
     this.stopTimer()
 
@@ -91,10 +99,11 @@ export class InputSearchQuery {
       if (delay > 0) {
         this.eventItem = event
         this.data = data
+        this.draft.value = value
         this.loading.value = true
         this.timer = setTimeout(this.emitInput, delay)
       } else {
-        this.event.onInput(event, data)
+        this.event().onInput(event, data)
       }
     }
   }
@@ -106,6 +115,10 @@ export class InputSearchQuery {
    * @param event keyboard event object / объект события клавиатуры
    */
   readonly onKeydown = (event: KeyboardEvent): void => {
+    if (event.isComposing) {
+      return
+    }
+
     if (
       event.key === 'Enter'
       && this.timer !== undefined
@@ -124,6 +137,7 @@ export class InputSearchQuery {
       clearTimeout(this.timer)
       this.timer = undefined
       this.loading.value = false
+      this.draft.value = undefined
       this.eventItem = undefined
       this.data = undefined
     }
@@ -159,7 +173,7 @@ export class InputSearchQuery {
    */
   protected getValue(
     event?: InputEvent,
-    data?: Record<string, any>
+    data?: Record<string, unknown>
   ): string {
     return String(data?.value ?? (event?.target as HTMLInputElement)?.value ?? '')
   }
@@ -175,7 +189,7 @@ export class InputSearchQuery {
       const data = this.data
 
       this.stopTimer()
-      this.event.onInput(event, data)
+      this.event().onInput(event, data)
     }
   }
 }

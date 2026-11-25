@@ -32,7 +32,7 @@ export type InputSocialPropsBasic<
     /** Type of social network / Тип социальной сети */
     socialType?: InputSocialTypeValue
     /** Dictionary of custom icons for each social network / Словарь кастомных иконок для каждой социальной сети */
-    socialIcons?: Record<InputSocialTypeValue, string>
+    socialIcons?: Partial<Record<InputSocialTypeValue, string>>
   }
 
 /** Incoming properties for InputSocial / Входящие свойства для InputSocial */

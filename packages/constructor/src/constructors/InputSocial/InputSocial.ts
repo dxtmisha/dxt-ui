@@ -1,6 +1,14 @@
-import { computed, type Ref } from 'vue'
+import { computed, mergeProps, type Ref } from 'vue'
 import { MediaSocial, type InputSocialItem } from '@dxtmisha/media'
-import type { ConstrEmit, DesignComp, DesignName, NumberOrString } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName,
+  type NumberOrString
+} from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -14,9 +22,32 @@ import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldInclude } from '../Field'
 import { MaskInclude, type MaskPropsInclude } from '../Mask'
 
-import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputSocialComponents, InputSocialEmits, InputSocialSlots } from './types'
 import type { InputSocialProps } from './props'
+
+/** InputSocial dependency constructors type / Тип конструкторов зависимостей InputSocial */
+export type InputSocialConstructors = {
+  /** Field attributes constructor / Конструктор атрибутов поля */
+  attributes: typeof FieldAttributesInclude
+  /** Field change constructor / Конструктор изменения поля */
+  change: typeof FieldChangeInclude
+  /** Field code constructor / Конструктор кода поля */
+  code: typeof FieldCodeInclude
+  /** Field element constructor / Конструктор элемента поля */
+  elementItem: typeof FieldElementInclude
+  /** Field event constructor / Конструктор событий поля */
+  event: typeof FieldEventInclude
+  /** Field constructor / Конструктор поля */
+  field: typeof FieldInclude
+  /** Field form constructor / Конструктор формы поля */
+  form: typeof FieldFormInclude
+  /** Mask constructor / Конструктор маски */
+  mask: typeof MaskInclude
+  /** Field validation constructor / Конструктор валидации поля */
+  validation: typeof FieldValidationInclude
+  /** Field value constructor / Конструктор значения поля */
+  value: typeof FieldValueInclude<string>
+}
 
 /**
  * Core class for managing social network input fields.
@@ -25,36 +56,97 @@ import type { InputSocialProps } from './props'
  * Базовый класс для управления полями ввода социальных сетей.
  * Обрабатывает получение конфигурации социальной сети (маски, иконки, префиксы) и связывает их с базовым компонентом ввода.
  */
-export class InputSocial {
-  /** Field attributes manager / Менеджер атрибутов поля */
-  readonly attributes: FieldAttributesInclude
-
-  /** Input element manager / Менеджер элемента ввода */
-  readonly elementItem: FieldElementInclude
-
-  /** Field change state manager / Менеджер состояния изменения поля */
-  readonly change: FieldChangeInclude
-
-  /** Field value manager / Менеджер значения поля */
-  readonly value: FieldValueInclude
-
-  /** Field code manager / Менеджер кода поля */
-  readonly code: FieldCodeInclude
-
-  /** Field validation manager / Менеджер валидации поля */
-  readonly validation: FieldValidationInclude
-
-  /** Field form manager / Менеджер формы поля */
-  readonly form: FieldFormInclude
-
-  /** Field events manager / Менеджер событий поля */
-  readonly event: FieldEventInclude
-
-  /** Basic field component manager / Менеджер базового компонента поля */
-  readonly field: FieldInclude
-
-  /** Mask component manager / Менеджер компонента маски */
-  readonly mask: MaskInclude
+export class InputSocial extends DesignLogicAbstract<
+  HTMLElement,
+  InputSocialComponents,
+  InputSocialEmits,
+  InputSocialSlots,
+  InputSocialProps,
+  InputSocialConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputSocialConstructors> = {
+    attributes: {
+      item: FieldAttributesInclude,
+      parameters: () => [this.props]
+    },
+    change: {
+      item: FieldChangeInclude,
+      parameters: () => [this.props]
+    },
+    code: {
+      item: FieldCodeInclude,
+      parameters: () => [this.props]
+    },
+    elementItem: {
+      item: FieldElementInclude,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    event: {
+      item: FieldEventInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('change'),
+        () => this.i('value'),
+        () => this.i('validation'),
+        this.emits,
+        () => this.callInstance('form', item => item)
+      ]
+    },
+    field: {
+      item: FieldInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        () => this.i('value'),
+        () => this.i('event')
+      ]
+    },
+    form: {
+      item: FieldFormInclude,
+      canCreate: () => FieldFormInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('value'),
+        () => this.i('validation')
+      ]
+    },
+    mask: {
+      item: MaskInclude,
+      parameters: () => [
+        () => this.bindsMask,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        () => this.i('value'),
+        '-'
+      ]
+    },
+    validation: {
+      item: FieldValidationInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('value'),
+        () => this.i('change'),
+        () => this.i('code')
+      ]
+    },
+    value: {
+      item: FieldValueInclude<string>,
+      parameters: () => [
+        this.props,
+        () => this.i('elementItem')
+      ]
+    }
+  }
 
   /**
    * Constructor for InputSocial.
@@ -66,110 +158,31 @@ export class InputSocial {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
-   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
-   * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
-   * @param constructors.MaskIncludeConstructor class for working with mask / класс для работы с маской
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: InputSocialProps,
-    protected readonly element: Ref<FieldElementInput>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputSocialComponents, InputSocialProps>,
-    protected readonly slots?: InputSocialSlots,
-    protected readonly emits?: ConstrEmit<InputSocialEmits>,
-    constructors: {
-      FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
-      FieldChangeIncludeConstructor?: typeof FieldChangeInclude
-      FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldElementIncludeConstructor?: typeof FieldElementInclude
-      FieldEventIncludeConstructor?: typeof FieldEventInclude
-      FieldFormIncludeConstructor?: typeof FieldFormInclude
-      FieldIncludeConstructor?: typeof FieldInclude
-      FieldValidationIncludeConstructor?: typeof FieldValidationInclude
-      FieldValueIncludeConstructor?: typeof FieldValueInclude
-      MaskIncludeConstructor?: typeof MaskInclude
-    } = {}
+    props: Readonly<InputSocialProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<InputSocialComponents, InputSocialProps>,
+    slots?: InputSocialSlots,
+    emits?: ConstrEmit<InputSocialEmits>,
+    constructors?: Partial<InputSocialConstructors>
   ) {
-    const {
-      FieldAttributesIncludeConstructor = FieldAttributesInclude,
-      FieldChangeIncludeConstructor = FieldChangeInclude,
-      FieldCodeIncludeConstructor = FieldCodeInclude,
-      FieldElementIncludeConstructor = FieldElementInclude,
-      FieldEventIncludeConstructor = FieldEventInclude,
-      FieldFormIncludeConstructor = FieldFormInclude,
-      FieldIncludeConstructor = FieldInclude,
-      FieldValidationIncludeConstructor = FieldValidationInclude,
-      FieldValueIncludeConstructor = FieldValueInclude,
-      MaskIncludeConstructor = MaskInclude
-    } = constructors
-
-    this.change = new FieldChangeIncludeConstructor(this.props)
-    this.attributes = new FieldAttributesIncludeConstructor(this.props)
-
-    this.elementItem = new FieldElementIncludeConstructor(
-      this.props,
-      this.element
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
 
-    this.value = new FieldValueIncludeConstructor(
-      this.props,
-      () => this.elementItem
-    )
-
-    this.code = new FieldCodeIncludeConstructor(this.props)
-    this.validation = new FieldValidationIncludeConstructor(
-      this.props,
-      () => this.attributes,
-      () => this.value,
-      () => this.change,
-      () => this.code,
-      undefined
-    )
-    this.form = new FieldFormIncludeConstructor(
-      this.props,
-      () => this.value,
-      () => this.validation
-    )
-    this.event = new FieldEventIncludeConstructor(
-      this.props,
-      () => this.change,
-      () => this.value,
-      () => this.validation,
-      this.emits,
-      () => this.form
-    )
-
-    this.field = new FieldIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      () => this.value,
-      () => this.event
-    )
-    this.mask = new MaskIncludeConstructor(
-      () => this.bindsMask,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      () => this.value,
-      '-'
-    )
-
-    // TODO: Temporary workaround until InputSocial is migrated to DesignLogicAbstract / Временный костыль до перевода InputSocial на DesignLogicAbstract
-    this.value.onMounted?.()
-    this.event.onMounted?.()
-    this.mask.onMounted?.()
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
+    this.i('mask')
   }
 
   /**
@@ -214,26 +227,32 @@ export class InputSocial {
    * Возвращает конкретную иконку для социальной сети из переданного свойства socialIcons.
    */
   get icon(): string | undefined {
+    const socialIcons: Partial<Record<string, string>> | undefined = this.props.socialIcons
+
     if (
       this.props.socialType
-      && this.props.socialIcons
+      && socialIcons?.[this.props.socialType]
     ) {
-      return this.props.socialIcons[this.props.socialType]
+      return socialIcons[this.props.socialType]
     }
 
     return this.data.value?.icon
   }
 
   /** InputSocial binding values and event handlers / Значения привязок ввода и обработчики событий */
-  get binds(): Record<string, any> {
-    return {
-      ...this.attributes.listForInput,
-      value: this.value.item.value,
-      onFocus: this.event.onFocus,
-      onBlur: this.event.onBlur,
-      onInput: this.event.onInput,
-      onChange: this.event.onChange
-    }
+  get binds(): ConstrBind {
+    const event = this.i('event')
+
+    return mergeProps(
+      this.i('attributes').listForInput,
+      {
+        value: this.i('value').item.value,
+        onFocus: event.onFocus,
+        onBlur: event.onBlur,
+        onInput: event.onInput,
+        onChange: event.onChange
+      }
+    )
   }
 
   /**

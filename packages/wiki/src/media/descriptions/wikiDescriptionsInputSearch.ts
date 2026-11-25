@@ -34,7 +34,8 @@ export const wikiDescriptionsInputSearch: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import { expect, within, userEvent, waitFor } from \'storybook/test\''
   ],
   render: `
       <DesignComponent v-bind="args" />
@@ -54,15 +55,26 @@ export const wikiDescriptionsInputSearch: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <span>Current query: {{ query || '—' }}</span>
-            <button class="wiki-storybook-button" @click="query = 'search text'">Set query</button>
-            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="query = ''">Clear</button>
+            <span data-testid="input-search-vmodel-value">Current query: {{ query || '—' }}</span>
+            <button type="button" class="wiki-storybook-button" @click="query = 'search text'">Set query</button>
+            <button type="button" class="wiki-storybook-button wiki-storybook-button-warning" @click="query = ''">Clear</button>
           </div>
           <DesignComponent
             v-model:value="query"
             placeholder="Search query..."
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const input = canvas.getByPlaceholderText('Search query...') as HTMLInputElement
+await expect(canvas.getByTestId('input-search-vmodel-value')).toHaveTextContent('Current query: —')
+await userEvent.click(canvas.getByRole('button', { name: 'Set query' }))
+await expect(canvas.getByTestId('input-search-vmodel-value')).toHaveTextContent('Current query: search text')
+await expect(input.value).toBe('search text')
+await userEvent.click(canvas.getByRole('button', { name: 'Clear' }))
+await expect(canvas.getByTestId('input-search-vmodel-value')).toHaveTextContent('Current query: —')
+await expect(input.value).toBe('')
       `
     },
     {
@@ -80,6 +92,73 @@ export const wikiDescriptionsInputSearch: StorybookComponentsDescriptionItem = {
             helper-message="Triggers only after 3 characters with 500ms debounce"
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const input = canvas.getByPlaceholderText('Min 3 chars, 500ms delay...') as HTMLInputElement
+await expect(input).toBeInTheDocument()
+await expect(canvas.getByText('Triggers only after 3 characters with 500ms debounce')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'InputSearchTestBehaviorAndStates',
+      name: {
+        en: 'Test: Debounce, Enter key, states, validation and slots',
+        ru: 'Тест: Debounce, Enter, состояния, валидация и слоты'
+      },
+      propsName: ['minQuery', 'delay', 'cancel', 'disabled', 'readonly', 'validationMessage', 'placeholder', 'textSearch'],
+      setup: `
+      return {
+        model: ref(''),
+        enterModel: ref('')
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <span data-testid="is-test-model">{{ model || 'empty' }}</span>
+          <DesignComponent
+            v-model:value="model"
+            :min-query="3"
+            :delay="80"
+            placeholder="Type 3+ chars"
+          />
+          <span data-testid="is-test-enter">{{ enterModel || 'empty' }}</span>
+          <DesignComponent
+            v-model:value="enterModel"
+            :min-query="2"
+            :delay="5000"
+            text-search="Fallback search placeholder"
+          />
+          <DesignComponent
+            data-testid="is-test-validation"
+            label="Search products"
+            validation-message="Invalid query"
+          >
+            <template #leading><span>[L]</span></template>
+            <template #trailing><span>[T]</span></template>
+          </DesignComponent>
+          <DesignComponent :disabled="true" placeholder="Disabled search" />
+          <DesignComponent :readonly="true" value="Readonly query" />
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const debounceInput = canvas.getByPlaceholderText('Type 3+ chars') as HTMLInputElement
+await userEvent.type(debounceInput, 'ab')
+await expect(canvas.getByTestId('is-test-model')).toHaveTextContent('empty')
+await userEvent.type(debounceInput, 'c')
+await waitFor(async () => {
+  await expect(canvas.getByTestId('is-test-model')).toHaveTextContent('abc')
+})
+
+const enterInput = canvas.getByPlaceholderText('Fallback search placeholder') as HTMLInputElement
+await userEvent.type(enterInput, 'go{Enter}')
+await expect(canvas.getByTestId('is-test-enter')).toHaveTextContent('go')
+
+await expect(canvas.getByText('[L]')).toBeInTheDocument()
+await expect(canvas.getByText('[T]')).toBeInTheDocument()
+await expect(canvas.getByText('Invalid query')).toBeInTheDocument()
+await expect(canvas.getByPlaceholderText('Disabled search')).toBeDisabled()
       `
     }
   ],

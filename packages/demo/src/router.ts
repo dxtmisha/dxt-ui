@@ -69,6 +69,7 @@ import DemoInputFileItemPage from './pages/components/DemoInputFileItemPage.vue'
 import DemoInputImagePage from './pages/components/DemoInputImagePage.vue'
 import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
 import DemoInputPhoneDialCodePage from './pages/components/DemoInputPhoneDialCodePage.vue'
+import DemoInputSearchPage from './pages/components/DemoInputSearchPage.vue'
 import DemoInputSocialPage from './pages/components/DemoInputSocialPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoListGroupPage from './pages/components/DemoListGroupPage.vue'
@@ -95,6 +96,7 @@ import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
 import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
 import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
+import DemoSelectValuePage from './pages/components/DemoSelectValuePage.vue'
 import DemoSkeletonPage from './pages/components/DemoSkeletonPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
@@ -442,6 +444,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoInputPhoneDialCodePage
   },
   {
+    path: '/component-input-search',
+    name: 'component-input-search',
+    component: DemoInputSearchPage
+  },
+  {
     path: '/component-input-social',
     name: 'component-input-social',
     component: DemoInputSocialPage
@@ -570,6 +577,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-select',
     name: 'component-select',
     component: DemoSelectPage
+  },
+  {
+    path: '/component-select-value',
+    name: 'component-select-value',
+    component: DemoSelectValuePage
   },
   {
     path: '/component-skeleton',

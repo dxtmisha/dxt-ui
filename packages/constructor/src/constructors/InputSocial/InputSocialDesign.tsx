@@ -1,24 +1,21 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputSocial } from './InputSocial'
 
-import type { FieldControl } from '../Field'
-import {
-  type InputSocialPropsBasic
-} from './props'
-import {
-  type InputSocialClasses,
-  type InputSocialComponents,
-  type InputSocialEmits,
-  type InputSocialExpose,
-  type InputSocialSlots
+import type { FieldControl, FieldPropsBasic } from '../Field'
+import type { InputSocialPropsBasic } from './props'
+import type {
+  InputSocialClasses,
+  InputSocialComponents,
+  InputSocialEmits,
+  InputSocialExpose,
+  InputSocialSlots
 } from './types'
 
 /**
@@ -34,7 +31,7 @@ export class InputSocialDesign<
   CLASSES extends InputSocialClasses,
   P extends InputSocialPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     InputSocialEmits,
     EXPOSE,
@@ -42,6 +39,7 @@ export class InputSocialDesign<
     CLASSES,
     P
   > {
+  /** InputSocial logic instance / Экземпляр логики InputSocial */
   protected readonly item: InputSocial
 
   /**
@@ -83,8 +81,8 @@ export class InputSocialDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -121,20 +119,23 @@ export class InputSocialDesign<
    * @returns array of rendered VNodes / массив отрендеренных VNode
    */
   protected initRender(): VNode[] {
-    return this.item.field.render(
+    return this.item.i('field').render(
       {
+        ...this.slots,
         default: this.renderInput
       },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        validationMessage: this.item.validation.message,
-        icon: this.item.icon,
-        label: this.item.label,
-        prefix: this.item.prefix,
-        suffix: this.item.suffix
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          validationMessage: this.item.i('validation').message,
+          icon: this.item.icon,
+          label: this.item.label,
+          prefix: this.item.prefix,
+          suffix: this.item.suffix
+        }
+      ) as Partial<ConstrBind<FieldPropsBasic>>
     )
   }
 
@@ -145,14 +146,14 @@ export class InputSocialDesign<
    * @param input data for the input element / данные для элемента ввода
    * @returns array of VNodes / массив VNode
    */
-  readonly renderInput = (input: FieldControl): VNode[] => {
-    if (this.item.mask.is) {
+  protected readonly renderInput = (input: FieldControl): VNode[] => {
+    if (this.item.i('mask').is) {
       return this.renderMask(input)
     }
 
     return [h(
       'input',
-      toBinds(
+      mergeProps(
         this.item.binds,
         input.binds,
         {
@@ -169,18 +170,21 @@ export class InputSocialDesign<
    * @param input data for the input element / данные для элемента ввода
    * @returns array of VNodes / массив VNode
    */
-  readonly renderMask = (input: FieldControl): VNode[] => {
-    return this.item.mask.render(undefined, {
+  protected readonly renderMask = (input: FieldControl): VNode[] => {
+    const event = this.item.i('event')
+
+    return this.item.i('mask').render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
-      inputAttrs: toBinds<ConstrBind<any>>(
-        this.item.attributes.listForInput,
+      inputAttrs: mergeProps(
+        this.item.i('attributes').listForInput,
         input.binds
-      ),
-      onFocus: this.item.event.onFocus,
-      onBlur: this.item.event.onBlur,
-      onInput: this.item.event.onInput
+      ) as Partial<HTMLInputElement>,
+      onFocus: event.onFocus,
+      onBlur: event.onBlur,
+      onInput: event.onInput,
+      onChange: event.onChange
     })
   }
 }

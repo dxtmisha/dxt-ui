@@ -50,7 +50,7 @@ const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'contextBottom', description: `Context slot for bottom area / Слот контекстной области снизу`, properties: [{ name: 'props', type: '(MenuControlItem) | undefined' }] },
   { name: 'contextTop', description: `Context slot for top area / Слот контекстной области сверху`, properties: [{ name: 'props', type: '(MenuControlItem) | undefined' }] },
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'default', description: `Custom trigger chip content slot / Пользовательский слот содержимого чипа-триггера`, properties: [{ name: 'props', type: '(MenuControlItem) | undefined' }] },
   { name: 'footer', description: `Footer slot for window bottom/ Слот подвала для низа окна`, properties: [{ name: 'props', type: '(MenuControlItem) | undefined' }] },
   { name: 'title', description: `Title slot for window title/ Слот заголовка для заголовка окна`, properties: [{ name: 'props', type: '(MenuControlItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка

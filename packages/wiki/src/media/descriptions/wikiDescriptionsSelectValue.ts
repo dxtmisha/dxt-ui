@@ -33,7 +33,10 @@ export const wikiDescriptionsSelectValue: StorybookComponentsDescriptionItem = {
       'поддержка состояний disabled и readonly'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\'',
+    'import { expect, within, userEvent } from \'storybook/test\''
+  ],
   stories: [
     {
       id: 'SelectValueBasic',
@@ -63,6 +66,68 @@ export const wikiDescriptionsSelectValue: StorybookComponentsDescriptionItem = {
             />
           </div>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByText('Select option')).toBeInTheDocument()
+await expect(canvas.getAllByText('Option 1').length).toBeGreaterThanOrEqual(2)
+await expect(canvas.getByText('Option 2')).toBeInTheDocument()
+await expect(canvas.getByText('Option 3')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'SelectValueTestFalsyClickAndDisabled',
+      name: {
+        en: 'Test: Falsy 0 value, click event, iconShow and disabled',
+        ru: 'Тест: Нулевое значение 0, событие click, iconShow и disabled'
+      },
+      propsName: ['placeholder', 'value', 'multiple', 'iconShow', 'iconCancel', 'disabled', 'chipAttrs'],
+      setup: `
+      const lastClicked = ref('')
+      const items = ref([
+        { label: 0, value: 0, index: '0', type: 'item' as const },
+        { label: 'Beta', value: 'beta', index: 'beta', type: 'item' as const }
+      ])
+      const onClick = (_event: MouseEvent, value?: { value?: string | number }) => {
+        lastClicked.value = String(value?.value ?? '')
+      }
+      return {
+        lastClicked,
+        items,
+        onClick
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <span data-testid="sv-test-clicked">{{ lastClicked || 'none' }}</span>
+          <DesignComponent data-testid="sv-test-zero-single" :value="[{ label: 0, value: 0 }]" />
+          <DesignComponent
+            data-testid="sv-test-multiple"
+            :multiple="true"
+            :icon-show="true"
+            icon-cancel="close"
+            :value="items"
+            @click="onClick"
+          />
+          <DesignComponent
+            data-testid="sv-test-disabled"
+            :multiple="true"
+            :disabled="true"
+            icon-cancel="close"
+            :value="[{ label: 'Locked', value: 'locked', index: 'locked', type: 'item' }]"
+            @click="onClick"
+          />
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('sv-test-zero-single')).toHaveTextContent('0')
+
+const multipleRoot = canvas.getByTestId('sv-test-multiple')
+const cancelIcon = multipleRoot.querySelector('span[aria-hidden="true"], button, [class*="trailing"]')
+if (cancelIcon) {
+  await userEvent.click(cancelIcon as HTMLElement)
+}
       `
     }
   ],

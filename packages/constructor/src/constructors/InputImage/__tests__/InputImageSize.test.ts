@@ -1,15 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { nextTick, reactive, ref, type Ref } from 'vue'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual<typeof import('vue')>('vue')
-
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
+import { effectScope, nextTick, reactive, ref, type Ref } from 'vue'
 
 import { ImageFile } from '../../Image/ImageFile'
 import { InputImageSize } from '../InputImageSize'
@@ -71,17 +62,27 @@ const flush = async (): Promise<void> => {
 }
 
 /**
- * Creates InputImageSize with the given properties and files mock.
+ * Creates InputImageSize and triggers onMounted inside an effectScope.
  *
- * Создаёт InputImageSize с указанными свойствами и моком файлов.
+ * Создаёт InputImageSize и запускает onMounted внутри effectScope.
  * @param props component properties / свойства компонента
  * @param files files mock / мок файлов
- * @returns InputImageSize instance / экземпляр InputImageSize
+ * @returns InputImageSize instance and scope cleanup / экземпляр InputImageSize и очистка области
  */
 const createSize = (
   props: Partial<InputImageProps>,
   files: InputImageFiles
-): InputImageSize => new InputImageSize(props as InputImageProps, files)
+): InputImageSize => {
+  const scope = effectScope()
+  let size!: InputImageSize
+
+  scope.run(() => {
+    size = new InputImageSize(props as Readonly<InputImageProps>, () => files)
+    size.onMounted()
+  })
+
+  return size
+}
 
 describe('InputImageSize', () => {
   beforeEach(() => {
@@ -89,11 +90,16 @@ describe('InputImageSize', () => {
   })
 
   describe('size and file size calculation', () => {
-    it('stays undefined without an image source', async () => {
+    it('stays undefined without an image source and remains lazy before onMounted', async () => {
       const createImageSpy = vi.spyOn(ImageFile, 'createImage')
-      const { files } = createFiles()
-      const size = createSize({}, files)
+      const { files } = createFiles('https://example.com/lazy.jpg')
+      const unmountedSize = new InputImageSize({} as Readonly<InputImageProps>, () => files)
 
+      expect(createImageSpy).not.toHaveBeenCalled()
+      expect(unmountedSize.get()).toBeUndefined()
+
+      const emptyFiles = createFiles().files
+      const size = createSize({}, emptyFiles)
       await flush()
 
       expect(size.get()).toBeUndefined()
@@ -178,7 +184,7 @@ describe('InputImageSize', () => {
       expect(size.getFileSize()).toBe(10)
     })
 
-    it('recalculates when the image source changes', async () => {
+    it('recalculates when the image source changes and stops watching on onUnmounted', async () => {
       mockCreateImage(300, 200)
       const { files, state } = createFiles()
       const size = createSize({}, files)
@@ -197,6 +203,34 @@ describe('InputImageSize', () => {
 
       expect(size.get()).toBeUndefined()
       expect(size.getFileSize()).toBeUndefined()
+
+      size.onUnmounted()
+      state.src = `data:image/png;base64,${btoa('ignored')}`
+      await flush()
+
+      expect(size.get()).toBeUndefined()
+      expect(size.getFileSize()).toBeUndefined()
+    })
+
+    it('ignores stale createImage resolution after unmount or subsequent update', async () => {
+      let resolveImage: (value: { image: HTMLImageElement, src: string, width: number, height: number }) => void = () => undefined
+      vi.spyOn(ImageFile, 'createImage').mockImplementationOnce(() => new Promise((resolve) => {
+        resolveImage = resolve
+      }))
+
+      const { files } = createFiles('https://example.com/slow.jpg')
+      const size = createSize({}, files)
+
+      size.onUnmounted()
+      resolveImage({
+        image: {} as HTMLImageElement,
+        src: 'https://example.com/slow.jpg',
+        width: 1920,
+        height: 1080
+      })
+      await flush()
+
+      expect(size.get()).toBeUndefined()
     })
 
     it('recalculates when the file reference changes', async () => {

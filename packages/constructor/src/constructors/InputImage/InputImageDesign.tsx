@@ -1,11 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
-
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { InputImage } from './InputImage'
 
@@ -81,10 +79,10 @@ export class InputImageDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose(),
-      open: this.item.eventItem.open,
-      clear: () => this.item.event.onClear()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose(),
+      open: this.item.i('eventItem').open,
+      clear: () => this.item.i('event').onClear()
     } as EXPOSE
   }
 
@@ -127,19 +125,20 @@ export class InputImageDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.labelledby(this.item.label.id),
-        ...AriaStaticInclude.describedby(this.item.message.id)
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.aria,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
-        ...this.item.label.render(this.slots),
+        ...this.item.i('label').render(this.slots),
         ...this.renderBody(),
         ...this.renderActions(),
-        ...this.item.message.render()
+        ...this.item.i('message').render()
       ]
     )
   }
@@ -150,15 +149,17 @@ export class InputImageDesign<
    * Метод рендеринга для кнопок действий.
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderActions = (): VNode[] => {
+  protected readonly renderActions = (): VNode[] => {
     if (
-      this.item.files.hasImage()
+      this.item.i('files').hasImage()
       && !this.props.disabled
       && !this.props.readonly
     ) {
-      return this.item.actions.render(undefined, {
-        class: this.classes?.value.actions
-      })
+      return this.item.callInstance(
+        'actions',
+        item => item.render(undefined, { class: this.classes?.value.actions }),
+        []
+      )
     }
 
     return []
@@ -170,7 +171,7 @@ export class InputImageDesign<
    * Метод рендеринга для основного содержимого (кадрирование и область загрузки).
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderBody = (): VNode[] => {
+  protected readonly renderBody = (): VNode[] => {
     return [
       h(
         'div',
@@ -191,13 +192,13 @@ export class InputImageDesign<
    * Метод рендеринга для компонента кадрирования изображения.
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderCrop = (): VNode[] => {
-    if (
-      this.item.files.hasImage()
-    ) {
-      return this.item.imageCrop.render(undefined, {
-        class: this.classes?.value.crop
-      })
+  protected readonly renderCrop = (): VNode[] => {
+    if (this.item.i('files').hasImage()) {
+      return this.item.callInstance(
+        'imageCrop',
+        item => item.render(undefined, { class: this.classes?.value.crop }),
+        []
+      )
     }
 
     return []
@@ -209,8 +210,8 @@ export class InputImageDesign<
    * Метод рендеринга для компонента области загрузки.
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderDropzone = (): VNode[] => {
-    return this.item.dropzone.render(undefined, {
+  protected readonly renderDropzone = (): VNode[] => {
+    return this.item.i('dropzone').render(undefined, {
       class: this.classes?.value.dropzone
     })
   }

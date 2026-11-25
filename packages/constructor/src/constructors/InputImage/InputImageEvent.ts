@@ -1,7 +1,5 @@
-// ai-none
-
-import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { CropAreaEventParameters } from '../CropArea'
 import type { DropzoneInclude } from '../Dropzone'
 import type { InputImageFiles } from './InputImageFiles'
@@ -13,15 +11,17 @@ import type { InputImageFiles } from './InputImageFiles'
  */
 export class InputImageEvent {
   /**
-   * Constructor
-   * @param files file manager instance / экземпляр менеджера файлов
-   * @param dropzone dropzone instance / экземпляр дропзоны
-   * @param event field event include instance / экземпляр событий поля
+   * Constructor.
+   *
+   * Конструктор.
+   * @param dropzone dropzone instance getter / геттер экземпляра дропзоны
+   * @param event field event include getter / геттер событий поля
+   * @param files file manager getter / геттер менеджера файлов
    */
   constructor(
-    protected readonly files: InputImageFiles,
-    protected readonly dropzone: DropzoneInclude,
-    protected readonly event: FieldEventInclude
+    protected readonly dropzone: () => DropzoneInclude,
+    protected readonly event: () => FieldEventInclude,
+    protected readonly files: () => InputImageFiles
   ) { }
 
   /**
@@ -30,7 +30,7 @@ export class InputImageEvent {
    * Открывает диалог выбора файла.
    */
   readonly open = (): void => {
-    this.dropzone.expose.open?.()
+    this.dropzone().expose.open?.()
   }
 
   /**
@@ -40,8 +40,8 @@ export class InputImageEvent {
    * @param event crop area event parameters / параметры события области кадрирования
    */
   readonly onCropResize = (event: CropAreaEventParameters): void => {
-    this.files.setCrop(event.coordinator)
-    this.event.onValue()
+    this.files().setCrop(event.coordinator)
+    this.event().onValue()
   }
 
   /**
@@ -55,7 +55,7 @@ export class InputImageEvent {
     event: Event,
     data: FieldValidationItem<FileList | undefined>
   ): Promise<void> => {
-    await this.files.setFiles(data.value)
-    this.event.onAndChange(event)
+    await this.files().setFiles(data.value)
+    this.event().onAndChange(event)
   }
 }

@@ -74,6 +74,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="InputImage" name="component-input-image"/>
         <DemoLink label="InputPhone" name="component-input-phone"/>
         <DemoLink label="InputPhoneDialCode" name="component-input-phone-dial-code"/>
+        <DemoLink label="InputSearch" name="component-input-search"/>
         <DemoLink label="InputSocial" name="component-input-social"/>
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="ListGroup" name="component-list-group"/>
@@ -100,6 +101,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="SegmentControl" name="component-segment-control"/>
         <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>
+        <DemoLink label="SelectValue" name="component-select-value"/>
         <DemoLink label="Skeleton" name="component-skeleton"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>

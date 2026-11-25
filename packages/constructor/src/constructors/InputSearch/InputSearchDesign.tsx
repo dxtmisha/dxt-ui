@@ -1,23 +1,21 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputSearch } from './InputSearch'
 
-import type { FieldControl } from '../Field'
-import {
-  type InputSearchPropsBasic
-} from './props'
-import {
-  type InputSearchClasses,
-  type InputSearchComponents,
-  type InputSearchEmits,
-  type InputSearchExpose,
-  type InputSearchSlots
+import type { FieldControl, FieldPropsBasic } from '../Field'
+import type { InputSearchPropsBasic } from './props'
+import type {
+  InputSearchClasses,
+  InputSearchComponents,
+  InputSearchEmits,
+  InputSearchExpose,
+  InputSearchSlots
 } from './types'
 
 /**
@@ -31,7 +29,7 @@ export class InputSearchDesign<
   CLASSES extends InputSearchClasses,
   P extends InputSearchPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     InputSearchEmits,
     EXPOSE,
@@ -39,12 +37,13 @@ export class InputSearchDesign<
     CLASSES,
     P
   > {
+  /** InputSearch logic instance / Экземпляр логики InputSearch */
   protected readonly item: InputSearch
 
   /**
-   * Constructor
+   * Constructor.
    *
-   * Конструктор
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -80,8 +79,8 @@ export class InputSearchDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -118,16 +117,19 @@ export class InputSearchDesign<
    * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
-    return this.item.field.render(
+    return this.item.i('field').render(
       {
+        ...this.slots,
         default: this.renderInput
       },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        validationMessage: this.item.validation.message
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          validationMessage: this.item.i('validation').message
+        }
+      ) as Partial<ConstrBind<FieldPropsBasic>>
     )
   }
 
@@ -138,10 +140,10 @@ export class InputSearchDesign<
    * @param input data for the input element / данные для элемента ввода
    * @returns array of VNodes / массив VNode
    */
-  readonly renderInput = (input: FieldControl): VNode[] => {
+  protected readonly renderInput = (input: FieldControl): VNode[] => {
     return [h(
       'input',
-      toBinds(
+      mergeProps(
         this.item.binds,
         input.binds,
         {

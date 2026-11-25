@@ -3,7 +3,9 @@ import {
   type ConstrBind,
   type ConstrClassObject,
   type ConstrEmit,
+  type ConstrItems,
   type DesignComp,
+  DesignLogicAbstract,
   type DesignName,
   isFilled
 } from '@dxtmisha/functional'
@@ -17,6 +19,16 @@ import type { EventClickValue } from '../../types/eventClickTypes'
 import type { SelectValueComponents, SelectValueEmits, SelectValueSlots } from './types'
 import type { SelectValueProps } from './props'
 
+/** SelectValue dependency constructors type / Тип конструкторов зависимостей SelectValue */
+export type SelectValueConstructors = {
+  /** Enabled state manager constructor / Конструктор менеджера состояния активности */
+  enabled: typeof EnabledInclude
+  /** Event click controller constructor / Конструктор контроллера клика по событию */
+  event: typeof EventClickInclude
+  /** Window classes manager constructor / Конструктор менеджера классов окна */
+  window: typeof WindowClassesInclude
+}
+
 /**
  * SelectValue is a constructor class for managing select value displays,
  * handling state such as placeholder states, canceling icons, and click actions.
@@ -24,15 +36,33 @@ import type { SelectValueProps } from './props'
  * SelectValue — это класс-конструктор для управления отображением выбранных значений,
  * обрабатывающий такие состояния, как плейсхолдеры, иконки отмены и действия по клику.
  */
-export class SelectValue {
-  /** Enabled state manager / Менеджер состояния активности */
-  readonly enabled: EnabledInclude
-
-  /** Event click controller / Контроллер клика по событию */
-  readonly event: EventClickInclude
-
-  /** Window classes manager / Менеджер классов окна */
-  readonly window: WindowClassesInclude
+export class SelectValue extends DesignLogicAbstract<
+  HTMLDivElement,
+  SelectValueComponents,
+  SelectValueEmits,
+  SelectValueSlots,
+  SelectValueProps,
+  SelectValueConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SelectValueConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    window: {
+      item: WindowClassesInclude,
+      parameters: () => [this.naming.getDesign()]
+    }
+  }
 
   /**
    * Constructor / Конструктор
@@ -42,49 +72,37 @@ export class SelectValue {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
-   * @param constructors.EventConstructor class for creating an event / класс для создания события
-   * @param constructors.WindowClassesConstructor class for working with window classes / класс для работы с классами окна
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: SelectValueProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<SelectValueComponents, SelectValueProps>,
-    protected readonly slots?: SelectValueSlots,
-    protected readonly emits?: ConstrEmit<SelectValueEmits>,
-    constructors: {
-      EnabledConstructor?: typeof EnabledInclude
-      EventConstructor?: typeof EventClickInclude
-      WindowClassesConstructor?: typeof WindowClassesInclude
-    } = {}
+    props: Readonly<SelectValueProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<SelectValueComponents, SelectValueProps>,
+    slots?: SelectValueSlots,
+    emits?: ConstrEmit<SelectValueEmits>,
+    constructors?: Partial<SelectValueConstructors>
   ) {
-    const {
-      EnabledConstructor = EnabledInclude,
-      EventConstructor = EventClickInclude,
-      WindowClassesConstructor = WindowClassesInclude
-    } = constructors
-
-    this.enabled = new EnabledConstructor(this.props)
-    this.event = new EventConstructor(
-      this.props,
-      () => this.enabled,
-      this.emits
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
-
-    this.window = new WindowClassesConstructor(naming.getDesign())
   }
 
   /** Icon for canceling selection / Иконка для отмены выбора */
   get iconTrailing(): ConstrBind<IconProps> | undefined {
-    if (this.enabled.isEnabled) {
+    if (this.i('enabled').isEnabled) {
       return {
         icon: this.props.iconCancel,
         dynamic: true,
         class: [
           this.naming.getSubClass('trailing'),
-          this.window.get().controlStatic
+          this.i('window').get().controlStatic
         ]
       }
     }
@@ -120,9 +138,9 @@ export class SelectValue {
   readonly onClick = (
     event: MouseEvent,
     options?: EventClickValue
-  ) => {
+  ): void => {
     event.preventDefault()
     event.stopPropagation()
-    this.event.onClick(event, options)
+    this.i('event').onClick(event, options)
   }
 }

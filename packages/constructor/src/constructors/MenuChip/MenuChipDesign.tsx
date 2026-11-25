@@ -1,27 +1,30 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode, type VNodeChild } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
+  isFilled,
   type ListNames
 } from '@dxtmisha/functional'
 
 import { MenuChip } from './MenuChip'
 
 import type { MenuControlItem } from '../Menu'
-import {
-  type MenuChipPropsBasic
-} from './props'
-import {
-  type MenuChipClasses,
-  type MenuChipComponents,
-  type MenuChipEmits,
-  type MenuChipExpose,
-  type MenuChipSlots
+import type { MenuChipPropsBasic } from './props'
+import type {
+  MenuChipClasses,
+  MenuChipComponents,
+  MenuChipEmits,
+  MenuChipExpose,
+  MenuChipSlots
 } from './types'
 
 /**
- * MenuChipDesign
+ * Design constructor and renderer for the MenuChip component.
+ * Manages class generation, styles, trigger chip rendering, hidden form input, and exposed APIs.
+ *
+ * Конструктор дизайна и рендерер для компонента MenuChip.
+ * Управляет генерацией классов, стилей, рендерингом чипа-триггера, скрытого поля формы и экспонируемого API.
  */
 export class MenuChipDesign<
   COMP extends MenuChipComponents,
@@ -37,14 +40,17 @@ export class MenuChipDesign<
     CLASSES,
     P
   > {
+  /** Instance of the MenuChip orchestrator / Экземпляр оркестратора MenuChip */
   protected readonly item: MenuChip
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for MenuChipDesign.
+   *
+   * Конструктор для MenuChipDesign.
+   * @param name class name / название класса
+   * @param props component properties / свойства компонента
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor logic orchestrator class / класс логического оркестратора
    */
   constructor(
     name: string,
@@ -69,104 +75,51 @@ export class MenuChipDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Renders the trigger chip component using menu control bindings and formatted label content.
    *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {
-      ...this.item.menu.expose,
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
-    } as EXPOSE
-  }
-
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  protected initClasses(): Partial<CLASSES> {
-    return {
-      main: {},
-      ...{
-        // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        separator: this.naming.getSubClass('separator'),
-        selected: this.naming.getSubClass('selected')
-        // :classes [!] System label / Системная метка
-      }
-    } as Partial<CLASSES>
-  }
-
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  protected initStyles(): ConstrStyles {
-    return {}
-  }
-
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  protected initRender(): VNode[] {
-    return this.item.menu.render(
-      {
-        control: (props: MenuControlItem) => [
-          this.renderControl(props),
-          this.renderInput()
-        ],
-        title: props => this.renderTitle(props),
-        footer: props => this.initSlot('footer', undefined, props),
-        contextTop: props => this.initSlot('contextTop', undefined, props),
-        contextBottom: props => this.initSlot('contextBottom', undefined, props)
-      },
-      {
-        selected: this.item.value.item.value
-      }
-    )
-  }
-
-  /**
-   * Renders the trigger button component using bindings and labels.
-   *
-   * Рендерит компонент кнопки-триггера, используя привязки и метки.
-   * @param props control item properties / свойства элемента управления
-   * @returns rendered button nodes / отрендеренные узлы кнопки
+   * Рендерит компонент чипа-триггера, используя привязки управления меню и форматированное содержимое метки.
+   * @param props menu control item properties / свойства элемента управления меню
+   * @returns rendered chip VNodes / отрендеренные VNode чипа
    */
   readonly renderControl = (props: MenuControlItem): VNode[] => {
-    return this.item.chip.render(
+    const event = this.item.i('event')
+
+    return this.item.i('chip').render(
       {
-        default: () => this.renderControlLabel(props.selectedNames?.value)
+        default: () => this.slots?.default
+          ? this.initSlot('default', undefined, props)
+          : this.renderControlLabel(props.selectedNames?.value)
       },
-      {
-        ...props.binds,
-        iconTurn: props.open.value,
-        onFocus: this.item.event.onFocus,
-        onBlur: this.item.event.onBlur
-      }
+      mergeProps(
+        props.binds,
+        {
+          iconTurn: props.open.value,
+          onFocus: event.onFocus,
+          onBlur: event.onBlur
+        }
+      ),
+      () => true
     )
   }
 
   /**
-   * Formats and renders the inner contents of the button, handling labels, separators, and values.
+   * Formats and renders the inner contents of the chip, handling labels, separators, and selected values.
    *
-   * Форматирует и рендерит внутреннее содержимое кнопки, обрабатывая метки, разделители и значения.
+   * Форматирует и рендерит внутреннее содержимое чипа, обрабатывая метки, разделители и выбранные значения.
    * @param selectedNames list of selected option labels / список меток выбранных опций
-   * @returns array of rendered nodes / массив отрендеренных узлов
+   * @returns array of rendered label nodes / массив отрендеренных узлов метки
    */
-  readonly renderControlLabel = (selectedNames?: ListNames): VNode[] => {
-    const children: any[] = []
-    const hasValue = selectedNames
+  readonly renderControlLabel = (selectedNames?: ListNames): VNodeChild[] => {
+    const children: VNodeChild[] = []
+    const hasLabel = this.props.label === 0 || isFilled(this.props.label, true)
+    const hasValue = Boolean(
+      selectedNames
       && selectedNames.length > 0
       && !(this.props.hideValueIcon && this.props.icon)
+    )
 
     if (
-      this.props.label
+      hasLabel
       && (
         !hasValue
         || !this.props.hideLabelValue
@@ -184,7 +137,7 @@ export class MenuChipDesign<
       }
     }
 
-    if (hasValue) {
+    if (hasValue && selectedNames) {
       children.push(
         h(
           'span',
@@ -198,34 +151,136 @@ export class MenuChipDesign<
   }
 
   /**
-   * Renders the hidden input element used to carry the value.
+   * Renders the hidden input element used to carry the form value.
    *
-   * Рендерит скрытый элемент ввода, используемый для передачи значения.
-   * @returns hidden input node / узел скрытого ввода
+   * Рендерит скрытый элемент ввода, используемый для передачи значения формы.
+   * @returns hidden input VNode / VNode скрытого элемента ввода
    */
   readonly renderInput = (): VNode => {
     return h(
       'input',
       {
+        ref: this.element,
         name: this.props.name,
-        value: this.item.value.get(),
+        value: this.item.i('value').get(),
         type: 'hidden'
       }
     )
   }
 
   /**
-   * Renders the title element, including search inputs and slot wrappers.
+   * Renders the dropdown title slot.
    *
-   * Рендерит элемент заголовка, включая поля ввода поиска и обертки слотов.
-   * @param props data for the transferable property / данные для передаваемого свойства
-   * @returns list of children nodes representing the title / список дочерних узлов, представляющих заголовок
+   * Рендерит слот заголовка выпадающего меню.
+   * @param props menu control item properties / свойства элемента управления меню
+   * @returns title VNode or undefined / VNode заголовка или undefined
    */
-  readonly renderTitle = (props: MenuControlItem) => {
-    const children: any[] = []
+  readonly renderTitle = (props: MenuControlItem): VNode | undefined => {
+    return this.initSlot('title', undefined, props)
+  }
 
-    this.initSlot('title', children, props)
+  /**
+   * Renders the dropdown footer slot.
+   *
+   * Рендерит слот подвала выпадающего меню.
+   * @param props menu control item properties / свойства элемента управления меню
+   * @returns footer VNode or undefined / VNode подвала или undefined
+   */
+  readonly renderFooter = (props: MenuControlItem): VNode | undefined => {
+    return this.initSlot('footer', undefined, props)
+  }
 
-    return children
+  /**
+   * Renders the top context slot inside the dropdown menu.
+   *
+   * Рендерит верхний контекстный слот внутри выпадающего меню.
+   * @param props menu control item properties / свойства элемента управления меню
+   * @returns top context VNode or undefined / VNode верхнего контекста или undefined
+   */
+  readonly renderContextTop = (props: MenuControlItem): VNode | undefined => {
+    return this.initSlot('contextTop', undefined, props)
+  }
+
+  /**
+   * Renders the bottom context slot inside the dropdown menu.
+   *
+   * Рендерит нижний контекстный слот внутри выпадающего меню.
+   * @param props menu control item properties / свойства элемента управления меню
+   * @returns bottom context VNode or undefined / VNode нижнего контекста или undefined
+   */
+  readonly renderContextBottom = (props: MenuControlItem): VNode | undefined => {
+    return this.initSlot('contextBottom', undefined, props)
+  }
+
+  /**
+   * Initializes exposed properties, linking internal methods and state to the component instance.
+   *
+   * Инициализирует экспонируемые свойства, связывая внутренние методы и состояние с экземпляром компонента.
+   * @returns exposed API object / объект экспонируемого API
+   */
+  protected initExpose(): EXPOSE {
+    return {
+      ...this.item.i('menu').expose,
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
+    } as EXPOSE
+  }
+
+  /**
+   * Initializes and extends component CSS class names.
+   *
+   * Инициализирует и дополняет имена CSS-классов компонента.
+   * @returns partial map of classes / частичная карта классов
+   */
+  protected initClasses(): Partial<CLASSES> {
+    return {
+      main: {},
+      ...{
+        // :classes [!] System label / Системная метка
+        label: this.naming.getSubClass('label'),
+        separator: this.naming.getSubClass('separator'),
+        selected: this.naming.getSubClass('selected')
+        // :classes [!] System label / Системная метка
+      }
+    } as Partial<CLASSES>
+  }
+
+  /**
+   * Initializes dynamic styles for the component.
+   *
+   * Инициализирует динамические стили для компонента.
+   * @returns style mapping object / объект маппинга стилей
+   */
+  protected initStyles(): ConstrStyles {
+    return {}
+  }
+
+  /**
+   * Core rendering method outputting the Menu wrapper with trigger chip and hidden input.
+   *
+   * Основной метод рендеринга, выводящий обертку Menu с чипом-триггером и скрытым полем ввода.
+   * @returns array of VNodes representing the template / массив VNode, представляющих шаблон
+   */
+  protected initRender(): VNode[] {
+    return this.item.i('menu').render(
+      {
+        control: (props: MenuControlItem) => [
+          ...this.renderControl(props),
+          this.renderInput()
+        ],
+        title: this.renderTitle,
+        footer: this.renderFooter,
+        contextTop: this.renderContextTop,
+        contextBottom: this.renderContextBottom
+      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          selected: this.item.i('value').item.value
+        }
+      )
+    )
   }
 }

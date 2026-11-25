@@ -1,5 +1,12 @@
-import type { Ref } from 'vue'
-import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
+import { mergeProps, type Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName
+} from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -15,172 +22,182 @@ import { FieldInclude } from '../Field'
 
 import { InputSearchQuery } from './InputSearchQuery'
 
-import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputSearchComponents, InputSearchEmits, InputSearchSlots } from './types'
 import type { InputSearchProps } from './props'
+
+/** InputSearch dependency constructors type / Тип конструкторов зависимостей InputSearch */
+export type InputSearchConstructors = {
+  /** Field attributes constructor / Конструктор атрибутов поля */
+  attributes: typeof FieldAttributesInclude
+  /** Field change constructor / Конструктор изменения поля */
+  change: typeof FieldChangeInclude
+  /** Field code constructor / Конструктор кода поля */
+  code: typeof FieldCodeInclude
+  /** Field element constructor / Конструктор элемента поля */
+  elementItem: typeof FieldElementInclude
+  /** Field event constructor / Конструктор событий поля */
+  event: typeof FieldEventInclude
+  /** Field constructor / Конструктор поля */
+  field: typeof FieldInclude
+  /** Field form constructor / Конструктор формы поля */
+  form: typeof FieldFormInclude
+  /** Field input mode constructor / Конструктор режима ввода поля */
+  inputMode: typeof FieldInputModeInclude
+  /** Search query manager constructor / Конструктор менеджера поискового запроса */
+  query: typeof InputSearchQuery
+  /** Text localization constructor / Конструктор локализации текста */
+  text: typeof TextInclude
+  /** Field validation constructor / Конструктор валидации поля */
+  validation: typeof FieldValidationInclude
+  /** Field value constructor / Конструктор значения поля */
+  value: typeof FieldValueInclude<string>
+}
 
 /**
  * InputSearch constructor class for managing search input logic, debounce timing, and field states.
  *
  * Класс-конструктор InputSearch для управления логикой ввода поиска, задержкой debounce и состояниями поля.
  */
-export class InputSearch {
-  /** Text translations utility / Утилита переводов текста */
-  readonly text: TextInclude
-  /** Field change state manager / Менеджер состояния изменения поля */
-  readonly change: FieldChangeInclude
-  /** Field input mode manager / Менеджер режима ввода поля */
-  readonly inputMode: FieldInputModeInclude
-  /** Field attributes manager / Менеджер атрибутов поля */
-  readonly attributes: FieldAttributesInclude
-
-  /** Input element reference manager / Менеджер ссылки на элемент ввода */
-  readonly elementItem: FieldElementInclude
-  /** Input value state manager / Менеджер состояния значения ввода */
-  readonly value: FieldValueInclude<string>
-
-  /** Field code error message manager / Менеджер сообщений ошибок кода поля */
-  readonly code: FieldCodeInclude
-  /** Field validation manager / Менеджер валидации поля */
-  readonly validation: FieldValidationInclude
-  /** Field form integration manager / Менеджер интеграции с формой поля */
-  readonly form: FieldFormInclude
-  /** Field event manager / Менеджер событий поля */
-  readonly event: FieldEventInclude
-  /** Search query manager / Менеджер поискового запроса */
-  readonly query: InputSearchQuery
-
-  /** Outer field wrapper component manager / Менеджер компонента внешней обертки поля */
-  readonly field: FieldInclude
+export class InputSearch extends DesignLogicAbstract<
+  HTMLElement,
+  InputSearchComponents,
+  InputSearchEmits,
+  InputSearchSlots,
+  InputSearchProps,
+  InputSearchConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputSearchConstructors> = {
+    attributes: {
+      item: FieldAttributesInclude,
+      parameters: () => [
+        () => ({
+          ...this.props,
+          placeholder: this.props.placeholder ?? this.i('text').search
+        }),
+        undefined,
+        undefined,
+        () => this.i('inputMode'),
+        'search'
+      ]
+    },
+    change: {
+      item: FieldChangeInclude,
+      parameters: () => [this.props]
+    },
+    code: {
+      item: FieldCodeInclude,
+      parameters: () => [this.props]
+    },
+    elementItem: {
+      item: FieldElementInclude,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    event: {
+      item: FieldEventInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('change'),
+        () => this.i('value'),
+        () => this.i('validation'),
+        this.emits,
+        () => this.callInstance('form', item => item)
+      ]
+    },
+    field: {
+      item: FieldInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          loading: this.props.loading ?? this.i('query').loading.value
+        }),
+        undefined,
+        () => this.i('value'),
+        () => this.getFieldEvent()
+      ]
+    },
+    form: {
+      item: FieldFormInclude,
+      canCreate: () => FieldFormInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('value'),
+        () => this.i('validation')
+      ]
+    },
+    inputMode: {
+      item: FieldInputModeInclude,
+      parameters: () => [this.props]
+    },
+    query: {
+      item: InputSearchQuery,
+      parameters: () => [
+        this.props,
+        () => this.i('event')
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
+    validation: {
+      item: FieldValidationInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('value'),
+        () => this.i('change'),
+        () => this.i('code')
+      ]
+    },
+    value: {
+      item: FieldValueInclude<string>,
+      parameters: () => [
+        this.props,
+        () => this.i('elementItem')
+      ]
+    }
+  }
 
   /**
-   * Constructor
+   * Constructor.
    *
-   * Конструктор
+   * Конструктор.
    * @param props input data / входные данные
    * @param element input element ref / ссылка на элемент ввода
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits function called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with override constructors / объект с переопределяемыми конструкторами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field events / класс для работы с событиями поля
-   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
-   * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
-   * @param constructors.FieldInputModeIncludeConstructor class for working with field input mode / класс для работы с режимом ввода поля
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
-   * @param constructors.InputSearchQueryConstructor class for working with search queries / класс для работы с поисковыми запросами
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: InputSearchProps,
-    protected readonly element: Ref<FieldElementInput>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputSearchComponents, InputSearchProps>,
-    protected readonly slots?: InputSearchSlots,
-    protected readonly emits?: ConstrEmit<InputSearchEmits>,
-    constructors: {
-      FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
-      FieldChangeIncludeConstructor?: typeof FieldChangeInclude
-      FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldElementIncludeConstructor?: typeof FieldElementInclude
-      FieldEventIncludeConstructor?: typeof FieldEventInclude
-      FieldFormIncludeConstructor?: typeof FieldFormInclude
-      FieldIncludeConstructor?: typeof FieldInclude
-      FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude
-      FieldValidationIncludeConstructor?: typeof FieldValidationInclude
-      FieldValueIncludeConstructor?: typeof FieldValueInclude
-      InputSearchQueryConstructor?: typeof InputSearchQuery
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
+    props: Readonly<InputSearchProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<InputSearchComponents, InputSearchProps>,
+    slots?: InputSearchSlots,
+    emits?: ConstrEmit<InputSearchEmits>,
+    constructors?: Partial<InputSearchConstructors>
   ) {
-    const {
-      FieldAttributesIncludeConstructor = FieldAttributesInclude,
-      FieldChangeIncludeConstructor = FieldChangeInclude,
-      FieldCodeIncludeConstructor = FieldCodeInclude,
-      FieldElementIncludeConstructor = FieldElementInclude,
-      FieldEventIncludeConstructor = FieldEventInclude,
-      FieldFormIncludeConstructor = FieldFormInclude,
-      FieldIncludeConstructor = FieldInclude,
-      FieldInputModeIncludeConstructor = FieldInputModeInclude,
-      FieldValidationIncludeConstructor = FieldValidationInclude,
-      FieldValueIncludeConstructor = FieldValueInclude,
-      InputSearchQueryConstructor = InputSearchQuery,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.text = new TextIncludeConstructor(this.props)
-    this.change = new FieldChangeIncludeConstructor(this.props)
-    this.inputMode = new FieldInputModeIncludeConstructor(this.props)
-    this.attributes = new FieldAttributesIncludeConstructor(
-      () => ({
-        placeholder: this.text.search,
-        ...this.props
-      }),
-      undefined,
-      undefined,
-      () => this.inputMode,
-      'search'
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
 
-    this.elementItem = new FieldElementIncludeConstructor(
-      this.props,
-      this.element
-    )
-
-    this.value = new FieldValueIncludeConstructor(
-      this.props,
-      () => this.elementItem
-    )
-
-    this.code = new FieldCodeIncludeConstructor(this.props)
-    this.validation = new FieldValidationIncludeConstructor(
-      this.props,
-      () => this.attributes,
-      () => this.value,
-      () => this.change,
-      () => this.code
-    )
-    this.form = new FieldFormIncludeConstructor(
-      this.props,
-      () => this.value,
-      () => this.validation
-    )
-
-    this.event = new FieldEventIncludeConstructor(
-      this.props,
-      () => this.change,
-      () => this.value,
-      () => this.validation,
-      this.emits,
-      () => this.form
-    )
-    this.query = new InputSearchQueryConstructor(
-      this.props,
-      this.value,
-      this.event
-    )
-
-    this.field = new FieldIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        loading: this.props.loading ?? this.query.loading.value
-      }),
-      undefined,
-      () => this.value,
-      () => this.event
-    )
-
-    // TODO: Temporary workaround until InputSearch is migrated to DesignLogicAbstract / Временный костыль до перевода InputSearch на DesignLogicAbstract
-    this.value.onMounted?.()
-    this.event.onMounted?.()
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
   }
 
   /**
@@ -189,15 +206,35 @@ export class InputSearch {
    * Значения привязок ввода и обработчики событий.
    * @returns object with input bindings / объект с привязками для поля ввода
    */
-  get binds(): Record<string, any> {
-    return {
-      ...this.attributes.listForInput,
-      value: this.value.item.value,
-      onFocus: this.event.onFocus,
-      onBlur: this.event.onBlur,
-      onInput: this.query.onInput,
-      onChange: this.query.onChange,
-      onKeydown: this.query.onKeydown
-    }
+  get binds(): ConstrBind {
+    const query = this.i('query')
+    const event = this.i('event')
+
+    return mergeProps(
+      this.i('attributes').listForInput,
+      {
+        value: query.draft.value ?? this.i('value').item.value,
+        onFocus: event.onFocus,
+        onBlur: event.onBlur,
+        onInput: query.onInput,
+        onChange: query.onChange,
+        onKeydown: query.onKeydown
+      }
+    )
+  }
+
+  /**
+   * Returns a field event adapter that cancels any pending debounce timer on clear.
+   *
+   * Возвращает адаптер событий поля, отменяющий активный таймер debounce при очистке.
+   * @returns field event controller / контроллер событий поля
+   */
+  protected getFieldEvent(): FieldEventInclude {
+    const event = this.i('event')
+
+    return Object.assign(
+      Object.create(event) as FieldEventInclude,
+      { onClear: this.i('query').onClear }
+    )
   }
 }
