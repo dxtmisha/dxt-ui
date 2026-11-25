@@ -1,19 +1,26 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { inject } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, inject } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
 import { FieldFormInclude } from '../FieldFormInclude'
 import type { FieldValidationInclude } from '../FieldValidationInclude'
 import type { FieldValueInclude } from '../FieldValueInclude'
 import type { FormElementRegistration } from '../../../constructors/Form/basicTypes'
 
-// Mocking vue's inject function
-vi.mock('vue', () => ({
-  inject: vi.fn()
-}))
+// Mocking only Vue's inject while keeping real effectScope/onScopeDispose behavior
+vi.mock('vue', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vue')>()
+  return {
+    ...actual,
+    inject: vi.fn()
+  }
+})
 
 describe('FieldFormInclude', () => {
   let mockContext: {
     register: ReturnType<typeof vi.fn>
+    unregister: ReturnType<typeof vi.fn>
     updateData: ReturnType<typeof vi.fn>
     getValue: ReturnType<typeof vi.fn>
   }
@@ -24,9 +31,14 @@ describe('FieldFormInclude', () => {
 
     mockContext = {
       register: vi.fn(),
+      unregister: vi.fn(),
       updateData: vi.fn(),
       getValue: vi.fn()
     }
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe('static is()', () => {
@@ -45,6 +57,7 @@ describe('FieldFormInclude', () => {
         () => ({}) as unknown as FieldValueInclude,
         () => ({}) as unknown as FieldValidationInclude
       )
+      expect(include).toBeInstanceOf(DesignLifecycleAbstract)
       expect(include.getElement()).toBeUndefined()
     })
 
@@ -133,6 +146,67 @@ describe('FieldFormInclude', () => {
       )
 
       expect(() => formInclude.updateData({ value: 'x', status: true })).not.toThrow()
+    })
+  })
+
+  describe('unregister & lifecycle cleanup', () => {
+    const createDeps = () => ({
+      value: {
+        expose: () => ({ value: { value: 'abc' }, getValue: () => 'abc', setValue: vi.fn(), clear: vi.fn() })
+      } as unknown as FieldValueInclude,
+      validation: {
+        item: { value: { status: true, value: 'abc' } },
+        expose: () => ({ checkValidity: () => true, getValidationMessage: () => '' })
+      } as unknown as FieldValidationInclude
+    })
+
+    it('should unregister on scope disposal and remain idempotent across onUnmounted and manual calls', () => {
+      vi.mocked(inject).mockReturnValue(mockContext as unknown as FormElementRegistration)
+      const { value, validation } = createDeps()
+      const scope = effectScope()
+      let include!: FieldFormInclude
+
+      scope.run(() => {
+        include = new FieldFormInclude({ name: 'username' }, () => value, () => validation)
+      })
+
+      expect(mockContext.register).toHaveBeenCalledTimes(1)
+      expect(mockContext.unregister).not.toHaveBeenCalled()
+
+      scope.stop()
+
+      expect(mockContext.unregister).toHaveBeenCalledTimes(1)
+      expect(mockContext.unregister).toHaveBeenCalledWith(include.id)
+
+      include.onUnmounted()
+      include.unregister()
+
+      expect(mockContext.unregister).toHaveBeenCalledTimes(1)
+    })
+
+    it('should unregister via onUnmounted when instantiated outside an effectScope', () => {
+      vi.mocked(inject).mockReturnValue(mockContext as unknown as FormElementRegistration)
+      const { value, validation } = createDeps()
+      const include = new FieldFormInclude({ name: 'email' }, () => value, () => validation)
+
+      include.onUnmounted()
+
+      expect(mockContext.unregister).toHaveBeenCalledTimes(1)
+      expect(mockContext.unregister).toHaveBeenCalledWith(include.id)
+    })
+
+    it('should not call context.unregister when element was never registered', () => {
+      vi.mocked(inject).mockReturnValue(mockContext as unknown as FormElementRegistration)
+      const include = new FieldFormInclude(
+        {},
+        () => ({}) as unknown as FieldValueInclude,
+        () => ({}) as unknown as FieldValidationInclude
+      )
+
+      include.unregister()
+      include.onUnmounted()
+
+      expect(mockContext.unregister).not.toHaveBeenCalled()
     })
   })
 })

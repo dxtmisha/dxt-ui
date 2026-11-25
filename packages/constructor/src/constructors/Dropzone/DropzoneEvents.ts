@@ -1,6 +1,7 @@
 // ai-none
 
 import { ref } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { DropzoneProps } from './props'
 
@@ -10,17 +11,19 @@ import type { DropzoneProps } from './props'
  * Класс, управляющий событиями перетаскивания и состоянием наведения Dropzone.
  */
 export class DropzoneEvents {
-  /** State indicating if files are currently dragged over / Состояние наведения перетаскиваемых файлов */
-  readonly enter = ref<boolean>(false)
-
   /**
-   * Constructor
-   * @param props input data / входные данные
+   * Constructor for DropzoneEvents.
+   *
+   * Конструктор для DropzoneEvents.
+   * @param props input properties / входные свойства
    */
   constructor(
-    protected readonly props: DropzoneProps
+    protected readonly props: Readonly<DropzoneProps>
   ) {
   }
+
+  /** State indicating if files are currently dragged over / Состояние наведения перетаскиваемых файлов */
+  readonly enter = ref<boolean>(false)
 
   /**
    * Returns binding drag-and-drop event handlers for the input element.
@@ -28,7 +31,7 @@ export class DropzoneEvents {
    * Возвращает обработчики событий привязки перетаскивания для элемента input.
    * @returns object with event handlers / объект с обработчиками событий
    */
-  get binds(): Record<string, any> {
+  get binds(): ConstrBind {
     return {
       onDragenter: this.onDragenter,
       onDragleave: this.onDragleave,

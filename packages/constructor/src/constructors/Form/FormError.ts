@@ -1,69 +1,62 @@
 // ai-none
 
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import { isFunction } from '@dxtmisha/functional-basic'
 
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
-
 import type { FormPropsBasic } from './props'
 
 /**
  * Class for managing and storing form error states.
- * Tracks overall error status and field error details based on active elements mode.
+ * Tracks overall error status and field error details based on active elements mode (native or custom).
  *
  * Класс для управления и хранения состояний ошибок формы.
- * Отслеживает общий статус ошибки и детали ошибок полей в зависимости от режима элементов.
+ * Отслеживает общий статус ошибки и детали ошибок полей в зависимости от активного режима элементов (нативного или кастомного).
  */
-export class FormError {
+export class FormError extends DesignLifecycleAbstract {
   /** Reactive overall error state flag / Реактивный флаг общего состояния ошибки */
   readonly error = ref<boolean>(false)
 
   /** Reactive map of error messages by field name / Реактивная карта сообщений об ошибках по именам полей */
   readonly errors = ref<Record<string, string>>({})
 
+  /** Cleanup handle for reactive elements watcher / Обработчик остановки реактивного наблюдателя элементов */
+  protected stopWatch?: WatchStopHandle
+
   /**
    * Constructor for FormError.
    *
    * Конструктор для FormError.
    * @param props incoming form properties / входящие свойства формы
-   * @param elements object for managing custom child elements / объект для управления кастомными дочерними элементами
-   * @param native object for working with native form elements / объект для работы с нативными элементами формы
+   * @param elements lazy getter for custom child elements manager / ленивый геттер менеджера кастомных дочерних элементов
+   * @param native lazy getter for native form elements manager / ленивый геттер менеджера нативных элементов формы
    */
   constructor(
-    protected readonly props: FormPropsBasic,
-    protected readonly elements: FormElements,
-    protected readonly native: FormElementsNative
+    protected readonly props: Readonly<FormPropsBasic>,
+    protected readonly elements: () => FormElements,
+    protected readonly native: () => FormElementsNative
   ) {
-    watch(
-      [
-        () => this.props.native,
-        this.elements.item,
-        this.native.item
-      ],
-      () => {
-        this.update()
-      },
-      { deep: true }
-    )
-
-    onMounted(() => {
-      this.update()
-    })
+    super()
   }
 
   /**
-   * Checks validity of the form /
-   * Проверяет валидность формы
-   * @returns validity status / статус валидности
-   */
-  readonly checkValidity = (): boolean => {
-    return !this.isError()
-  }
-
-  /**
-   * Returns boolean error status.
+   * Checks if the form has any validation error.
    *
-   * Возвращает булев статус ошибки.
+   * Проверяет, есть ли в форме ошибка валидации.
+   * @returns true if form has an error / true, если в форме есть ошибка
+   */
+  isError(): boolean {
+    return this.props.native
+      ? this.native().isError()
+      : this.elements().isError()
+  }
+
+  /**
+   * Returns cached boolean error status.
+   *
+   * Возвращает сохранённый булев статус ошибки.
    * @returns true if form has an error / true, если в форме есть ошибка
    */
   get(): boolean {
@@ -71,9 +64,9 @@ export class FormError {
   }
 
   /**
-   * Returns map of errors by field name.
+   * Returns cached map of error messages by field name.
    *
-   * Возвращает карту ошибок по именам полей.
+   * Возвращает сохранённую карту сообщений об ошибках по именам полей.
    * @returns record of field errors / объект ошибок полей
    */
   getErrors(): Record<string, string> {
@@ -81,34 +74,10 @@ export class FormError {
   }
 
   /**
-   * Checks if form has an error.
-   *
-   * Проверяет, есть ли ошибка в форме.
-   * @returns true if has error / true, если есть ошибка
-   */
-  isError(): boolean {
-    return this.props.native
-      ? this.native.isError()
-      : this.elements.isError()
-  }
-
-  /**
-   * Resets error status and errors map.
-   *
-   * Сбрасывает статус ошибки и карту ошибок.
-   * @returns this instance / текущий экземпляр
-   */
-  readonly reset = (): this => {
-    this.error.value = false
-    this.errors.value = {}
-    return this
-  }
-
-  /**
    * Updates error status and errors map based on active elements (native or custom).
    *
    * Обновляет статус ошибки и карту ошибок на основе активных элементов (нативных или кастомных).
-   * @returns this instance / текущий экземпляр
+   * @returns current instance / текущий экземпляр
    */
   readonly update = (): this => {
     this.error.value = this.isError()
@@ -120,6 +89,61 @@ export class FormError {
   }
 
   /**
+   * Resets error status and errors map.
+   *
+   * Сбрасывает статус ошибки и карту ошибок.
+   * @returns current instance / текущий экземпляр
+   */
+  readonly reset = (): this => {
+    this.error.value = false
+    this.errors.value = {}
+    return this
+  }
+
+  /**
+   * Checks validity of the form.
+   *
+   * Проверяет валидность формы.
+   * @returns validity status / статус валидности
+   */
+  readonly checkValidity = (): boolean => {
+    return !this.isError()
+  }
+
+  /**
+   * Synchronizes initial error state and starts watching active element lists on mount.
+   *
+   * Синхронизирует начальное состояние ошибок и запускает наблюдение за активными списками элементов при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.update()
+
+    this.stopWatch?.()
+    this.stopWatch = watch(
+      [
+        () => this.props.native,
+        () => this.props.native
+          ? this.native().item.value
+          : this.elements().item.value
+      ],
+      () => {
+        this.update()
+      },
+      { deep: true }
+    )
+  }
+
+  /**
+   * Stops watching active element lists on unmount.
+   *
+   * Останавливает наблюдение за активными списками элементов при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
+  /**
    * Returns map of errors collected from custom child elements.
    *
    * Возвращает карту ошибок, собранных из кастомных дочерних элементов.
@@ -128,8 +152,8 @@ export class FormError {
   protected getErrorsElements(): Record<string, string> {
     const errors: Record<string, string> = {}
 
-    this.elements.item.value.forEach((element) => {
-      const isInvalid = (typeof element.checkValidity === 'function' && !element.checkValidity())
+    for (const element of this.elements().item.value) {
+      const isInvalid = (isFunction(element.checkValidity) && !element.checkValidity())
         || element.data?.status === false
 
       if (isInvalid) {
@@ -140,7 +164,7 @@ export class FormError {
 
         errors[element.name] = message
       }
-    })
+    }
 
     return errors
   }
@@ -154,11 +178,11 @@ export class FormError {
   protected getErrorsNative(): Record<string, string> {
     const errors: Record<string, string> = {}
 
-    Object.entries(this.native.get()).forEach(([name, item]) => {
+    for (const [name, item] of Object.entries(this.native().get())) {
       if (item.status === false) {
         errors[name] = item.validationMessage ?? item.validityMessage ?? ''
       }
-    })
+    }
 
     return errors
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { FormElementsValues, FormExpose } from '@dxtmisha/constructor/Form'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoFlex from '../../components/DemoFlex.vue'
@@ -8,7 +9,8 @@ import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
 
-const formRef = ref<any>(null)
+const formRef = ref<FormExpose | null>(null)
+const nativeFormRef = ref<FormExpose | null>(null)
 
 const roleOptions = [
   { label: 'Frontend Developer', value: 'frontend' },
@@ -31,7 +33,7 @@ const categoryOptions = [
   { label: 'Business', value: 'business' }
 ]
 
-const formValues = ref<Record<string, any>>({
+const formValues = ref<FormElementsValues>({
   username: 'johndoe',
   email: 'john.doe@example.com',
   password: 'secretPassword123',
@@ -51,7 +53,16 @@ const formValues = ref<Record<string, any>>({
   notification: 'email'
 })
 
+const nativeValues = ref<FormElementsValues>({
+  title: 'Native Form Title',
+  category: 'developer',
+  notes: 'Native textarea notes',
+  subscribe: true,
+  priority: 'normal'
+})
+
 const validityStatus = ref<boolean | null>(null)
+const singleFieldSnapshot = ref<string>('Not queried')
 
 const onFormInput = (...args: unknown[]) => {
   onEvent('input', ...args)
@@ -81,6 +92,10 @@ const onFormReset = (...args: unknown[]) => {
   onEvent('reset', ...args)
 }
 
+const onFormSubmit = (...args: unknown[]) => {
+  onEvent('submit', ...args)
+}
+
 const onCheckValidity = () => {
   const isValid = formRef.value?.checkValidity() ?? false
   validityStatus.value = isValid
@@ -88,7 +103,7 @@ const onCheckValidity = () => {
 }
 
 const onFillDemoData = () => {
-  const sampleData = {
+  const sampleData: FormElementsValues = {
     username: 'alice_wonder',
     email: 'alice@example.com',
     password: 'securePassword456',
@@ -112,21 +127,57 @@ const onFillDemoData = () => {
   onEvent('setValues', sampleData)
 }
 
+const onSetUsername = () => {
+  formRef.value?.set('username', 'updated_user')
+  onEvent('set', { username: 'updated_user' })
+}
+
+const onGetValues = () => {
+  const values = formRef.value?.getValues() ?? {}
+  singleFieldSnapshot.value = `${String(values.username ?? '')} / ${String(values.email ?? '')}`
+  onEvent('getValues', values)
+}
+
+const onProgrammaticSubmit = () => {
+  formRef.value?.submit()
+}
+
 const onClearData = () => {
   formRef.value?.setValuesAll({})
   onEvent('setValuesAll', {})
+}
+
+const onNativeFill = () => {
+  nativeFormRef.value?.setValues({
+    title: 'Updated Native Title',
+    category: 'designer',
+    notes: 'Updated via setValues()',
+    subscribe: false,
+    priority: 'high'
+  })
+  onEvent('native-setValues')
+}
+
+const onNativeReset = () => {
+  nativeFormRef.value?.reset()
+  onEvent('native-reset')
 }
 </script>
 
 <template>
   <DemoLinkBlack />
-  <D1Page label="Form">
+  <D1Page label="Form" class="demo-form-page">
     <D1Section>
       <D1Grid>
         <D1GridItem base="12" lg="8">
           <D1Form
             ref="formRef"
             v-model="formValues"
+            action="/api/demo-submit"
+            method="post"
+            enctype="multipart/form-data"
+            target="_self"
+            autocomplete="on"
             @input="onFormInput"
             @inputLite="onFormInputLite"
             @inputValues="onFormInputValues"
@@ -134,7 +185,12 @@ const onClearData = () => {
             @changeLite="onFormChangeLite"
             @changeValues="onFormChangeValues"
             @reset="onFormReset"
+            @submit="onFormSubmit"
           >
+            <template #header>
+              <D1Header label="Custom Form Header Slot" tag="h4" />
+            </template>
+
             <D1Block label="General Usage">
               <D1Group label="Basic & Personal Information">
                 <D1Grid>
@@ -331,10 +387,17 @@ const onClearData = () => {
                   <D1Button type="reset" label="Reset Form" secondary />
                   <D1Button label="Check Validity" outline @click="onCheckValidity" />
                   <D1Button label="Fill Sample Data" outline @click="onFillDemoData" />
+                  <D1Button label="Set Username" outline @click="onSetUsername" />
+                  <D1Button label="Get Values" outline @click="onGetValues" />
+                  <D1Button label="Programmatic Submit" outline @click="onProgrammaticSubmit" />
                   <D1Button label="Clear Form" outline @click="onClearData" />
                 </DemoFlex>
               </D1Group>
             </D1Block>
+
+            <template #footer>
+              <D1TextDescription description="Custom Form Footer Slot" />
+            </template>
           </D1Form>
         </D1GridItem>
 
@@ -343,21 +406,88 @@ const onClearData = () => {
             <D1Group label="Events & Status">
               <DemoValue :value="eventName" label="Last Triggered Event" />
               <DemoValue :value="validityStatus ?? 'Not checked'" label="Validity Status" />
+              <DemoValue :value="singleFieldSnapshot" label="getValues() Snapshot" />
             </D1Group>
 
             <D1Group label="Current Form Values (v-model)">
               <DemoValue
-                v-for="(val, key) in formValues"
+                v-for="(entryValue, key) in formValues"
                 :key="key"
                 :label="String(key)"
-                :value="val ?? '—'"
+                :value="entryValue ?? '—'"
               />
             </D1Group>
           </D1Block>
         </D1GridItem>
       </D1Grid>
+
+      <D1Group label="Native HTML Form Elements (native=true)">
+        <D1Form
+          ref="nativeFormRef"
+          v-model="nativeValues"
+          native
+          @submit="onEvent('native-submit', $event)"
+          @reset="onEvent('native-reset', $event)"
+          @inputValues="onEvent('native-inputValues', $event)"
+          @changeValues="onEvent('native-changeValues', $event)"
+        >
+          <div class="demo-form-page__native">
+            <label class="demo-form-page__field">
+              <span>Title</span>
+              <input name="title" type="text" required>
+            </label>
+            <label class="demo-form-page__field">
+              <span>Category</span>
+              <select name="category">
+                <option value="developer">Developer</option>
+                <option value="designer">Designer</option>
+                <option value="manager">Manager</option>
+              </select>
+            </label>
+            <label class="demo-form-page__field">
+              <span>Notes</span>
+              <textarea name="notes" rows="2" />
+            </label>
+            <DemoFlex>
+              <label>
+                <input name="subscribe" type="checkbox">
+                Subscribe
+              </label>
+              <label>
+                <input name="priority" type="radio" value="normal">
+                Normal
+              </label>
+              <label>
+                <input name="priority" type="radio" value="high">
+                High
+              </label>
+            </DemoFlex>
+            <DemoFlex>
+              <D1Button type="submit" label="Submit Native" primary />
+              <D1Button label="Fill Native" outline @click="onNativeFill" />
+              <D1Button label="Reset Native" secondary @click="onNativeReset" />
+            </DemoFlex>
+          </div>
+        </D1Form>
+        <DemoValue :value="JSON.stringify(nativeValues)" label="Native Values" />
+      </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-form-page {
+  &__native {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 480px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+</style>

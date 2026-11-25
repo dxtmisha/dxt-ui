@@ -7,6 +7,7 @@ defineProps<{
   className?: string
   classClick?: string
   classPosition?: string
+  selectedValues?: string[]
 }>()
 </script>
 
@@ -17,10 +18,26 @@ defineProps<{
       :key="item.value"
       center
       size="sm"
-      :class="[className, classClick, classPosition]"
+      :class="[
+        className,
+        classClick,
+        classPosition,
+        selectedValues?.includes(item.value) ? 'd1-draggableWrapper__item--selected' : undefined,
+        selectedValues?.includes(item.value) ? 'demo-draggable-wrapper-list__selected' : undefined
+      ]"
       :data-value="item.value"
     >
       {{ item.label }}
     </DemoBox>
   </DemoFlex>
 </template>
+
+<style lang="scss">
+@use '@dxtmisha/d1/ui-properties' as ui;
+
+.demo-draggable-wrapper-list {
+  &__selected {
+    @include ui.borderColor(ui.v('?sys.palette.primary'), ui.v('?sys.opacity.primary'));
+  }
+}
+</style>

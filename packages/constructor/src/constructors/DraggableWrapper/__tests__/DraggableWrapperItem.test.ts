@@ -146,10 +146,20 @@ describe('DraggableWrapperItem', () => {
       expect(result.map(x => x.value)).toEqual(['a', 'b'])
     })
 
-    it('should preserve items with undefined values without dropping them', () => {
-      const items = [{ value: undefined }, { value: '2' }, { value: '3' }]
+    it('should preserve items with undefined values without dropping them or matching valueTo="undefined"', () => {
+      const items = [{ value: undefined }, { value: '2' }, { value: '3' }] as const
       const result = item.toNewPosition(items, '3', ['2'], false)
       expect(result.map(x => x.value)).toEqual([undefined, '3', '2'])
+
+      const resultUndefinedString = item.toNewPosition(items, 'undefined', ['2'], true)
+      expect(resultUndefinedString.map(x => x.value)).toEqual(['2', undefined, '3'])
+    })
+
+    it('should handle numeric 0 value without falsy trap and never mutate readonly input array', () => {
+      const items = [{ value: 0 }, { value: 1 }, { value: 2 }] as const
+      const result = item.toNewPosition(items, '2', ['0'], false)
+      expect(result.map(x => x.value)).toEqual([1, 2, 0])
+      expect(items.map(x => x.value)).toEqual([0, 1, 2])
     })
   })
 })

@@ -1,6 +1,7 @@
 // ai-none
 
-import { onMounted, watch } from 'vue'
+import { watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
@@ -10,48 +11,52 @@ import type { FormPropsBasic } from './props'
 
 /**
  * Class for managing Form values.
- * Coordinates reading and writing values across custom child elements and native form controls.
+ * Coordinates reading, writing, reactive synchronization, and resetting of values across custom child elements and native form controls.
  *
  * Класс для управления значениями формы (Form).
- * Координирует чтение и запись значений между кастомными дочерними элементами и нативными элементами управления формы.
+ * Координирует чтение, запись, реактивную синхронизацию и сброс значений между кастомными дочерними элементами и нативными элементами управления формы.
  */
-export class FormValue {
+export class FormValue extends DesignLifecycleAbstract {
+  /**
+   * Checks whether initial or controlled form values are provided in props.
+   *
+   * Проверяет, переданы ли начальные или контролируемые значения формы в свойствах.
+   * @param props incoming form properties / входящие свойства формы
+   * @returns true if value or modelValue is defined / true, если задано value или modelValue
+   */
+  static is(props?: Readonly<FormPropsBasic>): boolean {
+    return Boolean(props?.value || props?.modelValue)
+  }
+
   /** Cached initial form values / Закешированные исходные значения формы */
   protected cache: FormElementsValues = {}
 
+  /** Cleanup handle for modelValue prop watcher / Обработчик остановки наблюдателя за свойством modelValue */
+  protected stopWatchModelValue?: WatchStopHandle
+
+  /** Cleanup handle for value prop watcher / Обработчик остановки наблюдателя за свойством value */
+  protected stopWatchValue?: WatchStopHandle
+
   /**
-   * Constructor
+   * Constructor for FormValue.
+   *
+   * Конструктор для FormValue.
    * @param props incoming form properties / входящие свойства формы
-   * @param elements object for managing child elements / объект для управления дочерними элементами
-   * @param native object for working with native form elements / объект для работы с нативными элементами формы
+   * @param elements lazy getter for custom child elements manager / ленивый геттер менеджера кастомных дочерних элементов
+   * @param native lazy getter for native form elements manager / ленивый геттер менеджера нативных элементов формы
    */
   constructor(
-    protected readonly props?: FormPropsBasic,
-    protected readonly elements?: FormElements,
-    protected readonly native?: FormElementsNative
+    protected readonly props: Readonly<FormPropsBasic>,
+    protected readonly elements: () => FormElements,
+    protected readonly native: () => FormElementsNative
   ) {
-    if (this.props?.value) {
+    super()
+
+    if (this.props.value) {
       this.cache = { ...this.props.value }
-    } else if (this.props?.modelValue) {
+    } else if (this.props.modelValue) {
       this.cache = { ...this.props.modelValue }
     }
-
-    if (this.props) {
-      watch(() => this.props?.value, (value) => {
-        if (value) {
-          this.setValuesAll(value)
-        }
-      })
-      watch(() => this.props?.modelValue, (value) => {
-        if (value) {
-          this.setValuesAll(value)
-        }
-      })
-    }
-
-    onMounted(() => {
-      this.setValues(this.cache)
-    })
   }
 
   /**
@@ -61,11 +66,11 @@ export class FormValue {
    * @returns object with name to value mapping / объект сопоставления имени и значения
    */
   readonly get = (): FormElementsValues => {
-    if (this.props?.native) {
-      return this.native?.getValues() ?? {}
+    if (this.props.native) {
+      return this.native().getValues()
     }
 
-    return this.elements?.getValues() ?? {}
+    return this.elements().getValues()
   }
 
   /**
@@ -85,11 +90,11 @@ export class FormValue {
    * @returns object with name to validation data mapping / объект сопоставления имени и данных валидации
    */
   getData(): FormElementsData {
-    if (this.props?.native) {
-      return this.native?.get() ?? {}
+    if (this.props.native) {
+      return this.native().get()
     }
 
-    return this.elements?.getData() ?? {}
+    return this.elements().getData()
   }
 
   /**
@@ -99,25 +104,12 @@ export class FormValue {
    * @param name element name / имя элемента
    * @returns element value or undefined / значение элемента или undefined
    */
-  getValue(name: string): any {
-    if (this.props?.native) {
-      return this.native?.getValue(name)
+  getValue(name: string): unknown {
+    if (this.props.native) {
+      return this.native().getValue(name)
     }
 
-    return this.elements?.getValue(name)
-  }
-
-  /**
-   * Resets form element values to cached initial values.
-   *
-   * Сбрасывает значения элементов формы к закешированным исходным значениям.
-   */
-  readonly reset = (): void => {
-    if (this.props?.native) {
-      this.native?.reset(this.cache)
-    } else {
-      this.elements?.reset(this.cache)
-    }
+    return this.elements().getValue(name)
   }
 
   /**
@@ -127,25 +119,25 @@ export class FormValue {
    * @param name element name / имя элемента
    * @param value new value / новое значение
    */
-  readonly set = (name: string, value: any): void => {
-    if (this.props?.native) {
-      this.native?.set(name, value)
+  readonly set = (name: string, value: unknown): void => {
+    if (this.props.native) {
+      this.native().set(name, value)
     } else {
-      this.elements?.set(name, value)
+      this.elements().set(name, value)
     }
   }
 
   /**
-   * Sets values for form elements.
+   * Sets values for form elements without altering omitted fields.
    *
-   * Устанавливает значения для элементов формы.
+   * Устанавливает значения для элементов формы без изменения неуказанных полей.
    * @param values object of element values keyed by name / объект значений элементов по имени
    */
   readonly setValues = (values: FormElementsValues): void => {
-    if (this.props?.native) {
-      this.native?.setValues(values)
+    if (this.props.native) {
+      this.native().setValues(values)
     } else {
-      this.elements?.setValues(values)
+      this.elements().setValues(values)
     }
   }
 
@@ -158,10 +150,10 @@ export class FormValue {
    * @param values object of element values keyed by name / объект значений элементов по имени
    */
   readonly setValuesAll = (values: FormElementsValues): void => {
-    if (this.props?.native) {
-      this.native?.setValuesAll(values)
+    if (this.props.native) {
+      this.native().setValuesAll(values)
     } else {
-      this.elements?.setValuesAll(values)
+      this.elements().setValuesAll(values)
     }
   }
 
@@ -172,10 +164,60 @@ export class FormValue {
    * @returns current instance / текущий экземпляр
    */
   readonly update = (): this => {
-    if (this.props?.native) {
-      this.native?.update()
+    if (this.props.native) {
+      this.native().update()
     }
 
     return this
+  }
+
+  /**
+   * Resets form element values to cached initial values.
+   *
+   * Сбрасывает значения элементов формы к закешированным исходным значениям.
+   */
+  readonly reset = (): void => {
+    if (this.props.native) {
+      this.native().reset(this.cache)
+    } else {
+      this.elements().reset(this.cache)
+    }
+  }
+
+  /**
+   * Applies cached initial values and starts watching controlled value props on mount.
+   *
+   * Применяет закешированные начальные значения и запускает наблюдение за контролируемыми свойствами значений при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    if (Object.keys(this.cache).length > 0) {
+      this.setValues(this.cache)
+    }
+
+    this.stopWatchValue?.()
+    this.stopWatchValue = watch(() => this.props.value, (value) => {
+      if (value) {
+        this.setValuesAll(value)
+      }
+    })
+
+    this.stopWatchModelValue?.()
+    this.stopWatchModelValue = watch(() => this.props.modelValue, (value) => {
+      if (value) {
+        this.setValuesAll(value)
+      }
+    })
+  }
+
+  /**
+   * Stops watching controlled value props on unmount.
+   *
+   * Останавливает наблюдение за контролируемыми свойствами значений при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatchValue?.()
+    this.stopWatchModelValue?.()
+    this.stopWatchValue = undefined
+    this.stopWatchModelValue = undefined
   }
 }

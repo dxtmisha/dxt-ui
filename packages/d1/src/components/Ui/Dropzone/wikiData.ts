@@ -15,7 +15,7 @@ const propsNames: StorybookProps = [
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
-  { name: 'inputAttrs', type: 'ConstrBind<HTMLInputElement>' },
+  { name: 'inputAttrs', type: 'ConstrBind<Partial<Omit<HTMLInputElement, "style">>>' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
@@ -31,7 +31,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Default slot / Слот по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]

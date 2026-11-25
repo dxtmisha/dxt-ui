@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * DropzoneDesign
+ * DropzoneDesign constructor class responsible for assembling and rendering the Dropzone component.
+ * It coordinates root bindings, file input rendering, optional visual inclusions, and exposed controls.
+ *
+ * Класс-конструктор DropzoneDesign, отвечающий за сборку и рендеринг компонента Dropzone.
+ * Координирует привязки корневого элемента, рендеринг файлового инпута, опциональные визуальные включения и экспортируемые методы управления.
  */
 export class DropzoneDesign<
   COMP extends DropzoneComponents,
@@ -35,14 +39,17 @@ export class DropzoneDesign<
     CLASSES,
     P
   > {
+  /** Dropzone logic orchestrator instance / Экземпляр оркестратора логики Dropzone */
   protected readonly item: Dropzone
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a DropzoneDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна Dropzone.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,14 +74,32 @@ export class DropzoneDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Rendering method for the file input element.
+   *
+   * Метод рендеринга для элемента ввода файла.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderInput = (): VNode[] => [
+    h(
+      'input',
+      mergeProps(
+        this.item.i('input').binds,
+        {
+          class: this.classes?.value.input
+        }
+      )
+    )
+  ]
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
    * @returns expose object / объект экспонирования
    */
   protected initExpose(): EXPOSE {
     return {
-      open: this.item.input.open,
+      open: this.item.open,
       clear: this.item.clear
     } as EXPOSE
   }
@@ -113,36 +138,25 @@ export class DropzoneDesign<
    * @returns rendered virtual node / сгенерированный виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderInput(),
-      ...this.item.icon.renderIcon(),
-      ...this.item.label.render(),
-      ...this.item.description.render()
+      ...this.item.callInstance('icon', item => item.renderIcon(), []),
+      ...this.item.callInstance('label', item => item.render(), []),
+      ...this.item.callInstance('description', item => item.render(), [])
     ]
 
-    this.initSlot('default', children)
-
-    return h('label', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, children)
-  }
-
-  /**
-   * Rendering method for the file input element.
-   *
-   * Метод рендеринга для элемента ввода файла.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  protected renderInput(): VNode[] {
-    return [
-      h('input', {
-        ...this.item.input.binds,
-        class: this.classes?.value.input
-      })
-    ]
+    return h(
+      'label',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 }

@@ -39,8 +39,6 @@ export interface DropzoneExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface DropzoneSlots extends LabelSlots, DescriptionSlots {
-  /** Default slot / Слот по умолчанию */
-  default?: (props: any) => any
 }
 
 /**
@@ -49,6 +47,7 @@ export interface DropzoneSlots extends LabelSlots, DescriptionSlots {
  * Тип, описывающий подклассы.
  */
 export type DropzoneClasses = {
+  /** Main container class / Класс основного контейнера */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   input: string

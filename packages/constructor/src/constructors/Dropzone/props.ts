@@ -9,6 +9,7 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { ModelPropsFiles } from '../../types/modelTypes'
 import type { TextDropzonePropsInclude } from '../../types/textTypes'
 
+/** Token-driven properties for Dropzone / Токен-управляемые свойства для Dropzone */
 type DropzonePropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
@@ -16,6 +17,10 @@ type DropzonePropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for Dropzone component /
+ * Базовые свойства компонента Dropzone
+ */
 export type DropzonePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > = DescriptionProps
@@ -31,7 +36,7 @@ export type DropzonePropsBasic<
     /** Allow selecting multiple files / Разрешить выбор нескольких файлов */
     multiple?: boolean
     /** Additional attributes for the input element / Дополнительные атрибуты для элемента ввода */
-    inputAttrs?: ConstrBind<HTMLInputElement>
+    inputAttrs?: ConstrBind<Partial<Omit<HTMLInputElement, 'style'>>>
   }
 
 /**

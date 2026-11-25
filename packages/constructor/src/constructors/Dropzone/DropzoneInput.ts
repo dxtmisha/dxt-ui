@@ -1,58 +1,75 @@
 // ai-none
 
-import { ref } from 'vue'
-import type { ConstrEmit } from '@dxtmisha/functional'
+import { mergeProps, ref } from 'vue'
+import { isFunction, type ConstrBind, type ConstrEmit } from '@dxtmisha/functional'
 
-import { DropzoneEvents } from './DropzoneEvents'
-import { DropzoneFiles } from './DropzoneFiles'
-
-import type { DropzoneEmits } from './types'
+import type { DropzoneEvents } from './DropzoneEvents'
+import type { DropzoneFiles } from './DropzoneFiles'
 import type { DropzoneProps } from './props'
+import type { DropzoneEmits } from './types'
 
 /**
- * Class for managing the file input element in Dropzone.
+ * Class for managing the native file input element, its bindings, and DOM interactions in Dropzone.
  *
- * Класс для управления элементом инпута файлов в Dropzone.
+ * Класс для управления нативным элементом ввода файлов, его привязками и DOM-взаимодействиями в Dropzone.
  */
 export class DropzoneInput {
-  /** Reference to the file input element / Ссылка на элемент выбора файла */
-  readonly element = ref<HTMLInputElement | undefined>(undefined)
-
   /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param files file manager instance / экземпляр менеджера файлов
-   * @param events events manager instance / экземпляр менеджера событий
-   * @param emits event emitter / эмиттер событий
+   * Constructor for DropzoneInput.
+   *
+   * Конструктор для DropzoneInput.
+   * @param props input properties / входные свойства
+   * @param events getter returning drag-and-drop events manager / функция, возвращающая менеджер событий перетаскивания
+   * @param files getter returning file manager / функция, возвращающая менеджер файлов
+   * @param emits event emitter function / функция испускания событий
    */
   constructor(
-    protected readonly props: DropzoneProps,
-    protected readonly files: DropzoneFiles,
-    protected readonly events?: DropzoneEvents,
+    protected readonly props: Readonly<DropzoneProps>,
+    protected readonly events: () => DropzoneEvents,
+    protected readonly files: () => DropzoneFiles,
     protected readonly emits?: ConstrEmit<DropzoneEmits>
   ) {
   }
 
+  /** Reference to the file input element / Ссылка на элемент выбора файла */
+  readonly element = ref<HTMLInputElement | undefined>(undefined)
+
   /**
-   * Returns binding properties for the input element.
+   * Returns binding properties for the file input element.
    *
-   * Возвращает свойства привязки для элемента инпута.
+   * Возвращает свойства привязки для элемента ввода файлов.
    * @returns object with input binding attributes / объект с атрибутами привязки инпута
    */
-  get binds(): Record<string, any> {
-    return {
-      ref: this.element,
-      key: 'input',
-      accept: this.props.accept,
-      disabled: this.props.disabled || this.props.readonly,
-      multiple: this.props.multiple,
-      type: 'file',
-      ...this.props.inputAttrs,
-      ...this.events?.binds,
-      onFocus: this.onFocus,
-      onBlur: this.onBlur,
-      onClick: this.clear,
-      onChange: this.onChange
+  get binds(): ConstrBind {
+    return mergeProps(
+      {
+        ref: this.element,
+        key: 'input',
+        accept: this.props.accept,
+        disabled: this.props.disabled || this.props.readonly,
+        multiple: this.props.multiple,
+        type: 'file'
+      },
+      this.props.inputAttrs ?? {},
+      this.events().binds,
+      {
+        onFocus: this.onFocus,
+        onBlur: this.onBlur,
+        onClick: this.clear,
+        onChange: this.onChange
+      }
+    )
+  }
+
+  /**
+   * Clears the file input element.
+   *
+   * Очищает элемент ввода файла.
+   */
+  readonly clear = (): void => {
+    if (this.element.value) {
+      this.element.value.value = ''
+      this.element.value.files = null
     }
   }
 
@@ -71,15 +88,27 @@ export class DropzoneInput {
   }
 
   /**
-   * Clears the file input element.
+   * File input blur event handler.
    *
-   * Очищает элемент ввода файла.
+   * Обработчик события потери фокуса инпута файлов.
+   * @param event blur event / событие потери фокуса
    */
-  readonly clear = (): void => {
-    if (this.element.value) {
-      this.element.value.value = ''
-      this.element.value.files = null
+  protected readonly onBlur = (event: FocusEvent): void => {
+    if (!this.props.disabled && isFunction(this.emits)) {
+      this.emits('blur', event)
     }
+  }
+
+  /**
+   * File input change event handler.
+   *
+   * Обработчик события изменения инпута файлов.
+   * @param event input change event / событие изменения инпута
+   */
+  protected readonly onChange = (event: Event): void => {
+    const target = event.target as HTMLInputElement | null
+
+    this.files().set(target?.files || undefined, event)
   }
 
   /**
@@ -91,31 +120,8 @@ export class DropzoneInput {
   protected readonly onFocus = (event: FocusEvent): void => {
     this.clear()
 
-    if (this.props.disabled !== true) {
-      this.emits?.('focus', event)
+    if (!this.props.disabled && isFunction(this.emits)) {
+      this.emits('focus', event)
     }
-  }
-
-  /**
-   * File input blur event handler.
-   *
-   * Обработчик события потери фокуса инпута файлов.
-   * @param event blur event / событие потери фокуса
-   */
-  protected readonly onBlur = (event: FocusEvent): void => {
-    if (this.props.disabled !== true) {
-      this.emits?.('blur', event)
-    }
-  }
-
-  /**
-   * File input change event handler.
-   *
-   * Обработчик события изменения инпута файлов.
-   * @param event input change event / событие изменения инпута
-   */
-  protected readonly onChange = (event: Event): void => {
-    const target = event.target as HTMLInputElement
-    this.files.set(target.files || undefined, event)
   }
 }

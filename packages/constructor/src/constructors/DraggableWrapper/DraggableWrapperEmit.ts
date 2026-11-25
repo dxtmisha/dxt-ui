@@ -1,6 +1,9 @@
 // ai-none
 
-import type { ConstrEmit } from '@dxtmisha/functional'
+import {
+  DesignLifecycleAbstract,
+  type ConstrEmit
+} from '@dxtmisha/functional'
 
 import type { DraggableWrapperClient } from './DraggableWrapperClient'
 import type { DraggableWrapperItem } from './DraggableWrapperItem'
@@ -9,12 +12,18 @@ import type { DraggableWrapperSquare } from './DraggableWrapperSquare'
 import type { DraggableWrapperEventParameters } from './basicTypes'
 import type { DraggableWrapperEmits } from './types'
 
+/** Delay before emitting drop/position event in milliseconds / Задержка перед генерацией события сброса/позиции в миллисекундах */
+const EMIT_DELAY = 240
+
 /**
  * Class for handling drag-and-drop events emission.
  *
  * Класс для обработки отправки событий перетаскивания.
  */
-export class DraggableWrapperEmit {
+export class DraggableWrapperEmit extends DesignLifecycleAbstract {
+  /** Pending emit timeout handle / Идентификатор ожидающего таймера события */
+  protected timeout?: ReturnType<typeof setTimeout>
+
   /**
    * Constructor.
    *
@@ -30,6 +39,12 @@ export class DraggableWrapperEmit {
     protected readonly square: () => DraggableWrapperSquare,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
   ) {
+    super()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.stop()
   }
 
   /**
@@ -48,7 +63,7 @@ export class DraggableWrapperEmit {
     ) {
       const valueActive = activeElement.dataset?.value
       const valueGo = goElement.dataset?.value
-      const eventName = this.client().hasDrop() ? 'drop' : 'position'
+      const isDrop = this.client().hasDrop()
 
       const parameters: DraggableWrapperEventParameters = {
         active: activeElement,
@@ -63,7 +78,28 @@ export class DraggableWrapperEmit {
         before: this.square().isBefore()
       }
 
-      setTimeout(() => this.emits?.(eventName as never, parameters), 240)
+      this.stop()
+      this.timeout = setTimeout(() => {
+        this.timeout = undefined
+
+        if (isDrop) {
+          this.emits?.('drop', parameters)
+        } else {
+          this.emits?.('position', parameters)
+        }
+      }, EMIT_DELAY)
+    }
+  }
+
+  /**
+   * Clears any pending scheduled event emission timer.
+   *
+   * Очищает ожидающий таймер отложенной генерации события.
+   */
+  stop(): void {
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout)
+      this.timeout = undefined
     }
   }
 }

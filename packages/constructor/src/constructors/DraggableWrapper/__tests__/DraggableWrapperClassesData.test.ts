@@ -89,21 +89,40 @@ describe('DraggableWrapperClassesData', () => {
   })
 
   describe('DOM element finding queries', () => {
-    it('should locate trigger element via findClick()', () => {
-      const wrapperEl = document.createElement('div')
-      const classes = new DraggableWrapperClassesData(ref(wrapperEl), naming)
+    it('should locate trigger element via findClick() both on item itself and via child drag handle', () => {
+      const wrapperElement = document.createElement('div')
+      const classes = new DraggableWrapperClassesData(ref(wrapperElement), naming)
 
-      const trigger = document.createElement('button')
-      trigger.className = `${classes.getId()} ${classes.getList().click}`
+      // Case 1: entire item is the trigger
+      const triggerItem = document.createElement('button')
+      triggerItem.className = `${classes.getId()} ${classes.getList().click}`
       const icon = document.createElement('span')
-      trigger.appendChild(icon)
-      wrapperEl.appendChild(trigger)
+      triggerItem.appendChild(icon)
+      wrapperElement.appendChild(triggerItem)
 
-      expect(classes.findClick(icon)).toBe(trigger)
-      expect(classes.findClick(trigger)).toBe(trigger)
+      expect(classes.findClick(icon)).toBe(triggerItem)
+      expect(classes.findClick(triggerItem)).toBe(triggerItem)
 
-      const outsideEl = document.createElement('div')
-      expect(classes.findClick(outsideEl)).toBeUndefined()
+      // Case 2: child drag handle inside item returns the owning item (not the handle)
+      const parentItem = document.createElement('div')
+      parentItem.className = classes.getId()
+      parentItem.dataset.value = 'row-1'
+      const handle = document.createElement('span')
+      handle.className = classes.getList().click
+      const handleIcon = document.createElement('i')
+      handle.appendChild(handleIcon)
+      const bodyText = document.createElement('p')
+      parentItem.append(handle, bodyText)
+      wrapperElement.appendChild(parentItem)
+
+      expect(classes.findClick(handle)).toBe(parentItem)
+      expect(classes.findClick(handleIcon)).toBe(parentItem)
+      expect(classes.findClick(bodyText)).toBeUndefined()
+
+      // Case 3: outside element and non-Element targets
+      const outsideElement = document.createElement('div')
+      expect(classes.findClick(outsideElement)).toBeUndefined()
+      expect(classes.findClick(document.createTextNode('text') as unknown as HTMLElement)).toBeUndefined()
     })
 
     it('should find all child items and selections inside the wrapper', () => {
@@ -163,6 +182,16 @@ describe('DraggableWrapperClassesData', () => {
 
       const spy = vi.spyOn(functionalBasic, 'domElementsFromPoint').mockReturnValue([])
       expect(classes.findItemByPoints({ x: 10, y: 10 })).toBeUndefined()
+      spy.mockRestore()
+    })
+
+    it('should safely no-op setBlockSelection when not in DOM runtime', () => {
+      const classes = new DraggableWrapperClassesData(ref(document.createElement('div')), naming)
+      const spy = vi.spyOn(functionalBasic, 'isDomRuntime').mockReturnValue(false)
+
+      classes.setBlockSelection(true)
+      expect(document.body.classList.contains(classes.getList().blockSelection)).toBe(false)
+
       spy.mockRestore()
     })
   })

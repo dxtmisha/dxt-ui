@@ -5,18 +5,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type FormattedNumberComponents = {
-  // componentName: object
-}
+export type FormattedNumberComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type FormattedNumberEmits = {
-  // load: [value: string]
-}
+export type FormattedNumberEmits = {}
 
 /**
  * Type describing available properties.
@@ -31,9 +27,7 @@ export interface FormattedNumberExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface FormattedNumberSlots {
-  // default? (props: any): any
-}
+export interface FormattedNumberSlots {}
 
 /**
  * Type describing subclasses.

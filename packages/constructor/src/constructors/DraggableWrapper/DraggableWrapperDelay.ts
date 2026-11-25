@@ -3,6 +3,9 @@
 import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 import type { DraggableWrapperProps } from './props'
 
+/** Default drag start delay in milliseconds / Задержка начала перетаскивания по умолчанию в миллисекундах */
+const DEFAULT_DELAY = 640
+
 /**
  * Helper class for managing the start delay timeout of draggable sorting.
  *
@@ -19,7 +22,7 @@ export class DraggableWrapperDelay extends DesignLifecycleAbstract {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: DraggableWrapperProps
+    protected readonly props: Readonly<DraggableWrapperProps>
   ) {
     super()
   }
@@ -36,7 +39,17 @@ export class DraggableWrapperDelay extends DesignLifecycleAbstract {
    * @returns delay in milliseconds / задержка в миллисекундах
    */
   get delay(): number {
-    return Number(this.props.delay || 640)
+    const value = this.props.delay
+
+    if (
+      value === undefined
+      || value === ''
+    ) {
+      return DEFAULT_DELAY
+    }
+
+    const parsed = Number(value)
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_DELAY
   }
 
   /**

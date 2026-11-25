@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -17,12 +17,11 @@ import {
   type FormExpose,
   type FormSlots
 } from './types'
-import type { FormElementsValues } from './basicTypes'
 
 /**
- * FormDesign component class for rendering form markup and slots.
+ * FormDesign component class for assembling and rendering form markup, slots, and exposed form controls.
  *
- * Класс компонента FormDesign для рендеринга разметки формы и слотов.
+ * Класс компонента FormDesign для сборки и рендеринга разметки формы, слотов и экспонируемых методов управления формой.
  */
 export class FormDesign<
   COMP extends FormComponents,
@@ -38,10 +37,13 @@ export class FormDesign<
     CLASSES,
     P
   > {
+  /** Form logic orchestrator instance / Экземпляр оркестратора логики формы */
   protected readonly item: Form
 
   /**
-   * Constructor
+   * Constructor for creating a FormDesign instance.
+   *
+   * Конструктор для создания экземпляра FormDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -77,20 +79,14 @@ export class FormDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      checkValidity: this.item.error.checkValidity,
-      getValues: this.item.value.get,
-      reset: this.item.value.reset,
-      set: this.item.value.set,
-      setValues: (values: FormElementsValues) => {
-        this.item.value.setValues(values)
-        this.item.model.emit(values)
-      },
-      setValuesAll: (values: FormElementsValues) => {
-        this.item.value.setValuesAll(values)
-        this.item.model.emit(values)
-      },
+      checkValidity: this.item.checkValidity,
+      getValues: this.item.getValues,
+      reset: this.item.reset,
+      set: this.item.set,
+      setValues: this.item.setValues,
+      setValuesAll: this.item.setValuesAll,
       submit: this.item.submit
-    } as unknown as EXPOSE
+    } as EXPOSE
   }
 
   /**
@@ -126,7 +122,7 @@ export class FormDesign<
    * @returns rendered virtual node / отрисованный виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('header', children)
     this.initSlot('default', children)
@@ -134,13 +130,15 @@ export class FormDesign<
 
     return h(
       'form',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }

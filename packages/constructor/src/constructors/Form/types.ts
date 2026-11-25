@@ -15,10 +15,10 @@ export type FormComponents = {}
  *
  * Тип, описывающий доступные события.
  */
-export type FormEmits = ModelEmits & {
+export type FormEmits = ModelEmits<FormElementsValues> & {
   /** Form input event / Событие ввода формы */
   input: [
-    event: InputEvent,
+    event: InputEvent | Event,
     data: FormElementsData,
     values: FormElementsValues
   ]
@@ -33,7 +33,7 @@ export type FormEmits = ModelEmits & {
   ]
   /** Form change event / Событие изменения формы */
   change: [
-    event: InputEvent,
+    event: InputEvent | Event,
     data: FormElementsData,
     values: FormElementsValues
   ]
@@ -68,7 +68,7 @@ export interface FormExpose {
   reset(): void
 
   /** Sets the value of a form field / Устанавливает значение поля формы */
-  set(name: string, value: any): void
+  set(name: string, value: unknown): void
 
   /** Sets multiple values of form fields / Устанавливает несколько значений полей формы */
   setValues(values: FormElementsValues): void

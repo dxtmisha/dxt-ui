@@ -53,14 +53,18 @@ describe('DraggableWrapperDelay', () => {
   })
 
   describe('Boundary values and edge cases', () => {
-    it('should parse string delay values into numbers', () => {
-      const delay = new DraggableWrapperDelay({ delay: '450' as any })
-      expect(delay.delay).toBe(450)
+    it('should parse string delay values and preserve valid 0 delay (no falsy zero trap)', () => {
+      expect(new DraggableWrapperDelay({ delay: '450' }).delay).toBe(450)
+      expect(new DraggableWrapperDelay({ delay: 0 }).delay).toBe(0)
+      expect(new DraggableWrapperDelay({ delay: '0' }).delay).toBe(0)
     })
 
-    it('should fall back to 640 when delay is undefined or empty string', () => {
+    it('should fall back to 640 when delay is undefined, empty string, negative, or non-finite', () => {
       expect(new DraggableWrapperDelay({ delay: undefined }).delay).toBe(640)
-      expect(new DraggableWrapperDelay({ delay: '' as any }).delay).toBe(640)
+      expect(new DraggableWrapperDelay({ delay: '' }).delay).toBe(640)
+      expect(new DraggableWrapperDelay({ delay: -50 }).delay).toBe(640)
+      expect(new DraggableWrapperDelay({ delay: 'invalid' }).delay).toBe(640)
+      expect(new DraggableWrapperDelay({ delay: Number.POSITIVE_INFINITY }).delay).toBe(640)
     })
 
     it('should return false on stop() when no timer is active', () => {

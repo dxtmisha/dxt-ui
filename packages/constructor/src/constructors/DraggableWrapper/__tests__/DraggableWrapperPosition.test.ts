@@ -69,7 +69,8 @@ describe('DraggableWrapperPosition', () => {
 
   const createMockSquare = (squareEl?: HTMLElement) => ({
     getElement: () => squareEl,
-    prepare: vi.fn()
+    prepare: vi.fn(),
+    reset: vi.fn()
   } as any)
 
   describe('Standard functional requirements (Happy path)', () => {
@@ -249,6 +250,61 @@ describe('DraggableWrapperPosition', () => {
 
       expect(mockEmit.on).toHaveBeenCalled()
       expect(parent.firstChild).toBe(activeEl)
+    })
+
+    it('should abort drag session cleanly without emitting events or starting return transition', () => {
+      const activeElement = document.createElement('div')
+      activeElement.classList.add('item-active', 'item-sel', 'item-sel-more', 'item-ret')
+      const dropElement = document.createElement('div')
+      dropElement.classList.add('is-drop', 'drop-active')
+
+      const mockClasses = createMockClasses()
+      const mockItem = createMockItem()
+      mockItem.getActive().set(activeElement)
+      mockItem.getGo().set(dropElement)
+
+      const mockClient = createMockClient()
+      mockClient.hasDrop.mockReturnValue(true)
+      const mockEmit = createMockEmit()
+      const mockSquare = createMockSquare()
+
+      const position = new DraggableWrapperPosition(
+        () => mockClasses,
+        () => mockClient,
+        () => mockEmit,
+        () => mockItem,
+        () => mockSquare
+      )
+
+      position.abort()
+
+      expect(mockEmit.on).not.toHaveBeenCalled()
+      expect(dropElement.classList.contains('drop-active')).toBe(false)
+      expect(mockSquare.reset).toHaveBeenCalledTimes(1)
+      expect(activeElement.classList.contains('item-active')).toBe(false)
+      expect(activeElement.classList.contains('item-sel')).toBe(false)
+      expect(activeElement.classList.contains('item-sel-more')).toBe(false)
+      expect(activeElement.classList.contains('item-ret')).toBe(false)
+      expect(mockItem.reset).toHaveBeenCalledTimes(1)
+      expect(mockClient.reset).toHaveBeenCalledTimes(1)
+    })
+
+    it('should skip redundant domElementsFromPoint lookup when findItemByPoints already matched', () => {
+      const positionElement = document.createElement('div')
+      positionElement.classList.add('is-pos')
+      const spy = vi.spyOn(functionalBasic, 'domElementsFromPoint')
+
+      const position = new DraggableWrapperPosition(
+        () => createMockClasses({ findItem: positionElement }),
+        () => createMockClient(),
+        () => createMockEmit(),
+        () => createMockItem(),
+        () => createMockSquare()
+      )
+
+      position.update({ x: 10, y: 10 })
+      expect(spy).not.toHaveBeenCalled()
+      spy.mockRestore()
     })
   })
 })

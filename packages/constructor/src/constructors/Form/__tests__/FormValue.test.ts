@@ -1,198 +1,196 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { nextTick, reactive, ref } from 'vue'
 
 import { FormElements } from '../FormElements'
 import { FormElementsNative } from '../FormElementsNative'
 import { FormValue } from '../FormValue'
 import type { FormPropsBasic } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => fn()
-  }
-})
-
 describe('FormValue', () => {
-  it.each(['value', 'modelValue'] as const)('tracks initially absent %s and stops watching on disposal', async (property) => {
-    const scope = effectScope()
-    const props = reactive<FormPropsBasic>({})
-    const elements = new FormElements()
-    const setValues = vi.spyOn(elements, 'setValuesAll')
-    scope.run(() => new FormValue(props, elements))
-
-    try {
-      expect(setValues).not.toHaveBeenCalled()
-      props[property] = { title: 'first' }
-      await nextTick()
-      expect(setValues).toHaveBeenCalledExactlyOnceWith({ title: 'first' })
-
-      props[property] = undefined
-      await nextTick()
-      expect(setValues).toHaveBeenCalledTimes(1)
-
-      props[property] = { title: 'second' }
-      await nextTick()
-      expect(setValues).toHaveBeenLastCalledWith({ title: 'second' })
-
-      scope.stop()
-      props[property] = { title: 'after disposal' }
-      await nextTick()
-      expect(setValues).toHaveBeenCalledTimes(2)
-    } finally {
-      scope.stop()
-    }
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('delegates reading and writing to FormElements in custom elements mode', () => {
-    const elements = new FormElements()
-    const setUsernameMock = vi.fn()
-    const setAgeMock = vi.fn()
+  describe('Static predicate, caching, and lazy initialization', () => {
+    it('should report active status via static is() when value or modelValue is provided', () => {
+      expect(FormValue.is()).toBe(false)
+      expect(FormValue.is({})).toBe(false)
+      expect(FormValue.is({ value: {} })).toBe(true)
+      expect(FormValue.is({ modelValue: { name: 'Alice' } })).toBe(true)
+    })
 
-    elements.register({
-      name: 'username',
-      value: ref('admin'),
-      getValue: () => 'admin',
-      setValue: setUsernameMock,
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => '',
-      data: {
-        value: 'admin',
-        status: true
+    it('should cache initial value without mutating caller input and without eagerly invoking lazy getters', () => {
+      const initial = { username: 'alice' }
+      const elementsGetter = vi.fn(() => new FormElements())
+      const nativeGetter = vi.fn(() => new FormElementsNative(ref(undefined)))
+
+      const formValue = new FormValue(
+        { value: initial, modelValue: { username: 'bob' } },
+        elementsGetter,
+        nativeGetter
+      )
+
+      expect(elementsGetter).not.toHaveBeenCalled()
+      expect(nativeGetter).not.toHaveBeenCalled()
+      expect(formValue.getCache()).toEqual({ username: 'alice' })
+      expect(formValue.getCache()).not.toBe(initial)
+    })
+
+    it('should fall back to modelValue for initial cache when value is absent', () => {
+      const formValue = new FormValue(
+        { modelValue: { email: 'a@b.com' } },
+        () => new FormElements(),
+        () => new FormElementsNative(ref(undefined))
+      )
+
+      expect(formValue.getCache()).toEqual({ email: 'a@b.com' })
+    })
+  })
+
+  describe('Lifecycle watchers and mount synchronization', () => {
+    it.each(['value', 'modelValue'] as const)(
+      'should watch %s after onMounted and stop watching after onUnmounted',
+      async (property) => {
+        const props = reactive<FormPropsBasic>({})
+        const elements = new FormElements()
+        const native = new FormElementsNative(ref(undefined))
+        const setValuesAllSpy = vi.spyOn(elements, 'setValuesAll')
+        const setValuesSpy = vi.spyOn(elements, 'setValues')
+
+        const formValue = new FormValue(props, () => elements, () => native)
+
+        // Before mount, watcher is not active
+        props[property] = { title: 'before-mount' }
+        await nextTick()
+        expect(setValuesAllSpy).not.toHaveBeenCalled()
+
+        props[property] = undefined
+        formValue.onMounted()
+        expect(setValuesSpy).not.toHaveBeenCalled()
+
+        props[property] = { title: 'first' }
+        await nextTick()
+        expect(setValuesAllSpy).toHaveBeenCalledExactlyOnceWith({ title: 'first' })
+
+        props[property] = undefined
+        await nextTick()
+        expect(setValuesAllSpy).toHaveBeenCalledTimes(1)
+
+        props[property] = { title: 'second' }
+        await nextTick()
+        expect(setValuesAllSpy).toHaveBeenLastCalledWith({ title: 'second' })
+
+        formValue.onUnmounted()
+        props[property] = { title: 'after-unmount' }
+        await nextTick()
+        expect(setValuesAllSpy).toHaveBeenCalledTimes(2)
       }
-    })
+    )
 
-    elements.register({
-      name: 'age',
-      value: ref(25),
-      getValue: () => 25,
-      setValue: setAgeMock,
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => ''
-    })
+    it('should apply non-empty initial cache on onMounted', () => {
+      const elements = new FormElements()
+      const setValuesSpy = vi.spyOn(elements, 'setValues')
+      const native = new FormElementsNative(ref(undefined))
 
-    const formValue = new FormValue({ native: false }, elements)
+      const formValue = new FormValue(
+        { value: { username: 'john' } },
+        () => elements,
+        () => native
+      )
 
-    expect(formValue.get()).toEqual({
-      username: 'admin',
-      age: 25
-    })
-    expect(formValue.getValue('username')).toBe('admin')
-    expect(formValue.getData()).toEqual({
-      username: {
-        value: 'admin',
-        status: true
-      },
-      age: {
-        value: 25
-      }
-    })
-
-    formValue.set('username', 'root')
-    expect(setUsernameMock).toHaveBeenCalledWith('root')
-
-    formValue.setValues({ username: 'guest', age: 30 })
-    expect(setUsernameMock).toHaveBeenCalledWith('guest')
-    expect(setAgeMock).toHaveBeenCalledWith(30)
-  })
-
-  it('delegates reading and writing to FormElementsNative in native mode', () => {
-    const form = document.createElement('form')
-    const input = document.createElement('input')
-    input.name = 'email'
-    input.value = 'test@example.com'
-    form.appendChild(input)
-
-    const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: true }, undefined, native)
-
-    expect(formValue.get()).toEqual({
-      email: 'test@example.com'
-    })
-    expect(formValue.getValue('email')).toBe('test@example.com')
-
-    formValue.set('email', 'updated@example.com')
-    expect(input.value).toBe('updated@example.com')
-    expect(formValue.getValue('email')).toBe('updated@example.com')
-
-    formValue.setValues({ email: 'bulk@example.com' })
-    expect(input.value).toBe('bulk@example.com')
-    expect(formValue.get()).toEqual({
-      email: 'bulk@example.com'
+      formValue.onMounted()
+      expect(setValuesSpy).toHaveBeenCalledExactlyOnceWith({ username: 'john' })
     })
   })
 
-  it('watches props.value and updates form elements on change', async () => {
-    const elements = new FormElements()
-    const setMock = vi.fn()
+  describe('Custom and native mode delegation', () => {
+    it('should delegate reading, writing, and resetting to FormElements when native is false', () => {
+      const elements = new FormElements()
+      const nativeGetter = vi.fn(() => new FormElementsNative(ref(undefined)))
+      const setUsernameMock = vi.fn()
+      const resetSpy = vi.spyOn(elements, 'reset')
+      const setValuesAllSpy = vi.spyOn(elements, 'setValuesAll')
 
-    elements.register({
-      name: 'title',
-      value: ref('Hello'),
-      getValue: () => 'Hello',
-      setValue: setMock,
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => ''
+      elements.register({
+        name: 'username',
+        value: ref('admin'),
+        getValue: () => 'admin',
+        setValue: setUsernameMock,
+        clear: vi.fn(),
+        isChanged: () => false,
+        checkValidity: () => true,
+        getValidationMessage: () => '',
+        data: { value: 'admin', status: true }
+      })
+
+      const formValue = new FormValue(
+        { native: false, value: { username: 'initial' } },
+        () => elements,
+        nativeGetter
+      )
+
+      expect(formValue.get()).toEqual({ username: 'admin' })
+      expect(formValue.getValue('username')).toBe('admin')
+      expect(formValue.getData()).toEqual({
+        username: { value: 'admin', status: true }
+      })
+
+      formValue.set('username', 'root')
+      expect(setUsernameMock).toHaveBeenCalledWith('root')
+
+      formValue.setValues({ username: 'guest' })
+      expect(setUsernameMock).toHaveBeenCalledWith('guest')
+
+      formValue.setValuesAll({ username: 'all' })
+      expect(setValuesAllSpy).toHaveBeenCalledWith({ username: 'all' })
+
+      formValue.update()
+      formValue.reset()
+      expect(resetSpy).toHaveBeenCalledWith({ username: 'initial' })
+      expect(nativeGetter).not.toHaveBeenCalled()
     })
 
-    const reactiveProps = ref({
-      value: { title: 'Hello' }
+    it('should delegate reading, writing, updating, and resetting to FormElementsNative when native is true', () => {
+      const form = document.createElement('form')
+      const input = document.createElement('input')
+      input.name = 'email'
+      input.value = 'test@example.com'
+      form.appendChild(input)
+
+      const elementsGetter = vi.fn(() => new FormElements())
+      const native = new FormElementsNative(ref(form))
+      native.update()
+
+      const resetSpy = vi.spyOn(native, 'reset')
+      const updateSpy = vi.spyOn(native, 'update')
+
+      const formValue = new FormValue(
+        { native: true, value: { email: 'orig@test.com' } },
+        elementsGetter,
+        () => native
+      )
+
+      expect(formValue.get()).toEqual({ email: 'test@example.com' })
+      expect(formValue.getValue('email')).toBe('test@example.com')
+      expect(formValue.getData().email.value).toBe('test@example.com')
+
+      formValue.set('email', 'updated@example.com')
+      expect(input.value).toBe('updated@example.com')
+
+      formValue.setValues({ email: 'bulk@example.com' })
+      expect(input.value).toBe('bulk@example.com')
+
+      formValue.setValuesAll({ email: 'all@example.com' })
+      expect(input.value).toBe('all@example.com')
+
+      formValue.update()
+      expect(updateSpy).toHaveBeenCalled()
+
+      formValue.reset()
+      expect(resetSpy).toHaveBeenCalledWith({ email: 'orig@test.com' })
+      expect(elementsGetter).not.toHaveBeenCalled()
     })
-
-    const formValue = new FormValue(reactiveProps.value, elements)
-
-    reactiveProps.value.value = { title: 'New World' }
-    await nextTick()
-
-    expect(setMock).toHaveBeenCalledWith('New World')
-    expect(formValue).toBeDefined()
-  })
-
-  it('resets custom elements in non-native mode with cached initial values', () => {
-    const elements = new FormElements()
-    const resetSpy = vi.spyOn(elements, 'reset')
-    const formValue = new FormValue({ native: false, value: { username: 'initial' } }, elements)
-
-    expect(formValue.getCache()).toEqual({ username: 'initial' })
-
-    formValue.reset()
-    expect(resetSpy).toHaveBeenCalledWith({ username: 'initial' })
-  })
-
-  it('resets native elements in native mode with cached initial values', () => {
-    const form = document.createElement('form')
-    const native = new FormElementsNative(ref(form))
-    const resetSpy = vi.spyOn(native, 'reset')
-    const formValue = new FormValue({ native: true, value: { email: 'orig@test.com' } }, undefined, native)
-
-    expect(formValue.getCache()).toEqual({ email: 'orig@test.com' })
-
-    formValue.reset()
-    expect(resetSpy).toHaveBeenCalledWith({ email: 'orig@test.com' })
-  })
-
-  it('delegates setValuesAll to elements and native respectively', () => {
-    const elements = new FormElements()
-    const elementsSpy = vi.spyOn(elements, 'setValuesAll')
-    const formValueCustom = new FormValue({ native: false }, elements)
-
-    formValueCustom.setValuesAll({ name: 'Alice' })
-    expect(elementsSpy).toHaveBeenCalledWith({ name: 'Alice' })
-
-    const form = document.createElement('form')
-    const native = new FormElementsNative(ref(form))
-    const nativeSpy = vi.spyOn(native, 'setValuesAll')
-    const formValueNative = new FormValue({ native: true }, undefined, native)
-
-    formValueNative.setValuesAll({ email: 'bob@example.com' })
-    expect(nativeSpy).toHaveBeenCalledWith({ email: 'bob@example.com' })
   })
 })

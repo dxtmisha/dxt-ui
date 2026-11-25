@@ -126,46 +126,6 @@ export class DraggableWrapperClient {
   }
 
   /**
-   * Prepares client state for a drag action.
-   *
-   * Подготавливает состояние клиента для начала перетаскивания.
-   * @param item active draggable element / активный перетаскиваемый элемент
-   * @param coordinator client coordinate parameters / параметры координат клиента
-   * @returns this instance / текущий экземпляр класса
-   */
-  prepare(
-    item: HTMLElement,
-    coordinator: ImageCoordinator
-  ): this {
-    const rectItem = item.getBoundingClientRect()
-
-    this
-      .set(
-        coordinator.x - rectItem.left,
-        coordinator.y - rectItem.top
-      )
-      .setDrop(false)
-      .move(coordinator)
-
-    return this
-  }
-
-  /**
-   * Updates client coordinates and CSS style variables.
-   *
-   * Обновляет координаты клиента и переменные стилей CSS.
-   * @param coordinator client coordinate parameters / параметры координат клиента
-   * @returns this instance / текущий экземпляр класса
-   */
-  move(coordinator: ImageCoordinator): this {
-    this
-      .setClient(coordinator.x, coordinator.y)
-      .updateStyle()
-
-    return this
-  }
-
-  /**
    * Updates coordinates style variables directly.
    *
    * Обновляет переменные стилей координат напрямую.
@@ -194,6 +154,46 @@ export class DraggableWrapperClient {
     this.drop = false
 
     this.updateStyle()
+  }
+
+  /**
+   * Updates client coordinates and CSS style variables.
+   *
+   * Обновляет координаты клиента и переменные стилей CSS.
+   * @param coordinator client coordinate parameters / параметры координат клиента
+   * @returns this instance / текущий экземпляр класса
+   */
+  move(coordinator: ImageCoordinator): this {
+    this
+      .setClient(coordinator.x, coordinator.y)
+      .updateStyle()
+
+    return this
+  }
+
+  /**
+   * Prepares client state for a drag action.
+   *
+   * Подготавливает состояние клиента для начала перетаскивания.
+   * @param item active draggable element / активный перетаскиваемый элемент
+   * @param coordinator client coordinate parameters / параметры координат клиента
+   * @returns this instance / текущий экземпляр класса
+   */
+  prepare(
+    item: HTMLElement,
+    coordinator: ImageCoordinator
+  ): this {
+    const rectItem = item.getBoundingClientRect()
+
+    this
+      .set(
+        coordinator.x - rectItem.left,
+        coordinator.y - rectItem.top
+      )
+      .setDrop(false)
+      .move(coordinator)
+
+    return this
   }
 
   /**

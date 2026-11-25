@@ -28,6 +28,8 @@ export type FormElementRegistration<T = any> = {
   getValue: (name: string) => any
   /** Register a child element / Зарегистрировать дочерний элемент */
   register: FormElementRegister<T>
+  /** Unregister a child element by identifier / Удалить регистрацию дочернего элемента по идентификатору */
+  unregister?: (id: string) => void
   /** Update child element validation data / Обновить данные валидации дочернего элемента */
   updateData: (id: string, data?: FieldValidationItem<T>, event?: InputEvent) => void
 }

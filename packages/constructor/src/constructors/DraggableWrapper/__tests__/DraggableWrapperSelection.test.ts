@@ -60,26 +60,37 @@ describe('DraggableWrapperSelection', () => {
       expect(otherEl.classList.contains('selection-item')).toBe(true)
     })
 
-    it('should clean up all applied custom properties and classes on stop()', () => {
-      const activeEl = document.createElement('div')
-      const itemEl = document.createElement('div')
+    it('should clean up secondary selected items on stop() while preserving activeElement for return transition', () => {
+      const activeElement = document.createElement('div')
+      const secondaryElement = document.createElement('div')
 
-      itemEl.style.setProperty('--my-draggable-sys-item-width', '100px')
-      itemEl.style.setProperty('--my-draggable-sys-item-rotate', '-12deg')
-      itemEl.classList.add('active-item', 'selection-item', 'selection-more-item')
+      activeElement.style.setProperty('--my-draggable-sys-item-width', '120px')
+      activeElement.style.setProperty('--my-draggable-sys-item-height', '60px')
+      activeElement.classList.add('active-item')
+
+      secondaryElement.style.setProperty('--my-draggable-sys-item-width', '100px')
+      secondaryElement.style.setProperty('--my-draggable-sys-item-rotate', '-12deg')
+      secondaryElement.classList.add('active-item', 'selection-item', 'selection-more-item')
 
       const mockClasses = createMockClasses()
       const mockItem = createMockItem()
-      mockItem.getSelection().set([activeEl, itemEl])
+      mockItem.getActive().set(activeElement)
+      mockItem.getSelection().set([activeElement, secondaryElement])
 
       const selectionHelper = new DraggableWrapperSelection(naming, () => mockClasses, () => mockItem)
       selectionHelper.stop()
 
-      expect(itemEl.style.getPropertyValue('--my-draggable-sys-item-width')).toBe('')
-      expect(itemEl.style.getPropertyValue('--my-draggable-sys-item-rotate')).toBe('')
-      expect(itemEl.classList.contains('active-item')).toBe(false)
-      expect(itemEl.classList.contains('selection-item')).toBe(false)
-      expect(itemEl.classList.contains('selection-more-item')).toBe(false)
+      // Secondary item is cleaned up
+      expect(secondaryElement.style.getPropertyValue('--my-draggable-sys-item-width')).toBe('')
+      expect(secondaryElement.style.getPropertyValue('--my-draggable-sys-item-rotate')).toBe('')
+      expect(secondaryElement.classList.contains('active-item')).toBe(false)
+      expect(secondaryElement.classList.contains('selection-item')).toBe(false)
+      expect(secondaryElement.classList.contains('selection-more-item')).toBe(false)
+
+      // Active item retains its active class and dimensions for return transition
+      expect(activeElement.classList.contains('active-item')).toBe(true)
+      expect(activeElement.style.getPropertyValue('--my-draggable-sys-item-width')).toBe('120px')
+      expect(activeElement.style.getPropertyValue('--my-draggable-sys-item-height')).toBe('60px')
     })
   })
 

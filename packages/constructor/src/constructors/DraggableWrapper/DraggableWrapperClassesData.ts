@@ -2,7 +2,7 @@
 
 import type { Ref } from 'vue'
 import { getElementId, type DesignName } from '@dxtmisha/functional'
-import { domElementsFromPoint, type ImageCoordinator } from '@dxtmisha/functional-basic'
+import { domElementsFromPoint, isDomRuntime, type ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { DraggableWrapperClassesList, DraggableWrapperControl } from './basicTypes'
 
@@ -154,14 +154,37 @@ export class DraggableWrapperClassesData {
   }
 
   /**
-   * Finds the closest draggable trigger element.
+   * Toggle block selection CSS class on document body.
    *
-   * Находит ближайший элемент-триггер перетаскивания.
+   * Переключает класс CSS блокировки выделения текста на body документа.
+   * @param status activation status / статус активации
+   */
+  setBlockSelection(status = false): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
+    if (status) {
+      document.body.classList.add(this.list.blockSelection)
+    } else {
+      document.body.classList.remove(this.list.blockSelection)
+    }
+  }
+
+  /**
+   * Finds the closest draggable item element for a drag trigger click.
+   *
+   * Находит ближайший перетаскиваемый элемент для клика по триггеру перетаскивания.
    * @param target search start target element / целевой элемент начала поиска
-   * @returns trigger element or undefined / элемент-триггер или undefined
+   * @returns draggable item element or undefined / перетаскиваемый элемент или undefined
    */
   findClick(target: HTMLElement): HTMLElement | undefined {
-    return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`) || undefined
+    if (!(target instanceof Element)) {
+      return undefined
+    }
+
+    const trigger = target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`)
+    return trigger?.closest<HTMLElement>(`.${this.id}`) || undefined
   }
 
   /**
@@ -209,20 +232,6 @@ export class DraggableWrapperClassesData {
     return this.element.value?.querySelectorAll<HTMLElement>(
       `.${this.id}.${this.list.active}, .${this.id}.${this.list.selected}`
     )
-  }
-
-  /**
-   * Toggle block selection CSS class on document body.
-   *
-   * Переключает класс CSS блокировки выделения текста на body документа.
-   * @param status activation status / статус активации
-   */
-  setBlockSelection(status = false): void {
-    if (status) {
-      document.body.classList.add(this.list.blockSelection)
-    } else {
-      document.body.classList.remove(this.list.blockSelection)
-    }
   }
 
   /**

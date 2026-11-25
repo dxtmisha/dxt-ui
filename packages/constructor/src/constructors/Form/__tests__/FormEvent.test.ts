@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 
 import { ModelInclude } from '../../../classes/ModelInclude'
@@ -10,186 +11,187 @@ import { FormEvent } from '../FormEvent'
 import { FormValue } from '../FormValue'
 
 describe('FormEvent', () => {
-  it('handles onInput by updating native elements and emitting input, inputLite, and inputValues', () => {
-    const form = document.createElement('form')
-    const input = document.createElement('input')
-    input.name = 'username'
-    input.value = 'john'
-    form.appendChild(input)
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
 
-    const elements = new FormElements()
-    const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: false }, elements, native)
-    const emits = vi.fn()
-    const formEvent = new FormEvent({ native: false }, formValue, emits)
+  describe('Lazy dependency coupling', () => {
+    it('should not invoke model or value getters during construction', () => {
+      const modelGetter = vi.fn(() => new ModelInclude<FormElementsValues>('value'))
+      const valueGetter = vi.fn(() => new FormValue({}, () => new FormElements(), () => new FormElementsNative(ref(undefined))))
 
-    elements.register({
-      name: 'username',
-      value: ref('john'),
-      getValue: () => 'john',
-      setValue: vi.fn(),
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => ''
+      const formEvent = new FormEvent(modelGetter, valueGetter)
+
+      expect(formEvent).toBeDefined()
+      expect(modelGetter).not.toHaveBeenCalled()
+      expect(valueGetter).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Input and change event handling', () => {
+    it('should update value, sync model, and emit input, inputLite, and inputValues on onInput', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({ native: false }, () => elements, () => native)
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
+
+      elements.register({
+        name: 'username',
+        value: ref('john'),
+        getValue: () => 'john',
+        setValue: vi.fn(),
+        clear: vi.fn(),
+        isChanged: () => false,
+        checkValidity: () => true,
+        getValidationMessage: () => ''
+      })
+
+      const updateSpy = vi.spyOn(formValue, 'update')
+      const event = new InputEvent('input')
+
+      formEvent.onInput(event)
+
+      expect(updateSpy).toHaveBeenCalledTimes(1)
+      expect(emits).toHaveBeenCalledWith('update:value', { username: 'john' })
+      expect(emits).toHaveBeenCalledWith('update:modelValue', { username: 'john' })
+      expect(emits).toHaveBeenCalledWith(
+        'input',
+        event,
+        { username: expect.objectContaining({ value: 'john' }) },
+        { username: 'john' }
+      )
+      expect(emits).toHaveBeenCalledWith(
+        'inputLite',
+        { username: expect.objectContaining({ value: 'john' }) },
+        { username: 'john' }
+      )
+      expect(emits).toHaveBeenCalledWith('inputValues', { username: 'john' })
     })
 
-    const updateSpy = vi.spyOn(formValue, 'update')
-    const event = new InputEvent('input')
+    it('should omit input/change DOM event emits when event argument is undefined', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({ native: false }, () => elements, () => native)
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
 
-    formEvent.onInput(event)
+      formEvent.onInput(undefined)
+      formEvent.onChange(undefined)
 
-    expect(updateSpy).toHaveBeenCalledTimes(1)
-    expect(emits).toHaveBeenCalledWith(
-      'input',
-      event,
-      { username: expect.objectContaining({ value: 'john' }) },
-      { username: 'john' }
-    )
-    expect(emits).toHaveBeenCalledWith(
-      'inputLite',
-      { username: expect.objectContaining({ value: 'john' }) },
-      { username: 'john' }
-    )
-    expect(emits).toHaveBeenCalledWith(
-      'inputValues',
-      { username: 'john' }
-    )
-  })
-
-  it('handles onChange by emitting change, changeLite, and changeValues without updating native elements', () => {
-    const form = document.createElement('form')
-    const input = document.createElement('input')
-    input.name = 'age'
-    input.value = '25'
-    form.appendChild(input)
-
-    const elements = new FormElements()
-    const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: false }, elements, native)
-    const emits = vi.fn()
-    const formEvent = new FormEvent({ native: false }, formValue, emits)
-
-    elements.register({
-      name: 'age',
-      value: ref('25'),
-      getValue: () => '25',
-      setValue: vi.fn(),
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => ''
+      expect(emits).not.toHaveBeenCalledWith('input', expect.anything(), expect.anything(), expect.anything())
+      expect(emits).not.toHaveBeenCalledWith('change', expect.anything(), expect.anything(), expect.anything())
+      expect(emits).toHaveBeenCalledWith('inputLite', {}, {})
+      expect(emits).toHaveBeenCalledWith('inputValues', {})
+      expect(emits).toHaveBeenCalledWith('changeLite', {}, {})
+      expect(emits).toHaveBeenCalledWith('changeValues', {})
     })
 
-    const updateSpy = vi.spyOn(formValue, 'update')
-    const event = new InputEvent('change')
+    it('should emit change, changeLite, changeValues, and sync model without calling value.update() on onChange', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({ native: false }, () => elements, () => native)
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
 
-    formEvent.onChange(event)
+      elements.register({
+        name: 'age',
+        value: ref(25),
+        getValue: () => 25,
+        setValue: vi.fn(),
+        clear: vi.fn(),
+        isChanged: () => false,
+        checkValidity: () => true,
+        getValidationMessage: () => ''
+      })
 
-    expect(updateSpy).not.toHaveBeenCalled()
-    expect(emits).toHaveBeenCalledWith(
-      'change',
-      event,
-      { age: expect.objectContaining({ value: '25' }) },
-      { age: '25' }
-    )
-    expect(emits).toHaveBeenCalledWith(
-      'changeLite',
-      { age: expect.objectContaining({ value: '25' }) },
-      { age: '25' }
-    )
-    expect(emits).toHaveBeenCalledWith(
-      'changeValues',
-      { age: '25' }
-    )
-  })
+      const updateSpy = vi.spyOn(formValue, 'update')
+      const event = new Event('change')
 
-  it('retrieves native data and values when props.native is true', () => {
-    const form = document.createElement('form')
-    const input = document.createElement('input')
-    input.name = 'city'
-    input.value = 'Hanoi'
-    form.appendChild(input)
+      formEvent.onChange(event)
 
-    const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: true }, undefined, native)
-    const emits = vi.fn()
-    const formEvent = new FormEvent({ native: true }, formValue, emits)
+      expect(updateSpy).not.toHaveBeenCalled()
+      expect(emits).toHaveBeenCalledWith('update:value', { age: 25 })
+      expect(emits).toHaveBeenCalledWith('update:modelValue', { age: 25 })
+      expect(emits).toHaveBeenCalledWith('change', event, { age: { value: 25 } }, { age: 25 })
+      expect(emits).toHaveBeenCalledWith('changeLite', { age: { value: 25 } }, { age: 25 })
+      expect(emits).toHaveBeenCalledWith('changeValues', { age: 25 })
+    })
 
-    formEvent.onInput(new InputEvent('input'))
+    it('should collect native values in native mode on onInput', () => {
+      const form = document.createElement('form')
+      const input = document.createElement('input')
+      input.name = 'city'
+      input.value = 'Hanoi'
+      form.appendChild(input)
 
-    expect(emits).toHaveBeenCalledWith(
-      'inputValues',
-      { city: 'Hanoi' }
-    )
-  })
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(form))
+      const formValue = new FormValue({ native: true }, () => elements, () => native)
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
 
-  it('handles onReset by resetting form value and emitting reset and change events', () => {
-    const formValue = new FormValue()
-    const resetSpy = vi.spyOn(formValue, 'reset')
-    const emits = vi.fn()
-    const formEvent = new FormEvent({}, formValue, emits)
-    const event = new InputEvent('reset')
-    const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
-
-    formEvent.onReset(event)
-
-    expect(preventDefaultSpy).toHaveBeenCalledTimes(1)
-    expect(resetSpy).toHaveBeenCalledTimes(1)
-    expect(emits).toHaveBeenCalledWith('reset', event)
-    expect(emits).toHaveBeenCalledWith('change', event, {}, {})
-    expect(emits).toHaveBeenCalledWith('changeLite', {}, {})
-    expect(emits).toHaveBeenCalledWith('changeValues', {})
-  })
-
-  it('handles onSubmit by emitting submit event', () => {
-    const formValue = new FormValue()
-    const emits = vi.fn()
-    const formEvent = new FormEvent({}, formValue, emits)
-    const event = new SubmitEvent('submit')
-
-    formEvent.onSubmit(event)
-
-    expect(emits).toHaveBeenCalledWith('submit', event)
-  })
-
-  it('safely handles events without emits provided', () => {
-    const formValue = new FormValue()
-    const formEvent = new FormEvent({}, formValue)
-
-    expect(() => {
-      formEvent.onChange(new InputEvent('change'))
       formEvent.onInput(new InputEvent('input'))
-      formEvent.onReset(new InputEvent('reset'))
-      formEvent.onSubmit(new SubmitEvent('submit'))
-    }).not.toThrow()
+
+      expect(emits).toHaveBeenCalledWith('inputValues', { city: 'Hanoi' })
+    })
   })
 
-  it('calls model.emit with values on onInput and onChange when model is provided', () => {
-    const elements = new FormElements()
-    const formValue = new FormValue({ native: false }, elements)
-    const emits = vi.fn()
-    const model = new ModelInclude<FormElementsValues>('value', emits)
-    const modelEmitSpy = vi.spyOn(model, 'emit')
-    const formEvent = new FormEvent({ native: false }, formValue, emits, model)
+  describe('Reset, submit, and missing emits resilience', () => {
+    it('should prevent default, reset value, and emit reset, input, and change events on onReset', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({}, () => elements, () => native)
+      const resetSpy = vi.spyOn(formValue, 'reset')
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
 
-    elements.register({
-      name: 'email',
-      value: ref('test@example.com'),
-      getValue: () => 'test@example.com',
-      setValue: vi.fn(),
-      clear: vi.fn(),
-      isChanged: () => false,
-      checkValidity: () => true,
-      getValidationMessage: () => ''
+      const event = new Event('reset', { cancelable: true })
+      const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+
+      formEvent.onReset(event)
+
+      expect(preventDefaultSpy).toHaveBeenCalledTimes(1)
+      expect(resetSpy).toHaveBeenCalledTimes(1)
+      expect(emits).toHaveBeenCalledWith('reset', event)
+      expect(emits).toHaveBeenCalledWith('input', event, {}, {})
+      expect(emits).toHaveBeenCalledWith('change', event, {}, {})
+      expect(emits).toHaveBeenCalledWith('changeLite', {}, {})
+      expect(emits).toHaveBeenCalledWith('changeValues', {})
     })
 
-    formEvent.onInput(new InputEvent('input'))
-    expect(modelEmitSpy).toHaveBeenCalledWith({ email: 'test@example.com' })
-    expect(emits).toHaveBeenCalledWith('update:value', { email: 'test@example.com' })
-    expect(emits).toHaveBeenCalledWith('update:modelValue', { email: 'test@example.com' })
+    it('should emit submit event on onSubmit', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({}, () => elements, () => native)
+      const emits = vi.fn()
+      const model = new ModelInclude<FormElementsValues>('value', emits)
+      const formEvent = new FormEvent(() => model, () => formValue, emits)
+      const event = new SubmitEvent('submit')
 
-    formEvent.onChange(new InputEvent('change'))
-    expect(modelEmitSpy).toHaveBeenCalledWith({ email: 'test@example.com' })
+      formEvent.onSubmit(event)
+
+      expect(emits).toHaveBeenCalledExactlyOnceWith('submit', event)
+    })
+
+    it('should safely handle all event handlers when emits is omitted', () => {
+      const elements = new FormElements()
+      const native = new FormElementsNative(ref(undefined))
+      const formValue = new FormValue({}, () => elements, () => native)
+      const model = new ModelInclude<FormElementsValues>('value')
+      const formEvent = new FormEvent(() => model, () => formValue)
+
+      expect(() => {
+        formEvent.onChange(new Event('change'))
+        formEvent.onInput(new InputEvent('input'))
+        formEvent.onReset(new Event('reset'))
+        formEvent.onSubmit(new SubmitEvent('submit'))
+      }).not.toThrow()
+    })
   })
 })

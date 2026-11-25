@@ -2,8 +2,14 @@
 
 import type { DesignName } from '@dxtmisha/functional'
 
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
-import { DraggableWrapperItem } from './DraggableWrapperItem'
+import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import type { DraggableWrapperItem } from './DraggableWrapperItem'
+
+/** Rotation step in degrees per stacked selection item / Шаг поворота в градусах на каждый элемент в стопке выделения */
+const ROTATION_DEGREE = 4
+
+/** Maximum number of visible rotated items in selection stack / Максимальное количество видимых повернутых элементов в стопке выделения */
+const MAX_VISIBLE_SELECTION = 4
 
 /**
  * Helper class for managing multiselection styles and states during drag.
@@ -61,19 +67,17 @@ export class DraggableWrapperSelection {
     }
 
     let shift = 1
-    const deg = 4
-    const max = 4
 
     item.getSelection().set([...selection])
 
     selection.forEach((element) => {
       if (element !== active) {
         const rect = element.getBoundingClientRect()
-        const rotate: number = max * deg - shift * deg
+        const rotate: number = MAX_VISIBLE_SELECTION * ROTATION_DEGREE - shift * ROTATION_DEGREE
 
         this.updateItemStyles(element, rect, rotate)
 
-        if (shift < max) {
+        if (shift < MAX_VISIBLE_SELECTION) {
           shift++
         } else {
           element.classList.add(classes.getList().selectionMore)
@@ -83,16 +87,22 @@ export class DraggableWrapperSelection {
   }
 
   /**
-   * Resets styles of all selected elements in the stack.
+   * Resets styles of all secondary selected elements in the stack without disrupting the active element.
    *
-   * Сбрасывает стили всех выбранных элементов в стеке.
+   * Сбрасывает стили всех дополнительных выбранных элементов в стеке, не затрагивая активный элемент.
    */
   stop(): void {
-    const selection = this.item().getSelection().get()
+    const itemHelper = this.item()
+    const active = itemHelper?.getActive()?.get()
+    const selection = itemHelper?.getSelection()?.get()
     const classes = this.classes()
 
     if (selection) {
       selection.forEach((item) => {
+        if (item === active) {
+          return
+        }
+
         item.style.removeProperty(this.property.width)
         item.style.removeProperty(this.property.height)
         item.style.removeProperty(this.property.rotate)

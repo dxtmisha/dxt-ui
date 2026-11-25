@@ -1,19 +1,30 @@
 // ai-none
 
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import { isFunction, isNull } from '@dxtmisha/functional-basic'
 
 import type { FormElementsData, FormElementsValues } from './basicTypes'
 
+/** Input control types ignored during value collection and assignment / Типы элементов ввода, игнорируемые при сборе и присвоении значений */
+const IGNORED_INPUT_TYPES = ['button', 'submit', 'reset', 'image'] as const
+
+/** Native form control element union / Объединение нативных элементов управления формы */
+type NativeFormControl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+
 /**
  * Class for working with native HTML form elements and their values.
- * Caches form element data reactively and updates on value changes.
+ * Caches form element data reactively and synchronizes with the bound form DOM reference via component lifecycle.
  *
  * Класс для работы с нативными HTML-элементами формы и их значениями.
- * Кеширует данные элементов формы реактивно и обновляет при изменении значений.
+ * Кеширует данные элементов формы реактивно и синхронизируется с привязанной DOM-ссылкой формы через жизненный цикл компонента.
  */
-export class FormElementsNative {
+export class FormElementsNative extends DesignLifecycleAbstract {
   /** Reactive record of form elements validation data / Реактивный объект данных валидации элементов формы */
   readonly item = ref<FormElementsData>({})
+
+  /** Cleanup handle for form element ref watcher / Обработчик остановки наблюдателя за ссылкой на элемент формы */
+  protected stopWatch?: WatchStopHandle
 
   /**
    * Constructor for FormElementsNative.
@@ -24,17 +35,13 @@ export class FormElementsNative {
   constructor(
     protected readonly element: Ref<HTMLFormElement | undefined>
   ) {
-    this.update()
-
-    watch(this.element, () => {
-      this.update()
-    })
+    super()
   }
 
   /**
-   * Checks if any native form element has an error.
+   * Checks if any native form element has a validation error.
    *
-   * Проверяет, есть ли ошибка в каком-либо нативном элементе формы.
+   * Проверяет, есть ли ошибка валидации в каком-либо нативном элементе формы.
    * @returns true if any element has an error / true, если есть ошибка в элементе
    */
   isError(): boolean {
@@ -62,7 +69,7 @@ export class FormElementsNative {
    * @param name element name / имя элемента
    * @returns element value or undefined / значение элемента или undefined
    */
-  getValue(name: string): any {
+  getValue(name: string): unknown {
     return this.item.value[name]?.value
   }
 
@@ -75,9 +82,9 @@ export class FormElementsNative {
   getValues(): FormElementsValues {
     const values: FormElementsValues = {}
 
-    Object.entries(this.item.value).forEach(([name, item]) => {
+    for (const [name, item] of Object.entries(this.item.value)) {
       values[name] = item.value
-    })
+    }
 
     return values
   }
@@ -90,7 +97,7 @@ export class FormElementsNative {
    * @param value new value / новое значение
    * @returns current instance / текущий экземпляр
    */
-  set(name: string, value: any): this {
+  set(name: string, value: unknown): this {
     const form = this.element.value
 
     if (form?.elements) {
@@ -106,16 +113,31 @@ export class FormElementsNative {
   }
 
   /**
-   * Sets values for native form elements.
+   * Sets values for native form elements by name without altering omitted fields.
    *
-   * Устанавливает значения для нативных элементов формы.
+   * Устанавливает значения для нативных элементов формы по имени без изменения неуказанных полей.
    * @param values object of element values keyed by name / объект значений элементов по имени
    * @returns current instance / текущий экземпляр
    */
   setValues(values: FormElementsValues): this {
-    Object.entries(values).forEach(([name, value]) => {
-      this.set(name, value)
-    })
+    const form = this.element.value
+
+    if (form?.elements) {
+      let changed = false
+
+      for (const [name, value] of Object.entries(values)) {
+        const element = form.elements.namedItem(name)
+
+        if (element) {
+          this.setElementValue(element, value)
+          changed = true
+        }
+      }
+
+      if (changed) {
+        this.update()
+      }
+    }
 
     return this
   }
@@ -133,17 +155,14 @@ export class FormElementsNative {
     const form = this.element.value
 
     if (form?.elements) {
-      Array.from(form.elements).forEach((control) => {
-        if (
-          'name' in control
-          && control.name
-        ) {
-          const name = control.name as string
+      for (const control of Array.from(form.elements)) {
+        if ('name' in control && control.name) {
+          const name = String(control.name)
           const value = values[name]
 
           this.setElementValue(control, value)
         }
-      })
+      }
     }
 
     this.update()
@@ -151,9 +170,9 @@ export class FormElementsNative {
   }
 
   /**
-   * Updates cached reactive form elements data.
+   * Updates cached reactive form elements data from the bound form DOM controls.
    *
-   * Обновляет кешированные реактивные данные элементов формы.
+   * Обновляет кешированные реактивные данные элементов формы из привязанных DOM-элементов управления.
    * @returns current instance / текущий экземпляр
    */
   readonly update = (): this => {
@@ -161,16 +180,16 @@ export class FormElementsNative {
     const form = this.element.value
 
     if (form?.elements) {
-      Array.from(form.elements).forEach((control) => {
+      for (const control of Array.from(form.elements)) {
         if (this.isInput(control)) {
           data[control.name] = {
             value: this.getElementValue(control),
             validationMessage: control.validationMessage,
             validity: control.validity,
-            status: typeof control.checkValidity === 'function' ? control.checkValidity() : true
+            status: isFunction(control.checkValidity) ? control.checkValidity() : true
           }
         }
-      })
+      }
     }
 
     this.item.value = data
@@ -179,10 +198,10 @@ export class FormElementsNative {
 
   /**
    * Resets native form elements.
-   * Restores initial cached values if provided, or clears elements.
+   * Restores initial cached values if provided, or clears all elements.
    *
    * Сбрасывает нативные элементы формы.
-   * Восстанавливает исходные закешированные значения, если они переданы, или очищает элементы.
+   * Восстанавливает исходные закешированные значения, если они переданы, или очищает все элементы.
    * @param initialValues optional initial values to restore / опциональные исходные значения для восстановления
    * @returns current instance / текущий экземпляр
    */
@@ -191,24 +210,55 @@ export class FormElementsNative {
   }
 
   /**
-   * Checks if the element is an input element for data collection.
+   * Synchronizes initial native element state and starts watching the form DOM reference on mount.
    *
-   * Проверяет, является ли элемент элементом ввода для сбора данных.
-   * @param input element to check / элемент для проверки
-   * @returns true if the element is an input element / true, если элемент является элементом ввода
+   * Синхронизирует начальное состояние нативных элементов и запускает наблюдение за DOM-ссылкой формы при монтировании.
    */
-  protected isInput(input: Element): input is HTMLInputElement {
-    if (!('name' in input) || !input.name) {
+  override readonly onMounted = (): void => {
+    this.update()
+
+    this.stopWatch?.()
+    this.stopWatch = watch(this.element, () => {
+      this.update()
+    })
+  }
+
+  /**
+   * Stops watching the form DOM reference on unmount.
+   *
+   * Останавливает наблюдение за DOM-ссылкой формы при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
+  /**
+   * Checks if the element is a supported input control for data collection.
+   *
+   * Проверяет, является ли элемент поддерживаемым элементом ввода для сбора данных.
+   * @param input element to check / элемент для проверки
+   * @returns true if the element is a collectible input control / true, если элемент является собираемым элементом ввода
+   */
+  protected isInput(input: Element): input is NativeFormControl {
+    if (
+      !('name' in input)
+      || !input.name
+      || !('value' in input)
+    ) {
       return false
     }
 
-    const control = input as HTMLInputElement
+    const control = input as NativeFormControl
 
-    if (control.type === 'radio' && !control.checked) {
+    if (
+      control.type === 'radio'
+      && !(control as HTMLInputElement).checked
+    ) {
       return false
     }
 
-    if (['button', 'submit', 'reset', 'image'].includes(control.type)) {
+    if (IGNORED_INPUT_TYPES.includes(control.type as typeof IGNORED_INPUT_TYPES[number])) {
       return false
     }
 
@@ -216,41 +266,62 @@ export class FormElementsNative {
   }
 
   /**
-   * Returns the native value of an input element.
+   * Returns the native value of a form control element.
    *
-   * Возвращает нативное значение элемента ввода.
-   * @param input input element / элемент ввода
+   * Возвращает нативное значение элемента управления формы.
+   * @param input form control element / элемент управления формы
    * @returns element value / значение элемента
    */
-  protected getElementValue(input: HTMLInputElement): any {
-    return input.type === 'checkbox' ? input.checked : input.value
+  protected getElementValue(input: NativeFormControl): unknown {
+    return input.type === 'checkbox'
+      ? (input as HTMLInputElement).checked
+      : input.value
   }
 
   /**
-   * Sets value on a native DOM element or RadioNodeList.
+   * Sets value on a native DOM control element or RadioNodeList.
    *
-   * Устанавливает значение на нативном элементе DOM или RadioNodeList.
+   * Устанавливает значение на нативном DOM-элементе управления или RadioNodeList.
    * @param element DOM element or radio node list / элемент DOM или список радиокнопок
    * @param value new value / новое значение
    */
-  protected setElementValue(element: Element | RadioNodeList, value: any): void {
+  protected setElementValue(element: Element | RadioNodeList, value: unknown): void {
+    const stringValue = isNull(value) ? '' : String(value)
+
     if (typeof RadioNodeList !== 'undefined' && element instanceof RadioNodeList) {
-      element.value = String(value ?? '')
+      if (isNull(value)) {
+        for (const node of Array.from(element)) {
+          if (node instanceof HTMLInputElement) {
+            node.checked = false
+          }
+        }
+      } else {
+        element.value = stringValue
+      }
+
       return
     }
 
     if (element instanceof HTMLInputElement) {
-      if (['button', 'submit', 'reset', 'image'].includes(element.type)) {
+      if (IGNORED_INPUT_TYPES.includes(element.type as typeof IGNORED_INPUT_TYPES[number])) {
+        return
+      }
+
+      if (element.type === 'file') {
+        if (!stringValue) {
+          element.value = ''
+        }
         return
       }
 
       if (element.type === 'checkbox') {
         element.checked = Boolean(value)
       } else if (element.type === 'radio') {
-        element.checked = Boolean(value !== undefined && value !== null && element.value === String(value))
+        element.checked = !isNull(value) && element.value === stringValue
       } else {
-        element.value = value ?? ''
+        element.value = stringValue
       }
+
       return
     }
 
@@ -258,8 +329,10 @@ export class FormElementsNative {
       return
     }
 
-    if ('value' in element) {
-      (element as any).value = value ?? ''
+    if (element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
+      element.value = stringValue
+    } else if ('value' in element) {
+      (element as unknown as { value: string }).value = stringValue
     }
   }
 }

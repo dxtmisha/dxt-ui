@@ -1,9 +1,11 @@
 // ai-none
 
 import {
+  type ConstrBind,
   DesignLifecycleAbstract,
   getMouseClient
 } from '@dxtmisha/functional'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import type { DraggableWrapperClient } from './DraggableWrapperClient'
@@ -24,6 +26,15 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
   /** Active listener flag / Флаг активности слушателей */
   protected isListeners = false
 
+  /** Active drag or return transition flag / Флаг активного перетаскивания или перехода возврата */
+  protected hasActiveDrag = false
+
+  /** Pending animation frame identifier for move updates / Идентификатор ожидающего кадра анимации для обновлений перемещения */
+  protected moveFrame?: number
+
+  /** Latest pointer coordinates queued for the next animation frame / Последние координаты указателя в очереди на следующий кадр анимации */
+  protected pendingClient?: ImageCoordinator
+
   /**
    * Constructor.
    *
@@ -38,7 +49,7 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
    * @param square square placeholder manager factory / фабрика менеджера элемента-заполнителя
    */
   constructor(
-    protected readonly props: DraggableWrapperProps,
+    protected readonly props: Readonly<DraggableWrapperProps>,
     protected readonly classes: () => DraggableWrapperClassesData,
     protected readonly client: () => DraggableWrapperClient,
     protected readonly delay: () => DraggableWrapperDelay,
@@ -52,8 +63,40 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
 
   /** Callback after component unmounting / Обработчик после демонтирования компонента */
   override readonly onUnmounted = (): void => {
-    if (this.isListeners) {
-      this.stop()
+    this.cancelMoveFrame()
+
+    if (
+      this.isListeners
+      || this.hasActiveDrag
+    ) {
+      this.delay()?.stop()
+      this.selection()?.stop()
+
+      const position = this.position()
+
+      if (position) {
+        position.abort()
+      } else {
+        const activeElement = this.item()?.getActive()?.get()
+
+        if (activeElement) {
+          const list = this.classes().getList()
+
+          activeElement.classList.remove(
+            list.active,
+            list.selection,
+            list.selectionMore,
+            list.return
+          )
+        }
+
+        this.square()?.reset()
+        this.item()?.reset()
+        this.client()?.reset()
+      }
+
+      this.removeListeners()
+      this.hasActiveDrag = false
     }
   }
 
@@ -63,7 +106,7 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
    * Возвращает привязанные атрибуты для элемента.
    * @returns element binding properties / свойства привязки элемента
    */
-  get binds() {
+  get binds(): ConstrBind {
     return {
       onMousedown: this.onMousedown,
       onTouchstart: this.onMousedown,
@@ -79,7 +122,7 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
    * @returns check result / результат проверки
    */
   isEnd(event: Event): boolean {
-    return ['mouseup', 'contextmenu', 'touchend', 'touchcancel'].includes(event.type)
+    return ['mouseup', 'contextmenu', 'blur', 'touchend', 'touchcancel'].includes(event.type)
   }
 
   /**
@@ -102,7 +145,10 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
   readonly onMousedown = (
     event: MouseEvent | TouchEvent
   ): void => {
-    if (this.props.disabled) {
+    if (
+      this.props.disabled
+      || (event instanceof MouseEvent && event.button !== 0)
+    ) {
       return
     }
 
@@ -118,6 +164,7 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
       event.preventDefault()
     }
 
+    this.hasActiveDrag = true
     this.item().getFocus().set(item)
 
     this.delay().start(() => {
@@ -144,41 +191,9 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
       || event.propertyName === 'left'
     ) {
       this.position().reset()
-    }
-  }
 
-  /**
-   * Move event helper.
-   *
-   * Вспомогательный метод для перемещения.
-   * @param event move event / событие перемещения
-   */
-  protected readonly handleMove = (event: MouseEvent | TouchEvent): void => {
-    if (
-      this.isEnd(event)
-      || this.isNoButtons(event)
-    ) {
-      this.stop()
-      return
-    }
-
-    if (
-      this.item().getActive().is()
-    ) {
-      event.stopPropagation()
-
-      const client = getMouseClient(event)
-
-      this.client().move(client)
-      this.position().update(client)
-    } else {
-      const item = this.classes().findClick(event.target as HTMLElement)
-
-      if (
-        !item
-        || item !== this.item().getFocus().get()
-      ) {
-        this.stop()
+      if (!this.item().getActive().is()) {
+        this.hasActiveDrag = false
       }
     }
   }
@@ -193,6 +208,8 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
 
     window.addEventListener('mousemove', this.handleMove)
     window.addEventListener('mouseup', this.handleMove)
+    window.addEventListener('contextmenu', this.handleMove)
+    window.addEventListener('blur', this.handleMove)
     window.addEventListener('touchmove', this.handleMove, { passive: false })
     window.addEventListener('touchend', this.handleMove, { passive: false })
     window.addEventListener('touchcancel', this.handleMove, { passive: false })
@@ -208,9 +225,106 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
 
     window.removeEventListener('mousemove', this.handleMove)
     window.removeEventListener('mouseup', this.handleMove)
+    window.removeEventListener('contextmenu', this.handleMove)
+    window.removeEventListener('blur', this.handleMove)
     window.removeEventListener('touchmove', this.handleMove)
     window.removeEventListener('touchend', this.handleMove)
     window.removeEventListener('touchcancel', this.handleMove)
+  }
+
+  /**
+   * Cancels any pending animation frame without applying queued coordinates.
+   *
+   * Отменяет ожидающий кадр анимации без применения накопленных координат.
+   */
+  protected cancelMoveFrame(): void {
+    if (this.moveFrame !== undefined) {
+      cancelAnimationFrame(this.moveFrame)
+      this.moveFrame = undefined
+    }
+
+    this.pendingClient = undefined
+  }
+
+  /**
+   * Flushes queued pointer coordinates to client and position helpers.
+   *
+   * Применяет отложенные координаты указателя к помощникам клиента и позиционирования.
+   */
+  protected readonly flushMove = (): void => {
+    this.moveFrame = undefined
+    const client = this.pendingClient
+    this.pendingClient = undefined
+
+    if (
+      client
+      && this.item().getActive().is()
+    ) {
+      this.client().move(client)
+      this.position().update(client)
+    }
+  }
+
+  /**
+   * Cancels pending animation frame and synchronously applies the last queued coordinates.
+   *
+   * Отменяет ожидающий кадр анимации и синхронно применяет последние накопленные координаты.
+   */
+  protected flushPendingMove(): void {
+    if (this.moveFrame !== undefined) {
+      cancelAnimationFrame(this.moveFrame)
+      this.flushMove()
+    }
+  }
+
+  /**
+   * Move event helper.
+   *
+   * Вспомогательный метод для перемещения.
+   * @param event move event / событие перемещения
+   */
+  protected readonly handleMove = (event: MouseEvent | TouchEvent | Event): void => {
+    if (
+      this.isEnd(event)
+      || this.isNoButtons(event)
+    ) {
+      this.stop()
+      return
+    }
+
+    if (
+      this.item().getActive().is()
+    ) {
+      event.stopPropagation()
+      this.scheduleMove(getMouseClient(event as MouseEvent | TouchEvent))
+    } else {
+      const item = this.classes().findClick(event.target as HTMLElement)
+
+      if (
+        !item
+        || item !== this.item().getFocus().get()
+      ) {
+        this.stop()
+      }
+    }
+  }
+
+  /**
+   * Queues pointer coordinates update for the next animation frame.
+   *
+   * Ставит обновление координат указателя в очередь на следующий кадр анимации.
+   * @param client pointer coordinates / координаты указателя
+   */
+  protected scheduleMove(client: ImageCoordinator): void {
+    this.pendingClient = client
+
+    if (this.moveFrame === undefined) {
+      if (typeof requestAnimationFrame === 'function') {
+        this.moveFrame = requestAnimationFrame(this.flushMove)
+      } else {
+        this.flushMove()
+      }
+    }
   }
 
   /**
@@ -219,9 +333,17 @@ export class DraggableWrapperEvents extends DesignLifecycleAbstract {
    * Останавливает процесс перетаскивания и очищает слушатели событий.
    */
   protected stop(): void {
-    if (!this.delay().stop()) {
+    this.flushPendingMove()
+
+    if (this.delay().stop()) {
+      this.hasActiveDrag = false
+    } else {
       this.position().stop()
       this.selection().stop()
+
+      if (!this.item().getActive().is()) {
+        this.hasActiveDrag = false
+      }
     }
 
     this.removeListeners()

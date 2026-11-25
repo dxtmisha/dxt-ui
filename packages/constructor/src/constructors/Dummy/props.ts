@@ -1,10 +1,19 @@
+/**
+ * Design token properties for Dummy.
+ *
+ * Свойства дизайн-токенов для Dummy.
+ */
 type DummyPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type DummyPropsBasic = {
-}
+/**
+ * Basic incoming properties for Dummy.
+ *
+ * Базовые входящие свойства для Dummy.
+ */
+export type DummyPropsBasic = {}
 
 /**
  * Type describing incoming properties.

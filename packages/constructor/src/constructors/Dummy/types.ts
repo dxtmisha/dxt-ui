@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -5,18 +6,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type DummyComponents = {
-  // componentName: object
-}
+export type DummyComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type DummyEmits = {
-  // load: [value: string]
-}
+export type DummyEmits = {}
 
 /**
  * Type describing available properties.
@@ -32,8 +29,8 @@ export interface DummyExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface DummySlots {
-  /** Default slot for the component/ Слот по умолчанию для компонента */
-  default?(props: any): any
+  /** Default slot for the component / Слот по умолчанию для компонента */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**
@@ -42,6 +39,7 @@ export interface DummySlots {
  * Тип, описывающий подклассы.
  */
 export type DummyClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

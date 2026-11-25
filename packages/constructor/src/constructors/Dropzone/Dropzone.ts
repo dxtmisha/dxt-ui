@@ -1,5 +1,12 @@
-import { type Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract,
+  isFilled,
+  isNumber,
+  type NumberOrString
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -15,149 +22,125 @@ import { DropzoneFiles } from './DropzoneFiles'
 import { DropzoneInput } from './DropzoneInput'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { DropzoneComponents, DropzoneEmits, DropzoneSlots } from './types'
 import type { DropzoneProps } from './props'
+import type { DropzoneComponents, DropzoneEmits, DropzoneSlots } from './types'
+
+/** Dropzone dependency constructors type / Тип конструкторов зависимостей Dropzone */
+export type DropzoneConstructors = {
+  /** Description controller constructor / Конструктор контроллера описания */
+  description: typeof DescriptionInclude
+  /** Drag-and-drop events helper constructor / Конструктор помощника событий перетаскивания */
+  events: typeof DropzoneEvents
+  /** File manager helper constructor / Конструктор помощника управления файлами */
+  files: typeof DropzoneFiles
+  /** Icon controller constructor / Конструктор контроллера иконки */
+  icon: typeof IconInclude
+  /** Input element helper constructor / Конструктор помощника элемента ввода */
+  input: typeof DropzoneInput
+  /** Label controller constructor / Конструктор контроллера метки */
+  label: typeof LabelInclude
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<FileList | undefined>
+  /** Skeleton controller constructor / Конструктор контроллера скелетона */
+  skeleton: typeof SkeletonInclude
+  /** Text controller constructor / Конструктор контроллера текста */
+  text: typeof TextInclude
+}
 
 /**
- * Class for managing file dropzone logic.
+ * Orchestrator class for managing file dropzone logic, drag-and-drop state, file selection,
+ * model synchronization, accessibility attributes, and optional visual inclusions.
  *
- * Класс для управления логикой области сброса файлов.
+ * Класс-оркестратор для управления логикой области сброса файлов, состоянием перетаскивания,
+ * выбором файлов, синхронизацией модели, атрибутами доступности и опциональными визуальными включениями.
  */
-export class Dropzone {
-  /** Description controller / Контроллер описания */
-  readonly description: DescriptionInclude
-
-  /** Drag-and-drop events helper instance / Вспомогательный класс для управления событиями */
-  readonly events: DropzoneEvents
-
-  /** File manager helper instance / Вспомогательный класс для управления файлами */
-  readonly files: DropzoneFiles
-
-  /** Icon controller / Контроллер иконки */
-  readonly icon: IconInclude
-
-  /** Input element helper instance / Вспомогательный класс для работы с инпутом */
-  readonly input: DropzoneInput
-
-  /** Label controller / Контроллер метки */
-  readonly label: LabelInclude
-
-  /** Skeleton controller / Контроллер скелетона */
-  readonly skeleton: SkeletonInclude
-
-  /** Text controller / Контроллер текста */
-  readonly text: TextInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.DescriptionIncludeConstructor class for working with description / класс для работы с описанием
-   * @param constructors.DropzoneEventsConstructor class for working with events / класс для работы с событиями
-   * @param constructors.DropzoneFilesConstructor class for working with files / класс для работы с файлами
-   * @param constructors.DropzoneInputConstructor class for working with input / класс для работы с инпутом
-   * @param constructors.IconIncludeConstructor class for working with icon / класс для работы с иконкой
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
-   */
-  constructor(
-    protected readonly props: DropzoneProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<DropzoneComponents, DropzoneProps>,
-    protected readonly slots?: DropzoneSlots,
-    protected readonly emits?: ConstrEmit<DropzoneEmits>,
-    constructors: {
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-      DropzoneEventsConstructor?: typeof DropzoneEvents
-      DropzoneFilesConstructor?: typeof DropzoneFiles
-      DropzoneInputConstructor?: typeof DropzoneInput
-      IconIncludeConstructor?: typeof IconInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-      ModelIncludeConstructor?: typeof ModelInclude<FileList | undefined>
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      DescriptionIncludeConstructor = DescriptionInclude,
-      DropzoneEventsConstructor = DropzoneEvents,
-      DropzoneFilesConstructor = DropzoneFiles,
-      DropzoneInputConstructor = DropzoneInput,
-      IconIncludeConstructor = IconInclude,
-      LabelIncludeConstructor = LabelInclude,
-      ModelIncludeConstructor = ModelInclude,
-      SkeletonIncludeConstructor = SkeletonInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.skeleton = new SkeletonIncludeConstructor(
-      this.props,
-      this.naming,
-      ['classBackground']
-    )
-    this.text = new TextIncludeConstructor(this.props)
-
-    this.icon = new IconIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components
-    )
-    this.label = new LabelIncludeConstructor(
-      () => ({
-        ...this.props,
-        label: this.props.label || this.text.dropzone
-      }),
-      this.naming,
-      undefined,
-      this.slots,
-      undefined,
-      undefined,
-      undefined,
-      this.skeleton
-    )
-    this.description = new DescriptionIncludeConstructor(
-      this.props,
-      this.naming,
-      this.slots
-    )
-
-    this.files = new DropzoneFilesConstructor(this.props, this.emits)
-    this.events = new DropzoneEventsConstructor(this.props)
-    this.input = new DropzoneInputConstructor(this.props, this.files, this.events, this.emits)
-
-    new ModelIncludeConstructor('files', this.emits, this.files.item)
-  }
-
-  /**
-   * Computed list of classes for main element.
-   *
-   * Вычисляемый список классов для главного элемента.
-   * @returns computed classes / вычисленные классы
-   */
-  get classes(): ConstrClass {
-    return {
-      [this.naming.getStatusClass('enter')]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
-      ...this.skeleton.classes
-    }
-  }
-
-  /**
-   * Computed bindings for the main element.
-   *
-   * Вычисляемые привязки для главного элемента.
-   * @returns bindings object / объект привязок
-   */
-  get binds(): Record<string, any> {
-    return {
-      ...this.aria
+export class Dropzone extends DesignLogicAbstract<
+  HTMLLabelElement,
+  DropzoneComponents,
+  DropzoneEmits,
+  DropzoneSlots,
+  DropzoneProps,
+  DropzoneConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<DropzoneConstructors> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    events: {
+      item: DropzoneEvents,
+      parameters: () => [
+        this.props
+      ]
+    },
+    files: {
+      item: DropzoneFiles,
+      parameters: () => [
+        () => this.i('model'),
+        this.emits
+      ]
+    },
+    icon: {
+      item: IconInclude,
+      canCreate: () => IconInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    input: {
+      item: DropzoneInput,
+      parameters: () => [
+        this.props,
+        () => this.i('events'),
+        () => this.i('files'),
+        this.emits
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      parameters: () => [
+        () => ({
+          ...this.props,
+          label: this.getLabel()
+        }),
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        undefined,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    model: {
+      item: ModelInclude<FileList | undefined>,
+      parameters: () => [
+        'files',
+        this.emits
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [
+        this.props
+      ]
     }
   }
 
@@ -169,21 +152,28 @@ export class Dropzone {
    */
   get aria(): AriaList {
     const aria: AriaList = {
-      ...AriaStaticInclude.disabled(this.props.disabled),
-      ...AriaStaticInclude.readonly(this.props.readonly)
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
     }
 
-    if (this.label.is) {
+    const label = this.i('label')
+
+    if (label.is) {
       Object.assign(
         aria,
-        AriaStaticInclude.labelledby(this.label.id)
+        AriaStaticInclude.labelledby(label.id)
       )
     }
 
-    if (this.description.is) {
+    const descriptionId = this.callInstance(
+      'description',
+      item => item.is ? item.id : undefined
+    )
+
+    if (descriptionId) {
       Object.assign(
         aria,
-        AriaStaticInclude.describedby(this.description.id)
+        AriaStaticInclude.describedby(descriptionId)
       )
     }
 
@@ -191,12 +181,73 @@ export class Dropzone {
   }
 
   /**
-   * Clears selected files and file input element.
+   * Computed bindings for the main element.
    *
-   * Очищает выбранные файлы и элемент ввода файла.
+   * Вычисляемые привязки для главного элемента.
+   * @returns bindings object / объект привязок
+   */
+  get binds(): ConstrBind {
+    return this.aria
+  }
+
+  /**
+   * Computed list of classes for main element.
+   *
+   * Вычисляемый список классов для главного элемента.
+   * @returns computed classes / вычисленные классы
+   */
+  get classes(): ConstrClassObject {
+    const skeletonClasses = this.callInstance('skeleton', item => item.classes)
+    const classes: ConstrClassObject = {
+      [this.naming.getStatusClass('enter')]: !this.props.disabled
+        && !this.props.readonly
+        && this.i('events').enter.value
+    }
+
+    if (skeletonClasses) {
+      Object.assign(classes, skeletonClasses)
+    }
+
+    return classes
+  }
+
+  /**
+   * Clears selected files and resets the file input element.
+   *
+   * Очищает выбранные файлы и сбрасывает элемент ввода файла.
    */
   readonly clear = (): void => {
-    this.input.clear()
-    this.files.clear()
+    this.i('input').clear()
+    this.i('files').clear()
+  }
+
+  /**
+   * Opens the native file selection dialog.
+   *
+   * Открывает нативный диалог выбора файлов.
+   */
+  readonly open = (): void => {
+    this.i('input').open()
+  }
+
+  /**
+   * Resolves the effective label text with fallback to localized dropzone text when no custom label or default slot is provided.
+   *
+   * Разрешает итоговый текст метки с резервным локализованным текстом dropzone, если не переданы пользовательская метка или слот по умолчанию.
+   * @returns resolved label value / разрешенное значение метки
+   */
+  protected getLabel(): NumberOrString | undefined {
+    if (
+      isFilled(this.props.label, true)
+      || isNumber(this.props.label)
+    ) {
+      return this.props.label
+    }
+
+    if (this.slots?.default) {
+      return undefined
+    }
+
+    return this.i('text').dropzone
   }
 }

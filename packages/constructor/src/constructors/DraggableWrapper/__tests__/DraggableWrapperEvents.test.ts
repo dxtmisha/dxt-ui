@@ -34,6 +34,7 @@ describe('DraggableWrapperEvents', () => {
       getFocus: () => focusObj
     }
     const mockPosition = {
+      abort: vi.fn(),
       reset: vi.fn(),
       update: vi.fn(),
       stop: vi.fn()
@@ -80,26 +81,27 @@ describe('DraggableWrapperEvents', () => {
       expect(events.binds).toHaveProperty('onTransitionend')
     })
 
-    it('should identify drag end and no-buttons events', () => {
+    it('should identify drag end and no-buttons events including blur and contextmenu', () => {
       const { events } = createMockDeps()
       expect(events.isEnd(new Event('mouseup'))).toBe(true)
       expect(events.isEnd(new Event('touchend'))).toBe(true)
       expect(events.isEnd(new Event('touchcancel'))).toBe(true)
       expect(events.isEnd(new Event('contextmenu'))).toBe(true)
+      expect(events.isEnd(new Event('blur'))).toBe(true)
       expect(events.isEnd(new Event('mousemove'))).toBe(false)
 
       expect(events.isNoButtons(new MouseEvent('mousemove', { buttons: 0 }))).toBe(true)
       expect(events.isNoButtons(new MouseEvent('mousemove', { buttons: 1 }))).toBe(false)
     })
 
-    it('should initiate drag lifecycle on onMousedown and add window listeners', () => {
+    it('should initiate drag lifecycle on onMousedown and add window listeners including blur and contextmenu', () => {
       const targetItem = document.createElement('div')
       const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
       const { events, mockItem, mockClient, mockSquare, mockSelection } = createMockDeps({
         clickItem: targetItem
       })
 
-      const mouseEvent = new MouseEvent('mousedown', { cancelable: true, clientX: 100, clientY: 200 })
+      const mouseEvent = new MouseEvent('mousedown', { cancelable: true, button: 0, clientX: 100, clientY: 200 })
       events.onMousedown(mouseEvent)
 
       expect(mockItem.getFocus().set).toHaveBeenCalledWith(targetItem)
@@ -108,8 +110,39 @@ describe('DraggableWrapperEvents', () => {
       expect(mockSquare.prepare).toHaveBeenCalledWith(targetItem)
       expect(mockSelection.prepare).toHaveBeenCalled()
       expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function))
+      expect(addEventListenerSpy).toHaveBeenCalledWith('blur', expect.any(Function))
+      expect(addEventListenerSpy).toHaveBeenCalledWith('contextmenu', expect.any(Function))
 
+      events.onUnmounted()
       addEventListenerSpy.mockRestore()
+    })
+
+    it('should coalesce multiple mousemove events via requestAnimationFrame and flush on mouseup', () => {
+      vi.useFakeTimers()
+      const targetItem = document.createElement('div')
+      const { events, mockClient, mockPosition } = createMockDeps({
+        clickItem: targetItem,
+        hasActive: true
+      })
+
+      events.onMousedown(new MouseEvent('mousedown', { cancelable: true, button: 0, clientX: 10, clientY: 10 }))
+
+      // Multiple mousemove events within a single animation frame coalesce to the latest coordinates
+      window.dispatchEvent(new MouseEvent('mousemove', { buttons: 1, clientX: 20, clientY: 30 }))
+      window.dispatchEvent(new MouseEvent('mousemove', { buttons: 1, clientX: 40, clientY: 50 }))
+      window.dispatchEvent(new MouseEvent('mousemove', { buttons: 1, clientX: 60, clientY: 70 }))
+
+      expect(mockClient.move).not.toHaveBeenCalled()
+
+      // Releasing before next animation frame flushes the latest queued coordinates before stop()
+      window.dispatchEvent(new MouseEvent('mouseup', { buttons: 0 }))
+
+      expect(mockClient.move).toHaveBeenCalledTimes(1)
+      expect(mockClient.move).toHaveBeenCalledWith({ x: 60, y: 70 })
+      expect(mockPosition.update).toHaveBeenCalledTimes(1)
+      expect(mockPosition.stop).toHaveBeenCalledTimes(1)
+
+      vi.useRealTimers()
     })
 
     it('should reset position on onTransitionend for transform and left properties', () => {
@@ -138,27 +171,58 @@ describe('DraggableWrapperEvents', () => {
     it('should ignore mousedown when click did not hit a valid draggable item', () => {
       const { events, mockItem } = createMockDeps({ clickItem: undefined })
 
-      events.onMousedown(new MouseEvent('mousedown'))
+      events.onMousedown(new MouseEvent('mousedown', { button: 0 }))
+      expect(mockItem.getFocus().set).not.toHaveBeenCalled()
+    })
+
+    it('should ignore non-primary mouse buttons (e.g. right-click)', () => {
+      const targetItem = document.createElement('div')
+      const { events, mockItem } = createMockDeps({ clickItem: targetItem })
+
+      events.onMousedown(new MouseEvent('mousedown', { button: 2 }))
       expect(mockItem.getFocus().set).not.toHaveBeenCalled()
     })
   })
 
   describe('Lifecycle and cleanup', () => {
-    it('should clean up window listeners and stop dragging on onUnmounted when active', () => {
+    it('should abort drag, cancel rAF, clean up window listeners, and avoid position.stop() on onUnmounted when active', () => {
       const targetItem = document.createElement('div')
       const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
-      const { events, mockPosition, mockSelection } = createMockDeps({ clickItem: targetItem })
+      const { events, mockDelay, mockPosition, mockSelection } = createMockDeps({ clickItem: targetItem })
 
       // Start drag to attach listeners
-      events.onMousedown(new MouseEvent('mousedown', { cancelable: true }))
+      events.onMousedown(new MouseEvent('mousedown', { cancelable: true, button: 0 }))
 
       events.onUnmounted()
 
       expect(removeEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function))
-      expect(mockPosition.stop).toHaveBeenCalled()
-      expect(mockSelection.stop).toHaveBeenCalled()
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('blur', expect.any(Function))
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('contextmenu', expect.any(Function))
+      expect(mockDelay.stop).toHaveBeenCalledTimes(1)
+      expect(mockSelection.stop).toHaveBeenCalledTimes(1)
+      expect(mockPosition.abort).toHaveBeenCalledTimes(1)
+      expect(mockPosition.stop).not.toHaveBeenCalled()
 
       removeEventListenerSpy.mockRestore()
+    })
+
+    it('should also abort pending return transition when unmounted after mouseup before transitionend', () => {
+      const targetItem = document.createElement('div')
+      const { events, mockPosition, mockSelection } = createMockDeps({
+        clickItem: targetItem,
+        hasActive: true
+      })
+
+      events.onMousedown(new MouseEvent('mousedown', { cancelable: true, button: 0 }))
+      window.dispatchEvent(new MouseEvent('mouseup', { buttons: 0 }))
+
+      expect(mockPosition.stop).toHaveBeenCalledTimes(1)
+      expect(mockPosition.abort).not.toHaveBeenCalled()
+
+      // Unmount while return transition is still in progress
+      events.onUnmounted()
+      expect(mockSelection.stop).toHaveBeenCalled()
+      expect(mockPosition.abort).toHaveBeenCalledTimes(1)
     })
 
     it('should do nothing on onUnmounted if drag was never started', () => {
@@ -167,6 +231,7 @@ describe('DraggableWrapperEvents', () => {
 
       events.onUnmounted()
       expect(removeEventListenerSpy).not.toHaveBeenCalled()
+      expect(mockPosition.abort).not.toHaveBeenCalled()
       expect(mockPosition.stop).not.toHaveBeenCalled()
 
       removeEventListenerSpy.mockRestore()

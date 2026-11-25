@@ -31,16 +31,16 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'change', description: `Form change event / Событие изменения формы`, properties: [{ name: 'event', type: 'InputEvent' }, { name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
+  { name: 'change', description: `Form change event / Событие изменения формы`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
   { name: 'changeLite', description: `Form change event (lite version) / Событие изменения формы (упрощенная версия)`, properties: [{ name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
   { name: 'changeValues', description: `Form change values event / Событие значений изменения формы`, properties: [{ name: 'values', type: 'FormElementsValues' }] },
-  { name: 'input', description: `Form input event / Событие ввода формы`, properties: [{ name: 'event', type: 'InputEvent' }, { name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
+  { name: 'input', description: `Form input event / Событие ввода формы`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
   { name: 'inputLite', description: `Form input event (lite version) / Событие ввода формы (упрощенная версия)`, properties: [{ name: 'data', type: 'FormElementsData' }, { name: 'values', type: 'FormElementsValues' }] },
   { name: 'inputValues', description: `Form input values event / Событие значений ввода формы`, properties: [{ name: 'values', type: 'FormElementsValues' }] },
   { name: 'reset', description: `Form reset event / Событие сброса формы`, properties: [{ name: 'event', type: 'Event' }] },
   { name: 'submit', description: `Form submission event / Событие отправки формы`, properties: [{ name: 'event', type: 'SubmitEvent' }] },
-  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
-  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] }
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'FormElementsValues' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'FormElementsValues' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

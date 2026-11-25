@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 import type { DesignName } from '@dxtmisha/functional'
 
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import type { DraggableWrapperProps } from './props'
 
 /**
@@ -12,12 +12,6 @@ import type { DraggableWrapperProps } from './props'
  * Вспомогательный класс для управления элементом-заполнителем (square).
  */
 export class DraggableWrapperSquare {
-  /** Target square placeholder element / Целевой элемент-заполнитель (square) */
-  readonly squareElement = ref<HTMLElement>()
-
-  /** Indicator showing if placeholder is placed before target / Индикатор, показывающий, помещен ли заполнитель перед целью */
-  protected readonly before = ref<boolean>()
-
   /** Cached CSS style declarations / Кэшированные объявления стилей CSS */
   protected cached: Partial<CSSStyleDeclaration> = {}
   /** Cached CSS classes array / Кэшированный массив классов CSS */
@@ -48,7 +42,7 @@ export class DraggableWrapperSquare {
    * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
    */
   constructor(
-    protected readonly props: DraggableWrapperProps,
+    protected readonly props: Readonly<DraggableWrapperProps>,
     protected readonly naming: DesignName,
     protected readonly classes: () => DraggableWrapperClassesData
   ) {
@@ -62,15 +56,11 @@ export class DraggableWrapperSquare {
     }
   }
 
-  /**
-   * Returns the square placeholder element.
-   *
-   * Возвращает элемент-заполнитель.
-   * @returns square placeholder element or undefined / элемент-заполнитель или undefined
-   */
-  getElement(): HTMLElement | undefined {
-    return this.squareElement.value
-  }
+  /** Target square placeholder element / Целевой элемент-заполнитель (square) */
+  readonly squareElement = ref<HTMLElement>()
+
+  /** Indicator showing if placeholder is placed before target / Индикатор, показывающий, помещен ли заполнитель перед целью */
+  protected readonly before = ref<boolean>()
 
   /**
    * Checks if the placeholder is placed before the target element.
@@ -92,6 +82,40 @@ export class DraggableWrapperSquare {
     return Boolean(
       this.squareElement.value?.classList.contains(this.classes().getList().squareShow)
     )
+  }
+
+  /**
+   * Returns the square placeholder element.
+   *
+   * Возвращает элемент-заполнитель.
+   * @returns square placeholder element or undefined / элемент-заполнитель или undefined
+   */
+  getElement(): HTMLElement | undefined {
+    return this.squareElement.value
+  }
+
+  /**
+   * Hides the placeholder and resets its classes and styles.
+   *
+   * Скрывает элемент-заполнитель и сбрасывает его классы и стили.
+   */
+  reset(): void {
+    this.classes().setBlockSelection(false)
+
+    const squareElement = this.squareElement.value
+
+    if (squareElement) {
+      squareElement.classList.remove(this.classes().getList().squareShow)
+
+      this.resetClasses()
+      this.resetStyles()
+
+      const element = this.classes().getElement()
+
+      if (element) {
+        element.insertBefore(squareElement, null)
+      }
+    }
   }
 
   /**
@@ -142,46 +166,6 @@ export class DraggableWrapperSquare {
   }
 
   /**
-   * Hides the placeholder and resets its classes and styles.
-   *
-   * Скрывает элемент-заполнитель и сбрасывает его классы и стили.
-   */
-  reset(): void {
-    const squareElement = this.squareElement.value
-
-    if (squareElement) {
-      this.classes().setBlockSelection(false)
-      squareElement.classList.remove(this.classes().getList().squareShow)
-
-      this.resetClasses()
-      this.resetStyles()
-
-      const element = this.classes().getElement()
-
-      if (element) {
-        element.insertBefore(squareElement, null)
-      }
-    }
-  }
-
-  /**
-   * Filters component internal/identifier classes from item classes list.
-   *
-   * Фильтрует внутренние классы и идентификаторы компонента из списка классов элемента.
-   * @param classes input classes array / массив входящих классов
-   * @returns filtered classes array / массив отфильтрованных классов
-   */
-  protected filterItemClasses(classes: string[]): string[] {
-    const name = this.classes().getName()
-    const id = this.classes().getId()
-
-    return classes.filter((classItem) => {
-      return !classItem.startsWith(name)
-        && !classItem.startsWith(id)
-    })
-  }
-
-  /**
    * Calculates check if placeholder should be inserted before the item.
    *
    * Вычисляет проверку, нужно ли вставлять элемент-заполнитель перед элементом.
@@ -192,12 +176,12 @@ export class DraggableWrapperSquare {
     const items = this.classes().findItems()
 
     if (items) {
-      for (const el of items) {
-        if (el === item) {
+      for (const element of items) {
+        if (element === item) {
           return true
         }
 
-        if (el === this.squareElement.value) {
+        if (element === this.squareElement.value) {
           break
         }
       }
@@ -223,11 +207,67 @@ export class DraggableWrapperSquare {
       ) {
         return classes
       } else if (typeof classes === 'string') {
-        return classes.split(' ')
+        return classes.trim().split(/\s+/)
       }
     }
 
     return [...item.classList]
+  }
+
+  /**
+   * Caches styles declaration properties.
+   *
+   * Кэширует свойства объявления стилей.
+   * @param style CSS declaration properties / свойства объявления CSS
+   */
+  protected updateCached(style: Partial<CSSStyleDeclaration>): void {
+    this.cached = {
+      width: style.width,
+      height: style.height,
+      marginTop: style.marginTop,
+      marginRight: style.marginRight,
+      marginBottom: style.marginBottom,
+      marginLeft: style.marginLeft
+    }
+  }
+
+  /**
+   * Updates CSS classes on the square placeholder.
+   *
+   * Обновляет классы CSS на элементе-заполнителе.
+   * @param item target element to copy classes from / целевой элемент для копирования классов
+   */
+  protected updateClasses(item: HTMLElement): void {
+    const squareElement = this.squareElement.value
+
+    this.resetClasses()
+
+    if (squareElement) {
+      this.cachedClasses = this.filterItemClasses(this.getItemClasses(item))
+
+      if (this.cachedClasses.length > 0) {
+        squareElement.classList.add(...this.cachedClasses)
+      }
+    }
+  }
+
+  /**
+   * Updates CSS variables and dimensions on the square placeholder.
+   *
+   * Обновляет переменные CSS и размеры на элементе-заполнителе.
+   * @param style CSS declaration to copy properties from / объявление CSS для копирования свойств
+   */
+  protected updateStyles(style: Partial<CSSStyleDeclaration>): void {
+    const squareElement = this.squareElement.value
+
+    if (squareElement) {
+      squareElement.style.setProperty(this.property.width, style.width || 'unset')
+      squareElement.style.setProperty(this.property.height, style.height || 'unset')
+      squareElement.style.setProperty(this.property.marginTop, style.marginTop || 'unset')
+      squareElement.style.setProperty(this.property.marginRight, style.marginRight || 'unset')
+      squareElement.style.setProperty(this.property.marginBottom, style.marginBottom || 'unset')
+      squareElement.style.setProperty(this.property.marginLeft, style.marginLeft || 'unset')
+    }
   }
 
   /**
@@ -266,55 +306,22 @@ export class DraggableWrapperSquare {
   }
 
   /**
-   * Caches styles declaration properties.
+   * Filters component internal/identifier classes from item classes list.
    *
-   * Кэширует свойства объявления стилей.
-   * @param style CSS declaration properties / свойства объявления CSS
+   * Фильтрует внутренние классы и идентификаторы компонента из списка классов элемента.
+   * @param classes input classes array / массив входящих классов
+   * @returns filtered classes array / массив отфильтрованных классов
    */
-  protected updateCached(style: Partial<CSSStyleDeclaration>): void {
-    this.cached = {
-      width: style.width,
-      height: style.height,
-      marginTop: style.marginTop,
-      marginRight: style.marginRight,
-      marginBottom: style.marginBottom,
-      marginLeft: style.marginLeft
-    }
-  }
+  protected filterItemClasses(classes: string[]): string[] {
+    const name = this.classes().getName()
+    const id = this.classes().getId()
 
-  /**
-   * Updates CSS classes on the square placeholder.
-   *
-   * Обновляет классы CSS на элементе-заполнителе.
-   * @param item target element to copy classes from / целевой элемент для копирования классов
-   */
-  protected updateClasses(item: HTMLElement): void {
-    const squareElement = this.squareElement.value
-
-    this.resetClasses()
-
-    if (squareElement) {
-      this.cachedClasses = this.filterItemClasses(this.getItemClasses(item))
-      squareElement.classList.add(...this.cachedClasses)
-    }
-  }
-
-  /**
-   * Updates CSS variables and dimensions on the square placeholder.
-   *
-   * Обновляет переменные CSS и размеры на элементе-заполнителе.
-   * @param style CSS declaration to copy properties from / объявление CSS для копирования свойств
-   */
-  protected updateStyles(style: Partial<CSSStyleDeclaration>): void {
-    const squareElement = this.squareElement.value
-
-    if (squareElement) {
-      squareElement.style.setProperty(this.property.width, style.width || 'unset')
-      squareElement.style.setProperty(this.property.height, style.height || 'unset')
-      squareElement.style.setProperty(this.property.marginTop, style.marginTop || 'unset')
-      squareElement.style.setProperty(this.property.marginRight, style.marginRight || 'unset')
-      squareElement.style.setProperty(this.property.marginBottom, style.marginBottom || 'unset')
-      squareElement.style.setProperty(this.property.marginLeft, style.marginLeft || 'unset')
-    }
+    return classes
+      .map(classItem => classItem.trim())
+      .filter((classItem) => {
+        return classItem.length > 0
+          && !classItem.startsWith(name)
+          && !classItem.startsWith(id)
+      })
   }
 }

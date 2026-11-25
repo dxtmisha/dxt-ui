@@ -47,12 +47,15 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="Divider" name="component-divider"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
+        <DemoLink label="Dropzone" name="component-dropzone"/>
+        <DemoLink label="Dummy" name="component-dummy"/>
         <DemoLink label="Field" name="component-field"/>
         <DemoLink label="FieldCounter" name="component-field-counter"/>
         <DemoLink label="FieldLabel" name="component-field-label"/>
         <DemoLink label="FieldMessage" name="component-field-message"/>
         <DemoLink label="Form" name="component-form"/>
         <DemoLink label="Formatted" name="component-formatted"/>
+        <DemoLink label="FormattedNumber" name="component-formatted-number"/>
         <DemoLink label="Header" name="component-header"/>
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>

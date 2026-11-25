@@ -6,6 +6,7 @@ import { DraggableWrapperItemActive } from '../DraggableWrapperItemActive'
 describe('DraggableWrapperItemActive', () => {
   const naming = new DesignName('my.component')
   const mockClasses = {
+    getElement: () => undefined as HTMLElement | undefined,
     getName: () => 'my-component',
     getList: () => ({
       active: 'active-class'
@@ -53,6 +54,41 @@ describe('DraggableWrapperItemActive', () => {
       expect(element.style.getPropertyValue('--my-component-sys-item-shift-x')).toBe('15px')
       expect(element.style.getPropertyValue('--my-component-sys-item-shift-y')).toBe('30px')
       expect(element.classList.contains('active-class')).toBe(true)
+    })
+
+    it('should write and clean shift CSS variables on wrapper element when available so secondary selection items inherit them', () => {
+      const wrapperElement = document.createElement('div')
+      const classesWithWrapper = {
+        getElement: () => wrapperElement,
+        getName: () => 'my-component',
+        getList: () => ({
+          active: 'active-class'
+        })
+      } as any
+      const active = new DraggableWrapperItemActive(naming, () => classesWithWrapper)
+      const element = document.createElement('div')
+
+      element.getBoundingClientRect = () => ({
+        left: 10,
+        top: 20,
+        width: 100,
+        height: 200,
+        right: 110,
+        bottom: 220,
+        x: 10,
+        y: 20,
+        toJSON: () => {}
+      })
+
+      active.prepare(element, { x: 25, y: 50 })
+      expect(wrapperElement.style.getPropertyValue('--my-component-sys-item-shift-x')).toBe('15px')
+      expect(wrapperElement.style.getPropertyValue('--my-component-sys-item-shift-y')).toBe('30px')
+      expect(element.style.getPropertyValue('--my-component-sys-item-width')).toBe('100px')
+      expect(element.style.getPropertyValue('--my-component-sys-item-height')).toBe('200px')
+
+      active.reset()
+      expect(wrapperElement.style.getPropertyValue('--my-component-sys-item-shift-x')).toBe('')
+      expect(wrapperElement.style.getPropertyValue('--my-component-sys-item-shift-y')).toBe('')
     })
 
     it('should reset custom CSS properties and unset active item on reset()', () => {

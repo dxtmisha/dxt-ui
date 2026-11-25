@@ -23,8 +23,8 @@ export interface DraggableWrapperExpose {
    * @param parameters event parameters from the drop event / параметры события сброса
    * @returns new reordered array / новый переупорядоченный массив
    */
-  toNewPosition<T extends { value?: any }>(
-    values: T[],
+  toNewPosition<T extends { value?: unknown }>(
+    values: readonly T[],
     parameters: DraggableWrapperEventParameters
   ): T[]
 }

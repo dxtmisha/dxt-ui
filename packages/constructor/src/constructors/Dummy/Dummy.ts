@@ -1,29 +1,33 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
-import type { DummyComponents, DummyEmits, DummySlots } from './types'
 import type { DummyProps } from './props'
+import type {
+  DummyComponents,
+  DummyEmits,
+  DummySlots
+} from './types'
+
+/** Dummy dependency constructors type / Тип конструкторов зависимостей Dummy */
+export type DummyConstructors = {}
 
 /**
- * Dummy
+ * Class representing the Dummy logic orchestrator.
+ * Provides the base logic lifecycle contract for the placeholder dummy block component.
+ *
+ * Класс, представляющий оркестратор логики Dummy.
+ * Обеспечивает базовый контракт жизненного цикла логики для компонента-заглушки.
  */
-export class Dummy {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: DummyProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<DummyComponents, DummyProps>,
-    protected readonly slots?: DummySlots,
-    protected readonly emits?: ConstrEmit<DummyEmits>
-  ) {
-  }
+export class Dummy extends DesignLogicAbstract<
+  HTMLElement,
+  DummyComponents,
+  DummyEmits,
+  DummySlots,
+  DummyProps,
+  DummyConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<DummyConstructors> = {}
 }

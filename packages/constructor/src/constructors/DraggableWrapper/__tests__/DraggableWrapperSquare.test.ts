@@ -113,24 +113,44 @@ describe('DraggableWrapperSquare', () => {
       vi.restoreAllMocks()
     })
 
-    it('should apply classesSquare when provided as a space-separated string', () => {
+    it('should apply classesSquare when provided as a space-separated string with extra whitespace without throwing', () => {
       const parent = document.createElement('div')
       const targetItem = document.createElement('div')
       parent.appendChild(targetItem)
-      const squareEl = document.createElement('div')
+      const squareElement = document.createElement('div')
 
       const square = new DraggableWrapperSquare(
-        { classesSquare: 'custom-a custom-b' },
+        { classesSquare: '  custom-a   custom-b  ' },
         naming,
         () => createMockClasses()
       )
-      square.squareElement.value = squareEl
+      square.squareElement.value = squareElement
 
       vi.spyOn(window, 'getComputedStyle').mockReturnValue({} as any)
-      square.prepare(targetItem)
+      expect(() => square.prepare(targetItem)).not.toThrow()
 
-      expect(squareEl.classList.contains('custom-a')).toBe(true)
-      expect(squareEl.classList.contains('custom-b')).toBe(true)
+      expect(squareElement.classList.contains('custom-a')).toBe(true)
+      expect(squareElement.classList.contains('custom-b')).toBe(true)
+
+      vi.restoreAllMocks()
+    })
+
+    it('should ignore empty tokens in classesSquare array without throwing DOMException', () => {
+      const parent = document.createElement('div')
+      const targetItem = document.createElement('div')
+      parent.appendChild(targetItem)
+      const squareElement = document.createElement('div')
+
+      const square = new DraggableWrapperSquare(
+        { classesSquare: ['custom-valid', '', '   '] },
+        naming,
+        () => createMockClasses()
+      )
+      square.squareElement.value = squareElement
+
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue({} as any)
+      expect(() => square.prepare(targetItem)).not.toThrow()
+      expect(squareElement.classList.contains('custom-valid')).toBe(true)
 
       vi.restoreAllMocks()
     })

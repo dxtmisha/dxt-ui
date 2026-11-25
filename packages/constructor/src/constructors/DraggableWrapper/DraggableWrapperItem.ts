@@ -2,10 +2,10 @@
 
 import { forEach } from '@dxtmisha/functional'
 
-import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
-import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
-import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
-import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
+import type { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import type { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
+import type { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
+import type { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
 
 /**
  * Orchestrator model for tracking active, selected, and drop target items.
@@ -37,13 +37,13 @@ export class DraggableWrapperItem {
    * @returns array of HTML elements / массив HTML-элементов
    */
   get(): HTMLElement[] {
-    const selection = this.selection().get()
+    const selection = this.selection()?.get()
 
     if (selection) {
       return selection
     }
 
-    const active = this.active().get()
+    const active = this.active()?.get()
 
     if (active) {
       return [active]
@@ -99,7 +99,7 @@ export class DraggableWrapperItem {
    * @returns array of item values / массив значений элементов
    */
   getValues(): string[] {
-    return forEach(this.get(), item => item?.dataset?.value) as string[]
+    return forEach(this.get(), item => item?.dataset?.value)
   }
 
   /**
@@ -109,10 +109,10 @@ export class DraggableWrapperItem {
    * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
-    this.focus().reset()
-    this.active().reset()
-    this.selection().reset()
-    this.go().reset()
+    this.focus()?.reset()
+    this.active()?.reset()
+    this.selection()?.reset()
+    this.go()?.reset()
 
     return this
   }
@@ -127,18 +127,43 @@ export class DraggableWrapperItem {
    * @param before DOM layout direction / направление структуры DOM
    * @returns new reordered array / новый переупорядоченный массив
    */
-  toNewPosition<T extends { value?: any }>(
-    values: T[],
+  toNewPosition<T extends { value?: unknown }>(
+    values: readonly T[],
     valueTo?: string,
     valueSelection?: (string | undefined)[],
     before?: boolean
   ): T[] {
-    const selection = valueSelection || []
-    const items = values.filter(item => item.value !== undefined && selection.includes(String(item.value)))
-    const newValues = values.filter(item => item.value === undefined || !selection.includes(String(item.value)))
+    if (
+      values.length === 0
+      || !valueSelection
+      || valueSelection.length === 0
+    ) {
+      return [...values]
+    }
+
+    const selectionSet = new Set(valueSelection)
+    const items: T[] = []
+    const newValues: T[] = []
+
+    for (const item of values) {
+      if (
+        item.value !== undefined
+        && selectionSet.has(String(item.value))
+      ) {
+        items.push(item)
+      } else {
+        newValues.push(item)
+      }
+    }
+
+    if (items.length === 0) {
+      return newValues
+    }
 
     if (valueTo !== undefined) {
-      const index = newValues.findIndex(item => String(item.value) === valueTo)
+      const index = newValues.findIndex(
+        item => item.value !== undefined && String(item.value) === valueTo
+      )
 
       if (index !== -1) {
         newValues.splice(index + (before ? 0 : 1), 0, ...items)

@@ -11,10 +11,10 @@ import type { DemoSectionDraggableWrapperDropZonesItem } from '../../../types/dr
 
 /**
  * Component representing the drop zones section for the DraggableWrapper demo.
- * It manages two lists (Zone A and Zone B) and allows moving items between them.
+ * It manages two lists (Zone A and Zone B) and allows moving single or multiple selected items between them.
  *
  * Компонент, представляющий раздел зон сброса для демо-версии DraggableWrapper.
- * Управляет двумя списками (Зона А и Зона B) и позволяет перемещать элементы между ними.
+ * Управляет двумя списками (Зона А и Зона B) и позволяет перемещать один или несколько выбранных элементов между ними.
  */
 
 defineProps<{}>()
@@ -30,6 +30,23 @@ const zoneA = ref<DemoSectionDraggableWrapperDropZonesItem[]>([
 
 /** Items currently located in zone B / Элементы, находящиеся в данный момент в зоне B */
 const zoneB = ref<DemoSectionDraggableWrapperDropZonesItem[]>([])
+
+/** Selected item values for multi-item drop / Выбранные значения элементов для группового сброса */
+const selectedValues = ref<string[]>([])
+
+/**
+ * Toggles selection state for an item value.
+ *
+ * Переключает состояние выбора для значения элемента.
+ * @param value item value / значение элемента
+ */
+const toggleSelection = (value: string) => {
+  if (selectedValues.value.includes(value)) {
+    selectedValues.value = selectedValues.value.filter(entry => entry !== value)
+  } else {
+    selectedValues.value = [...selectedValues.value, value]
+  }
+}
 
 /**
  * Handles dropping of dragged items into a target zone.
@@ -53,12 +70,24 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
     zoneB.value.push(...movedItems)
   }
 
+  selectedValues.value = selectedValues.value.filter(entry => !draggedValues.includes(entry))
   onEvent('drop', parameters)
 }
 </script>
 
 <template>
-  <D1DraggableWrapper @drop="onDrop">
+  <DemoFlex>
+    <D1Button
+      v-for="item in [...zoneA, ...zoneB]"
+      :key="item.value"
+      :label="'Select ' + item.label"
+      :primary="selectedValues.includes(item.value)"
+      :outline="!selectedValues.includes(item.value)"
+      size="sm"
+      @click="toggleSelection(item.value)"
+    />
+  </DemoFlex>
+  <D1DraggableWrapper :delay="0" @drop="onDrop">
     <template #default="{ className, classClick, classDrop }">
       <DemoFlex>
         <div
@@ -70,6 +99,7 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
             :items="zoneA"
             :class-name="className"
             :class-click="classClick"
+            :selected-values="selectedValues"
           />
         </div>
 
@@ -82,11 +112,14 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
             :items="zoneB"
             :class-name="className"
             :class-click="classClick"
+            :selected-values="selectedValues"
           />
         </div>
       </DemoFlex>
     </template>
   </D1DraggableWrapper>
+  <DemoValue :value="zoneA.map(item => item.label).join(', ') || 'Empty'" label="Zone A Items" />
+  <DemoValue :value="zoneB.map(item => item.label).join(', ') || 'Empty'" label="Zone B Items" />
   <DemoValue :value="eventName" label="Event" />
 </template>
 
@@ -96,6 +129,7 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
 .demo-section-draggable-wrapper-drop-zones {
   &__zone {
     flex: 1;
+    min-height: 150px;
 
     padding: ui.v('?layout.paddingY') ui.v('?layout.paddingX');
 

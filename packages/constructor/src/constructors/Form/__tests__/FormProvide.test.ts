@@ -1,50 +1,72 @@
 // @vitest-environment jsdom
+import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { provide, ref } from 'vue'
+import { createApp, defineComponent, h, inject, ref } from 'vue'
 
-import { FORM_NAME_ELEMENT, type FormElementItem } from '../basicTypes'
+import { ModelInclude } from '../../../classes/ModelInclude'
+import {
+  FORM_NAME_ELEMENT,
+  type FormElementItem,
+  type FormElementRegistration,
+  type FormElementsValues
+} from '../basicTypes'
 import { FormElements } from '../FormElements'
+import { FormElementsNative } from '../FormElementsNative'
 import { FormEvent } from '../FormEvent'
 import { FormProvide } from '../FormProvide'
 import { FormValue } from '../FormValue'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual<typeof import('vue')>('vue')
-  return {
-    ...actual,
-    provide: vi.fn()
-  }
-})
+const cleanups: Array<() => void> = []
 
 describe('FormProvide', () => {
   afterEach(() => {
-    vi.clearAllMocks()
+    cleanups.splice(0).reverse().forEach(unmount => unmount())
+    vi.restoreAllMocks()
   })
 
-  it('calls provide with FORM_NAME_ELEMENT and registration object on construction', () => {
-    const elements = new FormElements()
-    const formValue = new FormValue({}, elements)
-    const formEvent = new FormEvent({}, formValue)
-    const formProvide = new FormProvide(elements, formEvent)
+  it('should provide registration callbacks lazily without invoking elements() or event() during construction', () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    cleanups.push(() => container.remove())
 
-    expect(provide).toHaveBeenCalledWith(FORM_NAME_ELEMENT, {
-      getValue: elements.getValue,
-      register: elements.register,
-      updateData: formProvide.updateData
+    const elements = new FormElements()
+    const native = new FormElementsNative(ref(undefined))
+    const formValue = new FormValue({}, () => elements, () => native)
+    const model = new ModelInclude<FormElementsValues>('value')
+    const formEvent = new FormEvent(() => model, () => formValue)
+
+    const elementsGetter = vi.fn(() => elements)
+    const eventGetter = vi.fn(() => formEvent)
+    let injectedContext: FormElementRegistration | undefined
+
+    const Child = defineComponent({
+      setup() {
+        injectedContext = inject<FormElementRegistration | undefined>(FORM_NAME_ELEMENT, undefined)
+        return () => h('div')
+      }
     })
-  })
 
-  it('updates validation data in FormElements and calls FormEvent.onInput on updateData', () => {
-    const elements = new FormElements()
-    const formValue = new FormValue({}, elements)
-    const formEvent = new FormEvent({}, formValue)
-    const formProvide = new FormProvide(elements, formEvent)
+    const Parent = defineComponent({
+      setup() {
+        new FormProvide(elementsGetter, eventGetter)
+        return () => h(Child)
+      }
+    })
 
-    const updateDataSpy = vi.spyOn(elements, 'updateData')
+    const app = createApp(Parent)
+    app.mount(container)
+    cleanups.push(() => app.unmount())
+
+    expect(injectedContext).toBeDefined()
+    expect(elementsGetter).not.toHaveBeenCalled()
+    expect(eventGetter).not.toHaveBeenCalled()
+
+    const logSpy = vi.spyOn(console, 'log')
     const onInputSpy = vi.spyOn(formEvent, 'onInput')
+    const updateDataSpy = vi.spyOn(elements, 'updateData')
 
     const mockElement: FormElementItem = {
-      id: 'username',
+      id: 'username-1',
       name: 'username',
       value: ref('admin'),
       getValue: () => 'admin',
@@ -53,25 +75,33 @@ describe('FormProvide', () => {
       isChanged: () => false,
       checkValidity: () => true,
       getValidationMessage: () => '',
-      data: {
-        value: 'admin',
-        status: true
-      }
+      data: { value: 'admin', status: true }
     }
 
-    elements.register(mockElement)
+    injectedContext?.register(mockElement)
+    expect(elementsGetter).toHaveBeenCalledTimes(1)
+    expect(eventGetter).not.toHaveBeenCalled()
+    expect(injectedContext?.getValue('username')).toBe('admin')
 
-    const mockData = {
+    const updatedData = {
       value: 'admin',
       status: false,
       validationMessage: 'Invalid username'
     }
-    const mockEvent = new InputEvent('input')
+    const inputEvent = new InputEvent('input')
 
-    formProvide.updateData('username', mockData, mockEvent)
+    injectedContext?.updateData('username-1', updatedData, inputEvent)
 
-    expect(updateDataSpy).toHaveBeenCalledWith('username', mockData)
-    expect(onInputSpy).toHaveBeenCalledWith(mockEvent)
-    expect(elements.getData().username).toEqual(mockData)
+    expect(logSpy).not.toHaveBeenCalled()
+    expect(updateDataSpy).toHaveBeenCalledWith('username-1', updatedData)
+    expect(onInputSpy).toHaveBeenCalledWith(inputEvent)
+    expect(elements.getData().username).toEqual(updatedData)
+
+    const unregisterSpy = vi.spyOn(elements, 'unregister')
+    injectedContext?.unregister?.('username-1')
+
+    expect(unregisterSpy).toHaveBeenCalledWith('username-1')
+    expect(elements.get().value).toHaveLength(0)
+    expect(injectedContext?.getValue('username')).toBeUndefined()
   })
 })

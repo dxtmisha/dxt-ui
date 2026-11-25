@@ -203,4 +203,46 @@ describe('DraggableWrapperEmit', () => {
       vi.useRealTimers()
     })
   })
+
+  describe('Lifecycle and cleanup', () => {
+    it('should cancel pending emit timeout on stop() and onUnmounted()', () => {
+      vi.useFakeTimers()
+
+      const activeElement = document.createElement('div')
+      activeElement.dataset.value = 'item-1'
+      const goElement = document.createElement('div')
+      goElement.dataset.value = 'item-2'
+
+      const mockItem = {
+        getActive: () => ({ get: () => activeElement }),
+        getGo: () => ({ get: () => goElement }),
+        getSelection: () => ({ get: () => [] }),
+        getValues: () => ['item-1']
+      } as any
+
+      const emitFn = vi.fn()
+      const emitHelper = new DraggableWrapperEmit(
+        () => ({ hasDrop: () => true } as any),
+        () => mockItem,
+        () => ({ isBefore: () => false } as any),
+        emitFn
+      )
+
+      emitHelper.on()
+      vi.advanceTimersByTime(100)
+      emitHelper.onUnmounted()
+
+      vi.advanceTimersByTime(500)
+      expect(emitFn).not.toHaveBeenCalled()
+
+      // Replacing pending timer on repeated on() calls fires only once
+      emitHelper.on()
+      vi.advanceTimersByTime(100)
+      emitHelper.on()
+      vi.advanceTimersByTime(240)
+      expect(emitFn).toHaveBeenCalledTimes(1)
+
+      vi.useRealTimers()
+    })
+  })
 })

@@ -1,4 +1,5 @@
 import {
+  type ConstrBind,
   type ConstrClassObject,
   type ConstrItems,
   DesignLogicAbstract
@@ -165,6 +166,16 @@ export class DraggableWrapper extends DesignLogicAbstract<
   }
 
   /**
+   * Returns bound attributes and event listeners for the wrapper element.
+   *
+   * Возвращает привязанные атрибуты и слушатели событий для элемента обертки.
+   * @returns element binding properties / свойства привязки элемента
+   */
+  get binds(): ConstrBind {
+    return this.i('events').binds
+  }
+
+  /**
    * Returns values for the class.
    *
    * Возвращает значения для класса.
@@ -194,8 +205,8 @@ export class DraggableWrapper extends DesignLogicAbstract<
    * @param parameters event parameters from the drop event / параметры события сброса
    * @returns new reordered array / новый переупорядоченный массив
    */
-  readonly toNewPosition = <T extends { value?: any }>(
-    values: T[],
+  readonly toNewPosition = <T extends { value?: unknown }>(
+    values: readonly T[],
     parameters: DraggableWrapperEventParameters
   ): T[] => {
     const { valueTo, valueSelection, before } = parameters

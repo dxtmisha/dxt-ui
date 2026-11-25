@@ -5,6 +5,7 @@ type FormattedNumberPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for FormattedNumber / Базовые свойства для FormattedNumber */
 export type FormattedNumberPropsBasic = {
   /** Value to format / Значение для форматирования */
   value?: NumberOrString

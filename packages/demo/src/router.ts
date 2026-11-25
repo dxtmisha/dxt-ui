@@ -42,12 +42,15 @@ import DemoCropAreaPage from './pages/components/DemoCropAreaPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDividerPage from './pages/components/DemoDividerPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
+import DemoDropzonePage from './pages/components/DemoDropzonePage.vue'
+import DemoDummyPage from './pages/components/DemoDummyPage.vue'
 import DemoFieldPage from './pages/components/DemoFieldPage.vue'
 import DemoFieldCounterPage from './pages/components/DemoFieldCounterPage.vue'
 import DemoFieldLabelPage from './pages/components/DemoFieldLabelPage.vue'
 import DemoFieldMessagePage from './pages/components/DemoFieldMessagePage.vue'
-import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
 import DemoFormPage from './pages/components/DemoFormPage.vue'
+import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
+import DemoFormattedNumberPage from './pages/components/DemoFormattedNumberPage.vue'
 import DemoHeaderPage from './pages/components/DemoHeaderPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
@@ -296,6 +299,16 @@ export const routes: RouteRecordRaw[] = [
     component: DemoDraggableWrapperPage
   },
   {
+    path: '/component-dropzone',
+    name: 'component-dropzone',
+    component: DemoDropzonePage
+  },
+  {
+    path: '/component-dummy',
+    name: 'component-dummy',
+    component: DemoDummyPage
+  },
+  {
     path: '/component-field',
     name: 'component-field',
     component: DemoFieldPage
@@ -316,14 +329,19 @@ export const routes: RouteRecordRaw[] = [
     component: DemoFieldMessagePage
   },
   {
+    path: '/component-form',
+    name: 'component-form',
+    component: DemoFormPage
+  },
+  {
     path: '/component-formatted',
     name: 'component-formatted',
     component: DemoFormattedPage
   },
   {
-    path: '/component-form',
-    name: 'component-form',
-    component: DemoFormPage
+    path: '/component-formatted-number',
+    name: 'component-formatted-number',
+    component: DemoFormattedNumberPage
   },
   {
     path: '/component-header',

@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -72,6 +72,22 @@ export class DraggableWrapperDesign<
   }
 
   /**
+   * Renders the square placeholder element.
+   *
+   * Рендерит элемент-заполнитель (square).
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderSquare = (): VNode => {
+    return h('div', {
+      ref: this.item.i('square').squareElement,
+      class: [
+        this.classes?.value.square,
+        this.item.i('classesData').getId()
+      ]
+    })
+  }
+
+  /**
    * Initializes component exposed properties.
    *
    * Инициализирует свойства, доступные извне компонента.
@@ -120,33 +136,19 @@ export class DraggableWrapperDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ...this.item.i('events').binds,
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
         this.slots?.default?.(this.item.i('classesData').getControl(this.classes?.value.item)),
         this.renderSquare()
       ]
     )
-  }
-
-  /**
-   * Renders the square placeholder element.
-   *
-   * Рендерит элемент-заполнитель (square).
-   * @returns virtual node / виртуальный узел
-   */
-  protected renderSquare(): VNode {
-    return h('div', {
-      ref: this.item.i('square').squareElement,
-      class: [
-        this.classes?.value.square,
-        this.item.i('classesData').getId()
-      ]
-    })
   }
 }

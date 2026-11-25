@@ -18,7 +18,7 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
       'customizable label, icon, and description support',
       'integrated ARIA accessibility attributes',
       'v-model binding for reactive file list management',
-      'programmatic clear() method'
+      'programmatic open() and clear() methods'
     ],
     ru: [
       'область перетаскивания файлов (Drag and Drop)',
@@ -26,7 +26,7 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
       'настройка текстовой метки, иконки и описания',
       'встроенные атрибуты доступности ARIA',
       'двусторонняя привязка v-model для управления списком файлов',
-      'программный метод очистки clear()'
+      'программные методы open() и clear()'
     ]
   },
   render: `
@@ -34,10 +34,21 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
         <DesignComponent v-bind="args"/>
       </div>
     `,
+  play: `
+const dropzone = canvasElement.querySelector('.design-component')
+await expect(dropzone).toBeInTheDocument()
+await expect(dropzone?.tagName).toBe('LABEL')
+const input = dropzone?.querySelector('input[type="file"]')
+await expect(input).toBeInTheDocument()
+  `,
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { DropzoneExpose } from \'@dxtmisha/constructor/Dropzone\''
   ],
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'DropzoneVModel',
       name: {
@@ -46,13 +57,13 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
       },
       setup: `
       return {
-        files: ref()
+        files: ref<FileList | undefined>()
       }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Files count: {{ files?.length || 0 }}</span>
+            <span class="wiki-storybook-item__label wiki-storybook-item__label--static" data-testid="files-count">Files count: {{ files?.length || 0 }}</span>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
             <DesignComponent
@@ -63,6 +74,14 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
             />
           </div>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const dropzone = canvasElement.querySelector('.design-component')
+await expect(dropzone).toBeInTheDocument()
+await expect(canvas.getByTestId('files-count')).toHaveTextContent('Files count: 0')
+await expect(dropzone).toHaveAttribute('aria-labelledby')
+await expect(dropzone).toHaveAttribute('aria-describedby')
       `
     },
     {
@@ -78,6 +97,10 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
             <DesignComponent isSkeleton />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const dropzone = canvasElement.querySelector('.design-component')
+await expect(dropzone).toBeInTheDocument()
       `
     },
     {
@@ -97,6 +120,82 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByText('Custom Upload Title')).toBeInTheDocument()
+await expect(canvas.getByText('Custom description text')).toBeInTheDocument()
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (NOT in documentation)
+    // =========================================================================
+    {
+      id: 'DropzoneTestStatesAndControls',
+      name: {
+        en: 'Test: Disabled, readonly, accept, multiple, textDropzone, inputAttrs and expose',
+        ru: 'Тест: Disabled, readonly, accept, multiple, textDropzone, inputAttrs и expose'
+      },
+      propsName: ['disabled', 'readonly', 'accept', 'multiple', 'textDropzone', 'inputAttrs'],
+      setup: `
+      const dropzoneRef = ref<DropzoneExpose | null>(null)
+      const files = ref<FileList | undefined>()
+      const clearFiles = () => {
+        dropzoneRef.value?.clear()
+      }
+      return { dropzoneRef, files, clearFiles }
+      `,
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
+            <DesignComponent
+              ref="dropzoneRef"
+              v-model:files="files"
+              accept=".png,.jpg"
+              multiple
+              text-dropzone="Fallback drop text"
+              :input-attrs="{ 'data-testid': 'dropzone-input-main' }"
+            />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
+            <DesignComponent label="Disabled" disabled />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
+            <DesignComponent label="Readonly" readonly />
+          </div>
+          <button class="wiki-storybook-button" type="button" @click="clearFiles">Clear</button>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const zones = canvasElement.querySelectorAll('.design-component')
+await expect(zones.length).toBe(3)
+await expect(zones[0]).not.toHaveAttribute('aria-disabled')
+await expect(zones[0]).not.toHaveAttribute('aria-readonly')
+await expect(zones[1]).toHaveAttribute('aria-disabled', 'true')
+await expect(zones[2]).toHaveAttribute('aria-readonly', 'true')
+
+const mainInput = canvas.getByTestId('dropzone-input-main')
+await expect(mainInput).toHaveAttribute('accept', '.png,.jpg')
+await expect(mainInput).toHaveAttribute('multiple')
+await expect(canvas.getByText('Fallback drop text')).toBeInTheDocument()
+
+await step('Toggle dragenter and dragleave classes', async () => {
+  await fireEvent.dragEnter(mainInput)
+  await waitFor(() => {
+    expect(zones[0]).toHaveClass('design-component--enter')
+  })
+  await fireEvent.dragLeave(mainInput)
+  await waitFor(() => {
+    expect(zones[0]).not.toHaveClass('design-component--enter')
+  })
+})
+
+await step('Invoke exposed clear()', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Clear' }))
+  await expect(mainInput).toHaveValue('')
+})
       `
     }
   ],

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import type { DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
  * Class for managing the active draggable item during dragging session.
@@ -12,9 +12,6 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
  * Класс для управления активным перетаскиваемым элементом во время сессии перетаскивания.
  */
 export class DraggableWrapperItemActive {
-  /** Target active element / Целевой активный элемент */
-  protected readonly item = ref<HTMLElement>()
-
   /** Property names map / Карта имен свойств */
   protected readonly property: {
     /** CSS property for item width / Свойство CSS для ширины элемента */
@@ -49,6 +46,9 @@ export class DraggableWrapperItemActive {
     }
   }
 
+  /** Target active element / Целевой активный элемент */
+  protected readonly item = ref<HTMLElement>()
+
   /**
    * Checks if an active item is defined.
    *
@@ -82,35 +82,6 @@ export class DraggableWrapperItemActive {
   }
 
   /**
-   * Prepares the item style properties and classes for drag.
-   *
-   * Подготавливает стили и классы элемента для перетаскивания.
-   * @param item HTML element to prepare / HTML-элемент для подготовки
-   * @param coordinator client coordinate parameters / параметры координат клиента
-   * @returns this instance / текущий экземпляр класса
-   */
-  prepare(
-    item: HTMLElement,
-    coordinator: ImageCoordinator
-  ): this {
-    this.reset()
-
-    const rect = item.getBoundingClientRect()
-    const shiftX = coordinator.x - rect.left
-    const shiftY = coordinator.y - rect.top
-
-    item.style.setProperty(this.property.width, `${rect.width}px`)
-    item.style.setProperty(this.property.height, `${rect.height}px`)
-
-    item.style.setProperty(this.property.shiftX, `${shiftX}px`)
-    item.style.setProperty(this.property.shiftY, `${shiftY}px`)
-
-    item.classList.add(this.classes().getList().active)
-
-    return this.set(item)
-  }
-
-  /**
    * Resets active element tracker.
    *
    * Сбрасывает отслеживание активного элемента.
@@ -130,6 +101,12 @@ export class DraggableWrapperItemActive {
    */
   resetItemStyles(): this {
     const item = this.get()
+    const wrapperElement = this.classes().getElement()
+
+    if (wrapperElement) {
+      wrapperElement.style.removeProperty(this.property.shiftX)
+      wrapperElement.style.removeProperty(this.property.shiftY)
+    }
 
     if (item) {
       item.style.removeProperty(this.property.width)
@@ -140,5 +117,36 @@ export class DraggableWrapperItemActive {
     }
 
     return this
+  }
+
+  /**
+   * Prepares the item style properties and classes for drag.
+   *
+   * Подготавливает стили и классы элемента для перетаскивания.
+   * @param item HTML element to prepare / HTML-элемент для подготовки
+   * @param coordinator client coordinate parameters / параметры координат клиента
+   * @returns this instance / текущий экземпляр класса
+   */
+  prepare(
+    item: HTMLElement,
+    coordinator: ImageCoordinator
+  ): this {
+    this.reset()
+
+    const rect = item.getBoundingClientRect()
+    const shiftX = coordinator.x - rect.left
+    const shiftY = coordinator.y - rect.top
+    const classes = this.classes()
+    const shiftTarget = classes.getElement() ?? item
+
+    item.style.setProperty(this.property.width, `${rect.width}px`)
+    item.style.setProperty(this.property.height, `${rect.height}px`)
+
+    shiftTarget.style.setProperty(this.property.shiftX, `${shiftX}px`)
+    shiftTarget.style.setProperty(this.property.shiftY, `${shiftY}px`)
+
+    item.classList.add(classes.getList().active)
+
+    return this.set(item)
   }
 }
