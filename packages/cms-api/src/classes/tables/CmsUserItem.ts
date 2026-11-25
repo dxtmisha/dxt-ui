@@ -18,7 +18,7 @@ import {
 
 import { findOneRecord } from '../../functions/db/findOneRecord'
 import { hasRecord } from '../../functions/db/hasRecord'
-import { toCmsIds } from '../../functions/toCmsIds'
+import { toIds } from '../../functions/to/toIds'
 import { CMS_USER_ERROR_GROUP } from '../../media/errors/cmsUserErrorCauseList'
 import { roles } from '../../media/schema/roles'
 import { userRoles } from '../../media/schema/userRoles'
@@ -773,7 +773,7 @@ export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRole
         const targetIds: number[] = []
 
         if (roleIds !== undefined) {
-          targetIds.push(...toCmsIds(roleIds))
+          targetIds.push(...toIds(roleIds))
         }
 
         if (roleCodes !== undefined) {

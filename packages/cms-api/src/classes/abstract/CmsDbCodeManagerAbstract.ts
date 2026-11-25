@@ -5,15 +5,14 @@ import {
   or,
   type SQL
 } from 'drizzle-orm'
-import {
-  isString,
-  uniqueArray
-} from '@dxtmisha/functional-basic'
+import { isString } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../../functions/escapeCmsSearchPattern'
 import { findRecords } from '../../functions/db/findRecords'
 import { hasRecord } from '../../functions/db/hasRecord'
+import { toCodes } from '../../functions/to/toCodes'
 import { CmsDbManagerAbstract } from './CmsDbManagerAbstract'
+import { CmsVerification } from '../CmsVerification'
 import type { CmsDbCodeItemAbstract } from './CmsDbCodeItemAbstract'
 import type {
   CmsCodeCreateInput,
@@ -51,16 +50,16 @@ export abstract class CmsDbCodeManagerAbstract<
    * @returns True if record exists / True, если запись существует
    */
   async hasByCode(code: string): Promise<boolean> {
-    const trimmedCode = isString(code) ? code.trim() : ''
-    if (trimmedCode.length === 0) {
+    const whereCondition = this.getCodeCondition(code)
+
+    if (!whereCondition) {
       return false
     }
 
-    const codeTable = this.getCodeTable()
     return hasRecord(
       this.databaseInstance.get(),
-      codeTable,
-      eq(codeTable.code, trimmedCode)
+      this.getCodeTable(),
+      whereCondition
     )
   }
 
@@ -72,12 +71,13 @@ export abstract class CmsDbCodeManagerAbstract<
    * @returns Wrapped entity item or undefined / Экземпляр обёртки записи или undefined
    */
   async getByCode(code: string): Promise<TItem | undefined> {
-    const trimmedCode = isString(code) ? code.trim() : ''
-    if (trimmedCode.length === 0) {
+    const whereCondition = this.getCodeCondition(code)
+    if (!whereCondition) {
       return undefined
     }
 
-    const foundRecord = await this.fetchOneRecord(eq(this.getCodeTable().code, trimmedCode))
+    const foundRecord = await this.fetchOneRecord(whereCondition)
+
     if (foundRecord) {
       return this.wrapItem(foundRecord)
     }
@@ -93,24 +93,38 @@ export abstract class CmsDbCodeManagerAbstract<
    * @returns List of wrapped entity items / Список найденных экземпляров обёртки
    */
   async getByCodes(codes: readonly string[]): Promise<TItem[]> {
-    const validCodes = uniqueArray(
-      codes
-        .filter(isString)
-        .map(code => code.trim())
-        .filter(code => code.length > 0)
-    )
+    const validCodes = toCodes(codes)
+
     if (validCodes.length === 0) {
       return []
     }
 
     const codeTable = this.getCodeTable()
-    const rows = await findRecords<TTable['$inferSelect']>(
-      this.databaseInstance.get(),
-      codeTable,
-      inArray(codeTable.code, validCodes)
-    )
 
-    return this.resolveListItems(rows)
+    return this.wrapItems(
+      await findRecords<TTable['$inferSelect']>(
+        this.databaseInstance.get(),
+        codeTable,
+        inArray(codeTable.code, validCodes)
+      )
+    )
+  }
+
+  /**
+   * Builds a SQL equality predicate for a normalized entity code, or returns undefined if the code is invalid or blank.
+   *
+   * Формирует SQL-условие равенства для нормализованного кода сущности или возвращает undefined при невалидном или пустом коде.
+   * @param code Unique entity code / Уникальный код записи
+   * @returns SQL equality predicate or undefined / SQL-условие равенства или undefined
+   */
+  protected getCodeCondition(code: unknown): SQL | undefined {
+    const trimmedCode = CmsVerification.normalizeCode(code, false)
+
+    if (trimmedCode.length === 0) {
+      return undefined
+    }
+
+    return eq(this.getCodeTable().code, trimmedCode)
   }
 
   /**
@@ -136,6 +150,7 @@ export abstract class CmsDbCodeManagerAbstract<
 
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
+
       if (trimmedSearch.length > 0) {
         const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
@@ -143,6 +158,7 @@ export abstract class CmsDbCodeManagerAbstract<
           ilike(codeTable.name, pattern),
           ilike(codeTable.description, pattern)
         )
+
         if (searchPredicate) {
           conditions.push(searchPredicate)
         }

@@ -11,7 +11,7 @@ import {
  * @param ids Raw list of record identifiers / Исходный список идентификаторов записей
  * @returns Deduplicated array of positive integer IDs / Уникальный массив положительных целых идентификаторов
  */
-export function toCmsIds(ids?: readonly unknown[]): number[] {
+export function toIds(ids?: readonly unknown[]): number[] {
   if (!isArray(ids)) {
     return []
   }

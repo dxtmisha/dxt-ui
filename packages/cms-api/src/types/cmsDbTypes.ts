@@ -62,6 +62,8 @@ export interface CmsListResult<TItem> {
   limit: number
   /** Applied page offset / Применённое смещение выборки */
   offset: number
+  /** Whether more matching records exist beyond the current page / Существуют ли ещё подходящие записи за пределами текущей страницы */
+  hasMore: boolean
 }
 
 /** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */

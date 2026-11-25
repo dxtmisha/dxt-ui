@@ -121,7 +121,7 @@ export class CmsRoleManager extends CmsDbCodeManagerAbstract<
    * @param rows Selected role rows / Выбранные строки ролей
    * @returns List of wrapped CmsRoleItem instances / Список экземпляров CmsRoleItem
    */
-  protected override async resolveListItems(
+  protected override async wrapItems(
     rows: readonly CmsRole[]
   ): Promise<CmsRoleItem[]> {
     return this.attachPermissions(rows)

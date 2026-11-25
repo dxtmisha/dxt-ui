@@ -1,7 +1,7 @@
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
-import { toOrderBy } from './toOrderBy'
+import { toOrderBy } from '../to/toOrderBy'
 import type {
   CmsDbExecutor,
   CmsIdTable

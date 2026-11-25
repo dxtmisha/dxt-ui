@@ -363,7 +363,7 @@ export class CmsUserManager extends CmsDbManagerAbstract<
    * @param rows Selected public user rows / Выбранные публичные строки пользователей
    * @returns List of wrapped CmsUserItem instances / Список экземпляров CmsUserItem
    */
-  protected override async resolveListItems(
+  protected override async wrapItems(
     rows: readonly CmsUserPublic[]
   ): Promise<CmsUserItem[]> {
     return this.attachRoles(rows)

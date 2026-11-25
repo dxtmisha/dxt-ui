@@ -46,45 +46,13 @@ export abstract class CmsDbAbstract<
   }
 
   /**
-   * Returns the bound table typed as CmsIdTable for shared base queries.
-   *
-   * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
-   * @returns Base CMS table schema / Базовая схема таблицы CMS
-   */
-  protected getBaseTable(): CmsIdTable {
-    return this.table
-  }
-
-  /**
-   * Fetches a single entity record by identifier from the bound table.
-   * Subclasses with joined relations can override this method to load related entities.
-   *
-   * Загружает запись сущности по идентификатору из привязанной таблицы.
-   * Подклассы со связанными сущностями могут переопределить этот метод.
-   * @param id Record identifier / Идентификатор записи
-   * @returns Loaded entity record or undefined / Загруженная запись сущности или undefined
-   */
-  protected async fetchById(id: number): Promise<TData | undefined> {
-    if (!CmsVerification.isPositiveInteger(id, false)) {
-      return undefined
-    }
-
-    const baseTable = this.getBaseTable()
-    return findOneRecord<TData>(
-      this.databaseInstance.get(),
-      baseTable,
-      eq(baseTable.id, id)
-    )
-  }
-
-  /**
    * Counts records in the bound table matching an optional SQL predicate.
    *
    * Подсчитывает количество записей в привязанной таблице по необязательному SQL-условию.
    * @param whereCondition Optional SQL predicate / Необязательное SQL-условие
    * @returns Number of matching records / Количество найденных записей
    */
-  protected async countRecords(whereCondition?: SQL): Promise<number> {
+  async countRecords(whereCondition?: SQL): Promise<number> {
     return countRecords(
       this.databaseInstance.get(),
       this.getBaseTable(),
@@ -93,21 +61,13 @@ export abstract class CmsDbAbstract<
   }
 
   /**
-   * Permanently deletes a record by identifier from the bound table.
+   * Returns the bound table typed as CmsIdTable for shared base queries.
    *
-   * Безвозвратно удаляет запись по идентификатору из привязанной таблицы.
-   * @param id Record identifier / Идентификатор записи
-   * @returns True if a record was deleted / True, если запись была удалена
+   * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
+   * @returns Base CMS table schema / Базовая схема таблицы CMS
    */
-  protected async deleteRecordById(id: number): Promise<boolean> {
-    CmsVerification.isPositiveInteger(id)
-
-    const baseTable = this.getBaseTable()
-    return deleteRecord(
-      this.databaseInstance.get(),
-      baseTable,
-      eq(baseTable.id, id)
-    )
+  protected getBaseTable(): CmsIdTable {
+    return this.table
   }
 
   /**
@@ -130,6 +90,46 @@ export abstract class CmsDbAbstract<
       baseTable,
       eq(baseTable.id, id),
       values as Partial<CmsIdTable['$inferInsert']>
+    )
+  }
+
+  /**
+   * Permanently deletes a record by identifier from the bound table.
+   *
+   * Безвозвратно удаляет запись по идентификатору из привязанной таблицы.
+   * @param id Record identifier / Идентификатор записи
+   * @returns True if a record was deleted / True, если запись была удалена
+   */
+  protected async deleteRecordById(id: number): Promise<boolean> {
+    CmsVerification.isPositiveInteger(id)
+
+    const baseTable = this.getBaseTable()
+    return deleteRecord(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id)
+    )
+  }
+
+  /**
+   * Fetches a single entity record by identifier from the bound table.
+   * Subclasses with joined relations can override this method to load related entities.
+   *
+   * Загружает запись сущности по идентификатору из привязанной таблицы.
+   * Подклассы со связанными сущностями могут переопределить этот метод.
+   * @param id Record identifier / Идентификатор записи
+   * @returns Loaded entity record or undefined / Загруженная запись сущности или undefined
+   */
+  protected async fetchById(id: number): Promise<TData | undefined> {
+    if (!CmsVerification.isPositiveInteger(id, false)) {
+      return undefined
+    }
+
+    const baseTable = this.getBaseTable()
+    return findOneRecord<TData>(
+      this.databaseInstance.get(),
+      baseTable,
+      eq(baseTable.id, id)
     )
   }
 

@@ -242,7 +242,8 @@ describe('CmsCreatedOriginManager', () => {
       items: [],
       total: 0,
       limit: 1,
-      offset: 0
+      offset: 0,
+      hasMore: false
     })
   })
 

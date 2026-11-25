@@ -12,7 +12,7 @@ import {
 
 import { findOneRecord } from '../../functions/db/findOneRecord'
 import { findRecords } from '../../functions/db/findRecords'
-import { toCmsIds } from '../../functions/toCmsIds'
+import { toIds } from '../../functions/to/toIds'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbItemAbstract } from './CmsDbItemAbstract'
@@ -38,6 +38,32 @@ export abstract class CmsDbManagerAbstract<
   TListRow extends object = TTable['$inferSelect']
 > extends CmsDbAbstract<TTable, TData> {
   /**
+   * Checks whether more matching records exist beyond the requested pagination window (`offset + limit`).
+   *
+   * Проверяет, существуют ли ещё подходящие записи за пределами текущей страницы (`offset + limit`).
+   * @param options Filtering and pagination options / Параметры фильтрации и пагинации
+   * @returns True if at least one more record exists / True, если существует ещё хотя бы одна запись
+   */
+  async hasMore(options: TListOptions = {} as TListOptions): Promise<boolean> {
+    const baseTable = this.getBaseTable()
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
+    const whereCondition = this.getListWhereCondition(options)
+    const nextRows = await findRecords<{ id: number }>(
+      this.databaseInstance.get(),
+      baseTable,
+      whereCondition,
+      {
+        select: { id: baseTable.id },
+        limit: 1,
+        offset: offset + limit
+      }
+    )
+
+    return nextRows.length > 0
+  }
+
+  /**
    * Finds an entity wrapped in an item instance by identifier.
    *
    * Находит запись в обёртке экземпляра сущности по идентификатору.
@@ -49,7 +75,9 @@ export abstract class CmsDbManagerAbstract<
       return undefined
     }
 
-    const foundRecord = await this.fetchOneRecord(eq(this.getBaseTable().id, id))
+    const baseTable = this.getBaseTable()
+    const foundRecord = await this.fetchOneRecord(eq(baseTable.id, id))
+
     if (foundRecord) {
       return this.wrapItem(foundRecord)
     }
@@ -65,13 +93,28 @@ export abstract class CmsDbManagerAbstract<
    * @returns List of wrapped entity items / Список найденных экземпляров обёртки
    */
   async getByIds(ids: readonly number[]): Promise<TItem[]> {
-    const validIds = toCmsIds(ids)
+    const validIds = toIds(ids)
+
     if (validIds.length === 0) {
       return []
     }
 
-    const rows = await this.selectByIdsRows(validIds)
-    return this.resolveListItems(rows)
+    return this.wrapItems(await this.selectByIdsRows(validIds))
+  }
+
+  /**
+   * Returns a paginated and filtered list of entity item wrappers without executing a total count query.
+   *
+   * Возвращает постраничный отфильтрованный список обёрток записей без выполнения дополнительного запроса подсчёта `total`.
+   * @param options Filtering and pagination options / Параметры фильтрации и пагинации
+   * @returns List of wrapped entity items / Список экземпляров обёртки записи
+   */
+  async getItems(options: TListOptions = {} as TListOptions): Promise<TItem[]> {
+    const limit = toLimit(options.limit)
+    const offset = toOffset(options.offset)
+    const whereCondition = this.getListWhereCondition(options)
+
+    return this.fetchListItems(whereCondition, limit, offset)
   }
 
   /**
@@ -84,45 +127,32 @@ export abstract class CmsDbManagerAbstract<
   async getList(options: TListOptions = {} as TListOptions): Promise<CmsListResult<TItem>> {
     const limit = toLimit(options.limit)
     const offset = toOffset(options.offset)
-    const whereCondition = this.buildListWhere(options)
-
+    const whereCondition = this.getListWhereCondition(options)
     const total = await this.countRecords(whereCondition)
-    if (total === 0) {
-      return {
-        items: [],
-        total: 0,
-        limit,
-        offset
-      }
-    }
 
-    const rows = await this.selectListRows(whereCondition, limit, offset)
-    const items = await this.resolveListItems(rows)
+    let items: TItem[] = []
+    if (total > 0) {
+      items = await this.fetchListItems(whereCondition, limit, offset)
+    }
 
     return {
       items,
       total,
       limit,
-      offset
+      offset,
+      hasMore: offset + limit < total
     }
   }
 
   /**
-   * Creates a new entity record and wraps it in an item instance.
+   * Counts total matching records for the given list filtering options.
    *
-   * Создаёт новую запись сущности и возвращает её обёрнутый экземпляр.
-   * @param input New entity payload / Входные данные новой записи
-   * @returns Created wrapped entity item / Созданный экземпляр обёртки записи
+   * Подсчитывает общее количество записей, соответствующих параметрам фильтрации списка.
+   * @param options Filtering options / Параметры фильтрации
+   * @returns Total number of matching records / Общее количество подходящих записей
    */
-  async create(input: TCreateInput): Promise<TItem> {
-    const createValues = this.prepareCreateValues(input)
-
-    try {
-      const createdRecord = await this.createRecord(createValues, input)
-      return this.wrapItem(createdRecord)
-    } catch (error) {
-      return this.handleError('create', error)
-    }
+  async getTotal(options: TListOptions = {} as TListOptions): Promise<number> {
+    return this.countRecords(this.getListWhereCondition(options))
   }
 
   /**
@@ -143,6 +173,24 @@ export abstract class CmsDbManagerAbstract<
     }
 
     return item.update(input)
+  }
+
+  /**
+   * Creates a new entity record and wraps it in an item instance.
+   *
+   * Создаёт новую запись сущности и возвращает её обёрнутый экземпляр.
+   * @param input New entity payload / Входные данные новой записи
+   * @returns Created wrapped entity item / Созданный экземпляр обёртки записи
+   */
+  async create(input: TCreateInput): Promise<TItem> {
+    const createValues = this.prepareCreateValues(input)
+
+    try {
+      const createdRecord = await this.createRecord(createValues, input)
+      return this.wrapItem(createdRecord)
+    } catch (error) {
+      return this.handleError('create', error)
+    }
   }
 
   /**
@@ -207,6 +255,7 @@ export abstract class CmsDbManagerAbstract<
    */
   protected async selectByIdsRows(validIds: readonly number[]): Promise<TListRow[]> {
     const baseTable = this.getBaseTable()
+
     return findRecords<TListRow>(
       this.databaseInstance.get(),
       baseTable,
@@ -247,7 +296,7 @@ export abstract class CmsDbManagerAbstract<
    * @param rows Selected table rows / Выбранные строки таблицы
    * @returns List of wrapped entity item instances / Список экземпляров обёртки сущности
    */
-  protected async resolveListItems(
+  protected async wrapItems(
     rows: readonly TListRow[]
   ): Promise<TItem[]> {
     return rows.map(row => this.wrapItem(row as unknown as TData))
@@ -274,6 +323,7 @@ export abstract class CmsDbManagerAbstract<
       .returning()
 
     const createdRecord = insertedRows[0]
+
     if (!createdRecord) {
       ErrorCenterThrow.on({
         group: this.errorGroup,
@@ -285,18 +335,6 @@ export abstract class CmsDbManagerAbstract<
   }
 
   /**
-   * Builds combined WHERE clause for list queries from the accumulated filter conditions.
-   *
-   * Формирует итоговое условие WHERE для запросов списка из собранных условий фильтрации.
-   * @param options Filtering options / Параметры фильтрации
-   * @returns Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
-   */
-  protected buildListWhere(options: TListOptions): SQL | undefined {
-    const conditions = this.buildListConditions(options)
-    return conditions.length > 0 ? and(...conditions) : undefined
-  }
-
-  /**
    * Builds SQL filter predicates for list queries.
    *
    * Формирует список SQL-условий фильтрации для запросов списка.
@@ -305,5 +343,34 @@ export abstract class CmsDbManagerAbstract<
    */
   protected buildListConditions(_options: TListOptions): SQL[] {
     return []
+  }
+
+  /**
+   * Combines filter conditions produced by `buildListConditions` into a single SQL predicate.
+   *
+   * Объединяет условия фильтрации из `buildListConditions` в единый SQL-предикат.
+   * @param options Filtering options / Параметры фильтрации
+   * @returns Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
+   */
+  private getListWhereCondition(options: TListOptions): SQL | undefined {
+    const conditions = this.buildListConditions(options)
+    return conditions.length > 0 ? and(...conditions) : undefined
+  }
+
+  /**
+   * Queries a paginated slice of rows and resolves them into wrapped entity items.
+   *
+   * Запрашивает страницу строк списка и преобразует их в экземпляры обёртки.
+   * @param whereCondition Combined SQL predicate or undefined / Объединённый SQL-предикат или undefined
+   * @param limit Applied page limit / Применённый лимит выборки
+   * @param offset Applied page offset / Применённое смещение выборки
+   * @returns List of wrapped entity item instances / Список экземпляров обёртки сущности
+   */
+  private async fetchListItems(
+    whereCondition: SQL | undefined,
+    limit: number,
+    offset: number
+  ): Promise<TItem[]> {
+    return this.wrapItems(await this.selectListRows(whereCondition, limit, offset))
   }
 }

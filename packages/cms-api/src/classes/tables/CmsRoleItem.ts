@@ -13,7 +13,7 @@ import {
 } from '@dxtmisha/functional-basic'
 
 import { findOneRecord } from '../../functions/db/findOneRecord'
-import { toCmsIds } from '../../functions/toCmsIds'
+import { toIds } from '../../functions/to/toIds'
 import { CMS_ROLE_ERROR_GROUP } from '../../media/errors/cmsRoleErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -396,7 +396,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
         const targetIds: number[] = []
 
         if (permissionIds !== undefined) {
-          targetIds.push(...toCmsIds(permissionIds))
+          targetIds.push(...toIds(permissionIds))
         }
 
         if (permissionCodes !== undefined) {
@@ -519,7 +519,7 @@ export class CmsRoleItem extends CmsDbCodeCreatedOriginItemAbstract<
     userIds: readonly number[]
   ): Promise<Map<number, CmsRoleWithPermissions[]>> {
     const rolesByUserId = new Map<number, CmsRoleWithPermissions[]>()
-    const uniqueUserIds = toCmsIds(userIds)
+    const uniqueUserIds = toIds(userIds)
 
     if (uniqueUserIds.length === 0) {
       return rolesByUserId

@@ -4,7 +4,7 @@ import {
   inArray
 } from 'drizzle-orm'
 
-import { toCmsIds } from '../../functions/toCmsIds'
+import { toIds } from '../../functions/to/toIds'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErrorCauseList'
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
@@ -86,7 +86,7 @@ export class CmsPermissionItem extends CmsDbCodeCreatedOriginItemAbstract<
     roleIds: readonly number[]
   ): Promise<Map<number, CmsPermission[]>> {
     const permissionsByRoleId = new Map<number, CmsPermission[]>()
-    const uniqueRoleIds = toCmsIds(roleIds)
+    const uniqueRoleIds = toIds(roleIds)
 
     if (uniqueRoleIds.length === 0) {
       return permissionsByRoleId

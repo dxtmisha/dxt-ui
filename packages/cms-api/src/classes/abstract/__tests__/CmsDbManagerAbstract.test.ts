@@ -174,13 +174,15 @@ describe('CmsDbManagerAbstract', () => {
     expect(list.total).toBe(1)
     expect(list.limit).toBe(200)
     expect(list.offset).toBe(0)
+    expect(list.hasMore).toBe(false)
     expect(list.items[0]).toBeInstanceOf(TestManagerItem)
 
     expect(await manager.getList({ limit: 0 })).toEqual({
       items: [],
       total: 0,
       limit: 1,
-      offset: 0
+      offset: 0,
+      hasMore: false
     })
 
     const createdItem = await manager.create({ name: '  First  ' })
@@ -191,7 +193,49 @@ describe('CmsDbManagerAbstract', () => {
 
     expect(await manager.delete(1)).toBe(true)
     expect(await manager.delete(999)).toBe(false)
+    expect(await manager.update(999, { name: 'Missing' })).toBeUndefined()
 
     await expect(manager.create({ name: 'Fail' })).rejects.toThrow('Failed to create CMS permission.')
+  })
+
+  it('supports standalone getItems, getTotal, and hasMore queries', async () => {
+    const first = makeRecord({ id: 1, name: 'First' })
+    const second = makeRecord({ id: 2, name: 'Second' })
+    const selectQueue: unknown[][] = [
+      [first, second],
+      [{ count: 5 }],
+      [{ id: 3 }],
+      []
+    ]
+    const selectChains: MockChain[] = []
+
+    const db = {
+      select: vi.fn(() => {
+        const chain = createChain(() => selectQueue.shift() ?? [])
+        selectChains.push(chain)
+        return chain
+      })
+    } as unknown as CmsDb
+
+    const dbInstance = new CmsDbInstance()
+    vi.spyOn(dbInstance, 'get').mockReturnValue(db)
+
+    const manager = new TestManager(dbInstance)
+
+    const items = await manager.getItems({ limit: 2, offset: 0 })
+    expect(items.map(item => item.getId())).toEqual([1, 2])
+    expect(items[0]).toBeInstanceOf(TestManagerItem)
+    expect(selectChains[0]?.limit).toHaveBeenCalledWith(2)
+    expect(selectChains[0]?.offset).toHaveBeenCalledWith(0)
+
+    expect(await manager.getTotal()).toBe(5)
+
+    expect(await manager.hasMore({ limit: 2, offset: 0 })).toBe(true)
+    expect(selectChains[2]?.limit).toHaveBeenCalledWith(1)
+    expect(selectChains[2]?.offset).toHaveBeenCalledWith(2)
+
+    expect(await manager.hasMore({ limit: 2, offset: 4 })).toBe(false)
+    expect(selectChains[3]?.limit).toHaveBeenCalledWith(1)
+    expect(selectChains[3]?.offset).toHaveBeenCalledWith(6)
   })
 })

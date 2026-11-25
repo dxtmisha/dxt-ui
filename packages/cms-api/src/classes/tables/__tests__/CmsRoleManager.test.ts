@@ -319,7 +319,8 @@ describe('CmsRoleManager', () => {
       items: [],
       total: 0,
       limit: 1,
-      offset: 0
+      offset: 0,
+      hasMore: false
     })
 
     const updatedItem = await manager.update(2, { name: 'Super Admin' })

@@ -270,6 +270,14 @@ describe('CmsDbAbstract', () => {
     expect(raw.select).toHaveBeenCalledTimes(2)
   })
 
+  it('counts records via public countRecords method', async () => {
+    const { dbInstance, raw } = createMockDb([[{ count: 7 }]])
+    const instance = new TestCmsDbItem(permissions, dbInstance)
+
+    expect(await instance.countRecords()).toBe(7)
+    expect(raw.select).toHaveBeenCalledTimes(1)
+  })
+
   it('routes operational errors through ErrorCenter via handleError', () => {
     ErrorCenter.setIsConsole(false)
     registerCmsErrorCauses()

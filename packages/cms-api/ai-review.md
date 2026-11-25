@@ -1,4 +1,3 @@
-CmsVerification
 createDb
 findOneRecord
 updateRecord
@@ -6,3 +5,13 @@ CmsDbInstance
 useCmsDb
 CmsDbTimestamp
 CmsDbSystemStatus
+CmsVerification
+countRecords
+deleteRecord
+hasRecord
+toIds
+toOrderBy
+CmsDbValuesAbstract
+findRecords
+CmsDbAbstract
+CmsDbManagerAbstract
