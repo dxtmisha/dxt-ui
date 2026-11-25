@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { FieldValidationItem } from '@dxtmisha/constructor'
 import type { InputPhoneExpose, InputPhoneValidationContext } from '@dxtmisha/constructor/InputPhone'
+import type { InputPhoneProps } from '@dxtmisha/d1/D1InputPhone'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoBox from '../../components/DemoBox.vue'
@@ -8,7 +10,23 @@ import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+const paletteList: NonNullable<NonNullable<InputPhoneProps['fieldAttrs']>['palette']>[] = [
+  'red',
+  'orange',
+  'amber',
+  'green',
+  'emerald',
+  'teal',
+  'blue',
+  'indigo',
+  'purple',
+  'rose',
+  'slate',
+  'neutral'
+]
+
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 const valueBasic = ref<string>('')
 const valueModel = ref<string>('12025550147')
@@ -44,6 +62,7 @@ const dynamicResetKey = ref<number>(0)
 const modelCountryCode = ref<string>('DE')
 const valueModelCountry = ref<string>('')
 
+const valueFormatMask = ref<string | undefined>('+1-202-555-0147')
 const valueFormatE164 = ref<string | undefined>('+12025550147')
 const valueFormatDigits = ref<string | undefined>('84912345678')
 const valueMultiMask = ref<string | undefined>('79001234567')
@@ -53,11 +72,27 @@ const valueMultiCountry = ref<string>('RU')
 const valueRestrictedList = ref<string>('84912345678')
 const valuePhoneMatchMap = ref<string>('74951234567')
 const valuePhoneMatchCustom = ref<string>('12025550147')
+const valuePhoneMatchRegex = ref<string>('74951234567')
+
+const isDynamicDisabled = ref<boolean>(false)
+const isDynamicReadonly = ref<boolean>(false)
+const isDynamicLoading = ref<boolean>(false)
+const isDynamicSkeleton = ref<boolean>(false)
+const isDynamicCountryBlock = ref<boolean>(false)
+const isDynamicCountryReadonly = ref<boolean>(false)
+const valueDynamicTarget = ref<string>('79001234567')
+const blockedTriggerCount = ref<number>(0)
+const isLifecycleMounted = ref<boolean>(true)
+
+const formPhoneValue = ref<string>('')
+const formStatus = ref<string>('Not submitted')
 
 const phoneMatchMapRef = ref<InputPhoneExpose>()
 const phoneMatchMapResult = ref<string>('not checked')
 const phoneMatchCustomRef = ref<InputPhoneExpose>()
 const phoneMatchCustomResult = ref<string>('not checked')
+const phoneMatchRegexRef = ref<InputPhoneExpose>()
+const phoneMatchRegexResult = ref<string>('not checked')
 
 const phoneMatchMapRule = {
   RU: /^9/,
@@ -76,6 +111,65 @@ const incompleteValidResult = ref<string>('not checked')
 
 const exposedRef = ref<InputPhoneExpose>()
 const exposedResult = ref<string>('none')
+
+const eventPhoneValue = ref<string>('')
+const eventCountryValue = ref<string>('US')
+const eventDigitsValue = ref<string | undefined>(undefined)
+const eventE164Value = ref<string | undefined>(undefined)
+
+const trackEvent = (name: string, payload: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = JSON.stringify(payload)
+}
+
+const handleInputEvent = (
+  domEvent: InputEvent | Event,
+  validationItem: FieldValidationItem<string>
+): void => {
+  trackEvent('input', {
+    eventType: domEvent.type,
+    value: validationItem.value,
+    status: validationItem.status
+  })
+}
+
+const handleInputLiteEvent = (validationItem: FieldValidationItem<string>): void => {
+  trackEvent('inputLite', {
+    value: validationItem.value,
+    status: validationItem.status
+  })
+}
+
+const handleChangeEvent = (
+  domEvent: InputEvent | Event,
+  validationItem: FieldValidationItem<string>
+): void => {
+  trackEvent('change', {
+    eventType: domEvent.type,
+    value: validationItem.value,
+    status: validationItem.status
+  })
+}
+
+const handleChangeLiteEvent = (validationItem: FieldValidationItem<string>): void => {
+  trackEvent('changeLite', {
+    value: validationItem.value,
+    detail: validationItem.detail,
+    status: validationItem.status
+  })
+}
+
+const handleFocusEvent = (focusEvent: FocusEvent): void => {
+  trackEvent('focus', { eventType: focusEvent.type })
+}
+
+const handleBlurEvent = (focusEvent: FocusEvent): void => {
+  trackEvent('blur', { eventType: focusEvent.type })
+}
+
+const handleBlockedEvent = (): void => {
+  blockedTriggerCount.value += 1
+}
 
 const onCheckRequired = (): void => {
   const valid = requiredRef.value?.checkValidity()
@@ -105,6 +199,13 @@ const onCheckPhoneMatchCustom = (): void => {
   phoneMatchCustomResult.value = `valid=${String(valid)}, message=${message || 'none'}`
 }
 
+const onCheckPhoneMatchRegex = (): void => {
+  const valid = phoneMatchRegexRef.value?.checkValidity()
+  const message = phoneMatchRegexRef.value?.getValidationMessage()
+
+  phoneMatchRegexResult.value = `valid=${String(valid)}, message=${message || 'none'}`
+}
+
 const onResetDynamicCountry = (): void => {
   countryDefaultDynamic.value = undefined
   valueDynamicUntouched.value = ''
@@ -113,13 +214,14 @@ const onResetDynamicCountry = (): void => {
 }
 
 const onReadExposed = (): void => {
+  const reactiveValue = exposedRef.value?.value
   const value = exposedRef.value?.getValue()
   const valid = exposedRef.value?.checkValidity()
   const message = exposedRef.value?.getValidationMessage()
   const detail = exposedRef.value?.getDetail()
   const changed = exposedRef.value?.isChanged()
 
-  exposedResult.value = `value=${String(value)}, valid=${String(valid)}, message=${message || 'none'}, country=${detail?.item?.value || 'none'}, e164=${detail?.e164 || 'none'}, isFull=${String(detail?.isFull)}, changed=${String(changed)}`
+  exposedResult.value = `reactive=${String(reactiveValue)}, value=${String(value)}, valid=${String(valid)}, message=${message || 'none'}, country=${detail?.item?.value || 'none'}, e164=${detail?.e164 || 'none'}, isFull=${String(detail?.isFull)}, changed=${String(changed)}`
 }
 
 const onSetExposed = (): void => {
@@ -144,6 +246,15 @@ const onResetPasteCases = (): void => {
   valuePasteRU.value = ''
   valuePasteVN.value = ''
   valuePasteBlocked.value = ''
+}
+
+const handleFormSubmit = (): void => {
+  formStatus.value = formPhoneValue.value ? `Form submitted (${formPhoneValue.value})` : 'Form blocked (required)'
+}
+
+const handleFormReset = (): void => {
+  formPhoneValue.value = ''
+  formStatus.value = 'Form reset'
 }
 </script>
 
@@ -269,6 +380,15 @@ const onResetPasteCases = (): void => {
           <DemoFlex>
             <DemoBox>
               <D1InputPhone
+                v-model="valueFormatMask"
+                format-output="mask"
+                label="Format Output: mask (default)"
+                helper-message="Emits formatted mask (+1-202-555-0147)"
+              />
+              <DemoValue :value="valueFormatMask"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
                 v-model="valueFormatE164"
                 format-output="e164"
                 label="Format Output: e164"
@@ -369,10 +489,23 @@ const onResetPasteCases = (): void => {
           <DemoBox><D1InputPhone label="Tonal" tonal value="12025550147"/></DemoBox>
           <DemoBox><D1InputPhone label="Boxed" boxed value="12025550147"/></DemoBox>
           <DemoBox><D1InputPhone label="Basic" basic value="12025550147"/></DemoBox>
+          <DemoBox><D1InputPhone label="isValue Active Label" outlined is-value value=""/></DemoBox>
           <DemoBox><D1InputPhone label="Custom Width (280px)" outlined width="280px" value="12025550147"/></DemoBox>
           <DemoBox><D1InputPhone label="Block Width" outlined block value="12025550147"/></DemoBox>
-          <DemoBox><D1InputPhone label="Field Palette Blue" outlined :field-attrs="{ palette: 'blue' }" value="12025550147"/></DemoBox>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Palettes (via fieldAttrs)">
+        <div class="demo-input-phone-page__palettes">
+          <D1InputPhone
+            v-for="paletteName in paletteList"
+            :key="paletteName"
+            outlined
+            :label="`Palette: ${paletteName}`"
+            :field-attrs="{ palette: paletteName }"
+            value="12025550147"
+          />
+        </div>
       </D1Group>
 
       <D1Group label="Sizes & Alignments">
@@ -436,6 +569,14 @@ const onResetPasteCases = (): void => {
           </DemoBox>
           <DemoBox>
             <D1InputPhone
+              label="HTML Helper Message"
+              has-html-code
+              helper-message="Format: <strong>+1-XXX-XXX-XXXX</strong>"
+              value="12025550147"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
               label="Warning Message"
               warning-message="Phone from legacy profile needs confirmation"
               value="79001234567"
@@ -474,6 +615,21 @@ const onResetPasteCases = (): void => {
           </DemoBox>
           <DemoBox>
             <D1InputPhone
+              ref="phoneMatchRegexRef"
+              v-model:value="valuePhoneMatchRegex"
+              country-default="RU"
+              label="phoneMatch (Global RegExp /^9/)"
+              text-invalid-phone="National part must start with 9"
+              :phone-match="/^9/"
+            />
+            <DemoValue :value="phoneMatchRegexResult"/>
+            <DemoFlex>
+              <D1Button label="Validate RegExp" @click="onCheckPhoneMatchRegex"/>
+              <D1Button label="Set Valid 7900..." @click="valuePhoneMatchRegex = '79001234567'"/>
+            </DemoFlex>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
               ref="phoneMatchCustomRef"
               v-model:value="valuePhoneMatchCustom"
               country-default="US"
@@ -494,8 +650,18 @@ const onResetPasteCases = (): void => {
           <DemoFlex>
             <DemoBox>
               <D1InputPhone
-                label="Cancel Always"
+                label="Cancel Auto (default)"
+                cancel="auto"
+                value="12025550147"
+              />
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                label="Cancel Always + Custom Close"
                 cancel="always"
+                cancel-show
+                text-cancel="Clear phone"
+                icon-close="close"
                 value="12025550147"
               />
             </DemoBox>
@@ -534,7 +700,7 @@ const onResetPasteCases = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="States & Skeleton">
+      <D1Group label="States, Skeleton & Dynamic Toggles">
         <DemoFlex>
           <DemoBox><D1InputPhone label="Disabled" disabled value="79001234567"/></DemoBox>
           <DemoBox><D1InputPhone label="Readonly" readonly value="79001234567"/></DemoBox>
@@ -548,6 +714,63 @@ const onResetPasteCases = (): void => {
             </D1Skeleton>
           </DemoBox>
         </DemoFlex>
+        <DemoBox>
+          <D1Skeleton :active="isDynamicSkeleton">
+            <D1InputPhone
+              v-model="valueDynamicTarget"
+              label="Dynamic State Target"
+              :disabled="isDynamicDisabled"
+              :readonly="isDynamicReadonly"
+              :loading="isDynamicLoading"
+              :is-skeleton="isDynamicSkeleton"
+              :country-block="isDynamicCountryBlock"
+              :country-readonly="isDynamicCountryReadonly"
+            />
+          </D1Skeleton>
+          <DemoFlex>
+            <D1Button label="Toggle Disabled" size="sm" outline @click="isDynamicDisabled = !isDynamicDisabled"/>
+            <D1Button label="Toggle Readonly" size="sm" outline @click="isDynamicReadonly = !isDynamicReadonly"/>
+            <D1Button label="Toggle Loading" size="sm" outline @click="isDynamicLoading = !isDynamicLoading"/>
+            <D1Button label="Toggle Skeleton" size="sm" outline @click="isDynamicSkeleton = !isDynamicSkeleton"/>
+            <D1Button label="Toggle countryBlock" size="sm" outline @click="isDynamicCountryBlock = !isDynamicCountryBlock"/>
+            <D1Button label="Toggle countryReadonly" size="sm" outline @click="isDynamicCountryReadonly = !isDynamicCountryReadonly"/>
+          </DemoFlex>
+          <DemoValue
+            label="Dynamic State"
+            :value="{
+              isDynamicDisabled,
+              isDynamicReadonly,
+              isDynamicLoading,
+              isDynamicSkeleton,
+              isDynamicCountryBlock,
+              isDynamicCountryReadonly
+            }"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Blocked & Guarded Actions">
+        <DemoFlex>
+          <DemoBox>
+            <D1InputPhone
+              label="Blocked Disabled"
+              disabled
+              value="79001234567"
+              @input="handleBlockedEvent"
+              @change="handleBlockedEvent"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              label="Blocked Readonly"
+              readonly
+              value="79001234567"
+              @input="handleBlockedEvent"
+              @change="handleBlockedEvent"
+            />
+          </DemoBox>
+        </DemoFlex>
+        <DemoValue label="Blocked Trigger Count" :value="blockedTriggerCount"/>
       </D1Group>
 
       <D1Group label="Slots & Attributes">
@@ -600,12 +823,22 @@ const onResetPasteCases = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Boundary Cases">
-        <DemoFlex>
-          <DemoBox><D1InputPhone label="Empty Value"/></DemoBox>
-          <DemoBox><D1InputPhone label="Unicode / Việt / Emoji 🚀" helper-message="Học tiếng Việt / Привет" value="84912345678"/></DemoBox>
-          <DemoBox><D1InputPhone label="<img src=x onerror=alert(1)>" value="12025550147"/></DemoBox>
-        </DemoFlex>
+      <D1Group label="Form Integration">
+        <form id="demo-input-phone-form" @submit.prevent="handleFormSubmit" @reset="handleFormReset">
+          <D1InputPhone
+            v-model="formPhoneValue"
+            form="demo-input-phone-form"
+            name="contact-phone"
+            country-default="US"
+            label="Contact Phone"
+            required
+          />
+          <DemoFlex>
+            <D1Button label="Submit Form" tag="button" type="submit" size="sm" primary/>
+            <D1Button label="Reset Form" tag="button" type="reset" size="sm" outline/>
+          </DemoFlex>
+        </form>
+        <DemoValue label="Form Status" :value="formStatus"/>
       </D1Group>
 
       <D1Group label="Exposed API">
@@ -631,17 +864,93 @@ const onResetPasteCases = (): void => {
         <DemoFlex direction="column">
           <DemoBox>
             <D1InputPhone
+              v-model:value="eventPhoneValue"
+              v-model:country="eventCountryValue"
+              v-model:digits="eventDigitsValue"
+              v-model:e164="eventE164Value"
               label="Event Tracker"
-              @update:value="() => onEvent('update:value')"
-              @update:model-value="() => onEvent('update:modelValue')"
-              @input="(event, value) => onEvent('input', event, value)"
-              @input-lite="(value) => onEvent('inputLite', value)"
-              @change="(event, value) => onEvent('change', event, value)"
-              @change-lite="(value) => onEvent('changeLite', value)"
+              :detail="{ source: 'demo-input-phone' }"
+              @update:value="(nextValue) => trackEvent('update:value', { value: nextValue })"
+              @update:model-value="(nextValue) => trackEvent('update:modelValue', { value: nextValue })"
+              @update:country="(nextCountry) => trackEvent('update:country', { country: nextCountry })"
+              @update:model-country="(nextCountry) => trackEvent('update:modelCountry', { country: nextCountry })"
+              @update:digits="(nextDigits) => trackEvent('update:digits', { digits: nextDigits })"
+              @update:model-digits="(nextDigits) => trackEvent('update:modelDigits', { digits: nextDigits })"
+              @update:e164="(nextE164) => trackEvent('update:e164', { e164: nextE164 })"
+              @update:model-e164="(nextE164) => trackEvent('update:modelE164', { e164: nextE164 })"
+              @input="handleInputEvent"
+              @input-lite="handleInputLiteEvent"
+              @change="handleChangeEvent"
+              @change-lite="handleChangeLiteEvent"
+              @focus="handleFocusEvent"
+              @blur="handleBlurEvent"
             />
           </DemoBox>
-          <DemoValue :value="eventName"/>
+          <DemoValue label="Event Name" :value="eventName || 'No events triggered yet'"/>
+          <DemoValue label="Event Payload" :value="eventPayload"/>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA & Keyboard)">
+        <DemoBox>
+          <D1InputPhone
+            id="demo-phone-a11y"
+            label="Accessible Phone Number"
+            label-id="demo-phone-label-id"
+            helper-id="demo-phone-helper-id"
+            validation-id="demo-phone-validation-id"
+            helper-message="Linked ARIA helper and explicit labels"
+            :tabindex="0"
+            :input-attrs="{ 'aria-label': 'Accessible telephone input' }"
+            :input-phone-dial-code-attrs="{
+              disableFocusReturn: false,
+              buttonAttrs: { 'aria-label': 'Country dial code selector' }
+            }"
+            value="12025550147"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Boundary Cases">
+        <DemoFlex>
+          <DemoBox><D1InputPhone label="Empty Value" value=""/></DemoBox>
+          <DemoBox><D1InputPhone label="Whitespace Value" value="   "/></DemoBox>
+          <DemoBox><D1InputPhone label="Zero Value" value="0"/></DemoBox>
+          <DemoBox><D1InputPhone label="Unicode / Việt / Emoji 🚀" helper-message="Học tiếng Việt / Привет" value="84912345678"/></DemoBox>
+          <DemoBox><D1InputPhone label="<img src=x onerror=alert(1)>" value="12025550147"/></DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              label="Very long multi-sentence telephone field label verifying clean wrapping and layout bounds across viewports"
+              helper-message="Extended multi-sentence helper message checking vertical spacing and text flow"
+              value="12025550147"
+            />
+          </DemoBox>
+        </DemoFlex>
+        <DemoBox class="demo-input-phone-page__narrow" size="sm">
+          <D1InputPhone
+            label="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            value="4930123456789"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex>
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1InputPhone
+            label="Mounted InputPhone"
+            country-default="US"
+            value="12025550147"
+          />
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
 
       <D1Group label="Dynamic Mask Length & Conflicting Country Codes">
@@ -812,4 +1121,16 @@ const onResetPasteCases = (): void => {
 </template>
 
 <style lang="scss">
+.demo-input-phone-page {
+  &__palettes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
+  }
+}
 </style>

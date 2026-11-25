@@ -1,63 +1,65 @@
-# Отчёт о визуальном и функциональном тестировании: D1Collage
+# Отчёт визуального и функционального тестирования: D1Collage
 
-## 1. Итоговое резюме
+## 1. Сводка выполнения
 
 - **Компонент:** `D1Collage` (`@dxtmisha/d1`)
-- **Исходный код:** [`D1Collage`](../../src/components/Ui/Collage) ([`Collage`](../../../constructor/src/constructors/Collage), [`DemoCollagePage`](../../../demo/src/pages/components/DemoCollagePage.vue))
-- **Демо / целевой URL:** `http://localhost:3000/component-collage`
-- **Материалы:** `Нет`
-- **Дата тестирования (UTC):** `2026-11-24T15:56:47Z`
-- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812)`
-- **Покрытие тест-кейсов:** 9 / 9 (`100%`)
-- **Итог:** **9 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Collage` после миграции на `DesignLogicAbstract` и обновления `FocusDirectionInclude` корректно рендерит все 5 вариантов макета (`standard`, `quilted`, `woven`, `masonryHorizontal`, `masonryVertical`), поддерживает `v-model:selected`, динамический `control`, `cellSize`, `keyValue`/`keyLabel`, `#default` слот, `expose.update()` и клавиатурную 2D-навигацию с нулевыми ошибками консоли.
+- **Исходный код:** [`D1Collage`](../../src/components/Ui/Collage), [`Collage`](../../../constructor/src/constructors/Collage), [`DemoCollagePage.vue`](../../../demo/src/pages/components/DemoCollagePage.vue)
+- **Целевой URL:** `http://localhost:3000/component-collage`
+- **Материалы (`materials/`):** `Отсутствуют`
+- **Дата тестирования (UTC):** `2026-11-25T06:01:08Z`
+- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Покрытие тест-кейсов:** `11 / 11` (`100%`)
+- **Итог:** **11 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — все 11 сценариев (SSR `HTTP 200`, все 5 вариантов раскладок, `CollageBar`, `v-model:selected`, `expose`, `v-if`, границы/XSS, узкий `DemoBox` `238 === 238`, адаптивность `1440×900` / `768×1024` / `375×812` / `320×568`, A11y и консоль с `0` ошибок) пройдены полностью.
 
 ---
 
-## 2. Базовая матрица
+## 2. Матрица результатов
 
-### 2.1 Визуальное соответствие (`VIS`)
+### 2.1 Визуальный рендеринг (`VIS`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Варианты `standard`, `quilted` и `woven` | ✅ | `totalItems: 39`, `hasZeroItem: false`, модификаторы `--variant--standard/quilted/woven` активны, `wovenCompactCount: 3`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Варианты `masonryHorizontal` (`cellSize`) и `masonryVertical` | ✅ | `--d1-collage-cell-size: 160px` применён; `masonryHorizontal` (`5` карточек) и `masonryVertical` (`6` карточек) распределяются без наложений. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-001` | Варианты `standard`, `quilted` (все 6 `span`) и `woven` | ✅ | Все три раскладки (`--variant--standard`, `--variant--quilted`, `--variant--woven`), все 6 типов `span` (`standard`, `large`, `tall`, `wide`, `huge`, `banner`), класс `.d1-collageItem--compact` в `woven` и изображения отображаются корректно без наложений. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Варианты `masonryHorizontal` (`cellSize` строкой) и `masonryVertical` (`cellSize` числом) | ✅ | CSS-переменная `--d1-collage-cell-size` (`160px` и `80px`) применена; оба варианта кладки динамически рассчитывают пропорции и распределяют карточки без перекрытий. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Динамические колонки (`1`–`12`), позиции `CollageBar` (`top`, `bottom`, `static`) и модификаторы `CollageItem` | ✅ | Переключение колонок (включая `1`, `6`, `12`) обновляет модификатор `--columns--*`; `CollageBar` (`top`, `bottom`, `static`) и флаги `selected`, `focus`, `compact`, `tag="div"` рендерятся корректно. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Выбор элементов (`v-model:selected`) и сброс выделения | ✅ | `["std-1", "std-3"]` -> клик по 2-й карточке -> `["std-1", "std-3", "std-2"]` -> `Clear Selection` -> `[]`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Программный `expose.update()` и слот `#default` | ✅ | `updateOutput: "Value: updates: 1"`, `slotItemCount: 2`. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | Динамическое переключение `control` (`true -> false`) | ✅ | `tabBefore: "0"` -> `Toggle Control` -> `tabAfter: null`. | — |
+| `TC-INT-001` | Выбор элементов (`v-model:selected`), программные кнопки и блокировка при `control=false` | ✅ | Начальное выделение `std-1`, `std-3`, клик по `std-2`, кнопки `Select std-1 & std-2` и `Clear Selection` синхронно обновляют `selectedItems`; при `control=false` снимается `tabindex` и выбор блокируется. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Программное API `expose` (`update()`, `getValue()`, `getDetail()`) и слоты `#default` / `#barBody` / `#barTrailing` | ✅ | `Trigger update()` инкрементирует счётчик (`Updates: 1`), `getValue()` и `getDetail()` работают по контракту (до выбора: `undefined`), а слоты `#default`, `#barBody` и `#barTrailing` в `demo-collage-slot` рендерятся корректно. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
+| `TC-INT-003` | Жизненный цикл монтирования и размонтирования через `v-if` | ✅ | При размонтировании отображается `Mounted: false`, при повторном монтировании восстанавливаются все карточки `masonryVertical` (`Tall Pin`, `Square`, `Portrait`, `Landscape`, `Tall Pin 2`, `Standard`, `Mounted: true`) без ошибок наблюдателей resize. | — |
 
-### 2.3 Граничные значения и крайние случаи (`BND`)
+### 2.3 Граничные случаи и устойчивость (`BND`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Пользовательские ключи `keyValue`/`keyLabel`, `0`, Unicode, XSS и `images: []` | ✅ | `labels: ["0", "Tiếng Việt / Кириллица / 🚀", "<img src=x onerror=alert(1)>"]`, `xssImgs: 0`, `emptyItemCount: 0`. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-001` | Пользовательские ключи `keyValue`/`keyLabel`, `0`, `""`, `"   "`, `-12.5`, Unicode и пустой `images: []` | ✅ | Значения `0`, `""`, `"   "`, `-12.5` и `Tiếng Việt / Кириллица / 🚀` отображаются без потери `0`, а `demo-collage-empty` (`:images="[]"`, `:cell-size="0"`) рендерит пустой контейнер без ошибок. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Экранирование XSS и переполнение длинной неразрывной строки в узком `DemoBox` | ✅ | `badImgs: 0`, `hasEscapedPayloadText: true`, `dialogs: []` (XSS экранирован как текст); пустая/пробельная строка `cellSize` игнорируется безопасно; узкий `DemoBox` (`demo-collage-page__narrow-box`) имеет `scrollWidth: 238 === clientWidth: 238` (`overflowsBox: false`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
 
-### 2.4 Адаптивность (`RSP`)
+### 2.4 Адаптивность и вьюпорты (`RSP`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптивность на Desktop (`1440px`), Tablet (`768px`) и Mobile (`375px`) | ✅ | Desktop (`1440/1440`) и Tablet (`768/768`) — `overflow: false`; на Mobile `375px` контейнер `D1Collage` имеет ширину `351px`, `masonryHorizontal` и `columns="2"` без переполнения, фиксированные демо-примеры `columns="4"` имеют `scrollWidth: 664px` по правилу `minmax(160px, 1fr)`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-001` | Проверка адаптивности на Desktop (`1440×900`), Tablet (`768×1024`) и Mobile (`375×812`, `320×568`) | ✅ | После исправления `Collage/style.scss` и `CollageBar/style.scss` на всех вьюпортах переполнение отсутствует: `1440×900` (`1440 === 1440`), `768×1024` (`768 === 768`), `375×812` (`375 === 375`) и `320×568` (`320 === 320`, `overflowX: false`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | Клавиатурная 2D-навигация `FocusDirectionInclude` (`ArrowRight`) | ✅ | `initialTabIndex: "0"`, при фокусе активирован первый элемент (`focusedBefore: 1`), `ArrowRight` перенёс `.d1-collageItem--focus` на индекс `1`. | — |
+| `TC-A11Y-001` | Клавиатурная 2D-навигация `FocusDirectionInclude` (`ArrowRight`, `Enter`) и `aria-label` | ✅ | На `demo-collage-control` заданы `aria-label` и `tabindex="0"`; `ArrowRight` перемещает `.d1-collageItem--focus`, а `Enter` переключает выделение элемента. | — |
 
-### 2.6 Консоль и среда выполнения (`LOG`)
+### 2.6 Консоль и стабильность runtime (`LOG`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | События `click`/`clickLite` и чистота консоли | ✅ | `eventOutput: "Value: clickLite"`, `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`. | — |
+| `TC-LOG-001` | События (`click`, `clickLite`, `update:selected`, `update:modelSelected`) и чистота консоли | ✅ | SSR-ответ `HTTP 200` (`hasComponent: true`); события и payload регистрируются в `DemoValue`; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`. | — |
 
 ---
 
-## 3. ИИ-аудит и рекомендации
+## 3. AI-аудит и рекомендации
 
-1. **Изоляция стенда и фиксированные колонки на Mobile:** На `375px` сам контейнер `.d1-collage` корректно занимает ширину `351px`, а `masonryHorizontal` и 2-колоночный слот укладываются без переполнения; фиксированные демо-блоки с `columns="4"` расширяют сетку до `664px` из-за минимальной ширины ячейки (`minmax(160px, 1fr)`), что является ожидаемым поведением при задании 4 колонок на узком экране (рекомендуется адаптивно уменьшать `columns` для мобильных разрешений в прикладных проектах).
-2. **Производительность и очистка ресурсов:** `CollageMasonryVertical` выполняет батч-чтение и батч-запись DOM без layout thrashing, все `requestAnimationFrame` и `watch` очищаются в `DesignLifecycleAbstract.onUnmounted`, а `FocusDirectionInclude` корректно снимает слушатели и `tabindex` при динамическом отключении `control`.
-3. **Чистота рантайма:** В консоли браузера зафиксировано `0` ошибок, `0` `[Vue warn]` и `0` исключений во всех 5 раскладках и интерактивных переходах.
+1. **Ограничение ширины сетки и перенос текста (`Collage/style.scss`, `CollageBar/style.scss`):** Добавление `min-width: 0; max-width: 100%;`, ограничение `grid-template-columns` с `min(...)` / `max(1px, min(..., calc((100cqw - gap * 19) / 20)))` в `Collage/style.scss`, а также `min-width: 0; max-width: 100%; overflow-wrap: anywhere;` в `CollageBar/style.scss` полностью устранило горизонтальное переполнение на `320×568` (`320 === 320`, `overflowX: false`).
+2. **Изоляция стенда и безопасность данных:** Экранирование XSS-строк подтверждено (`badImgs: 0`, `hasEscapedPayloadText: true`, `dialogs: []`), а `DemoBox` (`238 === 238`) корректно удерживает контент внутри узкого контейнера.
+3. **Стабильность жизненного цикла и runtime:** При `v-if`-перемонтировании, переключении колонок (`1`–`12`), работе с `expose` и 2D-навигации зафиксировано `0` ошибок консоли, `0` сетевых сбоев и `0` предупреждений Vue.

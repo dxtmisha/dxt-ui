@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { FormElementsValues, FormExpose } from '@dxtmisha/constructor/Form'
+import type { FormElementsData, FormElementsValues, FormExpose } from '@dxtmisha/constructor/Form'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
+import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 const formRef = ref<FormExpose | null>(null)
 const nativeFormRef = ref<FormExpose | null>(null)
+const controlledFormRef = ref<FormExpose | null>(null)
+const validationFormRef = ref<FormExpose | null>(null)
 
 const roleOptions = [
   { label: 'Frontend Developer', value: 'frontend' },
@@ -61,48 +65,112 @@ const nativeValues = ref<FormElementsValues>({
   priority: 'normal'
 })
 
+const controlledValues = ref<FormElementsValues>({
+  coupon: 'SAVE20',
+  region: 'global'
+})
+const controlledSnapshot = ref<string>('Not queried')
+
+const validationValues = ref<FormElementsValues>({
+  requiredCode: ''
+})
+const validationCheckResult = ref<string>('Not checked')
+
+const boundaryValues = ref<FormElementsValues>({
+  emptyText: '',
+  whitespaceText: '   ',
+  zeroCount: 0,
+  unicodeText: 'Tiếng Việt / Кириллица / 🚀🔥✨',
+  xssText: '<img src=x onerror=alert(1)>',
+  unbrokenText: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+})
+
+const isLifecycleMounted = ref<boolean>(true)
+
 const validityStatus = ref<boolean | null>(null)
 const singleFieldSnapshot = ref<string>('Not queried')
 
-const onFormInput = (...args: unknown[]) => {
-  onEvent('input', ...args)
+const trackEvent = (name: string, payload: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = JSON.stringify(payload)
 }
 
-const onFormInputLite = (...args: unknown[]) => {
-  onEvent('inputLite', ...args)
+const onFormUpdateModelValue = (values: FormElementsValues): void => {
+  trackEvent('update:modelValue', { keys: Object.keys(values).length, username: values.username })
 }
 
-const onFormInputValues = (...args: unknown[]) => {
-  onEvent('inputValues', ...args)
+const onFormUpdateValue = (values: FormElementsValues): void => {
+  trackEvent('update:value', { keys: Object.keys(values).length, username: values.username })
 }
 
-const onFormChange = (...args: unknown[]) => {
-  onEvent('change', ...args)
+const onFormInput = (
+  domEvent: InputEvent | Event,
+  data: FormElementsData,
+  values: FormElementsValues
+): void => {
+  trackEvent('input', {
+    eventType: domEvent.type,
+    fieldsCount: Object.keys(data).length,
+    username: values.username
+  })
 }
 
-const onFormChangeLite = (...args: unknown[]) => {
-  onEvent('changeLite', ...args)
+const onFormInputLite = (
+  data: FormElementsData,
+  values: FormElementsValues
+): void => {
+  trackEvent('inputLite', {
+    fieldsCount: Object.keys(data).length,
+    username: values.username
+  })
 }
 
-const onFormChangeValues = (...args: unknown[]) => {
-  onEvent('changeValues', ...args)
+const onFormInputValues = (values: FormElementsValues): void => {
+  trackEvent('inputValues', { username: values.username })
 }
 
-const onFormReset = (...args: unknown[]) => {
-  onEvent('reset', ...args)
+const onFormChange = (
+  domEvent: InputEvent | Event,
+  data: FormElementsData,
+  values: FormElementsValues
+): void => {
+  trackEvent('change', {
+    eventType: domEvent.type,
+    fieldsCount: Object.keys(data).length,
+    username: values.username
+  })
 }
 
-const onFormSubmit = (...args: unknown[]) => {
-  onEvent('submit', ...args)
+const onFormChangeLite = (
+  data: FormElementsData,
+  values: FormElementsValues
+): void => {
+  trackEvent('changeLite', {
+    fieldsCount: Object.keys(data).length,
+    username: values.username
+  })
 }
 
-const onCheckValidity = () => {
+const onFormChangeValues = (values: FormElementsValues): void => {
+  trackEvent('changeValues', { username: values.username })
+}
+
+const onFormReset = (domEvent: Event): void => {
+  trackEvent('reset', { eventType: domEvent.type })
+}
+
+const onFormSubmit = (submitEvent: SubmitEvent): void => {
+  submitEvent.preventDefault()
+  trackEvent('submit', { eventType: submitEvent.type })
+}
+
+const onCheckValidity = (): void => {
   const isValid = formRef.value?.checkValidity() ?? false
   validityStatus.value = isValid
-  onEvent('checkValidity', isValid)
+  trackEvent('checkValidity', { valid: isValid })
 }
 
-const onFillDemoData = () => {
+const onFillDemoData = (): void => {
   const sampleData: FormElementsValues = {
     username: 'alice_wonder',
     email: 'alice@example.com',
@@ -124,30 +192,40 @@ const onFillDemoData = () => {
   }
 
   formRef.value?.setValues(sampleData)
-  onEvent('setValues', sampleData)
+  trackEvent('setValues', { username: sampleData.username })
 }
 
-const onSetUsername = () => {
+const onSetUsername = (): void => {
   formRef.value?.set('username', 'updated_user')
-  onEvent('set', { username: 'updated_user' })
+  trackEvent('set', { username: 'updated_user' })
 }
 
-const onGetValues = () => {
+const onGetValues = (): void => {
   const values = formRef.value?.getValues() ?? {}
   singleFieldSnapshot.value = `${String(values.username ?? '')} / ${String(values.email ?? '')}`
-  onEvent('getValues', values)
+  trackEvent('getValues', { username: values.username, email: values.email })
 }
 
-const onProgrammaticSubmit = () => {
+const onProgrammaticSubmit = (): void => {
   formRef.value?.submit()
 }
 
-const onClearData = () => {
-  formRef.value?.setValuesAll({})
-  onEvent('setValuesAll', {})
+const onExposeReset = (): void => {
+  formRef.value?.reset()
+  trackEvent('expose-reset', formRef.value?.getValues() ?? {})
 }
 
-const onNativeFill = () => {
+const onClearData = (): void => {
+  formRef.value?.setValuesAll({})
+  trackEvent('setValuesAll', {})
+}
+
+const onNativeSubmit = (submitEvent: SubmitEvent): void => {
+  submitEvent.preventDefault()
+  trackEvent('native-submit', { eventType: submitEvent.type })
+}
+
+const onNativeFill = (): void => {
   nativeFormRef.value?.setValues({
     title: 'Updated Native Title',
     category: 'designer',
@@ -155,17 +233,48 @@ const onNativeFill = () => {
     subscribe: false,
     priority: 'high'
   })
-  onEvent('native-setValues')
+  trackEvent('native-setValues', nativeFormRef.value?.getValues() ?? {})
 }
 
-const onNativeReset = () => {
+const onNativeReset = (): void => {
   nativeFormRef.value?.reset()
-  onEvent('native-reset')
+  trackEvent('native-reset', nativeFormRef.value?.getValues() ?? {})
+}
+
+const onUpdateControlledValue = (nextValues: FormElementsValues): void => {
+  controlledValues.value = nextValues
+  trackEvent('controlled:update:value', nextValues)
+}
+
+const onApplyControlledProp = (): void => {
+  controlledValues.value = {
+    coupon: 'WELCOME50',
+    region: 'eu'
+  }
+}
+
+const onReadControlledValues = (): void => {
+  controlledSnapshot.value = JSON.stringify(controlledFormRef.value?.getValues() ?? {})
+}
+
+const onCheckValidationForm = (): void => {
+  const isValid = validationFormRef.value?.checkValidity() ?? false
+  validationCheckResult.value = `valid=${String(isValid)} | values=${JSON.stringify(validationFormRef.value?.getValues() ?? {})}`
+}
+
+const onFillValidCode = (): void => {
+  validationFormRef.value?.set('requiredCode', 'VALID-2026')
+  onCheckValidationForm()
+}
+
+const onResetValidationForm = (): void => {
+  validationFormRef.value?.reset()
+  onCheckValidationForm()
 }
 </script>
 
 <template>
-  <DemoLinkBlack />
+  <DemoLinkBlack/>
   <D1Page label="Form" class="demo-form-page">
     <D1Section>
       <D1Grid>
@@ -178,17 +287,19 @@ const onNativeReset = () => {
             enctype="multipart/form-data"
             target="_self"
             autocomplete="on"
+            @update:model-value="onFormUpdateModelValue"
+            @update:value="onFormUpdateValue"
             @input="onFormInput"
-            @inputLite="onFormInputLite"
-            @inputValues="onFormInputValues"
+            @input-lite="onFormInputLite"
+            @input-values="onFormInputValues"
             @change="onFormChange"
-            @changeLite="onFormChangeLite"
-            @changeValues="onFormChangeValues"
+            @change-lite="onFormChangeLite"
+            @change-values="onFormChangeValues"
             @reset="onFormReset"
             @submit="onFormSubmit"
           >
             <template #header>
-              <D1Header label="Custom Form Header Slot" tag="h4" />
+              <D1Header label="Custom Form Header Slot" tag="h4"/>
             </template>
 
             <D1Block label="General Usage">
@@ -248,7 +359,7 @@ const onNativeReset = () => {
                     <D1InputImage
                       name="avatar"
                       label="Profile Picture (Avatar)"
-                      helperMessage="Upload avatar image with crop support"
+                      helper-message="Upload avatar image with crop support"
                     />
                   </D1GridItem>
 
@@ -265,7 +376,7 @@ const onNativeReset = () => {
                       <D1GridItem base="12" sm="6">
                         <D1InputSocial
                           name="telegram"
-                          socialType="telegram"
+                          social-type="telegram"
                           label="Telegram Account"
                           placeholder="username"
                         />
@@ -330,7 +441,7 @@ const onNativeReset = () => {
                   <D1GridItem base="12" sm="6" md="4">
                     <D1Radio
                       name="notification"
-                      valueVariant="email"
+                      value-variant="email"
                       label="Receive notifications via Email"
                     />
                   </D1GridItem>
@@ -338,7 +449,7 @@ const onNativeReset = () => {
                   <D1GridItem base="12" sm="6" md="4">
                     <D1Radio
                       name="notification"
-                      valueVariant="sms"
+                      value-variant="sms"
                       label="Receive notifications via SMS"
                     />
                   </D1GridItem>
@@ -346,7 +457,7 @@ const onNativeReset = () => {
                   <D1GridItem base="12" sm="6" md="4">
                     <D1Radio
                       name="notification"
-                      valueVariant="push"
+                      value-variant="push"
                       label="Receive Push notifications"
                     />
                   </D1GridItem>
@@ -383,20 +494,21 @@ const onNativeReset = () => {
 
               <D1Group label="Form Controls">
                 <DemoFlex>
-                  <D1Button type="submit" label="Submit Form" primary />
-                  <D1Button type="reset" label="Reset Form" secondary />
-                  <D1Button label="Check Validity" outline @click="onCheckValidity" />
-                  <D1Button label="Fill Sample Data" outline @click="onFillDemoData" />
-                  <D1Button label="Set Username" outline @click="onSetUsername" />
-                  <D1Button label="Get Values" outline @click="onGetValues" />
-                  <D1Button label="Programmatic Submit" outline @click="onProgrammaticSubmit" />
-                  <D1Button label="Clear Form" outline @click="onClearData" />
+                  <D1Button type="submit" label="Submit Form" primary/>
+                  <D1Button type="reset" label="Reset Form" secondary/>
+                  <D1Button label="Expose Reset" outline @click="onExposeReset"/>
+                  <D1Button label="Check Validity" outline @click="onCheckValidity"/>
+                  <D1Button label="Fill Sample Data" outline @click="onFillDemoData"/>
+                  <D1Button label="Set Username" outline @click="onSetUsername"/>
+                  <D1Button label="Get Values" outline @click="onGetValues"/>
+                  <D1Button label="Programmatic Submit" outline @click="onProgrammaticSubmit"/>
+                  <D1Button label="Clear Form" outline @click="onClearData"/>
                 </DemoFlex>
               </D1Group>
             </D1Block>
 
             <template #footer>
-              <D1TextDescription description="Custom Form Footer Slot" />
+              <D1TextDescription description="Custom Form Footer Slot"/>
             </template>
           </D1Form>
         </D1GridItem>
@@ -404,9 +516,10 @@ const onNativeReset = () => {
         <D1GridItem base="12" lg="4">
           <D1Block label="Events & Form State">
             <D1Group label="Events & Status">
-              <DemoValue :value="eventName" label="Last Triggered Event" />
-              <DemoValue :value="validityStatus ?? 'Not checked'" label="Validity Status" />
-              <DemoValue :value="singleFieldSnapshot" label="getValues() Snapshot" />
+              <DemoValue :value="eventName" label="Last Triggered Event"/>
+              <DemoValue :value="eventPayload" label="Event Payload"/>
+              <DemoValue :value="validityStatus ?? 'Not checked'" label="Validity Status"/>
+              <DemoValue :value="singleFieldSnapshot" label="getValues() Snapshot"/>
             </D1Group>
 
             <D1Group label="Current Form Values (v-model)">
@@ -426,10 +539,10 @@ const onNativeReset = () => {
           ref="nativeFormRef"
           v-model="nativeValues"
           native
-          @submit="onEvent('native-submit', $event)"
-          @reset="onEvent('native-reset', $event)"
-          @inputValues="onEvent('native-inputValues', $event)"
-          @changeValues="onEvent('native-changeValues', $event)"
+          @submit="onNativeSubmit"
+          @reset="trackEvent('native-reset', nativeValues)"
+          @input-values="trackEvent('native-inputValues', $event)"
+          @change-values="trackEvent('native-changeValues', $event)"
         >
           <div class="demo-form-page__native">
             <label class="demo-form-page__field">
@@ -446,7 +559,7 @@ const onNativeReset = () => {
             </label>
             <label class="demo-form-page__field">
               <span>Notes</span>
-              <textarea name="notes" rows="2" />
+              <textarea name="notes" rows="2"/>
             </label>
             <DemoFlex>
               <label>
@@ -463,13 +576,111 @@ const onNativeReset = () => {
               </label>
             </DemoFlex>
             <DemoFlex>
-              <D1Button type="submit" label="Submit Native" primary />
-              <D1Button label="Fill Native" outline @click="onNativeFill" />
-              <D1Button label="Reset Native" secondary @click="onNativeReset" />
+              <D1Button type="submit" label="Submit Native" primary/>
+              <D1Button label="Fill Native" outline @click="onNativeFill"/>
+              <D1Button label="Reset Native" secondary @click="onNativeReset"/>
             </DemoFlex>
           </div>
         </D1Form>
-        <DemoValue :value="JSON.stringify(nativeValues)" label="Native Values" />
+        <DemoValue :value="JSON.stringify(nativeValues)" label="Native Values"/>
+      </D1Group>
+
+      <D1Group label="Controlled :value & Form Attributes">
+        <D1Form
+          ref="controlledFormRef"
+          :value="controlledValues"
+          action="/api/search"
+          method="get"
+          enctype="application/x-www-form-urlencoded"
+          target="_blank"
+          autocomplete="off"
+          data-testid="controlled-attributes-form"
+          @update:value="onUpdateControlledValue"
+          @submit.prevent="trackEvent('controlled-submit', controlledValues)"
+        >
+          <DemoFlex>
+            <D1Input name="coupon" label="Coupon Code"/>
+            <D1Input name="region" label="Region"/>
+          </DemoFlex>
+          <DemoFlex>
+            <D1Button label="Apply :value Prop" size="sm" outline @click="onApplyControlledProp"/>
+            <D1Button label="Read getValues()" size="sm" outline @click="onReadControlledValues"/>
+          </DemoFlex>
+        </D1Form>
+        <DemoValue label="Controlled :value" :value="JSON.stringify(controlledValues)"/>
+        <DemoValue label="Controlled getValues()" :value="controlledSnapshot"/>
+      </D1Group>
+
+      <D1Group label="Validation & Invalid State Flow">
+        <D1Form
+          ref="validationFormRef"
+          v-model="validationValues"
+          @submit.prevent="onCheckValidationForm"
+        >
+          <D1Input
+            name="requiredCode"
+            label="Required Invitation Code"
+            placeholder="Leave empty to trigger invalid check"
+            required
+          />
+          <DemoFlex>
+            <D1Button label="Check Validation" size="sm" outline @click="onCheckValidationForm"/>
+            <D1Button label="Fill Valid Code" size="sm" outline @click="onFillValidCode"/>
+            <D1Button label="Reset to Initial" size="sm" outline @click="onResetValidationForm"/>
+          </DemoFlex>
+        </D1Form>
+        <DemoValue label="Validation Flow Result" :value="validationCheckResult"/>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA & Semantics)">
+        <D1Form
+          aria-label="Accessible contact preferences form"
+          method="dialog"
+          enctype="text/plain"
+          @submit.prevent="trackEvent('a11y-submit', 'submitted')"
+        >
+          <fieldset class="demo-form-page__fieldset">
+            <legend>Contact Preferences</legend>
+            <D1Input name="contactEmail" label="Contact Email" required/>
+            <D1Button type="submit" label="Keyboard Submit" size="sm" outline/>
+          </fieldset>
+        </D1Form>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <div data-testid="empty-form-probe">
+          <D1Form/>
+        </div>
+        <DemoValue label="Empty Form" value="Renders empty <form class='d1-form' novalidate> without errors"/>
+
+        <DemoBox class="demo-form-page__narrow" size="sm">
+          <D1Form v-model="boundaryValues" @submit.prevent>
+            <D1Input name="emptyText" label="Empty String"/>
+            <D1Input name="whitespaceText" label="Whitespace"/>
+            <D1Input name="zeroCount" label="Zero Value"/>
+            <D1Input name="unicodeText" label="Multilingual"/>
+            <D1Input name="xssText" label="XSS Payload"/>
+            <D1Input name="unbrokenText" label="Unbroken"/>
+          </D1Form>
+        </DemoBox>
+        <DemoValue label="Boundary Values" :value="JSON.stringify(boundaryValues)"/>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex>
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1Form :model-value="{ lifecycleField: 'Active' }" @submit.prevent>
+            <D1Input name="lifecycleField" label="Mounted Form Field"/>
+          </D1Form>
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -488,6 +699,20 @@ const onNativeReset = () => {
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+
+  &__fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+  }
+
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
   }
 }
 </style>

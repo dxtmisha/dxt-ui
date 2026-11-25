@@ -3,21 +3,21 @@
 - **Сущность**: `D1Icon`
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Icon`, `packages/constructor/src/constructors/Icon`, `packages/demo/src/pages/components/DemoIconPage.vue`
 - **Целевой URL**: `http://localhost:3000/component-icon`
-- **Референсные материалы**: `Отсутствуют`
-- **Последняя проверка / обновление**: `2026-11-23`
-- **Всего тест-кейсов**: `13`
+- **Справочные материалы**: `Нет`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `16`
 
 ---
 
-## 1. Матрица покрытия
+## 1. Обзор матрицы покрытия
 
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуал и дизайн-система** | `VIS` | 3 | P0, P1 | Размеры (`auto`–`9xl`), формы/скругления, палитры, `overlay`, `inverse` |
-| **Интерактивность и контракт** | `INT` | 4 | P0, P1 | Переключение `active`/`iconActive`, `skeleton`, `dynamic`, `noPointerEvents`, `expose`, события |
-| **Границы и краевые случаи** | `BND` | 2 | P1, P2 | Трансформации `turn`/`dir` в LTR/RTL, пустые источники (`""`, `null`, `undefined`), `active`-only |
-| **Адаптивность и вьюпорты** | `RSP` | 2 | P1, P2 | Десктоп (`1440×900`) и мобильный вьюпорт (`375×812`) без переполнения |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | `aria-hidden="true"` для статичных, `role`/`aria-label`/`aria-checked`/`tabindex`/`disabled` для `dynamic` |
+| **Визуал и дизайн-система** | `VIS` | 3 | P0, P1 | Размеры (`auto`–`9xl`), формы/скругления, палитры, `overlay`, `inverse`, все типы источников |
+| **Интерактивность и контракт** | `INT` | 6 | P0, P1 | Переключение `active`/`iconActive`, `skeleton`, `dynamic`, `noPointerEvents`, блокировка `disabled`, `expose`, события и `v-if` lifecycle |
+| **Границы и краевые случаи** | `BND` | 3 | P1, P2 | Трансформации `turn`/`dir` в LTR/RTL, пустые/пробельные/`null` источники, `active`-only, Unicode/XSS и узкий контейнер `240px` |
+| **Адаптивность и вьюпорты** | `RSP` | 2 | P1, P2 | Десктоп (`1440×900`) и мобильный вьюпорт (`375×812`, `320×568`) без переполнения |
+| **Доступность (A11y)** | `A11Y` | 1 | P1 | `aria-hidden="true"` для статичных, `role` (`button`, `switch`, `checkbox`, `img`), `aria-pressed`, `aria-checked`, `aria-label`, `tabindex`, `disabled` |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | Отсутствие `console.error`, `[Vue warn]` и необработанных исключений |
 
 ---
@@ -26,9 +26,9 @@
 
 ### 2.1 Визуал и дизайн-система (`VIS`)
 
-#### [TC-VIS-001] Рендеринг шкалы размеров D1Icon (`auto`, `x`–`9xl`)
+#### [TC-VIS-001] Рендеринг шкалы размеров `D1Icon` (`auto`, `x`–`9xl`)
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуал и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `Sizes (auto, x, xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl, 8xl, 9xl)`.
@@ -36,19 +36,19 @@
 - **Ожидаемый результат**: Все иконки отрендерены, размеры монотонно возрастают, наложений и обрезаний нет.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-#### [TC-VIS-002] Формы и скругления (`square`, `circle`, `rect`, `rounded`)
+#### [TC-VIS-002] Формы, скругления (`square`, `circle`, `rect`, `rounded`) и принятые типы источников
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуал и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
-  1. Найти секцию `Shapes & Corner Rounding`.
-  2. Проверить применение классов `--rounded--*` и `border-radius` для `square`, `circle`, `rect`.
-- **Ожидаемый результат**: Иконки корректно отображают заданную геометрию и радиусы скругления.
+  1. Найти секции `Shapes & Corner Rounding` и `Accepted Source Types`.
+  2. Проверить классы `--rounded--*`, `border-radius` для `square`, `circle`, `rect`, а также рендер Material, `@public`, зарегистрированных, флагов, HEX, `ImageProps`, `Uint8Array`, `File` и `#default` слота.
+- **Ожидаемый результат**: Иконки корректно отображают геометрию, радиусы скругления и все поддерживаемые форматы источников.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
 #### [TC-VIS-003] Палитры, семантические цвета и инверсная поверхность
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуал и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `Palettes, Semantic Colors & Surfaces`.
@@ -60,7 +60,7 @@
 
 #### [TC-INT-001] Переключение двойной иконки (`active` + `iconActive`) и анимации
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Interactive & Functional`
+- **Категория**: `Интерактивность и контракт`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `States, Dual-Icon Switching & Animations`.
@@ -71,7 +71,7 @@
 
 #### [TC-INT-002] Состояние загрузки скелетона (`D1Skeleton` + `isSkeleton`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Interactive & Functional`
+- **Категория**: `Интерактивность и контракт`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `Skeleton Loading (D1Skeleton + isSkeleton)`.
@@ -82,53 +82,82 @@
 
 #### [TC-INT-003] События (`@click`, `@click-lite`, `@load`) и методы `expose`
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Interactive & Functional`
+- **Категория**: `Интерактивность и контракт`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `Events & Expose Methods`.
-  2. Нажать `Toggle Active`, затем кликнуть по управляемой иконке `Controlled interactive icon`.
-  3. Нажать `Bookmark Icons` и `Image Sources`, проверить обновление `Expose State` (`isActive()`, `getValue()`, `getDetail()`) и `Last Event`.
-- **Ожидаемый результат**: `isActive()` отражает `true`/`false`, `getValue()` и `getDetail()` обновляются, события `click`/`click-lite`/`load` фиксируются.
+  2. Нажать `Toggle Active`, затем кликнуть по управляемой иконке `Controlled interactive icon` и нажать `Read Expose`.
+  3. Нажать `Bookmark Icons`, `Country Flags`, `Image Sources`, `Reset` и проверить обновление `Expose State`, `Expose Snapshot`, `Last Event` и `Event Payload`.
+- **Ожидаемый результат**: `isActive()`, `getValue()` и `getDetail()` обновляются корректно, события `click`/`click-lite`/`load` и их payload фиксируются.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-INT-003.png`)
 
 #### [TC-INT-004] Модификатор `noPointerEvents` (статичный и `dynamic`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Interactive & Functional`
+- **Категория**: `Интерактивность и контракт`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
-  1. Найти секцию `Interactive Mode, Navigation & Accessibility (dynamic, noPointerEvents, ...)`.
-  2. Найти обе иконки с модификатором `noPointerEvents` (статичную `touch_app` и интерактивную `do_not_touch`).
+  1. Найти секцию `Interactive Mode, Navigation & Accessibility (A11y)`.
+  2. Найти обе иконки с модификатором `noPointerEvents` (`touch_app` и `do_not_touch`).
   3. Проверить наличие класса `.d1-icon--noPointerEvents` и вычисленного CSS-свойства `pointer-events: none`.
-- **Ожидаемый результат**: Обе иконки имеют класс `.d1-icon--noPointerEvents` и `getComputedStyle(element).pointerEvents === 'none'`, тогда как соседние обычные иконки сохраняют `pointer-events: auto`.
+- **Ожидаемый результат**: Обе иконки имеют класс `.d1-icon--noPointerEvents` и `pointerEvents === 'none'`.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-INT-004.png`)
+
+#### [TC-INT-005] Блокировка кликов при `disabled` на `dynamic` иконке
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и контракт`
+- **Предусловия**: Открыта группа `Interactive Mode, Navigation & Accessibility (A11y)`.
+- **Шаги теста**:
+  1. Кликнуть по `Disabled action` (`dynamic` + `disabled`).
+  2. Проверить значение `Blocked Click Count`.
+- **Ожидаемый результат**: Счётчик `Blocked Click Count` остаётся `0`, событие `click` не эмитится.
+- **Тип подтверждения**: `Console/Log`
+
+#### [TC-INT-006] Условное монтирование `v-if` (`Lifecycle & Conditional Mount`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и контракт`
+- **Предусловия**: Открыта группа `Lifecycle & Conditional Mount`.
+- **Шаги теста**:
+  1. Нажать `Toggle Mount` дважды, проверяя исчезновение и повторное появление `Mounted lifecycle icon`.
+- **Ожидаемый результат**: Индикатор `Mounted` переключается `true -> false -> true`, DOM корректно очищается и восстанавливается.
+- **Тип подтверждения**: `Console/Log`
 
 ### 2.3 Граничные случаи и устойчивость (`BND`)
 
 #### [TC-BND-001] Трансформации и направление RTL (`turn`, `dir`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Boundaries & Edge Cases`
+- **Категория**: `Границы и краевые случаи`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Найти секцию `Transformations & Direction (turn, dir in LTR and RTL)`.
-  2. Проверить наличие классов `--turn`, `--dir` и визуальное отражение/поворот в контейнерах `dir="ltr"` и `dir="rtl"`.
+  2. Проверить классы `--turn`, `--dir` и визуальное отражение/поворот в контейнерах `dir="ltr"` и `dir="rtl"`.
 - **Ожидаемый результат**: Иконки корректно поворачиваются (`turn`) и зеркалируются в `dir="rtl"`.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-BND-001.png`)
 
-#### [TC-BND-002] Пустые источники (`""`, `null`, `undefined`) и `active`-only иконка
+#### [TC-BND-002] Пустые/пробельные/nullish источники (`""`, `"   "`, `null`, `undefined`) и `active`-only иконка
 - **Приоритет**: `P2 (Medium)`
-- **Категория**: `Boundaries & Edge Cases`
+- **Категория**: `Границы и краевые случаи`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
-  1. Найти секцию `Empty Sources & Active-Only Icons`.
-  2. Проверить, что компоненты не падают и корректно рендерятся.
-- **Ожидаемый результат**: Все 5 экземпляров рендерятся без ошибок; `iconActive` с `active` отображает активную иконку.
+  1. Найти секцию `Boundary & Edge Cases`.
+  2. Проверить все пустые, пробельные и nullish варианты, а также `iconActive` с `active`.
+- **Ожидаемый результат**: Все экземпляры рендерятся без ошибок; `iconActive` с `active` отображает активную иконку.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-BND-002.png`)
+
+#### [TC-BND-003] Unicode/эмодзи, XSS-строка и узкий контейнер (`max-width: 240px`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и краевые случаи`
+- **Предусловия**: Открыта группа `Boundary & Edge Cases`.
+- **Шаги теста**:
+  1. Проверить `aria-label="Tiếng Việt / Кириллица / 🚀"`, `aria-label="<img src=x onerror=alert(1)>"` и слот с экранированным XSS-текстом.
+  2. Проверить узкий `.demo-icon-page__narrow` (`max-width: 240px`) с неразрывной строкой в слоте.
+- **Ожидаемый результат**: XSS-инъекции не выполняются (`img[onerror]` не создаётся), Unicode отображается корректно, макет страницы не ломается.
+- **Тип подтверждения**: `Screenshot` (`./screenshots/TC-BND-003.png`)
 
 ### 2.4 Адаптивность и вьюпорты (`RSP`)
 
 #### [TC-RSP-001] Десктопный вьюпорт (`1440×900`) — отсутствие горизонтального переполнения
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Responsive & Viewport`
+- **Категория**: `Адаптивность и вьюпорты`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, установить вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Проверить `document.documentElement.scrollWidth <= window.innerWidth`.
@@ -136,35 +165,35 @@
 - **Ожидаемый результат**: Горизонтальное переполнение отсутствует.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-RSP-001.png`)
 
-#### [TC-RSP-002] Мобильный вьюпорт (`375×812`) — адаптивность и перенос строк
+#### [TC-RSP-002] Мобильный вьюпорт (`375×812` и `320×568`) — адаптивность и перенос строк
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Responsive & Viewport`
-- **Предусловия**: Открыть `http://localhost:3000/component-icon`, установить вьюпорт `375×812`.
+- **Категория**: `Адаптивность и вьюпорты`
+- **Предусловия**: Открыть `http://localhost:3000/component-icon`, установить вьюпорт `375×812` и `320×568`.
 - **Шаги теста**:
-  1. Проверить перенос иконок внутри `DemoFlex` и отсутствие горизонтального переполнения самой страницы.
+  1. Проверить перенос иконок внутри `DemoFlex` и отсутствие горизонтального переполнения страницы.
 - **Ожидаемый результат**: Элементы `D1Icon` переносятся корректно, вёрстка не ломается.
 - **Тип подтверждения**: `Screenshot` (`./screenshots/TC-RSP-002.png`)
 
 ### 2.5 Доступность (`A11Y`)
 
-#### [TC-A11Y-001] Доступность (`aria-hidden`, `role`, `aria-label`, `aria-checked`, `tabindex`, `disabled`)
+#### [TC-A11Y-001] Доступность (`aria-hidden`, `role`, `aria-label`, `aria-pressed`, `aria-checked`, `tabindex`, `disabled`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Accessibility (A11y)`
+- **Категория**: `Доступность (A11y)`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, вьюпорт `1440×900`.
 - **Шаги теста**:
   1. Проверить декоративную иконку (без `dynamic`): наличие `aria-hidden="true"`.
-  2. В секции `Interactive Mode, Navigation & Accessibility` проверить атрибуты `role="button"`, `role="switch"`, `aria-label`, `tabindex="0"`, `aria-disabled="true"` у `disabled`, а также тег `<a>` для `href`/`to`.
-- **Ожидаемый результат**: Все ARIA-атрибуты и роли соответствуют контракту `Icon.ts`.
-- **Тип подтверждения**: `Console/Log` (без скриншота)
+  2. В секции `Interactive Mode, Navigation & Accessibility (A11y)` проверить `role="button"` (`aria-pressed`), `role="switch"` и `role="checkbox"` (`aria-checked`), `aria-label`, `tabindex="0"`, `aria-disabled="true"` и `tabindex="-1"` у `disabled` ссылки `<a>` для `href`/`to`.
+- **Ожидаемый результат**: Все ARIA-атрибуты, состояния и роли соответствуют контракту `Icon.ts`.
+- **Тип подтверждения**: `Console/Log`
 
-### 2.6 Логи, консоль и стабильность runtime (`LOG`)
+### 2.6 Логи, консоль и стабильность рантайма (`LOG`)
 
 #### [TC-LOG-001] Отсутствие ошибок консоли и предупреждений Vue
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Console & Runtime`
+- **Категория**: `Консоль и рантайм`
 - **Предусловия**: Открыть `http://localhost:3000/component-icon`, подключить сбор логов консоли и `pageerror`.
 - **Шаги теста**:
-  1. Выполнить загрузку страницы и все интерактивные сценарии (`TC-INT-001`–`TC-INT-004`).
+  1. Выполнить загрузку страницы и все интерактивные сценарии (`TC-INT-001`–`TC-INT-006`).
   2. Проверить список ошибок консоли и необработанных исключений.
 - **Ожидаемый результат**: `0` ошибок `console.error`, `0` `pageerror`, `0` предупреждений `[Vue warn]`.
 - **Тип подтверждения**: `Console/Log`

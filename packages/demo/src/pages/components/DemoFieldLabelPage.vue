@@ -12,6 +12,7 @@ const interactiveSkeleton = ref<boolean>(false)
 const interactiveCounterShow = ref<boolean>(true)
 const interactiveCounter = ref<number>(18)
 const interactiveUseSlot = ref<boolean>(false)
+const isLifecycleMounted = ref<boolean>(true)
 
 const stateSummary = computed<string>(() => JSON.stringify({
   label: interactiveLabel.value,
@@ -34,7 +35,7 @@ const incrementCounter = (): void => {
 
 <template>
   <DemoLinkBlack/>
-  <D1Page label="FieldLabel">
+  <D1Page label="FieldLabel" class="demo-field-label-page">
     <D1Section>
       <D1Group label="Basic Usage & For Binding">
         <DemoFlex direction="column">
@@ -59,7 +60,7 @@ const incrementCounter = (): void => {
             />
             <input
               id="demo-field-label-target"
-              class="demo-field-label__input"
+              class="demo-field-label-page__input"
               type="text"
               placeholder="Focus target input"
               aria-labelledby="demo-field-label-heading"
@@ -94,9 +95,9 @@ const incrementCounter = (): void => {
               counter-show
               :counter="92"
               :maxlength="100"
-              :maxlength-once="10"
               counter-template="[c] of [m] chars"
               counter-id="demo-field-label-counter-custom"
+              :field-counter-attrs="{ maxlengthOnce: 10 }"
             />
           </DemoBox>
 
@@ -107,7 +108,8 @@ const incrementCounter = (): void => {
               :counter="12"
               :maxlength="30"
               :field-counter-attrs="{
-                class: 'demo-field-label__counter-custom',
+                class: 'demo-field-label-page__counter-custom',
+                maxlengthOnce: 10,
                 textCharacterRemaining: '[left] left'
               }"
             />
@@ -124,6 +126,7 @@ const incrementCounter = (): void => {
           <DemoBox>
             <D1FieldLabel
               label="Counter Hidden (counterShow=false)"
+              :counter-show="false"
               :counter="42"
               :maxlength="100"
             />
@@ -191,7 +194,7 @@ const incrementCounter = (): void => {
           </DemoBox>
 
           <DemoBox>
-            <D1FieldLabel required>
+            <D1FieldLabel required counter-show :counter="8" :maxlength="32">
               <template #label>
                 <span>Slot Only With Required Mark</span>
               </template>
@@ -200,16 +203,57 @@ const incrementCounter = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Boundary & Multilingual">
+      <D1Group label="Accessibility (ARIA & Semantics)">
         <DemoFlex direction="column">
           <DemoBox>
-            <div class="demo-field-label__empty-probe" data-testid="empty-probe">
+            <D1FieldLabel
+              label="Accessible Account Label"
+              for="demo-field-label-a11y-input"
+              label-id="demo-field-label-a11y-heading"
+              counter-id="demo-field-label-a11y-counter"
+              required
+              counter-show
+              :counter="14"
+              :maxlength="40"
+            />
+            <input
+              id="demo-field-label-a11y-input"
+              class="demo-field-label-page__input"
+              type="text"
+              placeholder="Associated via for, aria-labelledby, aria-describedby"
+              aria-labelledby="demo-field-label-a11y-heading"
+              aria-describedby="demo-field-label-a11y-counter"
+              aria-required="true"
+            />
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <div data-testid="empty-probe">
               <D1FieldLabel label=""/>
             </div>
-            <DemoValue label="Empty Probe" value="Empty label without counter/loading renders nothing in DOM"/>
+            <div data-testid="whitespace-probe">
+              <D1FieldLabel label="   "/>
+            </div>
+            <div data-testid="undefined-probe">
+              <D1FieldLabel :label="undefined"/>
+            </div>
+            <DemoValue label="Empty Probe" value="Empty, whitespace, or undefined label without counter/loading renders nothing in DOM"/>
           </DemoBox>
 
-          <DemoBox class="demo-field-label__constrained">
+          <DemoBox>
+            <DemoFlex direction="column">
+              <D1FieldLabel :label="0" required/>
+              <D1FieldLabel :label="-42"/>
+              <D1FieldLabel :label="3.14"/>
+              <D1FieldLabel label="A"/>
+            </DemoFlex>
+          </DemoBox>
+
+          <DemoBox class="demo-field-label-page__narrow" size="sm">
             <D1FieldLabel
               label="Very long field label with many descriptive words to check wrapping and counter alignment inside constrained container"
               required
@@ -219,7 +263,7 @@ const incrementCounter = (): void => {
             />
           </DemoBox>
 
-          <DemoBox class="demo-field-label__constrained">
+          <DemoBox class="demo-field-label-page__narrow" size="sm">
             <D1FieldLabel
               label="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
               counter-show
@@ -230,7 +274,7 @@ const incrementCounter = (): void => {
 
           <DemoBox>
             <D1FieldLabel
-              label="Học tiếng Việt — Метка поля 🚀✨"
+              label="Tiếng Việt / Кириллица / 🚀🔥✨"
               required
               counter-show
               :counter="31"
@@ -304,7 +348,7 @@ const incrementCounter = (): void => {
               :counter-show="interactiveCounterShow"
               :counter="interactiveCounter"
               :maxlength="50"
-              :maxlength-once="10"
+              :field-counter-attrs="{ maxlengthOnce: 10 }"
             >
               <template v-if="interactiveUseSlot" #label>
                 <span>Slotted: <em>{{ interactiveLabel || 'No text' }}</em></span>
@@ -315,12 +359,34 @@ const incrementCounter = (): void => {
           <DemoValue label="State" :value="stateSummary"/>
         </DemoFlex>
       </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex>
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1FieldLabel
+            label="Mounted FieldLabel"
+            required
+            loading
+            counter-show
+            :counter="10"
+            :maxlength="50"
+          />
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
+      </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
 <style lang="scss">
-.demo-field-label {
+.demo-field-label-page {
   &__input {
     width: 100%;
     padding: 6px 10px;
@@ -330,8 +396,9 @@ const incrementCounter = (): void => {
     color: inherit;
   }
 
-  &__constrained {
-    max-width: 280px;
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
   }
 
   &__counter-custom {

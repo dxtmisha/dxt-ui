@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { NumberOrString } from '@dxtmisha/functional'
+import type { FieldValidationItem } from '@dxtmisha/constructor'
 import type { InputExpose } from '@dxtmisha/constructor/Input'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
@@ -9,6 +11,7 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 // Individual type models
 const valueText = ref<string>('Hello World')
@@ -37,6 +40,7 @@ const valueTime = ref<string>('14:30:00')
 const valueHourMinute = ref<string>('14:30')
 const valueCheckbox = ref<string>('on')
 const valueRadio = ref<string>('option-a')
+const valueDatalist = ref<string>('Vue 3')
 
 // Mask models
 const valuePhoneMask = ref<string>('+7 (900) 123-45-67')
@@ -48,26 +52,119 @@ const valueMaskAttrs = ref<string>('123456')
 const valuePattern = ref<string>('123')
 const valueMinMax = ref<string>('ab')
 
+// Dynamic state toggles & blocked tracking
+const dynamicValue = ref<string>('Dynamic target')
+const isDynamicDisabled = ref<boolean>(false)
+const isDynamicReadonly = ref<boolean>(false)
+const isDynamicLoading = ref<boolean>(false)
+const isDynamicSkeleton = ref<boolean>(true)
+const isDynamicFocus = ref<boolean>(false)
+const isDynamicSelected = ref<boolean>(false)
+const isDynamicWarning = ref<boolean>(false)
+const blockedTriggerCount = ref<number>(0)
+const isLifecycleMounted = ref<boolean>(true)
+
+// Form integration state
+const formValue = ref<string>('')
+const formStatus = ref<string>('Not submitted')
+
 // Exposed API ref and readouts
-const exposedRef = ref<InputExpose>()
+const exposedTarget = ref<InputExpose>()
 const exposedResult = ref<string>('none')
 
-const onReadExposed = (): void => {
-  const currentValue = exposedRef.value?.getValue()
-  const isValid = exposedRef.value?.checkValidity()
-  const isChanged = exposedRef.value?.isChanged()
-  const validationMessage = exposedRef.value?.getValidationMessage()
-  exposedResult.value = `value=${String(currentValue)}, valid=${String(isValid)}, changed=${String(isChanged)}, message=${validationMessage || 'none'}`
+const trackEvent = (
+  name: string,
+  payload: unknown
+): void => {
+  onEvent(name, payload)
+  eventPayload.value = JSON.stringify(payload)
 }
 
-const onSetExposed = (): void => {
-  exposedRef.value?.setValue('Preset Value')
-  onReadExposed()
+const handleInputEvent = (
+  domEvent: InputEvent | Event,
+  validationItem: FieldValidationItem<NumberOrString>
+): void => {
+  trackEvent('input', {
+    eventType: domEvent.type,
+    value: validationItem.value,
+    status: validationItem.status
+  })
 }
 
-const onClearExposed = (): void => {
-  exposedRef.value?.clear()
-  onReadExposed()
+const handleInputLiteEvent = (validationItem: FieldValidationItem<NumberOrString>): void => {
+  trackEvent('inputLite', {
+    value: validationItem.value,
+    status: validationItem.status
+  })
+}
+
+const handleChangeEvent = (
+  domEvent: InputEvent | Event,
+  validationItem: FieldValidationItem<NumberOrString>
+): void => {
+  trackEvent('change', {
+    eventType: domEvent.type,
+    value: validationItem.value,
+    status: validationItem.status
+  })
+}
+
+const handleChangeLiteEvent = (validationItem: FieldValidationItem<NumberOrString>): void => {
+  trackEvent('changeLite', {
+    value: validationItem.value,
+    detail: validationItem.detail,
+    status: validationItem.status
+  })
+}
+
+const handleFocusEvent = (focusEvent: FocusEvent): void => {
+  trackEvent('focus', { eventType: focusEvent.type })
+}
+
+const handleBlurEvent = (focusEvent: FocusEvent): void => {
+  trackEvent('blur', { eventType: focusEvent.type })
+}
+
+const handleUpdateValue = (nextValue: NumberOrString): void => {
+  trackEvent('update:value', { value: nextValue })
+}
+
+const handleUpdateModelValue = (nextValue: NumberOrString): void => {
+  trackEvent('update:modelValue', { value: nextValue })
+}
+
+const handleBlockedEvent = (): void => {
+  blockedTriggerCount.value += 1
+}
+
+const handleFormSubmit = (): void => {
+  formStatus.value = formValue.value.trim().length >= 3
+    ? `Form submitted (${formValue.value})`
+    : 'Form blocked (invalid)'
+}
+
+const handleFormReset = (): void => {
+  formValue.value = ''
+  formStatus.value = 'Form reset'
+}
+
+const handleReadExposed = (): void => {
+  const currentValue = exposedTarget.value?.getValue()
+  const reactiveValue = exposedTarget.value?.value
+  const isValid = exposedTarget.value?.checkValidity()
+  const isChanged = exposedTarget.value?.isChanged()
+  const validationMessage = exposedTarget.value?.getValidationMessage()
+  exposedResult.value = `value=${String(currentValue)}, ref=${String(reactiveValue)}, valid=${String(isValid)}, changed=${String(isChanged)}, message=${validationMessage || 'none'}`
+}
+
+const handleSetExposed = (): void => {
+  exposedTarget.value?.setValue('Preset Value')
+  handleReadExposed()
+}
+
+const handleClearExposed = (): void => {
+  exposedTarget.value?.clear()
+  handleReadExposed()
 }
 </script>
 
@@ -86,6 +183,7 @@ const onClearExposed = (): void => {
           <DemoBox><D1Input label="Custom Width (240px)" outlined width="240px" value="Fixed 240px"/></DemoBox>
           <DemoBox><D1Input label="Block Width" outlined block value="Full width input"/></DemoBox>
           <DemoBox><D1Input label="Field Palette Blue" outlined :field-attrs="{ palette: 'blue' }" value="Blue field"/></DemoBox>
+          <DemoBox><D1Input label="Forced isValue" outlined is-value placeholder="Placeholder with isValue"/></DemoBox>
         </DemoFlex>
       </D1Group>
 
@@ -101,7 +199,7 @@ const onClearExposed = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Type: Text">
+      <D1Group label="Type: Text & v-model Controls">
         <DemoFlex direction="column">
           <DemoFlex>
             <DemoBox>
@@ -117,6 +215,11 @@ const onClearExposed = (): void => {
                 enter-key-hint="next"
                 input-mode="text"
               />
+              <DemoFlex align="center">
+                <D1Button label="Set Sample" size="sm" outline @click="valueText = 'Updated Text'"/>
+                <D1Button label="Clear" size="sm" outline @click="valueText = ''"/>
+                <D1Button label="Reset" size="sm" outline @click="valueText = 'Hello World'"/>
+              </DemoFlex>
               <DemoValue :value="valueText"/>
             </DemoBox>
             <DemoBox>
@@ -131,9 +234,24 @@ const onClearExposed = (): void => {
             </DemoBox>
             <DemoBox>
               <D1Input
+                v-model="valueDatalist"
                 type="text"
-                label="HTML Code Input"
+                label="Datalist Suggestions"
+                list="demo-input-datalist"
+              />
+              <datalist id="demo-input-datalist">
+                <option value="Vue 3"/>
+                <option value="TypeScript"/>
+                <option value="Vite"/>
+              </datalist>
+              <DemoValue :value="valueDatalist"/>
+            </DemoBox>
+            <DemoBox>
+              <D1Input
+                type="text"
+                label="HTML Code Message"
                 has-html-code
+                helper-message="Helper with <strong>strong</strong> markup"
                 value="<b>Plain</b>"
               />
             </DemoBox>
@@ -487,13 +605,13 @@ const onClearExposed = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Validation & Counter">
+      <D1Group label="Validation, Counter & Warning">
         <DemoFlex>
           <DemoBox>
             <D1Input
               label="Required Field"
               required
-              helper-id="helper-req"
+              helper-id="helper-required"
               helper-message="Required field hint"
             />
           </DemoBox>
@@ -504,8 +622,17 @@ const onClearExposed = (): void => {
               :minlength="3"
               :maxlength="12"
               counter-show
-              counter-id="counter-len"
+              counter-id="counter-length"
               helper-message="3 to 12 characters"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1Input
+              label="Explicit Counter Prop"
+              :counter="8"
+              counter-show
+              :maxlength="20"
+              value="Explicit"
             />
           </DemoBox>
           <DemoBox>
@@ -519,7 +646,7 @@ const onClearExposed = (): void => {
           <DemoBox>
             <D1Input
               label="Forced Validation Message"
-              validation-id="val-forced"
+              validation-id="validation-forced"
               validation-message="Server validation failed"
               force-show-message
               value="Invalid"
@@ -537,7 +664,7 @@ const onClearExposed = (): void => {
             <D1Input
               label="Warning State"
               warning
-              warning-id="warn-input"
+              warning-id="warning-input"
               warning-message="Caps Lock may be active"
               helper-message="Fallback helper text"
               value="Warning value"
@@ -560,21 +687,33 @@ const onClearExposed = (): void => {
         <DemoFlex>
           <DemoBox>
             <D1Input
-              label="Icon Names"
+              label="Icon Names & Trailing Modifiers"
               icon="search"
-              icon-trailing="check"
+              icon-trailing="arrow_forward"
               icon-palette
+              icon-trailing-palette
+              icon-trailing-dir-only
+              icon-trailing-turn-only
               value="With icons"
             />
           </DemoBox>
           <DemoBox>
             <D1Input
-              label="Icon Object & Dir"
+              label="Icon Object, Dir & Hide"
               :icon="{ icon: 'mail', size: 'sm' }"
               icon-dir
               icon-turn
+              :icon-hide="false"
               :icon-attrs="{ rounded: 'full' }"
               value="user@example.com"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1Input
+              label="Hidden Icon"
+              icon="visibility"
+              icon-hide
+              value="Icon hidden"
             />
           </DemoBox>
           <DemoBox>
@@ -609,7 +748,7 @@ const onClearExposed = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="States & Skeleton">
+      <D1Group label="States, Interactive Toggles & Skeleton">
         <DemoFlex>
           <DemoBox><D1Input label="Disabled" disabled value="Disabled content"/></DemoBox>
           <DemoBox><D1Input label="Readonly" readonly value="Readonly content"/></DemoBox>
@@ -621,39 +760,94 @@ const onClearExposed = (): void => {
             </D1Skeleton>
           </DemoBox>
         </DemoFlex>
+
+        <D1Skeleton :active="isDynamicSkeleton">
+          <D1Input
+            v-model="dynamicValue"
+            data-testid="demo-input-dynamic"
+            label="Dynamic State Input"
+            helper-message="Toggle disabled, readonly, loading, skeleton, focus, selected, warning"
+            warning-message="Dynamic warning state"
+            :disabled="isDynamicDisabled"
+            :readonly="isDynamicReadonly"
+            :loading="isDynamicLoading"
+            :is-skeleton="isDynamicSkeleton"
+            :focus="isDynamicFocus"
+            :selected="isDynamicSelected"
+            :warning="isDynamicWarning"
+          />
+        </D1Skeleton>
+        <DemoFlex align="center">
+          <D1Button label="Toggle Disabled" size="sm" outline @click="isDynamicDisabled = !isDynamicDisabled"/>
+          <D1Button label="Toggle Readonly" size="sm" outline @click="isDynamicReadonly = !isDynamicReadonly"/>
+          <D1Button label="Toggle Loading" size="sm" outline @click="isDynamicLoading = !isDynamicLoading"/>
+          <D1Button label="Toggle Skeleton" size="sm" outline @click="isDynamicSkeleton = !isDynamicSkeleton"/>
+          <D1Button label="Toggle Focus" size="sm" outline @click="isDynamicFocus = !isDynamicFocus"/>
+          <D1Button label="Toggle Selected" size="sm" outline @click="isDynamicSelected = !isDynamicSelected"/>
+          <D1Button label="Toggle Warning" size="sm" outline @click="isDynamicWarning = !isDynamicWarning"/>
+        </DemoFlex>
+        <DemoValue
+          label="Dynamic Flags"
+          :value="{
+            isDynamicDisabled,
+            isDynamicReadonly,
+            isDynamicLoading,
+            isDynamicSkeleton,
+            isDynamicFocus,
+            isDynamicSelected,
+            isDynamicWarning
+          }"
+        />
       </D1Group>
 
-      <D1Group label="Boundary Cases">
+      <D1Group label="Blocked & Guarded Actions">
         <DemoFlex>
-          <DemoBox><D1Input label="Whitespace Value" value="   "/></DemoBox>
           <DemoBox>
             <D1Input
-              label="Long Unbroken Text"
-              width="240px"
-              value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              label="Blocked Disabled"
+              disabled
+              value="Locked"
+              @input="handleBlockedEvent"
+              @change="handleBlockedEvent"
             />
           </DemoBox>
           <DemoBox>
             <D1Input
-              label="Unicode & Emoji"
-              value="Привет / Học tiếng Việt 🚀✨"
+              label="Blocked Readonly"
+              readonly
+              value="Readonly"
+              @input="handleBlockedEvent"
+              @change="handleBlockedEvent"
             />
           </DemoBox>
           <DemoBox>
             <D1Input
-              label="XSS Escaped Text"
-              value="<img src=x onerror=alert(1)>"
+              label="Blocked Loading"
+              loading
+              value="Loading"
+              @input="handleBlockedEvent"
+              @change="handleBlockedEvent"
             />
           </DemoBox>
         </DemoFlex>
+        <DemoValue label="Blocked Trigger Count" :value="blockedTriggerCount"/>
       </D1Group>
 
-      <D1Group label="Slots & Attributes">
+      <D1Group label="Prefix, Suffix, Caption Props & Slots">
         <DemoFlex>
           <DemoBox>
-            <D1Input label="Leading & Trailing" value="Slot content">
-              <template #leading>
-                <span>[Lead]</span>
+            <D1Input
+              label="Prop Prefix, Suffix & Caption"
+              prefix="https://"
+              suffix=".com"
+              caption="Prop caption"
+              value="example"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1Input label="Leading & Trailing Slots" value="Slot content">
+              <template #leading="{ id }">
+                <span>[Lead:{{ id }}]</span>
               </template>
               <template #trailing>
                 <span>[Trail]</span>
@@ -661,7 +855,7 @@ const onClearExposed = (): void => {
             </D1Input>
           </DemoBox>
           <DemoBox>
-            <D1Input label="Prefix & Suffix" value="domain" prefix-id="pref-id" suffix-id="suf-id">
+            <D1Input label="Prefix & Suffix Slots" value="domain" prefix-id="prefix-id" suffix-id="suffix-id">
               <template #prefix>
                 <span>https://</span>
               </template>
@@ -671,19 +865,84 @@ const onClearExposed = (): void => {
             </D1Input>
           </DemoBox>
           <DemoBox>
-            <D1Input label="With Caption" width="280px" value="Input value" caption-decorative>
+            <D1Input label="With Caption Slot" width="280px" value="Input value" caption-decorative>
               <template #caption>
                 <span>Note</span>
               </template>
             </D1Input>
           </DemoBox>
           <DemoBox>
-            <D1Input label="Label:" label-id="custom-lbl-id" value="With label slot">
+            <D1Input label="Label:" label-id="custom-label-id" value="With label slot">
               <template #label>
                 <span> Custom</span>
               </template>
             </D1Input>
           </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Exposed API">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <D1Input
+              ref="exposedTarget"
+              label="Exposed Target"
+              required
+              value="Initial"
+            />
+          </DemoBox>
+          <DemoFlex>
+            <D1Button label="Read Values" size="sm" @click="handleReadExposed"/>
+            <D1Button label="setValue('Preset Value')" size="sm" outline @click="handleSetExposed"/>
+            <D1Button label="clear()" size="sm" outline @click="handleClearExposed"/>
+          </DemoFlex>
+          <DemoValue label="Expose Output" :value="exposedResult"/>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Form Integration">
+        <form id="demo-input-form" @submit.prevent="handleFormSubmit" @reset="handleFormReset">
+          <D1Input
+            v-model="formValue"
+            form="demo-input-form"
+            name="username"
+            label="Username (required, min 3 chars)"
+            placeholder="Enter username..."
+            required
+            :minlength="3"
+          />
+          <DemoFlex align="center">
+            <D1Button label="Submit Form" tag="button" type="submit" size="sm" primary/>
+            <D1Button label="Reset Form" tag="button" type="reset" size="sm" outline/>
+          </DemoFlex>
+        </form>
+        <DemoValue label="Form Status" :value="formStatus"/>
+      </D1Group>
+
+      <D1Group label="Events">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <D1Input
+              label="Event Tracker"
+              placeholder="Type and blur to emit events..."
+              :detail="{ source: 'demo-input' }"
+              @focus="handleFocusEvent"
+              @blur="handleBlurEvent"
+              @update:value="handleUpdateValue"
+              @update:model-value="handleUpdateModelValue"
+              @input="handleInputEvent"
+              @input-lite="handleInputLiteEvent"
+              @change="handleChangeEvent"
+              @change-lite="handleChangeLiteEvent"
+            />
+          </DemoBox>
+          <DemoValue label="Event Name" :value="eventName"/>
+          <DemoValue label="Event Payload" :value="eventPayload"/>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA & Attributes)">
+        <DemoFlex>
           <DemoBox>
             <D1Input
               id="custom-input-id"
@@ -702,49 +961,77 @@ const onClearExposed = (): void => {
               value="Attrs"
             />
           </DemoBox>
+          <DemoBox>
+            <D1Input
+              :input-attrs="{ 'aria-label': 'Standalone input without visible label' }"
+              placeholder="Aria-labeled input"
+            />
+          </DemoBox>
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Exposed API">
-        <DemoFlex direction="column">
+      <D1Group label="Boundary & Edge Cases">
+        <DemoFlex>
+          <DemoBox><D1Input label="Empty String" value=""/></DemoBox>
+          <DemoBox><D1Input label="Whitespace Value" value="   "/></DemoBox>
+          <DemoBox><D1Input label="Null Value" :value="undefined" placeholder="Undefined/empty"/></DemoBox>
+          <DemoBox><D1Input label="Single Character" value="A"/></DemoBox>
+          <DemoBox><D1Input label="Negative Number" type="number" :value="-42"/></DemoBox>
+          <DemoBox><D1Input label="Decimal Number" type="number" :value="3.14"/></DemoBox>
           <DemoBox>
             <D1Input
-              ref="exposedRef"
-              label="Exposed Target"
-              required
-              value="Initial"
+              label="Long Multi-Sentence Text"
+              value="Very long multi-sentence input value designed to verify horizontal scrolling and clean visual boundaries across containers."
             />
           </DemoBox>
-          <DemoFlex>
-            <D1Button label="Read Values" @click="onReadExposed"/>
-            <D1Button label="setValue('Preset Value')" @click="onSetExposed"/>
-            <D1Button label="clear()" @click="onClearExposed"/>
-          </DemoFlex>
-          <DemoValue :value="exposedResult"/>
+          <DemoBox>
+            <D1Input
+              label="Unicode & Emoji"
+              value="Привет / Học tiếng Việt 🚀✨"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1Input
+              label="XSS Escaped Text"
+              value="<img src=x onerror=alert(1)>"
+            />
+          </DemoBox>
         </DemoFlex>
+        <DemoBox class="demo-input-page__narrow" size="sm">
+          <D1Input
+            label="Narrow Container Unbroken"
+            value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          />
+        </DemoBox>
       </D1Group>
 
-      <D1Group label="Events">
-        <DemoFlex direction="column">
-          <DemoBox>
-            <D1Input
-              label="Event Tracker"
-              placeholder="Type and blur to emit events..."
-              @focus="() => onEvent('focus')"
-              @blur="() => onEvent('blur')"
-              @update:value="() => onEvent('update:value')"
-              @update:model-value="() => onEvent('update:modelValue')"
-              @input="(event, value) => onEvent('input', event, value)"
-              @input-lite="(value) => onEvent('inputLite', value)"
-              @change="(event, value) => onEvent('change', event, value)"
-              @change-lite="(value) => onEvent('changeLite', value)"
-            />
-          </DemoBox>
-          <DemoValue :value="eventName"/>
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex align="center">
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
         </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1Input
+            data-testid="demo-input-lifecycle"
+            label="Mounted Input"
+            value="Active in DOM"
+          />
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-input-page {
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
+  }
+}
+</style>

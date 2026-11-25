@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Header` (`packages/constructor/src/constructors/Header`, `packages/demo/src/pages/components/DemoHeaderPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-header`
 - **Справочные материалы**: `Нет`
-- **Последняя проверка / обновление**: `2026-11-24`
-- **Всего тест-кейсов**: `10`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `13`
 
 ---
 
@@ -13,11 +13,11 @@
 
 | Категория | Код | Кол-во | Приоритеты | Область проверки |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуальное соответствие** | `VIS` | 2 | P0, P1 | Иерархия тегов `h1`–`h6`, иконки, слоты и слияние внешних классов |
-| **Интерактивность и функции** | `INT` | 3 | P0, P1 | Реактивное переключение `tag`, трансформации иконки (`iconTurn`/`iconHide`/`selected`) и переключение контекста `area` |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Числовой `0` в `label` и `caption`, многоязычный длинный текст и геометрия без нулевых размеров |
-| **Адаптивность и вьюпорты** | `RSP` | 2 | P1 | Десктоп (`1440×900`), планшет (`768×1024`) и мобильный (`375×812`) с проверкой адаптивной шкалы шрифтов `@media (min-width: 768px)` |
-| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантические теги `H1`–`H6`, `labelId`, `aria-live="polite"` и `aria-hidden="true"` при `captionDecorative` |
+| **Визуальное соответствие** | `VIS` | 2 | P0, P1 | Иерархия тегов `h1`–`h6`, иконки, палитра `iconPalette`, слоты и слияние внешних классов |
+| **Интерактивность и функции** | `INT` | 4 | P0, P1 | Реактивное переключение `tag`, трансформации иконки (`iconTurn`/`iconHide`/`selected`), переключение `area` и условное монтирование `v-if` |
+| **Границы и крайние случаи** | `BND` | 3 | P1, P2 | Пустые/пробельные/`undefined`/`null` значения, числовые `0`/`-42`/`3.14`, RTL `iconDir`, XSS-экранирование, узкий контейнер `max-width: 240px` |
+| **Адаптивность и вьюпорты** | `RSP` | 2 | P1 | Десктоп (`1440×900`), планшет (`768×1024`) и мобильный (`375×812`, `320×568`) с проверкой шкалы `@media (min-width: 768px)` |
+| **Доступность (A11y)** | `A11Y` | 1 | P1 | Семантические теги `H1`–`H6`, `labelId` + `aria-labelledby`, `aria-live="polite"` и `aria-hidden="true"` при `captionDecorative` |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | Отсутствие `console.error`, `pageerror` и `[Vue warn]` |
 
 ---
@@ -29,20 +29,20 @@
 #### [TC-VIS-001] Типографическая шкала заголовков `h1`–`h6` и базовое выравнивание
 - **Приоритет**: `P0 (Critical)`
 - **Категория**: `Визуальное соответствие`
-- **Предусловия**: Открыть `http://localhost:3000/component-header`, вьюпорт `1440×900`.
+- **Предусловия**: Открыть `http://localhost:3000/component-header`, вьюпорт `1440×900`, тема `Light`.
 - **Шаги**:
   1. Проверить группу `Heading Tags (h1 - h6)`.
   2. Измерить `fontSize` элементов `.d1-header__label` для уровней `h1`–`h6`.
 - **Ожидаемый результат**: Теги `H1`–`H6` рендерятся строго по убывающей типографической шкале без наложений и обрезки.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-#### [TC-VIS-002] Слоты (`#default`, `#caption`, `#trailing`), разделитель `space` и слияние внешних классов
+#### [TC-VIS-002] Слоты (`#default`, `#caption`, `#trailing`), разделитель `space`, `iconPalette` и слияние внешних классов
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Визуальное соответствие`
 - **Предусловия**: Открыта страница `http://localhost:3000/component-header`.
 - **Шаги**:
-  1. Проверить `[data-testid="demo-header-slots"]` и `[data-testid="demo-header-merged"]`.
-- **Ожидаемый результат**: Отображаются кастомные слоты, эластичный разделитель `.d1-header__space` прижимает правый слот к краю, класс `.demo-header-custom` сохранён вместе с `.d1-header`.
+  1. Проверить `[data-testid="demo-header-slots"]`, `[data-testid="demo-header-icon-reactive"]` в `.d1-palette--blue` и `[data-testid="demo-header-merged"]`.
+- **Ожидаемый результат**: Отображаются кастомные слоты, эластичный разделитель `.d1-header__space` прижимает правый слот к краю, иконка с `iconPalette` наследует палитру, класс `.demo-header-custom` сохранён вместе с `.d1-header`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
 ### 2.2 Интерактивность и функции (`INT`)
@@ -60,10 +60,10 @@
 #### [TC-INT-002] Управление состояниями иконки (`iconTurn`, `iconHide`, `selected`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Интерактивность и функции`
-- **Предусловия**: Открыта группа `Icons & Interactive Icon States`.
+- **Предусловия**: Открыта группа `Icons, Palette & RTL Direction`.
 - **Шаги**:
-  1. Нажать `Toggle Turn`, `Toggle Active Icon`, `Toggle Hide` на `[data-testid="demo-header-icon-reactive"]`.
-- **Ожидаемый результат**: Иконка получает модификаторы поворота, активного состояния и скрытия без ошибок рендера.
+  1. Нажать `Toggle Turn`, `Toggle Hide`, `Toggle Active Icon` на `[data-testid="demo-header-icon-reactive"]`.
+- **Ожидаемый результат**: Иконка получает модификаторы поворота, скрытия и активного состояния без ошибок рендера, `icon-attrs` (`data-demo-icon="custom"`) сохранён.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
 #### [TC-INT-003] Реактивная передача контекста `area` дочернему `D1Area` и клики в `#trailing`
@@ -76,17 +76,46 @@
 - **Ожидаемый результат**: Счётчик кликов увеличивается, а `D1Area` переключается между `Area slot: #compact` и `Area slot: #header`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-003.png`)
 
+#### [TC-INT-004] Условное монтирование и очистка жизненного цикла (`v-if`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функции`
+- **Предусловия**: Открыта группа `Lifecycle & Conditional Mount`.
+- **Шаги**:
+  1. Нажать `Toggle Mount`, убедиться, что `[data-testid="demo-header-lifecycle"]` удалён из DOM, а `Mounted: false`.
+  2. Повторно нажать `Toggle Mount` и убедиться в восстановлении элемента и `Mounted: true`.
+- **Ожидаемый результат**: Компонент корректно размонтируется и повторно монтируется без ошибок консоли.
+- **Тип доказательства**: `Console/Log`
+
 ### 2.3 Границы и крайние случаи (`BND`)
 
-#### [TC-BND-001] Числовой `0` в `label` и `caption` и отсутствие нулевых размеров
+#### [TC-BND-001] Числовые значения (`0`, `-42`, `3.14`), одиночный символ и пустые/nullish входы
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Границы и крайние случаи`
-- **Предусловия**: Открыта группа `Caption Modes & Numeric Zero`.
+- **Предусловия**: Открыта группа `Boundary & Edge Cases`.
 - **Шаги**:
-  1. Проверить `[data-testid="demo-header-zero"]` (`label="0"`, `caption="0"`).
-  2. Проверить `getBoundingClientRect()` всех `.d1-header` на странице.
-- **Ожидаемый результат**: Числовой `0` отображается и в заголовке, и в подписи; все экземпляры `.d1-header` имеют ненулевые размеры.
+  1. Проверить `[data-testid="demo-header-zero"]` (`label="0"`, `caption="0"`), `[data-testid="demo-header-numeric"]`, `[data-testid="demo-header-single-char"]`.
+  2. Проверить `[data-testid="demo-header-empty"]`, `[data-testid="demo-header-whitespace"]`, `[data-testid="demo-header-nullish"]`.
+- **Ожидаемый результат**: Числовой `0` отображается и в заголовке, и в подписи; отрицательные/дробные значения и пустые/nullish состояния не вызывают падений и нулевых поломок DOM.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
+
+#### [TC-BND-002] Многоязычный длинный текст, XSS-строка и узкий контейнер (`max-width: 240px`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Открыта группа `Boundary & Edge Cases`.
+- **Шаги**:
+  1. Проверить `[data-testid="demo-header-xss"]` на экранирование `<img src=x onerror=alert(1)>` и `<script>`.
+  2. Проверить `[data-testid="demo-header-narrow"]` внутри `.demo-header-page__narrow` (`max-width: 240px`) с неразрывной строкой `AAAA...`.
+- **Ожидаемый результат**: XSS-теги отображаются строго как текст (`img[onerror]` не создаётся), длинная неразрывная строка переносится за счёт `overflow-wrap: anywhere` и не выходит за пределы `240px`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-002.png`)
+
+#### [TC-BND-003] Направленная иконка `iconDir` в RTL-контейнере
+- **Приоритет**: `P2 (Medium)`
+- **Категория**: `Границы и крайние случаи`
+- **Предусловия**: Открыта группа `Icons, Palette & RTL Direction`.
+- **Шаги**:
+  1. Проверить `[data-testid="demo-header-rtl"]` (`dir="rtl"`) и вычисленную трансформацию иконки с `icon-dir`.
+- **Ожидаемый результат**: Иконка в RTL-контейнере корректно зеркалируется.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-003.png`)
 
 ### 2.4 Адаптивность (`RSP`)
 
@@ -110,13 +139,14 @@
 
 ### 2.5 Доступность (`A11Y`)
 
-#### [TC-A11Y-001] Проверка `aria-live="polite"`, `aria-atomic="true"` и `aria-hidden="true"` (`captionDecorative`)
+#### [TC-A11Y-001] Проверка `labelId`, `aria-labelledby`, `aria-live="polite"`, `aria-atomic="true"` и `aria-hidden="true"` (`captionDecorative`)
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Доступность`
-- **Предусловия**: Открыта группа `Caption Modes & Numeric Zero`.
+- **Предусловия**: Открыта группа `Caption Modes & Accessibility (A11y)`.
 - **Шаги**:
   1. Проверить атрибуты `.d1-header__caption` в `[data-testid="demo-header-polite"]` и `[data-testid="demo-header-decorative"]`.
-- **Ожидаемый результат**: Обычная подпись имеет `aria-live="polite"` и `aria-atomic="true"`, декоративная — `aria-hidden="true"`.
+  2. Проверить связь `aria-labelledby="demo-header-a11y-heading"` на контейнере `role="region"` с `#demo-header-a11y-heading` внутри `[data-testid="demo-header-a11y"]`.
+- **Ожидаемый результат**: Обычная подпись имеет `aria-live="polite"` и `aria-atomic="true"`, декоративная — `aria-hidden="true"`, а `labelId` корректно связывает регион с заголовком `H2`.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)

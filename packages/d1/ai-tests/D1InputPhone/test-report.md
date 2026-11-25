@@ -1,75 +1,78 @@
 # Отчёт о визуальном и функциональном тестировании: D1InputPhone
 
-## 1. Итоговое резюме
+## 1. Сводка тестирования
 
 - **Компонент:** `D1InputPhone` (`@dxtmisha/d1`)
 - **Исходный код:** [`InputPhone`](packages/d1/src/components/Ui/InputPhone) ([`constructor`](packages/constructor/src/constructors/InputPhone), [`demo`](packages/demo/src/pages/components/DemoInputPhonePage.vue))
 - **Демо / целевой URL:** `http://localhost:3000/component-input-phone`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-23T06:53:35Z`
+- **Дата тестирования (UTC):** `2026-11-25T06:23:56Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
-- **Покрытие тест-кейсов:** 20 / 20 (`100%`)
-- **Итог:** **20 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1InputPhone` после архитектурного ревью конструктора и обновления демо-страницы успешно прошёл все 20 визуальных и функциональных сценариев, включая новые возможности: `formatOutput` (`e164` / `digits`), мульти-модельную синхронизацию (`v-model`, `v-model:e164`, `v-model:digits`, `v-model:country`), прямой `countryList` (`Single Country List` и `Restricted Country List`), валидацию `phoneMatch` (карта по странам и пользовательский колбэк), `autocomplete`, `getDetail()` и `isChanged()`, с нулевым числом ошибок и Vue-предупреждений в консоли.
+- **Покрытие тест-кейсов:** 24 / 24 (`100%`)
+- **Итог:** **24 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1InputPhone` успешно прошёл все 24 тест-кейса (`VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`), включая SSR (`HTTP 200`), 12 палитр `fieldAttrs`, форматы вывода (`mask`, `e164`, `digits`), мульти-модельную синхронизацию, динамические переключатели, нативную интеграцию с `<form>`, жизненный цикл `v-if`, узкий контейнер `240px` и адаптивность до `320px` без ошибок и предупреждений в консоли.
 
 ---
 
 ## 2. Базовая матрица
 
-### 2.1 Визуальное соответствие (`VIS`)
+### 2.1 Визуальный рендеринг (`VIS`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг и варианты внешнего вида (`classic`, `filled`, `outlined`, `tonal`, `boxed`, `basic`, `width`, `block`, `palette`) | ✅ | Отрисовано `76` экземпляров `.d1-field`, `70` триггеров `.d1-inputPhoneDialCode__button`, `72` маски `.d1-mask`, без нулевых размеров (`hasZeroSize: false`); блок `Custom Width (280px)` имеет точную ширину `280px`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Размеры (`sm`, `md`, `lg`, `display`), выравнивание (`align`) и настройки `inputPhoneDialCodeAttrs` | ✅ | Высоты `.d1-field__body` соответствуют градации: `32px` (`sm`), `48px` (`md`), `64px` (`lg`), `72px` (`display`); кнопки `DialCode` отобразили `+84expand_more` и `United Stateskeyboard_arrow_down`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
-| `TC-VIS-003` | Иконки (`iconTrailing`), состояния (`loading`, `focus`, `selected`, `isSkeleton`, `disabled`, `readonly`) и кнопка очистки | ✅ | Отображены `2` индикатора `.d1-progress` (`Loading Boolean` и `Loading Object`), применён класс скелетона (`hasSkeletonClass: true`), отформатированы все `disabled`/`readonly` поля, визуально различимы `focus` и `selected`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-001` | Базовый рендеринг, варианты оформления (`classic`, `filled`, `outlined`, `tonal`, `boxed`, `basic`, `isValue`) | ✅ | Все варианты оформления, `isValue`, `width: 280px` и `block` отрисованы с корневыми классами `.d1-inputPhone`, `.d1-inputPhoneDialCode` и `.d1-mask` без клиппинга и нулевых размеров. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Размеры (`sm`, `md`, `lg`, `display`), выравнивание (`align`) и настройка `DialCode` (`labelType`) | ✅ | Высоты и выравнивание (`left`, `center`, `right`) соответствуют токенам; триггеры `DialCode` корректно отображают флаг, код `+84` (`expand_more`) и название `United States` (`keyboard_arrow_down`). | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Иконки, индикаторы загрузки (`loading`) и состояние скелетона (`is-skeleton`) | ✅ | Отрисованы иконка `call`, кнопки очистки `cancel` (`auto`/`always`/`none`), спиннеры загрузки (boolean и object), состояния `focus`, `selected` и `is-skeleton` внутри `D1Skeleton`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-004` | Палитры (`fieldAttrs.palette`) и HTML-сообщения (`hasHtmlCode`) | ✅ | Все `12` палитр (`red`, `orange`, `amber`, `green`, `emerald`, `teal`, `blue`, `indigo`, `purple`, `rose`, `slate`, `neutral`) через `fieldAttrs` окрашивают рамку/метку поля (`+1-202-555-0147`); HTML-подсказка рендерится с тегом `<strong>`. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Двусторонняя привязка (`v-model:value`, `v-model`) и динамическое определение страны по цифрам | ✅ | Ввод `77012345678` (Казахстан) корректно отформатировался в `+7-7-01-234-56-78` с отображением значения `+7-701-234-56-78` и переключением иконки флага на `KZ` (`hasKzIcon: true`). | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Выбор страны в меню `DialCode`, автофокус на поле и режим `countryBlock` | ✅ | Карточка `Locked to Germany (DE)` скрывает `.d1-inputPhoneDialCode__button` (`blockedHasDialCode: false`); меню открыло `255` пунктов, выбор `Vietnam` установил `+84-` и вернул фокус в `<input>` (`focusReturnedToInput: true`). | ![TC-INT-002](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | Слоты (`prefix`, `suffix`, `leading`, `trailing`, `label`), `autocomplete` и кнопка очистки (`cancel`) | ✅ | Отображены все слоты (`Tel:`, `EXT`, `[OK]`, `+1`, `Custom`), атрибут `autocomplete="tel-national"` проброшен в `<input>`, клик по `.d1-field__cancel` сбросил `+1-202-555-0147` до префикса `+1-`. | ![TC-INT-003](./screenshots/TC-INT-003.png) |
-| `TC-INT-004` | Динамическое изменение маски в зависимости от длины введённого номера | ✅ | Пресеты `DE` перестроили маску по длине: `6` цифр -> `+49-301-234`, `10` -> `+49-301-234-5678`, `11` -> `+49-3012-345-6789`; `CN` `11` -> `+86-138-0013-8000`. | ![TC-INT-004](./screenshots/TC-INT-004.png) |
-| `TC-INT-005` | Разрешение конфликтующих и общих кодов стран (`GeoPhone`) | ✅ | Все конфликтные коды определили страну и маску: `+1-202-555-0147` (`United States`), `+1-416-555-0147` (`Canada`), `+7-900-123-45-67` (`Russia`), `+7-7-01-123-45-67` (`Kazakhstan`), `+44-20-7946-0958` (`United Kingdom`), `+44-1481-123456` (`Guernsey`). | ![TC-INT-005](./screenshots/TC-INT-005.png) |
-| `TC-INT-006` | Обрезка слоя маски в узком поле (`180px`, `Mask/style.scss`) | ✅ | При сужении поля до `180px` (`bodyWidth: 146`, `inputScrollWidth: 148`) слой `.d1-mask__character` имеет `overflow-x: hidden`, текст и маска корректно обрезаются без наложения на кнопку `×`. | ![TC-INT-006](./screenshots/TC-INT-006.png) |
-| `TC-INT-007` | Реактивное обновление `countryDefault` (`InputPhoneData` watcher) | ✅ | Нетронутое поле стартовало с `+44-`, после `Set countryDefault = DE` переключилось на `+49-`, после сброса и `Set countryDefault = VN` — на `+84-`, в то время как изменённое поле сохранило `+7-900-123-45-67`. | ![TC-INT-007](./screenshots/TC-INT-007.png) |
-| `TC-INT-008` | Ввод с внутренним префиксом страны (`8` для `RU`, `0` для `VN`, в т.ч. `countryBlock`) | ✅ | Ввод `89001234567` в `Russia` и `Russia Blocked` отбрасывает ведущую `8` -> `+7-900-123-45-67`; ввод `0912345678` в `Vietnam` и `Vietnam Blocked` отбрасывает ведущий `0` -> `+84-91-2345-678`. | ![TC-INT-008](./screenshots/TC-INT-008.png) |
-| `TC-INT-009` | Раскрытие группы альтернативных кодов без выбора подкода и последующий выбор подкода | ✅ | Клик по заголовку группы (`Dominican Republic` / `Caribbean Netherlands`) раскрывает подкоды, сохраняя исходное значение `+49-` даже после закрытия по `Escape`; выбор подкода (`+599-3`) переключает маску на `+599-3-`. | ![TC-INT-009](./screenshots/TC-INT-009.png) |
-| `TC-INT-010` | `formatOutput` (`e164` / `digits`), мульти-модель (`v-model:e164`, `v-model:digits`, `v-model:country`) и прямой `countryList` | ✅ | `Format Output: e164` -> `+12025550147`; `Format Output: digits` -> `84912345678`; `Multi-Model Sync` синхронно обновил все 4 модели при `Set e164 = +84912345678` (`+84-91-2345-678`, `country=VN`) и `Set digits = 493012345678` (`+49-301-234-5678`, `country=DE`); `Restricted Country List (US, VN, RU)` открыл ровно `3` пункта, а `Single Country List` скрыл стрелку и перевёл селектор в `readonly`. | ![TC-INT-010](./screenshots/TC-INT-010.png) |
+| `TC-INT-001` | Двусторонний `v-model` и динамическое определение страны по цифрам номера | ✅ | Ввод цифр номера синхронно обновляет `DemoValue`, форматирует маску и автоматически переключает флаг страны в `DialCode`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Выбор страны из меню `DialCode`, `countryBlock` и `maskAttrs` | ✅ | Выбор страны из меню обновляет значение и маску; при `countryBlock: true` селектор страны скрыт и автоопределение страны отключено. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
+| `TC-INT-003` | Слоты (`prefix`, `suffix`, `leading`, `trailing`, `label`) и кнопка очистки (`cancel`) | ✅ | Все слоты (`Tel:`, `EXT`, `[OK]`, кастомный `#leading` `+1`, `#label`) отображаются на своих позициях; клик по `cancel` сбрасывает введённый номер. | ![TC-INT-003](./screenshots/TC-INT-003.png) |
+| `TC-INT-004` | Динамическое изменение маски в зависимости от длины номера | ✅ | Пресеты и пошаговый ввод перестраивают маску по длине (`+49-301-234` ↔ `+49-301-234-5678` ↔ `+49-3012-345-6789`, `CN` `+86-138-0013-8000`) без потери цифр и переполнения. | ![TC-INT-004](./screenshots/TC-INT-004.png) |
+| `TC-INT-005` | Разрешение всех конфликтующих и общих кодов стран (`GeoPhone`) | ✅ | Корректно определяются `US (+1-202)`, `CA (+1-416)`, `RU (+7-900)`, `KZ (+7-701)`, `GB (+44-20)`, `GG (+44-1481)` и пересекающиеся префиксы; выбор вторичных стран из `DialCode` работает. | ![TC-INT-005](./screenshots/TC-INT-005.png) |
+| `TC-INT-006` | Горизонтальный скролл и обрезка `&__character` в узком поле (`MaskScroll`) | ✅ | При длинном номере `+49-3012-345-6789` слой `.d1-mask__character` обрезается по краю `.d1-mask__view` (`overflow: hidden`) и прокручивается синхронно без наложения на кнопку `cancel`. | ![TC-INT-006](./screenshots/TC-INT-006.png) |
+| `TC-INT-007` | Реактивное обновление `countryDefault` (`InputPhoneData` watcher) | ✅ | Смена `countryDefault` (`DE` / `VN`) обновляет нетронутое поле (`Untouched`), не перезаписывая пользовательский ввод в изменённом поле (`Modified`, `RU`). | ![TC-INT-007](./screenshots/TC-INT-007.png) |
+| `TC-INT-008` | Ввод номеров с внутренним префиксом страны (`8` для России, `0` для Вьетнама) | ✅ | Ведущие внутренние префиксы `8` и `0` отбрасываются маской (включая `countryBlock`), формируя `+7-900-123-45-67` и `+84-91-2345-678`. | ![TC-INT-008](./screenshots/TC-INT-008.png) |
+| `TC-INT-009` | Открытие группы альтернативных кодов без выбора подкода (`InputPhoneDialCode` / `MenuCountry`) | ✅ | Клик по заголовку `Dominican Republic` раскрывает группу без сброса текущей страны (`VN`); выбор подкода `+1-829` обновляет флаг на `DO` и маску на `+1-829-`. | ![TC-INT-009](./screenshots/TC-INT-009.png) |
+| `TC-INT-010` | Форматы вывода (`format-output`: `mask`, `e164`, `digits`), мульти-модели и прямой `country-list` | ✅ | Подтверждены значения: `mask` (`+1-202-555-0147`), `e164` (`+12025550147`), `digits` (`84912345678`); в `Multi-Model Sync` `mask=+84912345678 \| e164=+84912345678 \| digits=84912345678 \| country=VN`; `Restricted Country List` содержит `3` страны (`US, VN, RU`). | ![TC-INT-010](./screenshots/TC-INT-010.png) |
+| `TC-INT-011` | Динамические переключатели состояний, блокировка `disabled`/`readonly` и жизненный цикл `v-if` | ✅ | Переключатели `Disabled`, `Readonly`, `Loading`, `Skeleton`, `countryBlock`, `countryReadonly` работают корректно (`isDynamicSkeleton: true`); заблокированные поля не испускают событий; `v-if` цикл: `135 -> 55 -> 135` узлов. | ![TC-INT-011](./screenshots/TC-INT-011.png) |
+| `TC-INT-012` | Интеграция с `<form>` (валидация `required`, `submit` и `reset`) | ✅ | На пустом обязательном поле `Contact Phone*` (`+_-___-___-____`) отправка блокируется нативной валидацией (`Form Status: Form blocked (required)`); `submit` и `reset` отрабатывают штатно. | ![TC-INT-012](./screenshots/TC-INT-012.png) |
 
-### 2.3 Границы и крайние сценарии (`BND`)
+### 2.3 Граничные случаи и крайние сценарии (`BND`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Форматирование `disabled` / `readonly` (`InputPhoneFormat`), границы, Unicode и XSS | ✅ | `Disabled` -> `+7-900-123-45-67`, `Readonly` -> `+7-900-123-45-67`, `Disabled (Partial)` -> `+7-900-123`, `Readonly (Blocked US)` -> `+1-202-555-0`; все имеют `inputMode="tel"` и `id`; строка `<img src=x onerror=alert(1)>` экранирована как текст (`xssEscapedAsText: true`, `xssNoImgInjected: true`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
-| `TC-BND-002` | Валидация `required` при голом телефонном префиксе (`InputPhoneValidation`) | ✅ | На старте при голом префиксе `+1-` вызов `checkValidity()` возвращает `valid=false`; ввод `2025550147` (`+1-202-555-0147`) делает поле валидным (`valid=true`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
-| `TC-BND-003` | Валидация неполного номера телефона (`isFull === false` + `textInvalidPhone`) | ✅ | На необязательном поле при голом префиксе `+7-` `checkValidity()` возвращает `valid=true`; при вводе `90012` и `blur` возвращается `valid=false, message=Enter full phone number`; дозаполнение до `+7-900-123-45-67` снимает ошибку (`valid=true`). | ![TC-BND-003](./screenshots/TC-BND-003.png) |
-| `TC-BND-004` | Валидация `phoneMatch` (карта стран RegExp и пользовательский колбэк) | ✅ | Карта стран (`RU: /^9/, VN: /^9/`): для `74951234567` возвращает `valid=false, message=Mobile prefix required (national 9...)`, после `Set Valid RU (7900...)` -> `valid=true`. Пользовательский колбэк: для `12025550147` возвращает `valid=false, message=Phone must end with 0`, после `Set Ending 0` -> `valid=true`. | ![TC-BND-004](./screenshots/TC-BND-004.png) |
+| `TC-BND-001` | Форматирование `disabled` / `readonly` (полный, частичный, `countryBlock`), валидация, Unicode и XSS | ✅ | `Disabled` / `Readonly` поля отформатированы (`+7-900-123-45-67`, `+7-900-123`, `+1-202-555-0`); XSS-строка `<img src=x onerror=alert(1)>` экранирована как текст (`badImgs: 0`, `hasEscapedPayloadText: true`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Валидация `required` при голом телефонном префиксе (`InputPhoneValidation`) | ✅ | Голый префикс `+1-` определяется как пустой при `required` (`valid=false`, `Phone number is required`), а ввод полного номера снимает ошибку (`valid=true`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+| `TC-BND-003` | Валидация неполного номера телефона (`isFull === false` + `textInvalidPhone`) | ✅ | Голый префикс `+7-` валиден (`valid=true`), частичный ввод `90012` после `blur` выводит `Enter full phone number` (`valid=false`), полный номер восстанавливает `valid=true`. | ![TC-BND-003](./screenshots/TC-BND-003.png) |
+| `TC-BND-004` | Валидация `phoneMatch` (карта стран, глобальный `RegExp` и пользовательская функция) | ✅ | Все 3 формата правил `phoneMatch` (карта стран, глобальный `RegExp`, колбэк) корректно валидируют номер и выводят заданные сообщения об ошибках. | ![TC-BND-004](./screenshots/TC-BND-004.png) |
+| `TC-BND-005` | Граничные значения (`""`, `"   "`, `"0"`, длинный текст) и узкий контейнер `240px` | ✅ | Пустые/пробельные/`"0"` значения и Unicode (`Học tiếng Việt / Привет`) рендерятся без сбоев; контейнер `.demo-input-phone-page__narrow` сохраняет `scrollWidth: 238 === clientWidth: 238` (неразрывная метка `AAAA...` переносится, а `.d1-mask__character__item--special` с `r: 328 > boxR: 320` штатно обрезается слоем `.d1-mask__view` с `overflow: hidden`). | ![TC-BND-005](./screenshots/TC-BND-005.png) |
 
 ### 2.4 Адаптивность (`RSP`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Проверка вьюпортов `1440×900`, `768×1024`, `375×812` и `320×568` | ✅ | На всех `4` разрешениях горизонтальный скролл отсутствует (`overflow: false`): `scrollWidth === innerWidth` (`1440 / 768 / 375 / 320`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-001` | Адаптивность на разрешениях `1440×900`, `768×1024`, `375×812` и `320×568` | ✅ | На всех 4 разрешениях горизонтальный скролл отсутствует (`overflowX: false`, `offenders: []`): `1440 === 1440`, `768 === 768`, `375 === 375`, `320 === 320`. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная навигация (`Enter` / `Escape`) | ✅ | Все `76` инпутов имеют `inputMode="tel"` (`allTelMode: true`) и непустой `id` (`allHaveId: true`); все `70` триггеров `DialCode` имеют `aria-haspopup="listbox"` (`allAriaHaspopup: true`); открытие меню по `Enter` и закрытие по `Escape` возвращает фокус на `<input>` поля (`focusReturnedOnEscape: true`). | — |
+| `TC-A11Y-001` | WAI-ARIA атрибуты, `inputmode="tel"`, связь `label/input` и возврат фокуса | ✅ | Поля имеют `inputmode="tel"`, `id`, `for`, `label-id`, `helper-id`, `validation-id`, `tabindex="0"`, `aria-label`; закрытие меню `DialCode` по `Escape` возвращает фокус на `<input>`. | — |
 
 ### 2.6 Логи и консоль (`LOG`)
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | `Exposed API` (`getValue`, `setValue`, `clear`, `checkValidity`, `getDetail`, `isChanged`), события и чистота консоли | ✅ | `Read Values` -> `value=undefined, valid=false, country=US, e164=+1, isFull=false, changed=false`; `setValue('4930123456')` -> `value=4930123456, valid=true, country=DE, e164=+4930123456, isFull=true`; `clear()` -> `value=undefined, valid=false, e164=none`; `Event Tracker` зафиксировал `changeLite`; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`. | — |
+| `TC-LOG-001` | Все события, методы `expose` (`value`, `setValue`, `clear`, `getDetail`, `checkValidity`) и чистота консоли | ✅ | `Exposed API` в начальном состоянии вывел `reactive=1, value=undefined, valid=false, message=none, country=US, e164=+1, isFull=false, changed=false`; SSR `HTTP 200` (`hasComponent: true`); `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`, `dialogs: []`. | — |
 
 ---
 
 ## 3. AI-аудит и рекомендации
 
-1. **Форматирование вывода и мульти-модельная синхронизация ([InputPhoneValue.ts](packages/constructor/src/constructors/InputPhone/InputPhoneValue.ts), [InputPhoneEvent.ts](packages/constructor/src/constructors/InputPhone/InputPhoneEvent.ts))**: Поддержка `formatOutput` (`mask` / `e164` / `digits`) и независимых моделей `v-model:e164`, `v-model:digits`, `v-model:country` проверена в браузере (`TC-INT-010`) без рекурсивных циклов обновления и потери форматирования маски.
-2. **Прямой проп `countryList` и авто-readonly ([InputPhoneCountryList.ts](packages/constructor/src/constructors/InputPhone/InputPhoneCountryList.ts), [InputPhoneDialCode.ts](packages/constructor/src/constructors/InputPhoneDialCode/InputPhoneDialCode.ts))**: Передача `:country-list="['US', 'VN', 'RU']"` ограничивает список выбора ровно 3 пунктами, а `:country-list="['RU']"` автоматически переводит селектор в `readonly` (скрывая стрелку и блокируя открытие меню с сохранением цветного флага).
-3. **Страно-специфичная валидация `phoneMatch` ([InputPhoneValidation.ts](packages/constructor/src/constructors/InputPhone/InputPhoneValidation.ts))**: Подтверждена работа как карты RegExp по странам (проверяемой по национальному номеру `context.phone` без кода страны — например, `RU: /^9/` для мобильных `+7-9...`), так и пользовательской функции-валидатора с возвратом собственного сообщения об ошибке (`TC-BND-004`).
-4. **Форматирование `disabled` / `readonly`, валидация неполного номера и чистота консоли**: Все `disabled`/`readonly` поля форматируются через `InputPhoneFormat`, голый префикс и неполный номер корректно обрабатываются в `InputPhoneValidation`, горизонтальный скролл отсутствует вплоть до `320px`, а консоль браузера не содержит ошибок и Vue-предупреждений.
+1. **Поведение обрезки маски в узком контейнере (`TC-BND-005`):** В `.demo-input-phone-page__narrow` контейнер сохраняет точную геометрию (`scrollWidth: 238 === clientWidth: 238`), а неразрывная метка `AAAA...` переносится на две строки. Телеметрия фиксирует дочерний `SPAN.d1-mask__character__item--special` с правой границей `r: 328` при `boxR: 320`, что является ожидаемым внутренним клиппингом маски внутри `.d1-mask__view` (`overflow: hidden`) и не создаёт переполнения документа на `1440px`, `768px`, `375px` и `320px`.
+2. **Устойчивость мульти-модели, SSR и жизненного цикла `v-if`:** Компонент проходит SSR (`status: 200`, `hasComponent: true`), чистое размонтирование и повторное монтирование (`135 -> 55 -> 135` DOM-узлов), а также синхронную работу 4 моделей (`mask`, `e164`, `digits`, `country`) без рекурсивных обновлений.
+3. **XSS-устойчивость и чистота рантайма:** Вредоносная строка `<img src=x onerror=alert(1)>` безопасно экранируется в тексте (`badImgs: 0`, `hasEscapedPayloadText: true`), при этом на всём прогоне зафиксировано `0` ошибок консоли, `0` `[Vue warn]`, `0` исключений страницы и `0` сетевых ошибок.

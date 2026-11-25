@@ -1,8 +1,18 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinFieldCounter {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+
   &__aria {
     position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
     opacity: 0;
     pointer-events: none;
   }

@@ -3,6 +3,8 @@
 @mixin mixinCheckboxBasic {
   display: inline-flex;
   position: relative;
+  min-width: 0;
+  max-width: 100%;
 
   &__input {
     @include ui.absolute;
@@ -17,6 +19,8 @@
   &__body {
     display: flex;
     align-items: flex-start;
+    min-width: 0;
+    max-width: 100%;
 
     transition-timing-function: linear;
     transition-duration: ui.v('d.sys.transitionDuration.sm');
@@ -40,12 +44,21 @@
 
   &__info {
     @include ui.flexDynamic;
+    min-width: 0;
+    max-width: 100%;
   }
 
   &__label {
     display: block;
     position: relative;
     z-index: 4;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__description {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   &--required {

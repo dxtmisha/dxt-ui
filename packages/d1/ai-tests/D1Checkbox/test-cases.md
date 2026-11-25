@@ -1,195 +1,222 @@
-# Спецификация тест-кейсов: `D1Checkbox`
+# Спецификация тест-кейсов: D1Checkbox
 
 - **Сущность**: `D1Checkbox` (`Checkbox`)
-- **Путь к исходному коду**: `packages/d1/src/components/Ui/Checkbox` (конструктор: `packages/constructor/src/constructors/Checkbox`)
+- **Путь к исходному коду**: `packages/d1/src/components/Ui/Checkbox`, `packages/constructor/src/constructors/Checkbox`, `packages/demo/src/pages/components/DemoCheckboxPage.vue`
 - **Целевой URL**: `http://localhost:3000/component-checkbox`
 - **Справочные материалы**: `Нет`
-- **Последняя проверка / обновление**: `2026-11-17`
-- **Всего тест-кейсов**: `16`
+- **Последняя проверка / обновление**: `2026-11-25`
+- **Всего тест-кейсов**: `19`
 
 ---
 
 ## 1. Матрица покрытия
 
-| Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
+| Категория | Код | Количество | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
-| **Визуал и токены** | `VIS` | 4 | P0, P1 | Базовый рендеринг, `indeterminate`, `required`, макет (`block`/`itemCenter`/`container`/`adaptive`), состояния (`disabled`/`readonly`/`focus`/`loading`/`isSkeleton`), палитры, иконки и слоты |
-| **Интерактив и функциональность** | `INT` | 4 | P0, P1 | Переключение `v-model`, группа `selected` + `valueVariant`, блокировка в `disabled`/`readonly`, методы `expose` (`setValue`, `clear`, `checkValidity`) |
-| **Границы и крайние случаи** | `BND` | 3 | P1, P2 | Числовой `0` в `label`/`description`, `hasHtmlCode` и `forceShowMessage`, проверка переполнения по всем элементам |
-| **Адаптивность и вьюпорты** | `RSP` | 2 | P1, P2 | Планшет (`768×1024`) и мобильный (`375×812`, `320×568`), переключение `adaptive` и отсутствие горизонтального переполнения |
-| **Доступность (A11y)** | `A11Y` | 2 | P1, P2 | `aria-labelledby`, `aria-describedby`, `aria-invalid`, `aria-hidden="true"`, клавиатурная активация (`Tab`, `Space`) |
-| **Консоль и рантайм** | `LOG` | 1 | P0 | События `input`/`inputLite`/`change`/`changeLite`, `0` ошибок консоли и `[Vue warn]` |
+| **Визуальное соответствие и дизайн-система** | `VIS` | 4 | P0, P1 | Базовый вид, `indeterminate`, `required`, сообщения, `block`/`itemCenter`, все 5 `container`, все 6 `adaptive`, все 24 `palette`, иконки и слоты, `isSkeleton` |
+| **Интерактивность и функциональный контракт** | `INT` | 6 | P0, P1 | `v-model` и кнопки управления, `v-model:selected` и `v-model:modelSelected`, переключатели состояний, блокировка `disabled`/`readonly`/`loading`, `expose`, `<form>` и `v-if` |
+| **Граничные значения и краевые случаи** | `BND` | 4 | P1, P2 | Пустые/пробельные метки, `0`/`-42`/`3.14`/`"A"`, `hasHtmlCode` и `forceShowMessage`, Unicode/эмодзи, XSS, длинный текст и узкий `DemoBox` |
+| **Адаптивность и вьюпорты** | `RSP` | 2 | P1, P2 | Десктоп (`1440×900`), планшет (`768×1024`), мобильный (`375×812`, `320×568`), перестроение `adaptive="rightSm"` |
+| **Доступность** | `A11Y` | 2 | P1, P2 | `aria-labelledby`, `aria-describedby`, `aria-invalid`, `aria-readonly`, `aria-hidden`, явные ID, клавиатурное переключение `Tab` + `Space` |
+| **Консоль и рантайм** | `LOG` | 1 | P0 | Полный набор событий (`update:modelValue`, `input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`) и `0` ошибок/предупреждений |
 
 ---
 
 ## 2. Детальные тест-кейсы
 
-### 2.1 Визуал и дизайн-система (`VIS`)
+### 2.1 Визуальное соответствие и дизайн-система (`VIS`)
 
-#### [TC-VIS-001] Базовые состояния, обязательность (`required`), описание и сообщения (`helperMessage`, `validationMessage`)
+#### [TC-VIS-001] Базовые состояния, `indeterminate`, `required` и сообщения (`helperMessage`, `warningMessage`, `validationMessage`)
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`, светлая тема.
-- **Шаги теста**:
-  1. Прокрутить к группам `Basic`, `Indeterminate`, `Appearances & Validation`.
-  2. Проверить визуальное состояние отмеченного, неотмеченного, `indeterminate`, `required` (красная `*` после метки), `description`, `helperMessage` и `validationMessage`.
-- **Ожидаемый результат**: Все варианты отображаются корректно без смещений; отмеченный чекбокс показывает иконку `check`, `indeterminate` — иконку `remove`, `required` добавляет `*`, `validationMessage` отображается цветом ошибки.
+- **Шаги**:
+  1. Проверить группы `Basic & v-model Controls`, `Indeterminate` и `Appearances & Messages`.
+  2. Проверить отображение иконок `check` и `remove`, красной `*` у `required`, а также вспомогательных, предупреждающих (`warning`) и валидационных сообщений и `fieldMessageAttrs`.
+- **Ожидаемый результат**: Все состояния и сообщения отображаются с корректными токенами цвета, отступами и без наложения.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-#### [TC-VIS-002] Макет и адаптивные модификаторы (`block`, `itemCenter`, `container`, `adaptive`)
+#### [TC-VIS-002] Макет, все 5 `container` (`rightSm`–`right2xl`) и все 6 `adaptive` (`rightAlways`–`right2xl`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Прокрутить к группам `Layout & Container` и `Adaptive`.
-  2. Проверить ширину элементов `block` vs `:block="false"`, выравнивание `itemCenter` vs `:itemCenter="false"` при многострочном описании, `DemoBox container` и `adaptive="rightAlways"` (`order` элемента `.d1-checkbox__item` и `.d1-checkbox__info`).
-- **Ожидаемый результат**: `block` занимает всю ширину (`display: flex`), `:block="false"` — ширину контента; при `adaptive="rightAlways"` индикатор чекбокса располагается справа (`order: 4`).
+- **Шаги**:
+  1. Прокрутить к группам `Layout & Container (All 5)` и `Adaptive (All 6)`.
+  2. Проверить `block` vs `:block="false"`, `itemCenter` vs `:itemCenter="false"`, все 5 вариантов `container` внутри `DemoBox container` и все 6 вариантов `adaptive`.
+- **Ожидаемый результат**: `block` растягивается на всю ширину, `itemCenter` центрирует индикатор по вертикали, при `adaptive="rightAlways"` индикатор располагается справа.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
-#### [TC-VIS-003] Состояния `disabled`, `readonly`, `focus`, `loading` и `isSkeleton`
+#### [TC-VIS-003] Состояния (`disabled`, `readonly`, `focus`, `loading`) и `isSkeleton` внутри `D1Skeleton`
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Прокрутить к группам `States` и `Skeleton`.
-  2. Проверить классы `.d1-checkbox--disabled`, `.d1-checkbox--focus`, наличие `.d1-progress` при `loading` (булево и объект) и `.d1-skeleton__text` / `.d1-skeleton__background` при `isSkeleton`.
-- **Ожидаемый результат**: `disabled` снижает непрозрачность, `focus` подсвечивает индикатор, `loading` отображает спиннер и скрывает иконку, `isSkeleton` применяет скелетон-классы без дублирования DOM.
+- **Шаги**:
+  1. Прокрутить к группам `States & Interactive Toggles` и `Skeleton`.
+  2. Проверить классы `.d1-checkbox--disabled`, `.d1-checkbox--focus`, спиннер `.d1-progress` при `loading` (булево и объект) и `.d1-skeleton__text` / `.d1-skeleton__background` в `D1Skeleton`.
+- **Ожидаемый результат**: Все визуальные состояния и скелетон рендерятся корректно без дублирования DOM.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-003.png`)
 
-#### [TC-VIS-004] Палитры (`palette`), кастомные иконки (`iconCheckbox`, `iconIndeterminate`, `null`) и слоты (`#default`, `#description`)
+#### [TC-VIS-004] Все 24 палитры (`palette`), кастомные иконки (`iconCheckbox`, `iconIndeterminate`, `null`) и слоты (`#default`, `#description`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Visual & Design System`
+- **Категория**: `Визуальное соответствие и дизайн-система`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Прокрутить к группам `Palettes`, `Icons` и `Slots`.
-  2. Проверить применение `d1-palette--red`/`green`/`blue`, иконки строкой/объектом/`null` и рендеринг `<strong>Custom Label Slot</strong>` и `<em>Custom Description Slot</em>`.
-- **Ожидаемый результат**: Цвета палитр применяются к отмеченным чекбоксам, кастомные иконки рендерятся корректно, `null` скрывает иконку, слоты отображаются с HTML-тегами.
+- **Шаги**:
+  1. Прокрутить к группам `Palettes (All 24)`, `Icons` и `Slots`.
+  2. Проверить применение всех 24 классов `d1-palette--*`, иконок строкой/объектом/`null` и слотов `#default`/`#description`.
+- **Ожидаемый результат**: Все 24 палитры окрашивают отмеченный индикатор, кастомные иконки отображаются корректно, `null` скрывает иконку, слоты рендерят переданную разметку.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-004.png`)
 
-### 2.2 Интерактивность и управление состоянием (`INT`)
+### 2.2 Интерактивность и функциональный контракт (`INT`)
 
-#### [TC-INT-001] Двусторонняя привязка `v-model`
+#### [TC-INT-001] Двусторонняя привязка `v-model` и программные кнопки управления
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Interactive & Functional`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Найти первый чекбокс `Default` в группе `Basic` и связанный `DemoValue`.
-  2. Кликнуть по чекбоксу, проверить изменение `DemoValue` (`false` -> `true`) и `input.checked === true`.
-  3. Кликнуть повторно и проверить возврат (`true` -> `false`) и `input.checked === false`.
-- **Ожидаемый результат**: Значение `v-model` и состояние `input.checked` синхронно переключаются `false -> true -> false`.
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Basic & v-model Controls`.
+- **Шаги**:
+  1. Кликнуть по чекбоксу `Default`, затем воспользоваться кнопками `Set True`, `Set False`, `Toggle`.
+  2. Проверить синхронизацию `input.checked` и `DemoValue` (`Default Value`).
+- **Ожидаемый результат**: Состояние чекбокса и `DemoValue` синхронно меняются при пользовательском клике и нажатии кнопок.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
-#### [TC-INT-002] Синхронизация `v-model:selected` и `valueVariant`
+#### [TC-INT-002] Синхронизация `v-model:selected`, `v-model:modelSelected` и `valueVariant`
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Interactive & Functional`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Прокрутить к группе `Selected & Value Variant`.
-  2. Проверить, что `Option Alpha` отмечен (`selected === 'alpha'`), а `Option Beta` не отмечен.
-  3. Кликнуть по `Option Beta` и проверить обновление `DemoValue` на `"beta"` и снятие отметки с `Option Alpha`.
-- **Ожидаемый результат**: Выбор `Option Beta` синхронизирует `selected` в `"beta"` и автоматически сбрасывает `Option Alpha`.
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Selected & Value Variant`.
+- **Шаги**:
+  1. Кликнуть по `Option Beta` и проверить обновление `v-model:selected` на `"beta"` и снятие `Option Alpha`.
+  2. Нажать кнопки `Select Alpha`, `Clear Variant`, а также переключить `ModelSelected Second`.
+- **Ожидаемый результат**: Оба режима (`v-model:selected` и `v-model:modelSelected`) корректно синхронизируют группу чекбоксов с `valueVariant`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-002.png`)
 
-#### [TC-INT-003] Блокировка интерактивности в режимах `disabled` и `readonly`
+#### [TC-INT-003] Динамические переключатели состояний и жизненный цикл `v-if`
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группы `States & Interactive Toggles` и `Lifecycle & Conditional Mount`.
+- **Шаги**:
+  1. Нажать кнопки `Toggle Checked`, `Toggle Disabled`, `Toggle Readonly`, `Toggle Loading`, `Toggle Indeterminate`, `Toggle Skeleton`.
+  2. Нажать `Toggle Mount` дважды в группе `Lifecycle & Conditional Mount`.
+- **Ожидаемый результат**: Флаги в `State Flags` и вид `Dynamic Target Checkbox` обновляются мгновенно; `v-if` корректно удаляет и заново монтирует компонент.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-003.png`)
+
+#### [TC-INT-004] Блокировка интерактивности в режимах `disabled`, `readonly` и `loading` (`Blocked & Guarded Actions`)
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Interactive & Functional`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Попытаться кликнуть по чекбоксам `Disabled` и `Readonly` в группе `States`.
-  2. Проверить свойства `input.checked`, `input.disabled` и `input.readOnly`.
-- **Ожидаемый результат**: Ни `Disabled`, ни `Readonly` не меняют `input.checked` при клике.
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Blocked & Guarded Actions`.
+- **Шаги**:
+  1. Проверить исходный `Blocked Trigger Count` (`0`).
+  2. Попытаться кликнуть по чекбоксам `Blocked Disabled`, `Blocked Readonly` и `Blocked Loading`.
+- **Ожидаемый результат**: `input.checked` не изменяется ни у одного из них, события `@input`/`@change` не срабатывают, счётчик остаётся `0`.
 - **Тип доказательства**: `Console/Log`
 
-#### [TC-INT-004] Программное управление через `expose` (`setValue`, `clear`, `checkValidity`)
+#### [TC-INT-005] Программное управление через `expose` (`setValue`, `clear`, `isChanged`, `checkValidity`, `getValidationMessage`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Interactive & Functional`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Прокрутить к группе `Expose & Validation`.
-  2. Нажать `Check Validity` (ожидается `valid: false`), затем `Set True` (`value: true, valid: true`), затем `Set False` (`value: false, valid: false`), затем `Clear` (`value: undefined, valid: false`).
-- **Ожидаемый результат**: `DemoValue` точно отражает результаты всех методов `expose`.
-- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-004.png`)
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Expose & Validation`.
+- **Шаги**:
+  1. Нажать `Check Validity` (проверить `valid: false`), затем `Set True` (`value: true, valid: true`), затем `Set False` (`valid: false, message: "Custom required validation message"`), затем `Clear`.
+- **Ожидаемый результат**: `Expose Output` точно отражает возвращаемые значения `getValue()`, `isChanged()`, `checkValidity()` и `getValidationMessage()`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-005.png`)
 
-### 2.3 Граничные случаи (`BND`)
-
-#### [TC-BND-001] Числовой ноль (`:label="0"`, `:description="0"`) и `modelValue: false`
+#### [TC-INT-006] Интеграция с формой (`<form>`, `submit`, `reset`, `required`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Boundaries & Edge Cases`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Найти третий чекбокс в группе `Basic` с `:label="0"` и `:description="0"`.
-  2. Проверить текстовое содержимое `.d1-checkbox__label` и `.d1-checkbox__description`.
-- **Ожидаемый результат**: Метка отображает `"0"`, описание отображает `"0"`, `input.checked === false`.
+- **Категория**: `Интерактивность и функциональный контракт`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Form Integration`.
+- **Шаги**:
+  1. Отметить чекбокс `I accept the terms and conditions` и нажать `Submit Form`.
+  2. Нажать `Reset Form` и проверить сброс состояния.
+- **Ожидаемый результат**: `Form Status` отображает `"Form submitted (valid)"` после отправки и `"Form reset"` со снятой отметкой после сброса.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-006.png`)
+
+### 2.3 Граничные значения и краевые случаи (`BND`)
+
+#### [TC-BND-001] Пустые/пробельные метки и числовые значения (`0`, `-42`, `3.14`, `"A"`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Граничные значения и краевые случаи`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Boundary & Edge Cases`.
+- **Шаги**:
+  1. Проверить рендер чекбоксов с `""`, `"   "`, `:label="0"`/`:description="0"`, `-42`, `3.14` и `"A"`.
+- **Ожидаемый результат**: Числа `0`, `-42`, `3.14` и `"A"` отображаются в DOM, пустые и пробельные метки не ломают макет.
 - **Тип доказательства**: `Console/Log`
 
 #### [TC-BND-002] `hasHtmlCode` и `forceShowMessage` при `disabled`
 - **Приоритет**: `P2 (Medium)`
-- **Категория**: `Boundaries & Edge Cases`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Проверить `HTML Helper Message` в группе `Appearances & Validation` на наличие `<strong>strong</strong>`.
-  2. Проверить `Disabled with forceShowMessage` на видимость сообщения `"Visible even when disabled"`.
-- **Ожидаемый результат**: HTML-тег `<strong>` отрендерен внутри сообщения, а при `disabled + forceShowMessage` вспомогательное сообщение видимо.
+- **Категория**: `Граничные значения и краевые случаи`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Appearances & Messages`.
+- **Шаги**:
+  1. Проверить наличие HTML-тега `<strong>strong</strong>` в сообщении у `HTML Helper Message`.
+  2. Проверить видимость сообщения `"Visible even when disabled"` у `Disabled with forceShowMessage`.
+- **Ожидаемый результат**: HTML-разметка применяется при `hasHtmlCode`, а сообщение остаётся видимым при `disabled + forceShowMessage`.
 - **Тип доказательства**: `Console/Log`
 
-#### [TC-BND-003] Проверка переполнения текста и выравнивания по всем чекбоксам страницы
+#### [TC-BND-003] Unicode, вьетнамский/кириллица/эмодзи и экранирование XSS (`<img src=x onerror=alert(1)>`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Boundaries & Edge Cases`
-- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Проверить `scrollWidth <= clientWidth + 1` для всех `.d1-checkbox` и `.d1-checkbox__label` на странице.
-- **Ожидаемый результат**: Все чекбоксы помещаются в свои контейнеры без обрезания и горизонтального переполнения.
-- **Тип доказательства**: `Console/Log`
+- **Категория**: `Граничные значения и краевые случаи`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Boundary & Edge Cases`.
+- **Шаги**:
+  1. Проверить корректный рендер `"Tiếng Việt / Кириллица / 🚀 & <>"`.
+  2. Проверить, что `"<img src=x onerror=alert(1)>"` и `"<script>alert('xss')</script>"` отображаются только как экранированный текст.
+- **Ожидаемый результат**: Unicode отображается корректно, инъекции HTML/JS не выполняются.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-003.png`)
 
-### 2.4 Адаптивность (`RSP`)
-
-#### [TC-RSP-001] Отображение на планшете (`768×1024`)
+#### [TC-BND-004] Длинный текст и неразрывная строка в узком `DemoBox`
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Responsive & Viewport`
-- **Предусловия**: Изменить размер вьюпорта на `768×1024`.
-- **Шаги теста**:
-  1. Проверить `document.documentElement.scrollWidth <= window.innerWidth` и видимость элементов `D1Checkbox`.
-- **Ожидаемый результат**: Горизонтальное переполнение отсутствует (`hasOverflow: false`), макет сохраняет целостность.
+- **Категория**: `Граничные значения и краевые случаи`
+- **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, группа `Boundary & Edge Cases`.
+- **Шаги**:
+  1. Проверить `scrollWidth <= clientWidth + 1` для всех `.d1-checkbox` и `.d1-checkbox__label`, включая узкий `.demo-checkbox-page__narrow` (`max-width: 220px`) с `"AAAA...AAAA"`.
+- **Ожидаемый результат**: Все чекбоксы и длинные неразрывные строки корректно помещаются в контейнеры без горизонтального переполнения.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-004.png`)
+
+### 2.4 Адаптивность и вьюпорты (`RSP`)
+
+#### [TC-RSP-001] Отображение на десктопе (`1440×900`) и планшете (`768×1024`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Адаптивность и вьюпорты`
+- **Предусловия**: Проверить страницу при `1440×900` и `768×1024`.
+- **Шаги**:
+  1. Проверить `document.documentElement.scrollWidth <= window.innerWidth` и перенос элементов палитр (`.demo-checkbox-page__palettes`).
+- **Ожидаемый результат**: Горизонтальное переполнение отсутствует (`hasOverflow: false`), элементы адаптируются плавно.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-RSP-001.png`)
 
 #### [TC-RSP-002] Отображение на мобильном экране (`375×812` и `320×568`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Responsive & Viewport`
+- **Категория**: `Адаптивность и вьюпорты`
 - **Предусловия**: Изменить размер вьюпорта на `375×812`, затем на `320×568`.
-- **Шаги теста**:
-  1. Проверить горизонтальное переполнение на странице и перестроение `adaptive="rightSm"` (`order: 4` на `<640px`).
-- **Ожидаемый результат**: На обоих мобильных размерах `hasOverflow: false`, на `<640px` `adaptive="rightSm"` перемещает индикатор чекбокса вправо.
+- **Шаги**:
+  1. Проверить отсутствие горизонтального переполнения на странице и перестроение `adaptive="rightSm"` (`order: 4` при `<640px`).
+- **Ожидаемый результат**: На `375px` и `320px` `hasOverflow: false`, `adaptive="rightSm"` перемещает индикатор вправо.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-RSP-002.png`)
 
 ### 2.5 Доступность (`A11Y`)
 
-#### [TC-A11Y-001] Семантика HTML и WAI-ARIA атрибуты
+#### [TC-A11Y-001] Семантика HTML, WAI-ARIA атрибуты и явные идентификаторы
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Accessibility (A11y)`
+- **Категория**: `Доступность`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
-  1. Проверить корневой `<label>` (наличие `aria-labelledby` и `aria-describedby`, указывающих на реальные DOM ID), `aria-hidden="true"` на `.d1-checkbox__item`, и `aria-invalid="true"` на чекбоксе с `validationMessage`.
-- **Ожидаемый результат**: Все ARIA-ссылки валидны, декоративный индикатор скрыт от скринридеров, ошибка валидации помечена `aria-invalid="true"`.
+- **Шаги**:
+  1. Проверить `<label>` (`aria-labelledby`, `aria-describedby`), `aria-hidden="true"` на `.d1-checkbox__item`, `aria-invalid="true"` при `validationMessage`, `aria-readonly="true"` при `readonly`.
+  2. Проверить явные `labelId`, `descriptionId`, `helperId` и `aria-label` через `inputAttrs` в группе `Accessibility (ARIA & Attributes)`.
+- **Ожидаемый результат**: Все ARIA-ссылки и атрибуты полностью соответствуют контракту WAI-ARIA.
 - **Тип доказательства**: `Console/Log`
 
 #### [TC-A11Y-002] Клавиатурная навигация (`Tab` и `Space`)
 - **Приоритет**: `P1 (High)`
-- **Категория**: `Accessibility (A11y)`
+- **Категория**: `Доступность`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, вьюпорт `1440×900`.
-- **Шаги теста**:
+- **Шаги**:
   1. Установить фокус на нативный `<input type="checkbox">` первого чекбокса `Default`.
-  2. Нажать клавишу `Space` и проверить изменение `checked` и `DemoValue`.
-- **Ожидаемый результат**: Клавиша `Space` переключает состояние чекбокса и обновляет модель.
+  2. Нажать `Space` и проверить переключение `checked` и `DemoValue`.
+- **Ожидаемый результат**: Клавиша `Space` переключает чекбокс и обновляет `v-model`.
 - **Тип доказательства**: `Console/Log`
 
 ### 2.6 Консоль и рантайм (`LOG`)
 
-#### [TC-LOG-001] Генерация событий и чистота консоли
+#### [TC-LOG-001] Генерация событий (`update:modelValue`, `input`, `change`, `focus`, `blur`) и чистота консоли
 - **Приоритет**: `P0 (Critical)`
-- **Категория**: `Console & Runtime`
+- **Категория**: `Консоль и рантайм`
 - **Предусловия**: Открыть `http://localhost:3000/component-checkbox`, очистить буфер сообщений консоли.
-- **Шаги теста**:
-  1. Кликнуть чекбокс `Event Tracker` в группе `Events`.
-  2. Проверить отображение события в `DemoValue` и собрать все `console.error`, `pageerror` и `[Vue warn]` за всю сессию тестирования.
-- **Ожидаемый результат**: `DemoValue` фиксирует события (`changeLite`), `consoleErrors: []`, `pageErrors: []`, `vueWarnings: []`.
+- **Шаги**:
+  1. Сфокусировать, кликнуть и снять фокус с чекбокса `Event Tracker` в группе `Events`.
+  2. Проверить обновление `Event Name` и `Event Payload` (включая `detail: { source: "demo-checkbox" }`) и собрать все `console.error`, `pageerror` и `[Vue warn]` за сессию.
+- **Ожидаемый результат**: События фиксируются с ожидаемым payload, `consoleErrors: []`, `pageErrors: []`, `vueWarnings: []`.
 - **Тип доказательства**: `Console/Log`

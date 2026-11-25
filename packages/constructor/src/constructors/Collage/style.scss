@@ -8,14 +8,18 @@
   container-type: inline-size;
   box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 
   &__body {
     box-sizing: border-box;
     display: grid;
     gap: ui.v('??gap');
-    grid-template-columns: repeat(ui.v('??columns'), minmax(ui.v('??cell-size'), 1fr));
+    grid-template-columns: repeat(ui.v('??columns'), minmax(min(ui.v('??cell-size'), calc((100% - (ui.v('??columns') - 1) * ui.v('??gap')) / ui.v('??columns'))), 1fr));
     grid-template-rows: auto;
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
   }
 
   &--variant {
@@ -51,7 +55,7 @@
 
     &--masonryHorizontal {
       @include ui.subclass('body') {
-        grid-template-columns: repeat(auto-fit, minmax(calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(max(1px, min(calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10), calc((100cqw - (ui.v('??gap') * 19)) / 20))), 1fr));
       }
 
       *[data-collage-item] {

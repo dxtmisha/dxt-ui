@@ -1,63 +1,70 @@
-# Отчёт о визуальном и функциональном тестировании: D1Cell
+# Отчёт визуального и функционального тестирования: D1Cell
 
-## 1. Итоговое резюме
+## 1. Сводка выполнения
 
 - **Компонент:** `D1Cell` (`@dxtmisha/d1`)
-- **Исходный код:** [`Cell`](packages/d1/src/components/Ui/Cell) ([`constructor`](packages/constructor/src/constructors/Cell), [`demo`](packages/demo/src/pages/components/DemoCellPage.vue))
-- **Демо / целевой URL:** `http://localhost:3000/component-cell`
-- **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-24T08:43:00Z`
-- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Mobile 375x812)`
-- **Покрытие тест-кейсов:** 10 / 10 (`100%`)
-- **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1Cell` успешно прошёл все 10 визуальных, функциональных, адаптивных и A11y-сценариев; исправлены пропы демо (`:loading="{ visible: true, value: 65, max: 100 }"`, `<D1Skeleton :active="true">`, слот `#default` и видимое содержимое слота `#body`), зафиксировано `0` ошибок консоли и `0` предупреждений `[Vue warn]`.
+- **Исходный код:** [`D1Cell`](../../src/components/Ui/Cell), [`Cell`](../../../constructor/src/constructors/Cell), [`DemoCellPage.vue`](../../../demo/src/pages/components/DemoCellPage.vue)
+- **Целевой URL:** `http://localhost:3000/component-cell`
+- **Материалы (`materials/`):** `Отсутствуют`
+- **Дата тестирования (UTC):** `2026-11-25T05:47:16Z`
+- **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440×900, Tablet 768×1024, Mobile 375×812 / 320×568)`
+- **Покрытие тест-кейсов:** `16 / 16` (`100%`)
+- **Итог:** **16 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — все 16 визуальных, интерактивных, граничных, адаптивных, A11y и runtime-сценариев `D1Cell` пройдены успешно; SSR вернул `HTTP 200`, узкий контейнер `.demo-cell-page__narrow` не переполняется (`218 === 218`), все 4 вьюпорта (`1440×900`, `768×1024`, `375×812`, `320×568`) без горизонтального скролла при `0` ошибок консоли, Vue и сети.
 
 ---
 
-## 2. Базовая матрица
+## 2. Матрица результатов
 
-### 2.1 Визуальное соответствие (`VIS`)
+### 2.1 Визуальный рендеринг (`VIS`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендер, иконки, разделители и отступы | ✅ | Отрисовано `47` экземпляров `.d1-cell` без нулевых размеров (`hasZeroSize: false`), `4` ведущих иконки `.d1-cell__icon` и `3` завершающих `.d1-cell__trailing`, корректные разделители и отступы. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Теги (`section`, `button`, `a`) и слоты (`default`, `caption`, `description`, `trailing`, `body`) | ✅ | Отрендерены `section` (`1`), `button` (`1`), `a` (`2`) и все 5 слотов (`Custom Bold Label Slot`, `Custom Caption Slot`, `Custom Description Slot`, `.d1-cell__contextTrailing`, `.d1-cell__body`) без смещения вёрстки. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-001` | Базовый рендеринг, `label`, `caption`, `description` и теги (`section`, `button`, `a`) | ✅ | Все элементы `.d1-cell` отображаются с ненулевой геометрией, корректной иерархией `caption`/`label`/`description` и соответствующими тегами `<section>`, `<button type="button">`, `<a href="#demo-link">` и router-ссылками. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Иконки, модификаторы (`iconTurn`, `iconDir`, `iconHide`, `iconPalette`, `iconTop`, `iconAttrs`) | ✅ | Ведущие и завершающие иконки выровнены корректно; `iconHide` скрывает основную иконку, `iconTop` выравнивает её по верхнему краю, `iconTurn` поворачивает завершающую иконку. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Разделители (`divider`, все 12 значений `dividerLabel`) и отступы (все 7 `padding`, `paddingByIndent`) | ✅ | Применяются классы `.d1-cell--divider`, `data-divider="active"`, все 12 вариантов `.d1-cell--dividerLabel--*` (включая `adaptive*` и `container*`) и все 7 вариантов `.d1-cell--padding--*` без смещения вёрстки. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-004` | Индикатор загрузки (`loading`) и состояние скелетона (`isSkeleton` внутри `D1Skeleton`) | ✅ | Индикаторы `.d1-progress` (включая `{ visible: true, value: 65, max: 100 }`) и классы скелетона (`.d1-skeleton__text`, `.d1-skeleton__textVariant`) отображаются без дублирования DOM. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-INT-001` | Состояния (`focus`, `selected`, `readonly`, `disabled`) и динамика | ✅ | Применены все модификаторы (`--focus`, `--selected`, `--readonly`, `--disabled`, `--dynamic`, `--dynamicHover`); `disabled` и `readonly` имеют `cursor: default`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | Индикатор загрузки (`loading`) и скелетон (`isSkeleton` + `D1Skeleton`) | ✅ | Отображаются `3` индикатора `.d1-progress` (включая детерминированный `65%`) и активные плейсхолдеры скелетона (`skeletonClassCount: 5`) без искажения геометрии. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
-| `TC-INT-003` | Клик по интерактивной ячейке, эмиты `click` / `clickLite` и `expose` | ✅ | `getValue()` возвращает `"my-cell-value"`, `getDetail()` — `{"category":"demo","action":"trigger"}`; клик по `Interactive Cell` обновляет трекер события на `clickLite`. | — |
+| `TC-INT-001` | Статические состояния (`focus`, `selected`, `readonly`, `disabled`, `dynamic`, `dynamicHover`) | ✅ | Применены все модификаторы `.d1-cell--focus`, `.d1-cell--selected`, `.d1-cell--readonly`, `.d1-cell--disabled`, `.d1-cell--dynamic`, `.d1-cell--dynamicHover` с корректным `cursor`. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | Динамические переключатели состояний (`Interactive State Toggles`) | ✅ | Кнопки `Toggle Selected`, `Toggle Disabled`, `Toggle Readonly`, `Toggle Loading`, `Toggle Dynamic` и `Toggle Skeleton` реактивно обновляют классы целевого `D1Cell` и `State Flags`. | ![TC-INT-002](./screenshots/TC-INT-002.png) |
+| `TC-INT-003` | Блокировка кликов в состояниях `disabled`, `readonly` и `loading` (`Blocked & Guarded Actions`) | ✅ | После кликов по `Blocked Disabled Cell`, `Blocked Readonly Cell` и `Blocked Loading Cell` счётчик в блоке остался неизменным: `Blocked Click Count: 0`. | — |
+| `TC-INT-004` | Слоты (`#caption`, `#default`, `#description`) и scoped-привязки (`#trailing`, `#body`) | ✅ | Пользовательские слоты и scoped-классы `d1-cell__trailing`, `d1-cell__description`, `d1-cell__label` корректно отрендерены в DOM. | ![TC-INT-004](./screenshots/TC-INT-004.png) |
+| `TC-INT-005` | Методы `expose` (`getValue`, `getDetail`), переключение данных и жизненный цикл `v-if` | ✅ | После переключения `Expose Output`: `getValue(): "updated-cell-value", getDetail(): {"category":"demo","step":2}`; `Toggle Mount` чисто размонтирует (`Mounted: false`) и повторно монтирует (`Mounted: true`) `Mounted Cell`. | ![TC-INT-005](./screenshots/TC-INT-005.png) |
 
-### 2.3 Границы и крайние сценарии (`BND`)
+### 2.3 Граничные случаи и устойчивость (`BND`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Числовые значения в `label`, `caption`, `description` | ✅ | Числа `2048`, `42` и `100000` корректно отображаются в DOM. | — |
+| `TC-BND-001` | Пустые, пробельные, отсутствующие значения и числовые границы (`0`, `-42`, `3.14`) | ✅ | Числа `0`, `-42`, `3.14` и `"A"` явно отображаются в DOM, пустые и пробельные ячейки рендерятся без исключений. | — |
+| `TC-BND-002` | Unicode, вьетнамский/кириллица/эмодзи и экранирование XSS (`<img src=x onerror=alert(1)>`) | ✅ | Строки `"Tiếng Việt / Кириллица / 🚀 & <>"`, `"<img src=x onerror=alert(1)>"` и `"<script>alert('xss')</script>"` отображаются как текст (`badImgs: 0`, `hasEscapedPayloadText: true`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+| `TC-BND-003` | Длинный многословный текст и неразрывная строка в узком `DemoBox` | ✅ | Неразрывные строки `AAAA...` и `BBBB...` переносятся внутри узкого контейнера `.demo-cell-page__narrow` без переполнения (`scrollWidth: 218 === clientWidth: 218`, `overflowsBox: false`). | ![TC-BND-003](./screenshots/TC-BND-003.png) |
 
-### 2.4 Адаптивность (`RSP`)
+### 2.4 Адаптивность и вьюпорты (`RSP`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Адаптивность на десктопе (`1440×900`) | ✅ | Горизонтальный скролл отсутствует (`scrollWidth: 1440 === innerWidth: 1440`, `overflow: false`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
-| `TC-RSP-002` | Адаптивность на мобильном экране (`375×812`) | ✅ | `scrollWidth: 375 === innerWidth: 375`, `overflow: false`, `overflowingCells: 0`. | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
+| `TC-RSP-001` | Адаптивность на десктопе (`1440×900`) и планшете (`768×1024`) | ✅ | Горизонтальное переполнение отсутствует на обоих разрешениях: `1440×900` (`scrollWidth: 1440 === 1440`, `overflowX: false`), `768×1024` (`scrollWidth: 768 === 768`, `overflowX: false`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-002` | Адаптивность на мобильном экране (`375×812` и `320×568`) | ✅ | Горизонтальное переполнение отсутствует на обоих мобильных разрешениях: `375×812` (`scrollWidth: 375 === 375`, `overflowX: false`), `320×568` (`scrollWidth: 320 === 320`, `overflowX: false`). | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
 
 ### 2.5 Доступность (`A11Y`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA роли и `tabindex` | ✅ | Отрисовано `3` элемента с `role="button" tabindex="0"`, а также явные роли `listitem`, `menuitem` и `option`. | — |
+| `TC-A11Y-001` | WAI-ARIA роли, `labelId`/`descriptionId`, `captionDecorative`, `tabindex` и клавиатура (`Enter`) | ✅ | Интерактивные ячейки имеют `role="button"` и `tabindex="0"`, `captionDecorative` помечен `aria-hidden="true"`, заданы явные роли и ID, активация клавишей `Enter` срабатывает штатно. | — |
 
-### 2.6 Логи и консоль (`LOG`)
+### 2.6 Консоль и стабильность runtime (`LOG`)
 
-| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| ID | Сценарий | Статус | Наблюдаемый результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | Чистота консоли и отсутствие Vue-предупреждений | ✅ | `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`. | — |
+| `TC-LOG-001` | События `click` / `clickLite`, `index`-фолбэк и чистота консоли | ✅ | SSR-ответ `HTTP 200` (`hasComponent: true`); события `click`/`clickLite` (включая `index=7`) отрабатывают корректно; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`. | — |
 
 ---
 
 ## 3. AI-аудит и рекомендации
 
-1. **Соответствие контракту `ProgressPropsInclude` и `SkeletonPropsInclude` в демо ([DemoCellPage.vue](packages/demo/src/pages/components/DemoCellPage.vue))**: Заменены устаревшие пропы `:progress="{ value: 65 }"` → `:loading="{ visible: true, value: 65, max: 100 }"` и `:skeleton="{ active: true }"` → `<D1Skeleton :active="true"><D1Cell isSkeleton .../></D1Skeleton>`, а также слот `#label` → `#default`. После правок индикатор прогресса `65%`, слот заголовка и скелетон рендерятся без предупреждений Vue.
-2. **Ленивая инициализация и защита слотов ([Cell.ts](packages/constructor/src/constructors/Cell/Cell.ts), [CellDesign.tsx](packages/constructor/src/constructors/Cell/CellDesign.tsx))**: Опциональные включения (`icon`, `label`, `caption`, `description`, `progress`, `ripple`, `skeleton`) создаются строго по `canCreate` + `callInstance`, а `renderTrailing` / `renderBody` используют `isFunction(...)`, исключая пустые контейнеры при передаче `undefined`-слотов.
+1. **Перенос длинных неразрывных токенов (`overflow-wrap: anywhere`):** В `Cell/style.scss` корректно заданы ограничения ширины и перенос текста — даже в узком контейнере `.demo-cell-page__narrow` (`218px`) и на вьюпорте `320×568` неразрывные строки `AAAA...` / `BBBB...` аккуратно переносятся по строкам (`scrollWidth === clientWidth`, `overflowX: false`).
+2. **Защита интерактивных действий и SSR-совместимость:** Состояния `disabled`, `readonly` и `loading` полностью блокируют события клика (`Blocked Click Count: 0`), а условный рендер по `v-if` и SSR-выдача (`HTTP 200`) проходят без предупреждений `[Vue warn]`.
+3. **Чистота runtime и сети:** На протяжении всего прогона не зафиксировано ошибок консоли, исключений страницы, диалогов или сетевых сбоев (`consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`, `networkErrors: []`).

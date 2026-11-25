@@ -1,10 +1,53 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { EventClickValue } from '@dxtmisha/constructor'
+import type { FieldProps } from '@dxtmisha/d1/D1Field'
+import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
+
+type FieldStyleVariant = 'classic' | 'outlined' | 'filled' | 'tonal' | 'boxed' | 'basic'
+
+const paletteList: NonNullable<FieldProps['palette']>[] = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'black',
+  'white'
+]
+
+const styleList: FieldStyleVariant[] = [
+  'classic',
+  'outlined',
+  'filled',
+  'tonal',
+  'boxed',
+  'basic'
+]
+
+const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
 
 const interactiveValue = ref<string>('Hello Field')
 const interactiveFocus = ref<boolean>(false)
@@ -17,8 +60,12 @@ const interactiveValidation = ref<string>('')
 const interactiveForceShow = ref<boolean>(false)
 const interactiveSkeleton = ref<boolean>(false)
 const interactiveCounterTop = ref<boolean>(false)
-const interactiveStyle = ref<'classic' | 'outlined' | 'filled' | 'tonal' | 'boxed' | 'basic'>('outlined')
-const lastEvent = ref<string>('none')
+const interactiveStyle = ref<FieldStyleVariant>('outlined')
+
+const blockedClickCount = ref<number>(0)
+const formEmail = ref<string>('')
+const formStatus = ref<string>('Not submitted')
+const isLifecycleMounted = ref<boolean>(true)
 
 const interactiveSummary = computed<string>(() => JSON.stringify({
   value: interactiveValue.value,
@@ -35,12 +82,37 @@ const interactiveSummary = computed<string>(() => JSON.stringify({
   counterTop: interactiveCounterTop.value
 }))
 
-const onFieldClick = (_event: MouseEvent, options: EventClickValue): void => {
-  lastEvent.value = `${options.type}:${String(options.value ?? '')}`
+const trackEvent = (name: string, payload: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = JSON.stringify(payload)
+}
+
+const handleFieldClick = (
+  mouseEvent: MouseEvent,
+  options: EventClickValue
+): void => {
+  trackEvent('click', {
+    eventType: mouseEvent.type,
+    type: options.type,
+    value: options.value,
+    detail: options.detail
+  })
 
   if (options.type === 'cancel') {
     interactiveValue.value = ''
   }
+}
+
+const handleFieldClickLite = (options: EventClickValue): void => {
+  trackEvent('clickLite', {
+    type: options.type,
+    value: options.value,
+    detail: options.detail
+  })
+}
+
+const handleBlockedClick = (): void => {
+  blockedClickCount.value += 1
 }
 
 const toggleWarning = (): void => {
@@ -56,24 +128,27 @@ const toggleValidation = (): void => {
 }
 
 const cycleStyle = (): void => {
-  const styles: Array<'classic' | 'outlined' | 'filled' | 'tonal' | 'boxed' | 'basic'> = [
-    'classic',
-    'outlined',
-    'filled',
-    'tonal',
-    'boxed',
-    'basic'
-  ]
-  const index = styles.indexOf(interactiveStyle.value)
-  interactiveStyle.value = styles[(index + 1) % styles.length] ?? 'outlined'
+  const currentIndex = styleList.indexOf(interactiveStyle.value)
+  interactiveStyle.value = styleList[(currentIndex + 1) % styleList.length] ?? 'outlined'
+}
+
+const handleFormSubmit = (): void => {
+  formStatus.value = formEmail.value
+    ? `Form submitted (${formEmail.value})`
+    : 'Form blocked (email required)'
+}
+
+const handleFormReset = (): void => {
+  formEmail.value = ''
+  formStatus.value = 'Form reset'
 }
 </script>
 
 <template>
   <DemoLinkBlack/>
-  <D1Page label="Field">
+  <D1Page label="Field" class="demo-field-page">
     <D1Section>
-      <D1Group label="Visual Styles">
+      <D1Group label="Visual Styles (All 6)">
         <DemoFlex direction="column">
           <DemoBox>
             <D1Field classic is-value label="Classic (default)" helper-message="Default classic layout">
@@ -181,16 +256,23 @@ const cycleStyle = (): void => {
           </DemoBox>
 
           <DemoBox>
-            <D1Field
-              outlined
-              loading
-              label="Loading"
-              is-value
-            >
-              <template #default="{ binds }">
-                <input v-bind="binds" value="Loading data..." readonly/>
-              </template>
-            </D1Field>
+            <DemoFlex>
+              <D1Field outlined loading label="Loading (boolean)" is-value>
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Loading data..." readonly/>
+                </template>
+              </D1Field>
+              <D1Field
+                outlined
+                :loading="{ visible: true, linear: false, circular: true }"
+                label="Loading (object)"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Object progress config" readonly/>
+                </template>
+              </D1Field>
+            </DemoFlex>
           </DemoBox>
 
           <DemoBox data-testid="warning-field-box">
@@ -255,6 +337,7 @@ const cycleStyle = (): void => {
               label="Required & Validation"
               is-value
               validation-message="Please provide a valid value"
+              validation-id="demo-field-validation-msg"
             >
               <template #default="{ binds }">
                 <input v-bind="binds" value="Invalid value" readonly/>
@@ -264,7 +347,7 @@ const cycleStyle = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Sizes, Width & Palettes">
+      <D1Group label="Sizes (All 4), Width & Alignments">
         <DemoFlex direction="column">
           <DemoBox>
             <DemoFlex>
@@ -298,6 +381,17 @@ const cycleStyle = (): void => {
                   <input v-bind="binds" value="260px" readonly/>
                 </template>
               </D1Field>
+              <D1Field
+                outlined
+                width="custom"
+                class="demo-field-page__custom-width"
+                label="Custom width token (320px)"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Custom width" readonly/>
+                </template>
+              </D1Field>
               <D1Field outlined block label="Block width (100%)" is-value>
                 <template #default="{ binds }">
                   <input v-bind="binds" value="Full container width" readonly/>
@@ -308,14 +402,19 @@ const cycleStyle = (): void => {
 
           <DemoBox>
             <DemoFlex>
-              <D1Field outlined palette="emerald" focus label="Emerald Palette" is-value>
+              <D1Field outlined align="left" label="Align Left" is-value>
                 <template #default="{ binds }">
-                  <input v-bind="binds" value="Emerald" readonly/>
+                  <input v-bind="binds" value="Left aligned" readonly/>
                 </template>
               </D1Field>
-              <D1Field tonal palette="violet" label="Violet Tonal" is-value>
+              <D1Field outlined align="center" label="Align Center" is-value>
                 <template #default="{ binds }">
-                  <input v-bind="binds" value="Violet" readonly/>
+                  <input v-bind="binds" value="Center aligned" readonly/>
+                </template>
+              </D1Field>
+              <D1Field outlined align="right" label="Align Right" is-value>
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Right aligned" readonly/>
                 </template>
               </D1Field>
             </DemoFlex>
@@ -323,47 +422,109 @@ const cycleStyle = (): void => {
         </DemoFlex>
       </D1Group>
 
+      <D1Group label="Palettes (All 24)">
+        <div class="demo-field-page__palettes">
+          <D1Field
+            v-for="paletteName in paletteList"
+            :key="paletteName"
+            outlined
+            focus
+            is-value
+            :palette="paletteName"
+            :label="paletteName"
+          >
+            <template #default="{ binds }">
+              <input v-bind="binds" :value="paletteName" readonly/>
+            </template>
+          </D1Field>
+        </div>
+      </D1Group>
+
       <D1Group label="Icons, Cancel & Arrows">
         <DemoFlex direction="column">
           <DemoBox>
-            <D1Field
-              outlined
-              label="Leading & Trailing Icons"
-              icon="search"
-              icon-trailing="visibility"
-              is-value
-            >
-              <template #default="{ binds }">
-                <input v-bind="binds" value="Search query" readonly/>
-              </template>
-            </D1Field>
+            <DemoFlex>
+              <D1Field
+                outlined
+                label="Leading & Trailing Icons"
+                icon="search"
+                icon-trailing="visibility"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Search query" readonly/>
+                </template>
+              </D1Field>
+              <D1Field
+                outlined
+                label="Icon Modifiers & Object"
+                :icon="{ icon: 'arrow_drop_down', palette: 'blue' }"
+                icon-turn
+                icon-dir
+                icon-palette
+                :icon-attrs="{ size: 'md' }"
+                icon-trailing="info"
+                icon-trailing-turn-only
+                icon-trailing-dir-only
+                icon-trailing-palette
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Configured icons" readonly/>
+                </template>
+              </D1Field>
+              <D1Field
+                outlined
+                label="Hidden & Null Icons"
+                icon="search"
+                icon-hide
+                :icon-trailing="null"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="iconHide active" readonly/>
+                </template>
+              </D1Field>
+            </DemoFlex>
           </DemoBox>
 
           <DemoBox>
-            <D1Field
-              outlined
-              label="Icon Turn & Object Config"
-              :icon="{ icon: 'arrow_drop_down', palette: 'blue' }"
-              icon-turn
-              is-value
-            >
-              <template #default="{ binds }">
-                <input v-bind="binds" value="Turned icon" readonly/>
-              </template>
-            </D1Field>
-          </DemoBox>
-
-          <DemoBox>
-            <D1Field
-              outlined
-              label="Cancel Always"
-              cancel="always"
-              is-value
-            >
-              <template #default="{ binds }">
-                <input v-bind="binds" value="Clearable text" readonly/>
-              </template>
-            </D1Field>
+            <DemoFlex>
+              <D1Field
+                outlined
+                label="Cancel Auto (Shown)"
+                cancel="auto"
+                cancel-show
+                text-cancel="Clear field value"
+                icon-close="close"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Auto cancel" readonly/>
+                </template>
+              </D1Field>
+              <D1Field
+                outlined
+                label="Cancel Always"
+                cancel="always"
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Always clearable" readonly/>
+                </template>
+              </D1Field>
+              <D1Field
+                outlined
+                label="Cancel None"
+                cancel="none"
+                cancel-show
+                is-value
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Cancel hidden" readonly/>
+                </template>
+              </D1Field>
+            </DemoFlex>
           </DemoBox>
 
           <DemoBox>
@@ -375,6 +536,8 @@ const cycleStyle = (): void => {
                 label="Carousel (right)"
                 is-value
                 :disabled-previous="true"
+                icon-arrow-left="chevron_left"
+                icon-arrow-right="chevron_right"
               >
                 <template #default="{ binds }">
                   <input v-bind="binds" value="Slide 1" readonly/>
@@ -387,6 +550,8 @@ const cycleStyle = (): void => {
                 align="center"
                 label="Stepper (center)"
                 is-value
+                icon-minus="remove"
+                icon-plus="add"
               >
                 <template #default="{ binds }">
                   <input v-bind="binds" value="42" readonly/>
@@ -410,7 +575,7 @@ const cycleStyle = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Prefix, Suffix, Caption & Counter">
+      <D1Group label="Prefix, Suffix, Caption, Counter & Delegated Attrs">
         <DemoFlex direction="column">
           <DemoBox>
             <D1Field
@@ -419,6 +584,7 @@ const cycleStyle = (): void => {
               prefix="$"
               suffix="USD"
               caption="Tax incl."
+              caption-decorative
               value="199.00"
               is-value
             >
@@ -436,6 +602,7 @@ const cycleStyle = (): void => {
               counter-show
               :counter="24"
               :maxlength="60"
+              counter-id="demo-field-top-counter"
               helper-message="Counter positioned inside top label"
             >
               <template #default="{ binds }">
@@ -447,13 +614,16 @@ const cycleStyle = (): void => {
           <DemoBox>
             <D1Field
               outlined
-              label="Counter Bottom + HTML Helper"
+              label="Counter Bottom + Delegated Attrs"
               counter-show
               :counter="18"
               :maxlength="40"
               counter-template="[c] / [m]"
               has-html-code
               helper-message="Use <strong>letters</strong> and digits"
+              :field-label-attrs="{ 'data-testid': 'field-label-attrs-target' }"
+              :field-message-attrs="{ 'data-testid': 'field-message-attrs-target' }"
+              :field-counter-attrs="{ 'data-testid': 'field-counter-attrs-target' }"
               is-value
             >
               <template #default="{ binds }">
@@ -464,7 +634,7 @@ const cycleStyle = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Slots & Skeleton">
+      <D1Group label="Slots, Scoped Bindings & Skeleton">
         <DemoFlex direction="column">
           <DemoBox data-testid="slots-field-box">
             <D1Field
@@ -482,8 +652,9 @@ const cycleStyle = (): void => {
                 <span class="demo-field-page__badge" :data-control-id="id">L</span>
               </template>
               <template #prefix>PRE</template>
-              <template #default="{ binds }">
+              <template #default="{ id, className, classHidden, classForFocus, binds }">
                 <input v-bind="binds" value="Slot content" readonly/>
+                <span class="demo-field-page__meta" :data-slot-classes="`${id}|${className}|${classHidden}|${classForFocus}`"/>
               </template>
               <template #suffix>SUF</template>
               <template #caption>CAP</template>
@@ -513,20 +684,20 @@ const cycleStyle = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Interactive & Multilingual (RTL/LTR)">
+      <D1Group label="Interactive Controls, Events & Href">
         <DemoFlex direction="column">
           <DemoFlex>
-            <D1Button label="Style" outline @click="cycleStyle"/>
-            <D1Button label="Focus" :selected="interactiveFocus" outline @click="interactiveFocus = !interactiveFocus"/>
-            <D1Button label="Selected" :selected="interactiveSelected" outline @click="interactiveSelected = !interactiveSelected"/>
-            <D1Button label="Disabled" :selected="interactiveDisabled" outline @click="interactiveDisabled = !interactiveDisabled"/>
-            <D1Button label="Readonly" :selected="interactiveReadonly" outline @click="interactiveReadonly = !interactiveReadonly"/>
-            <D1Button label="Loading" :selected="interactiveLoading" outline @click="interactiveLoading = !interactiveLoading"/>
-            <D1Button label="Warning" :selected="Boolean(interactiveWarning)" outline @click="toggleWarning"/>
-            <D1Button label="Validation" :selected="Boolean(interactiveValidation)" outline @click="toggleValidation"/>
-            <D1Button label="Force Show" :selected="interactiveForceShow" outline @click="interactiveForceShow = !interactiveForceShow"/>
-            <D1Button label="Skeleton" :selected="interactiveSkeleton" outline @click="interactiveSkeleton = !interactiveSkeleton"/>
-            <D1Button label="Counter Top" :selected="interactiveCounterTop" outline @click="interactiveCounterTop = !interactiveCounterTop"/>
+            <D1Button label="Style" size="sm" outline @click="cycleStyle"/>
+            <D1Button label="Focus" size="sm" :selected="interactiveFocus" outline @click="interactiveFocus = !interactiveFocus"/>
+            <D1Button label="Selected" size="sm" :selected="interactiveSelected" outline @click="interactiveSelected = !interactiveSelected"/>
+            <D1Button label="Disabled" size="sm" :selected="interactiveDisabled" outline @click="interactiveDisabled = !interactiveDisabled"/>
+            <D1Button label="Readonly" size="sm" :selected="interactiveReadonly" outline @click="interactiveReadonly = !interactiveReadonly"/>
+            <D1Button label="Loading" size="sm" :selected="interactiveLoading" outline @click="interactiveLoading = !interactiveLoading"/>
+            <D1Button label="Warning" size="sm" :selected="Boolean(interactiveWarning)" outline @click="toggleWarning"/>
+            <D1Button label="Validation" size="sm" :selected="Boolean(interactiveValidation)" outline @click="toggleValidation"/>
+            <D1Button label="Force Show" size="sm" :selected="interactiveForceShow" outline @click="interactiveForceShow = !interactiveForceShow"/>
+            <D1Button label="Skeleton" size="sm" :selected="interactiveSkeleton" outline @click="interactiveSkeleton = !interactiveSkeleton"/>
+            <D1Button label="Counter Top" size="sm" :selected="interactiveCounterTop" outline @click="interactiveCounterTop = !interactiveCounterTop"/>
           </DemoFlex>
 
           <DemoBox data-testid="interactive-field-box">
@@ -551,6 +722,8 @@ const cycleStyle = (): void => {
               :is-value="Boolean(interactiveValue)"
               :cancel-show="Boolean(interactiveValue)"
               :value="interactiveValue"
+              :detail="{ source: 'demo-field' }"
+              :index="1"
               :counter="interactiveValue.length"
               :maxlength="50"
               counter-show
@@ -559,7 +732,8 @@ const cycleStyle = (): void => {
               suffix="txt"
               icon="edit"
               helper-message="Type or click clear icon"
-              @click="onFieldClick"
+              @click="handleFieldClick"
+              @click-lite="handleFieldClickLite"
             >
               <template #default="{ binds }">
                 <input
@@ -571,24 +745,248 @@ const cycleStyle = (): void => {
             </D1Field>
           </DemoBox>
 
+          <DemoBox>
+            <D1Field
+              outlined
+              label="Link Href Field"
+              href="#demo-field-href-anchor"
+              is-value
+              helper-message="Provides href binding via EventClickInclude"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="Linked field" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+
+          <DemoValue label="Event Name" :value="eventName"/>
+          <DemoValue label="Event Payload" :value="eventPayload"/>
+          <DemoValue label="State" :value="interactiveSummary"/>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Blocked & Guarded Actions">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <D1Field
+              outlined
+              disabled
+              cancel="always"
+              arrow-stepper
+              is-value
+              label="Blocked Disabled Field"
+              @click="handleBlockedClick"
+              @click-lite="handleBlockedClick"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="Cannot trigger click" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field
+              outlined
+              readonly
+              cancel="always"
+              is-value
+              label="Readonly Field (Cancel Hidden)"
+              @click="handleBlockedClick"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="Readonly protected" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+        </DemoFlex>
+        <DemoValue label="Blocked Click Count" :value="blockedClickCount"/>
+      </D1Group>
+
+      <D1Group label="Form Integration">
+        <form id="demo-field-form" @submit.prevent="handleFormSubmit" @reset="handleFormReset">
+          <D1Field
+            outlined
+            required
+            label="Email Address"
+            :is-value="Boolean(formEmail)"
+            helper-message="Enter an email address to submit"
+          >
+            <template #default="{ binds }">
+              <input
+                v-model="formEmail"
+                v-bind="binds"
+                type="email"
+                name="email"
+                required
+              />
+            </template>
+          </D1Field>
+          <DemoFlex align="center">
+            <D1Button label="Submit Form" tag="button" type="submit" size="sm" primary/>
+            <D1Button label="Reset Form" tag="button" type="reset" size="sm" outline/>
+          </DemoFlex>
+        </form>
+        <DemoValue label="Form Status" :value="formStatus"/>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA, IDs & Keyboard)">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <D1Field
+              id="demo-field-a11y"
+              outlined
+              is-value
+              label="Accessible Identifiers"
+              prefix="ID"
+              suffix="OK"
+              label-id="demo-field-a11y-label"
+              prefix-id="demo-field-a11y-prefix"
+              suffix-id="demo-field-a11y-suffix"
+              helper-id="demo-field-a11y-helper"
+              counter-id="demo-field-a11y-counter"
+              counter-show
+              :counter="10"
+              :maxlength="30"
+              helper-message="Binds prefix, suffix, helper, and counter IDs to aria-describedby"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="ARIA linked" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field
+              :id="101"
+              classic
+              is-value
+              label="Numeric ID & Invalid ARIA"
+              validation-id="demo-field-a11y-validation"
+              validation-message="Sets aria-invalid=true on control binds"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="Invalid ARIA state" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Boundary, RTL & Edge Cases">
+        <DemoFlex direction="column">
+          <DemoBox>
+            <D1Field outlined label="" helper-message="Empty label boundary">
+              <template #default="{ binds }">
+                <input v-bind="binds" value="" aria-label="Empty label field" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field outlined label="   " helper-message="Whitespace label boundary">
+              <template #default="{ binds }">
+                <input v-bind="binds" value="   " aria-label="Whitespace label field" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field
+              outlined
+              is-value
+              :id="0"
+              :label="0"
+              :prefix="0"
+              :suffix="0"
+              :caption="0"
+              :value="0"
+              counter-show
+              :counter="0"
+              :maxlength="10"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="0" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field outlined is-value label="A" prefix="P" suffix="S">
+              <template #default="{ binds }">
+                <input v-bind="binds" value="X" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field
+              outlined
+              is-value
+              label="Very long multi-sentence field label designed to verify truncation and layout stability across desktop and mobile viewports"
+              helper-message="Extended multi-sentence helper message checking vertical alignment without horizontal overflow"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="Long content value" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
+          <DemoBox>
+            <D1Field
+              outlined
+              is-value
+              label="<img src=x onerror=alert(1)>"
+              helper-message="<script>alert('xss')</script>"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="<img src=x onerror=alert(1)>" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
           <DemoBox dir="rtl">
             <D1Field
               outlined
-              label="رقم الهاتف — Học tiếng Việt"
+              label="رقم الهاتف — Học tiếng Việt / Кириллица 🚀"
               prefix="+84"
               suffix="VN"
               is-value
-              helper-message="Поддержка RTL и многоязычного текста 🚀"
+              helper-message="RTL direction and multilingual label support"
             >
               <template #default="{ binds }">
                 <input v-bind="binds" value="0912345678" readonly/>
               </template>
             </D1Field>
           </DemoBox>
-
-          <DemoValue label="Last Event" :value="lastEvent"/>
-          <DemoValue label="State" :value="interactiveSummary"/>
+          <DemoBox class="demo-field-page__narrow" size="sm">
+            <D1Field
+              outlined
+              is-value
+              label="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              helper-message="BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+            >
+              <template #default="{ binds }">
+                <input v-bind="binds" value="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" readonly/>
+              </template>
+            </D1Field>
+          </DemoBox>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex align="center">
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <D1Field
+          v-if="isLifecycleMounted"
+          outlined
+          is-value
+          label="Mounted Field"
+          prefix="$"
+          suffix="USD"
+        >
+          <template #default="{ binds }">
+            <input v-bind="binds" value="100" readonly/>
+          </template>
+        </D1Field>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
@@ -596,6 +994,22 @@ const cycleStyle = (): void => {
 
 <style lang="scss">
 .demo-field-page {
+  &__palettes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    max-width: 100%;
+  }
+
+  &__custom-width {
+    --d1-field-sys-width: 320px;
+  }
+
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
+  }
+
   &__badge {
     display: inline-flex;
     align-items: center;
@@ -606,6 +1020,10 @@ const cycleStyle = (): void => {
     border-radius: 4px;
     font-size: 12px;
     font-weight: 600;
+  }
+
+  &__meta {
+    display: none;
   }
 }
 </style>

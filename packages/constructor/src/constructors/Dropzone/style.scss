@@ -1,9 +1,15 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinDropzone {
+  box-sizing: border-box;
   @include ui.absolute;
   @include ui.flexY;
   justify-content: center;
+  justify-content: safe center;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 8;
 
   border-style: dashed;
@@ -14,11 +20,22 @@
 
   &__input {
     @include ui.absolute;
+    max-width: 100%;
     opacity: 0;
   }
 
   &__label {
+    min-width: 0;
+    max-width: 100%;
     text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  &__description {
+    min-width: 0;
+    max-width: 100%;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
 
   &--disabled,

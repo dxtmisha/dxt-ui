@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { DummyExpose } from '@dxtmisha/constructor/Dummy'
-import type { DummyProps } from '@dxtmisha/d1/Dummy'
+import type { DummyProps } from '@dxtmisha/d1/D1Dummy'
 import { useDemoEvent } from '../../composables/useDemoEvent'
-
+import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
-const { eventName, onEvent } = useDemoEvent()
+type DummyExposeTarget = DummyExpose & {
+  elementHtml?: HTMLDivElement
+}
 
-const sizes: NonNullable<DummyProps['size']>[] = [
+const { eventName, onEvent } = useDemoEvent()
+const eventPayload = ref<string>('No events triggered yet')
+
+const sizeList: NonNullable<DummyProps['size']>[] = [
   'x',
   'xs',
   'sm',
@@ -23,7 +28,7 @@ const sizes: NonNullable<DummyProps['size']>[] = [
   '5xl'
 ]
 
-const palettes: NonNullable<DummyProps['palette']>[] = [
+const paletteList: NonNullable<DummyProps['palette']>[] = [
   'red',
   'orange',
   'amber',
@@ -50,72 +55,192 @@ const palettes: NonNullable<DummyProps['palette']>[] = [
   'white'
 ]
 
-const dummyRef = ref<DummyExpose | null>(null)
-const elementTag = ref<string>('Not inspected')
+const dynamicSizeIndex = ref<number>(3)
+const dynamicPaletteIndex = ref<number>(10)
+const showDynamicSlot = ref<boolean>(true)
+const isLifecycleMounted = ref<boolean>(true)
 
-const inspectElement = () => {
-  elementTag.value = dummyRef.value?.elementHtml?.tagName ?? 'Unavailable'
-  onEvent('inspect', elementTag.value)
+const dummyTarget = ref<DummyExposeTarget | null>(null)
+const elementInspection = ref<string>('Not inspected')
+
+const currentDynamicSize = (): NonNullable<DummyProps['size']> => {
+  return sizeList[dynamicSizeIndex.value % sizeList.length] ?? 'md'
+}
+
+const currentDynamicPalette = (): NonNullable<DummyProps['palette']> => {
+  return paletteList[dynamicPaletteIndex.value % paletteList.length] ?? 'blue'
+}
+
+const trackEvent = (name: string, payload: unknown): void => {
+  onEvent(name, payload)
+  eventPayload.value = JSON.stringify(payload)
+}
+
+const cycleDynamicSize = (): void => {
+  dynamicSizeIndex.value = (dynamicSizeIndex.value + 1) % sizeList.length
+}
+
+const cycleDynamicPalette = (): void => {
+  dynamicPaletteIndex.value = (dynamicPaletteIndex.value + 1) % paletteList.length
+}
+
+const inspectElement = (): void => {
+  const htmlElement = dummyTarget.value?.elementHtml
+  elementInspection.value = htmlElement
+    ? `${htmlElement.tagName} (${htmlElement.className})`
+    : 'Unavailable'
+  trackEvent('inspect', { elementInspection: elementInspection.value })
 }
 </script>
 
 <template>
-  <DemoLinkBlack />
+  <DemoLinkBlack/>
   <D1Page label="Dummy" class="demo-dummy-page">
     <D1Section>
       <D1Group label="Basic & Default Slot">
         <DemoFlex>
-          <D1Dummy />
+          <D1Dummy/>
           <D1Dummy>Slot content</D1Dummy>
           <D1Dummy size="lg">
-            <span>Structured content</span>
+            <span>Structured HTML content</span>
           </D1Dummy>
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Sizes">
+      <D1Group label="Sizes (All 10)">
         <DemoFlex>
           <D1Dummy
-            v-for="size in sizes"
-            :key="size"
-            :size="size"
+            v-for="sizeName in sizeList"
+            :key="sizeName"
+            :size="sizeName"
           >
-            {{ size }}
+            {{ sizeName }}
           </D1Dummy>
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Palettes">
+      <D1Group label="Palettes (All 24)">
         <DemoFlex>
           <D1Dummy
-            v-for="palette in palettes"
-            :key="palette"
-            :palette="palette"
+            v-for="paletteName in paletteList"
+            :key="paletteName"
+            :palette="paletteName"
             size="sm"
           >
-            {{ palette }}
+            {{ paletteName }}
           </D1Dummy>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Interactive Controls & Dynamic Props">
+        <DemoFlex align="center">
+          <D1Button label="Cycle Size" size="sm" outline @click="cycleDynamicSize"/>
+          <D1Button label="Cycle Palette" size="sm" outline @click="cycleDynamicPalette"/>
+          <D1Button label="Toggle Slot" size="sm" outline @click="showDynamicSlot = !showDynamicSlot"/>
+        </DemoFlex>
+        <D1Dummy
+          :size="currentDynamicSize()"
+          :palette="currentDynamicPalette()"
+        >
+          <template v-if="showDynamicSlot">
+            {{ `Size: ${currentDynamicSize()}, Palette: ${currentDynamicPalette()}` }}
+          </template>
+        </D1Dummy>
+        <DemoValue
+          label="Dynamic Props"
+          :value="{
+            size: currentDynamicSize(),
+            palette: currentDynamicPalette(),
+            showSlot: showDynamicSlot
+          }"
+        />
       </D1Group>
 
       <D1Group label="External Attrs, Events & Expose (elementHtml)">
-        <DemoFlex>
+        <DemoFlex align="center">
           <D1Dummy
-            ref="dummyRef"
+            ref="dummyTarget"
             size="md"
             palette="blue"
             data-testid="demo-dummy-interactive"
-            @click="onEvent('click')"
+            @click="trackEvent('click', { source: 'demo-dummy-interactive' })"
           >
             Click me
           </D1Dummy>
-          <D1Button label="Inspect elementHtml" outline @click="inspectElement" />
+          <D1Button label="Inspect elementHtml" size="sm" outline @click="inspectElement"/>
         </DemoFlex>
-        <DemoValue :value="elementTag" label="elementHtml Tag" />
-        <DemoValue :value="eventName" label="Event" />
+        <DemoValue label="elementHtml" :value="elementInspection"/>
+        <DemoValue label="Event Name" :value="eventName"/>
+        <DemoValue label="Event Payload" :value="eventPayload"/>
+      </D1Group>
+
+      <D1Group label="Accessibility (Role, Label & Keyboard)">
+        <DemoFlex>
+          <D1Dummy
+            size="sm"
+            palette="indigo"
+            role="region"
+            aria-label="Accessible placeholder container"
+            tabindex="0"
+            @keydown.enter="trackEvent('keydown-enter', { key: 'Enter' })"
+            @keydown.space.prevent="trackEvent('keydown-space', { key: 'Space' })"
+          >
+            Focusable ARIA region
+          </D1Dummy>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Boundary & Edge Cases">
+        <DemoFlex>
+          <D1Dummy size="sm">{{ '' }}</D1Dummy>
+          <D1Dummy size="sm">   </D1Dummy>
+          <D1Dummy size="sm">{{ 0 }}</D1Dummy>
+          <D1Dummy size="sm">A</D1Dummy>
+          <D1Dummy size="sm">Tiếng Việt / Кириллица / 🚀 &amp; &lt;&gt;</D1Dummy>
+          <D1Dummy size="sm">&lt;img src=x onerror=alert(1)&gt;</D1Dummy>
+          <D1Dummy size="md">
+            Very long multi-sentence placeholder content designed to verify wrapping and vertical spacing inside a standard D1Dummy container.
+          </D1Dummy>
+          <DemoBox class="demo-dummy-page__narrow" size="sm">
+            <D1Dummy size="sm" class="demo-dummy-page__unbroken">
+              AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            </D1Dummy>
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex align="center">
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <D1Dummy
+          v-if="isLifecycleMounted"
+          size="sm"
+          palette="emerald"
+        >
+          Mounted Dummy
+        </D1Dummy>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-dummy-page {
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  &__unbroken {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+</style>

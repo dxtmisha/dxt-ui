@@ -5,6 +5,8 @@
   display: flex;
   align-items: center;
   position: relative;
+  min-width: 0;
+  max-width: 100%;
 
   padding: 0;
 
@@ -51,24 +53,38 @@
   &__context {
     @include ui.flexX;
     flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
     order: 16;
 
     @include ui.subclass('prefix') {
+      min-width: 0;
+      max-width: 100%;
       order: 8;
+      overflow-wrap: anywhere;
     }
 
     @include ui.subclass('label') {
+      min-width: 0;
+      max-width: 100%;
       order: 16;
+      overflow-wrap: anywhere;
     }
 
     @include ui.subclass('caption') {
       @include ui.flexDynamic;
+      min-width: 0;
+      max-width: 100%;
       order: 24;
+      overflow-wrap: anywhere;
     }
 
     @include ui.subclass('suffix') {
       @include ui.flexDynamic;
+      min-width: 0;
+      max-width: 100%;
       order: 32;
+      overflow-wrap: anywhere;
 
       @include ui.textAlign('right');
     }
@@ -77,6 +93,12 @@
       order: 40;
       @include ui.marginLeft(auto);
     }
+  }
+
+  &__description {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   &__trailing {

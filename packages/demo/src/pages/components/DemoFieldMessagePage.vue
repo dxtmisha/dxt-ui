@@ -15,6 +15,7 @@ const interactiveSkeleton = ref<boolean>(false)
 const interactiveCounterShow = ref<boolean>(true)
 const interactiveCounter = ref<number>(12)
 const interactiveUseSlots = ref<boolean>(false)
+const isLifecycleMounted = ref<boolean>(true)
 
 const stateSummary = computed<string>(() => JSON.stringify({
   helperMessage: interactiveHelper.value,
@@ -54,9 +55,9 @@ const incrementCounter = (): void => {
 
 <template>
   <DemoLinkBlack/>
-  <D1Page label="FieldMessage">
+  <D1Page label="FieldMessage" class="demo-field-message-page">
     <D1Section>
-      <D1Group label="Helper, Warning, Validation & ARIA Binding">
+      <D1Group label="Helper, Warning, Validation & Priority">
         <DemoFlex direction="column">
           <DemoBox>
             <D1FieldMessage helper-message="Enter your email address for account notifications."/>
@@ -82,27 +83,6 @@ const incrementCounter = (): void => {
               helper-message="This helper text is overridden visually while validation is active."
               warning-message="This warning text is overridden visually while validation is active."
               validation-message="Validation error takes display priority over warning and helper text."
-            />
-          </DemoBox>
-
-          <DemoBox>
-            <label class="demo-field-message-page__label" for="demo-field-message-input">
-              Linked Input (aria-describedby)
-            </label>
-            <input
-              id="demo-field-message-input"
-              class="demo-field-message-page__input"
-              type="text"
-              placeholder="Focus or inspect aria-describedby"
-              aria-describedby="demo-field-message-helper demo-field-message-warning demo-field-message-validation"
-            />
-            <D1FieldMessage
-              helper-message="Helper linked via helperId"
-              helper-id="demo-field-message-helper"
-              warning-message="Warning linked via warningId"
-              warning-id="demo-field-message-warning"
-              validation-message="Validation linked via validationId and role=alert"
-              validation-id="demo-field-message-validation"
             />
           </DemoBox>
         </DemoFlex>
@@ -224,9 +204,9 @@ const incrementCounter = (): void => {
               counter-show
               :counter="105"
               :maxlength="100"
-              :maxlength-once="10"
               counter-template="[c] / [m] chars"
               counter-id="demo-field-message-counter-id"
+              :field-counter-attrs="{ maxlengthOnce: 10 }"
             />
           </DemoBox>
 
@@ -235,7 +215,10 @@ const incrementCounter = (): void => {
               counter-show
               :counter="42"
               :maxlength="80"
-              :field-counter-attrs="{ class: 'demo-field-message-page__counter-custom' }"
+              :field-counter-attrs="{
+                class: 'demo-field-message-page__counter-custom',
+                textCharacterRemaining: '[left] remaining'
+              }"
             />
           </DemoBox>
         </DemoFlex>
@@ -256,12 +239,15 @@ const incrementCounter = (): void => {
             <D1FieldMessage
               helper-message="Standalone skeleton class on info"
               is-skeleton
+              counter-show
+              :counter="12"
+              :maxlength="40"
             />
           </DemoBox>
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Slots">
+      <D1Group label="Slots & Scoped Bindings">
         <DemoFlex direction="column">
           <DemoBox>
             <D1FieldMessage>
@@ -294,18 +280,43 @@ const incrementCounter = (): void => {
               validation-message="Trailing error"
               has-html-code
             >
-              <template #helper="{ helperMessage }">
-                <span>Scoped helper ({{ helperMessage }}): </span>
+              <template #helper="{ message, helperMessage, warningMessage, validationMessage }">
+                <span>
+                  Scoped helper (message={{ message }}, helper={{ helperMessage }}, warning={{ warningMessage }}, validation={{ validationMessage }}):
+                </span>
               </template>
-              <template #warning="{ warningMessage }">
-                <span>Scoped warning ({{ warningMessage }}): </span>
+              <template #warning="{ message, warningMessage }">
+                <span>Scoped warning ({{ message }} / {{ warningMessage }}): </span>
               </template>
-              <template #validation="{ validationMessage }">
-                <span>Scoped validation ({{ validationMessage }}): </span>
+              <template #validation="{ message, validationMessage }">
+                <span>Scoped validation ({{ message }} / {{ validationMessage }}): </span>
               </template>
             </D1FieldMessage>
           </DemoBox>
         </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA & Live Regions)">
+        <DemoBox>
+          <label class="demo-field-message-page__label" for="demo-field-message-input">
+            Linked Input (aria-describedby)
+          </label>
+          <input
+            id="demo-field-message-input"
+            class="demo-field-message-page__input"
+            type="text"
+            placeholder="Focus or inspect aria-describedby"
+            aria-describedby="demo-field-message-helper demo-field-message-warning demo-field-message-validation"
+          />
+          <D1FieldMessage
+            helper-message="Helper linked via helperId"
+            helper-id="demo-field-message-helper"
+            warning-message="Warning linked via warningId"
+            warning-id="demo-field-message-warning"
+            validation-message="Validation linked via validationId and role=alert"
+            validation-id="demo-field-message-validation"
+          />
+        </DemoBox>
       </D1Group>
 
       <D1Group label="Boundary & Multilingual">
@@ -313,14 +324,23 @@ const incrementCounter = (): void => {
           <DemoBox>
             <div data-testid="empty-probe">
               <D1FieldMessage helper-message="" warning-message="   " validation-message="   "/>
+              <D1FieldMessage :helper-message="undefined" :warning-message="undefined" :validation-message="undefined"/>
             </div>
             <DemoValue
               label="Empty & Whitespace Probe"
-              value="Empty or whitespace-only messages render nothing in DOM"
+              value="Empty, whitespace-only, or undefined messages render nothing in DOM"
             />
           </DemoBox>
 
-          <DemoBox class="demo-field-message-page__constrained">
+          <DemoBox>
+            <DemoFlex direction="column">
+              <D1FieldMessage helper-message="A"/>
+              <D1FieldMessage helper-message="0" validation-message="0"/>
+              <D1FieldMessage validation-message="<img src=x onerror=alert(1)>"/>
+            </DemoFlex>
+          </DemoBox>
+
+          <DemoBox class="demo-field-message-page__narrow" size="sm">
             <D1FieldMessage
               helper-message="Very long helper description explaining formatting rules and constraints across multiple lines inside a constrained container."
               counter-show
@@ -329,7 +349,7 @@ const incrementCounter = (): void => {
             />
           </DemoBox>
 
-          <DemoBox class="demo-field-message-page__constrained">
+          <DemoBox class="demo-field-message-page__narrow" size="sm">
             <D1FieldMessage
               validation-message="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             />
@@ -337,7 +357,7 @@ const incrementCounter = (): void => {
 
           <DemoBox>
             <D1FieldMessage
-              helper-message="Học tiếng Việt — Подсказка поля 🚀"
+              helper-message="Tiếng Việt / Кириллица / 🚀🔥✨"
               validation-message="Lỗi xác thực — Ошибка ввода 🔒"
               counter-show
               :counter="24"
@@ -439,6 +459,26 @@ const incrementCounter = (): void => {
           <DemoValue label="State" :value="stateSummary"/>
         </DemoFlex>
       </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex>
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1FieldMessage
+            helper-message="Mounted FieldMessage"
+            counter-show
+            :counter="12"
+            :maxlength="40"
+          />
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
+      </D1Group>
     </D1Section>
   </D1Page>
 </template>
@@ -460,8 +500,9 @@ const incrementCounter = (): void => {
     color: inherit;
   }
 
-  &__constrained {
-    max-width: 280px;
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
   }
 
   &__counter-custom {

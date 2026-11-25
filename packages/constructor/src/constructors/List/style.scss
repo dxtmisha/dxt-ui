@@ -1,6 +1,9 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinList {
+  min-width: 0;
+  max-width: 100%;
+
   &>*[data-item]~&__none {
     span {
       display: none;
@@ -11,6 +14,8 @@
     &--x {
       display: flex;
       align-items: stretch;
+      max-width: 100%;
+      overflow-x: auto;
 
       @include ui.subclass('space') {
         width: var(--sys-height);

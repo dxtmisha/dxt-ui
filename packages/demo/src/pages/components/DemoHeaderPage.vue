@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { HeaderProps } from '@dxtmisha/d1'
+import type { HeaderProps } from '@dxtmisha/d1/D1Header'
 
 import DemoBox from '../../components/DemoBox.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
@@ -13,6 +13,7 @@ const iconHide = ref<boolean>(false)
 const iconSelected = ref<boolean>(false)
 const headerArea = ref<string>('header')
 const trailingClicks = ref<number>(0)
+const isLifecycleMounted = ref<boolean>(true)
 
 const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 </script>
@@ -20,7 +21,7 @@ const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h
 <template>
   <DemoLinkBlack/>
   <D1Page label="Header">
-    <D1Section>
+    <D1Section class="demo-header-page">
       <D1Group label="Heading Tags (h1 - h6)">
         <DemoBox>
           <D1Header tag="h1" label="Heading Level 1" caption="Display scale"/>
@@ -64,14 +65,14 @@ const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Icons & Interactive Icon States">
+      <D1Group label="Icons, Palette & RTL Direction">
         <DemoFlex>
           <D1Button label="Toggle Turn" size="sm" @click="iconTurn = !iconTurn"/>
           <D1Button label="Toggle Hide" size="sm" outline @click="iconHide = !iconHide"/>
           <D1Button label="Toggle Active Icon" size="sm" outline @click="iconSelected = !iconSelected"/>
         </DemoFlex>
         <DemoValue label="iconState" :value="{ iconTurn, iconHide, iconSelected }"/>
-        <DemoBox>
+        <DemoBox class="d1-palette--blue">
           <D1Header
             data-testid="demo-header-icon-reactive"
             label="Configurable Leading Icon"
@@ -92,9 +93,17 @@ const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h
             caption="24 items"
           />
         </DemoBox>
+        <DemoBox dir="rtl" data-testid="demo-header-rtl">
+          <D1Header
+            icon="arrow_forward"
+            icon-dir
+            label="RTL Directional Icon"
+            caption="Mirrored icon in RTL container"
+          />
+        </DemoBox>
       </D1Group>
 
-      <D1Group label="Caption Modes & Numeric Zero">
+      <D1Group label="Caption Modes & Accessibility (A11y)">
         <DemoBox>
           <D1Header
             data-testid="demo-header-polite"
@@ -106,15 +115,17 @@ const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h
           <D1Header
             data-testid="demo-header-decorative"
             label="Decorative Caption"
-            caption=" Decorative note"
+            caption="Decorative note"
             caption-decorative
           />
         </DemoBox>
-        <DemoBox>
+        <DemoBox role="region" aria-labelledby="demo-header-a11y-heading">
           <D1Header
-            data-testid="demo-header-zero"
-            :label="0"
-            :caption="0"
+            data-testid="demo-header-a11y"
+            tag="h2"
+            label-id="demo-header-a11y-heading"
+            label="Region Heading with labelId"
+            caption="Linked via aria-labelledby"
           />
         </DemoBox>
       </D1Group>
@@ -166,23 +177,109 @@ const tags: Array<NonNullable<HeaderProps['tag']>> = ['h1', 'h2', 'h3', 'h4', 'h
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Long Content & External Class Merging">
+      <D1Group label="Boundary & Edge Cases">
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-empty"
+            label=""
+            caption=""
+            :icon="null"
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-whitespace"
+            label="   "
+            caption="   "
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-nullish"
+            :label="undefined"
+            :caption="undefined"
+            :icon="undefined"
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-zero"
+            :label="0"
+            :caption="0"
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-numeric"
+            :label="-42"
+            :caption="3.14"
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-single-char"
+            label="A"
+            caption="B"
+          />
+        </DemoBox>
         <DemoBox>
           <D1Header
             data-testid="demo-header-merged"
             class="demo-header-custom"
             icon="article"
             label="Long Multilingual Header — Заголовок раздела — Tiêu đề phần 🚀"
-            caption="Extended caption verifying flexbox spacing and wrapping resilience"
+            caption="Extended multi-sentence caption verifying flexbox spacing, line wrapping, and layout resilience across viewports without clipping"
           >
             <template #trailing>
               <D1Badge label="New"/>
             </template>
           </D1Header>
         </DemoBox>
+        <DemoBox>
+          <D1Header
+            data-testid="demo-header-xss"
+            label="<img src=x onerror=alert(1)>"
+            caption="<script>alert('xss')</script>"
+          />
+        </DemoBox>
+        <DemoBox class="demo-header-page__narrow" size="sm">
+          <D1Header
+            data-testid="demo-header-narrow"
+            icon="article"
+            label="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            caption="BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Lifecycle & Conditional Mount">
+        <DemoFlex align="center">
+          <D1Button
+            label="Toggle Mount"
+            size="sm"
+            outline
+            @click="isLifecycleMounted = !isLifecycleMounted"
+          />
+        </DemoFlex>
+        <DemoBox v-if="isLifecycleMounted">
+          <D1Header
+            data-testid="demo-header-lifecycle"
+            icon="check_circle"
+            label="Mounted Header"
+            caption="Active in DOM"
+          />
+        </DemoBox>
+        <DemoValue label="Mounted" :value="isLifecycleMounted"/>
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-header-page {
+  &__narrow {
+    width: 100%;
+    max-width: 240px;
+  }
+}
+</style>
