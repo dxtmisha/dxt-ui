@@ -1,4 +1,5 @@
 import { type Ref } from 'vue'
+import { type ConstrBind, isDomRuntime } from '@dxtmisha/functional'
 
 /**
  * Class for managing horizontal scrolling mechanics using wheel interactions.
@@ -27,9 +28,9 @@ export class ScrollToXInclude {
    * Возвращает привязки для элемента.
    * @returns object with scroll event handlers / объект с обработчиками событий прокрутки
    */
-  get binds() {
+  get binds(): ConstrBind {
     return {
-      onWheelPassive: this.onScrollToX
+      onWheel: this.onScrollToX
     }
   }
 
@@ -57,7 +58,10 @@ export class ScrollToXInclude {
    * @returns checking state / состояние проверки
    */
   protected isNotScrollSnap(): boolean {
-    if (this.element.value) {
+    if (
+      this.element.value
+      && isDomRuntime()
+    ) {
       const styles = getComputedStyle(this.element.value)
 
       return styles.scrollSnapType !== 'x mandatory'

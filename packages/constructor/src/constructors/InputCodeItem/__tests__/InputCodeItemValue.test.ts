@@ -4,25 +4,37 @@ import { ref } from 'vue'
 import { InputCodeItemValue } from '../InputCodeItemValue'
 
 describe('InputCodeItemValue', () => {
-  it('should check filled state, get and set values', () => {
+  it('should check filled state, get, set, and reset values', () => {
     const div = document.createElement('div')
     const input = document.createElement('input')
     div.appendChild(input)
 
-    const elRef = ref(div)
-    const val = new InputCodeItemValue(elRef)
+    const elementRef = ref(div)
+    const itemValue = new InputCodeItemValue(elementRef)
 
-    expect(val.is()).toBe(false)
-    expect(val.get()).toBe('')
+    expect(itemValue.is()).toBe(false)
+    expect(itemValue.get()).toBe('')
 
-    val.set('A')
-    expect(val.is()).toBe(true)
-    expect(val.get()).toBe('A')
+    itemValue.set('A')
+    expect(itemValue.is()).toBe(true)
+    expect(itemValue.get()).toBe('A')
     expect(input.value).toBe('A')
 
-    val.reset()
-    expect(val.is()).toBe(false)
-    expect(val.get()).toBe('')
+    // Setting identical value does not throw or alter DOM
+    itemValue.set('A')
+    expect(itemValue.get()).toBe('A')
+
+    itemValue.reset()
+    expect(itemValue.is()).toBe(false)
+    expect(itemValue.get()).toBe('')
     expect(input.value).toBe('')
+  })
+
+  it('should safely handle undefined element ref', () => {
+    const itemValue = new InputCodeItemValue(ref<HTMLElement | undefined>(undefined))
+
+    expect(() => itemValue.set('7')).not.toThrow()
+    expect(itemValue.get()).toBe('7')
+    expect(itemValue.is()).toBe(true)
   })
 })

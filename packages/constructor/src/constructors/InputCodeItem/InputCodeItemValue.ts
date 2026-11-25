@@ -48,7 +48,7 @@ export class InputCodeItemValue {
    * Изменение значения.
    * @param value new value / новое значение
    */
-  readonly set = (value: string) => {
+  readonly set = (value: string): void => {
     if (this.value.value !== value) {
       this.value.value = value
       this.update()
@@ -60,14 +60,16 @@ export class InputCodeItemValue {
    *
    * Обнуление значения.
    */
-  readonly reset = () => this.set('')
+  readonly reset = (): void => {
+    this.set('')
+  }
 
   /**
    * Data update.
    *
    * Обновление данных.
    */
-  protected update() {
+  protected update(): void {
     const input = this.element.value?.querySelector<HTMLInputElement>('input')
 
     if (

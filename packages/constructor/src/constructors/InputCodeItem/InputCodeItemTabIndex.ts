@@ -1,15 +1,31 @@
 // ai-none
 
 import { ref, watch } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 /**
  * Class for managing the tabindex of a code input item.
  *
  * Класс для управления tabindex элемента ввода кода.
  */
-export class InputCodeItemTabIndex {
+export class InputCodeItemTabIndex extends DesignLifecycleAbstract {
   /** Reactive tabindex ref / Реактивная ссылка на tabindex */
   readonly tabindex = ref<number | string | undefined>(undefined)
+
+  /**
+   * Synchronizes reactive tabindex when props.tabindex changes after mount.
+   *
+   * Синхронизирует реактивный tabindex при изменении props.tabindex после монтирования.
+   */
+  override readonly onMounted = (): void => {
+    watch(
+      () => this.props.tabindex,
+      (value) => {
+        this.tabindex.value = value
+      },
+      { immediate: true }
+    )
+  }
 
   /**
    * Constructor
@@ -18,15 +34,10 @@ export class InputCodeItemTabIndex {
    * @param props input property / входное свойство
    */
   constructor(
-    protected readonly props: { tabindex?: number | string }
+    protected readonly props: Readonly<{ tabindex?: number | string }>
   ) {
-    watch(
-      () => this.props.tabindex,
-      (value) => {
-        this.tabindex.value = value
-      },
-      { immediate: true }
-    )
+    super()
+    this.tabindex.value = props.tabindex
   }
 
   /**
@@ -45,7 +56,7 @@ export class InputCodeItemTabIndex {
    * Установить значение tabindex.
    * @param value new tabindex value / новое значение tabindex
    */
-  readonly set = (value: number | string | undefined) => {
+  readonly set = (value: number | string | undefined): void => {
     this.tabindex.value = value
   }
 
@@ -54,7 +65,7 @@ export class InputCodeItemTabIndex {
    *
    * Сбросить значение tabindex до начального.
    */
-  readonly reset = () => {
+  readonly reset = (): void => {
     this.tabindex.value = this.props.tabindex
   }
 }

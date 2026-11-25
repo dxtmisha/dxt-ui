@@ -35,8 +35,8 @@ export class InputFileItemInclude extends ComponentIncludeAbstract<
    */
   override get is(): boolean {
     return (
-      'file' in this.binds.value
-      || 'value' in this.binds.value
+      Boolean(this.binds.value.file)
+      || Boolean(this.binds.value.value)
     )
   }
 }

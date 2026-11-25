@@ -1,30 +1,31 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
+import { effectScope, nextTick, reactive } from 'vue'
 import { InputCodeItemTabIndex } from '../InputCodeItemTabIndex'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    watch: (src: () => any, cb: (val: any) => void, opts: any) => {
-      if (opts?.immediate) {
-        cb(src())
-      }
-    }
-  }
-})
-
 describe('InputCodeItemTabIndex', () => {
-  it('should initialize and watch props tabindex changes', () => {
-    const props = { tabindex: 1 }
-    const tabIndex = new InputCodeItemTabIndex(props)
+  it('should initialize, set, reset, and sync props.tabindex on mount', async () => {
+    const props = reactive<{ tabindex?: number | string }>({ tabindex: 1 })
+    const scope = effectScope()
+    let tabIndex!: InputCodeItemTabIndex
 
-    expect(tabIndex.get()).toBe(1)
+    scope.run(() => {
+      tabIndex = new InputCodeItemTabIndex(props)
+      expect(tabIndex.get()).toBe(1)
+
+      tabIndex.onMounted()
+    })
 
     tabIndex.set(2)
     expect(tabIndex.get()).toBe(2)
 
     tabIndex.reset()
     expect(tabIndex.get()).toBe(1)
+
+    props.tabindex = -1
+    await nextTick()
+    expect(tabIndex.get()).toBe(-1)
+
+    scope.stop()
   })
 })

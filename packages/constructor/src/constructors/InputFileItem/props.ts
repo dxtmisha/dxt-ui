@@ -92,7 +92,9 @@ export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputFileItem = {
+  /** Whether to show confirmation dialog before delete / Показывать ли диалог подтверждения перед удалением */
   confirmDelete: true,
+  /** Whether to enable image cropping / Включить ли кадрирование изображения */
   crop: true,
   ...{
     // :default [!] System label / Системная метка

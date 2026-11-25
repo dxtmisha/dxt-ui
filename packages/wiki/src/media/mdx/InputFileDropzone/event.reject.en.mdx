@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `reject`
+
+Event emitted when selected or dropped files exceed the `maxFileSize` limit.
+
+**Parameters:**
+- `files: File[]` — Array of rejected files whose size is greater than `maxFileSize`.
+
+<Source
+    code={`
+<script setup>
+const handleReject = (files) => {
+  console.log('Rejected files:', files)
+}
+</script>
+
+<template>
+  <InputFileDropzone
+    label="Upload files"
+    :maxFileSize="5242880"
+    @reject="handleReject"
+  />
+</template>
+  `}
+    language="html"
+/>

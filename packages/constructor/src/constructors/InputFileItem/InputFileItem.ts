@@ -1,7 +1,10 @@
 import type { Ref } from 'vue'
 import {
+  type ConstrClassObject,
   type ConstrEmit,
-  type DesignComp,
+  type ConstrItems,
+  type DesignComponents,
+  DesignLogicAbstract,
   type DesignName
 } from '@dxtmisha/functional'
 
@@ -15,10 +18,7 @@ import { ButtonInclude } from '../Button'
 import { IconInclude } from '../Icon'
 import { ImageInclude } from '../Image'
 import { ImageCropInclude } from '../ImageCrop'
-import {
-  ProgressInclude,
-  type ProgressProps
-} from '../Progress'
+import { ProgressInclude } from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
 
 import { InputFileItemAppearance } from './InputFileItemAppearance'
@@ -34,75 +34,255 @@ import type { AriaList } from '../../types/ariaTypes'
 import type {
   InputFileItemComponents,
   InputFileItemEmits,
+  InputFileItemExpose,
   InputFileItemSlots
 } from './types'
 import type { InputFileItemProps } from './props'
+
+/** InputFileItem dependency constructors type / Тип конструкторов зависимостей InputFileItem */
+export type InputFileItemConstructors = {
+  /** Appearance manager constructor / Конструктор менеджера режима отображения */
+  appearance: typeof InputFileItemAppearance
+  /** Action buttons manager constructor / Конструктор менеджера кнопок действий */
+  button: typeof InputFileItemButton
+  /** Crop button include constructor / Конструктор подключения кнопки кадрирования */
+  buttonCrop: typeof ButtonInclude
+  /** Delete button include constructor / Конструктор подключения кнопки удаления */
+  buttonDelete: typeof ButtonInclude
+  /** Retry button include constructor / Конструктор подключения кнопки повтора */
+  buttonRetry: typeof ButtonInclude
+  /** Caption include constructor / Конструктор подключения подписи */
+  caption: typeof CaptionInclude
+  /** Image crop manager constructor / Конструктор менеджера кадрирования изображения */
+  crop: typeof InputFileItemCrop
+  /** Delete confirmation manager constructor / Конструктор менеджера подтверждения удаления */
+  delete: typeof InputFileItemDelete
+  /** Enabled state controller constructor / Конструктор контроллера состояния активности */
+  enabled: typeof EnabledInclude
+  /** Event interaction manager constructor / Конструктор менеджера событий взаимодействия */
+  event: typeof InputFileItemEvent
+  /** File data helper constructor / Конструктор помощника данных файла */
+  file: typeof InputFileItemFile
+  /** Status icon include constructor / Конструктор подключения иконки статуса */
+  iconStatus: typeof IconInclude
+  /** Thumbnail image include constructor / Конструктор подключения изображения миниатюры */
+  image: typeof ImageInclude
+  /** ImageCrop component include constructor / Конструктор подключения компонента ImageCrop */
+  imageCrop: typeof ImageCropInclude
+  /** Label include constructor / Конструктор подключения метки */
+  label: typeof LabelInclude
+  /** Progress indicator include constructor / Конструктор подключения индикатора прогресса */
+  progress: typeof ProgressInclude
+  /** Upload progress helper constructor / Конструктор помощника прогресса загрузки */
+  progressValue: typeof InputFileItemProgress
+  /** Skeleton include constructor / Конструктор подключения скелетона */
+  skeleton: typeof SkeletonInclude
+  /** File status manager constructor / Конструктор менеджера статуса файла */
+  status: typeof InputFileItemStatus
+  /** Text translations controller constructor / Конструктор контроллера переводов текста */
+  text: typeof TextInclude
+}
 
 /**
  * Main orchestrator class for managing single file upload item display, states, and user interactions.
  *
  * Главный класс-оркестратор для управления отображением отдельного элемента загружаемого файла, состояниями и взаимодействием.
  */
-export class InputFileItem {
-  /** Appearance manager for display mode / Менеджер режима отображения */
-  readonly appearance: InputFileItemAppearance
-
-  /** Action buttons manager / Менеджер кнопок действий */
-  readonly button: InputFileItemButton
-
-  /** Button include for crop action / Подключение кнопки для действия кадрирования */
-  readonly buttonCrop: ButtonInclude
-
-  /** Button include for delete/remove action / Подключение кнопки для действия удаления */
-  readonly buttonDelete: ButtonInclude
-
-  /** Button include for retry action / Подключение кнопки для действия повтора */
-  readonly buttonRetry: ButtonInclude
-
-  /** Caption manager for secondary text / Менеджер подписи для вторичного текста */
-  readonly caption: CaptionInclude
-
-  /** Image crop manager / Менеджер кадрирования изображения */
-  readonly crop: InputFileItemCrop
-
-  /** Delete manager for confirmation dialog / Менеджер удаления для диалога подтверждения */
-  readonly delete: InputFileItemDelete
-
-  /** Enabled state controller / Контроллер состояния активности */
-  readonly enabled: EnabledInclude
-
-  /** Event interaction manager / Менеджер событий взаимодействия */
-  readonly event: InputFileItemEvent
-
-  /** File data and formatting helper / Вспомогательный класс для данных и форматирования файла */
-  readonly file: InputFileItemFile
-
-  /** Status icon include / Подключение иконки статуса */
-  readonly iconStatus: IconInclude
-
-  /** Thumbnail image include / Подключение изображения миниатюры */
-  readonly image: ImageInclude
-
-  /** ImageCrop component inclusion controller / Контроллер включения компонента ImageCrop */
-  readonly imageCrop: ImageCropInclude
-
-  /** Label manager for file name / Менеджер метки для имени файла */
-  readonly label: LabelInclude
-
-  /** Progress indicator include / Подключение индикатора прогресса */
-  readonly progress: ProgressInclude
-
-  /** Upload progress manager / Менеджер прогресса загрузки */
-  readonly progressValue: InputFileItemProgress
-
-  /** Skeleton loading placeholder include / Подключение скелетона загрузки */
-  readonly skeleton: SkeletonInclude
-
-  /** File status manager / Менеджер статуса файла */
-  readonly status: InputFileItemStatus
-
-  /** Text manager for translations / Менеджер текста для переводов */
-  readonly text: TextInclude
+export class InputFileItem extends DesignLogicAbstract<
+  HTMLDivElement,
+  InputFileItemComponents,
+  InputFileItemEmits,
+  InputFileItemSlots,
+  InputFileItemProps,
+  InputFileItemConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputFileItemConstructors> = {
+    appearance: {
+      item: InputFileItemAppearance,
+      parameters: () => [this.props]
+    },
+    button: {
+      item: InputFileItemButton,
+      parameters: () => [
+        this.props,
+        this.i('event'),
+        this.i('text')
+      ]
+    },
+    buttonCrop: {
+      item: ButtonInclude,
+      canCreate: () => !this.props.readonly && this.i('crop').is(),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.i('button').crop,
+        'buttonCrop'
+      ]
+    },
+    buttonDelete: {
+      item: ButtonInclude,
+      canCreate: () => !this.props.readonly,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.i('button').delete,
+        'buttonDelete'
+      ]
+    },
+    buttonRetry: {
+      item: ButtonInclude,
+      canCreate: () => !this.props.readonly && this.i('status').isError(),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.i('button').retry,
+        'buttonRetry'
+      ]
+    },
+    caption: {
+      item: CaptionInclude,
+      parameters: () => [
+        {},
+        this.naming
+      ]
+    },
+    crop: {
+      item: InputFileItemCrop,
+      parameters: () => [
+        this.props,
+        this.i('text'),
+        () => this.i('event').onCrop()
+      ]
+    },
+    delete: {
+      item: InputFileItemDelete,
+      parameters: () => [
+        this.props,
+        this.i('event'),
+        this.i('text')
+      ]
+    },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: InputFileItemEvent,
+      parameters: () => [
+        this.props,
+        this.i('file'),
+        this.emits
+      ]
+    },
+    file: {
+      item: InputFileItemFile,
+      parameters: () => [
+        this.props,
+        this.i('crop')
+      ]
+    },
+    iconStatus: {
+      item: IconInclude,
+      canCreate: () => this.i('status').isUploaded() || this.i('status').isError(),
+      parameters: () => [
+        () => ({
+          selected: this.i('status').isUploaded(),
+          icon: {
+            icon: this.props.iconError,
+            iconActive: this.props.iconSuccess,
+            success: this.i('status').isUploaded(),
+            error: this.i('status').isError()
+          }
+        }),
+        this.naming,
+        this.components
+      ]
+    },
+    image: {
+      item: ImageInclude,
+      parameters: () => [
+        () => ({
+          ...this.props,
+          image: this.i('file').image,
+          coordinator: this.i('crop').coordinator
+        }),
+        this.naming,
+        this.components,
+        undefined,
+        () => ({
+          alt: this.i('file').name
+        })
+      ]
+    },
+    imageCrop: {
+      item: ImageCropInclude,
+      canCreate: () => !this.props.readonly && this.i('crop').is(),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          coordinator: this.i('crop').coordinator,
+          image: this.i('file').imageOriginal,
+          onResize: this.i('crop').onResize
+        })
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      parameters: () => [
+        () => ({ label: this.i('file').name }),
+        this.naming
+      ]
+    },
+    progress: {
+      item: ProgressInclude,
+      canCreate: () => this.i('status').isUploading(),
+      parameters: () => [
+        () => ({
+          ...this.props,
+          loading: this.props.loading ?? this.i('status').isUploading()
+        }),
+        this.naming,
+        this.components,
+        () => this.i('progressValue').progressProps
+      ]
+    },
+    progressValue: {
+      item: InputFileItemProgress,
+      parameters: () => [
+        this.props,
+        this.i('file'),
+        this.i('appearance'),
+        this.i('status')
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    },
+    status: {
+      item: InputFileItemStatus,
+      parameters: () => [
+        this.props,
+        this.i('file'),
+        this.i('text')
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
+  }
 
   /**
    * Constructor.
@@ -114,202 +294,25 @@ export class InputFileItem {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ButtonIncludeConstructor class for creating a button / класс для создания кнопки
-   * @param constructors.CaptionIncludeConstructor class for creating a caption / класс для создания подписи
-   * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
-   * @param constructors.IconIncludeConstructor class for creating an icon / класс для создания иконки
-   * @param constructors.ImageIncludeConstructor class for creating an image / класс для создания изображения
-   * @param constructors.ImageCropIncludeConstructor class for creating an image crop / класс для создания кадрирования изображения
-   * @param constructors.InputFileItemAppearanceConstructor class for managing appearance / класс для управления режимом отображения
-   * @param constructors.InputFileItemButtonConstructor class for managing action buttons / класс для управления кнопками действий
-   * @param constructors.InputFileItemCropConstructor class for managing crop / класс для управления кадрированием
-   * @param constructors.InputFileItemDeleteConstructor class for managing delete confirmation / класс для управления подтверждением удаления
-   * @param constructors.InputFileItemEventConstructor class for managing file events / класс для управления событиями файла
-   * @param constructors.InputFileItemFileConstructor class for managing file data / класс для управления данными файла
-   * @param constructors.InputFileItemProgressConstructor class for managing file progress / класс для управления прогрессом файла
-   * @param constructors.InputFileItemStatusConstructor class for managing file status / класс для управления статусом файла
-   * @param constructors.LabelIncludeConstructor class for creating a label / класс для создания метки
-   * @param constructors.ProgressIncludeConstructor class for creating a progress indicator / класс для создания индикатора прогресса
-   * @param constructors.SkeletonIncludeConstructor class for creating a skeleton loader / класс для создания скелетона загрузки
-   * @param constructors.TextIncludeConstructor class for managing text / класс для управления текстом
+   * @param constructors dependency injection overrides object / объект переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: InputFileItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputFileItemComponents, InputFileItemProps>,
-    protected readonly slots?: InputFileItemSlots,
-    protected readonly emits?: ConstrEmit<InputFileItemEmits>,
-    constructors: {
-      ButtonIncludeConstructor?: typeof ButtonInclude
-      CaptionIncludeConstructor?: typeof CaptionInclude
-      EnabledConstructor?: typeof EnabledInclude
-      IconIncludeConstructor?: typeof IconInclude
-      ImageIncludeConstructor?: typeof ImageInclude
-      ImageCropIncludeConstructor?: typeof ImageCropInclude
-      InputFileItemAppearanceConstructor?: typeof InputFileItemAppearance
-      InputFileItemButtonConstructor?: typeof InputFileItemButton
-      InputFileItemCropConstructor?: typeof InputFileItemCrop
-      InputFileItemDeleteConstructor?: typeof InputFileItemDelete
-      InputFileItemEventConstructor?: typeof InputFileItemEvent
-      InputFileItemFileConstructor?: typeof InputFileItemFile
-      InputFileItemProgressConstructor?: typeof InputFileItemProgress
-      InputFileItemStatusConstructor?: typeof InputFileItemStatus
-      LabelIncludeConstructor?: typeof LabelInclude
-      ProgressIncludeConstructor?: typeof ProgressInclude
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
+    props: Readonly<InputFileItemProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<InputFileItemComponents, InputFileItemProps>,
+    slots?: InputFileItemSlots,
+    emits?: ConstrEmit<InputFileItemEmits>,
+    constructors?: Partial<InputFileItemConstructors>
   ) {
-    const {
-      ButtonIncludeConstructor = ButtonInclude,
-      CaptionIncludeConstructor = CaptionInclude,
-      EnabledConstructor = EnabledInclude,
-      IconIncludeConstructor = IconInclude,
-      ImageIncludeConstructor = ImageInclude,
-      ImageCropIncludeConstructor = ImageCropInclude,
-      InputFileItemAppearanceConstructor = InputFileItemAppearance,
-      InputFileItemButtonConstructor = InputFileItemButton,
-      InputFileItemCropConstructor = InputFileItemCrop,
-      InputFileItemDeleteConstructor = InputFileItemDelete,
-      InputFileItemEventConstructor = InputFileItemEvent,
-      InputFileItemFileConstructor = InputFileItemFile,
-      InputFileItemProgressConstructor = InputFileItemProgress,
-      InputFileItemStatusConstructor = InputFileItemStatus,
-      LabelIncludeConstructor = LabelInclude,
-      ProgressIncludeConstructor = ProgressInclude,
-      SkeletonIncludeConstructor = SkeletonInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.appearance = new InputFileItemAppearanceConstructor(this.props)
-    this.enabled = new EnabledConstructor(this.props)
-    this.text = new TextIncludeConstructor(this.props)
-    this.crop = new InputFileItemCropConstructor(
-      this.props,
-      this.text
-    )
-    this.file = new InputFileItemFileConstructor(
-      this.props,
-      this.crop
-    )
-
-    this.event = new InputFileItemEventConstructor(
-      this.props,
-      this.file,
-      this.emits
-    )
-    this.delete = new InputFileItemDeleteConstructor(
-      this.props,
-      this.event,
-      this.text
-    )
-    this.status = new InputFileItemStatusConstructor(
-      this.props,
-      this.file,
-      this.text
-    )
-    this.progressValue = new InputFileItemProgressConstructor(
-      this.props,
-      this.file,
-      this.appearance,
-      this.status
-    )
-
-    this.button = new InputFileItemButtonConstructor(
-      this.props,
-      this.event,
-      this.text
-    )
-
-    this.buttonCrop = new ButtonIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => this.button.crop,
-      'buttonCrop'
-    )
-
-    this.buttonDelete = new ButtonIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => this.button.delete,
-      'buttonDelete'
-    )
-
-    this.buttonRetry = new ButtonIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => this.button.retry,
-      'buttonRetry'
-    )
-
-    this.caption = new CaptionIncludeConstructor(
-      {},
-      this.naming
-    )
-
-    this.iconStatus = new IconIncludeConstructor(
-      () => ({
-        selected: this.status.isUploaded(),
-        icon: {
-          icon: this.props.iconError,
-          iconActive: this.props.iconSuccess,
-          success: this.status.isUploaded(),
-          error: this.status.isError()
-        }
-      }),
-      this.naming,
-      this.components
-    )
-
-    this.image = new ImageIncludeConstructor(
-      () => ({
-        ...this.props,
-        image: this.file.image,
-        coordinator: this.crop.coordinator
-      }),
-      this.naming,
-      this.components,
-      undefined,
-      () => ({
-        alt: this.file.name
-      })
-    )
-
-    this.imageCrop = new ImageCropIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        coordinator: this.crop.coordinator,
-        image: this.file.imageOriginal,
-        onResize: this.crop.onResize
-      })
-    )
-
-    this.label = new LabelIncludeConstructor(
-      () => ({ label: this.file.name }),
-      this.naming
-    )
-
-    this.progress = new ProgressIncludeConstructor(
-      () => ({
-        ...this.props,
-        loading: this.props.loading ?? this.status.isUploading()
-      }),
-      this.naming,
-      this.components,
-      () => this.progressProps
-    )
-
-    this.skeleton = new SkeletonIncludeConstructor(
-      this.props,
-      this.naming,
-      ['classBackground']
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
   }
 
@@ -321,41 +324,34 @@ export class InputFileItem {
    */
   get aria(): AriaList {
     return {
-      ...AriaStaticInclude.disabled(this.props.disabled),
-      ...AriaStaticInclude.busy(this.status.isUploading())
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.busy(this.i('status').isUploading())
     }
   }
 
   /**
-   * Resolves properties and settings for the progress indicator.
+   * Returns CSS classes from skeleton controller when active.
    *
-   * Определяет свойства и настройки для индикатора прогресса.
-   * @returns progress configuration object / объект конфигурации прогресса
+   * Возвращает CSS-классы из контроллера скелетона при его активации.
+   * @returns classes values / значения классов
    */
-  protected get progressProps(): ProgressProps {
-    const item: ProgressProps = {
-      visible: this.status.isUploading()
-    }
+  get classes(): ConstrClassObject {
+    return this.callInstance('skeleton', item => item.classes, {})
+  }
 
-    if (!this.appearance.isTile()) {
-      item.position = 'static'
-    }
-
-    if (this.progressValue.isDeterminate()) {
-      item.value = this.progressValue.value
-      item.max = this.progressValue.max
-    }
-
-    if (this.appearance.isCircular()) {
-      return {
-        ...item,
-        circular: true
-      }
-    }
-
+  /**
+   * Returns exposed properties and methods of the component.
+   *
+   * Возвращает открытые свойства и методы компонента.
+   * @returns exposed API object / объект открытого API
+   */
+  get expose(): InputFileItemExpose {
     return {
-      ...item,
-      linear: true
+      getFile: () => this.i('file').getFile(),
+      getStatus: () => this.i('status').status,
+      getCrop: () => this.i('crop').coordinator,
+      delete: () => this.i('event').onDelete(),
+      retry: () => this.i('event').onRetry()
     }
   }
 }

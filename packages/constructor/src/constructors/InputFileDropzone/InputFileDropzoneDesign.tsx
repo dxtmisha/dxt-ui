@@ -1,11 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
-
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { InputFileDropzone } from './InputFileDropzone'
 
@@ -80,9 +78,7 @@ export class InputFileDropzoneDesign<
    * @returns object of exported properties / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
-    return {
-      open: this.item.eventItem.open
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -122,18 +118,19 @@ export class InputFileDropzoneDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.labelledby(this.item.label.id),
-        ...AriaStaticInclude.describedby(this.item.message.id)
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          ...this.item.aria
+        }
+      ),
       [
-        ...this.item.label.render(this.slots),
+        ...(this.item.callInstance('label', item => item.render(this.slots)) ?? []),
         ...this.renderBody(),
-        ...this.item.message.render()
+        ...(this.item.callInstance('message', item => item.render()) ?? [])
       ]
     )
   }
@@ -161,8 +158,11 @@ export class InputFileDropzoneDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderDropzone = (): VNode[] => {
-    return this.item.dropzone.render(undefined, {
-      class: this.classes?.value.dropzone
-    })
+    return this.item.i('dropzone').render(
+      this.slots?.default ? { default: this.slots.default } : undefined,
+      {
+        class: this.classes?.value.dropzone
+      }
+    )
   }
 }

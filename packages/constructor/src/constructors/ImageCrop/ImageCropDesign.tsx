@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -108,7 +108,7 @@ export class ImageCropDesign<
    * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
-    return this.item.cropImage.styles
+    return this.item.styles
   }
 
   /**
@@ -118,22 +118,25 @@ export class ImageCropDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.item.image.render(),
-      ...this.item.cropArea.render(),
-      ...this.item.progress.render()
+    const children: VNode[] = [
+      ...this.item.callInstance('image', item => item.render(), []),
+      ...this.item.callInstance('cropArea', item => item.render(), []),
+      ...this.item.callInstance('progress', item => item.render(), [])
     ]
 
     this.initSlot('default', children)
 
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.aria,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       h('div', this.getKeyClass('body'), children)
     )
   }

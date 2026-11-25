@@ -63,6 +63,9 @@ import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoImageCropPage from './pages/components/DemoImageCropPage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoInputCodePage from './pages/components/DemoInputCodePage.vue'
+import DemoInputCodeItemPage from './pages/components/DemoInputCodeItemPage.vue'
+import DemoInputFileDropzonePage from './pages/components/DemoInputFileDropzonePage.vue'
+import DemoInputFileItemPage from './pages/components/DemoInputFileItemPage.vue'
 import DemoInputImagePage from './pages/components/DemoInputImagePage.vue'
 import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
 import DemoInputPhoneDialCodePage from './pages/components/DemoInputPhoneDialCodePage.vue'
@@ -407,6 +410,21 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-input-code',
     name: 'component-input-code',
     component: DemoInputCodePage
+  },
+  {
+    path: '/component-input-code-item',
+    name: 'component-input-code-item',
+    component: DemoInputCodeItemPage
+  },
+  {
+    path: '/component-input-file-dropzone',
+    name: 'component-input-file-dropzone',
+    component: DemoInputFileDropzonePage
+  },
+  {
+    path: '/component-input-file-item',
+    name: 'component-input-file-item',
+    component: DemoInputFileItemPage
   },
   {
     path: '/component-input-image',

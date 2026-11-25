@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `reject`
+
+Событие срабатывает, когда выбранные или перетащенные файлы превышают ограничение `maxFileSize`.
+
+**Параметры:**
+- `files: File[]` — Массив отклонённых файлов, размер которых превышает `maxFileSize`.
+
+<Source
+    code={`
+<script setup>
+const handleReject = (files) => {
+  console.log('Отклонённые файлы:', files)
+}
+</script>
+
+<template>
+  <InputFileDropzone
+    label="Загрузить файлы"
+    :maxFileSize="5242880"
+    @reject="handleReject"
+  />
+</template>
+  `}
+    language="html"
+/>

@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <DesignComponent :value="100" unit="celsius" language="en-US"/>
+  <DesignComponent :value="100" unit="celsius" language="en-US" v-bind="args"/>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

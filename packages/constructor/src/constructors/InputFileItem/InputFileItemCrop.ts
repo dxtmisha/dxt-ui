@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import type { ConstrBind } from '@dxtmisha/functional'
+import { type ConstrBind, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import type { CropAreaCoordinator, CropAreaEventParameters } from '../CropArea'
 import type { DialogProps } from '../Dialog'
@@ -12,12 +12,15 @@ import type { InputFileItemPropsBasic } from './props'
  *
  * Вспомогательный класс для управления состоянием кадрирования изображения, элементами управления диалогом и синхронизацией области кадрирования.
  */
-export class InputFileItemCrop {
+export class InputFileItemCrop extends DesignLifecycleAbstract {
   /** Working/current crop coordinates in editor / Рабочие/текущие координаты кадрирования в редакторе */
   protected readonly current = ref<CropAreaCoordinator | undefined>()
 
   /** Saved crop coordinates / Сохраненные координаты кадрирования */
   protected readonly value = ref<CropAreaCoordinator | undefined>()
+
+  /** Stop handle for crop prop watcher / Функция остановки наблюдателя за свойством crop */
+  protected stopWatch?: () => void
 
   /**
    * Constructor.
@@ -25,16 +28,15 @@ export class InputFileItemCrop {
    * Конструктор.
    * @param props input data / входные данные
    * @param text text manager instance / экземпляр менеджера текста
+   * @param onCrop callback triggered when crop is saved / коллбэк, вызываемый при сохранении кадрирования
    */
   constructor(
     protected readonly props: InputFileItemPropsBasic,
-    protected readonly text: TextInclude
+    protected readonly text: TextInclude,
+    protected readonly onCrop?: () => void
   ) {
-    watch(
-      () => this.props.value?.crop,
-      crop => this.updateCoordinator(crop),
-      { immediate: true }
-    )
+    super()
+    this.updateCoordinator(props.value?.crop)
   }
 
   /**
@@ -110,11 +112,37 @@ export class InputFileItemCrop {
   }
 
   /**
+   * Registers reactive watcher for crop property changes on mount.
+   *
+   * Регистрирует реактивный наблюдатель за изменением свойства crop при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.updateCoordinator(this.props.value?.crop)
+
+    this.stopWatch?.()
+    this.stopWatch = watch(
+      () => this.props.value?.crop,
+      crop => this.updateCoordinator(crop)
+    )
+  }
+
+  /**
+   * Cleans up reactive watcher on unmount.
+   *
+   * Очищает реактивный наблюдатель при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
+  /**
    * Saves current working crop coordinates.
    *
    * Сохраняет текущие рабочие координаты кадрирования.
    */
   protected readonly onSave = (): void => {
     this.value.value = this.current.value
+    this.onCrop?.()
   }
 }

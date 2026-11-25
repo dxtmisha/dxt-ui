@@ -1,5 +1,10 @@
 import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
+/**
+ * Descriptions for HorizontalScroll component properties
+ *
+ * Описания свойств компонента HorizontalScroll
+ */
 export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionItem = {
   name: 'HorizontalScroll',
   description: {
@@ -20,6 +25,10 @@ export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionIte
       'слот для контента с данными привязки для элементов'
     ]
   },
+  import: [
+    'import { ref } from \'vue\'',
+    'import type { HorizontalScrollExpose } from \'@dxtmisha/constructor/HorizontalScroll\''
+  ],
   render: `
     <DesignComponent v-bind="args">
       <template #default="{ classItem }">
@@ -31,18 +40,19 @@ export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionIte
         <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.95 0.07 140);">Item 6</div>
         <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.95 0.06 160);">Item 7</div>
         <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.94 0.05 175);">Item 8</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.94 0.05 195);">Item 9</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.94 0.05 215);">Item 10</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.05 240);">Item 11</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.06 265);">Item 12</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.07 285);">Item 13</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.08 305);">Item 14</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.08 325);">Item 15</div>
-        <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.08 345);">Item 16</div>
       </template>
     </DesignComponent>
   `,
+  play: `
+const container = canvasElement.querySelector('.design-component')
+await expect(container).toBeInTheDocument()
+const items = canvasElement.querySelectorAll('.design-component__item')
+await expect(items.length).toBe(8)
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'HorizontalScrollBasic',
       name: {
@@ -70,6 +80,76 @@ export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionIte
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const containers = canvasElement.querySelectorAll('.design-component')
+await expect(containers.length).toBe(2)
+const selectedItem = canvasElement.querySelector('.design-component__item--selected')
+await expect(selectedItem).toBeInTheDocument()
+await expect(selectedItem).toHaveTextContent('Item 4')
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor Props Only — NEVER in documentation)
+    // =========================================================================
+    {
+      id: 'HorizontalScrollTestTagsAndExpose',
+      name: {
+        en: 'Test: Tags, slot binds and expose API',
+        ru: 'Тест: Теги, привязки слота и expose API'
+      },
+      propsName: ['tag'],
+      setup: `
+      const scrollReference = ref<HorizontalScrollExpose | null>(null)
+      const elementTag = ref<string>('')
+
+      const inspectScroll = (): void => {
+        scrollReference.value?.toSelected()
+        elementTag.value = scrollReference.value?.getElement()?.tagName ?? ''
+      }
+
+      return {
+        scrollReference,
+        elementTag,
+        inspectScroll
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex wiki-storybook-flex-align-center">
+            <button type="button" class="wiki-storybook-button" @click="inspectScroll">
+              Inspect and Scroll
+            </button>
+            <span data-testid="hs-expose-tag">{{ elementTag }}</span>
+          </div>
+
+          <DesignComponent
+            ref="scrollReference"
+            tag="nav"
+            aria-label="Test scroll navigation"
+            data-testid="hs-test-nav"
+          >
+            <template #default="{ binds, classItemSelected }">
+              <div v-bind="binds" style="min-width: 240px;">First</div>
+              <div v-bind="binds" :class="classItemSelected" style="min-width: 240px;">Selected</div>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const navElement = canvasElement.querySelector('[data-testid="hs-test-nav"]')
+await expect(navElement?.tagName).toBe('NAV')
+await expect(navElement).toHaveAttribute('aria-label', 'Test scroll navigation')
+await expect(navElement?.querySelectorAll('.design-component__item').length).toBe(2)
+
+await step('Call expose toSelected and getElement via button', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Inspect and Scroll' }))
+  await waitFor(() => {
+    expect(canvas.getByTestId('hs-expose-tag')).toHaveTextContent('NAV')
+  })
+})
       `
     }
   ],

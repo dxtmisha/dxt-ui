@@ -24,6 +24,8 @@ export type InputFileDropzoneComponents
 export type InputFileDropzoneEmits = {
   /** Event triggered when files are added / Событие при добавлении файлов */
   add: [files: File[]]
+  /** Event triggered when files are rejected due to maxFileSize / Событие при отклонении файлов из-за превышения maxFileSize */
+  reject: [files: File[]]
 }
 
 /**

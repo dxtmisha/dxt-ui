@@ -163,6 +163,19 @@ describe('InputFileItemCrop', () => {
       expect(cropHelper.valueRef.value).toEqual(newCoordinates)
       expect(cropHelper.coordinator).toEqual(newCoordinates)
     })
+
+    it('invokes optional onCrop callback after saving coordinates', () => {
+      let called = 0
+      const text = new TextInclude({} as InputFileItemPropsBasic)
+      const cropHelper = new TestInputFileItemCrop({ crop: true }, text, () => {
+        called += 1
+      })
+
+      cropHelper.onResize({ coordinator: [10, 10, 10, 10] } as unknown as CropAreaEventParameters)
+      cropHelper.callOnSave()
+
+      expect(called).toBe(1)
+    })
   })
 
   describe('dialog', () => {

@@ -36,7 +36,10 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
     ]
   },
   import: [
-    'import { image1 } from \'@dxtmisha/wiki/media\''
+    'import { ref } from \'vue\'',
+    'import type { InputFileItemExpose } from \'@dxtmisha/constructor/InputFileItem\'',
+    'import { image1 } from \'@dxtmisha/wiki/media\'',
+    'import { expect, within, userEvent } from \'storybook/test\''
   ],
   stories: [
     {
@@ -69,7 +72,7 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
               <DesignComponent
                 appearance="list"
                 status="uploaded"
-                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="list"
@@ -112,23 +115,23 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
               <DesignComponent
                 appearance="tile"
                 status="idle"
-                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="tile"
                 status="uploading"
                 :loading="{ visible: true, value: 1400000 }"
-                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: 'https://picsum.photos/200/200?random=2' }"
+                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="tile"
                 status="uploaded"
-                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=3' }"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="tile"
                 status="error"
-                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: 'https://picsum.photos/200/200?random=4' }"
+                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="tile"
@@ -172,6 +175,11 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
             </div>
           </div>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByText('document-contract.pdf')).toBeInTheDocument()
+await expect(canvas.getByText('disabled-file.docx')).toBeInTheDocument()
       `
     },
     {
@@ -187,6 +195,69 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
             <DesignComponent isSkeleton :value="{ name: 'loading-file.pdf', size: 1048576 }" />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const item = canvasElement.querySelector('[aria-busy]')
+await expect(item).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'InputFileItemTestExposeAndEvents',
+      name: {
+        en: 'Test: Expose API, delete, retry and crop props',
+        ru: 'Тест: Expose API, delete, retry и crop'
+      },
+      propsName: ['file', 'crop', 'confirmDelete'],
+      setup: `
+      const fileItemReference = ref<InputFileItemExpose | null>(null)
+      const statusText = ref('')
+      const eventText = ref('')
+      const testFile = new File(['abc'], 'contract-draft.pdf', { type: 'application/pdf' })
+      return {
+        fileItemReference,
+        statusText,
+        eventText,
+        testFile,
+        inspectItem: () => {
+          statusText.value = String(fileItemReference.value?.getStatus() ?? '') + ':' + String(fileItemReference.value?.getFile()?.name ?? '')
+        },
+        callRetry: () => fileItemReference.value?.retry(),
+        callDelete: () => fileItemReference.value?.delete(),
+        onRetry: () => { eventText.value = 'retry' },
+        onDelete: () => { eventText.value = 'delete' }
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="inspectItem">Inspect</button>
+            <button type="button" class="wiki-storybook-button" @click="callRetry">Call retry()</button>
+            <button type="button" class="wiki-storybook-button" @click="callDelete">Call delete()</button>
+            <span data-testid="ifi-test-status">{{ statusText }}</span>
+            <span data-testid="ifi-test-event">{{ eventText }}</span>
+          </div>
+          <DesignComponent
+            ref="fileItemReference"
+            status="error"
+            :file="testFile"
+            :confirmDelete="false"
+            :crop="true"
+            :value="{ name: 'contract-draft.pdf', size: 3, crop: [10, 10, 10, 10] }"
+            @retry="onRetry"
+            @delete="onDelete"
+          />
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await userEvent.click(canvas.getByRole('button', { name: 'Inspect' }))
+await expect(canvas.getByTestId('ifi-test-status')).toHaveTextContent('error:contract-draft.pdf')
+
+await userEvent.click(canvas.getByRole('button', { name: 'Call retry()' }))
+await expect(canvas.getByTestId('ifi-test-event')).toHaveTextContent('retry')
+
+await userEvent.click(canvas.getByRole('button', { name: 'Call delete()' }))
+await expect(canvas.getByTestId('ifi-test-event')).toHaveTextContent('delete')
       `
     }
   ],

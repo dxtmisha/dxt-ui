@@ -6,7 +6,7 @@ import { HeadroomWikiStorybook } from './wiki'
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'
 import type { HeadroomEventItem } from '@dxtmisha/constructor'
-import type { HeadroomExpose } from '@dxtmisha/constructor/Headroom'
+import type { HeadroomExpose as HeadroomExposeType } from '@dxtmisha/constructor/Headroom'
 import { expect, within, userEvent, waitFor } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
@@ -265,7 +265,7 @@ export const HeadroomExpose: Story = {
   render: () => ({
     components: { D1Headroom },
     setup() {
-      const headroomReference = ref<(HeadroomExpose & { elementHtml?: HTMLElement }) | null>(null)
+      const headroomReference = ref<(HeadroomExposeType & { elementHtml?: HTMLElement }) | null>(null)
       const stickyStatus = ref<boolean>(false)
       const exposedValues = ref<HeadroomEventItem | null>(null)
       const exposedTagName = ref<string>('')

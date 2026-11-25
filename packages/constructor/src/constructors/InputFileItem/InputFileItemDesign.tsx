@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -80,13 +80,7 @@ export class InputFileItemDesign<
    * @returns object of exported properties / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
-    return {
-      getFile: this.item.file.getFile,
-      getStatus: () => this.item.status.status,
-      getCrop: () => this.item.crop.coordinator,
-      delete: () => this.item.event.onDelete(),
-      retry: () => this.item.event.onRetry()
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -97,7 +91,7 @@ export class InputFileItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         thumbnail: this.naming.getSubClass('thumbnail'),
@@ -133,12 +127,15 @@ export class InputFileItemDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ...this.item.aria,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          ...this.item.aria
+        }
+      ),
       this.renderChildren()
     )
   }
@@ -150,11 +147,13 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderChildren = (): VNode[] => {
-    if (this.item.appearance.isTile()) {
+    const appearance = this.item.i('appearance')
+
+    if (appearance.isTile()) {
       return this.renderTile()
     }
 
-    if (this.item.appearance.isCompact()) {
+    if (appearance.isCompact()) {
       return this.renderCompact()
     }
 
@@ -183,7 +182,7 @@ export class InputFileItemDesign<
    */
   readonly renderCompact = (): VNode[] => {
     return [
-      ...this.item.label.render(),
+      ...this.item.i('label').render(),
       ...this.renderStatus(),
       ...this.renderActions()
     ]
@@ -239,7 +238,7 @@ export class InputFileItemDesign<
         'div',
         { class: this.classes?.value.body },
         [
-          ...this.item.label.render(),
+          ...this.item.i('label').render(),
           ...this.renderProgress(),
           ...this.renderCaption()
         ]
@@ -255,10 +254,17 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonCrop = (props?: WindowControlItem): VNode[] => {
-    return this.item.buttonCrop.render(undefined, toBinds(
-      props?.binds,
-      { class: this.classes?.value.buttonCrop }
-    ))
+    return this.item.callInstance(
+      'buttonCrop',
+      item => item.render(
+        undefined,
+        toBinds(
+          props?.binds,
+          { class: this.classes?.value.buttonCrop }
+        )
+      ),
+      []
+    )
   }
 
   /**
@@ -269,10 +275,17 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonDelete = (props?: WindowControlItem): VNode[] => {
-    return this.item.buttonDelete.render(undefined, toBinds(
-      props?.binds,
-      { class: this.classes?.value.buttonDelete }
-    ))
+    return this.item.callInstance(
+      'buttonDelete',
+      item => item.render(
+        undefined,
+        toBinds(
+          props?.binds,
+          { class: this.classes?.value.buttonDelete }
+        )
+      ),
+      []
+    )
   }
 
   /**
@@ -282,10 +295,14 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonRetry = (): VNode[] => {
-    if (this.item.status.isError()) {
-      return this.item.buttonRetry.render(undefined, {
-        class: this.classes?.value.buttonRetry
-      })
+    if (this.item.i('status').isError()) {
+      return this.item.callInstance(
+        'buttonRetry',
+        item => item.render(undefined, {
+          class: this.classes?.value.buttonRetry
+        }),
+        []
+      )
     }
 
     return []
@@ -298,9 +315,9 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderCaption = (): VNode[] => {
-    return this.item.caption.render([
+    return this.item.i('caption').render([
       ...this.renderStatus(),
-      this.item.status.message
+      this.item.i('status').message
     ])
   }
 
@@ -311,7 +328,7 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderCrop = (): VNode[] => {
-    return this.item.imageCrop.render()
+    return this.item.callInstance('imageCrop', item => item.render(), [])
   }
 
   /**
@@ -321,13 +338,15 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderDialog = (): VNode[] => {
+    const deleteItem = this.item.i('delete')
+
     if (
-      this.item.delete.is()
+      deleteItem.is()
       && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',
-        this.item.delete.dialog,
+        deleteItem.dialog,
         {
           control: this.renderButtonDelete
         }
@@ -344,13 +363,15 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderDialogCrop = (): VNode[] => {
+    const cropItem = this.item.i('crop')
+
     if (
-      this.item.crop.is()
+      cropItem.is()
       && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',
-        this.item.crop.dialog,
+        cropItem.dialog,
         {
           default: this.renderCrop,
           control: this.renderButtonCrop
@@ -368,10 +389,14 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderProgress = (): VNode[] => {
-    if (this.item.status.isUploading()) {
-      return this.item.progress.render(undefined, {
-        class: this.classes?.value.progress
-      })
+    if (this.item.i('status').isUploading()) {
+      return this.item.callInstance(
+        'progress',
+        item => item.render(undefined, {
+          class: this.classes?.value.progress
+        }),
+        []
+      )
     }
 
     return []
@@ -384,11 +409,13 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderStatus = (): VNode[] => {
+    const status = this.item.i('status')
+
     if (
-      this.item.status.isUploaded()
-      || this.item.status.isError()
+      status.isUploaded()
+      || status.isError()
     ) {
-      return this.item.iconStatus.renderIcon()
+      return this.item.callInstance('iconStatus', item => item.renderIcon(), [])
     }
 
     return []
@@ -407,7 +434,7 @@ export class InputFileItemDesign<
         {
           class: this.classes?.value.thumbnail
         },
-        this.item.image.render()
+        this.item.i('image').render()
       )
     ]
   }

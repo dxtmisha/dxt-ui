@@ -45,7 +45,7 @@ describe('InputFileDropzoneFiles', () => {
     expect(emits).toHaveBeenCalledWith('add', [file1, file2])
   })
 
-  it('should filter files by maxFileSize and emit add with valid files only', () => {
+  it('should filter files by maxFileSize and emit both add and reject events', () => {
     const emits = vi.fn()
     const props = { maxFileSize: 500 } as InputFileDropzoneProps
     const filesManager = new InputFileDropzoneFiles(props, emits)
@@ -57,11 +57,12 @@ describe('InputFileDropzoneFiles', () => {
     const result = filesManager.setFiles([fileValid1, fileInvalid, fileValid2])
 
     expect(result).toEqual([fileValid1, fileValid2])
-    expect(emits).toHaveBeenCalledTimes(1)
+    expect(emits).toHaveBeenCalledTimes(2)
     expect(emits).toHaveBeenCalledWith('add', [fileValid1, fileValid2])
+    expect(emits).toHaveBeenCalledWith('reject', [fileInvalid])
   })
 
-  it('should return empty array and not emit if all files exceed maxFileSize', () => {
+  it('should return empty array and emit only reject if all files exceed maxFileSize', () => {
     const emits = vi.fn()
     const props = { maxFileSize: 100 } as InputFileDropzoneProps
     const filesManager = new InputFileDropzoneFiles(props, emits)
@@ -72,7 +73,9 @@ describe('InputFileDropzoneFiles', () => {
     const result = filesManager.setFiles([fileLarge1, fileLarge2])
 
     expect(result).toEqual([])
-    expect(emits).not.toHaveBeenCalled()
+    expect(emits).toHaveBeenCalledTimes(1)
+    expect(emits).toHaveBeenCalledWith('reject', [fileLarge1, fileLarge2])
+    expect(emits).not.toHaveBeenCalledWith('add', expect.anything())
   })
 
   it('should not throw when emits callback is not provided', () => {

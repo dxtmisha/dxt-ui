@@ -1,15 +1,19 @@
 // ai-none
 
-import { type VNode, type Reactive, ref } from 'vue'
+import { type Reactive, ref, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName,
+  forEach,
+  getObjectNoUndefined,
   isFilled,
-  forEach
+  isObject
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { InputCodeItemComponentInclude, InputCodeItemPropsInclude } from './basicTypes'
 import type { InputCodeItemExpose, InputCodeItemSlots } from './types'
 import type { InputCodeItemPropsBasic } from './props'
@@ -27,8 +31,10 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   InputCodeItemExpose,
   InputCodeItemSlots
 > {
-  protected readonly name = 'inputCodeItem'
-  protected readonly propsAttrsName = 'itemAttrs'
+  /** Component sub-name identifier / Идентификатор имени субкомпонента */
+  protected override readonly name = 'inputCodeItem'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
+  protected override readonly propsAttrsName = 'itemAttrs'
 
   /** List of child component exposed states / Список экспортируемых состояний дочерних компонентов */
   readonly items = ref<Reactive<InputCodeItemExpose>[]>([])
@@ -41,14 +47,18 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param onUpdate event for value update / событие обновления значения
+   * @param extra additional properties or attributes / дополнительные свойства или атрибуты
+   * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    props: Readonly<InputCodeItemPropsInclude>,
+    props: ComponentIncludeProps<InputCodeItemPropsInclude>,
     naming: DesignName,
     components?: DesignComponents<InputCodeItemComponentInclude, InputCodeItemPropsInclude>,
-    protected readonly onUpdate?: (value: string) => void
+    protected readonly onUpdate?: (value: string) => void,
+    extra?: ComponentIncludeExtra<InputCodeItemPropsBasic>,
+    index?: string
   ) {
-    super(props, naming, components)
+    super(props, naming, components, extra, index)
   }
 
   /**
@@ -80,8 +90,10 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Фокусируется на первом пустом или на последнем элементе ввода кода.
    */
-  readonly focus = () => {
-    if (this.items.value.length > 0) {
+  readonly focus = (): void => {
+    const itemsLength = this.items.value.length
+
+    if (itemsLength > 0) {
       for (const item of this.items.value) {
         if (!isFilled(item.getValue(), true)) {
           item.focusInput?.()
@@ -89,7 +101,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
         }
       }
 
-      this.items.value[this.items.value.length - 1]?.focusInput?.()
+      this.items.value[itemsLength - 1]?.focusInput?.()
     }
   }
 
@@ -99,7 +111,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * Групповое обновление значений элементов.
    * @param value new code string / новая строка кода
    */
-  readonly update = (value: string) => {
+  readonly update = (value: string): void => {
     const values = this.getValue(value)
 
     this.items.value.forEach((item, index) => item.set(values?.[index] ?? ''))
@@ -113,7 +125,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Обновляет tabindex элементов.
    */
-  readonly updateTabindex = () => {
+  readonly updateTabindex = (): void => {
     let hasEmpty = false
 
     this.items.value.forEach((item) => {
@@ -134,7 +146,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Сбрасывает массив собранных элементов.
    */
-  readonly reset = () => {
+  readonly reset = (): void => {
     this.items.value = []
   }
 
@@ -143,7 +155,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Сбрасывает значения всех элементов кода.
    */
-  readonly resetValue = () => {
+  readonly resetValue = (): void => {
     this.update('')
     this.onInput()
   }
@@ -153,7 +165,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Обработчик события ввода. Собирает полное значение кода и вызывает событие обновления.
    */
-  readonly onInput = () => {
+  readonly onInput = (): void => {
     let value = ''
 
     for (const item of this.items.value) {
@@ -173,15 +185,15 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    *
    * Обработчик события Backspace. Перемещает фокус назад, когда элемент пуст.
    */
-  readonly onBackspace = () => {
-    let none = false
+  readonly onBackspace = (): void => {
+    let isCleared = false
 
     this.items.value.forEach((item, index) => {
       if (
         !isFilled(item.getValue(), true)
-        || none
+        || isCleared
       ) {
-        none = true
+        isCleared = true
         item.set(this.items.value[index + 1]?.getValue() || '')
       }
     })
@@ -197,21 +209,21 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   readonly onPaste = (
     index: InputCodeItemPropsBasic['index'],
     text: string
-  ) => {
-    let go = false
-    let key = 0
+  ): void => {
+    let isMatched = false
+    let valueIndex = 0
     const values = this.getValue(text)
 
     this.items.value.forEach((item) => {
       if (
-        key in values
+        valueIndex in values
         && (
           item.index === index
-          || go
+          || isMatched
         )
       ) {
-        go = true
-        item.set(values?.[key++] ?? '')
+        isMatched = true
+        item.set(values?.[valueIndex++] ?? '')
       }
     })
 
@@ -254,27 +266,28 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<InputCodeItemPropsBasic>> {
     const props = this.getProps()
     const binds = super.toBinds()
 
     return {
       ...binds,
+      ...getObjectNoUndefined({
+        disabled: props.disabled,
+        hide: props.hide,
+        isSkeleton: props.isSkeleton,
+        name: props.name,
+        autocomplete: props.autocomplete,
+        match: props.match,
+        inputMode: props.inputMode,
+        placeholder: props.placeholder
+      }),
 
-      ref: (item: any) => {
-        if (item) {
-          this.items.value.push(item)
+      ref: (item: unknown) => {
+        if (isObject(item)) {
+          this.items.value.push(item as Reactive<InputCodeItemExpose>)
         }
       },
-
-      disabled: props.disabled,
-      hide: props.hide,
-      isSkeleton: props.isSkeleton,
-      name: props.name,
-      autocomplete: props.autocomplete,
-      match: props.match,
-      inputMode: props.inputMode,
-      placeholder: props.placeholder,
 
       onInput: this.onInput,
       onPaste: this.onPaste,

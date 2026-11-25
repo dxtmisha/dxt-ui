@@ -1,5 +1,13 @@
 import { type Ref } from 'vue'
-import { type ConstrBind, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComponents,
+  DesignLogicAbstract,
+  type DesignName
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
@@ -10,27 +18,84 @@ import { InputCodeItemValue } from './InputCodeItemValue'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { InputCodeItemComponents, InputCodeItemEmits, InputCodeItemSlots } from './types'
+import type {
+  InputCodeItemComponents,
+  InputCodeItemEmits,
+  InputCodeItemExpose,
+  InputCodeItemSlots
+} from './types'
 import type { InputCodeItemProps } from './props'
+
+/** InputCodeItem dependency constructors type / Тип конструкторов зависимостей InputCodeItem */
+export type InputCodeItemConstructors = {
+  /** Event handler constructor / Конструктор обработчика событий */
+  event: typeof InputCodeItemEvent
+  /** Navigation controller constructor / Конструктор контроллера навигации */
+  go: typeof InputCodeItemGo
+  /** Skeleton controller constructor / Конструктор контроллера скелетона */
+  skeleton: typeof SkeletonInclude
+  /** Tabindex controller constructor / Конструктор контроллера tabindex */
+  tabindex: typeof InputCodeItemTabIndex
+  /** Text localization constructor / Конструктор локализации текста */
+  text: typeof TextInclude
+  /** Value controller constructor / Конструктор контроллера значения */
+  value: typeof InputCodeItemValue
+}
 
 /**
  * Class for handling code input.
  *
- *  / Класс для работы с вводом кода.
+ * Класс для работы с вводом кода.
  */
-export class InputCodeItem {
-  /** Object for event handling / Объект для обработки событий */
-  readonly event: InputCodeItemEvent
-  /** Object for navigation and focus movement / Объект для навигации и перемещения фокуса */
-  readonly go: InputCodeItemGo
-  /** Skeleton control instance / Экземпляр управления скелетоном */
-  readonly skeleton: SkeletonInclude
-  /** Object for managing tabindex / Объект для управления tabindex */
-  readonly tabindex: InputCodeItemTabIndex
-  /** Object for text localization / Объект для локализации текста */
-  readonly text: TextInclude
-  /** Object for handling value / Объект для работы со значением */
-  readonly value: InputCodeItemValue
+export class InputCodeItem extends DesignLogicAbstract<
+  HTMLDivElement,
+  InputCodeItemComponents,
+  InputCodeItemEmits,
+  InputCodeItemSlots,
+  InputCodeItemProps,
+  InputCodeItemConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputCodeItemConstructors> = {
+    event: {
+      item: InputCodeItemEvent,
+      parameters: () => [
+        this.props,
+        () => this.i('go'),
+        () => this.i('value'),
+        this.emits
+      ]
+    },
+    go: {
+      item: InputCodeItemGo,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    },
+    tabindex: {
+      item: InputCodeItemTabIndex,
+      parameters: () => [this.props]
+    },
+    text: {
+      item: TextInclude,
+      canCreate: () => this.props.index !== undefined,
+      parameters: () => [this.props]
+    },
+    value: {
+      item: InputCodeItemValue,
+      parameters: () => [this.element]
+    }
+  }
 
   /**
    * Constructor
@@ -42,54 +107,26 @@ export class InputCodeItem {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.InputCodeItemEventConstructor class for working with input code item event / класс для работы с событием элемента ввода кода
-   * @param constructors.InputCodeItemGoConstructor class for working with input code item go / класс для работы с переходом элемента ввода кода
-   * @param constructors.InputCodeItemTabIndexConstructor class for working with input code item tabindex / класс для работы с tabindex элемента ввода кода
-   * @param constructors.InputCodeItemValueConstructor class for working with input code item value / класс для работы со значением элемента ввода кода
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
+   * @param constructors dependency injection overrides object / объект переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: InputCodeItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputCodeItemComponents, InputCodeItemProps>,
-    protected readonly slots?: InputCodeItemSlots,
-    protected readonly emits?: ConstrEmit<InputCodeItemEmits>,
-    constructors: {
-      InputCodeItemEventConstructor?: typeof InputCodeItemEvent
-      InputCodeItemGoConstructor?: typeof InputCodeItemGo
-      InputCodeItemTabIndexConstructor?: typeof InputCodeItemTabIndex
-      InputCodeItemValueConstructor?: typeof InputCodeItemValue
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
+    props: Readonly<InputCodeItemProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<InputCodeItemComponents, InputCodeItemProps>,
+    slots?: InputCodeItemSlots,
+    emits?: ConstrEmit<InputCodeItemEmits>,
+    constructors?: Partial<InputCodeItemConstructors>
   ) {
-    const {
-      InputCodeItemEventConstructor = InputCodeItemEvent,
-      InputCodeItemGoConstructor = InputCodeItemGo,
-      InputCodeItemTabIndexConstructor = InputCodeItemTabIndex,
-      InputCodeItemValueConstructor = InputCodeItemValue,
-      SkeletonIncludeConstructor = SkeletonInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.value = new InputCodeItemValueConstructor(element)
-    this.go = new InputCodeItemGoConstructor(props, element)
-    this.tabindex = new InputCodeItemTabIndexConstructor(props)
-    this.event = new InputCodeItemEventConstructor(
+    super(
       props,
-      this.value,
-      this.go,
-      emits
-    )
-    this.skeleton = new SkeletonIncludeConstructor(
-      props,
+      element,
       naming,
-      ['classBackground']
+      components,
+      slots,
+      emits,
+      constructors
     )
-    this.text = new TextIncludeConstructor(props)
   }
 
   /**
@@ -99,14 +136,42 @@ export class InputCodeItem {
    * @returns ARIA attributes / ARIA атрибуты
    */
   get aria(): AriaList {
+    const symbol = this.callInstance('text', item => item.symbol)
+    const label = this.props.index !== undefined && symbol
+      ? symbol.replace('[index]', (Number(this.props.index) + 1).toString())
+      : undefined
+
     return {
-      ...AriaStaticInclude.disabled(this.props.disabled),
-      ...AriaStaticInclude.invalid(this.props.error),
-      ...AriaStaticInclude.label(
-        this.props.index !== undefined
-          ? this.text.symbol?.replace('[index]', (Number(this.props.index) + 1).toString())
-          : undefined
-      )
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.invalid(Boolean(this.props.error)),
+      ...AriaStaticInclude.label(label)
+    }
+  }
+
+  /**
+   * Returns values for the class.
+   *
+   * Возвращает значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return this.callInstance('skeleton', item => item.classes, {})
+  }
+
+  /**
+   * Returns exposed properties and methods.
+   *
+   * Возвращает открытые свойства и методы.
+   * @returns exposed API object / объект открытого API
+   */
+  get expose(): InputCodeItemExpose {
+    return {
+      index: this.props.index,
+      getValue: () => this.i('value').get(),
+      set: (value: string) => this.i('value').set(value),
+      setTabindex: (value: number | string | undefined) => this.i('tabindex').set(value),
+      reset: () => this.i('value').reset(),
+      focusInput: this.focus
     }
   }
 
@@ -117,6 +182,8 @@ export class InputCodeItem {
    * @returns bindings for input element / привязки для элемента ввода
    */
   get inputBinds(): ConstrBind<Partial<HTMLInputElement>> {
+    const event = this.i('event')
+
     return {
       key: 'input',
       class: this.naming.getSubClass('input'),
@@ -125,29 +192,17 @@ export class InputCodeItem {
       inputMode: this.props.inputMode,
       maxLength: 1,
       placeholder: this.props.disabled ? undefined : this.props.placeholder,
-      [this.go.getKey()]: this.props.index,
+      [this.i('go').getKey()]: this.props.index,
       disabled: this.props.disabled,
-      tabindex: this.tabindex.get(),
+      tabindex: this.i('tabindex').get(),
 
-      onFocus: this.event.onFocus,
-      onClick: this.event.onClick,
-      onKeydown: this.event.onKeydown,
-      onInput: this.event.onInput,
-      onPaste: this.event.onPaste,
+      onFocus: event.onFocus,
+      onClick: event.onClick,
+      onKeydown: event.onKeydown,
+      onInput: event.onInput,
+      onPaste: event.onPaste,
 
       ...this.aria
-    }
-  }
-
-  /**
-   * Returns values for the class.
-   *
-   * Возвращает значения для класса.
-   * @returns classes values / значения классов
-   */
-  get classes() {
-    return {
-      ...this.skeleton.classes
     }
   }
 
@@ -156,7 +211,7 @@ export class InputCodeItem {
    *
    * Переводим элемент в состояние фокуса.
    */
-  readonly focus = () => {
+  readonly focus = (): void => {
     this.element.value?.querySelector('input')?.focus()
   }
 

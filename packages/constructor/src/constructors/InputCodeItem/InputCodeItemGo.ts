@@ -1,17 +1,34 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import { isFilled } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, isDomRuntime, isFilled } from '@dxtmisha/functional'
 
 import type { InputCodeItemElement } from './basicTypes'
 import type { InputCodeItemProps } from './props'
+
+/** Maximum sibling steps when scanning code items / Максимальное число шагов по соседним элементам кода */
+const MAX_SIBLING_TRAVERSAL = 32
+/** Delay in milliseconds before selecting input text / Задержка в миллисекундах перед выделением текста ввода */
+const SELECTION_DELAY_MS = 32
 
 /**
  * Class for handling the movement of elements in a list.
  *
  * Класс для работы с перемещением элементов по списку.
  */
-export class InputCodeItemGo {
+export class InputCodeItemGo extends DesignLifecycleAbstract {
+  /** Active selection timeout identifier / Идентификатор активного таймера выделения */
+  protected selectionTimer?: ReturnType<typeof setTimeout>
+
+  /**
+   * Clears pending selection timer on unmount.
+   *
+   * Очищает активный таймер выделения при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.clearSelectionTimer()
+  }
+
   /**
    * Constructor
    *
@@ -22,7 +39,9 @@ export class InputCodeItemGo {
   constructor(
     protected readonly props: Readonly<InputCodeItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>
-  ) {}
+  ) {
+    super()
+  }
 
   /**
    * Get the key for identification.
@@ -39,7 +58,7 @@ export class InputCodeItemGo {
    *
    * Перенести на следующий элемент.
    */
-  next() {
+  next(): void {
     this.toFocus(this.element.value?.nextElementSibling)
   }
 
@@ -48,7 +67,7 @@ export class InputCodeItemGo {
    *
    * Вернуться на предыдущий элемент.
    */
-  back() {
+  back(): void {
     this.toFocus(this.element.value?.previousElementSibling)
   }
 
@@ -57,20 +76,20 @@ export class InputCodeItemGo {
    *
    * Изменяет место фокусировки в зависимости от заполнения значения.
    */
-  focusToPreviousEmpty() {
+  focusToPreviousEmpty(): void {
     if (
       this.isMove()
       && this.element.value
       && !this.isValue()
     ) {
-      let maximum = 32
+      let maximum = MAX_SIBLING_TRAVERSAL
       let element: InputCodeItemElement = this.element.value.previousElementSibling
-      let elementOld: InputCodeItemElement = this.element.value
+      let previousElement: InputCodeItemElement = this.element.value
 
       while (maximum-- > 0) {
         if (!element) {
-          if (elementOld) {
-            this.toFocus(elementOld)
+          if (previousElement) {
+            this.toFocus(previousElement)
           }
 
           break
@@ -82,11 +101,11 @@ export class InputCodeItemGo {
           input
           && isFilled(input.value, true)
         ) {
-          this.toFocus(elementOld)
+          this.toFocus(previousElement)
           break
         }
 
-        elementOld = element
+        previousElement = element
         element = element.previousElementSibling
       }
     }
@@ -97,7 +116,7 @@ export class InputCodeItemGo {
    *
    * Сфокусироваться на предыдущем элементе.
    */
-  focusToPrevious() {
+  focusToPrevious(): void {
     if (
       this.isMove()
       && this.element.value
@@ -111,12 +130,12 @@ export class InputCodeItemGo {
    *
    * Сфокусироваться на следующем незаполненном элементе.
    */
-  focusToNextEmpty() {
+  focusToNextEmpty(): void {
     if (
       this.isMove()
       && this.element.value
     ) {
-      let maximum = 32
+      let maximum = MAX_SIBLING_TRAVERSAL
       let element: InputCodeItemElement = this.element.value.nextElementSibling
 
       while (maximum-- > 0) {
@@ -147,7 +166,7 @@ export class InputCodeItemGo {
    *
    * Сфокусироваться на следующем элементе.
    */
-  focusToNext() {
+  focusToNext(): void {
     if (
       this.isMove()
       && this.element.value
@@ -162,14 +181,19 @@ export class InputCodeItemGo {
    * Выделяет текст элемента.
    * @param element selected element / выбранный элемент
    */
-  selection(element: InputCodeItemElement = this.element.value) {
+  selection(element: InputCodeItemElement = this.element.value): void {
     const input = this.getInput(element)
 
-    if (input) {
-      setTimeout(() => {
+    if (
+      input
+      && isDomRuntime()
+    ) {
+      this.clearSelectionTimer()
+      this.selectionTimer = setTimeout(() => {
+        this.selectionTimer = undefined
         input.selectionStart = 0
         input.selectionEnd = input.value.length
-      }, 32)
+      }, SELECTION_DELAY_MS)
     }
   }
 
@@ -210,7 +234,7 @@ export class InputCodeItemGo {
    * Переводим элемент в состояние фокуса.
    * @param element selected element / выбранный элемент
    */
-  protected toFocus(element?: InputCodeItemElement) {
+  protected toFocus(element?: InputCodeItemElement): void {
     if (this.isMove()) {
       const input = this.getInput(element)
 
@@ -218,6 +242,18 @@ export class InputCodeItemGo {
         input.focus()
         this.selection(element)
       }
+    }
+  }
+
+  /**
+   * Clears the pending selection timer if active.
+   *
+   * Очищает активный таймер выделения, если он запущен.
+   */
+  protected clearSelectionTimer(): void {
+    if (this.selectionTimer !== undefined) {
+      clearTimeout(this.selectionTimer)
+      this.selectionTimer = undefined
     }
   }
 }

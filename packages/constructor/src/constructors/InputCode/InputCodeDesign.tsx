@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -80,12 +80,7 @@ export class InputCodeDesign<
    * @returns object with exposed methods / объект с открытыми методами
    */
   protected initExpose(): EXPOSE {
-    return {
-      getValue: () => this.item.value.value,
-      set: (value: string | number) => this.item.inputCodeItem.update(String(value)),
-      reset: () => this.item.inputCodeItem.resetValue(),
-      focus: () => this.item.inputCodeItem.focus()
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -122,21 +117,23 @@ export class InputCodeDesign<
    * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.item.fieldLabel.render(),
+    const children: VNode[] = [
+      ...(this.item.callInstance('fieldLabel', item => item.render()) ?? []),
       this.renderContext(),
-      ...this.item.fieldMessage.render()
+      ...(this.item.callInstance('fieldMessage', item => item.render()) ?? [])
     ]
 
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          ...this.item.aria
+        }
+      ),
       children
     )
   }
@@ -162,17 +159,20 @@ export class InputCodeDesign<
    * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   protected readonly renderItems = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
+    const inputCodeItem = this.item.i('inputCodeItem')
+    const length = this.props.length ?? 4
+    const validation = this.item.isValidation()
 
-    this.item.inputCodeItem.reset()
+    inputCodeItem.reset()
 
-    for (let i = 0; i < (this.props.length ?? 4); i++) {
+    for (let index = 0; index < length; index++) {
       children.push(
-        ...this.item.inputCodeItem.renderItem(
-          i,
+        ...inputCodeItem.renderItem(
+          index,
           true,
           this.props.success,
-          this.item.isValidation()
+          validation
         )
       )
     }

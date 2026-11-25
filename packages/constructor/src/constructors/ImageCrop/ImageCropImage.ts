@@ -3,8 +3,9 @@
 import { ref, watch } from 'vue'
 import {
   type ConstrEmit,
-  type DesignName,
   type ConstrStyles,
+  DesignLifecycleAbstract,
+  type DesignName,
   isObject
 } from '@dxtmisha/functional'
 
@@ -17,7 +18,7 @@ import type { ImageCropProps } from './props'
  *
  * Класс для управления состоянием загрузки изображения, вычислением соотношения сторон и стилями для ImageCrop.
  */
-export class ImageCropImage {
+export class ImageCropImage extends DesignLifecycleAbstract {
   /** Loading state of the image / Состояние загрузки изображения */
   protected readonly loading = ref<boolean>(false)
 
@@ -35,24 +36,11 @@ export class ImageCropImage {
   }
 
   /**
-   * Constructor.
+   * Reset aspect ratio and loading state when source image changes.
    *
-   * Конструктор.
-   * @param naming component naming helper / помощник именования компонента
-   * @param props input data / входные данные
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * Сбрасывает соотношение сторон и состояние загрузки при смене исходного изображения.
    */
-  constructor(
-    naming: DesignName,
-    protected readonly props: ImageCropProps,
-    protected readonly emits?: ConstrEmit<ImageCropEmits>
-  ) {
-    this.property = {
-      aspectRatio: naming.getStyle('aspect-ratio'),
-      width: naming.getStyle('width'),
-      height: naming.getStyle('height')
-    }
-
+  override readonly onMounted = (): void => {
     watch(
       () => this.props.image,
       () => {
@@ -60,6 +48,28 @@ export class ImageCropImage {
         this.loading.value = false
       }
     )
+  }
+
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param naming component naming helper / помощник именования компонента
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   */
+  constructor(
+    protected readonly props: Readonly<ImageCropProps>,
+    naming: DesignName,
+    protected readonly emits?: ConstrEmit<ImageCropEmits>
+  ) {
+    super()
+
+    this.property = {
+      aspectRatio: naming.getStyle('aspect-ratio'),
+      width: naming.getStyle('width'),
+      height: naming.getStyle('height')
+    }
   }
 
   /**
@@ -104,7 +114,12 @@ export class ImageCropImage {
       const width = Number(image.width)
       const height = Number(image.height)
 
-      if (width > 0 && height > 0) {
+      if (
+        Number.isFinite(width)
+        && Number.isFinite(height)
+        && width > 0
+        && height > 0
+      ) {
         this.aspectRatio.value = `${width} / ${height}`
       }
     }

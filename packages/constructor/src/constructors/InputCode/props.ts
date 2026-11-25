@@ -60,6 +60,7 @@ export const defaultsInputCode = {
   match: /[0-9]/,
   /** Autocomplete mode / Режим автозаполнения */
   autocomplete: 'one-time-code',
+  /** Input mode hint for virtual keyboards / Подсказка режима ввода для виртуальных клавиатур */
   inputMode: 'numeric',
   ...{
     // :default [!] System label / Системная метка

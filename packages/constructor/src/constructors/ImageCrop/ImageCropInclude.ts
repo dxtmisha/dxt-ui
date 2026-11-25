@@ -16,7 +16,10 @@ export class ImageCropInclude extends ComponentIncludeAbstract<
   ImageCropExpose,
   ImageCropSlots
 > {
+  /** Component sub-name / Дополнительное имя компонента */
   protected override readonly name = 'imageCrop'
+  /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
   protected override readonly propsAttrsName = 'imageCropAttrs'
-  protected readonly hasInitElement: boolean = false
+  /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
+  protected override readonly hasInitElement: boolean = false
 }

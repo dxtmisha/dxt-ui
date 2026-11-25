@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -82,14 +82,7 @@ export class InputCodeItemDesign<
    * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
-    return {
-      index: this.props.index,
-      getValue: () => this.item.value.get(),
-      set: this.item.value.set,
-      setTabindex: this.item.tabindex.set,
-      reset: this.item.value.reset,
-      focusInput: this.item.focus
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -127,17 +120,23 @@ export class InputCodeItemDesign<
    * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderInput(),
       ...this.renderSub()
     ]
 
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, children)
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 
   /**

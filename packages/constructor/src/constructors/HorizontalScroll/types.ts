@@ -1,4 +1,6 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { HorizontalScrollControlItem } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -35,7 +37,7 @@ export interface HorizontalScrollExpose {
  */
 export interface HorizontalScrollSlots {
   /** Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки */
-  default?(props: any): any
+  default?(props: HorizontalScrollControlItem): VNode[]
 }
 
 /**

@@ -1,5 +1,12 @@
-import { type ConstrEmit, type DesignComp, type DesignName, isFilled } from '@dxtmisha/functional'
-import { onMounted, ref, type Ref, watch } from 'vue'
+import { ref, type Ref, watch } from 'vue'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComponents,
+  DesignLogicAbstract,
+  type DesignName,
+  isFilled
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -10,7 +17,24 @@ import { InputCodeItemInclude } from '../InputCodeItem'
 
 import type { AriaList } from '../../types/ariaTypes'
 import type { InputCodeProps } from './props'
-import type { InputCodeComponents, InputCodeEmits } from './types'
+import type {
+  InputCodeComponents,
+  InputCodeEmits,
+  InputCodeExpose,
+  InputCodeSlots
+} from './types'
+
+/** InputCode dependency constructors type / Тип конструкторов зависимостей InputCode */
+export type InputCodeConstructors = {
+  /** Field label controller constructor / Конструктор контроллера метки поля */
+  fieldLabel: typeof FieldLabelInclude
+  /** Field message controller constructor / Конструктор контроллера сообщения поля */
+  fieldMessage: typeof FieldMessageInclude
+  /** Code input item list controller constructor / Конструктор контроллера списка элементов ввода кода */
+  inputCodeItem: typeof InputCodeItemInclude
+  /** Model binding controller constructor / Конструктор контроллера привязки модели */
+  model: typeof ModelInclude
+}
 
 /**
  * Class for managing code input components.
@@ -23,22 +47,69 @@ import type { InputCodeComponents, InputCodeEmits } from './types'
  * управляет привязкой реактивного значения, обновляет подсветку элементов кода и генерирует соответствующие
  * роли и метки ARIA для доступности.
  */
-export class InputCode {
-  /** Field label manager / Управляющий меткой поля */
-  readonly fieldLabel: FieldLabelInclude
-  /** Field message manager / Управляющий сообщением поля */
-  readonly fieldMessage: FieldMessageInclude
-  /** Code input item list manager / Управляющий списком элементов ввода кода */
-  readonly inputCodeItem: InputCodeItemInclude
-
-  /** Model binding manager / Управляющий привязкой модели */
-  readonly model: ModelInclude
-
+export class InputCode extends DesignLogicAbstract<
+  HTMLDivElement,
+  InputCodeComponents,
+  InputCodeEmits,
+  InputCodeSlots,
+  InputCodeProps,
+  InputCodeConstructors
+> {
   /** Reactive value of the input / Реактивное значение поля ввода */
   readonly value = ref<string>('')
 
+  /** Stop handle for value props watcher / Функция остановки наблюдателя за свойствами значения */
+  protected stopWatch?: () => void
+
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputCodeConstructors> = {
+    fieldLabel: {
+      item: FieldLabelInclude,
+      canCreate: () => FieldLabelInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({ loading: this.props.loading })
+      ]
+    },
+    fieldMessage: {
+      item: FieldMessageInclude,
+      canCreate: () => (
+        isFilled(this.props.helperMessage)
+        || isFilled(this.props.warningMessage)
+        || isFilled(this.props.validationMessage)
+        || Boolean(this.props.fieldMessageAttrs)
+      ),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    inputCodeItem: {
+      item: InputCodeItemInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.onInput
+      ]
+    },
+    model: {
+      item: ModelInclude,
+      parameters: () => [
+        'value',
+        this.emits,
+        this.value
+      ]
+    }
+  }
+
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input properties / входные свойства
    * @param element main HTML element ref / ссылка на основной HTML-элемент
    * @param naming component naming helper / помощник именования компонента
@@ -46,69 +117,25 @@ export class InputCode {
    * @param slots slots configuration object / объект конфигурации слотов
    * @param emits event emitter function / функция для вызова событий
    * @param constructors override constructors map / объект переопределения конструкторов
-   * @param constructors.FieldLabelIncludeConstructor custom field label constructor / пользовательский конструктор метки поля
-   * @param constructors.FieldMessageIncludeConstructor custom field message constructor / пользовательский конструктор сообщения поля
-   * @param constructors.InputCodeItemIncludeConstructor custom input code item constructor / пользовательский конструктор элемента ввода кода
-   * @param constructors.ModelIncludeConstructor custom model constructor / пользовательский конструктор модели
    */
   constructor(
-    protected readonly props: InputCodeProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputCodeComponents, InputCodeProps>,
-    protected readonly slots?: any,
-    protected readonly emits?: ConstrEmit<InputCodeEmits>,
-    constructors: {
-      FieldLabelIncludeConstructor?: typeof FieldLabelInclude
-      FieldMessageIncludeConstructor?: typeof FieldMessageInclude
-      InputCodeItemIncludeConstructor?: typeof InputCodeItemInclude
-      ModelIncludeConstructor?: typeof ModelInclude
-    } = {}
+    props: InputCodeProps,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<InputCodeComponents, InputCodeProps>,
+    slots?: InputCodeSlots,
+    emits?: ConstrEmit<InputCodeEmits>,
+    constructors?: Partial<InputCodeConstructors>
   ) {
-    const {
-      FieldLabelIncludeConstructor = FieldLabelInclude,
-      FieldMessageIncludeConstructor = FieldMessageInclude,
-      InputCodeItemIncludeConstructor = InputCodeItemInclude,
-      ModelIncludeConstructor = ModelInclude
-    } = constructors
-
-    this.fieldLabel = new FieldLabelIncludeConstructor(
+    super(
       props,
+      element,
       naming,
       components,
-      () => ({ loading: props.loading })
+      slots,
+      emits,
+      constructors
     )
-    this.fieldMessage = new FieldMessageIncludeConstructor(props, naming, components)
-
-    this.inputCodeItem = new InputCodeItemIncludeConstructor(
-      props,
-      naming,
-      components,
-      this.onInput
-    )
-
-    this.model = new ModelIncludeConstructor('value', emits, this.value)
-
-    watch(
-      [
-        () => this.props.value,
-        () => this.props.modelValue
-      ],
-      this.update
-    )
-    onMounted(this.update)
-  }
-
-  /**
-   * Updates current code value and synchronizes code items.
-   *
-   * Обновляет текущее значение кода и синхронизирует элементы кода.
-   */
-  readonly update = (): void => {
-    const value = this.props.value ?? this.props.modelValue ?? ''
-
-    this.value.value = value
-    this.inputCodeItem.update(value)
   }
 
   /**
@@ -120,8 +147,23 @@ export class InputCode {
   get aria(): AriaList {
     return {
       ...AriaStaticInclude.role('group'),
-      ...AriaStaticInclude.labelledby(this.fieldLabel.id),
-      ...AriaStaticInclude.describedby(this.fieldMessage.id)
+      ...AriaStaticInclude.labelledby(this.callInstance('fieldLabel', item => item.id)),
+      ...AriaStaticInclude.describedby(this.callInstance('fieldMessage', item => item.id))
+    }
+  }
+
+  /**
+   * Returns exposed methods and properties of the component.
+   *
+   * Возвращает методы и свойства компонента, доступные извне.
+   * @returns object with exposed methods / объект с открытыми методами
+   */
+  get expose(): InputCodeExpose {
+    return {
+      getValue: () => this.value.value,
+      set: (value: string | number) => this.i('inputCodeItem').update(String(value)),
+      reset: () => this.i('inputCodeItem').resetValue(),
+      focus: () => this.i('inputCodeItem').focus()
     }
   }
 
@@ -132,7 +174,50 @@ export class InputCode {
    * @returns true if validation is active / true, если валидация активна
    */
   isValidation(): boolean {
-    return isFilled(this.props.validation || this.fieldMessage.validation)
+    return isFilled(
+      this.props.validation
+      || this.callInstance('fieldMessage', item => item.validation)
+    )
+  }
+
+  /**
+   * Updates current code value and synchronizes code items.
+   *
+   * Обновляет текущее значение кода и синхронизирует элементы кода.
+   */
+  readonly update = (): void => {
+    const value = this.props.value ?? this.props.modelValue ?? ''
+
+    this.value.value = value
+    this.i('inputCodeItem').update(value)
+  }
+
+  /**
+   * Synchronizes initial code value and registers reactive value watchers after mount.
+   *
+   * Синхронизирует начальное значение кода и регистрирует реактивные наблюдатели после монтирования.
+   */
+  protected override readonly onMounted = (): void => {
+    this.update()
+
+    this.stopWatch?.()
+    this.stopWatch = watch(
+      [
+        () => this.props.value,
+        () => this.props.modelValue
+      ],
+      this.update
+    )
+  }
+
+  /**
+   * Cleans up reactive watchers on component unmount.
+   *
+   * Очищает реактивные наблюдатели при размонтировании компонента.
+   */
+  protected override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
   }
 
   /**
@@ -141,12 +226,12 @@ export class InputCode {
    * Обработчик события, вызываемый при изменении вводимого значения.
    * @param value new input value / новое значение ввода
    */
-  protected readonly onInput = (value: string) => {
+  protected readonly onInput = (value: string): void => {
     if (
       this.value.value !== value
     ) {
       this.value.value = value
-      this.model.emit(value)
+      this.i('model').emit(value)
       this.emits?.('input', value)
     }
   }

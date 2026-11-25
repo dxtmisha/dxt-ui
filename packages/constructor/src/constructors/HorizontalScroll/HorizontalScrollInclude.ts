@@ -1,5 +1,6 @@
 // ai-none
 
+import { type ConstrBind, getObjectNoUndefined } from '@dxtmisha/functional'
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { HorizontalScrollPropsInclude } from './basicTypes'
@@ -22,19 +23,20 @@ export class HorizontalScrollInclude extends ComponentIncludeAbstract<
   HorizontalScrollSlots
 > {
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
-  protected readonly exposeItems = [
+  protected override readonly exposeItems = [
     { name: 'toSelected' }
   ]
 
   /** Component sub-name / Дополнительное имя компонента */
-  protected name = 'horizontalScroll'
+  protected override readonly name = 'horizontalScroll'
   /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
-  protected propsAttrsName = 'horizontalScrollAttrs'
+  protected override readonly propsAttrsName = 'horizontalScrollAttrs'
 
   /**
    * HTML element of the component.
    *
    * HTML элемент компонента.
+   * @returns HTML div element or undefined / HTML-элемент div или undefined
    */
   get elementHtml(): HTMLDivElement | undefined {
     return this.element.value?.getElement()
@@ -55,13 +57,15 @@ export class HorizontalScrollInclude extends ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<HorizontalScrollPropsBasic>> {
     const props = this.getProps()
 
     return {
       ...super.toBinds(),
-      bleed: props.horizontalScrollBleed,
-      align: props.horizontalScrollAlign
+      ...getObjectNoUndefined({
+        bleed: props.horizontalScrollBleed,
+        align: props.horizontalScrollAlign
+      })
     }
   }
 }

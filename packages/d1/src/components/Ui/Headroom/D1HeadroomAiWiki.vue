@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <DesignComponent scroll-element="#container" disappears :transform-threshold="100">
+  <DesignComponent scroll-element="#container" disappears :transform-threshold="100" v-bind="args">
     Sticky Header
   </DesignComponent>
 </div>

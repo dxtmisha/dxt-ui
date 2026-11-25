@@ -1,6 +1,7 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { CropAreaComponentInclude, CropAreaEmitsInclude } from '../CropArea'
+import type { CropAreaComponentInclude, CropAreaCoordinator, CropAreaEmitsInclude } from '../CropArea'
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
 
@@ -22,7 +23,7 @@ export type ImageCropComponents = ImageComponentInclude
  */
 export type ImageCropEmits = CropAreaEmitsInclude
   & ImageEmitsInclude
-  & ModelEmits<any>
+  & ModelEmits<CropAreaCoordinator>
 
 /**
  * Type describing available properties.
@@ -39,7 +40,7 @@ export interface ImageCropExpose {
  */
 export interface ImageCropSlots {
   /** Default slot / Слот по умолчанию */
-  default?: (props: any) => any
+  default?: (props?: Record<string, unknown>) => VNode[]
 }
 
 /**

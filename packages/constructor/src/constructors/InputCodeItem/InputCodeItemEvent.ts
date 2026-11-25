@@ -2,13 +2,15 @@
 
 import {
   type ConstrEmit,
+  DesignLifecycleAbstract,
   eventStopPropagation,
   getClipboardData,
+  isDomRuntime,
   isMetaKey
 } from '@dxtmisha/functional'
 
-import { InputCodeItemGo } from './InputCodeItemGo'
-import { InputCodeItemValue } from './InputCodeItemValue'
+import type { InputCodeItemGo } from './InputCodeItemGo'
+import type { InputCodeItemValue } from './InputCodeItemValue'
 
 import type { InputCodeItemEmits } from './types'
 import type { InputCodeItemProps } from './props'
@@ -18,22 +20,36 @@ import type { InputCodeItemProps } from './props'
  *
  * Класс для работы с событиями.
  */
-export class InputCodeItemEvent {
+export class InputCodeItemEvent extends DesignLifecycleAbstract {
+  /** Scheduled animation frame identifier for backspace event / Идентификатор кадра анимации для события backspace */
+  protected backspaceFrameId?: number
+
+  /**
+   * Cancels any scheduled backspace animation frame on unmount.
+   *
+   * Отменяет запланированный кадр анимации backspace при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.clearBackspaceFrame()
+  }
+
   /**
    * Constructor
    *
    * Конструктор
    * @param props input property / входное свойство
-   * @param value object for working with entered data / объект для работы с введёнными данными
-   * @param go object for handling movement between elements / объект для работы с перемещением между элементами
+   * @param go getter for movement controller / геттер контроллера перемещения
+   * @param value getter for input value manager / геттер менеджера значения ввода
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: Readonly<InputCodeItemProps>,
-    protected readonly value: InputCodeItemValue,
-    protected readonly go: InputCodeItemGo,
+    protected readonly go: () => InputCodeItemGo,
+    protected readonly value: () => InputCodeItemValue,
     protected readonly emits?: ConstrEmit<InputCodeItemEmits>
-  ) { }
+  ) {
+    super()
+  }
 
   /**
    * Focus event handler.
@@ -41,10 +57,10 @@ export class InputCodeItemEvent {
    * Обработчик события фокуса.
    */
   readonly onFocus = (): void => {
-    if (this.value.is()) {
-      this.go.selection()
+    if (this.value().is()) {
+      this.go().selection()
     } else {
-      this.go.focusToPreviousEmpty()
+      this.go().focusToPreviousEmpty()
     }
   }
 
@@ -54,7 +70,11 @@ export class InputCodeItemEvent {
    * Событий нажатия клавиш клавиатуры.
    * @param event invoked event / вызываемое событие
    */
-  readonly onKeydown = (event: KeyboardEvent) => {
+  readonly onKeydown = (event: KeyboardEvent): void => {
+    if (event.isComposing) {
+      return
+    }
+
     if (
       isMetaKey(event)
       || this.isMatch(event.key)
@@ -69,11 +89,11 @@ export class InputCodeItemEvent {
         this.backspace()
         return
       case 'ArrowLeft':
-        this.go.focusToPrevious()
+        this.go().focusToPrevious()
         event.preventDefault()
         return
       case 'ArrowRight':
-        this.go.focusToNext()
+        this.go().focusToNext()
         event.preventDefault()
         return
     }
@@ -87,8 +107,8 @@ export class InputCodeItemEvent {
    * Обработчик события клика.
    */
   readonly onClick = (): void => {
-    if (this.value.is()) {
-      this.go.focusToNextEmpty()
+    if (this.value().is()) {
+      this.go().focusToNextEmpty()
     }
   }
 
@@ -98,19 +118,21 @@ export class InputCodeItemEvent {
    * Событие для изменения символа.
    * @param event invoked event / вызываемое событие
    */
-  readonly onInput = (event: InputEvent) => {
-    const value = (event.target as HTMLInputElement).value
+  readonly onInput = (event: InputEvent): void => {
+    const inputValue = (event.target as HTMLInputElement).value
 
-    if (value.length > 1) {
-      this.emits?.('paste', this.getIndex(), value)
+    if (inputValue.length > 1) {
+      this.emits?.('paste', this.getIndex(), inputValue)
       return
     }
 
-    this.value.set(value)
-    this.emits?.('input', this.getIndex(), value)
+    const valueInstance = this.value()
 
-    if (this.value.is()) {
-      this.go.next()
+    valueInstance.set(inputValue)
+    this.emits?.('input', this.getIndex(), inputValue)
+
+    if (valueInstance.is()) {
+      this.go().next()
     }
   }
 
@@ -125,6 +147,7 @@ export class InputCodeItemEvent {
       .then((data) => {
         this.emits?.('paste', this.getIndex(), data)
       })
+      .catch(() => undefined)
 
     eventStopPropagation(event)
   }
@@ -158,11 +181,33 @@ export class InputCodeItemEvent {
    *
    * Удаление значения.
    */
-  protected backspace() {
-    if (this.value.is()) {
-      requestAnimationFrame(() => this.emits?.('backspace', this.getIndex()))
+  protected backspace(): void {
+    if (
+      this.value().is()
+      && isDomRuntime()
+    ) {
+      this.clearBackspaceFrame()
+      this.backspaceFrameId = requestAnimationFrame(() => {
+        this.backspaceFrameId = undefined
+        this.emits?.('backspace', this.getIndex())
+      })
     }
 
-    this.go.back()
+    this.go().back()
+  }
+
+  /**
+   * Cancels the scheduled backspace animation frame if active.
+   *
+   * Отменяет запланированный кадр анимации backspace, если он активен.
+   */
+  protected clearBackspaceFrame(): void {
+    if (
+      this.backspaceFrameId !== undefined
+      && isDomRuntime()
+    ) {
+      cancelAnimationFrame(this.backspaceFrameId)
+      this.backspaceFrameId = undefined
+    }
   }
 }

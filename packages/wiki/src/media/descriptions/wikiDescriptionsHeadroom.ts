@@ -30,7 +30,7 @@ export const wikiDescriptionsHeadroom: StorybookComponentsDescriptionItem = {
   import: [
     'import { ref } from \'vue\'',
     'import type { HeadroomEventItem } from \'@dxtmisha/constructor\'',
-    'import type { HeadroomExpose } from \'@dxtmisha/constructor/Headroom\''
+    'import type { HeadroomExpose as HeadroomExposeType } from \'@dxtmisha/constructor/Headroom\''
   ],
   render: `
       <div
@@ -260,7 +260,7 @@ await step('Scroll back to top to trigger headroomSticky exit', async () => {
       },
       propsName: ['scrollElement', 'disappears', 'transformThreshold'],
       setup: `
-      const headroomReference = ref<(HeadroomExpose & { elementHtml?: HTMLElement }) | null>(null)
+      const headroomReference = ref<(HeadroomExposeType & { elementHtml?: HTMLElement }) | null>(null)
       const stickyStatus = ref<boolean>(false)
       const exposedValues = ref<HeadroomEventItem | null>(null)
       const exposedTagName = ref<string>('')
@@ -693,7 +693,7 @@ await step('Scroll container with transformThreshold=0 keeps percent at 0 and om
   ai: {
     render: `
 <div :class="classDemo.item">
-  <DesignComponent scroll-element="#container" disappears :transform-threshold="100">
+  <DesignComponent scroll-element="#container" disappears :transform-threshold="100" v-bind="args">
     Sticky Header
   </DesignComponent>
 </div>

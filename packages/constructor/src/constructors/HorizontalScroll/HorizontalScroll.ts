@@ -1,5 +1,14 @@
-import { nextTick, onMounted, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, goScrollTo } from '@dxtmisha/functional'
+import { nextTick, type Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComponents,
+  DesignLogicAbstract,
+  type DesignName,
+  goScrollTo,
+  isDomRuntime
+} from '@dxtmisha/functional'
 
 import { ScrollToXInclude } from '../../classes/ScrollToXInclude'
 
@@ -7,9 +16,16 @@ import type { HorizontalScrollControlItem } from './basicTypes'
 import type {
   HorizontalScrollComponents,
   HorizontalScrollEmits,
+  HorizontalScrollExpose,
   HorizontalScrollSlots
 } from './types'
 import type { HorizontalScrollProps } from './props'
+
+/** HorizontalScroll dependency constructors type / Тип конструкторов зависимостей HorizontalScroll */
+export type HorizontalScrollConstructors = {
+  /** Scroll helper constructor / Конструктор помощника прокрутки */
+  scroll: typeof ScrollToXInclude
+}
 
 /**
  * Class representing the business logic and scroll synchronization of the HorizontalScroll component.
@@ -18,9 +34,60 @@ import type { HorizontalScrollProps } from './props'
  * Класс, представляющий бизнес-логику и синхронизацию прокрутки компонента HorizontalScroll.
  * Управляет DOM-событиями и координатами плавной горизонтальной прокрутки для активных дочерних элементов.
  */
-export class HorizontalScroll {
-  /** Scroll helper class / Класс-помощник для прокрутки */
-  readonly scroll: ScrollToXInclude
+export class HorizontalScroll extends DesignLogicAbstract<
+  HTMLDivElement,
+  HorizontalScrollComponents,
+  HorizontalScrollEmits,
+  HorizontalScrollSlots,
+  HorizontalScrollProps,
+  HorizontalScrollConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<HorizontalScrollConstructors> = {
+    scroll: {
+      item: ScrollToXInclude,
+      parameters: () => [this.element]
+    }
+  }
+
+  /** Scheduled animation frame identifier / Идентификатор запланированного кадра анимации */
+  protected animationFrameId?: number
+
+  /** Whether the component has been unmounted / Был ли компонент размонтирован */
+  protected isUnmounted = false
+
+  /**
+   * Executes post-mount scroll alignment to the selected element.
+   *
+   * Выполняет выравнивание прокрутки к выбранному элементу после монтирования.
+   */
+  protected override readonly onMounted = async (): Promise<void> => {
+    await nextTick()
+
+    if (!this.isUnmounted && isDomRuntime()) {
+      this.animationFrameId = requestAnimationFrame(() => {
+        this.animationFrameId = undefined
+        this.toSelected()
+      })
+    }
+  }
+
+  /**
+   * Cancels any scheduled scroll animation frame on unmount.
+   *
+   * Отменяет запланированный кадр анимации прокрутки при размонтировании.
+   */
+  protected override readonly onUnmounted = (): void => {
+    this.isUnmounted = true
+
+    if (
+      this.animationFrameId !== undefined
+      && isDomRuntime()
+    ) {
+      cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = undefined
+    }
+  }
 
   /**
    * Constructor for HorizontalScroll.
@@ -32,47 +99,57 @@ export class HorizontalScroll {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ScrollToXIncludeConstructor class for working with scroll / класс для работы со скроллом
+   * @param constructors dependency injection overrides object / объект переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: HorizontalScrollProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps>,
-    protected readonly slots?: HorizontalScrollSlots,
-    protected readonly emits?: ConstrEmit<HorizontalScrollEmits>,
-    constructors: {
-      ScrollToXIncludeConstructor?: typeof ScrollToXInclude
-    } = {}
+    props: Readonly<HorizontalScrollProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<HorizontalScrollComponents, HorizontalScrollProps>,
+    slots?: HorizontalScrollSlots,
+    emits?: ConstrEmit<HorizontalScrollEmits>,
+    constructors?: Partial<HorizontalScrollConstructors>
   ) {
-    const {
-      ScrollToXIncludeConstructor = ScrollToXInclude
-    } = constructors
-
-    this.scroll = new ScrollToXIncludeConstructor(element)
-
-    onMounted(async () => {
-      await nextTick()
-      requestAnimationFrame(() => this.toSelected())
-    })
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
   }
 
-  /** Returns bindings for the element / Возвращает привязки для элемента */
-  get binds(): Record<string, any> {
+  /**
+   * Returns bindings for the element.
+   *
+   * Возвращает привязки для элемента.
+   * @returns element bindings / привязки элемента
+   */
+  get binds(): ConstrBind {
+    return this.i('scroll').binds
+  }
+
+  /**
+   * Returns exposed properties and methods.
+   *
+   * Возвращает открытые свойства и методы.
+   * @returns exposed API object / объект открытого API
+   */
+  get expose(): HorizontalScrollExpose {
     return {
-      ref: this.element,
-      ...this.scroll.binds
+      getElement: () => this.element.value,
+      toSelected: () => this.toSelected()
     }
   }
 
-  /** Exposed properties and methods / Открытые свойства и методы */
-  readonly expose = {
-    getElement: () => this.element.value,
-    toSelected: () => this.toSelected()
-  }
-
-  /** Returns data for managing slot data / Возвращает данные для управления данными слотами */
+  /**
+   * Returns data for managing slot data.
+   *
+   * Возвращает данные для управления данными слота.
+   * @returns slot control data / данные управления слотом
+   */
   get slotData(): HorizontalScrollControlItem {
     return {
       classItem: this.naming.getSubClass('item'),
@@ -81,6 +158,16 @@ export class HorizontalScroll {
         class: this.naming.getSubClass('item')
       }
     }
+  }
+
+  /**
+   * Returns HTML tag for the scroll element.
+   *
+   * Возвращает HTML-тег для элемента прокрутки.
+   * @returns tag name / название тега
+   */
+  get tag(): string {
+    return this.props.tag ?? 'div'
   }
 
   /**
@@ -100,7 +187,7 @@ export class HorizontalScroll {
    *
    * Прокручивает к выбранному элементу.
    */
-  protected toSelected = () => {
+  protected readonly toSelected = (): void => {
     const item = this.getItemSelected()
 
     if (

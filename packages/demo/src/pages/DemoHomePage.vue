@@ -68,6 +68,9 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ImageCrop" name="component-image-crop"/>
         <DemoLink label="Input" name="component-input"/>
         <DemoLink label="InputCode" name="component-input-code"/>
+        <DemoLink label="InputCodeItem" name="component-input-code-item"/>
+        <DemoLink label="InputFileDropzone" name="component-input-file-dropzone"/>
+        <DemoLink label="InputFileItem" name="component-input-file-item"/>
         <DemoLink label="InputImage" name="component-input-image"/>
         <DemoLink label="InputPhone" name="component-input-phone"/>
         <DemoLink label="InputPhoneDialCode" name="component-input-phone-dial-code"/>

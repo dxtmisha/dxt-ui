@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -80,9 +80,7 @@ export class HorizontalScrollDesign<
    * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.expose
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -118,19 +116,18 @@ export class HorizontalScrollDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = []
-
-    this.initSlot('default', children, this.item.slotData)
-
     return h(
-      this.props.tag ?? 'div',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
-      children
+      this.item.tag,
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      this.initSlot('default', undefined, this.item.slotData)
     )
   }
 }

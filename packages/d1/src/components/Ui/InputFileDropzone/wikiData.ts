@@ -48,7 +48,8 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'add', description: `Event triggered when files are added / Событие при добавлении файлов`, properties: [{ name: 'files', type: 'File[]' }] }
+  { name: 'add', description: `Event triggered when files are added / Событие при добавлении файлов`, properties: [{ name: 'files', type: 'File[]' }] },
+  { name: 'reject', description: `Event triggered when files are rejected due to maxFileSize / Событие при отклонении файлов из-за превышения maxFileSize`, properties: [{ name: 'files', type: 'File[]' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

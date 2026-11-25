@@ -16,7 +16,7 @@ export type ImageCropPropsBasic<
   CropArea extends CropAreaPropsBasic = CropAreaPropsBasic
 > = CropAreaPropsInclude<CropArea>
   & ImagePropsInclude<Image>
-  & ModelProps<any>
+  & ModelProps<CropAreaCoordinator>
   & {
     /** Initial or current crop coordinates [top, right, bottom, left] / Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева] */
     value?: CropAreaCoordinator

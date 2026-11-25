@@ -247,7 +247,7 @@ await step('Toggle formatting off and back on', async () => {
   ai: {
     render: `
 <div :class="classDemo.item">
-  <DesignComponent :value="100" unit="celsius" language="en-US"/>
+  <DesignComponent :value="100" unit="celsius" language="en-US" v-bind="args"/>
 </div>
     `,
     description: `
