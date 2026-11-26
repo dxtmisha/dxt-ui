@@ -1,0 +1,145 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/AriaStaticInclude - Trình tạo thuộc tính ARIA tĩnh'/>
+
+# Lớp AriaStaticInclude
+
+Lớp `AriaStaticInclude` là **lớp tiện ích tĩnh (Static Utility Class)** trong `@dxtmisha/constructor`, dùng để tạo các đối tượng thuộc tính WAI-ARIA chuẩn hóa và an toàn kiểu (`AriaList`) cho việc gắn kết thuộc tính và trạng thái khả năng truy cập của thành phần.
+
+## Các tính năng chính
+
+- **Không tốn chi phí khởi tạo** — toàn bộ phương thức đều là `static`, trả về đối tượng `AriaList` thuần túy để trải trực tiếp vào `get aria()` hoặc thuộc tính VNode.
+- **Chuẩn hóa boolean nhất quán** — chuyển đổi trạng thái boolean của widget thành chuỗi `'true'` / `'false'` đúng chuẩn ARIA hoặc bỏ qua có điều kiện các thuộc tính không kích hoạt.
+- **Hàm hỗ trợ tổng hợp cho widget** — cung cấp các bộ tạo gộp (`control`, `modal`) cho nút kích hoạt tương tác, cửa sổ bật lên và hộp thoại modal.
+- **Bỏ qua không phá hủy** — các phương thức xử lý chuỗi và token tùy chọn trả về `{}` khi giá trị rỗng hoặc `undefined`, giúp không ghi đè thuộc tính sẵn có khi trải đối tượng.
+- **Đẳng cấu SSR (SSR Isomorphism)** — các phương thức thuần túy, không lưu trạng thái và không phụ thuộc DOM hay biến toàn cục trình duyệt, an toàn cho kết xuất phía máy chủ và quá trình hydrate của Vue.
+
+## Phương thức
+
+### Hỗ trợ boolean & giá trị
+
+- `isTrueOrFalse(value?: boolean): 'true' | 'false'` — Chuyển đổi giá trị boolean hoặc `undefined` sang chuỗi chuẩn ARIA `'true'` hoặc `'false'`.
+- `valueMinMax(value?: string | number | null, min?: string | number | null, max?: string | number | null): AriaList` — Trả về các thuộc tính `'aria-valuenow'`, `'aria-valuemin'` và `'aria-valuemax'` cho giá trị dải khác rỗng và xác định (giữ nguyên số `0`), bỏ qua `undefined`, `null`, `''` và `NaN`.
+
+### Vai trò & đặt tên
+
+- `role(role?: RoleType): AriaList` — Trả về `{ role }` khi không rỗng, ngược lại trả về `{}`.
+- `roledescription(roledescription?: string): AriaList` — Trả về `{ 'aria-roledescription': roledescription }` khi chuỗi không rỗng, ngược lại trả về `{}`.
+- `label(label?: string | number): AriaList` — Trả về `{ 'aria-label': label }` cho chuỗi khác rỗng hoặc số khác 0 (chuỗi rỗng và số `0` trả về `{}`; truyền chuỗi `'0'` để giữ nhãn số không).
+- `labelledby(id?: string): AriaList` — Trả về `{ 'aria-labelledby': id }` khi không rỗng, ngược lại trả về `{}`.
+- `describedby(id?: string): AriaList` — Trả về `{ 'aria-describedby': id }` khi không rỗng, ngược lại trả về `{}`.
+
+### Trạng thái widget
+
+- `atomic(isAtomic?: boolean): AriaList` — Trả về `{ 'aria-atomic': 'true' | 'false' }` để điều khiển mức độ đọc lại toàn bộ vùng cập nhật động.
+- `busy(isBusy?: boolean): AriaList` — Trả về `{ 'aria-busy': 'true' | 'false' }` báo hiệu phần tử đang được cập nhật.
+- `checked(isChecked?: AriaList['aria-checked']): AriaList` — Trả về `{ 'aria-checked': 'true' | 'false' | 'mixed' }` cho hộp kiểm, nút chọn đơn và công tắc.
+- `disabled(isDisabled: boolean = true): AriaList` — Trả về `{ 'aria-disabled': 'true' }` khi `isDisabled` là `true`, hoặc `{}` khi `false`.
+- `expanded(isExpanded?: boolean): AriaList` — Trả về `{ 'aria-expanded': 'true' | 'false' }` cho nút kích hoạt và vùng chứa có thể mở rộng.
+- `hidden(isHidden: boolean = true): AriaList` — Trả về `{ 'aria-hidden': 'true' | 'false' }` (mặc định `true` cho phần tử trang trí).
+- `invalid(isInvalid: AriaList['aria-invalid'] = true): AriaList` — Trả về `{ 'aria-invalid': 'true' | 'grammar' | 'spelling' }` khi hợp lệ bị lỗi, hoặc `{}` khi `false` / `'false'`.
+- `multiselectable(isMultiselectable?: boolean): AriaList` — Trả về `{ 'aria-multiselectable': 'true' | 'false' }` cho danh sách chọn nhiều mục.
+- `pressed(isPressed?: AriaList['aria-pressed']): AriaList` — Trả về `{ 'aria-pressed': 'true' | 'false' | 'mixed' }` cho nút bật/tắt.
+- `readonly(isReadonly: boolean = true): AriaList` — Trả về `{ 'aria-readonly': 'true' }` khi `isReadonly` là `true`, hoặc `{}` khi `false`.
+- `selected(isSelected?: boolean | null): AriaList` — Trả về `{ 'aria-selected': 'true' | 'false' }` khi `isSelected` khác `undefined` và `null`, hoặc `{}` khi `undefined` / `null`.
+
+### Quan hệ, vùng động & hướng bố cục
+
+- `controls(controls?: string): AriaList` — Trả về `{ 'aria-controls': controls }` khi không rỗng, ngược lại trả về `{}`.
+- `current(value?: AriaList['aria-current']): AriaList` — Trả về `{ 'aria-current': value }` cho token chuỗi không rỗng (`'page'`, `'step'`, v.v.) hoặc `'true'`/`'false'` cho giá trị boolean và `undefined`.
+- `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Trả về `{ 'aria-haspopup': 'true' | popupType }` khi kích hoạt, hoặc `{}` khi `false`, `'false'` hay `undefined`.
+- `live(live?: AriaList['aria-live']): AriaList` — Trả về `{ 'aria-live': live }` (`'off' | 'polite' | 'assertive'`) khi có giá trị, ngược lại trả về `{}`.
+- `orientation(orientation?: AriaList['aria-orientation']): AriaList` — Trả về `{ 'aria-orientation': orientation }` (`'horizontal' | 'vertical' | 'undefined'`) khi có giá trị, ngược lại trả về `{}`.
+- `sort(sortDir?: AriaList['aria-sort'] | (string & {})): AriaList` — Trả về `{ 'aria-sort': sortDir }` khi không rỗng, ngược lại trả về `{}`.
+
+### Phương thức tổng hợp
+
+#### `control`
+
+Tạo đối tượng thuộc tính ARIA tổng hợp (`id`, `aria-controls`, `aria-haspopup`, `aria-expanded`) cho các phần tử điều khiển tương tác và nút kích hoạt.
+
+**Tham số:**
+- `id?: string` — Định danh phần tử kích hoạt.
+- `controls?: string` — Định danh phần tử bật lên hoặc bảng điều khiển được quản lý.
+- `haspopup?: AriaList['aria-haspopup']` — Loại cửa sổ bật lên (`'menu'`, `'dialog'`, `'listbox'`, v.v.) hoặc giá trị boolean.
+- `expanded?: boolean` — Trạng thái mở rộng của phần tử được điều khiển.
+
+**Trả về:** `AriaList` — Đối tượng thuộc tính ARIA tổng hợp.
+
+```typescript
+import { AriaStaticInclude } from '@dxtmisha/constructor'
+
+const triggerAria = AriaStaticInclude.control(
+  'menu-trigger',
+  'menu-panel',
+  'menu',
+  true
+)
+// { id: 'menu-trigger', 'aria-controls': 'menu-panel', 'aria-haspopup': 'menu', 'aria-expanded': 'true' }
+```
+
+#### `ariaModal`
+
+Trả về `{ 'aria-modal': 'true' }` khi `isModal` là `true`, hoặc `{}` khi `false`.
+
+**Tham số:**
+- `isModal: boolean = true` — Hộp thoại có giới hạn tương tác trong nội dung của nó hay không.
+
+**Trả về:** `AriaList` — Đối tượng chứa thuộc tính `aria-modal`.
+
+```typescript
+const modalAttr = AriaStaticInclude.ariaModal(true)
+// { 'aria-modal': 'true' }
+```
+
+#### `modal`
+
+Tạo đối tượng thuộc tính ARIA tổng hợp (`aria-modal`, `aria-labelledby`, `aria-describedby`) cho cửa sổ modal và vùng hộp thoại.
+
+**Tham số:**
+- `isModal: boolean = true` — Cửa sổ có phải là modal hay không.
+- `ariaLabelledby?: string` — Định danh phần tử tiêu đề.
+- `ariaDescribedby?: string` — Định danh phần tử mô tả.
+
+**Trả về:** `AriaList` — Đối tượng thuộc tính ARIA tổng hợp cho modal.
+
+```typescript
+const dialogAria = AriaStaticInclude.modal(
+  true,
+  'dialog-title',
+  'dialog-description'
+)
+// { 'aria-modal': 'true', 'aria-labelledby': 'dialog-title', 'aria-describedby': 'dialog-description' }
+```
+
+## Kiểu dữ liệu
+
+### AriaList
+
+- `'aria-label'?: string` — Chuỗi tên truy cập cho phần tử.
+- `'aria-labelledby'?: string` — Định danh phần tử đóng vai trò nhãn.
+- `'aria-describedby'?: string` — Định danh phần tử mô tả.
+- `'aria-controls'?: string` — Định danh phần tử được điều khiển.
+- `'aria-expanded'?: AriaTrueOrFalse` — Trạng thái mở rộng/thu gọn của phần tử được điều khiển.
+- `'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'` — Loại cửa sổ bật lên được kích hoạt bởi phần tử.
+- `'aria-modal'?: AriaTrueOrFalse` — Chỉ báo hộp thoại modal.
+- `'role'?: RoleType` — Vai trò ARIA ngữ nghĩa của phần tử.
+
+## Kiến trúc sử dụng
+
+`AriaStaticInclude` được thiết kế để kết hợp bên trong getter `get aria(): AriaList` của lớp điều phối cùng với các lớp `Include` động:
+
+```typescript
+import { AriaStaticInclude, type AriaList } from '@dxtmisha/constructor'
+
+export class CustomButton {
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('button'),
+      ...AriaStaticInclude.label(this.props.ariaLabel),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.pressed(this.isPressed)
+    }
+  }
+}
+```

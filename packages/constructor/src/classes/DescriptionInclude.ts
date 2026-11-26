@@ -11,7 +11,7 @@ import {
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
 
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTypes'
 
@@ -56,7 +56,7 @@ export class DescriptionInclude {
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
-    protected readonly props: RefOrNormalOrFunction<DescriptionProps>,
+    protected readonly props: RefOrNormalOrFunction<DescriptionProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly slots?: DescriptionSlots,
     protected readonly skeleton?: () => SkeletonInclude | undefined,
@@ -118,7 +118,7 @@ export class DescriptionInclude {
     }
 
     if (children.length > 0) {
-      const skeleton = this.skeleton?.()
+      const skeleton = this.getSkeleton()
 
       return [
         render(
@@ -148,7 +148,21 @@ export class DescriptionInclude {
    * Возвращает свойства, разрешая функции при необходимости.
    * @returns resolved description properties / разрешенные свойства описания
    */
-  protected getProps(): DescriptionProps {
+  protected getProps(): DescriptionProps & SkeletonPropsInclude {
     return executeFunctionRef(this.props)
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если режим скелетона активен.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    if (SkeletonInclude.is(this.getProps())) {
+      return this.skeleton?.()
+    }
+
+    return undefined
   }
 }

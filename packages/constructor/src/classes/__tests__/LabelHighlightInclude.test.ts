@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { DesignName } from '@dxtmisha/functional'
 import { SkeletonInclude } from '../../constructors/Skeleton'
 import { LabelHighlightInclude } from '../LabelHighlightInclude'
@@ -123,15 +123,30 @@ describe('LabelHighlightInclude', () => {
 
   it('should apply skeleton classes lazily via getter callback', () => {
     const skeleton = new SkeletonInclude({ isSkeleton: true }, new DesignName('d1.listItem'), ['classTextVariant'])
-    const include = new LabelHighlightInclude(
+    const skeletonGetter = vi.fn(() => skeleton)
+
+    const includeInactive = new LabelHighlightInclude(
       { label: 'Item' },
       new DesignName('d1.listItem'),
       undefined,
       undefined,
       undefined,
-      () => skeleton
+      skeletonGetter
+    )
+    const inactiveNodes = includeInactive.render()
+    expect(inactiveNodes[0]?.props?.class).not.toContain('d1-skeleton__textVariant')
+    expect(skeletonGetter).not.toHaveBeenCalled()
+
+    const include = new LabelHighlightInclude(
+      { label: 'Item', isSkeleton: true },
+      new DesignName('d1.listItem'),
+      undefined,
+      undefined,
+      undefined,
+      skeletonGetter
     )
     const nodes = include.render()
     expect(nodes[0]?.props?.class).toContain('d1-skeleton__textVariant')
+    expect(skeletonGetter).toHaveBeenCalledTimes(1)
   })
 })

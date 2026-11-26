@@ -1,0 +1,145 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/AriaStaticInclude - Static ARIA Attribute Builders'/>
+
+# AriaStaticInclude Class
+
+The `AriaStaticInclude` class is a **Static Utility Class** in `@dxtmisha/constructor` designed to generate standardized, type-safe WAI-ARIA attribute objects (`AriaList`) for component bindings and accessibility tree states.
+
+## Key Features
+
+- **Zero Instantiation Overhead** — all methods are `static`, returning plain `AriaList` objects ready to spread directly into `get aria()` or VNode bindings.
+- **Consistent Boolean Normalization** — converts boolean widget states into ARIA-compliant `'true'` / `'false'` string literals or conditionally omits inactive attributes.
+- **Composite Widget Helpers** — provides bundled attribute builders (`control`, `modal`) for interactive triggers, popups, and modal dialogs.
+- **Non-Destructive Omission** — optional string and token helpers omit empty or `undefined` values by returning `{}` so existing attributes are preserved during spreads.
+- **SSR Isomorphism** — pure, stateless methods with zero DOM or browser global dependencies, safe for server-side rendering and Vue hydration.
+
+## Methods
+
+### Boolean & Value Helpers
+
+- `isTrueOrFalse(value?: boolean): 'true' | 'false'` — Converts a boolean or `undefined` value to the ARIA string literal `'true'` or `'false'`.
+- `valueMinMax(value?: string | number | null, min?: string | number | null, max?: string | number | null): AriaList` — Returns `'aria-valuenow'`, `'aria-valuemin'`, and `'aria-valuemax'` attributes for defined non-empty range values (preserving numeric `0`), omitting `undefined`, `null`, `''`, and `NaN`.
+
+### Roles & Naming
+
+- `role(role?: RoleType): AriaList` — Returns `{ role }` when non-empty, or `{}` otherwise.
+- `roledescription(roledescription?: string): AriaList` — Returns `{ 'aria-roledescription': roledescription }` when non-empty, or `{}` otherwise.
+- `label(label?: string | number): AriaList` — Returns `{ 'aria-label': label }` for non-empty strings or non-zero numbers (empty strings and numeric `0` return `{}`; pass `'0'` to preserve zero).
+- `labelledby(id?: string): AriaList` — Returns `{ 'aria-labelledby': id }` when non-empty, or `{}` otherwise.
+- `describedby(id?: string): AriaList` — Returns `{ 'aria-describedby': id }` when non-empty, or `{}` otherwise.
+
+### Widget States
+
+- `atomic(isAtomic?: boolean): AriaList` — Returns `{ 'aria-atomic': 'true' | 'false' }` for live region announcement granularity.
+- `busy(isBusy?: boolean): AriaList` — Returns `{ 'aria-busy': 'true' | 'false' }` indicating ongoing asynchronous updates.
+- `checked(isChecked?: AriaList['aria-checked']): AriaList` — Returns `{ 'aria-checked': 'true' | 'false' | 'mixed' }` for checkboxes, radios, and switches.
+- `disabled(isDisabled: boolean = true): AriaList` — Returns `{ 'aria-disabled': 'true' }` when `isDisabled` is `true`, or `{}` when `false`.
+- `expanded(isExpanded?: boolean): AriaList` — Returns `{ 'aria-expanded': 'true' | 'false' }` for expandable triggers and containers.
+- `hidden(isHidden: boolean = true): AriaList` — Returns `{ 'aria-hidden': 'true' | 'false' }` (defaults to `true` for decorative elements).
+- `invalid(isInvalid: AriaList['aria-invalid'] = true): AriaList` — Returns `{ 'aria-invalid': 'true' | 'grammar' | 'spelling' }` when active, or `{}` when `false` or `'false'`.
+- `multiselectable(isMultiselectable?: boolean): AriaList` — Returns `{ 'aria-multiselectable': 'true' | 'false' }` for multi-select containers.
+- `pressed(isPressed?: AriaList['aria-pressed']): AriaList` — Returns `{ 'aria-pressed': 'true' | 'false' | 'mixed' }` for toggle buttons.
+- `readonly(isReadonly: boolean = true): AriaList` — Returns `{ 'aria-readonly': 'true' }` when `isReadonly` is `true`, or `{}` when `false`.
+- `selected(isSelected?: boolean | null): AriaList` — Returns `{ 'aria-selected': 'true' | 'false' }` when `isSelected` is neither `undefined` nor `null`, or `{}` when `undefined` or `null`.
+
+### Relationships, Live Regions & Orientation
+
+- `controls(controls?: string): AriaList` — Returns `{ 'aria-controls': controls }` when non-empty, or `{}` otherwise.
+- `current(value?: AriaList['aria-current']): AriaList` — Returns `{ 'aria-current': value }` for non-empty token strings (`'page'`, `'step'`, etc.) or `'true'`/`'false'` for boolean/`undefined` values.
+- `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Returns `{ 'aria-haspopup': 'true' | popupType }` when active, or `{}` when `false`, `'false'`, or `undefined`.
+- `live(live?: AriaList['aria-live']): AriaList` — Returns `{ 'aria-live': live }` (`'off' | 'polite' | 'assertive'`) when defined, or `{}` otherwise.
+- `orientation(orientation?: AriaList['aria-orientation']): AriaList` — Returns `{ 'aria-orientation': orientation }` (`'horizontal' | 'vertical' | 'undefined'`) when defined, or `{}` otherwise.
+- `sort(sortDir?: AriaList['aria-sort'] | (string & {})): AriaList` — Returns `{ 'aria-sort': sortDir }` when non-empty, or `{}` otherwise.
+
+### Composite Helpers
+
+#### `control`
+
+Generates a composite ARIA attribute object (`id`, `aria-controls`, `aria-haspopup`, `aria-expanded`) for interactive trigger controls.
+
+**Parameters:**
+- `id?: string` — Trigger element identifier.
+- `controls?: string` — Identifier of the controlled popup or panel element.
+- `haspopup?: AriaList['aria-haspopup']` — Popup type (`'menu'`, `'dialog'`, `'listbox'`, etc.) or boolean.
+- `expanded?: boolean` — Whether the controlled element is currently expanded.
+
+**Returns:** `AriaList` — Composite ARIA attribute record.
+
+```typescript
+import { AriaStaticInclude } from '@dxtmisha/constructor'
+
+const triggerAria = AriaStaticInclude.control(
+  'menu-trigger',
+  'menu-panel',
+  'menu',
+  true
+)
+// { id: 'menu-trigger', 'aria-controls': 'menu-panel', 'aria-haspopup': 'menu', 'aria-expanded': 'true' }
+```
+
+#### `ariaModal`
+
+Returns `{ 'aria-modal': 'true' }` when `isModal` is `true`, or `{}` when `false`.
+
+**Parameters:**
+- `isModal: boolean = true` — Whether the dialog restricts interaction to its contents.
+
+**Returns:** `AriaList` — ARIA modal attribute record.
+
+```typescript
+const modalAttr = AriaStaticInclude.ariaModal(true)
+// { 'aria-modal': 'true' }
+```
+
+#### `modal`
+
+Generates a composite ARIA attribute object (`aria-modal`, `aria-labelledby`, `aria-describedby`) for modal windows and dialog regions.
+
+**Parameters:**
+- `isModal: boolean = true` — Whether the window is modal.
+- `ariaLabelledby?: string` — Identifier of the title element.
+- `ariaDescribedby?: string` — Identifier of the description element.
+
+**Returns:** `AriaList` — Composite ARIA modal attribute record.
+
+```typescript
+const dialogAria = AriaStaticInclude.modal(
+  true,
+  'dialog-title',
+  'dialog-description'
+)
+// { 'aria-modal': 'true', 'aria-labelledby': 'dialog-title', 'aria-describedby': 'dialog-description' }
+```
+
+## Types
+
+### AriaList
+
+- `'aria-label'?: string` — Accessible name string for the element.
+- `'aria-labelledby'?: string` — Identifier of the labeling element.
+- `'aria-describedby'?: string` — Identifier of the describing element.
+- `'aria-controls'?: string` — Identifier of the controlled element.
+- `'aria-expanded'?: AriaTrueOrFalse` — Expanded/collapsed state of a controlled element.
+- `'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'` — Type of popup triggered by the element.
+- `'aria-modal'?: AriaTrueOrFalse` — Modal dialog indicator.
+- `'role'?: RoleType` — Semantic ARIA role of the element.
+
+## Usage Architecture
+
+`AriaStaticInclude` is designed to be composed inside a constructor's `get aria(): AriaList` getter alongside dynamic `Include` classes:
+
+```typescript
+import { AriaStaticInclude, type AriaList } from '@dxtmisha/constructor'
+
+export class CustomButton {
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('button'),
+      ...AriaStaticInclude.label(this.props.ariaLabel),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.pressed(this.isPressed)
+    }
+  }
+}
+```

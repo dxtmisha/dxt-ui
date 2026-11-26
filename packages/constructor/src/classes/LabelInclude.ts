@@ -11,7 +11,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
 
@@ -61,7 +61,7 @@ export class LabelInclude {
    * @param ignoreLabelIfSlot flag to ignore props.label if slot is provided / флаг игнорирования props.label, если передан слот
    */
   constructor(
-    protected readonly props: RefOrNormalOrFunction<LabelProps>,
+    protected readonly props: RefOrNormalOrFunction<LabelProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelSlots | LabelAlternativeSlots,
@@ -183,7 +183,7 @@ export class LabelInclude {
    * Возвращает свойства, разрешая функции при необходимости.
    * @returns resolved label properties / разрешенные свойства метки
    */
-  protected getProps(): LabelProps {
+  protected getProps(): LabelProps & SkeletonPropsInclude {
     return executeFunctionRef(this.props)
   }
 
@@ -195,7 +195,7 @@ export class LabelInclude {
    */
   protected getClassName(): ConstrClass {
     const classes: ConstrClass = [this.naming.getSubClass('label')]
-    const skeleton = executeFunctionRef(this.skeleton)
+    const skeleton = this.getSkeleton()
 
     if (this.classesExtra) {
       classes.push(this.classesExtra)
@@ -206,6 +206,20 @@ export class LabelInclude {
     }
 
     return classes
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если режим скелетона активен.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    if (SkeletonInclude.is(this.getProps())) {
+      return executeFunctionRef(this.skeleton)
+    }
+
+    return undefined
   }
 
   /**

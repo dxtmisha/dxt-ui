@@ -205,7 +205,7 @@ describe('Window (orchestrator unit)', () => {
       expect(binds['data-window']).toBeDefined()
       expect(binds.role).toBe('dialog')
       expect(binds['aria-labelledby']).toBe('title-id')
-      expect(binds['aria-modal']).toBe(true)
+      expect(binds['aria-modal']).toBe('true')
 
       scope.stop()
     })

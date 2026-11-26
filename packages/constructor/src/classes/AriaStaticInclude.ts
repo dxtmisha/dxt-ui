@@ -1,12 +1,14 @@
-import { isString } from '@dxtmisha/functional'
+import { isNull, isString } from '@dxtmisha/functional'
 
-import type { AriaList, AriaTrueOrFalse } from '../types/ariaTypes'
+import type { AriaList } from '../types/ariaTypes'
 import type { RoleType } from '../types/roleTypes'
 
 /**
  * Utility class for generating static ARIA accessibility attributes and widget states.
+ * Provides stateless, SSR-safe static builders returning partial AriaList records for component `aria` getters.
  *
  * Утилитарный класс для формирования статических ARIA атрибутов доступности и состояний виджетов.
+ * Предоставляет чистые, SSR-безопасные статические генераторы, возвращающие объекты AriaList для геттеров `aria`.
  */
 export class AriaStaticInclude {
   /**
@@ -14,9 +16,9 @@ export class AriaStaticInclude {
    *
    * Преобразует булево значение в строковый литерал ('true' или 'false'), соответствующий спецификации ARIA.
    * @param value boolean value to convert / преобразуемое булево значение
-   * @returns string 'true' or 'false', or undefined / строка 'true', 'false' или undefined
+   * @returns string 'true' or 'false' / строка 'true' или 'false'
    */
-  static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined {
+  static isTrueOrFalse(value?: boolean): 'true' | 'false' {
     return value ? 'true' : 'false'
   }
 
@@ -30,7 +32,13 @@ export class AriaStaticInclude {
   static ariaModal(
     isModal: boolean = true
   ): AriaList {
-    return this.isDataToData('aria-modal', isModal)
+    if (isModal) {
+      return {
+        'aria-modal': this.isTrueOrFalse(isModal)
+      }
+    }
+
+    return {}
   }
 
   /**
@@ -63,12 +71,12 @@ export class AriaStaticInclude {
    * Returns the ARIA checked attribute indicating the current checked state of checkboxes, radio buttons, or switches.
    *
    * Возвращает атрибут ARIA checked, указывающий текущее состояние отметки флажков, радиокнопок или переключателей.
-   * @param isChecked whether the element is checked / отмечен ли элемент
+   * @param isChecked whether the element is checked or mixed / отмечен ли элемент или имеет смешанное состояние
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static checked(isChecked?: boolean): AriaList {
+  static checked(isChecked?: AriaList['aria-checked']): AriaList {
     return {
-      'aria-checked': this.isTrueOrFalse(isChecked)
+      'aria-checked': this.toBooleanOrToken(isChecked)
     }
   }
 
@@ -89,7 +97,7 @@ export class AriaStaticInclude {
     expanded?: boolean
   ): AriaList {
     return {
-      id,
+      ...this.isDataToData('id', id),
       ...this.controls(controls),
       ...this.haspopup(haspopup),
       ...this.expanded(expanded)
@@ -115,11 +123,7 @@ export class AriaStaticInclude {
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
   static current(value?: AriaList['aria-current']): AriaList {
-    const current = isString(value)
-      ? value
-      : this.isTrueOrFalse(value)
-
-    return this.isDataToData('aria-current', current)
+    return this.isDataToData('aria-current', this.toBooleanOrToken(value))
   }
 
   /**
@@ -171,7 +175,13 @@ export class AriaStaticInclude {
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
   static haspopup(haspopup?: AriaList['aria-haspopup']): AriaList {
-    return this.isDataToData('aria-haspopup', haspopup)
+    if (haspopup && haspopup !== 'false') {
+      return {
+        'aria-haspopup': this.toBooleanOrToken(haspopup)
+      }
+    }
+
+    return {}
   }
 
   /**
@@ -193,13 +203,13 @@ export class AriaStaticInclude {
    * Returns the ARIA invalid attribute indicating that the entered value does not conform to expected validation rules.
    *
    * Возвращает атрибут ARIA invalid, указывающий, что введенное значение не соответствует правилам валидации.
-   * @param isInvalid whether the element value is invalid / является ли значение невалидным
+   * @param isInvalid whether the element value is invalid or error type / является ли значение невалидным или тип ошибки
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static invalid(isInvalid: boolean = true): AriaList {
-    if (isInvalid) {
+  static invalid(isInvalid: AriaList['aria-invalid'] = true): AriaList {
+    if (isInvalid && isInvalid !== 'false') {
       return {
-        'aria-invalid': this.isTrueOrFalse(isInvalid)
+        'aria-invalid': this.toBooleanOrToken(isInvalid)
       }
     }
 
@@ -292,12 +302,12 @@ export class AriaStaticInclude {
    * Returns the ARIA pressed attribute indicating the current pressed state of toggle buttons.
    *
    * Возвращает атрибут ARIA pressed, указывающий текущее состояние нажатия кнопок-переключателей.
-   * @param isPressed whether the toggle button is pressed / нажата ли кнопка-переключатель
+   * @param isPressed whether the toggle button is pressed or mixed / нажата ли кнопка-переключатель или имеет смешанное состояние
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static pressed(isPressed?: boolean): AriaList {
+  static pressed(isPressed?: AriaList['aria-pressed']): AriaList {
     return {
-      'aria-pressed': this.isTrueOrFalse(isPressed)
+      'aria-pressed': this.toBooleanOrToken(isPressed)
     }
   }
 
@@ -326,9 +336,7 @@ export class AriaStaticInclude {
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
   static role(role?: RoleType): AriaList {
-    return {
-      role
-    }
+    return this.isDataToData('role', role)
   }
 
   /**
@@ -349,8 +357,8 @@ export class AriaStaticInclude {
    * @param isSelected whether the element is selected / выбран ли элемент
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static selected(isSelected?: boolean): AriaList {
-    if (isSelected !== undefined) {
+  static selected(isSelected?: boolean | null): AriaList {
+    if (!isNull(isSelected)) {
       return {
         'aria-selected': this.isTrueOrFalse(isSelected)
       }
@@ -366,7 +374,7 @@ export class AriaStaticInclude {
    * @param sortDir sorting direction ('none' | 'ascending' | 'descending' | 'other') / направление сортировки ('none' | 'ascending' | 'descending' | 'other')
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static sort(sortDir?: AriaList['aria-sort'] | string): AriaList {
+  static sort(sortDir?: AriaList['aria-sort'] | (string & {})): AriaList {
     return this.isDataToData('aria-sort', sortDir)
   }
 
@@ -380,14 +388,14 @@ export class AriaStaticInclude {
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
   static valueMinMax(
-    value?: string | number,
-    min?: string | number,
-    max?: string | number
+    value?: string | number | null,
+    min?: string | number | null,
+    max?: string | number | null
   ): AriaList {
     return {
-      'aria-valuenow': value,
-      'aria-valuemin': min,
-      'aria-valuemax': max
+      ...this.isDefinedToData('aria-valuenow', value),
+      ...this.isDefinedToData('aria-valuemin', min),
+      ...this.isDefinedToData('aria-valuemax', max)
     }
   }
 
@@ -410,5 +418,45 @@ export class AriaStaticInclude {
     }
 
     return {}
+  }
+
+  /**
+   * Helper method that constructs an ARIA attribute record if the provided value is defined (not null/undefined), not an empty string, and not NaN (preserving numeric 0).
+   *
+   * Вспомогательный метод, формирующий объект с ARIA атрибутом, если значение определено (не null/undefined), не является пустой строкой и не равно NaN (сохраняя числовой 0).
+   * @param name ARIA attribute name / имя ARIA атрибута
+   * @param value attribute value / значение атрибута
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  protected static isDefinedToData<V>(
+    name: string,
+    value?: V
+  ): AriaList {
+    if (
+      !isNull(value)
+      && value !== ''
+      && !Number.isNaN(value)
+    ) {
+      return {
+        [name]: value
+      }
+    }
+
+    return {}
+  }
+
+  /**
+   * Converts a boolean or string ARIA token into a normalized string literal or preserves the token.
+   *
+   * Преобразует булево значение или строковый ARIA-токен в нормализованный строковый литерал либо сохраняет исходный токен.
+   * @param value boolean value or string token / булево значение или строковый токен
+   * @returns string token or 'true' / 'false' / строковый токен или 'true' / 'false'
+   */
+  protected static toBooleanOrToken<T extends string>(
+    value?: T | boolean
+  ): T | 'true' | 'false' {
+    return isString(value)
+      ? value
+      : this.isTrueOrFalse(value)
   }
 }

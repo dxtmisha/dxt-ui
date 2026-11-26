@@ -1,7 +1,7 @@
 import { type VNode, type VNodeArrayChildren } from 'vue'
 import { getElementId, type DesignName, isFilled, render } from '@dxtmisha/functional'
 
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { SuffixProps, SuffixSlots } from '../types/suffixTypes'
 
@@ -43,7 +43,7 @@ export class SuffixInclude {
    * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: Readonly<SuffixProps>,
+    protected readonly props: Readonly<SuffixProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly slots?: SuffixSlots,
     protected readonly skeleton?: () => SkeletonInclude | undefined
@@ -102,6 +102,8 @@ export class SuffixInclude {
     }
 
     if (children.length > 0) {
+      const skeleton = this.getSkeleton()
+
       return [
         render(
           'div',
@@ -109,7 +111,7 @@ export class SuffixInclude {
             'id': this.id,
             'class': {
               [this.naming.getSubClass('suffix')]: true,
-              ...this.skeleton?.()?.classes
+              ...skeleton?.classes
             },
             'data-event-type': 'suffix'
           },
@@ -120,5 +122,19 @@ export class SuffixInclude {
     }
 
     return []
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если режим скелетона активен.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    if (SkeletonInclude.is(this.props)) {
+      return this.skeleton?.()
+    }
+
+    return undefined
   }
 }
