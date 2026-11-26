@@ -1,48 +1,78 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { DesignName } from '@dxtmisha/functional'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, h } from 'vue'
+import { DesignComponents, DesignName } from '@dxtmisha/functional'
+
+import type { TabsNavigationPropsInclude } from '../basicTypes'
+import type { TabsNavigationExpose } from '../types'
 import { TabsNavigationInclude } from '../TabsNavigationInclude'
 
 describe('TabsNavigationInclude', () => {
-  it('should map ids getter to element.ids()', () => {
-    const mockExpose = {
-      ids: vi.fn().mockReturnValue({ 'tab-1': 'some-id-1' })
-    } as any
-
-    const include = new TabsNavigationInclude({}, new DesignName('my.tabs'))
-    include['element'].value = mockExpose
-
-    expect(include.ids).toEqual({ 'tab-1': 'some-id-1' })
-    expect(mockExpose.ids).toHaveBeenCalled()
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('should fallback to empty object if element is undefined for ids getter', () => {
-    const include = new TabsNavigationInclude({}, new DesignName('my.tabs'))
+  it('should evaluate static is predicate based on tabs and tabsNavigationAttrs', () => {
+    expect(TabsNavigationInclude.is()).toBe(false)
+    expect(TabsNavigationInclude.is({})).toBe(false)
+    expect(TabsNavigationInclude.is({ tabs: [{ value: 'a', label: 'A' }] })).toBe(true)
+    expect(TabsNavigationInclude.is({ tabsNavigationAttrs: { divider: true } })).toBe(true)
+  })
+
+  it('should map ids getter to element.ids() and fallback to empty object when unmounted', () => {
+    const mockExpose: TabsNavigationExpose = {
+      ids: vi.fn().mockReturnValue({ 'tab-1': 'generated-id-1' })
+    }
+
+    const include = new TabsNavigationInclude({}, new DesignName('d1.tabs'))
     expect(include.ids).toEqual({})
+
+    // @ts-expect-error assigning protected ref in unit test
+    include.element.value = mockExpose
+    expect(include.ids).toEqual({ 'tab-1': 'generated-id-1' })
+    expect(mockExpose.ids).toHaveBeenCalledTimes(1)
   })
 
-  it('should resolve and clean properties with getProps() and extra bindings', () => {
-    const props = {
-      tabs: {
-        active: true
-      },
-      tabItemAttrs: {
-        style: 'color: red'
+  it('should resolve tabs via getExtra and preserve inherited itemAttrs when tabItemAttrs is undefined', () => {
+    const propsWithAttrs: TabsNavigationPropsInclude = {
+      tabs: [{ value: 'overview', label: 'Overview' }],
+      tabItemAttrs: { style: { color: 'red' } }
+    }
+
+    const includeWithAttrs = new TabsNavigationInclude(propsWithAttrs, new DesignName('d1.tabs'))
+    expect(includeWithAttrs.binds.value.list).toEqual([{ value: 'overview', label: 'Overview' }])
+    expect(includeWithAttrs.binds.value.itemAttrs).toEqual({ style: { color: 'red' } })
+
+    // Non-destructive merging: undefined tabItemAttrs must not overwrite tabsNavigationAttrs.itemAttrs
+    const propsInherited: TabsNavigationPropsInclude = {
+      tabs: [{ value: 'details', label: 'Details' }],
+      tabsNavigationAttrs: {
+        itemAttrs: { tag: 'a' }
       }
-    } as any
+    }
 
-    const include = new TabsNavigationInclude(props, new DesignName('my.tabs'))
+    const includeInherited = new TabsNavigationInclude(propsInherited, new DesignName('d1.tabs'))
+    expect(includeInherited.binds.value.itemAttrs).toEqual({ tag: 'a' })
+  })
 
-    // @ts-expect-error accessing protected method
-    const extra = include.getExtra()
-    expect(extra).toEqual({
-      list: { active: true }
+  it('should render connected tabsNavigation component via DesignComponents', () => {
+    const MockTabsNavigation = defineComponent({
+      name: 'MockTabsNavigation',
+      setup() {
+        return () => h('div', { class: 'mock-tabs-navigation' })
+      }
     })
-
-    // @ts-expect-error accessing protected method
-    const binds = include.toBinds()
-    expect(binds.itemAttrs).toEqual({
-      style: 'color: red'
+    const components = new DesignComponents({
+      tabsNavigation: MockTabsNavigation
     })
+    const include = new TabsNavigationInclude(
+      { tabs: [{ value: 'a', label: 'A' }] },
+      new DesignName('d1.tabs'),
+      components
+    )
+
+    const rendered = include.render()
+    expect(rendered).toHaveLength(1)
+    expect(rendered[0]?.type).toBe(MockTabsNavigation)
   })
 })

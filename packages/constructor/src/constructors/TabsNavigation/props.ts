@@ -1,7 +1,7 @@
 import type { ConstrBind, ListRecord, ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabItemPropsBasic } from '../TabItem'
-import type { HorizontalScrollPropsInclude } from '../HorizontalScroll'
+import type { HorizontalScrollPropsBasic, HorizontalScrollPropsInclude } from '../HorizontalScroll'
 
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
@@ -11,31 +11,37 @@ type TabsNavigationPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for the TabsNavigation component.
+ *
+ * Базовые свойства компонента TabsNavigation.
+ */
 export type TabsNavigationPropsBasic<
-  TabItem extends TabItemPropsBasic = TabItemPropsBasic
-> = HorizontalScrollPropsInclude
+  TabItem extends TabItemPropsBasic = TabItemPropsBasic,
+  HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic
+> = HorizontalScrollPropsInclude<HorizontalScroll>
   & ModelPropsSelected<ListSelectedList>
   & {
-    /** Status/ Статусы */
-    /** List of selected values/ Список выбранных значений */
+    /** Status / Статусы */
+    /** List of selected values / Список выбранных значений */
     selected?: ListSelectedList
 
-    /** Value/ Значения */
-    /** List of tab items/ Список элементов вкладок */
+    /** Value / Значения */
+    /** List of tab items / Список элементов вкладок */
     list?: ListRecord<TabItem>
 
-    /** Style/ Стили */
-    /** HTML tag for the tabs navigation/ HTML-тег для навигации вкладок */
+    /** Style / Стили */
+    /** HTML tag for the tabs navigation / HTML-тег для навигации вкладок */
     tag?: TabItem['tag']
 
-    /** Options/ Опции */
-    /** Key for the label/ Ключ для подписи */
+    /** Options / Опции */
+    /** Key for the label / Ключ для подписи */
     keyLabel?: string
-    /** Key for the value/ Ключ для значения */
+    /** Key for the value / Ключ для значения */
     keyValue?: string
 
-    /** Attributes/ Атрибуты */
-    /** Additional attributes for each tab item/ Дополнительные атрибуты для каждого элемента вкладки */
+    /** Attributes / Атрибуты */
+    /** Additional attributes for each tab item / Дополнительные атрибуты для каждого элемента вкладки */
     itemAttrs?: ConstrBind<TabItem>
   }
 
@@ -53,7 +59,7 @@ export type TabsNavigationProps = TabsNavigationPropsBasic & TabsNavigationProps
  */
 export const defaultsTabsNavigation = {
   horizontalScrollBleed: true,
-  horizontalScrollAlign: 'left',
+  horizontalScrollAlign: 'left' as const,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -1,10 +1,9 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  type ListDataFullItem,
-  toBinds
+  type ListDataFullItem
 } from '@dxtmisha/functional'
 
 import type { HorizontalScrollControlItem } from '../HorizontalScroll'
@@ -51,6 +50,7 @@ export class TabsNavigationDesign<
   /** TabsNavigation business logic instance / Экземпляр бизнес-логики TabsNavigation */
   protected readonly item: TabsNavigation
 
+  /** Sub-component key used for rendering individual tab items / Ключ субкомпонента для рендеринга отдельных элементов вкладок */
   protected readonly itemComponent: string = 'tabItem'
 
   /**
@@ -91,9 +91,7 @@ export class TabsNavigationDesign<
    * @returns object containing exposed API maps / объект, содержащий карты экспортируемого API
    */
   protected initExpose(): EXPOSE {
-    return {
-      ids: () => this.item.ids.ids.value
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
@@ -130,13 +128,16 @@ export class TabsNavigationDesign<
    * @returns array of VNodes representing scrollable wrapper with list items / массив VNode, представляющих прокручиваемую обертку с элементами списка
    */
   protected initRender(): VNode[] {
-    return this.item.scroll.render(
+    return this.item.i('scroll').render(
       { default: this.renderList },
-      {
-        ...this.item.binds,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      }
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      )
     )
   }
 
@@ -150,15 +151,17 @@ export class TabsNavigationDesign<
   readonly renderList = (
     props: HorizontalScrollControlItem
   ): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('leading', children)
 
-    this.item.data.fullData.value.forEach(
-      item => children.push(
-        this.renderItem(props, item)
-      )
-    )
+    this.item.i('data').fullData.value.forEach((item) => {
+      const node = this.renderItem(props, item)
+
+      if (node) {
+        children.push(node)
+      }
+    })
 
     this.initSlot('trailing', children)
 
@@ -176,26 +179,30 @@ export class TabsNavigationDesign<
   readonly renderItem = (
     props: HorizontalScrollControlItem,
     item: ListDataFullItem<TabItemPropsBasic>
-  ): VNode => {
-    const isSelected = this.item.selected.isSelected(item.index)
+  ): VNode | undefined => {
+    const isSelected = this.item.i('selected').isSelected(item.index)
+    const itemClass = this.classes?.value.item
+    const tagBind = this.props.tag !== undefined
+      ? { tag: this.props.tag }
+      : {}
 
     return this.components?.renderOne(
       this.itemComponent as never,
-      toBinds(
-        this.props.itemAttrs,
+      mergeProps(
+        this.props.itemAttrs ?? {},
         item,
         props.binds,
+        tagBind,
         {
-          tag: this.props.tag,
           key: item.index,
-          id: this.item.ids.getIdByValue(item.value),
+          id: this.item.i('ids').getIdByValue(item.value),
           onClick: this.item.onClick,
-          class: {
-            [`${this.classes?.value.item}`]: true,
-            [props.classItemSelected]: isSelected
-          }
+          class: [
+            itemClass,
+            isSelected ? props.classItemSelected : undefined
+          ]
         }
       )
-    ) as VNode
+    )
   }
 }

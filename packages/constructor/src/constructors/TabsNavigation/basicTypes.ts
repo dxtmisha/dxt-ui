@@ -3,7 +3,7 @@ import type { ConstrBind, ListRecord, NumberOrString } from '@dxtmisha/functiona
 import type { TabItemPropsBasic } from '../TabItem'
 import type { TabsNavigationPropsBasic } from './props'
 
-/** List of identifiers for the tabs/ Список идентификаторов для вкладок */
+/** List of identifiers for the tabs / Список идентификаторов для вкладок */
 export type TabsNavigationIdsList = Record<NumberOrString, string>
 
 /**
@@ -12,7 +12,7 @@ export type TabsNavigationIdsList = Record<NumberOrString, string>
  * Тип для подключения компонента TabsNavigation.
  */
 export type TabsNavigationComponentInclude = {
-  /** TabsNavigation component/ Компонент TabsNavigation */
+  /** TabsNavigation component / Компонент TabsNavigation */
   tabsNavigation?: object
 }
 
@@ -25,10 +25,10 @@ export type TabsNavigationPropsInclude<
   TabItem extends TabItemPropsBasic = TabItemPropsBasic,
   TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic
 > = {
-  /** Tabs list or TabsNavigation properties/ Список вкладок или свойства TabsNavigation */
+  /** Tabs list or TabsNavigation properties / Список вкладок или свойства TabsNavigation */
   tabs?: ListRecord<TabItem> | ConstrBind<TabsNavigation>
-  /** Attributes for tabs/ Атрибуты для вкладок */
+  /** Attributes for tabs / Атрибуты для вкладок */
   tabItemAttrs?: ConstrBind<TabItem>
-  /** Attributes for TabsNavigation/ Атрибуты для TabsNavigation */
+  /** Attributes for TabsNavigation / Атрибуты для TabsNavigation */
   tabsNavigationAttrs?: ConstrBind<TabsNavigation>
 }

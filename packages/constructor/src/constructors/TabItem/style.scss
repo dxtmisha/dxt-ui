@@ -25,7 +25,7 @@
     pointer-events: none;
     opacity: 0;
 
-    width: calc(#{ui.v('??sys.width')} - (2 * #{ui.v('??paddingX', 0px)}));
+    width: calc(#{ui.v('?item.sys.width')} - (2 * #{ui.v('??paddingX', 0px)}));
     height: ui.v('??indicator.height', auto);
 
     content: " ";
@@ -46,6 +46,10 @@
 
   &__ripple {
     order: 32;
+  }
+
+  &__loading#{'.'}#{ui.n('?progress--visible')} ~ * {
+    opacity: ui.v('??colorOpacity', 0);
   }
 
   &--readonly,

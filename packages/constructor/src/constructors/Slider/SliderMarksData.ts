@@ -3,16 +3,19 @@
 import { computed, type ComputedRef } from 'vue'
 
 import {
-  isArray,
   type DesignName,
+  isArray,
   isObject,
   isObjectNotArray,
   toNumber,
   toPercentBy100
 } from '@dxtmisha/functional'
 
-import type { SliderMarkList } from './basicTypes'
+import type { SliderMarkItemValue, SliderMarkList } from './basicTypes'
 import type { SliderPropsBasic } from './props'
+
+/** Maximum decimal places preserved during floating-point step rounding / Максимальное число знаков после запятой при округлении по шагу */
+const MAX_DECIMAL_PRECISION = 12
 
 /**
  * Class for computing and managing normalized slider mark items list.
@@ -20,13 +23,26 @@ import type { SliderPropsBasic } from './props'
  * Класс для вычисления и управления нормализованным списком элементов меток слайдера.
  */
 export class SliderMarksData {
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input properties / входящие свойства
+   * @param naming component naming helper / помощник именования компонента
+   */
+  constructor(
+    protected readonly props: Readonly<SliderPropsBasic>,
+    protected readonly naming: DesignName
+  ) {
+  }
+
   /** Computed list of normalized mark items / Вычисляемый список нормализованных элементов меток */
   readonly data = computed<SliderMarkList | undefined>(() => {
     if (this.props.marks) {
       const rawList = this.getRawMarks()
       const resultList: SliderMarkList = []
 
-      rawList.forEach((item: any) => {
+      rawList.forEach((item: unknown) => {
         const mark = this.getItemMark(item)
         const value = this.getItemValue(item, mark)
 
@@ -48,17 +64,6 @@ export class SliderMarksData {
 
     return undefined
   })
-
-  /**
-   * Constructor
-   * @param props input properties / входящие свойства
-   * @param naming component naming helper / помощник именования компонента
-   */
-  constructor(
-    protected readonly props: SliderPropsBasic,
-    protected readonly naming: DesignName
-  ) {
-  }
 
   /**
    * Returns minimum numeric value of range.
@@ -87,7 +92,7 @@ export class SliderMarksData {
    * @returns minimum distance / минимальное расстояние
    */
   get minimumDistanceNumber(): number {
-    return toNumber(this.props.minimumDistance ?? 1)
+    return Math.max(0, toNumber(this.props.minimumDistance ?? 1))
   }
 
   /**
@@ -105,7 +110,7 @@ export class SliderMarksData {
    * Checks if mark items list is present and non-empty.
    *
    * Проверяет, присутствует ли список элементов меток и не пуст ли он.
-   * @returns true if marks exist / true если метки присутствуют
+   * @returns true if marks exist / true, если метки присутствуют
    */
   is(): this is { data: ComputedRef<SliderMarkList> } {
     return Boolean(this.data.value)
@@ -119,6 +124,28 @@ export class SliderMarksData {
    */
   get(): SliderMarkList | undefined {
     return this.data.value
+  }
+
+  /**
+   * Rounds numeric value according to the decimal precision of step and min.
+   *
+   * Округляет числовое значение с учётом точности десятичных знаков шага и минимума.
+   * @param value numeric value / числовое значение
+   * @returns rounded numeric value / округлённое числовое значение
+   */
+  roundValue(value: number): number {
+    const precision = Math.min(
+      MAX_DECIMAL_PRECISION,
+      Math.max(
+        this.getDecimalPrecision(this.stepNumber),
+        this.getDecimalPrecision(this.minNumber)
+      )
+    )
+    const rounded = precision > 0
+      ? Number(value.toFixed(precision))
+      : value
+
+    return rounded === 0 ? 0 : rounded
   }
 
   /**
@@ -159,7 +186,7 @@ export class SliderMarksData {
     const step = this.stepNumber
 
     const rawValue = ((max - min) / 100) * percent + min
-    const stepValue = Math.round((rawValue - min) / step) * step + min
+    const stepValue = this.roundValue(Math.round((rawValue - min) / step) * step + min)
 
     return Math.max(min, Math.min(max, stepValue))
   }
@@ -185,6 +212,33 @@ export class SliderMarksData {
   }
 
   /**
+   * Calculates decimal precision for a numeric value.
+   *
+   * Вычисляет количество знаков после запятой для числового значения.
+   * @param value numeric value / числовое значение
+   * @returns number of fractional digits / количество дробных цифр
+   */
+  protected getDecimalPrecision(value: number): number {
+    if (
+      !Number.isFinite(value)
+      || Number.isInteger(value)
+    ) {
+      return 0
+    }
+
+    const stringValue = value.toString().toLowerCase()
+
+    if (stringValue.includes('e-')) {
+      const [mantissa, exponent] = stringValue.split('e-')
+      const mantissaDecimals = mantissa?.split('.')[1]?.length ?? 0
+
+      return mantissaDecimals + Number(exponent ?? 0)
+    }
+
+    return stringValue.split('.')[1]?.length ?? 0
+  }
+
+  /**
    * Extracts text label representation from raw item.
    *
    * Извлекает текстовое представление метки из сырого элемента.
@@ -192,9 +246,10 @@ export class SliderMarksData {
    * @param value computed item value / вычисленное значение элемента
    * @returns text label string / строка текста метки
    */
-  protected getItemLabel(item: any, value: any): string {
+  protected getItemLabel(item: unknown, value: SliderMarkItemValue): string {
     if (isObjectNotArray(item)) {
-      return String(item[this.keyLabel] ?? item.label ?? value)
+      const record = item as Record<string, unknown>
+      return String(record[this.keyLabel] ?? record.label ?? value)
     }
 
     return String(item)
@@ -207,12 +262,13 @@ export class SliderMarksData {
    * @param item raw item / сырой элемент
    * @returns numeric mark value / числовое значение метки
    */
-  protected getItemMark(item: any): number {
+  protected getItemMark(item: unknown): number {
     if (isObjectNotArray(item)) {
-      return toNumber(item.mark ?? item[this.keyValue] ?? item.value ?? 0)
+      const record = item as Record<string, unknown>
+      return toNumber((record.mark ?? record[this.keyValue] ?? record.value ?? 0) as string | number)
     }
 
-    return toNumber(item)
+    return toNumber(item as string | number)
   }
 
   /**
@@ -223,12 +279,13 @@ export class SliderMarksData {
    * @param mark computed mark position value / вычисленное значение позиции метки
    * @returns payload value / значение данных
    */
-  protected getItemValue(item: any, mark: number): any {
+  protected getItemValue(item: unknown, mark: number): SliderMarkItemValue {
     if (isObjectNotArray(item)) {
-      return item[this.keyValue] ?? item.value ?? mark
+      const record = item as Record<string, unknown>
+      return (record[this.keyValue] ?? record.value ?? mark) as SliderMarkItemValue
     }
 
-    return item
+    return item as SliderMarkItemValue
   }
 
   /**
@@ -237,7 +294,7 @@ export class SliderMarksData {
    * Извлекает сырой список меток из свойств.
    * @returns array of raw mark items / массив сырых элементов меток
    */
-  protected getRawMarks(): any[] {
+  protected getRawMarks(): unknown[] {
     if (isArray(this.props.marks)) {
       return this.props.marks
     }

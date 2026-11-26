@@ -15,21 +15,23 @@ import type { SliderValue } from './SliderValue'
  */
 export class SliderGo {
   /**
-   * Constructor
-   * @param emitsItem event emission manager / менеджер эмита событий
-   * @param enabled enabled state manager / менеджер активности
-   * @param focus handle focus manager / менеджер фокуса ползунков
-   * @param marks marks calculation manager / менеджер вычисления меток
-   * @param sliderElement element layout manager / менеджер верстки и координат
-   * @param value slider value bounds manager / менеджер значений слайдера
+   * Constructor.
+   *
+   * Конструктор.
+   * @param emitsItem getter returning event emission manager / функция, возвращающая менеджер эмита событий
+   * @param enabled getter returning enabled state manager / функция, возвращающая менеджер активности
+   * @param focus getter returning handle focus manager / функция, возвращающая менеджер фокуса ползунков
+   * @param marks getter returning marks calculation manager / функция, возвращающая менеджер вычисления меток
+   * @param sliderElement getter returning element layout manager / функция, возвращающая менеджер верстки и координат
+   * @param value getter returning slider value bounds manager / функция, возвращающая менеджер значений слайдера
    */
   constructor(
-    protected readonly emitsItem: SliderEmit,
-    protected readonly enabled: EnabledInclude,
-    protected readonly focus: SliderFocus,
-    protected readonly marks: SliderMarks,
-    protected readonly sliderElement: SliderElement,
-    protected readonly value: SliderValue
+    protected readonly emitsItem: () => SliderEmit,
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly focus: () => SliderFocus,
+    protected readonly marks: () => SliderMarks,
+    protected readonly sliderElement: () => SliderElement,
+    protected readonly value: () => SliderValue
   ) { }
 
   /**
@@ -39,24 +41,20 @@ export class SliderGo {
    * @param coordinate pointer coordinate / координата указателя
    */
   updateFromCoordinate(coordinate: number): void {
-    const sliderRect = this.sliderElement.rectangle
-
-    if (sliderRect) {
-      const percentage = this.sliderElement.getMovePercent(coordinate, sliderRect)
-      const markValue = this.marks.toMark(percentage)
-
-      this.value.set(markValue, this.focus.get())
-      this.emitsItem.emit('input')
+    if (!this.enabled().isEnabled) {
+      return
     }
-  }
 
-  /**
-   * Increases active thumb value by step or neighbor mark.
-   *
-   * Увеличивает значение активного ползунка на шаг или соседнюю метку.
-   */
-  increase(): void {
-    this.go(true)
+    const sliderElement = this.sliderElement()
+    const sliderRectangle = sliderElement.rectangle
+
+    if (sliderRectangle) {
+      const percentage = sliderElement.getMovePercent(coordinate, sliderRectangle)
+      const markValue = this.marks().toMark(percentage)
+
+      this.value().set(markValue, this.focus().get())
+      this.emitsItem().emit('input')
+    }
   }
 
   /**
@@ -69,19 +67,31 @@ export class SliderGo {
   }
 
   /**
+   * Increases active thumb value by step or neighbor mark.
+   *
+   * Увеличивает значение активного ползунка на шаг или соседнюю метку.
+   */
+  increase(): void {
+    this.go(true)
+  }
+
+  /**
    * Navigates active thumb value by direction.
    *
    * Изменяет значение активного ползунка в указанном направлении.
-   * @param isIncrease direction multiplier flag (true for next, false for previous) / флаг направления
+   * @param isIncrease direction multiplier flag (true for next, false for previous) / флаг направления (true — вперёд, false — назад)
    */
   protected go(isIncrease: boolean): void {
-    if (this.enabled.isEnabled) {
-      const currentActiveValue = this.focus.isMin() ? this.value.min : this.value.max
-      const targetValue = this.marks.getMarkNeighbor(currentActiveValue, isIncrease)
+    if (this.enabled().isEnabled) {
+      const focus = this.focus()
+      const valueItem = this.value()
+      const emitsItem = this.emitsItem()
+      const currentActiveValue = focus.isMin() ? valueItem.min : valueItem.max
+      const targetValue = this.marks().getMarkNeighbor(currentActiveValue, isIncrease)
 
-      this.value.set(targetValue, this.focus.get())
-      this.emitsItem.emit('input')
-      this.emitsItem.emit('change')
+      valueItem.set(targetValue, focus.get())
+      emitsItem.emit('input')
+      emitsItem.emit('change')
     }
   }
 }

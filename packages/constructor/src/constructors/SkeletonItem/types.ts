@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -5,16 +6,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SkeletonItemComponents = {
-}
+export type SkeletonItemComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type SkeletonItemEmits = {
-}
+export type SkeletonItemEmits = {}
 
 /**
  * Type describing available properties.
@@ -30,7 +29,8 @@ export interface SkeletonItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SkeletonItemSlots {
-  default?(props: any): any
+  /** Default slot for the skeleton item / Слот по умолчанию для элемента скелетона */
+  default?(props?: Record<string, unknown>): VNode[]
 }
 
 /**
@@ -39,6 +39,7 @@ export interface SkeletonItemSlots {
  * Тип, описывающий подклассы.
  */
 export type SkeletonItemClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

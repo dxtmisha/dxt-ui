@@ -22,7 +22,7 @@ type SliderPropsToken = {
  *
  * Базовый интерфейс свойств для компонента Slider.
  */
-export type SliderPropsBasic = ModelProps
+export type SliderPropsBasic = ModelProps<number | string | [number | string, number | string]>
   & FieldStepProps
   & EnabledProps
   & SkeletonPropsInclude

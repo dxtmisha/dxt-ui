@@ -19,20 +19,22 @@ import type { SliderProps } from './props'
  */
 export class SliderEmit {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
-   * @param model model value helper / помощник значения модели
-   * @param value slider value bounds manager / менеджер значений слайдера
-   * @param minElement min thumb handle manager / менеджер минимального ползунка
-   * @param maxElement max thumb handle manager / менеджер максимального ползунка
+   * @param maxElement getter returning max thumb handle manager / функция, возвращающая менеджер максимального ползунка
+   * @param minElement getter returning min thumb handle manager / функция, возвращающая менеджер минимального ползунка
+   * @param model getter returning model value helper / функция, возвращающая помощник значения модели
+   * @param value getter returning slider value bounds manager / функция, возвращающая менеджер значений слайдера
    * @param emits event emitter function / функция генерации событий
    */
   constructor(
-    protected readonly props: SliderProps,
-    protected readonly model: ModelValueInclude<SliderValueType>,
-    protected readonly value: SliderValue,
-    protected readonly minElement: SliderThumbMin,
-    protected readonly maxElement: SliderThumbMax,
+    protected readonly props: Readonly<SliderProps>,
+    protected readonly maxElement: () => SliderThumbMax,
+    protected readonly minElement: () => SliderThumbMin,
+    protected readonly model: () => ModelValueInclude<SliderValueType>,
+    protected readonly value: () => SliderValue,
     protected readonly emits?: ConstrEmit<SliderEmits>
   ) {
   }
@@ -44,19 +46,17 @@ export class SliderEmit {
    * @param eventName event key / имя события
    */
   emit(eventName: 'input' | 'change'): void {
-    const value = this.model.get()
-    const detail = this.getDetail()
-    const emits: any = this.emits
+    const value = this.model().get()
 
     if (value !== undefined) {
-      if (eventName === 'input') {
-        emits?.('input', detail)
-        emits?.('inputLite', value)
-      }
+      const detail = this.getDetail()
 
-      if (eventName === 'change') {
-        emits?.('change', detail)
-        emits?.('changeLite', value)
+      if (eventName === 'input') {
+        this.emits?.('input', detail)
+        this.emits?.('inputLite', value)
+      } else if (eventName === 'change') {
+        this.emits?.('change', detail)
+        this.emits?.('changeLite', value)
       }
     }
   }
@@ -82,13 +82,14 @@ export class SliderEmit {
    * @returns event detail object for range / объект деталей для диапазона
    */
   protected getDetailMultiple(): SliderEventDetail {
-    const minItem = this.minElement.getItem()
-    const maxItem = this.maxElement.getItem()
+    const minItem = this.minElement().getItem()
+    const maxItem = this.maxElement().getItem()
+    const valueItem = this.value()
 
     return {
       mark: [
-        this.value.min,
-        this.value.max
+        valueItem.min,
+        valueItem.max
       ],
       item: [
         minItem,
@@ -108,10 +109,10 @@ export class SliderEmit {
    * @returns event detail object for single mode / объект деталей для одиночного режима
    */
   protected getDetailSingle(): SliderEventDetail {
-    const maxItem = this.maxElement.getItem()
+    const maxItem = this.maxElement().getItem()
 
     return {
-      mark: this.value.max,
+      mark: this.value().max,
       item: maxItem,
       value: maxItem.value
     }

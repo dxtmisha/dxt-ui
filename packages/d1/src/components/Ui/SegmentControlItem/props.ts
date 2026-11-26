@@ -2,6 +2,7 @@ import { type SegmentControlItemPropsBasic, defaultsSegmentControlItem } from '@
 
 import type { BadgeProps } from '../Badge'
 import type { IconProps } from '../Icon'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -27,7 +28,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SegmentControlItemProps = SegmentControlItemPropsBasic<IconProps, BadgeProps> & PropsToken
+export type SegmentControlItemProps = SegmentControlItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

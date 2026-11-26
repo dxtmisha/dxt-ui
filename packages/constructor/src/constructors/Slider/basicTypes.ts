@@ -1,4 +1,8 @@
-import type { NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
+import type {
+  ConstrStyles,
+  NumberOrString,
+  NumberOrStringOrBoolean
+} from '@dxtmisha/functional'
 import type { SliderPropsBasic } from './props'
 
 /** Focus handle type enum for Slider / Перечисление типов фокуса ползунка слайдера */
@@ -27,7 +31,7 @@ export type SliderMarkItem = {
   /** Display label text / Отображаемый текст метки */
   label: string
   /** Custom CSS style properties / Пользовательские свойства CSS стилей */
-  style?: Record<string, any>
+  style?: ConstrStyles
 }
 
 /** List of slider mark items / Список элементов меток слайдера */

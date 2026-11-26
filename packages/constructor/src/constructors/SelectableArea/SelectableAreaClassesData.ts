@@ -2,6 +2,7 @@
 
 import type { Ref } from 'vue'
 import { getElementId, type DesignName } from '@dxtmisha/functional'
+import { isDomRuntime } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesList } from './basicTypes'
 
@@ -39,8 +40,22 @@ export class SelectableAreaClassesData {
    * @returns check result / результат проверки
    */
   isMain(target: HTMLElement): boolean {
+    if (!(target instanceof Element)) {
+      return false
+    }
+
     return !this.findItem(target)
       && target.closest(`.${this.naming.getName()}`) === this.getElement()
+  }
+
+  /**
+   * Returns the wrapper DOM element.
+   *
+   * Возвращает DOM-элемент обертки.
+   * @returns wrapper DOM element or undefined / DOM-элемент обертки или undefined
+   */
+  getElement(): HTMLElement | undefined {
+    return this.element.value
   }
 
   /**
@@ -64,16 +79,6 @@ export class SelectableAreaClassesData {
   }
 
   /**
-   * Returns the wrapper DOM element.
-   *
-   * Возвращает DOM-элемент обертки.
-   * @returns wrapper DOM element or undefined / DOM-элемент обертки или undefined
-   */
-  getElement(): HTMLElement | undefined {
-    return this.element.value
-  }
-
-  /**
    * Returns the bounding rectangle of the wrapper element.
    *
    * Возвращает ограничивающий прямоугольник элемента обертки.
@@ -84,6 +89,37 @@ export class SelectableAreaClassesData {
   }
 
   /**
+   * Toggle block selection CSS class on document body.
+   *
+   * Переключает класс CSS блокировки выделения текста на body документа.
+   * @param status activation status / статус активации
+   */
+  setBlockSelection(status = false): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
+    if (status) {
+      document.body.classList.add(this.list.body)
+    } else {
+      document.body.classList.remove(this.list.body)
+    }
+  }
+
+  /**
+   * Finds an item by its dataset value without CSS selector injection risks.
+   *
+   * Находит элемент по значению в dataset без риска инъекции CSS-селектора.
+   * @param value data value / значение данных
+   * @returns item element or undefined / элемент или undefined
+   */
+  findByValue(value: string | number): HTMLElement | undefined {
+    const stringValue = String(value)
+
+    return this.findItems().find(item => item.dataset?.value === stringValue)
+  }
+
+  /**
    * Finds the closest selectable trigger element.
    *
    * Находит ближайший элемент-триггер выделения.
@@ -91,6 +127,10 @@ export class SelectableAreaClassesData {
    * @returns trigger element or undefined / элемент-триггер или undefined
    */
   findClick(target: HTMLElement): HTMLElement | undefined {
+    if (!(target instanceof Element)) {
+      return undefined
+    }
+
     return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`) || undefined
   }
 
@@ -102,18 +142,11 @@ export class SelectableAreaClassesData {
    * @returns item element or undefined / элемент или undefined
    */
   findItem(target: HTMLElement): HTMLElement | undefined {
-    return target.closest<HTMLElement>(`.${this.id}`) || undefined
-  }
+    if (!(target instanceof Element)) {
+      return undefined
+    }
 
-  /**
-   * Finds an item by its dataset value.
-   *
-   * Находит элемент по значению в dataset.
-   * @param value data value / значение данных
-   * @returns item element or undefined / элемент или undefined
-   */
-  findByValue(value: string | number): HTMLElement | undefined {
-    return this.element.value?.querySelector<HTMLElement>(`.${this.id}[data-value="${value}"]`) || undefined
+    return target.closest<HTMLElement>(`.${this.id}`) || undefined
   }
 
   /**
@@ -136,20 +169,6 @@ export class SelectableAreaClassesData {
   findSelection(): HTMLElement[] {
     const nodes = this.element.value?.querySelectorAll<HTMLElement>(`.${this.id}.${this.list.selected}`)
     return nodes ? Array.from(nodes) : []
-  }
-
-  /**
-   * Toggle block selection CSS class on document body.
-   *
-   * Переключает класс CSS блокировки выделения текста на body документа.
-   * @param status activation status / статус активации
-   */
-  setBlockSelection(status = false): void {
-    if (status) {
-      document.body.classList.add(this.list.body)
-    } else {
-      document.body.classList.remove(this.list.body)
-    }
   }
 
   /**

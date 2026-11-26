@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
@@ -11,7 +11,7 @@ import { SliderValue } from '../SliderValue'
 import type { SliderProps } from '../props'
 
 function createSliderValue(
-  initialValue: SliderValueType | undefined,
+  initialValue: SliderValueType | string | [string, string] | undefined,
   props: Partial<SliderProps> = {}
 ) {
   const fullProps = {
@@ -24,9 +24,14 @@ function createSliderValue(
   const naming = new DesignName('dxt.slider')
   const focus = new SliderFocus()
   const marksData = new SliderMarksData(fullProps, naming)
-  const marks = new SliderMarks(fullProps, naming, marksData)
-  const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
-  const sliderValue = new SliderValue(focus, marks, model, fullProps)
+  const marks = new SliderMarks(fullProps, () => marksData)
+  const model = new ModelValueInclude<SliderValueType>(
+    'modelValue',
+    undefined,
+    undefined,
+    ref(initialValue as SliderValueType | undefined)
+  )
+  const sliderValue = new SliderValue(fullProps, () => focus, () => marks, () => marksData, () => model)
 
   return { sliderValue, focus, model, marks }
 }
@@ -40,52 +45,69 @@ describe('SliderValue', () => {
     expect(sliderValue.max).toBe(40)
   })
 
-  it('should return default min and max when initial value is undefined in single mode', () => {
-    const { sliderValue } = createSliderValue(undefined, { multiple: false })
+  it('should preserve numeric 0 as a valid value even when min is negative', () => {
+    const { sliderValue } = createSliderValue(0, { min: -100, max: 100, multiple: false })
 
-    expect(sliderValue.min).toBe(0)
+    expect(sliderValue.min).toBe(-100)
     expect(sliderValue.max).toBe(0)
+
+    const stringZero = createSliderValue('0', { min: -50, max: 50, multiple: false }).sliderValue
+    expect(stringZero.max).toBe(0)
   })
 
-  it('should return correct min and max for multiple range mode', () => {
-    const { sliderValue } = createSliderValue([20, 80], { multiple: true })
+  it('should coerce string numeric values in single and multiple modes', () => {
+    const single = createSliderValue('42', { multiple: false }).sliderValue
+    expect(single.max).toBe(42)
 
-    expect(sliderValue.get()).toEqual([20, 80])
-    expect(sliderValue.min).toBe(20)
-    expect(sliderValue.max).toBe(80)
+    const range = createSliderValue(['15', '85'], { multiple: true }).sliderValue
+    expect(range.min).toBe(15)
+    expect(range.max).toBe(85)
   })
 
-  it('should set single number value and update focus', () => {
+  it('should return default min and max when initial value is undefined', () => {
+    const single = createSliderValue(undefined, { min: 10, max: 90, multiple: false }).sliderValue
+    expect(single.min).toBe(10)
+    expect(single.max).toBe(10)
+
+    const multiple = createSliderValue(undefined, { min: 10, max: 90, multiple: true }).sliderValue
+    expect(multiple.min).toBe(10)
+    expect(multiple.max).toBe(90)
+  })
+
+  it('should set single number value and ignore non-finite values', () => {
     const { sliderValue, focus, model } = createSliderValue(10, { multiple: false })
 
     sliderValue.set(60)
-
     expect(focus.get()).toBe(SliderFocusType.max)
+    expect(model.get()).toBe(60)
+
+    sliderValue.set(Number.NaN)
     expect(model.get()).toBe(60)
   })
 
-  it('should set range array value in multiple mode', () => {
-    const { sliderValue, focus, model } = createSliderValue([10, 90], { multiple: true })
+  it('should set full range array in multiple mode even when new min exceeds previous max', () => {
+    const { sliderValue, focus, model } = createSliderValue([10, 20], {
+      multiple: true,
+      minimumDistance: 5
+    })
 
-    sliderValue.set([30, 70], SliderFocusType.min)
+    sliderValue.set([50, 80], SliderFocusType.min)
 
     expect(focus.get()).toBe(SliderFocusType.min)
-    expect(model.get()).toEqual([30, 70])
+    expect(model.get()).toEqual([50, 80])
+
+    // Inverted range pair must be clamped cleanly respecting minimumDistance
+    sliderValue.set([80, 50], SliderFocusType.max)
+    expect(model.get()).toEqual([45, 50])
   })
 
-  it('should update min thumb value in multiple mode when setting single number with min focus', () => {
+  it('should update individual min or max thumb in multiple mode when setting a single number', () => {
     const { sliderValue, model } = createSliderValue([20, 80], { multiple: true })
 
     sliderValue.set(30, SliderFocusType.min)
-
     expect(model.get()).toEqual([30, 80])
-  })
-
-  it('should update max thumb value in multiple mode when setting single number with max focus', () => {
-    const { sliderValue, model } = createSliderValue([20, 80], { multiple: true })
 
     sliderValue.set(90, SliderFocusType.max)
-
-    expect(model.get()).toEqual([20, 90])
+    expect(model.get()).toEqual([30, 90])
   })
 })

@@ -1,7 +1,5 @@
 // ai-none
 
-import type { DesignName } from '@dxtmisha/functional'
-
 import type { SliderMarksData } from './SliderMarksData'
 
 import { SliderFocusType, type SliderMarkItem } from './basicTypes'
@@ -14,15 +12,15 @@ import type { SliderPropsBasic } from './props'
  */
 export class SliderMarks {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
-   * @param naming component naming helper / помощник именования компонента
-   * @param data manager for computing normalized mark items list / менеджер вычисления нормализованного списка элементов меток
+   * @param data getter returning marks data manager / функция, возвращающая менеджер данных меток
    */
   constructor(
-    protected readonly props: SliderPropsBasic,
-    protected readonly naming: DesignName,
-    protected readonly data: SliderMarksData
+    protected readonly props: Readonly<SliderPropsBasic>,
+    protected readonly data: () => SliderMarksData
   ) { }
 
   /**
@@ -32,7 +30,7 @@ export class SliderMarks {
    * @returns marks data manager / менеджер данных меток
    */
   getData(): SliderMarksData {
-    return this.data
+    return this.data()
   }
 
   /**
@@ -47,7 +45,7 @@ export class SliderMarks {
     targetValue: number,
     searchKey: 'mark' | 'value' = 'mark'
   ): SliderMarkItem {
-    const marks = this.data.get()
+    const marks = this.data().get()
 
     if (marks) {
       const foundItem = marks.find(item => item[searchKey] === targetValue)
@@ -69,7 +67,7 @@ export class SliderMarks {
    *
    * Находит соседнюю метку для шаговой навигации.
    * @param currentValue current thumb value / текущее значение ползунка
-   * @param isIncrease true if increasing value / true если значение увеличивается
+   * @param isIncrease true if increasing value / true, если значение увеличивается
    * @returns neighbor mark value / значение соседней метки
    */
   getMarkNeighbor(currentValue: number, isIncrease: boolean): number {
@@ -86,7 +84,7 @@ export class SliderMarks {
    * @returns nearest mark value / ближайшее значение метки
    */
   getNearest(targetValue: number): number {
-    const data = this.data.get()
+    const data = this.data().get()
 
     if (
       this.props.magnet
@@ -95,14 +93,18 @@ export class SliderMarks {
       let nearestMark = targetValue
       let minimumDifference = Infinity
 
-      data.forEach((markItem) => {
-        const difference = Math.abs(markItem.mark - targetValue)
+      for (let index = 0; index < data.length; index++) {
+        const markItem = data[index]
 
-        if (difference < minimumDifference) {
-          nearestMark = markItem.mark
-          minimumDifference = difference
+        if (markItem) {
+          const difference = Math.abs(markItem.mark - targetValue)
+
+          if (difference < minimumDifference) {
+            nearestMark = markItem.mark
+            minimumDifference = difference
+          }
         }
-      })
+      }
 
       return nearestMark
     }
@@ -126,15 +128,16 @@ export class SliderMarks {
     maxCurrent: number,
     focusType: SliderFocusType
   ): number {
-    const minimumDistance = this.data.minimumDistanceNumber
-    let minLimit = this.data.minNumber
-    let maxLimit = this.data.maxNumber
+    const data = this.data()
+    const minimumDistance = data.minimumDistanceNumber
+    let minLimit = data.minNumber
+    let maxLimit = data.maxNumber
 
     if (this.props.multiple) {
       if (focusType === SliderFocusType.min) {
-        maxLimit = maxCurrent - minimumDistance
+        maxLimit = Math.max(minLimit, maxCurrent - minimumDistance)
       } else {
-        minLimit = minCurrent + minimumDistance
+        minLimit = Math.min(maxLimit, minCurrent + minimumDistance)
       }
     }
 
@@ -144,12 +147,12 @@ export class SliderMarks {
   /**
    * Converts percentage back into a mark/value using step or magnet snapping.
    *
-   * Переводит процент обратно в значение с учетом шага или притягивания к метке.
+   * Переводит процент обратно в значение с учётом шага или притягивания к метке.
    * @param percent percentage value / значение в процентах
    * @returns calculated value or mark / вычисленное значение или метка
    */
   toMark(percent: number): number {
-    return this.getNearest(this.data.toValue(percent))
+    return this.getNearest(this.data().toValue(percent))
   }
 
   /**
@@ -164,7 +167,8 @@ export class SliderMarks {
       return this.getNextItem(currentValue)?.mark ?? currentValue
     }
 
-    return currentValue + this.data.stepNumber
+    const data = this.data()
+    return data.roundValue(currentValue + data.stepNumber)
   }
 
   /**
@@ -175,7 +179,7 @@ export class SliderMarks {
    * @returns next mark item or undefined / следующий элемент метки или undefined
    */
   protected getNextItem(currentValue: number): SliderMarkItem | undefined {
-    const data = this.data.get()
+    const data = this.data().get()
 
     if (data) {
       return data.find(item => item.mark > currentValue)
@@ -196,7 +200,8 @@ export class SliderMarks {
       return this.getPrevItem(currentValue)?.mark ?? currentValue
     }
 
-    return currentValue - this.data.stepNumber
+    const data = this.data()
+    return data.roundValue(currentValue - data.stepNumber)
   }
 
   /**
@@ -207,12 +212,19 @@ export class SliderMarks {
    * @returns previous mark item or undefined / предыдущий элемент метки или undefined
    */
   protected getPrevItem(currentValue: number): SliderMarkItem | undefined {
-    const data = this.data.get()
+    const data = this.data().get()
 
     if (data) {
-      return data.slice()
-        .reverse()
-        .find(item => item.mark < currentValue)
+      for (let index = data.length - 1; index >= 0; index--) {
+        const markItem = data[index]
+
+        if (
+          markItem
+          && markItem.mark < currentValue
+        ) {
+          return markItem
+        }
+      }
     }
 
     return undefined

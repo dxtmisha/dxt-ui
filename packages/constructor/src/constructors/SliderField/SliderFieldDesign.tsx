@@ -1,9 +1,11 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  toBinds
+  getObjectNoUndefined,
+  type RawSlots
 } from '@dxtmisha/functional'
 
 import { SliderField } from './SliderField'
@@ -75,6 +77,274 @@ export class SliderFieldDesign<
   }
 
   /**
+   * Renders body container inside SliderField.
+   *
+   * Рендерит контейнер тела внутри SliderField.
+   * @returns body virtual node array / массив виртуальных узлов тела
+   */
+  readonly renderBody = (): VNode[] => {
+    return [
+      h('div', this.getKeyClass('body'), [
+        ...this.item.callInstance('icon', item => item.render(), []),
+        ...this.renderLabelLeading(),
+        ...this.renderInputMin(),
+        ...this.renderValueMin(),
+        ...this.renderSlider(),
+        ...this.renderValueMax(),
+        ...this.renderInputMax(),
+        ...this.renderLabelTrailing()
+      ])
+    ]
+  }
+
+  /**
+   * Renders leading label element and leading slot content.
+   *
+   * Рендерит элемент ведущей метки и содержимое слота leading.
+   * @returns leading elements virtual nodes / виртуальные узлы ведущих элементов
+   */
+  readonly renderLabelLeading = (): VNode[] => {
+    const children: VNode[] = []
+
+    if (this.props.labelLeading) {
+      children.push(
+        h('span', {
+          key: 'labelLeading',
+          class: [
+            this.classes?.value.labelSlider,
+            this.classes?.value.labelLeading
+          ]
+        }, this.props.labelLeading)
+      )
+    }
+
+    this.initSlot('leading', children)
+
+    return children
+  }
+
+  /**
+   * Renders trailing label element and trailing slot content.
+   *
+   * Рендерит элемент замыкающей метки и содержимое слота trailing.
+   * @returns trailing elements virtual nodes / виртуальные узлы замыкающих элементов
+   */
+  readonly renderLabelTrailing = (): VNode[] => {
+    const children: VNode[] = []
+
+    if (this.props.labelTrailing) {
+      children.push(
+        h(
+          'span',
+          {
+            key: 'labelTrailing',
+            class: [
+              this.classes?.value.labelSlider,
+              this.classes?.value.labelTrailing
+            ]
+          },
+          this.props.labelTrailing
+        )
+      )
+    }
+
+    this.initSlot('trailing', children)
+
+    return children
+  }
+
+  /**
+   * Renders minimum value input field.
+   *
+   * Рендерит поле ввода минимального значения.
+   * @returns minimum input virtual node array / массив виртуальных узлов минимального ввода
+   */
+  readonly renderInputMin = (): VNode[] => {
+    if (
+      this.props.multiple
+      && this.props.showInput
+    ) {
+      return [
+        h(
+          'input',
+          mergeProps(
+            this.item.ariaInputMin,
+            this.item.i('sliderEvent').inputBinds,
+            {
+              'key': 'inputMin',
+              'placeholder': this.item.i('label').min,
+              'class': [
+                this.classes?.value.input,
+                this.classes?.value.inputMin
+              ],
+              'name': this.item.getName('min'),
+              'data-type': 'min'
+            }
+          )
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders maximum value input field.
+   *
+   * Рендерит поле ввода максимального значения.
+   * @returns maximum input virtual node array / массив виртуальных узлов максимального ввода
+   */
+  readonly renderInputMax = (): VNode[] => {
+    if (this.props.showInput) {
+      return [
+        h(
+          'input',
+          mergeProps(
+            this.item.ariaInputMax,
+            (this.props.inputAttrs ?? {}) as ConstrBind,
+            this.item.i('sliderEvent').inputBinds,
+            {
+              'key': 'inputMax',
+              'placeholder': this.item.i('label').max,
+              'class': [
+                this.classes?.value.input,
+                this.classes?.value.inputMax
+              ],
+              'name': this.item.getName('max'),
+              'data-type': 'max'
+            }
+          )
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders minimum value display text.
+   *
+   * Рендерит отображение минимального значения.
+   * @returns minimum value virtual node array / массив виртуальных узлов минимального значения
+   */
+  readonly renderValueMin = (): VNode[] => {
+    if (
+      this.props.multiple
+      && this.props.showValue
+      && !this.props.showInput
+    ) {
+      return [
+        h(
+          'span',
+          {
+            key: 'valueMin',
+            class: [
+              this.classes?.value.value,
+              this.classes?.value.valueMin
+            ]
+          },
+          this.item.i('label').min
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders maximum value display text.
+   *
+   * Рендерит отображение максимального значения.
+   * @returns maximum value virtual node array / массив виртуальных узлов максимального значения
+   */
+  readonly renderValueMax = (): VNode[] => {
+    if (
+      this.props.showValue
+      && !this.props.showInput
+    ) {
+      return [
+        h(
+          'span',
+          {
+            key: 'valueMax',
+            class: [
+              this.classes?.value.value,
+              this.classes?.value.valueMax
+            ]
+          },
+          this.item.i('label').max
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders embedded slider component via components manager.
+   *
+   * Рендерит встроенный компонент слайдера через менеджер компонентов.
+   * @returns slider virtual nodes / виртуальные узлы слайдера
+   */
+  readonly renderSlider = (): VNode[] => {
+    const sliderSlots: RawSlots | undefined = this.slots && (
+      this.slots.mark
+      || this.slots.minLabel
+      || this.slots.maxLabel
+    )
+      ? getObjectNoUndefined({
+        mark: this.slots.mark,
+        minLabel: this.slots.minLabel,
+        maxLabel: this.slots.maxLabel
+      }) as RawSlots
+      : undefined
+
+    const slider = this.components?.renderOne(
+      'slider',
+      mergeProps(
+        {
+          readonly: this.props.readonly,
+          disabled: this.props.disabled,
+          selected: this.props.selected,
+
+          name: this.props.name,
+          marks: this.props.marks,
+          magnet: this.props.magnet,
+
+          keyLabel: this.props.keyLabel,
+          keyValue: this.props.keyValue,
+
+          required: this.props.required,
+          step: this.props.step,
+          min: this.props.min,
+          max: this.props.max,
+          multiple: this.props.multiple,
+          minimumDistance: this.props.minimumDistance,
+
+          showThumbLabel: this.props.showThumbLabel,
+          vertical: this.props.vertical,
+          isSkeleton: this.props.isSkeleton,
+          inputAttrs: this.props.inputAttrs
+        },
+        (this.props.sliderAttrs ?? {}) as ConstrBind,
+        {
+          class: this.classes?.value.slider,
+          value: this.item.i('value').item.value,
+          onInputLite: this.item.onSliderInput,
+          onChangeLite: this.item.onSliderChange
+        }
+      ),
+      sliderSlots
+    )
+
+    if (slider) {
+      return [slider]
+    }
+
+    return []
+  }
+
+  /**
    * Initialization of exposed properties.
    *
    * Инициализация экспонируемых свойств.
@@ -82,8 +352,8 @@ export class SliderFieldDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -134,261 +404,20 @@ export class SliderFieldDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        key: 'main',
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
-      [
-        ...this.item.fieldLabel.render(this.slots),
-        ...this.renderBody(),
-        ...this.item.fieldMessage.render()
-      ]
-    )
-  }
-
-  /**
-   * Renders body container inside SliderField.
-   *
-   * Рендерит контейнер тела внутри SliderField.
-   * @returns body virtual node / виртуальный узел тела
-   */
-  readonly renderBody = (): VNode[] => {
-    return [
-      h('div', this.getKeyClass('body'), [
-        ...this.item.icon.render(),
-        ...this.renderLabelLeading(),
-        ...this.renderInputMin(),
-        ...this.renderValueMin(),
-        ...this.renderSlider(),
-        ...this.renderValueMax(),
-        ...this.renderInputMax(),
-        ...this.renderLabelTrailing()
-      ])
-    ]
-  }
-
-  /**
-   * Renders leading icon and leading label element.
-   *
-   * Рендерит ведущую иконку и элемент ведущей метки.
-   * @returns leading elements virtual nodes / виртуальные узлы ведущих элементов
-   */
-  readonly renderLabelLeading = (): VNode[] => {
-    const children: VNode[] = []
-
-    if (this.props.labelLeading) {
-      children.push(
-        h('span', {
-          key: 'labelLeading',
-          class: [
-            this.classes?.value.labelSlider,
-            this.classes?.value.labelLeading
-          ]
-        }, this.props.labelLeading)
-      )
-    }
-
-    this.initSlot('leading', children)
-
-    return children
-  }
-
-  /**
-   * Renders trailing label element and trailing icon.
-   *
-   * Рендерит элемент замыкающей метки и замыкающую иконку.
-   * @returns trailing elements virtual nodes / виртуальные узлы замыкающих элементов
-   */
-  readonly renderLabelTrailing = (): VNode[] => {
-    const children: VNode[] = []
-
-    if (this.props.labelTrailing) {
-      children.push(
-        h(
-          'span',
-          {
-            key: 'labelTrailing',
-            class: [
-              this.classes?.value.labelSlider,
-              this.classes?.value.labelTrailing
-            ]
-          },
-          this.props.labelTrailing
-        )
-      )
-    }
-
-    this.initSlot('trailing', children)
-
-    return children
-  }
-
-  /**
-   * Renders minimum value input field.
-   *
-   * Рендерит поле ввода минимального значения.
-   * @returns minimum input node or undefined / узел минимального ввода или undefined
-   */
-  readonly renderInputMin = (): VNode[] => {
-    if (
-      this.props.multiple
-      && this.props.showInput
-    ) {
-      return [
-        h('input', {
-          'key': 'inputMin',
-          'placeholder': this.item.label.min,
-          'class': [
-            this.classes?.value.input,
-            this.classes?.value.inputMin
-          ],
-          'name': this.item.getName('min'),
-          'data-type': 'min',
-          ...this.item.sliderEvent.inputBinds
-        })
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders maximum value input field.
-   *
-   * Рендерит поле ввода максимального значения.
-   * @returns maximum input node or undefined / узел максимального ввода или undefined
-   */
-  readonly renderInputMax = (): VNode[] => {
-    if (this.props.showInput) {
-      return [
-        h('input', {
-          'key': 'inputMax',
-          ...this.props.inputAttrs,
-          'placeholder': this.item.label.max,
-          'class': [
-            this.classes?.value.input,
-            this.classes?.value.inputMax
-          ],
-          'name': this.item.getName('max'),
-          'data-type': 'max',
-          ...this.item.sliderEvent.inputBinds
-        })
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders minimum value display text.
-   *
-   * Рендерит отображение минимального значения.
-   * @returns minimum value node or undefined / узел минимального значения или undefined
-   */
-  readonly renderValueMin = (): VNode[] => {
-    if (
-      this.props.multiple
-      && this.props.showValue
-      && !this.props.showInput
-    ) {
-      return [
-        h(
-          'span',
-          {
-            key: 'valueMin',
-            class: [
-              this.classes?.value.value,
-              this.classes?.value.valueMin
-            ]
-          },
-          this.item.label.min
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders maximum value display text.
-   *
-   * Рендерит отображение максимального значения.
-   * @returns maximum value node or undefined / узел максимального значения или undefined
-   */
-  readonly renderValueMax = (): VNode[] => {
-    if (
-      this.props.showValue
-      && !this.props.showInput
-    ) {
-      return [
-        h(
-          'span',
-          {
-            key: 'valueMax',
-            class: [
-              this.classes?.value.value,
-              this.classes?.value.valueMax
-            ]
-          },
-          this.item.label.max
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders embedded slider component via components manager.
-   *
-   * Рендерит встроенный компонент слайдера через менеджер компонентов.
-   * @returns slider virtual nodes / виртуальные узлы слайдера
-   */
-  readonly renderSlider = (): VNode[] => {
-    const slider = this.components?.renderOne(
-      'slider',
-      toBinds(
+      mergeProps(
+        this.getAttrs(),
         {
-          readonly: this.props.readonly,
-          disabled: this.props.disabled,
-          selected: this.props.selected,
-
-          name: this.props.name,
-          marks: this.props.marks,
-          magnet: this.props.magnet,
-
-          keyLabel: this.props.keyLabel,
-          keyValue: this.props.keyValue,
-
-          required: this.props.required,
-          step: this.props.step,
-          min: this.props.min,
-          max: this.props.max,
-          multiple: this.props.multiple,
-          minimumDistance: this.props.minimumDistance,
-
-          showThumbLabel: this.props.showThumbLabel,
-          vertical: this.props.vertical,
-          isSkeleton: this.props.isSkeleton,
-          inputAttrs: this.props.inputAttrs
-
-        },
-        this.props.sliderAttrs,
-        {
-          class: this.classes?.value.slider,
-          value: this.item.value.item.value,
-          onInputLite: this.item.sliderEvent.onSliderInput,
-          onChangeLite: this.item.sliderEvent.onSliderChange
+          ref: this.element,
+          key: 'main',
+          class: this.classes?.value.main,
+          style: this.styles?.value
         }
-      )
+      ),
+      [
+        ...this.item.callInstance('fieldLabel', item => item.render(this.slots), []),
+        ...this.renderBody(),
+        ...this.item.i('fieldMessage').render()
+      ]
     )
-
-    if (slider) {
-      return [slider]
-    }
-
-    return []
   }
 }

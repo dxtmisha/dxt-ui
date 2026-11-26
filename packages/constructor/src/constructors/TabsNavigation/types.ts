@@ -1,4 +1,5 @@
-import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
+import type { VNode } from 'vue'
+import type { ConstrClass, ConstrItem, ListSelectedList } from '@dxtmisha/functional'
 
 import type { HorizontalScrollComponentInclude } from '../HorizontalScroll'
 import type { TabItemComponentInclude } from '../TabItem'
@@ -41,11 +42,11 @@ export interface TabsNavigationExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface TabsNavigationSlots {
-  /** Slot for content before the tabs/ Слот для содержимого перед вкладками */
-  leading?(props: any): any
+  /** Slot for content before the tabs / Слот для содержимого перед вкладками */
+  leading?(props: ConstrItem): VNode[]
 
-  /** Slot for content after the tabs/ Слот для содержимого после вкладок */
-  trailing?(props: any): any
+  /** Slot for content after the tabs / Слот для содержимого после вкладок */
+  trailing?(props: ConstrItem): VNode[]
 }
 
 /**
@@ -54,6 +55,7 @@ export interface TabsNavigationSlots {
  * Тип, описывающий подклассы.
  */
 export type TabsNavigationClasses = {
+  /** Main element class / Класс главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   item: string

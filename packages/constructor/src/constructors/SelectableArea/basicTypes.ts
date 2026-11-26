@@ -23,7 +23,9 @@ export type SelectableAreaControl = {
   classClick: string
   /** Function to handle item click / Функция для обработки клика по элементу */
   onClick: (event: MouseEvent | TouchEvent) => void
-  /** Is item selected / Выбран ли элемент */
+  /** Function to handle keyboard selection and Escape reset / Функция для обработки клавиатурного выбора и сброса по Escape */
+  onKeydown: (event: KeyboardEvent) => void
+  /** Array of currently selected item values / Массив значений текущих выбранных элементов */
   selected: string[]
 }
 
@@ -33,7 +35,7 @@ export type SelectableAreaClassesList = {
   click: string
   /** Class for selected element / Класс для выбранного элемента */
   selected: string
-  /** Class for showing the spacer element / Класс для отображения элемента-заполнителя */
+  /** Class for showing the selection square element / Класс для отображения элемента-квадрата выделения */
   show: string
   /** Class for blocking text selection / Класс для блокировки выделения текста */
   body: string

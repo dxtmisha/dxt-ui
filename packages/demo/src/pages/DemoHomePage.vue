@@ -107,16 +107,22 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ScrollSticky" name="component-scroll-sticky"/>
         <DemoLink label="Section" name="component-section"/>
         <DemoLink label="SegmentControl" name="component-segment-control"/>
+        <DemoLink label="SegmentControlItem" name="component-segment-control-item"/>
         <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>
         <DemoLink label="SelectValue" name="component-select-value"/>
         <DemoLink label="Skeleton" name="component-skeleton"/>
+        <DemoLink label="SkeletonItem" name="component-skeleton-item"/>
+        <DemoLink label="Slider" name="component-slider"/>
+        <DemoLink label="SliderField" name="component-slider-field"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>
-        <DemoLink label="Textarea" name="component-textarea"/>
+        <DemoLink label="TabItem" name="component-tab-item"/>
         <DemoLink label="Table" name="component-table"/>
         <DemoLink label="TableFlex" name="component-table-flex"/>
         <DemoLink label="Tabs" name="component-tabs"/>
+        <DemoLink label="TabsNavigation" name="component-tabs-navigation"/>
+        <DemoLink label="Textarea" name="component-textarea"/>
         <DemoLink label="Tooltip" name="component-tooltip"/>
         <DemoLink label="Window" name="component-window"/>
       </D1Group>

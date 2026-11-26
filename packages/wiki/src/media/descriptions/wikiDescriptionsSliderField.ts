@@ -36,12 +36,22 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { SliderFieldExpose } from \'@dxtmisha/constructor/SliderField\''
   ],
   render: `
-      <DesignComponent v-bind="args" />
-    `,
+    <DesignComponent v-bind="args"/>
+  `,
+  play: `
+const field = canvasElement.querySelector('.design-component')
+await expect(field).toBeInTheDocument()
+const thumb = canvasElement.querySelector('[role="slider"]')
+await expect(thumb).toBeInTheDocument()
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'SliderFieldOrientation',
       name: {
@@ -51,12 +61,17 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
-            <DesignComponent label="Horizontal" :value="40" />
+            <DesignComponent label="Horizontal" :value="40"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
-            <DesignComponent vertical label="Vertical" :value="60" />
+            <DesignComponent vertical label="Vertical" :value="60"/>
           </div>
         </div>
+      `,
+      play: `
+const fields = canvasElement.querySelectorAll('.design-component')
+await expect(fields.length).toBe(2)
+await expect(fields[1]).toHaveClass('design-component--vertical')
       `
     },
     {
@@ -72,6 +87,12 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
           showInput
           :value="[20, 80]"
         />
+      `,
+      play: `
+const thumbs = canvasElement.querySelectorAll('[role="slider"]')
+await expect(thumbs.length).toBe(2)
+const inputs = canvasElement.querySelectorAll('input[type="number"]')
+await expect(inputs.length).toBe(2)
       `
     },
     {
@@ -83,11 +104,11 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
       setup: `
       return {
         customMarks: [
-          { mark: 0, label: '0%' },
-          { mark: 25, label: '25%' },
-          { mark: 50, label: '50%' },
-          { mark: 75, label: '75%' },
-          { mark: 100, label: '100%' }
+          { mark: 0, value: 0, label: '0%' },
+          { mark: 25, value: 25, label: '25%' },
+          { mark: 50, value: 50, label: '50%' },
+          { mark: 75, value: 75, label: '75%' },
+          { mark: 100, value: 100, label: '100%' }
         ]
       }
       `,
@@ -99,6 +120,10 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
           :step="5"
           showInput
         />
+      `,
+      play: `
+const thumb = canvasElement.querySelector('[role="slider"]')
+await expect(thumb).toBeInTheDocument()
       `
     },
     {
@@ -116,7 +141,7 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Single value: <strong>{{ singleValue }}</strong></span>
+            <span data-testid="slider-field-single">Single value: <strong>{{ singleValue }}</strong></span>
             <button class="wiki-storybook-button" @click="singleValue = 25">25</button>
             <button class="wiki-storybook-button" @click="singleValue = 75">75</button>
           </div>
@@ -129,7 +154,7 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
           />
 
           <div class="wiki-storybook-flex-align-center">
-            <span>Range value: <strong>{{ rangeValue }}</strong></span>
+            <span data-testid="slider-field-range">Range value: <strong>{{ rangeValue }}</strong></span>
             <button class="wiki-storybook-button" @click="rangeValue = [10, 90]">10 - 90</button>
           </div>
           <DesignComponent
@@ -141,6 +166,16 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
             :max="100"
           />
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('slider-field-single')).toHaveTextContent('50')
+await step('Update single and range v-model values', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: '75' }))
+  await expect(canvas.getByTestId('slider-field-single')).toHaveTextContent('75')
+  await userEvent.click(canvas.getByRole('button', { name: '10 - 90' }))
+  await expect(canvas.getByTestId('slider-field-range')).toHaveTextContent('10')
+})
       `
     },
     {
@@ -160,6 +195,68 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
             />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const field = canvasElement.querySelector('.design-component')
+await expect(field).toBeInTheDocument()
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor props only)
+    // =========================================================================
+    {
+      id: 'SliderFieldTestStatesSlotsExpose',
+      name: {
+        en: 'Test: States, label options, slots and expose methods',
+        ru: 'Тест: Состояния, опции метки, слоты и методы expose'
+      },
+      propsName: ['disabled', 'readonly', 'showValue', 'showValueInLabel', 'labelLeading', 'labelTrailing', 'labelSeparator', 'helperMessage', 'validationMessage'],
+      setup: `
+      const fieldReference = ref<SliderFieldExpose | null>(null)
+      const controlledValue = ref<number>(0)
+      const validResult = ref<string>('')
+      const checkExpose = () => {
+        validResult.value = String(fieldReference.value?.checkValidity())
+      }
+      return { fieldReference, controlledValue, validResult, checkExpose }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="checkExpose">Check Validity</button>
+            <span data-testid="slider-field-valid">{{ validResult }}</span>
+          </div>
+          <DesignComponent
+            ref="fieldReference"
+            v-model="controlledValue"
+            label="Gain"
+            showValueInLabel
+            labelSeparator=": "
+            labelLeading="Min"
+            labelTrailing="Max"
+            helperMessage="Adjust level"
+            :min="-50"
+            :max="50"
+          />
+          <DesignComponent :value="40" label="Disabled" showInput disabled/>
+          <DesignComponent :value="60" label="Readonly" showInput readonly/>
+          <DesignComponent :value="20" label="Error" validationMessage="Out of bounds"/>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const fields = canvasElement.querySelectorAll('.design-component')
+await expect(fields.length).toBe(4)
+await expect(fields[0]).toHaveTextContent('Gain: 0')
+await expect(fields[1].querySelector('input[type="number"]')).toBeDisabled()
+await expect(fields[2].querySelector('input[type="number"]')).toHaveAttribute('readonly')
+await expect(fields[3]).toHaveTextContent('Out of bounds')
+
+await step('Call exposed checkValidity()', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Check Validity' }))
+  await expect(canvas.getByTestId('slider-field-valid')).toHaveTextContent('true')
+})
       `
     }
   ],
@@ -190,9 +287,9 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'Slot'} type={'label'} />
-<StorybookDescriptions componentName={'Slot'} type={'leading'} />
-<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'leading'}/>
+<StorybookDescriptions componentName={'Slot'} type={'trailing'}/>
 <StorybookDescriptions componentName={'Slider'} type={'slots'}/>
     `
   },

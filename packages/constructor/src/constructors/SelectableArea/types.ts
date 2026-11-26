@@ -7,7 +7,7 @@ export type SelectableAreaComponents = {
 }
 
 /** Type describing available events / Тип, описывающий доступные события */
-export type SelectableAreaEmits = ModelEmitsSelected
+export type SelectableAreaEmits = ModelEmitsSelected<string[]>
   & {
     /** Event triggered when items are selected / Событие, вызываемое при выборе элементов */
     selected: [parameters: SelectableAreaEventParameters]
@@ -18,7 +18,7 @@ export interface SelectableAreaExpose {
   /** Resets the selection / Сбрасывает выбор */
   reset: () => void
   /** Selects items programmatically / Выбирает элементы программно */
-  setSelected: (value: string | string[]) => void
+  setSelected: (value: string | readonly string[]) => void
 }
 
 /** Type describing available slots / Тип, описывающий доступные слоты */

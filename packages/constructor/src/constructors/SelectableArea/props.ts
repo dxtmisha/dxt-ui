@@ -7,7 +7,7 @@ type SelectableAreaPropsToken = {
 }
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
-export type SelectableAreaPropsBasic = ModelPropsSelected
+export type SelectableAreaPropsBasic = ModelPropsSelected<string | string[]>
   & {
     /** Disables the selection functionality / Отключает функционал выделения */
     disabled?: boolean

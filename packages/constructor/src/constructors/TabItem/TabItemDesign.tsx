@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -81,7 +81,7 @@ export class TabItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -93,12 +93,13 @@ export class TabItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         label: this.naming.getSubClass('label'),
         icon: this.naming.getSubClass('icon'),
-        badge: this.naming.getSubClass('badge')
+        badge: this.naming.getSubClass('badge'),
+        loading: this.naming.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -121,22 +122,24 @@ export class TabItemDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.item.icon.render(),
-      ...this.item.label.render(),
-      ...this.item.badge.render(),
-      ...this.item.ripple.render()
-    ]
-
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
-      children
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      [
+        ...this.item.callInstance('progress', item => item.render(), []),
+        ...this.item.callInstance('icon', item => item.render(), []),
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.item.callInstance('badge', item => item.render(), []),
+        ...this.item.callInstance('ripple', item => item.render(), [])
+      ]
     )
   }
 }

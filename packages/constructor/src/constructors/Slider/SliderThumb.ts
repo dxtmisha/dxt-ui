@@ -20,28 +20,30 @@ import type { SliderPropsBasic } from './props'
  * Управляет ссылками на элементы, вычислением BoundingClientRect, фокусом и получением текста метки.
  */
 export abstract class SliderThumb {
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props properties / свойства
+   * @param marks getter returning slider marks manager / функция, возвращающая менеджер меток слайдера
+   * @param marksData getter returning slider marks data manager / функция, возвращающая менеджер данных меток слайдера
+   * @param valueItem getter returning slider value manager / функция, возвращающая менеджер значения слайдера
+   */
+  constructor(
+    protected readonly props: Readonly<SliderPropsBasic>,
+    protected readonly marks: () => SliderMarks,
+    protected readonly marksData: () => SliderMarksData,
+    protected readonly valueItem: () => SliderValue
+  ) { }
+
   /** Target element reference for thumb handle button / Ссылка на целевой элемент кнопки ползунка */
   readonly element = ref<HTMLElement | undefined>(undefined)
 
   /** Computed normalized mark item for this thumb value / Вычисляемый нормализованный элемент метки для значения этого ползунка */
-  readonly item = computed<SliderMarkItem>(() => this.marks.getItem(this.mark))
+  readonly item = computed<SliderMarkItem>(() => this.marks().getItem(this.mark))
 
   /**
-   * Constructor
-   * @param props properties / свойства
-   * @param marksData slider marks data manager / менеджер данных меток слайдера
-   * @param marks slider marks manager / менеджер меток слайдера
-   * @param valueItem slider value manager / менеджер значения слайдера
-   */
-  constructor(
-    protected readonly props: SliderPropsBasic,
-    protected readonly marksData: SliderMarksData,
-    protected readonly marks: SliderMarks,
-    protected readonly valueItem: SliderValue
-  ) { }
-
-  /**
-   * Returns current numeric mark for this thumb / Абстрактный метод.
+   * Returns current numeric mark for this thumb.
    *
    * Возвращает текущее числовое значение метки для этого ползунка.
    * @returns numeric mark / числовое значение метки
@@ -49,7 +51,7 @@ export abstract class SliderThumb {
   abstract get mark(): number
 
   /**
-   * Returns current numeric value for this thumb / Абстрактный метод.
+   * Returns current numeric value for this thumb.
    *
    * Возвращает текущее числовое значение для этого ползунка.
    * @returns numeric value / числовое значение
@@ -79,15 +81,25 @@ export abstract class SliderThumb {
    * @returns ARIA attributes list / список ARIA-атрибутов
    */
   get aria(): AriaList {
-    return {
+    const aria: AriaList = {
       ...AriaStaticInclude.role('slider'),
       ...AriaStaticInclude.valueMinMax(
         this.value,
         this.valuemin,
         this.valuemax
       ),
-      ...AriaStaticInclude.orientation(this.props.vertical ? 'vertical' : 'horizontal')
+      ...AriaStaticInclude.orientation(this.props.vertical ? 'vertical' : 'horizontal'),
+      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
     }
+
+    if (
+      this.marksData().is()
+      && this.label !== String(this.value)
+    ) {
+      aria['aria-valuetext'] = this.label
+    }
+
+    return aria
   }
 
   /**
@@ -114,7 +126,7 @@ export abstract class SliderThumb {
    * Returns thumb handle button element instance.
    *
    * Возвращает экземпляр элемента кнопки ползунка.
-   * @returns DOM-элемент или undefined
+   * @returns DOM element or undefined / DOM-элемент или undefined
    */
   getElement(): HTMLElement | undefined {
     return this.element.value

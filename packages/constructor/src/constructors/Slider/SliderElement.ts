@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional'
 
 import type { SliderThumbMax } from './SliderThumbMax'
 import type { SliderThumbMin } from './SliderThumbMin'
@@ -15,17 +16,19 @@ import type { SliderPropsBasic } from './props'
  */
 export class SliderElement {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
    * @param element container element reference / ссылка на элемент контейнера
-   * @param maxElement max thumb handle manager / менеджер максимального ползунка
-   * @param minElement min thumb handle manager / менеджер минимального ползунка
+   * @param maxElement getter returning max thumb handle manager / функция, возвращающая менеджер максимального ползунка
+   * @param minElement getter returning min thumb handle manager / функция, возвращающая менеджер минимального ползунка
    */
   constructor(
-    protected readonly props: SliderPropsBasic,
+    protected readonly props: Readonly<SliderPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly maxElement: SliderThumbMax,
-    protected readonly minElement: SliderThumbMin
+    protected readonly maxElement: () => SliderThumbMax,
+    protected readonly minElement: () => SliderThumbMin
   ) {}
 
   /**
@@ -36,6 +39,49 @@ export class SliderElement {
    */
   get rectangle(): DOMRect | undefined {
     return this.element.value?.getBoundingClientRect()
+  }
+
+  /**
+   * Checks whether the slider container uses right-to-left (RTL) text direction.
+   *
+   * Проверяет, использует ли контейнер слайдера направление текста справа налево (RTL).
+   * @returns true if RTL direction is active / true, если активно направление RTL
+   */
+  isRtl(): boolean {
+    if (!isDomRuntime()) {
+      return false
+    }
+
+    const element = this.element.value
+
+    if (element) {
+      const closestDirection = element.closest('[dir]')?.getAttribute('dir')?.toLowerCase()
+
+      if (closestDirection === 'rtl') {
+        return true
+      }
+
+      if (closestDirection === 'ltr') {
+        return false
+      }
+
+      if (typeof getComputedStyle === 'function') {
+        return getComputedStyle(element).direction === 'rtl'
+      }
+    }
+
+    return document.documentElement?.dir?.toLowerCase() === 'rtl'
+      || document.dir?.toLowerCase() === 'rtl'
+  }
+
+  /**
+   * Checks whether the slider is in vertical orientation.
+   *
+   * Проверяет, находится ли слайдер в вертикальной ориентации.
+   * @returns true if vertical / true, если вертикальный
+   */
+  isVertical(): boolean {
+    return Boolean(this.props.vertical)
   }
 
   /**
@@ -50,7 +96,7 @@ export class SliderElement {
   getMovePercent(
     coordinate: number,
     rectangle: DOMRect,
-    isVertical: boolean = Boolean(this.props.vertical)
+    isVertical: boolean = this.isVertical()
   ): number {
     if (isVertical) {
       if (rectangle.height <= 0) {
@@ -62,6 +108,10 @@ export class SliderElement {
 
     if (rectangle.width <= 0) {
       return 0
+    }
+
+    if (this.isRtl()) {
+      return (100 / rectangle.width) * (rectangle.right - coordinate)
     }
 
     return (100 / rectangle.width) * (coordinate - rectangle.left)
@@ -79,19 +129,25 @@ export class SliderElement {
     coordinate: number,
     isVertical: boolean = Boolean(this.props.vertical)
   ): SliderFocusType {
-    const minRectangle = this.minElement.rectangle
-    const maxRectangle = this.maxElement.rectangle
+    if (this.props.multiple) {
+      const minRectangle = this.minElement().rectangle
+      const maxRectangle = this.maxElement().rectangle
 
-    if (
-      this.props.multiple
-      && minRectangle
-      && maxRectangle
-    ) {
-      const positionProperty = isVertical ? 'top' : 'left'
-      const distanceMin = Math.abs(minRectangle[positionProperty] - coordinate)
-      const distanceMax = Math.abs(maxRectangle[positionProperty] - coordinate)
+      if (
+        minRectangle
+        && maxRectangle
+      ) {
+        const minCenter = isVertical
+          ? minRectangle.top + (minRectangle.height || 0) / 2
+          : minRectangle.left + (minRectangle.width || 0) / 2
+        const maxCenter = isVertical
+          ? maxRectangle.top + (maxRectangle.height || 0) / 2
+          : maxRectangle.left + (maxRectangle.width || 0) / 2
+        const distanceMin = Math.abs(minCenter - coordinate)
+        const distanceMax = Math.abs(maxCenter - coordinate)
 
-      return distanceMin < distanceMax ? SliderFocusType.min : SliderFocusType.max
+        return distanceMin < distanceMax ? SliderFocusType.min : SliderFocusType.max
+      }
     }
 
     return SliderFocusType.max

@@ -1,6 +1,7 @@
 // ai-none
 
 import { ref, type Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -11,9 +12,6 @@ import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
  * Класс, управляющий логикой выбора перетаскиванием квадрата.
  */
 export class SelectableAreaSquare {
-  /** Square element reference / Ссылка на элемент-квадрат */
-  readonly squareElement = ref<HTMLElement | undefined>()
-
   /** Saved initial selected values / Сохраненные начальные выбранные значения */
   protected selectedStart: string[] = []
   /** Currently saved selected values / Текущие сохраненные выбранные значения */
@@ -38,30 +36,23 @@ export class SelectableAreaSquare {
    * Constructor.
    *
    * Конструктор.
-   * @param classes classes manager / менеджер классов
+   * @param naming component naming helper / помощник именования компонента
+   * @param classes classes manager factory / фабрика менеджера классов
    */
   constructor(
-    protected readonly classes: SelectableAreaClassesData
+    protected readonly naming: DesignName,
+    protected readonly classes: () => SelectableAreaClassesData
   ) {
-    const className = this.classes.getName()
-
     this.property = {
-      x: `--${className}-sys-square-x`,
-      y: `--${className}-sys-square-y`,
-      width: `--${className}-sys-square-width`,
-      height: `--${className}-sys-square-height`
+      x: this.naming.getStyle('square', 'x'),
+      y: this.naming.getStyle('square', 'y'),
+      width: this.naming.getStyle('square', 'width'),
+      height: this.naming.getStyle('square', 'height')
     }
   }
 
-  /**
-   * Returns the square element reference.
-   *
-   * Возвращает ссылку на элемент-квадрат.
-   * @returns square element reference / ссылка на элемент-квадрат
-   */
-  getSquare(): Ref<HTMLElement | undefined> {
-    return this.squareElement
-  }
+  /** Square element reference / Ссылка на элемент-квадрат */
+  readonly squareElement = ref<HTMLElement | undefined>()
 
   /**
    * Returns current active selection.
@@ -74,41 +65,13 @@ export class SelectableAreaSquare {
   }
 
   /**
-   * Selects items that intersect with the square.
+   * Returns the square element reference.
    *
-   * Выбирает элементы, которые пересекаются с квадратом.
+   * Возвращает ссылку на элемент-квадрат.
+   * @returns square element reference / ссылка на элемент-квадрат
    */
-  selectionBySquare(): void {
-    const squareElement = this.squareElement.value
-    if (!squareElement) return
-
-    const squareRect = squareElement.getBoundingClientRect()
-    const items = this.classes.findItems()
-
-    this.selectedCurrent = [...this.selectedStart]
-
-    items.forEach((item) => {
-      const rect = item.getBoundingClientRect()
-      const value = item.dataset?.value
-
-      if (
-        rect.right < squareRect.left
-        || rect.bottom < squareRect.top
-        || rect.left > squareRect.right
-        || rect.top > squareRect.bottom
-        || !value
-      ) {
-        return
-      }
-
-      const index = this.selectedCurrent.indexOf(value)
-
-      if (index === -1) {
-        this.selectedCurrent.push(value)
-      } else {
-        this.selectedCurrent.splice(index, 1)
-      }
-    })
+  getSquare(): Ref<HTMLElement | undefined> {
+    return this.squareElement
   }
 
   /**
@@ -131,22 +94,35 @@ export class SelectableAreaSquare {
   }
 
   /**
-   * Starts the square selection interaction.
+   * Resets square state, hides the element, and clears inline custom properties.
    *
-   * Запускает взаимодействие выбора области.
-   * @param client client starting coordinates / начальные координаты клиента
-   * @param selected start selection values / начальные выбранные значения
+   * Сбрасывает состояние квадрата, скрывает элемент и очищает встроенные пользовательские свойства.
    */
-  start(client: ImageCoordinator, selected: string[]): void {
+  reset(): void {
+    this.end()
+    this.selectedCurrent = []
+    this.client = { x: 0, y: 0 }
+
     const squareElement = this.squareElement.value
-
-    this.client = client
-    this.selectedStart = selected
-
-    this.updateSquare(client)
-
     if (squareElement) {
-      squareElement.classList.add(this.classes.list.show)
+      squareElement.style.removeProperty(this.property.x)
+      squareElement.style.removeProperty(this.property.y)
+      squareElement.style.removeProperty(this.property.width)
+      squareElement.style.removeProperty(this.property.height)
+    }
+  }
+
+  /**
+   * Ends the square selection interaction and hides the square.
+   *
+   * Завершает взаимодействие выбора области и скрывает квадрат.
+   */
+  end(): void {
+    this.selectedStart = []
+
+    const squareElement = this.squareElement.value
+    if (squareElement) {
+      squareElement.classList.remove(this.classes().list.show)
     }
   }
 
@@ -162,15 +138,65 @@ export class SelectableAreaSquare {
   }
 
   /**
-   * Ends the square selection interaction and hides the square.
+   * Selects items that intersect with the square.
    *
-   * Завершает взаимодействие выбора области и скрывает квадрат.
+   * Выбирает элементы, которые пересекаются с квадратом.
    */
-  end(): void {
+  selectionBySquare(): void {
+    const squareElement = this.squareElement.value
+    if (!squareElement) {
+      return
+    }
+
+    const squareRect = squareElement.getBoundingClientRect()
+    const items = this.classes().findItems()
+    const selectedSet = new Set<string>(this.selectedStart)
+
+    for (const item of items) {
+      const value = item.dataset?.value
+      if (value === undefined) {
+        continue
+      }
+
+      const rect = item.getBoundingClientRect()
+
+      if (
+        rect.right < squareRect.left
+        || rect.bottom < squareRect.top
+        || rect.left > squareRect.right
+        || rect.top > squareRect.bottom
+      ) {
+        continue
+      }
+
+      if (selectedSet.has(value)) {
+        selectedSet.delete(value)
+      } else {
+        selectedSet.add(value)
+      }
+    }
+
+    this.selectedCurrent = Array.from(selectedSet)
+  }
+
+  /**
+   * Starts the square selection interaction.
+   *
+   * Запускает взаимодействие выбора области.
+   * @param client client starting coordinates / начальные координаты клиента
+   * @param selected start selection values / начальные выбранные значения
+   */
+  start(client: ImageCoordinator, selected: readonly string[]): void {
     const squareElement = this.squareElement.value
 
+    this.client = { ...client }
+    this.selectedStart = [...selected]
+    this.selectedCurrent = [...selected]
+
+    this.updateSquare(client)
+
     if (squareElement) {
-      squareElement.classList.remove(this.classes.list.show)
+      squareElement.classList.add(this.classes().list.show)
     }
   }
 }

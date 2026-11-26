@@ -2,6 +2,7 @@ import { type TabItemPropsBasic, defaultsTabItem } from '@dxtmisha/constructor/T
 
 import type { IconProps } from '../Icon'
 import type { BadgeProps } from '../Badge'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -27,7 +28,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabItemProps = TabItemPropsBasic<IconProps, BadgeProps> & PropsToken
+export type TabItemProps = TabItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

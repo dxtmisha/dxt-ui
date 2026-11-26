@@ -1,101 +1,227 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
+import { ListDataRef } from '@dxtmisha/functional'
+
+import type { HorizontalScrollInclude } from '../../HorizontalScroll'
+import type { TabsNavigationFocus } from '../TabsNavigationFocus'
+import type { TabsNavigationSelected } from '../TabsNavigationSelected'
 import { TabsNavigationControl } from '../TabsNavigationControl'
 
 describe('TabsNavigationControl', () => {
-  it('should define binds', () => {
-    const mockSelected = {} as any
-    const mockFocus = {} as any
-    const mockData = {} as any
+  afterEach(() => {
+    document.dir = ''
+    document.documentElement.dir = ''
+    document.body.innerHTML = ''
+    vi.restoreAllMocks()
+  })
 
-    const control = new TabsNavigationControl(mockSelected, mockFocus, mockData)
+  const createFixture = (
+    items: Array<{ value: string | number, label: string, disabled?: boolean }> = [
+      { value: 'tab-1', label: 'Tab 1' },
+      { value: 'tab-2', label: 'Tab 2' },
+      { value: 'tab-3', label: 'Tab 3' }
+    ],
+    options: { dir?: string, styleDirection?: string } = {}
+  ) => {
+    const container = document.createElement('div')
+
+    if (options.dir) {
+      container.setAttribute('dir', options.dir)
+    }
+
+    if (options.styleDirection) {
+      container.style.direction = options.styleDirection
+    }
+
+    document.body.appendChild(container)
+
+    const focusValue = ref<string | number | undefined>()
+    const selectedValue = ref<string | number | undefined>(items[0]?.value)
+
+    const data = new ListDataRef(
+      ref(items),
+      focusValue,
+      undefined,
+      undefined,
+      undefined,
+      selectedValue
+    )
+
+    const setFocus = vi.fn((value?: string | number | boolean) => {
+      focusValue.value = value as string | number | undefined
+    })
+    const positionFocus = vi.fn(() => {
+      focusValue.value = selectedValue.value
+    })
+    const resetFocus = vi.fn(() => {
+      focusValue.value = undefined
+    })
+    const focus = {
+      get: () => focusValue.value,
+      set: setFocus,
+      position: positionFocus,
+      reset: resetFocus
+    } as unknown as TabsNavigationFocus
+
+    const setSelected = vi.fn((value?: string | number | boolean) => {
+      selectedValue.value = value as string | number | undefined
+    })
+    const selected = {
+      set: setSelected
+    } as unknown as TabsNavigationSelected
+
+    const scroll = {
+      elementHtml: container
+    } as unknown as HorizontalScrollInclude
+
+    const control = new TabsNavigationControl(
+      () => data,
+      () => focus,
+      () => scroll,
+      () => selected
+    )
+
+    return {
+      container,
+      focusValue,
+      selectedValue,
+      setFocus,
+      positionFocus,
+      resetFocus,
+      setSelected,
+      control
+    }
+  }
+
+  it('should define focus/blur binds and expose first and last items', () => {
+    const { control } = createFixture()
 
     expect(control.binds).toEqual({
       onFocus: control.onFocus,
       onBlur: control.onBlur
     })
-  })
-
-  it('should fetch first item identifier', () => {
-    const mockSelected = {} as any
-    const mockFocus = {} as any
-    const mockData = {
-      getFirstItemByParent: vi.fn().mockReturnValue({ index: 'tab-1' })
-    } as any
-
-    const control = new TabsNavigationControl(mockSelected, mockFocus, mockData)
-
     expect(control.getFirstItem()).toBe('tab-1')
-    expect(mockData.getFirstItemByParent).toHaveBeenCalledWith(undefined)
+    expect(control.getLastItem()).toBe('tab-3')
   })
 
-  it('should listen to keydown events on focus and clean up on blur', () => {
-    const mockSelected = {} as any
-    const mockFocus = {
-      position: vi.fn(),
-      reset: vi.fn()
-    } as any
-    const mockData = {} as any
+  it('should start keydown listener on focus, stop on blur, and clean up onUnmounted without leaks', () => {
+    const addSpy = vi.spyOn(document.body, 'addEventListener')
+    const removeSpy = vi.spyOn(document.body, 'removeEventListener')
+    const { control, positionFocus, resetFocus } = createFixture()
 
-    const control = new TabsNavigationControl(mockSelected, mockFocus, mockData)
-
-    // Trigger focus
     control.onFocus()
+    expect(positionFocus).toHaveBeenCalledTimes(1)
+    expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function), undefined)
 
-    // EventItem should have been created and started
-    expect(control['event']).toBeDefined()
-    expect(mockFocus.position).toHaveBeenCalled()
-
-    // Trigger blur
     control.onBlur()
+    expect(resetFocus).toHaveBeenCalledTimes(1)
+    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function), undefined)
 
-    expect(control['event']).toBeUndefined()
-    expect(mockFocus.reset).toHaveBeenCalled()
+    // Focus again and unmount directly without blur
+    control.onFocus()
+    control.onUnmounted()
+    expect(resetFocus).toHaveBeenCalledTimes(2)
+    expect(removeSpy).toHaveBeenCalledTimes(2)
   })
 
-  it('should navigate prev, next, and select item on keydown', () => {
-    const mockSelected = {
-      set: vi.fn()
-    } as any
-    const mockFocus = {
-      get: vi.fn().mockReturnValue('tab-2'),
-      set: vi.fn(),
-      position: vi.fn(),
-      reset: vi.fn()
-    } as any
-    const mockData = {
-      getLength: () => 3,
-      getFocusItem: vi.fn().mockReturnValue({ index: 'tab-2', disabled: false }),
-      getFirstItemByParent: () => ({ index: 'tab-1' }),
-      getIndexPrev: vi.fn().mockReturnValue({ index: 'tab-1' }),
-      getIndexNext: vi.fn().mockReturnValue({ index: 'tab-3' })
-    } as any
+  it('should navigate ArrowLeft, ArrowRight, Home, End, and select via Enter/Space in LTR', () => {
+    const { control, focusValue, setFocus, setSelected } = createFixture()
 
-    const control = new TabsNavigationControl(mockSelected, mockFocus, mockData)
+    control.onFocus()
+    expect(focusValue.value).toBe('tab-1')
 
-    // Trigger focus to start listener
+    // ArrowRight -> tab-2
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-2')
+
+    // ArrowLeft -> tab-1
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-1')
+
+    // End -> tab-3
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-3')
+
+    // Enter selects focused tab-3
+    const enterEvent = new KeyboardEvent('keydown', { code: 'Enter', bubbles: true, cancelable: true })
+    document.body.dispatchEvent(enterEvent)
+    expect(enterEvent.defaultPrevented).toBe(true)
+    expect(setSelected).toHaveBeenLastCalledWith('tab-3')
+
+    // Home -> tab-1
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-1')
+
+    // Space selects focused tab-1
+    const spaceEvent = new KeyboardEvent('keydown', { code: 'Space', bubbles: true, cancelable: true })
+    document.body.dispatchEvent(spaceEvent)
+    expect(spaceEvent.defaultPrevented).toBe(true)
+    expect(setSelected).toHaveBeenLastCalledWith('tab-1')
+
+    control.onUnmounted()
+  })
+
+  it('should invert ArrowLeft and ArrowRight navigation in RTL mode', () => {
+    const { control, setFocus } = createFixture(undefined, { dir: 'rtl' })
+
     control.onFocus()
 
-    // Invoke arrow left keydown handler
-    const eventLeft = new KeyboardEvent('keydown', { code: 'ArrowLeft' })
-    control['on'](eventLeft)
+    // In RTL, ArrowLeft moves to next (tab-2)
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-2')
 
-    expect(mockData.getIndexPrev).toHaveBeenCalledWith('tab-2')
-    expect(mockFocus.set).toHaveBeenCalledWith('tab-1')
+    // In RTL, ArrowRight moves to prev (tab-1)
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight', bubbles: true, cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith('tab-1')
 
-    // Invoke arrow right keydown handler
-    const eventRight = new KeyboardEvent('keydown', { code: 'ArrowRight' })
-    control['on'](eventRight)
+    control.onUnmounted()
+  })
 
-    expect(mockData.getIndexNext).toHaveBeenCalledWith('tab-2')
-    expect(mockFocus.set).toHaveBeenCalledWith('tab-3')
+  it('should ignore IME composition events, disabled items, and empty lists', () => {
+    const { control, setFocus, setSelected } = createFixture([
+      { value: 'tab-1', label: 'Tab 1', disabled: true },
+      { value: 'tab-2', label: 'Tab 2' }
+    ])
 
-    // Invoke enter select keydown handler
-    const eventEnter = new KeyboardEvent('keydown', { code: 'Enter' })
-    const spyPreventEnter = vi.spyOn(eventEnter, 'preventDefault')
-    control['on'](eventEnter)
+    control.onFocus()
 
-    expect(spyPreventEnter).toHaveBeenCalled()
-    expect(mockSelected.set).toHaveBeenCalledWith('tab-2')
+    // IME composition guard
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight', isComposing: true }))
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', isComposing: true }))
+    expect(setFocus).not.toHaveBeenCalled()
+    expect(setSelected).not.toHaveBeenCalled()
+
+    // Disabled item must not be selected via Enter
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', cancelable: true }))
+    expect(setSelected).not.toHaveBeenCalled()
+
+    control.onUnmounted()
+
+    // Empty list no-op
+    const emptyFixture = createFixture([])
+    emptyFixture.control.onFocus()
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }))
+    expect(emptyFixture.setFocus).not.toHaveBeenCalled()
+    emptyFixture.control.onUnmounted()
+  })
+
+  it('should navigate numeric 0 tab indices accurately', () => {
+    const { control, setFocus, setSelected } = createFixture([
+      { value: 0, label: 'Zero' },
+      { value: 1, label: 'One' }
+    ])
+
+    control.onFocus()
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight', cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith(1)
+
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', cancelable: true }))
+    expect(setFocus).toHaveBeenLastCalledWith(0)
+
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', cancelable: true }))
+    expect(setSelected).toHaveBeenLastCalledWith(0)
+
+    control.onUnmounted()
   })
 })

@@ -1,3 +1,6 @@
+import type { Component } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 /**
  * Type describing style tokens.
  *
@@ -20,14 +23,14 @@ type SkeletonItemPropsToken = {
  * Интерфейс, представляющий входящие свойства базового компонента.
  */
 export type SkeletonItemPropsBasic = {
-  /** Tag name for the skeleton element / Имя тега для элемента скелета */
-  tag?: string | any
+  /** Tag name or component for the skeleton element / Имя тега или компонент для элемента скелетона */
+  tag?: string | Component
   /** Attributes for the HTML element / Атрибуты для HTML-элемента */
-  itemAttrs?: Record<string, any>
+  itemAttrs?: ConstrBind
   /** Static text content to render instead of random text / Статическое текстовое содержимое для рендеринга вместо случайного текста */
   label?: string | number
   /** Expected length or range of lengths for the random text / Ожидаемая длина или диапазон длин для случайного текста */
-  length?: string | number | [number, number]
+  length?: string | number | readonly [number, number]
 }
 
 /**

@@ -7,7 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'divider', type: 'boolean' },
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
-  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
+  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollProps>' },
   { name: 'horizontalScrollBleed', type: 'boolean' },
   { name: 'itemAttrs', type: 'ConstrBind<TabItemProps>' },
   { name: 'keyLabel', type: 'string' },
@@ -23,8 +23,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'leading', description: `Slot for content before the tabs/ Слот для содержимого перед вкладками`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'trailing', description: `Slot for content after the tabs/ Слот для содержимого после вкладок`, properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'leading', description: `Slot for content before the tabs / Слот для содержимого перед вкладками`, properties: [{ name: 'props', type: '((props: ConstrItem) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] },
+  { name: 'trailing', description: `Slot for content after the tabs / Слот для содержимого после вкладок`, properties: [{ name: 'props', type: '((props: ConstrItem) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

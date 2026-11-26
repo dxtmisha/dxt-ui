@@ -27,6 +27,8 @@ export type TextIndex = 'actions'
   | 'last'
   | 'loading'
   | 'loadingFile'
+  | 'max'
+  | 'min'
   | 'more'
   | 'morePrev'
   | 'next'
@@ -198,6 +200,18 @@ export type TextLoadingFilePropsInclude = {
   textLoadingFile?: TextValue
 }
 
+/** Interface for including maximum text / Интерфейс для включения текста максимума */
+export type TextMaxPropsInclude = {
+  /** Maximum text / Текст максимума */
+  textMax?: TextValue
+}
+
+/** Interface for including minimum text / Интерфейс для включения текста минимума */
+export type TextMinPropsInclude = {
+  /** Minimum text / Текст минимума */
+  textMin?: TextValue
+}
+
 /** Interface for including more text/ Интерфейс для включения текста "показать еще" */
 export type TextMorePropsInclude = {
   /** More text/ Текст "показать еще" */
@@ -320,6 +334,8 @@ export type TextAllPropsInclude = TextActionsPropsInclude
   & TextLastPropsInclude
   & TextLoadingPropsInclude
   & TextLoadingFilePropsInclude
+  & TextMaxPropsInclude
+  & TextMinPropsInclude
   & TextMorePropsInclude
   & TextMorePrevPropsInclude
   & TextNextPropsInclude

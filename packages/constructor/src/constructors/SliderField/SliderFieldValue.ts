@@ -1,6 +1,6 @@
 // ai-none
 
-import { toNumber } from '@dxtmisha/functional'
+import { isArray, isNull, toNumber } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { SliderValueType } from '../Slider'
@@ -8,28 +8,37 @@ import type { SliderFieldProps } from './props'
 
 /**
  * Class for calculating minimum and maximum values of SliderField.
+ * Resolves single or range values from FieldValueInclude with safe numeric fallbacks.
  *
  * Класс для вычисления минимального и максимального значений SliderField.
+ * Определяет одиночные значения или диапазон из FieldValueInclude с безопасными числовыми значениями по умолчанию.
  */
 export class SliderFieldValue {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
-   * @param value field value include instance / экземпляр значения поля
+   * @param value getter returning field value include instance / функция, возвращающая экземпляр значения поля
    */
   constructor(
-    protected readonly props: SliderFieldProps,
-    protected readonly value: FieldValueInclude<SliderValueType>
+    protected readonly props: Readonly<SliderFieldProps>,
+    protected readonly value: () => FieldValueInclude<SliderValueType>
   ) { }
 
   /**
-   * Minimum numeric value / Минимальное числовое значение
+   * Minimum numeric value.
+   *
+   * Минимальное числовое значение.
    * @returns min value / минимальное значение
    */
   get min(): number {
-    const itemValue = this.value.item.value
+    const itemValue = this.value().item.value
 
-    if (Array.isArray(itemValue)) {
+    if (
+      isArray(itemValue)
+      && !isNull(itemValue[0])
+    ) {
       return toNumber(itemValue[0])
     }
 
@@ -37,17 +46,26 @@ export class SliderFieldValue {
   }
 
   /**
-   * Maximum numeric value / Максимальное числовое значение
+   * Maximum numeric value.
+   *
+   * Максимальное числовое значение.
    * @returns max value / максимальное значение
    */
   get max(): number {
-    const itemValue = this.value.item.value
+    const itemValue = this.value().item.value
 
-    if (Array.isArray(itemValue)) {
-      return toNumber(itemValue[1])
-    }
+    if (isArray(itemValue)) {
+      if (!isNull(itemValue[1])) {
+        return toNumber(itemValue[1])
+      }
 
-    if (itemValue) {
+      if (!isNull(itemValue[0])) {
+        return toNumber(itemValue[0])
+      }
+    } else if (
+      !isNull(itemValue)
+      && String(itemValue) !== ''
+    ) {
       return toNumber(itemValue)
     }
 
@@ -65,6 +83,6 @@ export class SliderFieldValue {
    * @param value new value / новое значение
    */
   set(value: SliderValueType): void {
-    this.value.set(value)
+    this.value().set(value)
   }
 }

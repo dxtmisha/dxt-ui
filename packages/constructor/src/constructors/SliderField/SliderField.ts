@@ -1,6 +1,14 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName,
+  isNull
+} from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
@@ -8,180 +16,235 @@ import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
-import { IconTrailingInclude } from '../Icon'
 import { FieldLabelInclude } from '../FieldLabel'
 import { FieldMessageInclude } from '../FieldMessage'
+import { IconTrailingInclude } from '../Icon'
 import { type SliderValueType } from '../Slider'
 
 import { SliderFieldEvent } from './SliderFieldEvent'
 import { SliderFieldLabel } from './SliderFieldLabel'
 import { SliderFieldValue } from './SliderFieldValue'
 
-import type { FieldElementInput } from '../../types/fieldTypes'
-import type { SliderFieldComponents, SliderFieldEmits, SliderFieldSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { SliderFieldProps } from './props'
+import type { SliderFieldComponents, SliderFieldEmits, SliderFieldSlots } from './types'
+
+/** SliderField dependency constructors type / Тип конструкторов зависимостей SliderField */
+export type SliderFieldConstructors = {
+  /** Field attributes include constructor / Конструктор атрибутов поля */
+  attributes: typeof FieldAttributesInclude
+  /** Field change include constructor / Конструктор отслеживания изменений поля */
+  change: typeof FieldChangeInclude
+  /** Field code include constructor / Конструктор кодов ошибок поля */
+  code: typeof FieldCodeInclude
+  /** Field event include constructor / Конструктор событий поля */
+  event: typeof FieldEventInclude
+  /** Field label include constructor / Конструктор включения метки поля */
+  fieldLabel: typeof FieldLabelInclude
+  /** Field message include constructor / Конструктор включения сообщения поля */
+  fieldMessage: typeof FieldMessageInclude
+  /** Field form include constructor / Конструктор интеграции с формой */
+  form: typeof FieldFormInclude
+  /** Icon trailing include constructor / Конструктор включения иконок */
+  icon: typeof IconTrailingInclude
+  /** Slider field label text constructor / Конструктор меток текста поля слайдера */
+  label: typeof SliderFieldLabel
+  /** Slider field event constructor / Конструктор событий поля слайдера */
+  sliderEvent: typeof SliderFieldEvent
+  /** Text include constructor / Конструктор локализованных текстов */
+  text: typeof TextInclude
+  /** Field validation include constructor / Конструктор валидации поля */
+  validation: typeof FieldValidationInclude
+  /** Field value include constructor / Конструктор значения поля */
+  value: typeof FieldValueInclude<SliderValueType>
+  /** Slider field value constructor / Конструктор значения поля слайдера */
+  valueItem: typeof SliderFieldValue
+}
 
 /**
  * SliderField logic orchestrator class.
- * Coordinates field label, field message, slider picker, input handlers, values, validation, and ARIA bindings.
+ * Coordinates field label, field message, slider picker, input handlers, values, validation, and form integration.
  *
  * Оркестраторный класс логики SliderField.
- * Координирует метку поля, сообщение поля, ползунок слайдера, обработчики ввода, значения, валидацию и привязки ARIA.
+ * Координирует метку поля, сообщение поля, ползунок слайдера, обработчики ввода, значения, валидацию и интеграцию с формой.
  */
-export class SliderField {
-  /** Field change include instance / Экземпляр отслеживания изменений поля */
-  readonly change: FieldChangeInclude
-  /** Field attributes include instance / Экземпляр атрибутов поля */
-  readonly attributes: FieldAttributesInclude
-
-  /** Field value include instance / Экземпляр значения поля */
-  readonly value: FieldValueInclude<SliderValueType>
-  /** Slider field value instance / Экземпляр значения поля слайдера */
-  readonly valueItem: SliderFieldValue
-
-  /** Field code include instance / Экземпляр кода поля */
-  readonly code: FieldCodeInclude
-  /** Field validation include instance / Экземпляр валидации поля */
-  readonly validation: FieldValidationInclude
-  /** Field form include instance / Экземпляр формы поля */
-  readonly form: FieldFormInclude
-  /** Field event include instance / Экземпляр событий поля */
-  readonly event: FieldEventInclude
-  /** Slider field event instance / Экземпляр событий поля слайдера */
-  readonly sliderEvent: SliderFieldEvent
-
-  /** Field label include instance / Экземпляр включения метки поля */
-  readonly fieldLabel: FieldLabelInclude
-
-  /** Field message include instance / Экземпляр включения сообщения поля */
-  readonly fieldMessage: FieldMessageInclude
-
-  /** Icon trailing include instance / Экземпляр включения иконки */
-  readonly icon: IconTrailingInclude
-  /** Slider field label text instance / Экземпляр меток текста поля слайдера */
-  readonly label: SliderFieldLabel
+export class SliderField extends DesignLogicAbstract<
+  HTMLDivElement,
+  SliderFieldComponents,
+  SliderFieldEmits,
+  SliderFieldSlots,
+  SliderFieldProps,
+  SliderFieldConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SliderFieldConstructors> = {
+    attributes: {
+      item: FieldAttributesInclude,
+      parameters: () => [this.props]
+    },
+    change: {
+      item: FieldChangeInclude,
+      parameters: () => [this.props]
+    },
+    code: {
+      item: FieldCodeInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: FieldEventInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('change'),
+        () => this.i('value'),
+        () => this.i('validation'),
+        this.emits,
+        () => this.callInstance('form', item => item)
+      ]
+    },
+    fieldLabel: {
+      item: FieldLabelInclude,
+      canCreate: () => FieldLabelInclude.is(this.props) || Boolean(this.props.showValueInLabel),
+      parameters: () => [
+        () => this.i('label').labelProps,
+        this.naming,
+        this.components
+      ]
+    },
+    fieldMessage: {
+      item: FieldMessageInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        () => this.i('validation').message
+      ]
+    },
+    form: {
+      item: FieldFormInclude,
+      canCreate: () => FieldFormInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('value'),
+        () => this.i('validation')
+      ]
+    },
+    icon: {
+      item: IconTrailingInclude,
+      canCreate: () => IconTrailingInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    label: {
+      item: SliderFieldLabel,
+      parameters: () => [
+        this.props,
+        () => this.i('valueItem')
+      ]
+    },
+    sliderEvent: {
+      item: SliderFieldEvent,
+      parameters: () => [
+        this.props,
+        () => this.i('event'),
+        () => this.i('valueItem')
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
+    validation: {
+      item: FieldValidationInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('value'),
+        () => this.i('change'),
+        () => this.i('code')
+      ]
+    },
+    value: {
+      item: FieldValueInclude<SliderValueType>,
+      parameters: () => [
+        this.props,
+        undefined,
+        undefined,
+        false,
+        false,
+        true
+      ]
+    },
+    valueItem: {
+      item: SliderFieldValue,
+      parameters: () => [
+        this.props,
+        () => this.i('value')
+      ]
+    }
+  }
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
-   * @param element input element / элемент ввода
+   * @param element root element reference / ссылка на корневой элемент
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
-   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
-   * @param constructors.FieldLabelIncludeConstructor class for working with field label / класс для работы с меткой поля
-   * @param constructors.FieldMessageIncludeConstructor class for working with field message / класс для работы с сообщением поля
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
-   * @param constructors.SliderFieldLabelConstructor class for working with slider field label / класс для работы с метками поля слайдера
-   * @param constructors.SliderFieldValueConstructor class for working with slider field value / класс для работы со значением поля слайдера
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: SliderFieldProps,
-    protected readonly element: Ref<FieldElementInput>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<SliderFieldComponents, SliderFieldProps>,
-    protected readonly slots?: SliderFieldSlots,
-    protected readonly emits?: ConstrEmit<SliderFieldEmits>,
-    constructors: {
-      FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
-      FieldChangeIncludeConstructor?: typeof FieldChangeInclude
-      FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldEventIncludeConstructor?: typeof FieldEventInclude
-      FieldFormIncludeConstructor?: typeof FieldFormInclude
-      FieldLabelIncludeConstructor?: typeof FieldLabelInclude
-      FieldMessageIncludeConstructor?: typeof FieldMessageInclude
-      FieldValidationIncludeConstructor?: typeof FieldValidationInclude
-      FieldValueIncludeConstructor?: typeof FieldValueInclude
-      IconTrailingIncludeConstructor?: typeof IconTrailingInclude
-      SliderFieldEventConstructor?: typeof SliderFieldEvent
-      SliderFieldLabelConstructor?: typeof SliderFieldLabel
-      SliderFieldValueConstructor?: typeof SliderFieldValue
-    } = {}
+    props: Readonly<SliderFieldProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<SliderFieldComponents, SliderFieldProps>,
+    slots?: SliderFieldSlots,
+    emits?: ConstrEmit<SliderFieldEmits>,
+    constructors?: Partial<SliderFieldConstructors>
   ) {
-    const {
-      FieldAttributesIncludeConstructor = FieldAttributesInclude,
-      FieldChangeIncludeConstructor = FieldChangeInclude,
-      FieldCodeIncludeConstructor = FieldCodeInclude,
-      FieldEventIncludeConstructor = FieldEventInclude,
-      FieldFormIncludeConstructor = FieldFormInclude,
-      FieldLabelIncludeConstructor = FieldLabelInclude,
-      FieldMessageIncludeConstructor = FieldMessageInclude,
-      FieldValidationIncludeConstructor = FieldValidationInclude,
-      FieldValueIncludeConstructor = FieldValueInclude,
-      IconTrailingIncludeConstructor = IconTrailingInclude,
-      SliderFieldEventConstructor = SliderFieldEvent,
-      SliderFieldLabelConstructor = SliderFieldLabel,
-      SliderFieldValueConstructor = SliderFieldValue
-    } = constructors
-
-    this.change = new FieldChangeIncludeConstructor(props)
-    this.attributes = new FieldAttributesIncludeConstructor(props)
-
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(
+    super(
       props,
-      undefined,
-      undefined,
-      false
-    )
-    this.valueItem = new SliderFieldValueConstructor(props, this.value)
-
-    this.code = new FieldCodeIncludeConstructor(props)
-    this.validation = new FieldValidationIncludeConstructor(
-      props,
-      () => this.attributes,
-      () => this.value,
-      () => this.change,
-      () => this.code
-    )
-    this.form = new FieldFormIncludeConstructor(
-      props,
-      () => this.value,
-      () => this.validation
-    )
-    this.event = new FieldEventIncludeConstructor(
-      props,
-      () => this.change,
-      () => this.value,
-      () => this.validation,
+      element,
+      naming,
+      components,
+      slots,
       emits,
-      () => this.form
+      constructors
     )
 
-    // TODO: Temporary workaround until SliderField is migrated to DesignLogicAbstract / Временный костыль до перевода SliderField на DesignLogicAbstract
-    this.value.onMounted?.()
-    this.event.onMounted?.()
-    this.sliderEvent = new SliderFieldEventConstructor(
-      props,
-      this.event,
-      this.valueItem
-    )
+    this.i('value')
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
+  }
 
-    this.fieldLabel = new FieldLabelIncludeConstructor(
-      () => this.label.labelProps,
-      this.naming,
-      this.components
-    )
+  /**
+   * Returns ARIA attributes for the maximum (or single) numeric input field.
+   *
+   * Возвращает ARIA-атрибуты для числового поля максимального (или одиночного) значения.
+   * @returns ARIA attributes map / карта ARIA-атрибутов
+   */
+  get ariaInputMax(): AriaList {
+    return AriaStaticInclude.label(this.getInputAriaLabel('max'))
+  }
 
-    this.fieldMessage = new FieldMessageIncludeConstructor(
-      props,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      () => this.validation.message
-    )
-
-    this.icon = new IconTrailingIncludeConstructor(props, this.naming, this.components)
-    this.label = new SliderFieldLabelConstructor(props, this.valueItem)
+  /**
+   * Returns ARIA attributes for the minimum numeric input field.
+   *
+   * Возвращает ARIA-атрибуты для числового поля минимального значения.
+   * @returns ARIA attributes map / карта ARIA-атрибутов
+   */
+  get ariaInputMin(): AriaList {
+    return AriaStaticInclude.label(this.getInputAriaLabel('min'))
   }
 
   /**
@@ -197,5 +260,54 @@ export class SliderField {
     }
 
     return undefined
+  }
+
+  /**
+   * Delegates slider value change commit to the lazy slider event handler.
+   *
+   * Делегирует подтверждение изменения значения слайдера ленивому обработчику событий слайдера.
+   */
+  readonly onSliderChange = (): void => {
+    this.i('sliderEvent').onSliderChange()
+  }
+
+  /**
+   * Delegates slider value input to the lazy slider event handler.
+   *
+   * Делегирует ввод значения слайдера ленивому обработчику событий слайдера.
+   * @param value selected value or range / выбранное значение или диапазон
+   */
+  readonly onSliderInput = (value: SliderValueType): void => {
+    this.i('sliderEvent').onSliderInput(value)
+  }
+
+  /**
+   * Builds a localized accessible label for numeric min/max input fields.
+   *
+   * Формирует локализованную подпись доступности для числовых полей минимума и максимума.
+   * @param bound target bound type / тип границы значения
+   * @returns accessible label string or undefined / строка подписи доступности или undefined
+   */
+  protected getInputAriaLabel(bound: 'min' | 'max'): string | undefined {
+    const hasLabel = !isNull(this.props.label) && String(this.props.label) !== ''
+    const baseLabel = hasLabel ? String(this.props.label) : undefined
+
+    if (
+      bound === 'max'
+      && !this.props.multiple
+      && baseLabel
+    ) {
+      return baseLabel
+    }
+
+    const boundText = bound === 'min'
+      ? this.i('text').min
+      : this.i('text').max
+
+    if (baseLabel && boundText) {
+      return `${baseLabel} (${boundText})`
+    }
+
+    return boundText ?? baseLabel
   }
 }

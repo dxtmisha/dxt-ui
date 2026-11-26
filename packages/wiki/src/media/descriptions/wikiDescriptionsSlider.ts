@@ -1,5 +1,10 @@
 import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
+/**
+ * Descriptions for Slider component properties
+ *
+ * Описания свойств компонента Slider
+ */
 export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
   name: 'Slider',
   description: {
@@ -35,12 +40,22 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { SliderExpose } from \'@dxtmisha/constructor/Slider\''
   ],
   render: `
-      <DesignComponent v-bind="args" />
-    `,
+    <DesignComponent v-bind="args"/>
+  `,
+  play: `
+const slider = canvasElement.querySelector('.design-component')
+await expect(slider).toBeInTheDocument()
+const thumb = canvasElement.querySelector('[role="slider"]')
+await expect(thumb).toBeInTheDocument()
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'SliderOrientation',
       name: {
@@ -51,13 +66,20 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Horizontal</div>
-            <DesignComponent :value="40" />
+            <DesignComponent :value="40"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Vertical</div>
-            <DesignComponent vertical :value="60" />
+            <DesignComponent vertical :value="60"/>
           </div>
         </div>
+      `,
+      play: `
+const sliders = canvasElement.querySelectorAll('.design-component')
+await expect(sliders.length).toBe(2)
+await expect(sliders[1]).toHaveClass('design-component--vertical')
+const verticalThumb = sliders[1].querySelector('[role="slider"]')
+await expect(verticalThumb).toHaveAttribute('aria-orientation', 'vertical')
       `
     },
     {
@@ -67,7 +89,11 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
         ru: 'Выбор диапазона'
       },
       template: `
-        <DesignComponent multiple :minimumDistance="10" />
+        <DesignComponent multiple :minimumDistance="10"/>
+      `,
+      play: `
+const thumbs = canvasElement.querySelectorAll('[role="slider"]')
+await expect(thumbs.length).toBe(2)
       `
     },
     {
@@ -79,16 +105,20 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
       setup: `
       return {
         customMarks: [
-          { mark: 0, label: '0%' },
-          { mark: 25, label: '25%' },
-          { mark: 50, label: '50%' },
-          { mark: 75, label: '75%' },
-          { mark: 100, label: '100%' }
+          { value: 0, label: '0%' },
+          { value: 25, label: '25%' },
+          { value: 50, label: '50%' },
+          { value: 75, label: '75%' },
+          { value: 100, label: '100%' }
         ]
       }
       `,
       template: `
-        <DesignComponent :marks="customMarks" magnet :step="5" />
+        <DesignComponent :marks="customMarks" magnet :step="5"/>
+      `,
+      play: `
+const marks = canvasElement.querySelectorAll('.design-component__mark')
+await expect(marks.length).toBe(5)
       `
     },
     {
@@ -105,15 +135,25 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <span>Current value: <strong>{{ sliderValue }}</strong></span>
+            <span data-testid="slider-vmodel-value">Current value: <strong>{{ sliderValue }}</strong></span>
           </div>
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="sliderValue = 25">Set 25</button>
             <button class="wiki-storybook-button" @click="sliderValue = 75">Set 75</button>
             <button class="wiki-storybook-button wiki-storybook-button-warning" @click="sliderValue = 0">Clear</button>
           </div>
-          <DesignComponent v-model="sliderValue" :min="0" :max="100" />
+          <DesignComponent v-model="sliderValue" :min="0" :max="100"/>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('slider-vmodel-value')).toHaveTextContent('40')
+await step('Update v-model to 75 and 0', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Set 75' }))
+  await expect(canvas.getByTestId('slider-vmodel-value')).toHaveTextContent('75')
+  await userEvent.click(canvas.getByRole('button', { name: 'Clear' }))
+  await expect(canvas.getByTestId('slider-vmodel-value')).toHaveTextContent('0')
+})
       `
     },
     {
@@ -126,10 +166,82 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
       template: `
         <DesignSkeleton :active="true">
           <div class="wiki-storybook-flex-column">
-            <DesignComponent isSkeleton />
-            <DesignComponent isSkeleton multiple />
+            <DesignComponent isSkeleton/>
+            <DesignComponent isSkeleton multiple/>
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const sliders = canvasElement.querySelectorAll('.design-component')
+await expect(sliders.length).toBe(2)
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor props only)
+    // =========================================================================
+    {
+      id: 'SliderTestStatesSlotsExpose',
+      name: {
+        en: 'Test: States, slots, hidden input, ARIA and expose methods',
+        ru: 'Тест: Состояния, слоты, скрытый input, ARIA и методы expose'
+      },
+      propsName: ['disabled', 'readonly', 'selected', 'showThumbLabel', 'name', 'required', 'min', 'max', 'step', 'inputAttrs'],
+      setup: `
+      const sliderReference = ref<SliderExpose | null>(null)
+      const controlledValue = ref<number>(0)
+      const increaseValue = () => {
+        sliderReference.value?.increase()
+      }
+      const decreaseValue = () => {
+        sliderReference.value?.decrease()
+      }
+      return { sliderReference, controlledValue, increaseValue, decreaseValue }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="increaseValue">Increase</button>
+            <button class="wiki-storybook-button" @click="decreaseValue">Decrease</button>
+            <span data-testid="slider-controlled-value">{{ controlledValue }}</span>
+          </div>
+          <DesignComponent
+            ref="sliderReference"
+            v-model="controlledValue"
+            name="level"
+            required
+            :min="-50"
+            :max="50"
+            :step="10"
+            :inputAttrs="{ 'data-testid': 'slider-hidden-input' }"
+          />
+          <DesignComponent :value="40" disabled/>
+          <DesignComponent :value="60" readonly selected :showThumbLabel="false"/>
+          <DesignComponent :value="[20, 80]" multiple showThumbLabel>
+            <template #minLabel="{ value }"><span>Min {{ value }}</span></template>
+            <template #maxLabel="{ value }"><span>Max {{ value }}</span></template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const hiddenInput = canvas.getByTestId('slider-hidden-input')
+await expect(hiddenInput).toHaveAttribute('value', '0')
+await expect(hiddenInput).toHaveAttribute('name', 'level')
+
+const sliders = canvasElement.querySelectorAll('.design-component')
+await expect(sliders.length).toBe(4)
+await expect(sliders[1].querySelector('[role="slider"]')).toHaveAttribute('aria-disabled', 'true')
+await expect(sliders[2].querySelector('[role="slider"]')).toHaveAttribute('aria-readonly', 'true')
+await expect(sliders[3]).toHaveTextContent('Min 20')
+await expect(sliders[3]).toHaveTextContent('Max 80')
+
+await step('Increase and decrease via expose methods', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Increase' }))
+  await expect(canvas.getByTestId('slider-controlled-value')).toHaveTextContent('10')
+  await userEvent.click(canvas.getByRole('button', { name: 'Decrease' }))
+  await expect(canvas.getByTestId('slider-controlled-value')).toHaveTextContent('0')
+})
       `
     }
   ],

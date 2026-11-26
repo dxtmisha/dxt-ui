@@ -32,7 +32,8 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
     ]
   },
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { SelectableAreaEventParameters, SelectableAreaExpose } from \'@dxtmisha/constructor/SelectableArea\''
   ],
   render: `
     <DesignComponent v-bind="args">
@@ -53,7 +54,16 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
       </template>
     </DesignComponent>
   `,
+  play: `
+const area = canvasElement.querySelector('.design-component')
+await expect(area).toBeInTheDocument()
+const items = canvasElement.querySelectorAll('[data-value]')
+await expect(items.length).toBe(12)
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'SelectableAreaBasic',
       name: {
@@ -76,6 +86,12 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
             </div>
           </template>
         </DesignComponent>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('[data-value]')
+await expect(items.length).toBe(6)
+await userEvent.click(items[0])
+await expect(canvasElement.querySelector('.design-component__square')).toHaveAttribute('aria-hidden', 'true')
       `
     },
     {
@@ -92,7 +108,7 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
-            <span>Selected items: {{ selected }}</span>
+            <span data-testid="selectable-model">Selected items: {{ selected }}</span>
             <button class="wiki-storybook-button" @click="selected = []">Reset</button>
             <button class="wiki-storybook-button" @click="selected = ['item-1', 'item-2', 'item-3']">Select 1-3</button>
           </div>
@@ -120,6 +136,111 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+await expect(canvas.getByTestId('selectable-model')).toHaveTextContent('item-2')
+await step('Reset selection via button', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Reset' }))
+  await expect(canvas.getByTestId('selectable-model')).toHaveTextContent('[]')
+})
+await step('Select items 1-3 via button', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Select 1-3' }))
+  await expect(canvas.getByTestId('selectable-model')).toHaveTextContent('item-1')
+})
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor props only)
+    // =========================================================================
+    {
+      id: 'SelectableAreaTestModesAndExpose',
+      name: {
+        en: 'Test: Active, disabled, tag, events and expose methods',
+        ru: 'Тест: Режимы active, disabled, tag, события и методы expose'
+      },
+      propsName: ['active', 'disabled', 'tag', 'selected'],
+      setup: `
+      const areaReference = ref<SelectableAreaExpose | null>(null)
+      const activeSelected = ref<string[]>([])
+      const disabledSelected = ref<string[]>(['item-1'])
+      const emittedSelection = ref<string>('')
+      const onSelected = (parameters: SelectableAreaEventParameters) => {
+        emittedSelection.value = parameters.selected.join(',')
+      }
+      const applyExpose = () => {
+        areaReference.value?.setSelected(['item-1', 'item-3'])
+      }
+      const resetExpose = () => {
+        areaReference.value?.reset()
+      }
+      return { areaReference, activeSelected, disabledSelected, emittedSelection, onSelected, applyExpose, resetExpose }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="applyExpose">Expose Select</button>
+            <button class="wiki-storybook-button" @click="resetExpose">Expose Reset</button>
+            <span data-testid="selectable-emitted">{{ emittedSelection }}</span>
+          </div>
+          <DesignComponent
+            ref="areaReference"
+            v-model:selected="activeSelected"
+            active
+            tag="section"
+            @selected="onSelected"
+          >
+            <template #default="{ className, classClick, onClick }">
+              <div class="wiki-storybook-flex">
+                <div
+                  v-for="item in 4"
+                  :key="item"
+                  :class="['wiki-storybook-item wiki-storybook-item--auto', className, classClick]"
+                  :data-value="'item-' + item"
+                  @click="onClick"
+                >
+                  Active {{ item }}
+                </div>
+              </div>
+            </template>
+          </DesignComponent>
+          <DesignComponent
+            v-model:selected="disabledSelected"
+            disabled
+          >
+            <template #default="{ className, classClick, onClick }">
+              <div class="wiki-storybook-flex">
+                <div
+                  v-for="item in 2"
+                  :key="item"
+                  :class="['wiki-storybook-item wiki-storybook-item--auto', className, classClick]"
+                  :data-value="'item-' + item"
+                  @click="onClick"
+                >
+                  Disabled {{ item }}
+                </div>
+              </div>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const areas = canvasElement.querySelectorAll('.design-component')
+await expect(areas.length).toBe(2)
+await expect(areas[0].tagName).toBe('SECTION')
+
+await step('Programmatic setSelected and reset via expose', async () => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Expose Select' }))
+  await waitFor(() => {
+    expect(canvas.getByTestId('selectable-emitted')).toHaveTextContent('item-1,item-3')
+  })
+  await userEvent.click(canvas.getByRole('button', { name: 'Expose Reset' }))
+  await waitFor(() => {
+    expect(canvas.getByTestId('selectable-emitted')).toHaveTextContent('')
+  })
+})
       `
     }
   ],

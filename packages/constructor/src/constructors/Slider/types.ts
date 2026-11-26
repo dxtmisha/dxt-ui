@@ -42,7 +42,7 @@ export type SliderEmits
  */
 export interface SliderExpose {
   /** Gets current slider value / Возвращает текущее значение слайдера */
-  getValue: () => SliderValueType
+  getValue: () => SliderValueType | undefined
   /** Sets slider value programmatically / Устанавливает значение слайдера программно */
   setValue: (value: SliderValueType) => void
   /** Increases current value by step / Увеличивает текущее значение на шаг */

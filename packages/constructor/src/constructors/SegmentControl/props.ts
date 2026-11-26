@@ -1,15 +1,23 @@
 import { defaultsTabsNavigation, type TabsNavigationPropsBasic } from '../TabsNavigation'
-import type { TabItemPropsBasic } from '../TabItem'
+import type { HorizontalScrollPropsBasic } from '../HorizontalScroll'
+import type { SegmentControlItemPropsBasic } from '../SegmentControlItem'
 
+/** Design token properties for SegmentControl / Свойства дизайн-токенов для SegmentControl */
 type SegmentControlPropsToken = {
   // :type [!] System label / Системная метка
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for the SegmentControl component.
+ *
+ * Базовые свойства компонента SegmentControl.
+ */
 export type SegmentControlPropsBasic<
-  TabItem extends TabItemPropsBasic = TabItemPropsBasic
-> = TabsNavigationPropsBasic<TabItem>
+  SegmentControlItem extends SegmentControlItemPropsBasic = SegmentControlItemPropsBasic,
+  HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic
+> = TabsNavigationPropsBasic<SegmentControlItem, HorizontalScroll>
 
 /**
  * Type describing incoming properties.
@@ -25,7 +33,8 @@ export type SegmentControlProps = SegmentControlPropsBasic & SegmentControlProps
  */
 export const defaultsSegmentControl = {
   ...defaultsTabsNavigation,
-  horizontalScrollAlign: true,
+  horizontalScrollAlign: 'block' as const,
+  horizontalScrollBleed: false,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

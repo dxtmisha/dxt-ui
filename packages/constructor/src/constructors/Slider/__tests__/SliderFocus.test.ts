@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { SliderFocusType } from '../basicTypes'
 import { SliderFocus } from '../SliderFocus'
 
@@ -26,5 +26,15 @@ describe('SliderFocus', () => {
     expect(focus.get()).toBe(SliderFocusType.max)
     expect(focus.isMax()).toBe(true)
     expect(focus.isMin()).toBe(false)
+  })
+
+  it('should keep state isolated between separate instances', () => {
+    const focusA = new SliderFocus()
+    const focusB = new SliderFocus()
+
+    focusA.set(SliderFocusType.min)
+
+    expect(focusA.isMin()).toBe(true)
+    expect(focusB.isMax()).toBe(true)
   })
 })

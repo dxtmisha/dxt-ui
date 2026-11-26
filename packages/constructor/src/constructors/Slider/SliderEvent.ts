@@ -1,5 +1,7 @@
 // ai-none
 
+import { type ConstrBind, getKey } from '@dxtmisha/functional'
+
 import type { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { SliderDragEvent } from './SliderDragEvent'
@@ -13,7 +15,6 @@ import type { SliderThumbMin } from './SliderThumbMin'
 import type { SliderValue } from './SliderValue'
 
 import { SliderFocusType } from './basicTypes'
-import type { SliderProps } from './props'
 
 /**
  * Class for handling slider events and keyboard interaction.
@@ -22,31 +23,31 @@ import type { SliderProps } from './props'
  */
 export class SliderEvent {
   /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param dragEvent drag event manager / менеджер событий перетаскивания
-   * @param emitsItem event emission manager / менеджер эмита событий
-   * @param enabled enabled state manager / менеджер активности
-   * @param focus handle focus manager / менеджер фокуса ползунков
-   * @param go navigation step manager / менеджер навигации и шагов
-   * @param marksData marks calculation data manager / менеджер данных вычисления меток
-   * @param maxElement max thumb handle manager / менеджер максимального ползунка
-   * @param minElement min thumb handle manager / менеджер минимального ползунка
-   * @param sliderElement element layout manager / менеджер верстки и координат
-   * @param value slider value bounds manager / менеджер значений слайдера
+   * Constructor.
+   *
+   * Конструктор.
+   * @param dragEvent getter returning drag event manager / функция, возвращающая менеджер событий перетаскивания
+   * @param emitsItem getter returning event emission manager / функция, возвращающая менеджер эмита событий
+   * @param enabled getter returning enabled state manager / функция, возвращающая менеджер активности
+   * @param focus getter returning handle focus manager / функция, возвращающая менеджер фокуса ползунков
+   * @param go getter returning navigation step manager / функция, возвращающая менеджер навигации и шагов
+   * @param marksData getter returning marks calculation data manager / функция, возвращающая менеджер данных вычисления меток
+   * @param maxElement getter returning max thumb handle manager / функция, возвращающая менеджер максимального ползунка
+   * @param minElement getter returning min thumb handle manager / функция, возвращающая менеджер минимального ползунка
+   * @param sliderElement getter returning element layout manager / функция, возвращающая менеджер верстки и координат
+   * @param value getter returning slider value bounds manager / функция, возвращающая менеджер значений слайдера
    */
   constructor(
-    protected readonly props: SliderProps,
-    protected readonly dragEvent: SliderDragEvent,
-    protected readonly emitsItem: SliderEmit,
-    protected readonly enabled: EnabledInclude,
-    protected readonly focus: SliderFocus,
-    protected readonly go: SliderGo,
-    protected readonly marksData: SliderMarksData,
-    protected readonly maxElement: SliderThumbMax,
-    protected readonly minElement: SliderThumbMin,
-    protected readonly sliderElement: SliderElement,
-    protected readonly value: SliderValue
+    protected readonly dragEvent: () => SliderDragEvent,
+    protected readonly emitsItem: () => SliderEmit,
+    protected readonly enabled: () => EnabledInclude,
+    protected readonly focus: () => SliderFocus,
+    protected readonly go: () => SliderGo,
+    protected readonly marksData: () => SliderMarksData,
+    protected readonly maxElement: () => SliderThumbMax,
+    protected readonly minElement: () => SliderThumbMin,
+    protected readonly sliderElement: () => SliderElement,
+    protected readonly value: () => SliderValue
   ) { }
 
   /**
@@ -55,7 +56,7 @@ export class SliderEvent {
    * Возвращает объект с обработчиками событий для элемента максимального ползунка.
    * @returns object with event handlers / объект с обработчиками событий
    */
-  get eventsMax(): Record<string, (event: any) => void> {
+  get eventsMax(): ConstrBind {
     return {
       onFocus: this.onFocusMax,
       onKeydown: this.onKeydown,
@@ -70,7 +71,7 @@ export class SliderEvent {
    * Возвращает объект с обработчиками событий для элемента минимального ползунка.
    * @returns object with event handlers / объект с обработчиками событий
    */
-  get eventsMin(): Record<string, (event: any) => void> {
+  get eventsMin(): ConstrBind {
     return {
       onFocus: this.onFocusMin,
       onKeydown: this.onKeydown,
@@ -85,11 +86,29 @@ export class SliderEvent {
    * Фокусирует соответствующий элемент ползунка на основе текущего типа фокуса.
    */
   focusElement(): void {
-    if (this.focus.isMin()) {
-      this.minElement.focus()
+    if (this.focus().isMin()) {
+      this.minElement().focus()
     } else {
-      this.maxElement.focus()
+      this.maxElement().focus()
     }
+  }
+
+  /**
+   * Handles focus event for maximum thumb handle.
+   *
+   * Обрабатывает событие фокуса для максимального ползунка.
+   */
+  readonly onFocusMax = (): void => {
+    this.focus().set(SliderFocusType.max)
+  }
+
+  /**
+   * Handles focus event for minimum thumb handle.
+   *
+   * Обрабатывает событие фокуса для минимального ползунка.
+   */
+  readonly onFocusMin = (): void => {
+    this.focus().set(SliderFocusType.min)
   }
 
   /**
@@ -99,43 +118,62 @@ export class SliderEvent {
    * @param event KeyboardEvent / событие клавиатуры
    */
   readonly onKeydown = (event: KeyboardEvent): void => {
-    if (!this.enabled.isEnabled) {
+    if (
+      event.isComposing
+      || !this.enabled().isEnabled
+    ) {
       return
     }
 
-    const key = event.code || event.key
+    const key = getKey(event)
+    const sliderElement = this.sliderElement()
+    const isHorizontalRtl = !sliderElement.isVertical() && sliderElement.isRtl()
 
     switch (key) {
       case 'ArrowRight':
-      case 'ArrowUp':
         event.preventDefault()
-        this.go.increase()
+        if (isHorizontalRtl) {
+          this.go().decrease()
+        } else {
+          this.go().increase()
+        }
         break
       case 'ArrowLeft':
+        event.preventDefault()
+        if (isHorizontalRtl) {
+          this.go().increase()
+        } else {
+          this.go().decrease()
+        }
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        this.go().increase()
+        break
       case 'ArrowDown':
         event.preventDefault()
-        this.go.decrease()
+        this.go().decrease()
         break
       case 'Home':
         event.preventDefault()
-        this.set(this.marksData.minNumber)
+        this.set(this.marksData().minNumber)
         break
       case 'End':
         event.preventDefault()
-        this.set(this.marksData.maxNumber)
+        this.set(this.marksData().maxNumber)
         break
       case 'PageUp':
         event.preventDefault()
-        if (this.marksData.is()) {
-          this.go.increase()
+        if (this.marksData().is()) {
+          this.go().increase()
         } else {
           this.page(true)
         }
         break
       case 'PageDown':
         event.preventDefault()
-        if (this.marksData.is()) {
-          this.go.decrease()
+        if (this.marksData().is()) {
+          this.go().decrease()
         } else {
           this.page(false)
         }
@@ -154,53 +192,32 @@ export class SliderEvent {
     event: MouseEvent | TouchEvent,
     forcedFocus?: SliderFocusType
   ): void => {
-    if (!this.enabled.isEnabled) {
+    if (
+      !this.enabled().isEnabled
+      || ('button' in event && event.button !== 0)
+    ) {
       return
     }
 
-    event.preventDefault()
+    if (event.cancelable !== false) {
+      event.preventDefault()
+    }
+
     event.stopPropagation()
 
-    const coordinate = this.dragEvent.getCoordinates(event)
+    const dragEvent = this.dragEvent()
+    const coordinate = dragEvent.getCoordinates(event)
 
     if (forcedFocus) {
-      this.focus.set(forcedFocus)
+      this.focus().set(forcedFocus)
     } else {
-      this.focus.set(this.sliderElement.getTypeByCoordinate(coordinate))
+      this.focus().set(this.sliderElement().getTypeByCoordinate(coordinate))
     }
 
     this.focusElement()
 
-    this.go.updateFromCoordinate(coordinate)
-    this.dragEvent.start()
-  }
-
-  /**
-   * Handles focus event for minimum thumb handle.
-   *
-   * Обрабатывает событие фокуса для минимального ползунка.
-   */
-  readonly onFocusMin = (): void => {
-    this.focus.set(SliderFocusType.min)
-  }
-
-  /**
-   * Handles focus event for maximum thumb handle.
-   *
-   * Обрабатывает событие фокуса для максимального ползунка.
-   */
-  readonly onFocusMax = (): void => {
-    this.focus.set(SliderFocusType.max)
-  }
-
-  /**
-   * Handles pointer start interaction for minimum thumb handle.
-   *
-   * Обрабатывает начало взаимодействия указателем для минимального ползунка.
-   * @param event MouseEvent or TouchEvent / событие мыши или касания
-   */
-  readonly onMousedownMin = (event: MouseEvent | TouchEvent): void => {
-    this.onMousedown(event, SliderFocusType.min)
+    this.go().updateFromCoordinate(coordinate)
+    dragEvent.start()
   }
 
   /**
@@ -214,15 +231,27 @@ export class SliderEvent {
   }
 
   /**
-   * Sets value for active focused thumb and emits change event.
+   * Handles pointer start interaction for minimum thumb handle.
    *
-   * Устанавливает значение для активного ползунка и вызывает событие изменения.
+   * Обрабатывает начало взаимодействия указателем для минимального ползунка.
+   * @param event MouseEvent or TouchEvent / событие мыши или касания
+   */
+  readonly onMousedownMin = (event: MouseEvent | TouchEvent): void => {
+    this.onMousedown(event, SliderFocusType.min)
+  }
+
+  /**
+   * Sets value for active focused thumb and emits input and change events.
+   *
+   * Устанавливает значение для активного ползунка и вызывает события ввода и изменения.
    * @param value target numeric value / целевое числовое значение
    */
   protected set(value: number): void {
-    this.value.set(value, this.focus.get())
-    this.emitsItem.emit('input')
-    this.emitsItem.emit('change')
+    const emitsItem = this.emitsItem()
+
+    this.value().set(value, this.focus().get())
+    emitsItem.emit('input')
+    emitsItem.emit('change')
   }
 
   /**
@@ -232,10 +261,14 @@ export class SliderEvent {
    * @param isIncrease direction flag / флаг направления
    */
   protected page(isIncrease: boolean): void {
-    const range = this.marksData.maxNumber - this.marksData.minNumber
-    const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
-    const currentValue = this.focus.isMin() ? this.value.min : this.value.max
-    const targetValue = isIncrease ? currentValue + pageStep : currentValue - pageStep
+    const marksData = this.marksData()
+    const range = marksData.maxNumber - marksData.minNumber
+    const step = marksData.stepNumber
+    const pageStep = Math.max(step, Math.round((range * 0.1) / step) * step)
+    const currentValue = this.focus().isMin() ? this.value().min : this.value().max
+    const targetValue = marksData.roundValue(
+      isIncrease ? currentValue + pageStep : currentValue - pageStep
+    )
 
     this.set(targetValue)
   }

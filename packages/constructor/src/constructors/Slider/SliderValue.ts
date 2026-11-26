@@ -1,11 +1,12 @@
 // ai-none
 
-import { isArray, isFilled } from '@dxtmisha/functional'
+import { isArray } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import type { SliderFocus } from './SliderFocus'
 import type { SliderMarks } from './SliderMarks'
+import type { SliderMarksData } from './SliderMarksData'
 
 import { SliderFocusType, type SliderValueType } from './basicTypes'
 import type { SliderProps } from './props'
@@ -17,23 +18,27 @@ import type { SliderProps } from './props'
  */
 export class SliderValue {
   /**
-   * Constructor
-   * @param focus focus handle manager / менеджер фокуса ползунка
-   * @param marks marks manager / менеджер меток
-   * @param model model value helper / помощник значения модели
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
+   * @param focus getter returning focus handle manager / функция, возвращающая менеджер фокуса ползунка
+   * @param marks getter returning marks manager / функция, возвращающая менеджер меток
+   * @param marksData getter returning marks data manager / функция, возвращающая менеджер данных меток
+   * @param model getter returning model value helper / функция, возвращающая помощник значения модели
    */
   constructor(
-    protected readonly focus: SliderFocus,
-    protected readonly marks: SliderMarks,
-    protected readonly model: ModelValueInclude<SliderValueType>,
-    protected readonly props: SliderProps
+    protected readonly props: Readonly<SliderProps>,
+    protected readonly focus: () => SliderFocus,
+    protected readonly marks: () => SliderMarks,
+    protected readonly marksData: () => SliderMarksData,
+    protected readonly model: () => ModelValueInclude<SliderValueType>
   ) { }
 
   /**
-   * Returns current numeric min value in pair or 0.
+   * Returns current numeric min value in pair or minimum range bound.
    *
-   * Возвращает текущее числовое минимальное значение в паре или 0.
+   * Возвращает текущее числовое минимальное значение в паре или минимальную границу диапазона.
    * @returns mark min / минимальное значение
    */
   get min(): number {
@@ -43,10 +48,10 @@ export class SliderValue {
       this.props.multiple
       && isArray(currentValue)
     ) {
-      return currentValue[0] ?? this.marks.getData().minNumber
+      return this.toNumericValue(currentValue[0]) ?? this.marksData().minNumber
     }
 
-    return this.marks.getData().minNumber
+    return this.marksData().minNumber
   }
 
   /**
@@ -59,18 +64,22 @@ export class SliderValue {
     const currentValue = this.get()
 
     if (isArray(currentValue)) {
-      return currentValue[1] ?? currentValue[0] ?? this.marks.getData().maxNumber
+      return this.toNumericValue(currentValue[1])
+        ?? this.toNumericValue(currentValue[0])
+        ?? this.marksData().maxNumber
     }
 
-    if (isFilled(currentValue, true)) {
-      return Number(currentValue)
+    const numericValue = this.toNumericValue(currentValue)
+
+    if (numericValue !== undefined) {
+      return numericValue
     }
 
     if (this.props.multiple) {
-      return this.marks.getData().maxNumber
+      return this.marksData().maxNumber
     }
 
-    return this.marks.getData().minNumber
+    return this.marksData().minNumber
   }
 
   /**
@@ -80,7 +89,7 @@ export class SliderValue {
    * @returns current model value / текущее значение модели
    */
   get(): SliderValueType | undefined {
-    return this.model.get()
+    return this.model().get()
   }
 
   /**
@@ -94,28 +103,67 @@ export class SliderValue {
     targetValue: SliderValueType,
     focusType: SliderFocusType = SliderFocusType.max
   ): void {
-    this.focus.set(focusType)
+    this.focus().set(focusType)
 
     if (
       this.props.multiple
       && isArray(targetValue)
     ) {
-      const checkedMin = this.marks.checkValue(targetValue[0], this.min, this.max, SliderFocusType.min)
-      const checkedMax = this.marks.checkValue(targetValue[1], checkedMin, this.max, SliderFocusType.max)
+      const rawMin = this.toNumericValue(targetValue[0])
+      const rawMax = this.toNumericValue(targetValue[1])
 
-      this.model.set([checkedMin, checkedMax])
-    } else if (typeof targetValue === 'number') {
-      const checkedValue = this.marks.checkValue(targetValue, this.min, this.max, focusType)
+      if (
+        rawMin !== undefined
+        && rawMax !== undefined
+      ) {
+        const marksData = this.marksData()
+        const marks = this.marks()
+        const minBound = marksData.minNumber
+        const maxBound = marksData.maxNumber
+        const boundedMax = marks.checkValue(rawMax, minBound, maxBound, SliderFocusType.max)
+        const checkedMin = marks.checkValue(rawMin, minBound, boundedMax, SliderFocusType.min)
+        const checkedMax = marks.checkValue(rawMax, checkedMin, maxBound, SliderFocusType.max)
+
+        this.model().set([checkedMin, checkedMax])
+      }
+    } else if (
+      typeof targetValue === 'number'
+      && Number.isFinite(targetValue)
+    ) {
+      const checkedValue = this.marks().checkValue(targetValue, this.min, this.max, focusType)
 
       if (this.props.multiple) {
         if (focusType === SliderFocusType.min) {
-          this.model.set([checkedValue, this.max])
+          this.model().set([checkedValue, this.max])
         } else {
-          this.model.set([this.min, checkedValue])
+          this.model().set([this.min, checkedValue])
         }
       } else {
-        this.model.set(checkedValue)
+        this.model().set(checkedValue)
       }
     }
+  }
+
+  /**
+   * Safely parses numeric or numeric-string value into a finite number.
+   *
+   * Безопасно преобразует числовое или строковое числовое значение в конечное число.
+   * @param value candidate value / проверяемое значение
+   * @returns finite number or undefined / конечное число или undefined
+   */
+  protected toNumericValue(value: unknown): number | undefined {
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : undefined
+    }
+
+    if (
+      typeof value === 'string'
+      && value.trim() !== ''
+    ) {
+      const parsed = Number(value)
+      return Number.isFinite(parsed) ? parsed : undefined
+    }
+
+    return undefined
   }
 }

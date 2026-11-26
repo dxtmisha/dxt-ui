@@ -102,16 +102,22 @@ import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
 import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
 import DemoSectionPage from './pages/components/DemoSectionPage.vue'
 import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
+import DemoSegmentControlItemPage from './pages/components/DemoSegmentControlItemPage.vue'
 import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
 import DemoSelectValuePage from './pages/components/DemoSelectValuePage.vue'
 import DemoSkeletonPage from './pages/components/DemoSkeletonPage.vue'
+import DemoSkeletonItemPage from './pages/components/DemoSkeletonItemPage.vue'
+import DemoSliderPage from './pages/components/DemoSliderPage.vue'
+import DemoSliderFieldPage from './pages/components/DemoSliderFieldPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
-import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
+import DemoTabItemPage from './pages/components/DemoTabItemPage.vue'
 import DemoTablePage from './pages/components/DemoTablePage.vue'
 import DemoTableFlexPage from './pages/components/DemoTableFlexPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
+import DemoTabsNavigationPage from './pages/components/DemoTabsNavigationPage.vue'
+import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
 import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
 
@@ -617,6 +623,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoSegmentControlPage
   },
   {
+    path: '/component-segment-control-item',
+    name: 'component-segment-control-item',
+    component: DemoSegmentControlItemPage
+  },
+  {
     path: '/component-selectable-area',
     name: 'component-selectable-area',
     component: DemoSelectableAreaPage
@@ -637,6 +648,21 @@ export const routes: RouteRecordRaw[] = [
     component: DemoSkeletonPage
   },
   {
+    path: '/component-skeleton-item',
+    name: 'component-skeleton-item',
+    component: DemoSkeletonItemPage
+  },
+  {
+    path: '/component-slider',
+    name: 'component-slider',
+    component: DemoSliderPage
+  },
+  {
+    path: '/component-slider-field',
+    name: 'component-slider-field',
+    component: DemoSliderFieldPage
+  },
+  {
     path: '/component-snackbar',
     name: 'component-snackbar',
     component: DemoSnackbarPage
@@ -645,6 +671,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-switch',
     name: 'component-switch',
     component: DemoSwitchPage
+  },
+  {
+    path: '/component-tab-item',
+    name: 'component-tab-item',
+    component: DemoTabItemPage
   },
   {
     path: '/component-table',
@@ -660,6 +691,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-tabs',
     name: 'component-tabs',
     component: DemoTabsPage
+  },
+  {
+    path: '/component-tabs-navigation',
+    name: 'component-tabs-navigation',
+    component: DemoTabsNavigationPage
   },
   {
     path: '/component-textarea',

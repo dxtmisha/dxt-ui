@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { DesignName } from '@dxtmisha/functional'
 import { SliderFocusType } from '../basicTypes'
 import { SliderMarks } from '../SliderMarks'
@@ -10,7 +10,7 @@ function createSliderMarks(props: Partial<SliderPropsBasic> = {}) {
   const fullProps = { ...props } as SliderPropsBasic
   const naming = new DesignName('dxt.slider')
   const marksData = new SliderMarksData(fullProps, naming)
-  const marks = new SliderMarks(fullProps, naming, marksData)
+  const marks = new SliderMarks(fullProps, () => marksData)
 
   return { marks, marksData }
 }
@@ -21,31 +21,29 @@ describe('SliderMarks', () => {
     expect(marks.getData()).toBe(marksData)
   })
 
-  it('should retrieve item from mark list or return fallback item if not found', () => {
+  it('should retrieve item from mark list by mark or value and fallback if not found', () => {
     const { marks } = createSliderMarks({
       marks: [
-        { mark: 20, value: 20, label: 'Twenty' },
-        { mark: 80, value: 80, label: 'Eighty' }
+        { mark: 20, value: 200, label: 'Twenty' },
+        { mark: 80, value: 800, label: 'Eighty' }
       ]
     })
 
-    const itemTwenty = marks.getItem(20)
-    expect(itemTwenty.label).toBe('Twenty')
-
-    const itemMissing = marks.getItem(50)
-    expect(itemMissing).toEqual({ mark: 50, value: 50, label: '50' })
+    expect(marks.getItem(20).label).toBe('Twenty')
+    expect(marks.getItem(800, 'value').label).toBe('Eighty')
+    expect(marks.getItem(50)).toEqual({ mark: 50, value: 50, label: '50' })
   })
 
-  it('should navigate next and prev values using step when magnet is disabled', () => {
+  it('should navigate next and prev values using step without floating-point drift', () => {
     const { marks } = createSliderMarks({
       min: 0,
-      max: 100,
-      step: 10,
+      max: 1,
+      step: 0.1,
       magnet: false
     })
 
-    expect(marks.getMarkNeighbor(50, true)).toBe(60)
-    expect(marks.getMarkNeighbor(50, false)).toBe(40)
+    expect(marks.getMarkNeighbor(0.2, true)).toBe(0.3)
+    expect(marks.getMarkNeighbor(0.3, false)).toBe(0.2)
   })
 
   it('should navigate next and prev values using mark items when magnet is enabled', () => {
@@ -56,25 +54,23 @@ describe('SliderMarks', () => {
 
     expect(marks.getMarkNeighbor(25, true)).toBe(75)
     expect(marks.getMarkNeighbor(75, false)).toBe(25)
+    expect(marks.getMarkNeighbor(100, true)).toBe(100)
+    expect(marks.getMarkNeighbor(0, false)).toBe(0)
   })
 
-  it('should snap to nearest mark when magnet is enabled', () => {
-    const { marks } = createSliderMarks({
+  it('should snap to nearest mark only when magnet is enabled', () => {
+    const withMagnet = createSliderMarks({
       marks: [0, 30, 80, 100],
       magnet: true
     })
+    expect(withMagnet.marks.getNearest(20)).toBe(30)
+    expect(withMagnet.marks.getNearest(70)).toBe(80)
 
-    expect(marks.getNearest(20)).toBe(30)
-    expect(marks.getNearest(70)).toBe(80)
-  })
-
-  it('should return raw target value when magnet is disabled', () => {
-    const { marks } = createSliderMarks({
+    const withoutMagnet = createSliderMarks({
       marks: [0, 30, 80, 100],
       magnet: false
     })
-
-    expect(marks.getNearest(20)).toBe(20)
+    expect(withoutMagnet.marks.getNearest(20)).toBe(20)
   })
 
   it('should restrict target value within min/max bounds in single mode', () => {
@@ -89,7 +85,7 @@ describe('SliderMarks', () => {
     expect(marks.checkValue(150, 0, 100, SliderFocusType.max)).toBe(100)
   })
 
-  it('should restrict min/max values respecting minimumDistance in multiple mode', () => {
+  it('should restrict min/max values respecting minimumDistance without exceeding outer range bounds', () => {
     const { marks } = createSliderMarks({
       min: 0,
       max: 100,
@@ -97,11 +93,13 @@ describe('SliderMarks', () => {
       multiple: true
     })
 
-    // Adjusting min handle towards max (maxCurrent = 60), minLimit becomes 0, maxLimit becomes (60 - 10) = 50
     expect(marks.checkValue(55, 20, 60, SliderFocusType.min)).toBe(50)
-
-    // Adjusting max handle towards min (minCurrent = 40), minLimit becomes (40 + 10) = 50, maxLimit becomes 100
     expect(marks.checkValue(45, 40, 80, SliderFocusType.max)).toBe(50)
+
+    // Extreme boundary: minCurrent + minimumDistance > maxNumber must never exceed maxNumber
+    expect(marks.checkValue(98, 95, 100, SliderFocusType.max)).toBe(100)
+    // Extreme boundary: maxCurrent - minimumDistance < minNumber must never go below minNumber
+    expect(marks.checkValue(2, 0, 5, SliderFocusType.min)).toBe(0)
   })
 
   it('should calculate value from percentage via toMark', () => {

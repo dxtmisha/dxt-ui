@@ -9,13 +9,13 @@ import { SliderThumb } from './SliderThumb'
  */
 export class SliderThumbMax extends SliderThumb {
   /**
-   * Returns current numeric mark/value for maximum thumb.
+   * Returns current numeric mark for maximum thumb.
    *
    * Возвращает текущее числовое значение метки для максимального ползунка.
    * @returns numeric value / числовое значение
    */
   get mark(): number {
-    return this.valueItem.max
+    return this.valueItem().max
   }
 
   /**
@@ -25,7 +25,7 @@ export class SliderThumbMax extends SliderThumb {
    * @returns numeric value / числовое значение
    */
   get value(): number {
-    return this.valueItem.max
+    return this.valueItem().max
   }
 
   /**
@@ -35,7 +35,7 @@ export class SliderThumbMax extends SliderThumb {
    * @returns minimum numeric value / минимальное числовое значение
    */
   get valuemin(): number {
-    return this.props.multiple ? this.valueItem.min : this.marksData.minNumber
+    return this.props.multiple ? this.valueItem().min : this.marksData().minNumber
   }
 
   /**
@@ -45,6 +45,6 @@ export class SliderThumbMax extends SliderThumb {
    * @returns maximum numeric value / максимальное числовое значение
    */
   get valuemax(): number {
-    return this.marksData.maxNumber
+    return this.marksData().maxNumber
   }
 }

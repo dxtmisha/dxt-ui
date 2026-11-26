@@ -1,4 +1,5 @@
 import { type TabsNavigationPropsBasic, defaultsTabsNavigation } from '@dxtmisha/constructor/TabsNavigation'
+import type { HorizontalScrollProps } from '../HorizontalScroll'
 import type { TabItemProps } from '../TabItem'
 
 export const propsValues = {
@@ -13,12 +14,15 @@ type PropsToken = {
 }
 
 /**
- * Type describing incoming properties/ Тип, описывающий входящие свойства
+ * Type describing incoming properties / Тип, описывающий входящие свойства
  */
-export type TabsNavigationProps = TabsNavigationPropsBasic<TabItemProps> & PropsToken
+export type TabsNavigationProps = TabsNavigationPropsBasic<
+  TabItemProps,
+  HorizontalScrollProps
+> & PropsToken
 
 /**
- * Default value for property/ Значение по умолчанию для свойства
+ * Default value for property / Значение по умолчанию для свойства
  */
 export const defaults: object = {
   ...defaultsTabsNavigation,

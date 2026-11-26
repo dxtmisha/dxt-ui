@@ -1,12 +1,14 @@
 import type { LabelProps } from '../../types/labelTypes'
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { BadgePropsBasic, BadgePropsInclude } from '../Badge'
+import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
+/** Design token properties for TabItem / Свойства дизайн-токенов для TabItem */
 type TabItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -19,25 +21,25 @@ type TabItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties type for TabItem component /
+ * Базовый тип свойств для компонента TabItem
+ */
 export type TabItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
-  Badge extends BadgePropsBasic = BadgePropsBasic
+  Badge extends BadgePropsBasic = BadgePropsBasic,
+  Progress extends ProgressPropsBasic = ProgressPropsBasic
 > = LabelProps
   & IconPropsInclude<Icon>
   & BadgePropsInclude<Badge>
+  & ProgressPropsInclude<Progress>
   & SkeletonPropsInclude
   & EnabledProps
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    /** Value/ Значения */
-    /** Item index/ Индекс элемента */
-    index?: any
-    /** URL address for links/ URL-адрес для ссылок */
-    href?: string
-
-    /** Style/ Стили */
-    /** HTML tag for the tab item/ HTML-тег для элемента вкладки */
+    /** Style / Стили */
+    /** HTML tag for the tab item / HTML-тег для элемента вкладки */
     tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string
   }
 

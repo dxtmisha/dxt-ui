@@ -1,9 +1,11 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
+
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { SelectableArea } from './SelectableArea'
 
@@ -43,11 +45,13 @@ export class SelectableAreaDesign<
   protected readonly item: SelectableArea
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -72,15 +76,29 @@ export class SelectableAreaDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Renders the decorative square selection overlay element.
+   *
+   * Рендерит декоративный элемент-квадрат выделения.
+   * @returns square placeholder node / узел квадрата
+   */
+  readonly renderSquare = (): VNode => {
+    return h('div', {
+      ref: this.item.i('square').squareElement,
+      class: this.classes?.value.square,
+      ...AriaStaticInclude.hidden()
+    })
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
    * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      reset: this.item.item.reset,
-      setSelected: this.item.item.set
+      reset: this.item.reset,
+      setSelected: this.item.setSelected
     } as EXPOSE
   }
 
@@ -119,34 +137,23 @@ export class SelectableAreaDesign<
    * @returns rendered node / отрендеренный узел
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('default', children, this.item.slotData)
     children.push(this.renderSquare())
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.events.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
-  }
-
-  /**
-   * Render square placeholder.
-   *
-   * Рендер элемента-квадрата.
-   * @returns square placeholder node / узел квадрата
-   */
-  protected readonly renderSquare = (): VNode => {
-    return h('div', {
-      ref: this.item.square.squareElement,
-      class: this.classes?.value.square
-    })
   }
 }

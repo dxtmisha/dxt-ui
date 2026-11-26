@@ -14,7 +14,16 @@ import {
 } from './types'
 
 /**
- * SegmentControlDesign
+ * SegmentControlDesign handles the visual layout, HTML rendering, and slot integration of SegmentControl.
+ * Extends TabsNavigationDesign and renders each navigation item using the segmentControlItem sub-component.
+ *
+ * SegmentControlDesign управляет визуальной разметкой, HTML-рендерингом и интеграцией слотов SegmentControl.
+ * Расширяет TabsNavigationDesign и отрисовывает каждый элемент навигации с помощью субкомпонента segmentControlItem.
+ *
+ * @template COMP type describing component configuration / тип, описывающий конфигурацию компонентов
+ * @template EXPOSE type describing exposed API structure / тип, описывающий структуру экспортируемого API
+ * @template CLASSES type describing CSS classes map / тип, описывающий карту CSS-классов
+ * @template P type describing properties interface / тип, описывающий интерфейс свойств
  */
 export class SegmentControlDesign<
   COMP extends SegmentControlComponents,
@@ -27,14 +36,17 @@ export class SegmentControlDesign<
     CLASSES,
     P
   > {
-  protected readonly itemComponent: string = 'segmentControlItem'
+  /** Sub-component key used for rendering individual segment items / Ключ субкомпонента для рендеринга отдельных элементов сегментов */
+  protected override readonly itemComponent: string = 'segmentControlItem'
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for initializing the segment control design renderer.
+   *
+   * Конструктор для инициализации отрисовщика дизайна сегментированного управления.
+   * @param name component class name / название класса компонента
+   * @param props reactive input properties / реактивные входные свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor business logic orchestrator constructor / конструктор оркестратора бизнес-логики
    */
   constructor(
     name: string,

@@ -1,22 +1,9 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
+
+import type { HorizontalScrollInclude } from '../../HorizontalScroll'
 import { TabsNavigationSize } from '../TabsNavigationSize'
-
-let mountFn: () => void = () => {}
-let unmountFn: () => void = () => {}
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => {
-      mountFn = fn
-    },
-    onUnmounted: (fn: () => void) => {
-      unmountFn = fn
-    }
-  }
-})
 
 describe('TabsNavigationSize', () => {
   beforeEach(() => {
@@ -25,38 +12,98 @@ describe('TabsNavigationSize', () => {
 
   afterEach(() => {
     vi.useRealTimers()
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 
-  it('should initialize EventItem on mount and remove on unmount', async () => {
+  it('should evaluate static is predicate based on divider prop', () => {
+    expect(TabsNavigationSize.is()).toBe(false)
+    expect(TabsNavigationSize.is({})).toBe(false)
+    expect(TabsNavigationSize.is({ divider: false })).toBe(false)
+    expect(TabsNavigationSize.is({ divider: true })).toBe(true)
+  })
+
+  it('should initialize EventItem onMounted, update --sys-scroll-width with 64ms debounce, and clean up onUnmounted', async () => {
+    const disconnect = vi.fn()
+    const observe = vi.fn()
+    let observerCallback: ResizeObserverCallback | undefined
+
+    class MockResizeObserver {
+      constructor(callback: ResizeObserverCallback) {
+        observerCallback = callback
+      }
+
+      observe = observe
+      disconnect = disconnect
+      unobserve = vi.fn()
+    }
+
+    vi.stubGlobal('ResizeObserver', MockResizeObserver)
+
     const element = document.createElement('div')
-    Object.defineProperty(element, 'scrollWidth', { value: 300, writable: true })
-    const mockScroll = {
-      elementHtml: element
-    } as any
+    document.body.appendChild(element)
+    Object.defineProperty(element, 'scrollWidth', { value: 300, writable: true, configurable: true })
 
-    const size = new TabsNavigationSize(mockScroll)
+    const getScroll = vi.fn(() => ({ elementHtml: element }) as unknown as HorizontalScrollInclude)
+    const size = new TabsNavigationSize(getScroll)
 
-    // Trigger mount
-    await mountFn()
+    // Side-effect-free constructor
+    expect(getScroll).not.toHaveBeenCalled()
 
-    // It should have initialized event and set style width
-    // listener() is called during mount
-    vi.advanceTimersByTime(100) // update is debounced by 64ms
+    await size.onMounted()
 
+    expect(observe).toHaveBeenCalledWith(element)
+    expect(element.style.getPropertyValue('--sys-scroll-width')).toBe('')
+
+    vi.advanceTimersByTime(64)
     expect(element.style.getPropertyValue('--sys-scroll-width')).toBe('300px')
 
-    // Change scrollWidth and trigger event handler directly
-    Object.defineProperty(element, 'scrollWidth', { value: 450 })
-    // @ts-expect-error accessing protected listener
-    size.listener()
+    // Simulate resize via ResizeObserver callback
+    Object.defineProperty(element, 'scrollWidth', { value: 450, writable: true, configurable: true })
+    observerCallback?.([] as ResizeObserverEntry[], {} as ResizeObserver)
 
-    vi.advanceTimersByTime(100)
+    expect(element.style.getPropertyValue('--sys-scroll-width')).toBe('')
+    vi.advanceTimersByTime(64)
     expect(element.style.getPropertyValue('--sys-scroll-width')).toBe('450px')
 
-    // Trigger unmount
-    unmountFn()
+    // Unmount during pending debounce timer must cancel timer and disconnect observer
+    Object.defineProperty(element, 'scrollWidth', { value: 600, writable: true, configurable: true })
+    observerCallback?.([] as ResizeObserverEntry[], {} as ResizeObserver)
 
-    // event should be stopped
-    expect(size['event']).toBeDefined()
+    size.onUnmounted()
+    expect(disconnect).toHaveBeenCalledTimes(1)
+
+    vi.advanceTimersByTime(100)
+    expect(element.style.getPropertyValue('--sys-scroll-width')).toBe('')
+
+    element.remove()
+  })
+
+  it('should abort setup without attaching ResizeObserver if unmounted before nextTick completes', async () => {
+    const observe = vi.fn()
+    class MockResizeObserver {
+      observe = observe
+      disconnect = vi.fn()
+      unobserve = vi.fn()
+    }
+    vi.stubGlobal('ResizeObserver', MockResizeObserver)
+
+    const element = document.createElement('div')
+    const size = new TabsNavigationSize(() => ({ elementHtml: element }) as unknown as HorizontalScrollInclude)
+
+    const mountPromise = size.onMounted()
+    size.onUnmounted()
+    await mountPromise
+    await nextTick()
+
+    expect(observe).not.toHaveBeenCalled()
+  })
+
+  it('should handle missing container element without throwing', async () => {
+    const size = new TabsNavigationSize(() => ({ elementHtml: undefined }) as unknown as HorizontalScrollInclude)
+
+    await expect(size.onMounted()).resolves.toBeUndefined()
+    vi.advanceTimersByTime(100)
+    expect(() => size.onUnmounted()).not.toThrow()
   })
 })

@@ -1,5 +1,11 @@
-import { toRef, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
+import { computed, toRef } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract,
+  ListDataRef,
+  type ListSelectedList
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -7,16 +13,46 @@ import { ModelInclude } from '../../classes/ModelInclude'
 
 import { HorizontalScrollInclude } from '../HorizontalScroll'
 
-import { TabsNavigationSelected } from './TabsNavigationSelected'
+import { TabsNavigationControl } from './TabsNavigationControl'
 import { TabsNavigationFocus } from './TabsNavigationFocus'
 import { TabsNavigationIds } from './TabsNavigationIds'
 import { TabsNavigationIndicator } from './TabsNavigationIndicator'
-import { TabsNavigationControl } from './TabsNavigationControl'
+import { TabsNavigationSelected } from './TabsNavigationSelected'
 import { TabsNavigationSize } from './TabsNavigationSize'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { EventClickValue } from '../../types/eventClickTypes'
-import type { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
+import type {
+  TabsNavigationComponents,
+  TabsNavigationEmits,
+  TabsNavigationExpose,
+  TabsNavigationSlots
+} from './types'
+
+/** TabsNavigation dependency constructors type / Тип конструкторов зависимостей TabsNavigation */
+export type TabsNavigationConstructors = {
+  /** Tab keyboard control constructor / Конструктор управления клавиатурой вкладок */
+  control: typeof TabsNavigationControl
+  /** Reactive list data reference constructor / Конструктор реактивной ссылки на данные списка */
+  data: typeof ListDataRef
+  /** Event click listener constructor / Конструктор обработчика кликов */
+  event: typeof EventClickInclude
+  /** Focus management constructor / Конструктор управления фокусом */
+  focus: typeof TabsNavigationFocus
+  /** Tab DOM identifiers manager constructor / Конструктор менеджера DOM-идентификаторов вкладок */
+  ids: typeof TabsNavigationIds
+  /** Dynamic tab active indicator constructor / Конструктор активного индикатора вкладки */
+  indicator: typeof TabsNavigationIndicator
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<ListSelectedList | undefined>
+  /** Horizontal scroll inclusion constructor / Конструктор подключения горизонтальной прокрутки */
+  scroll: typeof HorizontalScrollInclude
+  /** Selected tab state constructor / Конструктор состояния выбранной вкладки */
+  selected: typeof TabsNavigationSelected
+  /** Tab container resize observer constructor / Конструктор отслеживания размеров контейнера вкладок */
+  size: typeof TabsNavigationSize
+}
 
 /**
  * TabsNavigation manages the core business logic of a tab navigation component.
@@ -25,134 +61,136 @@ import type { TabsNavigationProps } from './props'
  * TabsNavigation управляет основной бизнес-логикой компонента навигации вкладок.
  * Координирует выбор элементов, управление фокусом, движение индикатора, прокрутку и управление с клавиатуры.
  */
-export class TabsNavigation {
-  /** Scroll handling helper / Вспомогательный класс для работы с прокруткой */
-  readonly scroll: HorizontalScrollInclude
-
-  /** Selected tab state helper / Класс для работы с выбранным состоянием вкладки */
-  readonly selected: TabsNavigationSelected
-
-  /** Focus management helper / Класс для управления фокусом */
-  readonly focus: TabsNavigationFocus
-
-  /** Reactive list data reference / Реактивная ссылка на данные списка */
-  readonly data: ListDataRef
-
-  /** Tab DOM identifiers manager / Менеджер DOM-идентификаторов вкладок */
-  readonly ids: TabsNavigationIds
-
-  /** Dynamic tab active indicator helper / Вспомогательный класс для управления активным индикатором вкладки */
-  readonly indicator: TabsNavigationIndicator
-
-  /** Tab keyboard control helper / Вспомогательный класс для управления с клавиатуры */
-  readonly control: TabsNavigationControl
-
-  /** Tab size observer helper / Вспомогательный класс для отслеживания размеров вкладок */
-  readonly size: TabsNavigationSize
-
-  /** Event click listener helper / Вспомогательный класс для обработки кликов */
-  readonly event: EventClickInclude
+export class TabsNavigation extends DesignLogicAbstract<
+  HTMLDivElement,
+  TabsNavigationComponents,
+  TabsNavigationEmits,
+  TabsNavigationSlots,
+  TabsNavigationProps,
+  TabsNavigationConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TabsNavigationConstructors> = {
+    control: {
+      item: TabsNavigationControl,
+      parameters: () => [
+        () => this.i('data'),
+        () => this.i('focus'),
+        () => this.i('scroll'),
+        () => this.i('selected')
+      ]
+    },
+    data: {
+      item: ListDataRef,
+      parameters: () => [
+        toRef(this.props, 'list'),
+        computed(() => this.i('focus').item.value),
+        undefined,
+        undefined,
+        undefined,
+        computed(() => this.i('selected').actualItem.value),
+        toRef(this.props, 'keyValue'),
+        toRef(this.props, 'keyLabel')
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    focus: {
+      item: TabsNavigationFocus,
+      parameters: () => [
+        () => this.i('scroll'),
+        () => this.i('selected')
+      ]
+    },
+    ids: {
+      item: TabsNavigationIds,
+      parameters: () => [
+        () => this.i('data')
+      ]
+    },
+    indicator: {
+      item: TabsNavigationIndicator,
+      conditions: () => true,
+      parameters: () => [
+        () => this.i('scroll').elementHtml,
+        this.naming,
+        () => this.i('selected')
+      ]
+    },
+    model: {
+      item: ModelInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits
+      ]
+    },
+    scroll: {
+      item: HorizontalScrollInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    selected: {
+      item: TabsNavigationSelected,
+      parameters: () => [
+        this.props,
+        () => this.i('model')
+      ]
+    },
+    size: {
+      item: TabsNavigationSize,
+      conditions: () => TabsNavigationSize.is(this.props),
+      parameters: () => [
+        () => this.i('scroll')
+      ]
+    }
+  }
 
   /**
-   * Constructor for initializing all necessary components for tab navigation.
+   * Returns ARIA attributes for the tablist container element.
    *
-   * Конструктор для инициализации всех необходимых компонентов навигации вкладок.
-   * @param props input configuration properties / входные конфигурационные свойства
-   * @param element main HTML element / главный HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components registry of design components / реестр дизайн-компонентов
-   * @param slots slot functions wrapper / обертка функций слотов
-   * @param emits event emitter callback / функция обратного вызова для генерации событий
-   * @param constructors optional custom implementation class constructors / опциональные пользовательские конструкторы классов
+   * Возвращает ARIA-атрибуты для контейнера списка вкладок.
+   * @returns ARIA attributes dictionary / словарь ARIA-атрибутов
    */
-  constructor(
-    protected readonly props: TabsNavigationProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TabsNavigationComponents, TabsNavigationProps>,
-    protected readonly slots?: TabsNavigationSlots,
-    protected readonly emits?: ConstrEmit<TabsNavigationEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      HorizontalScrollIncludeConstructor?: typeof HorizontalScrollInclude
-      ListDataRefConstructor?: typeof ListDataRef
-      ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
-      TabsNavigationControlConstructor?: typeof TabsNavigationControl
-      TabsNavigationIdsConstructor?: typeof TabsNavigationIds
-      TabsNavigationFocusConstructor?: typeof TabsNavigationFocus
-      TabsNavigationIndicatorConstructor?: typeof TabsNavigationIndicator
-      TabsNavigationSelectedConstructor?: typeof TabsNavigationSelected
-      TabsNavigationSizeConstructor?: typeof TabsNavigationSize
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      HorizontalScrollIncludeConstructor = HorizontalScrollInclude,
-      ListDataRefConstructor = ListDataRef,
-      ModelIncludeConstructor = ModelInclude,
-      TabsNavigationControlConstructor = TabsNavigationControl,
-      TabsNavigationIdsConstructor = TabsNavigationIds,
-      TabsNavigationFocusConstructor = TabsNavigationFocus,
-      TabsNavigationIndicatorConstructor = TabsNavigationIndicator,
-      TabsNavigationSelectedConstructor = TabsNavigationSelected,
-      TabsNavigationSizeConstructor = TabsNavigationSize
-    } = constructors
-
-    this.scroll = new HorizontalScrollIncludeConstructor(
-      props,
-      naming,
-      components
-    )
-
-    this.selected = new TabsNavigationSelectedConstructor(props)
-    this.focus = new TabsNavigationFocusConstructor(
-      this.scroll,
-      this.selected
-    )
-    this.data = new ListDataRefConstructor(
-      toRef(props, 'list'),
-      this.focus.item,
-      undefined,
-      undefined,
-      undefined,
-      this.selected.actualItem,
-      toRef(props, 'keyValue'),
-      toRef(props, 'keyLabel')
-    )
-
-    this.ids = new TabsNavigationIdsConstructor(
-      props,
-      this.data
-    )
-
-    this.indicator = new TabsNavigationIndicatorConstructor(
-      props,
-      () => this.scroll.elementHtml,
-      naming,
-      this.selected
-    )
-    this.control = new TabsNavigationControlConstructor(
-      this.selected,
-      this.focus,
-      this.data
-    )
-    this.size = new TabsNavigationSizeConstructor(this.scroll)
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    new ModelIncludeConstructor('selected', emits, this.selected.item)
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('tablist'),
+      ...AriaStaticInclude.orientation('horizontal')
+    }
   }
 
   /**
    * Returns binding attributes for the container element.
    *
    * Возвращает атрибуты привязки для контейнера.
-   * @returns object containing role, tabIndex, and keyboard bindings / объект с ролью, tabIndex и привязками клавиатуры
+   * @returns object containing role, orientation, tabIndex, and keyboard focus bindings / объект с ролью, ориентацией, tabIndex и привязками фокуса клавиатуры
    */
-  get binds(): Record<string, any> {
+  get binds(): ConstrBind {
     return {
       tabindex: 0,
-      ...this.control.binds,
-      ...AriaStaticInclude.role('tablist')
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Returns exposed API properties and methods.
+   *
+   * Возвращает экспортируемые свойства и методы API.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  get expose(): TabsNavigationExpose {
+    return {
+      ids: () => this.i('ids').ids.value
     }
   }
 
@@ -166,8 +204,28 @@ export class TabsNavigation {
   readonly onClick = (
     event: MouseEvent,
     options?: EventClickValue
-  ) => {
-    this.selected.set(options?.value)
-    this.event.onClick(event, options)
+  ): void => {
+    this.i('selected').set(options?.value)
+    this.i('event').onClick(event, options)
+  }
+
+  /**
+   * Lazily initializes keyboard control on container focus.
+   *
+   * Лениво инициализирует управление клавиатурой при получении фокуса контейнером.
+   */
+  protected readonly onFocus = (): void => {
+    this.i('control').onFocus()
+  }
+
+  /**
+   * Stops active keyboard control on container blur when initialized.
+   *
+   * Останавливает активное управление клавиатурой при потере фокуса контейнером, если оно инициализировано.
+   */
+  protected readonly onBlur = (): void => {
+    if (this.hasInstance('control')) {
+      this.i('control').onBlur()
+    }
   }
 }

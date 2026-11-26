@@ -9,10 +9,10 @@ const propsNames: StorybookProps = [
   { name: 'backgroundVariant', type: 'boolean' },
   { name: 'border', type: 'boolean' },
   { name: 'borderVariant', type: 'boolean' },
-  { name: 'itemAttrs', type: 'Record<string, any>' },
+  { name: 'itemAttrs', type: 'ConstrBind' },
   { name: 'label', type: 'string | number' },
-  { name: 'length', type: 'string | number | [number, number]' },
-  { name: 'tag', type: 'string | any' },
+  { name: 'length', type: 'string | number | readonly [number, number]' },
+  { name: 'tag', type: 'string | Component' },
   { name: 'text', type: 'boolean' },
   { name: 'textVariant', type: 'boolean' }
   // :propsList [!] System label / Системная метка
@@ -20,7 +20,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'default', description: `Default slot for the skeleton item / Слот по умолчанию для элемента скелетона`, properties: [{ name: 'props', type: '((props?: Record<string, unknown> | undefined) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

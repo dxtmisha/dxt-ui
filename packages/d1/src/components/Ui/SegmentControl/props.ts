@@ -1,4 +1,5 @@
 import { type SegmentControlPropsBasic, defaultsSegmentControl } from '@dxtmisha/constructor/SegmentControl'
+import type { HorizontalScrollProps } from '../HorizontalScroll'
 import type { SegmentControlItemProps } from '../SegmentControlItem'
 
 export const propsValues = {
@@ -13,9 +14,12 @@ type PropsToken = {
 }
 
 /**
- * Type describing incoming properties/ Тип, описывающий входящие свойства
+ * Type describing incoming properties / Тип, описывающий входящие свойства
  */
-export type SegmentControlProps = SegmentControlPropsBasic<SegmentControlItemProps> & PropsToken
+export type SegmentControlProps = SegmentControlPropsBasic<
+  SegmentControlItemProps,
+  HorizontalScrollProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

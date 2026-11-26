@@ -310,6 +310,30 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textMax: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Maximum value text',
+        ru: 'Текст максимального значения'
+      }
+    },
+    hide: true
+  },
+  textMin: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Minimum value text',
+        ru: 'Текст минимального значения'
+      }
+    },
+    hide: true
+  },
   textMore: {
     type: StorybookControl.text,
     options: {

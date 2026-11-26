@@ -53,6 +53,7 @@ export * from './classes/TextIncludeInstance'
 export * from './classes/TouchEventInclude'
 
 // Functions
+export * from './functions/escapeAttributeValue'
 export * from './functions/getAreaValue'
 export * from './functions/getClassTagAStatic'
 export * from './functions/setAreaValue'

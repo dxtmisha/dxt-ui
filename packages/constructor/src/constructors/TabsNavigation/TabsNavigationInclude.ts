@@ -1,8 +1,7 @@
-// ai-none
-
 import {
   type ConstrBind,
-  getBind
+  getBind,
+  getObjectNoUndefined
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -32,12 +31,23 @@ export class TabsNavigationInclude<
     PropsExtra,
     TabsNavigationExpose,
     TabsNavigationSlots,
-    Record<string, any>
+    Partial<ConstrBind<TabsNavigationProps>>
   > {
   /** Sub-component name / Название субкомпонента */
-  protected readonly name = 'tabsNavigation'
+  protected override readonly name = 'tabsNavigation'
   /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
-  protected readonly propsAttrsName = 'tabsNavigationAttrs'
+  protected override readonly propsAttrsName = 'tabsNavigationAttrs'
+
+  /**
+   * Checks whether tabs navigation properties are provided.
+   *
+   * Проверяет, переданы ли свойства навигации вкладок.
+   * @param props input properties / входные свойства
+   * @returns true if tabs or tabsNavigationAttrs are present / true, если указаны tabs или tabsNavigationAttrs
+   */
+  static is(props?: Readonly<TabsNavigationPropsInclude>): boolean {
+    return Boolean(props?.tabs || props?.tabsNavigationAttrs)
+  }
 
   /**
    * Getter returning list of generated IDs.
@@ -50,17 +60,17 @@ export class TabsNavigationInclude<
   }
 
   /**
-   * Resolves and returns dynamic properties for horizontal scroll.
+   * Resolves and returns dynamic properties for tabs navigation.
    *
-   * Разрешает и возвращает динамические свойства для горизонтальной прокрутки.
+   * Разрешает и возвращает динамические свойства для навигации вкладок.
    * @returns resolved properties or undefined / разрешенные свойства или undefined
    */
-  protected override getExtra() {
+  protected override getExtra(): Partial<ConstrBind<TabsNavigationProps>> | undefined {
     return getBind(
       this.getProps().tabs,
       super.getExtra(),
       'list'
-    )
+    ) as Partial<ConstrBind<TabsNavigationProps>> | undefined
   }
 
   /**
@@ -69,10 +79,12 @@ export class TabsNavigationInclude<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<TabsNavigationProps>> {
     return {
       ...super.toBinds(),
-      itemAttrs: this.getProps().tabItemAttrs
+      ...getObjectNoUndefined({
+        itemAttrs: this.getProps().tabItemAttrs
+      })
     }
   }
 }

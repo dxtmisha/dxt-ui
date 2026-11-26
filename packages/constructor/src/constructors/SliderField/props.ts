@@ -4,6 +4,7 @@ import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
 import { defaultsSlider, type SliderPropsBasic, type SliderPropsInclude, type SliderValueType } from '../Slider'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
+import type { TextMaxPropsInclude, TextMinPropsInclude } from '../../types/textTypes'
 
 /** SliderField design token properties interface / Интерфейс токенов дизайна свойств SliderField */
 type SliderFieldPropsToken = {
@@ -28,6 +29,8 @@ export type SliderFieldPropsBasic<
   & FieldMessagePropsInclude<FieldMessage>
   & FieldValueProps<SliderValueType>
   & SliderPropsInclude<Slider>
+  & TextMaxPropsInclude
+  & TextMinPropsInclude
   & {
     /** Show value in label title / Показывать значение в заголовке метки */
     showValueInLabel?: boolean

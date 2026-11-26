@@ -2,6 +2,8 @@
 
 import { SliderThumb } from './SliderThumb'
 
+import type { SliderPropsBasic } from './props'
+
 /**
  * Class representing minimum slider thumb handle.
  *
@@ -9,13 +11,24 @@ import { SliderThumb } from './SliderThumb'
  */
 export class SliderThumbMin extends SliderThumb {
   /**
-   * Returns current numeric mark/value for minimum thumb.
+   * Checks whether minimum thumb handle is enabled for range mode.
+   *
+   * Проверяет, активен ли минимальный ползунок для режима диапазона.
+   * @param props input properties / входящие свойства
+   * @returns true if multiple range mode is enabled / true, если включён режим диапазона
+   */
+  static is(props?: Readonly<SliderPropsBasic>): boolean {
+    return Boolean(props?.multiple)
+  }
+
+  /**
+   * Returns current numeric mark for minimum thumb.
    *
    * Возвращает текущее числовое значение метки для минимального ползунка.
    * @returns numeric value / числовое значение
    */
   get mark(): number {
-    return this.valueItem.min
+    return this.valueItem().min
   }
 
   /**
@@ -25,7 +38,7 @@ export class SliderThumbMin extends SliderThumb {
    * @returns numeric value / числовое значение
    */
   get value(): number {
-    return this.valueItem.min
+    return this.valueItem().min
   }
 
   /**
@@ -35,7 +48,7 @@ export class SliderThumbMin extends SliderThumb {
    * @returns minimum numeric value / минимальное числовое значение
    */
   get valuemin(): number {
-    return this.marksData.minNumber
+    return this.marksData().minNumber
   }
 
   /**
@@ -45,6 +58,6 @@ export class SliderThumbMin extends SliderThumb {
    * @returns maximum numeric value / максимальное числовое значение
    */
   get valuemax(): number {
-    return this.valueItem.max
+    return this.valueItem().max
   }
 }

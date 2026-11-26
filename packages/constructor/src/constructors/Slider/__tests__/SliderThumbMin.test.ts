@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
@@ -12,18 +12,25 @@ import { SliderValue } from '../SliderValue'
 import type { SliderProps } from '../props'
 
 describe('SliderThumbMin', () => {
-  it('should return value.min as mark property in single mode', () => {
+  it('should evaluate static is predicate based on multiple prop', () => {
+    expect(SliderThumbMin.is(undefined)).toBe(false)
+    expect(SliderThumbMin.is({ multiple: false })).toBe(false)
+    expect(SliderThumbMin.is({ multiple: true })).toBe(true)
+  })
+
+  it('should return value.min as mark and value in single mode', () => {
     const props = { min: 0, max: 100, multiple: false } as SliderProps
     const naming = new DesignName('dxt.slider')
     const focus = new SliderFocus()
     const marksData = new SliderMarksData(props, naming)
-    const marks = new SliderMarks(props, naming, marksData)
+    const marks = new SliderMarks(props, () => marksData)
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(75))
-    const value = new SliderValue(focus, marks, model, props)
+    const value = new SliderValue(props, () => focus, () => marks, () => marksData, () => model)
 
-    const thumbMin = new SliderThumbMin(props, marksData, marks, value)
+    const thumbMin = new SliderThumbMin(props, () => marks, () => marksData, () => value)
 
     expect(thumbMin.mark).toBe(0)
+    expect(thumbMin.value).toBe(0)
     expect(thumbMin.label).toBe('0')
     expect(thumbMin.aria).toEqual({
       'role': 'slider',
@@ -34,18 +41,19 @@ describe('SliderThumbMin', () => {
     })
   })
 
-  it('should return value.min as mark property in multiple range mode', () => {
+  it('should return value.min and max thumb ceiling as valuemax in multiple range mode', () => {
     const props = { min: 0, max: 100, multiple: true } as SliderProps
     const naming = new DesignName('dxt.slider')
     const focus = new SliderFocus()
     const marksData = new SliderMarksData(props, naming)
-    const marks = new SliderMarks(props, naming, marksData)
+    const marks = new SliderMarks(props, () => marksData)
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref([25, 85]))
-    const value = new SliderValue(focus, marks, model, props)
+    const value = new SliderValue(props, () => focus, () => marks, () => marksData, () => model)
 
-    const thumbMin = new SliderThumbMin(props, marksData, marks, value)
+    const thumbMin = new SliderThumbMin(props, () => marks, () => marksData, () => value)
 
     expect(thumbMin.mark).toBe(25)
+    expect(thumbMin.value).toBe(25)
     expect(thumbMin.label).toBe('25')
     expect(thumbMin.aria).toEqual({
       'role': 'slider',

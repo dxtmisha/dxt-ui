@@ -42,10 +42,12 @@ export interface SegmentControlItemSlots extends TabItemSlots {
  * Тип, описывающий подклассы.
  */
 export type SegmentControlItemClasses = {
+  /** Main element class / Класс главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string
   icon: string
   badge: string
+  loading: string
   // :classes [!] System label / Системная метка
 }

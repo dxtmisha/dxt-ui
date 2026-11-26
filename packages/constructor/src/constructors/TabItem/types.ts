@@ -47,10 +47,12 @@ export interface TabItemSlots extends LabelSlots {
  * Тип, описывающий подклассы.
  */
 export type TabItemClasses = {
+  /** Main element class / Класс главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string
   icon: string
   badge: string
+  loading: string
   // :classes [!] System label / Системная метка
 }

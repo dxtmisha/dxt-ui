@@ -1,22 +1,24 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { Skeleton, type SkeletonClassesList } from '../Skeleton'
 
 import { Slider } from './Slider'
 
-import { type SliderMarkItem } from './basicTypes'
-import { type SliderPropsBasic } from './props'
-import {
-  type SliderClasses,
-  type SliderComponents,
-  type SliderEmits,
-  type SliderExpose,
-  type SliderSlots
+import type { SliderMarkItem, SliderValueType } from './basicTypes'
+import type { SliderPropsBasic } from './props'
+import type {
+  SliderClasses,
+  SliderComponents,
+  SliderEmits,
+  SliderExpose,
+  SliderSlots
 } from './types'
 
 /**
@@ -42,7 +44,9 @@ export class SliderDesign<
   protected readonly item: Slider
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -78,10 +82,10 @@ export class SliderDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: () => this.item.model.get(),
-      setValue: val => this.item.value.set(val),
-      increase: () => this.item.go.increase(),
-      decrease: () => this.item.go.decrease()
+      getValue: () => this.item.i('model').get(),
+      setValue: (value: SliderValueType) => this.item.i('value').set(value),
+      increase: () => this.item.i('go').increase(),
+      decrease: () => this.item.i('go').decrease()
     } as EXPOSE
   }
 
@@ -93,9 +97,7 @@ export class SliderDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        ...this.item.classes
-      },
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         rail: this.naming.getSubClass('rail'),
@@ -119,9 +121,7 @@ export class SliderDesign<
    * @returns custom styles / пользовательские стили
    */
   protected initStyles(): ConstrStyles {
-    return {
-      ...this.item.styles
-    }
+    return this.item.styles
   }
 
   /**
@@ -143,11 +143,14 @@ export class SliderDesign<
 
     return h(
       'div',
-      {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
@@ -156,64 +159,75 @@ export class SliderDesign<
    * Renders minimum thumb handle button for range mode.
    *
    * Рендерит кнопку минимального ползунка для режима диапазона.
-   * @returns VNode or undefined / VNode или undefined
+   * @returns VNode array / массив VNode
    */
   readonly renderThumbMin = (): VNode[] => {
-    if (this.props.multiple) {
-      const minLabelContent = this.slots?.minLabel
-        ? this.initSlot('minLabel', undefined, this.item.minElement.getSlot())
-        : this.item.minElement.label
+    return this.item.callInstance('thumbMin', (thumbMin) => {
+      if (!this.props.multiple) {
+        return []
+      }
+
+      const minLabelContent = this.props.showThumbLabel
+        ? (
+            this.slots?.minLabel
+              ? this.initSlot('minLabel', undefined, thumbMin.getSlot())
+              : thumbMin.label
+          )
+        : undefined
 
       return [
         h(
           'button',
           {
             type: 'button',
-            ref: this.item.minElement.element,
+            ref: thumbMin.element,
             class: [
               this.classes?.value.thumb,
               this.classes?.value.thumbMin,
-              this.item.skeleton.classesSkeleton.classBackgroundAfter
+              this.getSkeletonClass('classBackgroundAfter')
             ],
             tabindex: this.item.tabindex,
-            ...this.item.minElement.aria,
-            ...this.item.enabled.aria,
-            ...this.item.event.eventsMin
+            ...thumbMin.aria,
+            ...this.item.i('enabled').aria,
+            ...this.item.eventsMin
           },
           this.renderThumbContent(minLabelContent)
         )
       ]
-    }
-
-    return []
+    }, [])
   }
 
   /**
    * Renders maximum thumb handle button.
    *
    * Рендерит кнопку максимального ползунка.
-   * @returns VNode / VNode ползунка
+   * @returns VNode array / массив VNode ползунка
    */
   readonly renderThumbMax = (): VNode[] => {
-    const maxLabelContent = this.slots?.maxLabel
-      ? this.initSlot('maxLabel', undefined, this.item.maxElement.getSlot())
-      : this.item.maxElement.label
+    const thumbMax = this.item.i('thumbMax')
+    const maxLabelContent = this.props.showThumbLabel
+      ? (
+          this.slots?.maxLabel
+            ? this.initSlot('maxLabel', undefined, thumbMax.getSlot())
+            : thumbMax.label
+        )
+      : undefined
 
     return [
       h(
         'button',
         {
           type: 'button',
-          ref: this.item.maxElement.element,
+          ref: thumbMax.element,
           class: [
             this.classes?.value.thumb,
             this.classes?.value.thumbMax,
-            this.item.skeleton.classesSkeleton.classBackgroundAfter
+            this.getSkeletonClass('classBackgroundAfter')
           ],
           tabindex: this.item.tabindex,
-          ...this.item.maxElement.aria,
-          ...this.item.enabled.aria,
-          ...this.item.event.eventsMax
+          ...thumbMax.aria,
+          ...this.item.i('enabled').aria,
+          ...this.item.eventsMax
         },
         this.renderThumbContent(maxLabelContent)
       )
@@ -225,9 +239,9 @@ export class SliderDesign<
    *
    * Рендерит внутренние элементы кнопки ползунка (элемент метки и эффект волны).
    * @param label label content / содержимое метки
-   * @returns VNode[] / массив элементов VNode
+   * @returns VNode array / массив элементов VNode
    */
-  readonly renderThumbContent = (label?: any): VNode[] => {
+  readonly renderThumbContent = (label?: string | VNode | VNode[]): VNode[] => {
     const children: VNode[] = []
 
     if (this.props.showThumbLabel) {
@@ -240,7 +254,9 @@ export class SliderDesign<
       )
     }
 
-    children.push(...this.renderRipple())
+    if (!this.props.isSkeleton) {
+      children.push(...this.item.callInstance('ripple', item => item.render(), []))
+    }
 
     return children
   }
@@ -249,15 +265,16 @@ export class SliderDesign<
    * Renders slider background rail element.
    *
    * Рендерит элемент рельса заднего плана слайдера.
-   * @returns VNode / VNode рельса
+   * @returns VNode array / массив VNode рельса
    */
   readonly renderRail = (): VNode[] => {
     return [
       h('div', {
         class: [
           this.classes?.value.rail,
-          this.item.skeleton.classesSkeleton.classBackground
-        ]
+          this.getSkeletonClass('classBackground')
+        ],
+        ...AriaStaticInclude.hidden()
       })
     ]
   }
@@ -266,11 +283,14 @@ export class SliderDesign<
    * Renders active track element.
    *
    * Рендерит элемент активной дорожки слайдера.
-   * @returns VNode / VNode дорожки
+   * @returns VNode array / массив VNode дорожки
    */
   readonly renderTrack = (): VNode[] => {
     return [
-      h('div', this.getKeyClass('track'))
+      h('div', {
+        ...this.getKeyClass('track'),
+        ...AriaStaticInclude.hidden()
+      })
     ]
   }
 
@@ -278,10 +298,10 @@ export class SliderDesign<
    * Renders tick marks container and items.
    *
    * Рендерит контейнер и элементы делений/меток.
-   * @returns VNode or undefined / VNode или undefined
+   * @returns VNode array / массив VNode
    */
   readonly renderMarks = (): VNode[] => {
-    const marksList = this.item.marksData.get()
+    const marksList = this.item.i('marksData').get()
 
     if (marksList) {
       const children = marksList.map(this.renderMarkItem)
@@ -302,13 +322,17 @@ export class SliderDesign<
    *
    * Рендерит отдельный элемент метки.
    * @param markItem mark item configuration / конфигурация элемента метки
+   * @param index optional item index for unique key / опциональный индекс элемента для уникального ключа
    * @returns VNode / VNode метки
    */
-  readonly renderMarkItem = (markItem: SliderMarkItem): VNode => {
+  readonly renderMarkItem = (
+    markItem: SliderMarkItem,
+    index?: number
+  ): VNode => {
     return h(
       'span',
       {
-        'key': markItem.mark,
+        'key': index !== undefined ? `${markItem.mark}-${index}` : markItem.mark,
         'class': this.classes?.value.mark,
         'data-label': markItem.label,
         'data-value': markItem.value,
@@ -322,45 +346,54 @@ export class SliderDesign<
    * Renders clickable/touchable interactive selection area.
    *
    * Рендерит кликабельную/интерактивную область выбора.
-   * @returns VNode / VNode области выбора
+   * @returns VNode array / массив VNode области выбора
    */
   readonly renderSelect = (): VNode[] => {
     return [
       h('div', {
         class: this.classes?.value.select,
-        onMousedown: this.item.event.onMousedown,
-        onTouchstart: this.item.event.onMousedown
+        ...AriaStaticInclude.hidden(),
+        onMousedown: this.item.onMousedown,
+        onTouchstart: this.item.onMousedown
       })
     ]
-  }
-
-  /**
-   * Renders ripple animation component if active.
-   *
-   * Рендерит компонент анимации волны (ripple), если активен.
-   * @returns VNode or undefined / VNode или undefined
-   */
-  readonly renderRipple = (): VNode[] => {
-    return this.components?.render('ripple', {
-      visible: this.item.isRipple()
-    }) ?? []
   }
 
   /**
    * Renders hidden input element.
    *
    * Рендерит скрытый элемент input.
-   * @returns VNode[] / массив элементов VNode
+   * @returns VNode array / массив элементов VNode
    */
   readonly renderInput = (): VNode[] => {
     return [
-      h('input', {
-        name: this.props.name,
-        type: 'hidden',
-        value: this.item.value.get() || '',
-        required: this.props.required,
-        ...this.props.inputAttrs
-      })
+      h(
+        'input',
+        mergeProps(
+          {
+            name: this.props.name,
+            type: 'hidden',
+            value: this.item.i('value').get() ?? '',
+            required: this.props.required
+          },
+          (this.props.inputAttrs ?? {}) as ConstrBind
+        )
+      )
     ]
+  }
+
+  /**
+   * Resolves a skeleton utility class without eagerly instantiating SkeletonInclude.
+   *
+   * Возвращает служебный класс скелетона без преждевременной инициализации SkeletonInclude.
+   * @param key skeleton class key / ключ класса скелетона
+   * @returns resolved CSS class name / вычисленное имя CSS-класса
+   */
+  protected getSkeletonClass(key: keyof SkeletonClassesList): string {
+    return this.item.callInstance(
+      'skeleton',
+      item => item.classesSkeleton[key],
+      () => Skeleton.getClassesListByDesign(this.naming.getDesign())[key]
+    )
   }
 }

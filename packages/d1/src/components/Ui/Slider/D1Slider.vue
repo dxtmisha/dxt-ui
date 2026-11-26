@@ -11,6 +11,8 @@ import {
   type SliderSlots
 } from '@dxtmisha/constructor/Slider'
 
+import { D1Ripple } from '../Ripple'
+
 import { defaults, type SliderProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -43,7 +45,10 @@ const design = new SliderDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      ripple: D1Ripple
+    }
   }
 )
 

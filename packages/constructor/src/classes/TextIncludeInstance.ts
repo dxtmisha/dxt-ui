@@ -35,6 +35,8 @@ export class TextIncludeInstance {
     last: 'Last',
     loading: 'Loading',
     loadingFile: 'Uploading your file',
+    max: 'Maximum',
+    min: 'Minimum',
     more: 'Show more',
     morePrev: 'Show previous',
     next: 'Next',

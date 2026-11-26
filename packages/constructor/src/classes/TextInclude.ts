@@ -180,6 +180,16 @@ export class TextInclude {
     return this.get('textLoadingFile')
   }
 
+  /** Maximum text / Текст максимума */
+  get max(): string | undefined {
+    return this.get('textMax')
+  }
+
+  /** Minimum text / Текст минимума */
+  get min(): string | undefined {
+    return this.get('textMin')
+  }
+
   /** More text / Текст "показать еще" */
   get more(): string | undefined {
     return this.get('textMore')

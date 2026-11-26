@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
@@ -29,22 +29,26 @@ class ConcreteSliderThumb extends SliderThumb {
   }
 }
 
-function createConcreteSliderThumb() {
-  const props = { min: 0, max: 100 } as SliderProps
+function createConcreteSliderThumb(propsOverrides: Partial<SliderProps> = {}) {
+  const props = { min: 0, max: 100, ...propsOverrides } as SliderProps
   const naming = new DesignName('dxt.slider')
   const focus = new SliderFocus()
   const marksData = new SliderMarksData(props, naming)
-  const marks = new SliderMarks(props, naming, marksData)
+  const marks = new SliderMarks(props, () => marksData)
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(50))
-  const value = new SliderValue(focus, marks, model, props)
+  const value = new SliderValue(props, () => focus, () => marks, () => marksData, () => model)
 
-  const thumb = new ConcreteSliderThumb(props, marksData, marks, value)
+  const thumb = new ConcreteSliderThumb(props, () => marks, () => marksData, () => value)
 
   return { thumb }
 }
 
 describe('SliderThumb', () => {
-  it('should compute mark item and return label text', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should compute mark item and return label text and slot payload', () => {
     const { thumb } = createConcreteSliderThumb()
 
     expect(thumb.getItem()).toEqual({
@@ -60,15 +64,37 @@ describe('SliderThumb', () => {
     expect(thumb.label).toBe('50')
   })
 
-  it('should return undefined element and rectangle initially', () => {
+  it('should generate complete ARIA attributes including orientation, readonly, and custom valuetext', () => {
+    const defaultThumb = createConcreteSliderThumb().thumb
+    expect(defaultThumb.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 50,
+      'aria-valuemin': 0,
+      'aria-valuemax': 100,
+      'aria-orientation': 'horizontal'
+    })
+
+    const customThumb = createConcreteSliderThumb({
+      vertical: true,
+      readonly: true,
+      marks: [{ mark: 50, value: 50, label: 'Halfway' }]
+    }).thumb
+    expect(customThumb.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 50,
+      'aria-valuemin': 0,
+      'aria-valuemax': 100,
+      'aria-orientation': 'vertical',
+      'aria-readonly': 'true',
+      'aria-valuetext': 'Halfway'
+    })
+  })
+
+  it('should return undefined element and rectangle initially, then reflect assigned DOM element', () => {
     const { thumb } = createConcreteSliderThumb()
 
     expect(thumb.getElement()).toBeUndefined()
     expect(thumb.rectangle).toBeUndefined()
-  })
-
-  it('should return element and bounding rect when element ref is assigned', () => {
-    const { thumb } = createConcreteSliderThumb()
 
     const buttonElement = document.createElement('button')
     vi.spyOn(buttonElement, 'getBoundingClientRect').mockReturnValue({

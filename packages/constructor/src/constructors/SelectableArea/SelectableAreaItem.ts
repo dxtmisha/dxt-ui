@@ -1,6 +1,7 @@
 // ai-none
 
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 import { toArray } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -12,28 +13,46 @@ import type { SelectableAreaProps } from './props'
  *
  * Класс, управляющий логикой выбора элементов (клик, shift-клик, cmd-клик).
  */
-export class SelectableAreaItem {
-  /** Reference to the currently selected values / Ссылка на текущие выбранные значения */
-  readonly item = ref<string[]>([])
-
+export class SelectableAreaItem extends DesignLifecycleAbstract {
   /** Reference to the last selected item / Ссылка на последний выбранный элемент */
   protected lastSelection: HTMLElement | undefined
+
+  /** Stop handle for the reactive props watcher / Функция остановки реактивного наблюдателя свойств */
+  protected stopWatchProps?: WatchStopHandle
+
+  /** Stop handle for the reactive item watcher / Функция остановки реактивного наблюдателя выбранных элементов */
+  protected stopWatchItem?: WatchStopHandle
 
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props properties / свойства
-   * @param classes classes manager / менеджер классов
+   * @param classes classes manager factory / фабрика менеджера классов
    */
   constructor(
-    protected readonly props: SelectableAreaProps,
-    protected readonly classes: SelectableAreaClassesData
+    protected readonly props: Readonly<SelectableAreaProps>,
+    protected readonly classes: () => SelectableAreaClassesData
   ) {
-    this.updateItemByProps()
+    super()
 
-    watch(
-      () => props.selected,
+    this.updateItemByProps()
+  }
+
+  /** Reference to the currently selected values / Ссылка на текущие выбранные значения */
+  readonly item = ref<string[]>([])
+
+  /**
+   * Registers reactive watchers and synchronizes initial selection classes on mount.
+   *
+   * Регистрирует реактивные наблюдатели и синхронизирует начальные классы выбора при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.stopWatchers()
+    this.updateSelection()
+
+    this.stopWatchProps = watch(
+      () => [this.props.selected, this.props.modelSelected],
       () => {
         this.updateItemByProps()
         this.updateSelection()
@@ -41,15 +60,21 @@ export class SelectableAreaItem {
       { deep: true }
     )
 
-    watch(
+    this.stopWatchItem = watch(
       this.item,
       () => this.updateSelection(),
       { deep: true }
     )
+  }
 
-    onMounted(() => {
-      this.updateSelection()
-    })
+  /**
+   * Stops reactive watchers and releases cached DOM references on unmount.
+   *
+   * Останавливает реактивные наблюдатели и освобождает кэшированные ссылки на DOM при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatchers()
+    this.lastSelection = undefined
   }
 
   /**
@@ -78,8 +103,12 @@ export class SelectableAreaItem {
    * Обновляет выбранные значения.
    * @param value new selected value or array of values / новое выбранное значение или массив значений
    */
-  readonly set = (value: string | string[]): void => {
-    this.item.value = toArray(value)
+  readonly set = (value: string | readonly string[]): void => {
+    const nextValue = [...toArray(value)]
+
+    if (!this.isSameSelection(nextValue)) {
+      this.item.value = nextValue
+    }
   }
 
   /**
@@ -88,7 +117,11 @@ export class SelectableAreaItem {
    * Сбрасывает выбор.
    */
   readonly reset = (): void => {
-    this.item.value = []
+    this.lastSelection = undefined
+
+    if (this.item.value.length > 0) {
+      this.item.value = []
+    }
   }
 
   /**
@@ -96,10 +129,15 @@ export class SelectableAreaItem {
    *
    * Обычный выбор кликом (выбирает один элемент).
    * @param value item value / значение элемента
+   * @returns current instance / текущий экземпляр класса
    */
   selectionByClick(value: string): this {
-    this.lastSelection = this.classes.findByValue(value)
-    this.item.value = [value]
+    this.lastSelection = this.classes().findByValue(value)
+
+    if (!this.isSameSelection([value])) {
+      this.item.value = [value]
+    }
+
     return this
   }
 
@@ -108,6 +146,7 @@ export class SelectableAreaItem {
    *
    * Выбор с зажатым meta (переключает элемент в выборе).
    * @param value item value / значение элемента
+   * @returns current instance / текущий экземпляр класса
    */
   selectionByMeta(value: string): this {
     const newValue = [...this.item.value]
@@ -128,60 +167,94 @@ export class SelectableAreaItem {
    *
    * Выбор с зажатым shift (выбирает диапазон элементов).
    * @param value item value / значение элемента
+   * @returns current instance / текущий экземпляр класса
    */
   selectionByShift(value: string): this {
     if (
       this.lastSelection
       && this.lastSelection.dataset?.value !== String(value)
     ) {
-      const items = this.classes.findItems()
-      const newValue: string[] = []
+      const items = this.classes().findItems()
 
-      let start = false
-      let end = false
+      if (items.includes(this.lastSelection)) {
+        const newValue: string[] = []
 
-      for (const item of items) {
-        if (
-          item === this.lastSelection
-          || item.dataset?.value === String(value)
-        ) {
-          if (start) {
-            end = true
-          } else {
-            start = true
+        let start = false
+        let end = false
+
+        for (const item of items) {
+          if (
+            item === this.lastSelection
+            || item.dataset?.value === String(value)
+          ) {
+            if (start) {
+              end = true
+            } else {
+              start = true
+            }
+          }
+
+          if (
+            start
+            && item.dataset?.value !== undefined
+          ) {
+            newValue.push(item.dataset.value)
+          }
+
+          if (end) {
+            break
           }
         }
 
-        if (
-          start
-          && item.dataset?.value
-        ) {
-          newValue.push(item.dataset.value)
+        if (!this.isSameSelection(newValue)) {
+          this.item.value = newValue
         }
 
-        if (end) {
-          break
-        }
+        return this
       }
-
-      this.item.value = newValue
-    } else {
-      this.selectionByClick(value)
     }
 
+    this.selectionByClick(value)
     return this
+  }
+
+  /**
+   * Checks whether the provided selection array matches the current selection in order.
+   *
+   * Проверяет, совпадает ли переданный массив выбора с текущим выбором в том же порядке.
+   * @param values candidate selection values / проверяемые значения выбора
+   * @returns true if identical / true, если массивы совпадают
+   */
+  protected isSameSelection(values: readonly string[]): boolean {
+    const current = this.item.value
+
+    if (current.length !== values.length) {
+      return false
+    }
+
+    for (let index = 0; index < current.length; index++) {
+      if (current[index] !== values[index]) {
+        return false
+      }
+    }
+
+    return true
   }
 
   /**
    * Updates selection values based on the component properties.
    *
    * Обновляет значения выбора на основе свойств компонента.
+   * @returns current instance / текущий экземпляр класса
    */
   protected updateItemByProps(): this {
-    if (this.props.selected) {
-      this.item.value = toArray(this.props.selected)
-    } else {
-      this.item.value = []
+    const selected = this.props.selected ?? this.props.modelSelected
+    const nextValue = selected !== undefined
+      ? [...toArray(selected)]
+      : []
+
+    if (!this.isSameSelection(nextValue)) {
+      this.item.value = nextValue
     }
 
     return this
@@ -191,24 +264,40 @@ export class SelectableAreaItem {
    * Helper to update the CSS selection classes in the DOM.
    *
    * Вспомогательный метод для обновления классов выбора в DOM.
+   * @returns current instance / текущий экземпляр класса
    */
   protected updateSelection(): this {
-    const values = this.item.value
-    const items = this.classes.findItems()
+    const selectedSet = new Set(this.item.value)
+    const classesData = this.classes()
+    const items = classesData.findItems()
+    const selectedClass = classesData.list.selected
 
-    items.forEach((item) => {
+    for (const item of items) {
       const value = item.dataset?.value
 
       if (
         value !== undefined
-        && values.includes(value)
+        && selectedSet.has(value)
       ) {
-        item.classList.add(this.classes.list.selected)
+        item.classList.add(selectedClass)
       } else {
-        item.classList.remove(this.classes.list.selected)
+        item.classList.remove(selectedClass)
       }
-    })
+    }
 
     return this
+  }
+
+  /**
+   * Stops active reactive watchers.
+   *
+   * Останавливает активные реактивные наблюдатели.
+   */
+  protected stopWatchers(): void {
+    this.stopWatchProps?.()
+    this.stopWatchProps = undefined
+
+    this.stopWatchItem?.()
+    this.stopWatchItem = undefined
   }
 }

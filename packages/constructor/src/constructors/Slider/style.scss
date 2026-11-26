@@ -20,22 +20,22 @@
   }
 
   &__rail {
-    left: 0;
+    @include ui.left(0);
     width: 100%;
   }
 
   &__track {
-    left: ui.v('??sys-thumb-min-x', 0%);
-    right: calc(100% - #{ui.v('??sys-thumb-max-x', 100%)});
-    transition-property: left, right;
+    @include ui.left(ui.v('??sys-thumb-min-x', 0%));
+    @include ui.right(calc(100% - #{ui.v('??sys-thumb-max-x', 100%)}));
+    transition-property: inset-inline-start, inset-inline-end;
   }
 
   &__select {
     z-index: 8;
 
-    left: 0;
+    @include ui.left(0);
     width: 100%;
-    height: ui.v('??thumb-size');
+    height: ui.v('??thumbSize');
 
     cursor: pointer;
   }
@@ -73,7 +73,7 @@
     border: none;
     outline: none;
 
-    transform: translateX(calc(#{ui.v('??thumbAreaSize')} / -2));
+    transform: translateX(calc(#{ui.v('??thumbAreaSize')} / -2 * #{ui.isDir()}));
 
     cursor: pointer;
 
@@ -98,11 +98,11 @@
   }
 
   &__thumbMin {
-    left: ui.v('??sys.thumb.min.x', 0%);
+    @include ui.left(ui.v('??sys.thumb.min.x', 0%));
   }
 
   &__thumbMax {
-    left: ui.v('??sys.thumb.max.x', 100%);
+    @include ui.left(ui.v('??sys.thumb.max.x', 100%));
   }
 
   &__marks {
@@ -116,7 +116,7 @@
   &__mark {
     position: absolute;
     top: calc(50% - #{ui.v('??markSize', 0px)} / 2);
-    left: calc(ui.v('??sys.mark', 0%) - #{ui.v('??markSize', 0px)} / 2);
+    @include ui.left(calc(ui.v('??sys.mark', 0%) - #{ui.v('??markSize', 0px)} / 2));
 
     width: ui.v('??markSize');
     height: ui.v('??markSize');
@@ -135,8 +135,8 @@
     @include ui.subclass('rail') {
       top: 0;
       bottom: 0;
-      left: 0;
-      right: 0;
+      @include ui.left(0);
+      @include ui.right(0);
 
       margin: 0 auto;
 
@@ -147,8 +147,8 @@
     @include ui.subclass('track') {
       top: calc(100% - #{ui.v('??sys-thumb-max-x', 100%)});
       bottom: ui.v('??sys-thumb-min-x', 0%);
-      left: 0;
-      right: 0;
+      @include ui.left(0);
+      @include ui.right(0);
 
       margin: 0 auto;
 
@@ -167,8 +167,8 @@
     }
 
     @include ui.subclass('thumb') {
-      left: auto;
-      right: auto;
+      @include ui.left(auto);
+      @include ui.right(auto);
       margin: 0 auto;
       transform: translateY(calc(#{ui.v('??thumbAreaSize')} / -2));
     }

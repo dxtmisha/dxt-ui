@@ -1,32 +1,43 @@
-// ai-none
+import {
+  type ConstrBind,
+  DesignLifecycleAbstract,
+  EventItem,
+  eventStopPropagation,
+  isDomRuntime,
+  isNull,
+  type ListDataRef,
+  type ListSelectedItem
+} from '@dxtmisha/functional'
 
-import { EventItem, eventStopPropagation, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
-
-import { TabsNavigationFocus } from './TabsNavigationFocus'
-import { TabsNavigationSelected } from './TabsNavigationSelected'
+import type { HorizontalScrollInclude } from '../HorizontalScroll'
+import type { TabsNavigationFocus } from './TabsNavigationFocus'
+import type { TabsNavigationSelected } from './TabsNavigationSelected'
 
 /**
  * Class for managing tab navigation keyboard control and keyboard event listeners.
  *
  * Класс для управления контролем клавиатурной навигации вкладок и обработчиками клавиатурных событий.
  */
-export class TabsNavigationControl {
+export class TabsNavigationControl extends DesignLifecycleAbstract {
   /** Reference to the keydown EventItem wrapper / Ссылка на обертку события EventItem для нажатия клавиш */
-  protected event?: EventItem<HTMLElement, any>
+  protected event?: EventItem<HTMLElement, KeyboardEvent>
 
   /**
    * Constructor for initializing keyboard control components.
    *
    * Конструктор для инициализации компонентов управления клавиатурой.
-   * @param selected selection management helper / объект управления выделением
-   * @param focus focus management helper / объект управления фокусом
-   * @param data data list manager / объект менеджера списка данных
+   * @param data lazy getter returning data list manager / ленивый геттер, возвращающий менеджер списка данных
+   * @param focus lazy getter returning focus management helper / ленивый геттер, возвращающий объект управления фокусом
+   * @param scroll lazy getter returning scroll handling helper / ленивый геттер, возвращающий объект управления прокруткой
+   * @param selected lazy getter returning selection management helper / ленивый геттер, возвращающий объект управления выделением
    */
   constructor(
-    protected readonly selected: TabsNavigationSelected,
-    protected readonly focus: TabsNavigationFocus,
-    protected readonly data: ListDataRef
+    protected readonly data: () => ListDataRef,
+    protected readonly focus: () => TabsNavigationFocus,
+    protected readonly scroll: () => HorizontalScrollInclude,
+    protected readonly selected: () => TabsNavigationSelected
   ) {
+    super()
   }
 
   /**
@@ -35,7 +46,7 @@ export class TabsNavigationControl {
    * Возвращает привязки событий фокуса и потери фокуса для контейнера tablist.
    * @returns object containing focus and blur event handlers / объект с обработчиками событий focus и blur
    */
-  get binds() {
+  get binds(): ConstrBind {
     return {
       onFocus: this.onFocus,
       onBlur: this.onBlur
@@ -45,11 +56,21 @@ export class TabsNavigationControl {
   /**
    * Returns the first item's index identifier in the list.
    *
-   * Возвращает строковый идентификатор первого элемента в списке.
+   * Возвращает идентификатор первого элемента в списке.
    * @returns first tab index or undefined / индекс первой вкладки или undefined
    */
-  getFirstItem(): string | undefined {
-    return this.data.getFirstItemByParent(undefined)?.index
+  getFirstItem(): ListSelectedItem | undefined {
+    return this.data().getFirstItemByParent(undefined)?.index
+  }
+
+  /**
+   * Returns the last item's index identifier in the list.
+   *
+   * Возвращает идентификатор последнего элемента в списке.
+   * @returns last tab index or undefined / индекс последней вкладки или undefined
+   */
+  getLastItem(): ListSelectedItem | undefined {
+    return this.data().getLastItemByParent(undefined)?.index
   }
 
   /**
@@ -57,7 +78,7 @@ export class TabsNavigationControl {
    *
    * Обработчик события фокуса, инициализирует глобальный слушатель событий клавиатуры.
    */
-  readonly onFocus = () => {
+  readonly onFocus = (): void => {
     this.start()
   }
 
@@ -66,8 +87,49 @@ export class TabsNavigationControl {
    *
    * Обработчик события потери фокуса, останавливает и удаляет слушатель событий клавиатуры.
    */
-  readonly onBlur = () => {
+  readonly onBlur = (): void => {
     this.stop()
+  }
+
+  /**
+   * Stops active keyboard listeners on component unmount to prevent listener leaks.
+   *
+   * Останавливает активные слушатели клавиатуры при размонтировании компонента для предотвращения утечек.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stop()
+  }
+
+  /**
+   * Checks whether the navigation container uses right-to-left (RTL) text direction.
+   *
+   * Проверяет, использует ли контейнер навигации направление текста справа налево (RTL).
+   * @returns true if RTL direction is active / true, если активно направление RTL
+   */
+  protected isRtl(): boolean {
+    if (!isDomRuntime()) {
+      return false
+    }
+
+    const element = this.scroll().elementHtml
+
+    if (element) {
+      const closestDirection = element.closest('[dir]')?.getAttribute('dir')?.toLowerCase()
+
+      if (
+        closestDirection === 'rtl'
+        || closestDirection === 'ltr'
+      ) {
+        return closestDirection === 'rtl'
+      }
+
+      if (typeof getComputedStyle === 'function') {
+        return getComputedStyle(element).direction === 'rtl'
+      }
+    }
+
+    return document.documentElement?.dir?.toLowerCase() === 'rtl'
+      || document.dir?.toLowerCase() === 'rtl'
   }
 
   /**
@@ -76,41 +138,40 @@ export class TabsNavigationControl {
    * Возвращает индекс текущего фокуса или индекс первого элемента в качестве альтернативы.
    * @returns current active focus index / индекс текущего активного фокуса
    */
-  protected getFocus(): string | undefined {
-    return this.focus.get() || this.getFirstItem()
+  protected getFocus(): ListSelectedItem | undefined {
+    return this.focus().get() ?? this.getFirstItem()
   }
 
   /**
-   * Starts the keyboard keydown event listener.
+   * Moves focus to the first logical tab item.
    *
-   * Запускает прослушивание события keydown на клавиатуре.
+   * Перемещает фокус на первую вкладку по логике списка.
+   * @returns instance of this control class / текущий экземпляр класса управления
    */
-  protected start() {
-    if (isDomRuntime()) {
-      if (!this.event) {
-        this.event = new EventItem<HTMLElement, any>(
-          document.body,
-          ['keydown'],
-          this.on
-        )
-      }
+  protected first(): this {
+    const firstItem = this.getFirstItem()
 
-      this.focus.position()
-      this.event.start()
+    if (!isNull(firstItem)) {
+      this.focus().set(firstItem)
     }
+
+    return this
   }
 
   /**
-   * Stops the keyboard keydown event listener and resets focus state.
+   * Moves focus to the last logical tab item.
    *
-   * Останавливает прослушивание события keydown на клавиатуре и сбрасывает состояние фокуса.
+   * Перемещает фокус на последнюю вкладку по логике списка.
+   * @returns instance of this control class / текущий экземпляр класса управления
    */
-  protected stop() {
-    if (this.event) {
-      this.event.stop()
-      this.event = undefined
-      this.focus.reset()
+  protected last(): this {
+    const lastItem = this.getLastItem()
+
+    if (!isNull(lastItem)) {
+      this.focus().set(lastItem)
     }
+
+    return this
   }
 
   /**
@@ -122,9 +183,9 @@ export class TabsNavigationControl {
   protected prev(): this {
     const focus = this.getFocus()
 
-    if (focus) {
-      this.focus.set(
-        this.data.getIndexPrev(focus)?.index
+    if (!isNull(focus)) {
+      this.focus().set(
+        this.data().getIndexPrev(focus as string)?.index
       )
     }
 
@@ -140,9 +201,9 @@ export class TabsNavigationControl {
   protected next(): this {
     const focus = this.getFocus()
 
-    if (focus) {
-      this.focus.set(
-        this.data.getIndexNext(focus)?.index
+    if (!isNull(focus)) {
+      this.focus().set(
+        this.data().getIndexNext(focus as string)?.index
       )
     }
 
@@ -150,45 +211,97 @@ export class TabsNavigationControl {
   }
 
   /**
-   * Callback handling keydown keyboard events for arrow keys, enter, and space.
+   * Starts the keyboard keydown event listener.
    *
-   * Обратный вызов, обрабатывающий события клавиатуры keydown для стрелок, ввода и пробела.
+   * Запускает прослушивание события keydown на клавиатуре.
+   */
+  protected start(): void {
+    if (isDomRuntime()) {
+      if (!this.event) {
+        this.event = new EventItem<HTMLElement, KeyboardEvent>(
+          document.body,
+          ['keydown'],
+          this.on
+        )
+      }
+
+      this.focus().position()
+      this.event.start()
+    }
+  }
+
+  /**
+   * Stops the keyboard keydown event listener and resets focus state.
+   *
+   * Останавливает прослушивание события keydown на клавиатуре и сбрасывает состояние фокуса.
+   */
+  protected stop(): void {
+    if (this.event) {
+      this.event.stop()
+      this.event = undefined
+      this.focus().reset()
+    }
+  }
+
+  /**
+   * Callback handling keydown keyboard events for arrow keys, Home, End, Enter, and Space.
+   *
+   * Обратный вызов, обрабатывающий события клавиатуры keydown для стрелок, Home, End, Enter и пробела.
    * @param event native KeyboardEvent object / объект нативного события KeyboardEvent
    */
-  protected readonly on = (event: KeyboardEvent) => {
-    if (this.data.getLength()) {
-      const item = this.data.getFocusItem()
-      const key = event.code || event.key || (event as any).keyCode
+  protected readonly on = (event: KeyboardEvent): void => {
+    if (
+      event.isComposing
+      || !this.data().getLength()
+    ) {
+      return
+    }
 
-      switch (key) {
-        case 'ArrowLeft':
-        case 'Left':
-        case 37:
-          eventStopPropagation(event)
-          this.prev()
-          break
-        case 'ArrowRight':
-        case 'Right':
-        case 39:
-          eventStopPropagation(event)
+    const item = this.data().getFocusItem()
+    const key = event.code || event.key
+
+    switch (key) {
+      case 'ArrowLeft':
+      case 'Left':
+        eventStopPropagation(event)
+
+        if (this.isRtl()) {
           this.next()
-          break
-        case 'Enter':
-        case 13:
-        case 'Space':
-        case 'Spacebar':
-        case ' ':
-        case 32:
-          event.preventDefault()
+        } else {
+          this.prev()
+        }
+        break
+      case 'ArrowRight':
+      case 'Right':
+        eventStopPropagation(event)
 
-          if (
-            item
-            && !item.disabled
-          ) {
-            this.selected.set(item.index)
-          }
-          break
-      }
+        if (this.isRtl()) {
+          this.prev()
+        } else {
+          this.next()
+        }
+        break
+      case 'Home':
+        eventStopPropagation(event)
+        this.first()
+        break
+      case 'End':
+        eventStopPropagation(event)
+        this.last()
+        break
+      case 'Enter':
+      case 'Space':
+      case 'Spacebar':
+      case ' ':
+        event.preventDefault()
+
+        if (
+          item
+          && !item.disabled
+        ) {
+          this.selected().set(item.index)
+        }
+        break
     }
   }
 }
