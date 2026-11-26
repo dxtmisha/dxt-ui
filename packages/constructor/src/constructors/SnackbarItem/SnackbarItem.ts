@@ -1,146 +1,255 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
-
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { AreaInclude } from '../../classes/AreaInclude'
-import { DescriptionInclude } from '../../classes/DescriptionInclude'
-import { EventClickInclude } from '../../classes/EventClickInclude'
-import { LabelInclude } from '../../classes/LabelInclude'
-import { TextInclude } from '../../classes/TextInclude'
+import { mergeProps, type Ref } from 'vue'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName,
+  getBind,
+  isFilled,
+  isNumber
+} from '@dxtmisha/functional'
 
 import { ActionsInclude, type ActionsProps } from '../Actions'
 import { ButtonInclude } from '../Button'
 import { IconTrailingInclude } from '../Icon'
 
-import type { SnackbarItemComponents, SnackbarItemEmits, SnackbarItemSlots } from './types'
+import { AreaInclude } from '../../classes/AreaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
+import { TextInclude } from '../../classes/TextInclude'
+
+import type { AriaList } from '../../types/ariaTypes'
 import type { SnackbarItemProps } from './props'
+import type { SnackbarItemComponents, SnackbarItemEmits, SnackbarItemSlots } from './types'
+
+/** SnackbarItem dependency constructors type / Тип конструкторов зависимостей SnackbarItem */
+export type SnackbarItemConstructors = {
+  /** Actions manager constructor / Конструктор менеджера действий */
+  actions: typeof ActionsInclude
+  /** Area context manager constructor / Конструктор менеджера контекста области */
+  area: typeof AreaInclude
+  /** Action button manager constructor / Конструктор менеджера кнопки действия */
+  button: typeof ButtonInclude
+  /** Close button manager constructor / Конструктор менеджера кнопки закрытия */
+  buttonClose: typeof ButtonInclude
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Click event manager constructor / Конструктор менеджера событий клика */
+  event: typeof EventClickInclude
+  /** Icon manager constructor / Конструктор менеджера иконок */
+  icon: typeof IconTrailingInclude
+  /** Label manager constructor / Конструктор менеджера метки */
+  label: typeof LabelInclude
+  /** Text manager constructor / Конструктор менеджера текста */
+  text: typeof TextInclude
+}
 
 /**
- * SnackbarItem
+ * SnackbarItem class for managing the business logic of a single snackbar notification item.
+ * Coordinates area context propagation, WAI-ARIA live region attributes, icons, label,
+ * description, action button, close button, and action lists.
+ *
+ * Класс SnackbarItem для управления бизнес-логикой отдельного элемента уведомления снекбара.
+ * Координирует передачу контекста области, WAI-ARIA атрибуты динамической области, иконки,
+ * метку, описание, кнопку действия, кнопку закрытия и списки действий.
  */
-export class SnackbarItem {
-  /** Label manager for snackbar item/ Менеджер меток для элемента снекбара */
-  readonly label: LabelInclude
-  /** Description manager for snackbar item/ Менеджер описаний для элемента снекбара */
-  readonly description: DescriptionInclude
-  /** Event click manager for snackbar item/ Менеджер событий клика для элемента снекбара */
-  readonly event: EventClickInclude
+export class SnackbarItem extends DesignLogicAbstract<
+  HTMLDivElement,
+  SnackbarItemComponents,
+  SnackbarItemEmits,
+  SnackbarItemSlots,
+  SnackbarItemProps,
+  SnackbarItemConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SnackbarItemConstructors> = {
+    actions: {
+      item: ActionsInclude,
+      canCreate: () => Boolean(
+        !this.props.actionsHide
+        && (
+          isFilled(this.props.actionsList)
+          || isFilled(this.props.actionsSecondary)
+          || isFilled(this.props.actionsAttrs?.list)
+          || isFilled(this.props.actionsAttrs?.listSecondary)
+        )
+      ),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        { align: 'left' } as ActionsProps,
+        undefined,
+        this.emits
+      ]
+    },
+    area: {
+      item: AreaInclude,
+      parameters: () => [
+        this.props
+      ]
+    },
+    button: {
+      item: ButtonInclude,
+      canCreate: () => isFilled(this.props.button) || isNumber(this.props.button),
+      parameters: () => [
+        undefined,
+        this.naming,
+        this.components,
+        () => {
+          if (isFilled(this.props.button) || isNumber(this.props.button)) {
+            const bind = getBind(this.props.button, undefined, 'label', true)
 
-  /** Icon manager for snackbar item/ Менеджер иконок для элемента снекбара */
-  readonly icon: IconTrailingInclude
-  /** Button manager for snackbar item/ Менеджер кнопок для элемента снекбара */
-  readonly button: ButtonInclude
-  /** Actions manager for snackbar item/ Менеджер действий для элемента снекбара */
-  readonly actions: ActionsInclude
+            if (isFilled(bind)) {
+              return mergeProps(
+                { onClick: this.i('event').onClick },
+                bind
+              )
+            }
+          }
 
-  /** Area manager for snackbar item/ Менеджер областей для элемента снекбара */
-  readonly area: AreaInclude
-  /** Text manager for window content/ Менеджер текста для содержимого окна */
-  readonly text: TextInclude
+          return {}
+        }
+      ]
+    },
+    buttonClose: {
+      item: ButtonInclude,
+      canCreate: () => Boolean(this.props.closeButton && this.props.iconClose),
+      parameters: () => [
+        undefined,
+        this.naming,
+        this.components,
+        () => (
+          this.props.closeButton
+            ? {
+                icon: this.props.iconClose,
+                class: this.naming.getSubClass('close'),
+                onClick: this.onClose,
+                ...AriaStaticInclude.label(this.i('text').close)
+              }
+            : {}
+        ),
+        'button-close'
+      ]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    icon: {
+      item: IconTrailingInclude,
+      canCreate: () => IconTrailingInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [
+        this.props
+      ]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
+   * Constructor for SnackbarItem.
+   * Eagerly initializes AreaInclude during setup so Vue provide/inject context is registered.
+   *
+   * Конструктор для SnackbarItem.
+   * Инициализирует AreaInclude немедленно во время setup для регистрации контекста provide/inject Vue.
+   * @param props input properties / входные свойства
+   * @param element root HTML element reference / ссылка на корневой HTML-элемент
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors constructors item class/ класс элемента конструкторов
-   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
-   * @param constructors.AreaConstructor class for creating an area/ класс для создания области
-   * @param constructors.ButtonConstructor class for creating a button/ класс для создания кнопки
-   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param constructors.EventClickConstructor class for creating an event click/ класс для создания события клика
-   * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
-   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
-   * @param constructors.TextConstructor class for creating a text/ класс для создания текста
+   * @param components object for working with sub-components / объект для работы с вложенными компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits event emitter function / функция вызова событий
+   * @param constructors dependency constructors override map / карта переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: SnackbarItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<SnackbarItemComponents, SnackbarItemProps>,
-    protected readonly slots?: SnackbarItemSlots,
-    protected readonly emits?: ConstrEmit<SnackbarItemEmits>,
-    constructors: {
-      ActionsConstructor?: typeof ActionsInclude
-      AreaConstructor?: typeof AreaInclude
-      ButtonConstructor?: typeof ButtonInclude
-      DescriptionConstructor?: typeof DescriptionInclude
-      EventConstructor?: typeof EventClickInclude
-      IconConstructor?: typeof IconTrailingInclude
-      LabelConstructor?: typeof LabelInclude
-      TextConstructor?: typeof TextInclude
-    } = {}
+    props: Readonly<SnackbarItemProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<SnackbarItemComponents, SnackbarItemProps>,
+    slots?: SnackbarItemSlots,
+    emits?: ConstrEmit<SnackbarItemEmits>,
+    constructors?: Partial<SnackbarItemConstructors>
   ) {
-    const {
-      ActionsConstructor = ActionsInclude,
-      AreaConstructor = AreaInclude,
-      ButtonConstructor = ButtonInclude,
-      DescriptionConstructor = DescriptionInclude,
-      EventConstructor = EventClickInclude,
-      IconConstructor = IconTrailingInclude,
-      LabelConstructor = LabelInclude,
-      TextConstructor = TextInclude
-    } = constructors
-
-    this.event = new EventConstructor(undefined, undefined, emits)
-
-    this.label = new LabelConstructor(props, naming, undefined, slots)
-    this.description = new DescriptionConstructor(props, naming, slots)
-    this.icon = new IconConstructor(props, naming, components)
-
-    this.button = new ButtonConstructor(
-      () => this.props?.button,
-      naming,
-      components,
-      { onClick: this.event.onClick }
-    )
-    this.actions = new ActionsConstructor(
+    super(
       props,
+      element,
       naming,
       components,
-      { align: 'left' } as ActionsProps,
-      undefined,
-      emits
+      slots,
+      emits,
+      constructors
     )
 
-    this.area = new AreaConstructor(props)
-    this.text = new TextConstructor(props)
-  }
-
-  /** ARIA bind for snackbar item/ ARIA привязка для элемента снекбара */
-  get ariaBind() {
-    const aria = {
-      ...AriaStaticInclude.atomic(true),
-      ...AriaStaticInclude.role(this.props.role),
-      ...AriaStaticInclude.live(this.props.ariaLive)
-    }
-
-    if (this.props.success) {
-      return {
-        ...aria,
-        ...AriaStaticInclude.live('polite'),
-        ...AriaStaticInclude.role('status')
-      }
-    }
-
-    if (this.props.error) {
-      return {
-        ...aria,
-        ...AriaStaticInclude.live('assertive'),
-        ...AriaStaticInclude.role('alert')
-      }
-    }
-
-    return aria
+    this.i('area')
   }
 
   /**
-   * Events on close button click.
+   * Returns WAI-ARIA attributes for the snackbar item live region.
+   * Defaults to `role="alert"` / `aria-live="assertive"` for error notifications and
+   * `role="status"` / `aria-live="polite"` for success notifications unless explicitly overridden.
    *
-   * События при нажатии на закрытие.
+   * Возвращает WAI-ARIA атрибуты для динамической области элемента снекбара.
+   * По умолчанию задает `role="alert"` / `aria-live="assertive"` для уведомлений об ошибках и
+   * `role="status"` / `aria-live="polite"` для уведомлений об успехе, если не переопределены явно.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  readonly onClose = () => this.emits?.('close', this.props.value)
+  get aria(): AriaList {
+    let role = this.props.role
+    let live = this.props.ariaLive
+
+    if (this.props.error) {
+      role ??= 'alert'
+      live ??= 'assertive'
+    } else if (this.props.success) {
+      role ??= 'status'
+      live ??= 'polite'
+    }
+
+    return {
+      ...AriaStaticInclude.atomic(true),
+      ...AriaStaticInclude.role(role),
+      ...AriaStaticInclude.live(live)
+    }
+  }
+
+  /**
+   * Handles close button click and emits the `close` event with the item value.
+   *
+   * Обрабатывает нажатие на кнопку закрытия и испускает событие `close` со значением элемента.
+   */
+  readonly onClose = (): void => {
+    this.emits?.('close', this.props.value)
+  }
 }

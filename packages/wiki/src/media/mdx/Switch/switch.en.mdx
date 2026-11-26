@@ -1,21 +1,35 @@
-Component for creating interactive toggle switches for quickly changing binary settings or on/off states.
+import { Source } from '@storybook/addon-docs/blocks';
 
-Switch serves as a visual alternative to a checkbox, mimicking a physical toggle switch. It supports smooth transition animations, focus management, built-in validation, form integration, and loading state indicators. The component is ideal for instant settings application without requiring a form submission.
+The `Switch` component is an interactive toggle control for binary on/off state selection with integrated accessibility (`role="switch"`), validation, descriptions, and form support.
+
+Extending the checkbox architecture, it renders a native `<input type="checkbox" role="switch">` paired with a sliding track indicator. It coordinates two-way `v-model` and `v-model:selected` synchronization, read-only click protection (`aria-readonly`), loading indicators, and skeleton placeholders.
 
 **Key features:**
 
-- Quick binary toggling states (on / off)
-- Built-in validation with custom error messages
-- Support for labels and detailed descriptions
-- Customizable and smoothly animated track and slider elements
-- Form integration via name and value attributes
-- Disabled, loading, and skeleton states
-- Ripple effect on interaction
-- Adaptive layout and styling
+- **Accessible Switch Semantics:** Native checkbox input enhanced with WAI-ARIA `role="switch"`, `aria-readonly`, `aria-invalid`, `aria-labelledby`, and `aria-describedby`
+- **Model & Variant Sync:** Two-way `v-model` boolean binding and `v-model:selected` synchronization with `valueVariant` and `valueVariantHide`
+- **Built-in Validation:** Native constraint validation, `required`, `validationMessage`, `validationCode`, and exposed validation helpers (`checkValidity`, `getValidationMessage`)
+- **Rich Anatomy:** Supports `label`, `description`, `helperMessage`, `warningMessage`, `hasHtmlCode`, and `#default` / `#description` slots
+- **Interactive & Loading States:** `disabled`, `readonly`, `focus`, `loading`, `indeterminate`, `isSkeleton`, `adaptive`, and `container` layout options
 
 **Common use cases:**
 
-- Toggling options in a settings panel
-- Activating application features (e.g., dark mode, push notifications)
-- Quick filters in catalogs
-- Agreement confirmation (alternative to checkbox)
+- Toggling options in a settings or preferences panel
+- Activating application features (e.g., dark mode, notifications, auto-save)
+- Quick binary filters in lists and catalogs
+- Instant state controls that take effect immediately
+
+<Source
+    code={`
+<template>
+  <Switch
+    v-model="notificationsEnabled"
+    label="Enable push notifications"
+    description="Receive real-time alerts about important updates"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Switch pairs tactile sliding-track ergonomics with native HTML form semantics, keyboard accessibility, and built-in validation.

@@ -111,13 +111,21 @@ import DemoSkeletonItemPage from './pages/components/DemoSkeletonItemPage.vue'
 import DemoSliderPage from './pages/components/DemoSliderPage.vue'
 import DemoSliderFieldPage from './pages/components/DemoSliderFieldPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
+import DemoSnackbarItemPage from './pages/components/DemoSnackbarItemPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTabItemPage from './pages/components/DemoTabItemPage.vue'
 import DemoTablePage from './pages/components/DemoTablePage.vue'
 import DemoTableFlexPage from './pages/components/DemoTableFlexPage.vue'
+import DemoTableFlexHeaderItemPage from './pages/components/DemoTableFlexHeaderItemPage.vue'
+import DemoTableFlexItemPage from './pages/components/DemoTableFlexItemPage.vue'
+import DemoTableFlexRecordPage from './pages/components/DemoTableFlexRecordPage.vue'
+import DemoTableHeaderItemPage from './pages/components/DemoTableHeaderItemPage.vue'
+import DemoTableItemPage from './pages/components/DemoTableItemPage.vue'
+import DemoTableRecordPage from './pages/components/DemoTableRecordPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 import DemoTabsNavigationPage from './pages/components/DemoTabsNavigationPage.vue'
 import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
+import DemoTextareaAutosizePage from './pages/components/DemoTextareaAutosizePage.vue'
 import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
 
@@ -668,6 +676,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoSnackbarPage
   },
   {
+    path: '/component-snackbar-item',
+    name: 'component-snackbar-item',
+    component: DemoSnackbarItemPage
+  },
+  {
     path: '/component-switch',
     name: 'component-switch',
     component: DemoSwitchPage
@@ -688,6 +701,36 @@ export const routes: RouteRecordRaw[] = [
     component: DemoTableFlexPage
   },
   {
+    path: '/component-table-flex-header-item',
+    name: 'component-table-flex-header-item',
+    component: DemoTableFlexHeaderItemPage
+  },
+  {
+    path: '/component-table-flex-item',
+    name: 'component-table-flex-item',
+    component: DemoTableFlexItemPage
+  },
+  {
+    path: '/component-table-flex-record',
+    name: 'component-table-flex-record',
+    component: DemoTableFlexRecordPage
+  },
+  {
+    path: '/component-table-header-item',
+    name: 'component-table-header-item',
+    component: DemoTableHeaderItemPage
+  },
+  {
+    path: '/component-table-item',
+    name: 'component-table-item',
+    component: DemoTableItemPage
+  },
+  {
+    path: '/component-table-record',
+    name: 'component-table-record',
+    component: DemoTableRecordPage
+  },
+  {
     path: '/component-tabs',
     name: 'component-tabs',
     component: DemoTabsPage
@@ -701,6 +744,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-textarea',
     name: 'component-textarea',
     component: DemoTextareaPage
+  },
+  {
+    path: '/component-textarea-autosize',
+    name: 'component-textarea-autosize',
+    component: DemoTextareaAutosizePage
   },
   {
     path: '/component-tooltip',

@@ -1,5 +1,9 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrConstructors,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -8,96 +12,77 @@ import { LabelInclude } from '../../classes/LabelInclude'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { TableItemComponents, TableItemEmits, TableItemSlots } from './types'
 import type { TableItemProps } from './props'
+import type { TableItemComponents, TableItemEmits, TableItemSlots } from './types'
+
+/** TableItem dependency constructors type / Тип конструкторов зависимостей TableItem */
+export type TableItemConstructors = {
+  /** Description constructor / Конструктор описания */
+  description: typeof DescriptionInclude
+  /** Label constructor / Конструктор метки */
+  label: typeof LabelInclude
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
  * Class representing a table cell constructor (TableItem).
- * Provides coordination for components such as label, description, tooltip, and skeleton.
+ * Provides lazy coordination for label, description, skeleton, HTML bindings, and ARIA attributes.
  *
  * Класс, представляющий конструктор ячейки таблицы (TableItem).
- * Обеспечивает координацию работы таких компонентов, как метка, описание, всплывающая подсказка и скелетон.
+ * Обеспечивает ленивую координацию метки, описания, скелетона, HTML-привязок и ARIA-атрибутов.
  */
-export class TableItem {
-  /** Description text manager instance / Экземпляр менеджера текста описания */
-  readonly description: DescriptionInclude
-  /** Label text manager instance / Экземпляр менеджера текста метки */
-  readonly label: LabelInclude
-  /** Skeleton loader manager instance / Экземпляр менеджера скелетонов */
-  readonly skeleton: SkeletonInclude
-
-  /**
-   * Constructor for TableItem.
-   *
-   * Конструктор для TableItem.
-   * @param props input properties / входные свойства
-   * @param element target HTML element / целевой HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
-   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.DescriptionConstructor class for creating a description / класс для создания описания
-   * @param constructors.LabelConstructor class for creating a label / класс для создания метки
-   * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
-   */
-  constructor(
-    protected readonly props: TableItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TableItemComponents, TableItemProps>,
-    protected readonly slots?: TableItemSlots,
-    protected readonly emits?: ConstrEmit<TableItemEmits>,
-    constructors: {
-      DescriptionConstructor?: typeof DescriptionInclude
-      LabelConstructor?: typeof LabelInclude
-      SkeletonConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      DescriptionConstructor = DescriptionInclude,
-      LabelConstructor = LabelInclude,
-      SkeletonConstructor = SkeletonInclude
-    } = constructors
-
-    this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
-    this.description = new DescriptionConstructor(props, naming, slots, () => this.skeleton)
-    this.label = new LabelConstructor(
-      props,
-      naming,
-      undefined,
-      slots,
-      undefined,
-      undefined,
-      undefined,
-      this.skeleton
-    )
-  }
-
-  /**
-   * Returns the HTML tag for the table cell.
-   *
-   * Возвращает HTML-тег для ячейки таблицы.
-   * @returns HTML tag name / имя HTML-тега
-   */
-  get tag(): string {
-    return this.props.tag ?? 'td'
-  }
-
-  /**
-   * Computed HTML attributes and bindings for the main element.
-   *
-   * Вычисляемые HTML-атрибуты и привязки для главного элемента.
-   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
-   */
-  get binds(): Record<string, any> {
-    return {
-      'colspan': this.props.colspan,
-      'rowspan': this.props.rowspan,
-      'data-index': this.props.index,
-      ...this.aria
+export class TableItem<
+  E extends HTMLElement = HTMLElement,
+  COMP extends TableItemComponents = TableItemComponents,
+  EMITS extends TableItemEmits = TableItemEmits,
+  SLOTS extends TableItemSlots = TableItemSlots,
+  P extends TableItemProps = TableItemProps,
+  CONSTRUCTORS extends TableItemConstructors & ConstrConstructors<CONSTRUCTORS> = TableItemConstructors
+> extends DesignLogicAbstract<
+    E,
+    COMP,
+    EMITS,
+    SLOTS,
+    P,
+    CONSTRUCTORS
+  > {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CONSTRUCTORS> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        undefined,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classTextVariant']
+      ]
     }
-  }
+  } as unknown as ConstrItems<CONSTRUCTORS>
 
   /**
    * Computed ARIA attributes for the table cell.
@@ -108,7 +93,32 @@ export class TableItem {
   get aria(): AriaList {
     return {
       ...AriaStaticInclude.selected(this.props.selected || undefined),
-      ...AriaStaticInclude.disabled(this.props.disabled)
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }
+  }
+
+  /**
+   * Computed HTML attributes and bindings for the main element.
+   *
+   * Вычисляемые HTML-атрибуты и привязки для главного элемента.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
+   */
+  get binds(): ConstrBind {
+    return {
+      'colspan': this.props.colspan,
+      'rowspan': this.props.rowspan,
+      'data-index': this.props.index,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Returns the HTML tag for the table cell.
+   *
+   * Возвращает HTML-тег для ячейки таблицы.
+   * @returns HTML tag name / имя HTML-тега
+   */
+  get tag(): string {
+    return this.props.tag || 'td'
   }
 }

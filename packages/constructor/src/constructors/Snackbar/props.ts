@@ -1,5 +1,6 @@
 import type { TextNotificationsPropsInclude } from '../../types/textTypes'
 
+/** Design token properties for Snackbar / Свойства дизайн-токенов для Snackbar */
 type SnackbarPropsToken = {
   // :type [!] System label / Системная метка
   full?: boolean
@@ -11,10 +12,15 @@ type SnackbarPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic incoming properties for Snackbar component.
+ *
+ * Базовые входящие свойства для компонента Snackbar.
+ */
 export type SnackbarPropsBasic
   = TextNotificationsPropsInclude
     & {
-      /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */
+      /** Delay before auto-closing the notification / Задержка перед автоматическим закрытием уведомления */
       delay?: number
     }
 

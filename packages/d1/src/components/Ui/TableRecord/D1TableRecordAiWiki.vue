@@ -21,7 +21,9 @@ defineOptions({
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
   <table style="border-collapse: collapse; width: 100%;">
-    <D1TableRecord v-bind="args" />
+    <tbody>
+      <D1TableRecord v-bind="args" />
+    </tbody>
   </table>
 </div>
     </template>

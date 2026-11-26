@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -28,7 +28,7 @@ export class TableDesign<
   CLASSES extends TableClasses,
   P extends TableProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     TableEmits,
     EXPOSE,
@@ -40,7 +40,9 @@ export class TableDesign<
   protected readonly item: Table
 
   /**
-   * Constructor
+   * Constructor for TableDesign.
+   *
+   * Конструктор для TableDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -69,9 +71,305 @@ export class TableDesign<
   }
 
   /**
+   * Renders the custom body content slot.
+   *
+   * Рендерит слот пользовательского содержимого тела таблицы.
+   * @returns rendered slot virtual nodes array / массив виртуальных узлов слота
+   */
+  readonly renderBody = (): VNode[] => {
+    const children: VNode[] = []
+
+    this.initSlot('body', children)
+
+    return children
+  }
+
+  /**
+   * Renders the colgroup element with col definitions for column widths.
+   *
+   * Рендерит элемент colgroup с определениями col для ширины колонок.
+   * @returns rendered colgroup virtual nodes array / массив виртуальных узлов colgroup
+   */
+  readonly renderColgroup = (): VNode[] => {
+    const tag = this.item.tagColgroup
+
+    if (!tag) {
+      return []
+    }
+
+    const cols = this.item.callInstanceArray('columns', item => item.cols)
+
+    if (cols.length === 0) {
+      return []
+    }
+
+    return [
+      h(
+        tag,
+        this.getKeyClass('colgroup'),
+        cols.map(columnAttributes => h(
+          this.item.tagCol,
+          {
+            ...columnAttributes,
+            class: this.classes?.value.col
+          }
+        ))
+      )
+    ]
+  }
+
+  /**
+   * Renders the table footer.
+   *
+   * Рендерит подвал таблицы.
+   * @returns rendered foot virtual nodes array / массив виртуальных узлов подвала
+   */
+  readonly renderFoot = (): VNode[] => {
+    const children = this.renderRecords('foot', this.props.foot, false, true)
+
+    this.initSlot(
+      'foot',
+      children,
+      { columns: this.item.callInstanceArray('columns', item => item.list) }
+    )
+
+    if (children.length > 0) {
+      return [
+        h(
+          this.item.tagFoot,
+          mergeProps(
+            this.item.bindsSection,
+            this.getKeyClass('foot')
+          ),
+          children
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the table header.
+   *
+   * Рендерит заголовок таблицы.
+   * @returns rendered header virtual nodes array / массив виртуальных узлов заголовка
+   */
+  readonly renderHeader = (): VNode[] => {
+    const children = this.renderRecords('header', this.props.header, true)
+
+    this.initSlot(
+      'header',
+      children,
+      { columns: this.item.callInstanceArray('columns', item => item.list) }
+    )
+
+    if (children.length > 0) {
+      return [
+        h(
+          this.item.tagHeader,
+          mergeProps(
+            this.item.bindsSection,
+            {
+              key: 'header',
+              ref: this.item.headerElement,
+              class: this.classes?.value.header
+            }
+          ),
+          children
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the table items container.
+   *
+   * Рендерит контейнер элементов таблицы.
+   * @returns rendered items virtual nodes array / массив виртуальных узлов элементов
+   */
+  readonly renderItems = (): VNode[] => {
+    const children: VNode[] = this.renderList()
+
+    this.initSlot(
+      'items',
+      children,
+      { columns: this.item.callInstanceArray('columns', item => item.list) }
+    )
+
+    if (children.length > 0) {
+      return [
+        h(
+          this.item.tagItems,
+          mergeProps(
+            this.item.bindsSection,
+            this.getKeyClass('items')
+          ),
+          children
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the list of table rows/items.
+   *
+   * Рендерит список строк/элементов таблицы.
+   * @returns array of rendered item virtual nodes / массив отрендеренных виртуальных узлов элементов
+   */
+  readonly renderList = (): VNode[] => {
+    const children: VNode[] = []
+    const list = this.item.callInstanceArray('pagination', item => item.list)
+
+    if (list.length > 0) {
+      const columns = this.item.callInstanceArray('columns', item => item.list)
+
+      list.forEach((item, key) => {
+        const record = this.item.callInstance(
+          'tableRecord',
+          tableRecord => tableRecord.renderRecord(
+            `item-${key}`,
+            columns,
+            item
+          )
+        )
+
+        if (record) {
+          children.push(record)
+        }
+      })
+    }
+
+    return children
+  }
+
+  /**
+   * Renders the main element wrapper.
+   *
+   * Рендерит обертку основного элемента.
+   * @returns rendered main virtual node / виртуальный узел основного элемента
+   */
+  readonly renderMain = (): VNode => {
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      this.renderTable()
+    )
+  }
+
+  /**
+   * Helper for rendering header or footer records.
+   *
+   * Вспомогательный метод для рендеринга записей шапки или подвала.
+   * @param index prefix index name / префиксное имя индекса
+   * @param data record header/foot items / элементы записей шапки/подвала
+   * @param isHeader header flag / флаг шапки
+   * @param isFoot footer flag / флаг подвала
+   * @returns list of rendered VNodes / список отрендеренных VNode
+   */
+  readonly renderRecords = (
+    index: string,
+    data?: TableHeader | TableHeaders,
+    isHeader: boolean = true,
+    isFoot: boolean = false
+  ): VNode[] => {
+    const children: VNode[] = []
+
+    if (data) {
+      const columns = this.item.callInstanceArray('columns', item => item.list)
+
+      toArray(data).forEach((item, key) => {
+        const record = this.item.callInstance(
+          'tableRecord',
+          tableRecord => tableRecord.renderRecord(
+            `${index}-${key}`,
+            columns,
+            item,
+            isHeader,
+            isFoot
+              ? { stickyTop: false, isFoot: true }
+              : { stickyTop: false }
+          )
+        )
+
+        if (record) {
+          children.push(record)
+        }
+      })
+    }
+
+    return children
+  }
+
+  /**
+   * Renders the sticky scroll component if available.
+   *
+   * Рендерит компонент липкой прокрутки, если он доступен.
+   * @returns rendered scroll sticky virtual node or undefined / виртуальный узел липкой прокрутки или undefined
+   */
+  readonly renderScrollSticky = (): VNode | undefined => {
+    if (
+      this.components?.is('scrollSticky')
+      && this.props.stickyScrollBottom
+    ) {
+      return this.components.renderOne(
+        'scrollSticky',
+        mergeProps(
+          this.getAttrs(),
+          {
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          }
+        ),
+        { default: () => this.renderTable() }
+      )
+    }
+
+    return undefined
+  }
+
+  /**
+   * Renders the table element.
+   *
+   * Рендерит элемент таблицы.
+   * @returns rendered table virtual node / виртуальный узел таблицы
+   */
+  readonly renderTable = (): VNode => {
+    return h(
+      this.item.tag,
+      mergeProps(
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.table
+        }
+      ),
+      [
+        ...this.item.callInstanceArray('caption', item => item.render()),
+        ...this.renderColgroup(),
+        ...this.renderBody(),
+        ...this.renderHeader(),
+        ...this.renderItems(),
+        ...this.renderFoot()
+      ]
+    )
+  }
+
+  /**
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed object / экспортируемый объект
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -81,6 +379,7 @@ export class TableDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +402,7 @@ export class TableDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -116,249 +416,5 @@ export class TableDesign<
    */
   protected initRender(): VNode {
     return this.renderScrollSticky() || this.renderMain()
-  }
-
-  /**
-   * Renders the main element wrapper.
-   *
-   * Рендерит обертку основного элемента.
-   * @returns rendered main virtual node / виртуальный узел основного элемента
-   */
-  readonly renderMain = (): VNode => {
-    return h('div', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.renderTable())
-  }
-
-  /**
-   * Renders the sticky scroll component if available.
-   *
-   * Рендерит компонент липкой прокрутки, если он доступен.
-   * @returns rendered scroll sticky virtual node or undefined / виртуальный узел липкой прокрутки или undefined
-   */
-  readonly renderScrollSticky = (): VNode | undefined => {
-    if (
-      this.components
-      && this.props.stickyScrollBottom
-    ) {
-      return this.components.renderOne('scrollSticky', {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      }, { default: () => this.renderTable() })
-    }
-
-    return undefined
-  }
-
-  /**
-   * Renders the table element.
-   *
-   * Рендерит элемент таблицы.
-   * @returns rendered table virtual node / виртуальный узел таблицы
-   */
-  readonly renderTable = (): VNode => {
-    return h(
-      this.item.tag,
-      {
-        ref: this.element,
-        class: this.classes?.value.table,
-        ...this.item.binds
-      },
-      [
-        ...this.item.caption.render(),
-        ...this.renderColgroup(),
-        ...this.renderBody(),
-        ...this.renderHeader(),
-        ...this.renderItems(),
-        ...this.renderFoot()
-      ]
-    )
-  }
-
-  /**
-   * Renders the colgroup element with col definitions for column widths.
-   *
-   * Рендерит элемент colgroup с определениями col для ширины колонок.
-   * @returns rendered colgroup virtual nodes array / массив виртуальных узлов colgroup
-   */
-  readonly renderColgroup = (): VNode[] => {
-    const tag = this.item.tagColgroup
-
-    if (!tag) {
-      return []
-    }
-
-    const cols = this.item.columns.cols
-
-    if (cols.length === 0) {
-      return []
-    }
-
-    return [
-      h(
-        tag,
-        this.getKeyClass('colgroup'),
-        cols.map(attr => h(this.item.tagCol, { ...attr, class: this.classes?.value.col }))
-      )
-    ]
-  }
-
-  /**
-   * Renders the table header.
-   *
-   * Рендерит заголовок таблицы.
-   * @returns rendered header virtual node or undefined / виртуальный узел заголовка или undefined
-   */
-  readonly renderHeader = (): VNode[] => {
-    const children = this.renderRecords('header', this.props.header, true)
-
-    this.initSlot(
-      'header',
-      children,
-      { columns: this.item.columns.list }
-    )
-
-    if (children.length > 0) {
-      return [
-        h(
-          this.item.tagHeader,
-          {
-            ref: this.item.headerElement,
-            class: this.classes?.value.header
-          },
-          children
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the table footer.
-   *
-   * Рендерит подвал таблицы.
-   * @returns rendered foot virtual node or empty array / виртуальный узел подвала или пустой массив
-   */
-  readonly renderFoot = (): VNode[] => {
-    const children = this.renderRecords('foot', this.props.foot, true)
-
-    this.initSlot(
-      'foot',
-      children,
-      { columns: this.item.columns.list }
-    )
-
-    if (children.length > 0) {
-      return [
-        h(
-          this.item.tagFoot,
-          this.getKeyClass('foot'),
-          children
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the table items.
-   *
-   * Рендерит элементы таблицы.
-   * @returns rendered items virtual node or undefined / виртуальный узел элементов или undefined
-   */
-  readonly renderItems = (): VNode[] => {
-    const children: any[] = this.renderList()
-
-    this.initSlot(
-      'items',
-      children,
-      { columns: this.item.columns.list }
-    )
-
-    if (children.length > 0) {
-      return [
-        h(
-          this.item.tagItems,
-          this.getKeyClass('items'),
-          children
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the list of table rows/items.
-   *
-   * Рендерит список строк/элементов таблицы.
-   * @returns array of rendered item virtual nodes / массив отрендеренных виртуальных узлов элементов
-   */
-  readonly renderList = (): any[] => {
-    const children: any[] = []
-
-    this.item.pagination.list.forEach((item, key) => {
-      children.push(
-        this.item.tableRecord.renderRecord(
-          this.item.tableRecord.getKey(`item-${key}`, item),
-          this.item.columns.list,
-          item
-        )
-      )
-    })
-
-    return children
-  }
-
-  /**
-   * Renders the custom body content slot.
-   *
-   * Рендерит слот пользовательского содержимого тела таблицы.
-   * @returns rendered slot virtual node or undefined / виртуальный узел слота или undefined
-   */
-  readonly renderBody = (): VNode[] => {
-    const children: any[] = []
-
-    this.initSlot('body', children)
-
-    return children
-  }
-
-  /**
-   * Helper for rendering header or footer records.
-   *
-   * Вспомогательный метод для рендеринга записей шапки или подвала.
-   * @param index prefix index name / префиксное имя индекса
-   * @param data record header/foot items / элементы записей шапки/подвала
-   * @param isHeader header flag / флаг шапки
-   * @returns list of rendered VNodes / список отрендеренных VNode
-   */
-  readonly renderRecords = (
-    index: string,
-    data?: TableHeader | TableHeaders,
-    isHeader: boolean = true
-  ): VNode[] => {
-    const children: any[] = []
-
-    if (data) {
-      toArray(data).forEach((item, key) => {
-        children.push(
-          this.item.tableRecord.renderRecord(
-            this.item.tableRecord.getKey(`${index}-${key}`, item),
-            this.item.columns.list,
-            item,
-            isHeader,
-            { stickyTop: false }
-          )
-        )
-      })
-    }
-
-    return children
   }
 }

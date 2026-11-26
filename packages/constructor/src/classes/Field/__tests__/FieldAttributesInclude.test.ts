@@ -85,6 +85,35 @@ describe('FieldAttributesInclude', () => {
     expect(attrsFromInputAttrs.listForCheckbox.value).toBe('custom-val')
   })
 
+  it('should omit type attribute in listForTextarea while preserving other attributes and listForCheck type', () => {
+    const type = new FieldTypeInclude({ type: 'text' })
+    const attrs = new FieldAttributesInclude(
+      {
+        name: 'comment',
+        required: true,
+        placeholder: 'Write comment',
+        maxlength: 500,
+        readonly: false,
+        disabled: false,
+        inputAttrs: { 'data-testid': 'comment-textarea' }
+      },
+      () => type
+    )
+
+    const textareaList = attrs.listForTextarea
+    expect('type' in textareaList).toBe(false)
+    expect(textareaList.name).toBe('comment')
+    expect(textareaList.required).toBe(true)
+    expect(textareaList.placeholder).toBe('Write comment')
+    expect(textareaList.maxlength).toBe(500)
+    expect(textareaList.readonly).toBe(false)
+    expect(textareaList.disabled).toBe(false)
+    expect(textareaList['data-testid']).toBe('comment-textarea')
+
+    expect(attrs.list.type).toBe('text')
+    expect(attrs.listForCheck.type).toBe('text')
+  })
+
   it('should accept props as a function', () => {
     let required = false
     const attrs = new FieldAttributesInclude(() => ({

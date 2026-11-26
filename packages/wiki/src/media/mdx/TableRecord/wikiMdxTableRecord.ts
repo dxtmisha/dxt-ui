@@ -6,6 +6,8 @@ import slotsEn from './slots.en.mdx'
 import slotsRu from './slots.ru.mdx'
 import instructionEn from './instruction.en.mdx'
 import instructionRu from './instruction.ru.mdx'
+import isFootEn from './isFoot.en.mdx'
+import isFootRu from './isFoot.ru.mdx'
 import isHeaderEn from './isHeader.en.mdx'
 import isHeaderRu from './isHeader.ru.mdx'
 
@@ -28,6 +30,10 @@ export const wikiMdxTableRecord: StorybookComponentsMdxItem = {
     instruction: {
       en: instructionEn,
       ru: instructionRu
+    },
+    isFoot: {
+      en: isFootEn,
+      ru: isFootRu
     },
     isHeader: {
       en: isHeaderEn,

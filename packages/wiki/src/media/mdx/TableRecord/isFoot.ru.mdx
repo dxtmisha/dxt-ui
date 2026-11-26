@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Подвал таблицы
+
+Свойство `isFoot` переключает строку таблицы в режим отображения подвала (итоговой строки):
+
+- Ячейки подвала (`TableHeaderItem` / `<th>`) рендерятся без атрибута `scope="col"`, сохраняя корректную семантику `<tfoot>`.
+- Пользовательские слоты ячеек разрешаются через `foot-<column>` и `foot-default` вместо `header-<column>` и `header-default`.
+
+<Source
+    code={`
+<table>
+  <tfoot>
+    <TableRecord
+      :isFoot="true"
+      :columns="['name', 'role']"
+      :item="{ name: 'Итого', role: '2 пользователя' }"
+    >
+      <template #foot-name="{ value }">
+        <strong>{{ value }}</strong>
+      </template>
+    </TableRecord>
+  </tfoot>
+</table>
+  `}
+    language="html"
+/>

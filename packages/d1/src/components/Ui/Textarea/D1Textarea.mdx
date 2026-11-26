@@ -20,7 +20,16 @@ import {TextareaWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'Textarea'} type={'textarea'}/>
+
 <StorybookDescriptions componentName={'Textarea'} type={'autosize'}/>
+<Canvas of={Textarea.TextareaAutosize}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Textarea.TextareaVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Textarea.TextareaSkeleton}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -28,11 +37,20 @@ import {TextareaWikiStorybook} from './wiki'
 ## Events
 
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
-<StorybookDescriptions componentName={'Event'} type={'change'}/>
+<StorybookDescriptions componentName={'Event'} type={'focus'}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'clear'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
+<Canvas of={Textarea.TextareaExpose}/>
+    
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
@@ -44,5 +62,6 @@ import {TextareaWikiStorybook} from './wiki'
 <StorybookDescriptions componentName={'Slot'} type={'caption'} />
 <StorybookDescriptions componentName={'Slot'} type={'leading'} />
 <StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<Canvas of={Textarea.TextareaSlots}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

@@ -1,22 +1,24 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## ARIA Role
+## ARIA Role and Live Region
 
-The `role` property allows you to override the default ARIA role for the notification element. The default role is `status`.
+`SnackbarItem` always sets `aria-atomic="true"` and automatically derives `role` and `aria-live` from status flags unless explicitly overridden:
 
-**When to use:**
- - `status` (default) — used for messages that contain advisory information not requiring immediate action. Assistive technologies (screen readers) will announce such a message when the user is idle.
- - `alert` — use for critical errors or warnings requiring immediate attention. Screen readers will interrupt the current task to announce this notification.
- - `log` — use if notifications represent a sequential log of events.
+- **`error`:** Defaults to `role="alert"` and `aria-live="assertive"` for critical errors requiring immediate announcement.
+- **`success`:** Defaults to `role="status"` and `aria-live="polite"` for non-interrupting confirmations.
+- **Explicit override (`role`, `ariaLive`):** Always takes precedence over `error` and `success` defaults (for example, `role="log"` or `aria-live="off"`).
 
 <Source
     code={`
 <template>
-  <!-- Standard notification -->
-  <SnackbarItem label="Download complete" role="status" />
+  <!-- Success notification (role="status", aria-live="polite") -->
+  <SnackbarItem label="Download complete" success />
 
-  <!-- Critical error -->
-  <SnackbarItem label="Connection error!" role="alert" />
+  <!-- Critical error (role="alert", aria-live="assertive") -->
+  <SnackbarItem label="Connection error!" error />
+
+  <!-- Explicit ARIA override -->
+  <SnackbarItem label="Background event" role="log" aria-live="off" />
 </template>
   `}
     language="html"

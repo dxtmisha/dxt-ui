@@ -1,4 +1,9 @@
-- `[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для рендеринга пользовательской ячейки для указанного индекса колонки.
+- `[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для рендеринга пользовательской ячейки данных для указанного индекса колонки.
+- `default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек данных без отдельного слота колонки.
+- `header-[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для рендеринга пользовательской ячейки заголовка при активном `isHeader`.
+- `header-default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек заголовка без отдельного слота `header-<column>`.
+- `foot-[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для рендеринга пользовательской ячейки подвала при активном `isFoot`.
+- `foot-default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек подвала без отдельного слота `foot-<column>`.
 
 > **TableRecordItemSlotProps:**
 > - `item: any` — Объект данных строки.

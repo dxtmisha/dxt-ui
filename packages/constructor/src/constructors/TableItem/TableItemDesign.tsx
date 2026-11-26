@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -51,7 +51,7 @@ export class TableItemDesign<
     name: string,
     props: Readonly<P>,
     options?: ConstrOptions<COMP, TableItemEmits, P>,
-    ItemConstructor: typeof TableItem = TableItem
+    ItemConstructor: typeof TableItem | (new (...args: ConstructorParameters<typeof TableItem>) => TableItem) = TableItem
   ) {
     super(
       name,
@@ -67,6 +67,23 @@ export class TableItemDesign<
       this.slots,
       this.emits
     )
+  }
+
+  /**
+   * Renders the children context of the table item.
+   *
+   * Рендерит контекст содержимого ячейки таблицы.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderContext = (): VNode[] => {
+    const children: VNode[] = [
+      ...this.item.callInstance('label', item => item.render(), []),
+      ...this.item.callInstance('description', item => item.render(), [])
+    ]
+
+    this.initSlot('context', children)
+
+    return children
   }
 
   /**
@@ -116,30 +133,16 @@ export class TableItemDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderContext()
     )
-  }
-
-  /**
-   * Renders the children context of the table item.
-   *
-   * Рендерит контекст содержимого ячейки таблицы.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  readonly renderContext = (): VNode[] => {
-    const children: any[] = [
-      ...this.item.label.render(),
-      ...this.item.description.render()
-    ]
-
-    this.initSlot('context', children)
-
-    return children
   }
 }

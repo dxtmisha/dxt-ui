@@ -1,19 +1,26 @@
 // ai-none
 
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
+  type ConstrComponent,
+  type ConstrItem,
   type DesignComponents,
   type DesignName,
-  isObjectNotArray,
-  toBinds
+  executeFunctionRef,
+  getObjectNoUndefined,
+  isArray,
+  isFunction,
+  isObject,
+  isObjectNotArray
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 
 import type { TableItemPropsInclude } from './basicTypes'
-import type { TableItemExpose, TableItemSlots } from './types'
 import type { TableItemPropsBasic } from './props'
+import type { TableItemExpose, TableItemSlots } from './types'
 
 /**
  * TableItemInclude class provides functionality for rendering table cell items
@@ -54,61 +61,13 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    */
   constructor(
     props: ComponentIncludeProps<TableItemPropsInclude>,
-    protected readonly naming: DesignName,
-    components?: DesignComponents<any, TableItemPropsInclude>,
+    naming: DesignName,
+    components?: DesignComponents<ConstrComponent, TableItemPropsInclude>,
     extra?: ComponentIncludeExtra<TableItemPropsBasic>,
-    protected readonly slots?: Record<string, any>,
+    protected readonly slots?: ConstrItem,
     index?: string
   ) {
     super(props, naming, components, extra, index)
-  }
-
-  /**
-   * Renders the table item using a slot.
-   *
-   * Рендерит ячейку таблицы с использованием слота.
-   * @param key unique rendering key / уникальный ключ рендеринга
-   * @param index column index / индекс колонки
-   * @param row row data object / объект данных строки
-   * @param value cell value / значение ячейки
-   * @param attrs additional cell properties/attributes / дополнительные свойства/атрибуты ячейки
-   * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
-   */
-  renderSlot(
-    key: string,
-    index: string,
-    row: any,
-    value: any,
-    attrs?: ComponentIncludeExtra<TableItemPropsBasic>
-  ): VNode | undefined {
-    const slotsName = this.getSlotsName(index)
-
-    if (
-      this.slots
-      && slotsName in this.slots
-    ) {
-      return this.components?.renderOne(
-        this.name,
-        toBinds(
-          this.getBinds(index),
-          this.getCellAttrs(value),
-          attrs
-        ),
-        {
-          context: () => this.slots?.[slotsName]?.({
-            item: row,
-            value,
-            classes: this.getItemClasses(),
-            key,
-            index,
-            slotsName
-          })
-        },
-        key
-      )
-    }
-
-    return undefined
   }
 
   /**
@@ -124,15 +83,17 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   renderDefault(
     key: string,
     index: string,
-    value: any,
+    value: unknown,
     attrs?: ComponentIncludeExtra<TableItemPropsBasic>
   ): VNode | undefined {
+    const extraAttrs = executeFunctionRef(attrs)
+
     return this.components?.renderOne(
       this.name,
-      toBinds(
+      mergeProps(
         this.getBinds(index),
         this.getCellAttrs(value) ?? { label: value },
-        attrs
+        extraAttrs ?? {}
       ),
       undefined,
       key
@@ -152,11 +113,13 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   readonly renderItem = (
     key: string,
     index: string,
-    row: any,
+    row: unknown,
     attrs?: ComponentIncludeExtra<TableItemPropsBasic>
   ): VNode | undefined => {
     if (this.components) {
-      const value: any = row?.[index]
+      const value = isObject(row) && Object.hasOwn(row, index)
+        ? (row as Record<string, unknown>)[index]
+        : undefined
 
       return this.renderSlot(key, index, row, value, attrs)
         || this.renderDefault(key, index, value, attrs)
@@ -166,13 +129,95 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Returns the class name for the table item component.
+   * Renders the table item using a slot.
    *
-   * Возвращает имя класса для компонента ячейки таблицы.
-   * @returns class name / имя класса
+   * Рендерит ячейку таблицы с использованием слота.
+   * @param key unique rendering key / уникальный ключ рендеринга
+   * @param index column index / индекс колонки
+   * @param row row data object / объект данных строки
+   * @param value cell value / значение ячейки
+   * @param attrs additional cell properties/attributes / дополнительные свойства/атрибуты ячейки
+   * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
-  protected getItemClassName(): string {
-    return `${this.naming.getName()}-tableItem`
+  renderSlot(
+    key: string,
+    index: string,
+    row: unknown,
+    value: unknown,
+    attrs?: ComponentIncludeExtra<TableItemPropsBasic>
+  ): VNode | undefined {
+    const slotsName = this.getSlotsName(index)
+    const slot = this.slots?.[slotsName]
+
+    if (isFunction(slot)) {
+      const extraAttrs = executeFunctionRef(attrs)
+
+      return this.components?.renderOne(
+        this.name,
+        mergeProps(
+          this.getBinds(index),
+          this.getCellAttrs(value) ?? {},
+          extraAttrs ?? {}
+        ),
+        {
+          context: () => slot({
+            item: row,
+            value,
+            classes: this.getItemClasses(),
+            key,
+            index,
+            slotsName
+          })
+        },
+        key
+      )
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns binding properties for the table item.
+   *
+   * Возвращает свойства привязки для ячейки таблицы.
+   * @param index column index / индекс колонки
+   * @returns component bindings / привязки компонента
+   */
+  protected getBinds(index: string): ConstrBind {
+    const props = this.getProps()
+    const columnAttrs = props.tableItemColumnAttrs && Object.hasOwn(props.tableItemColumnAttrs, index)
+      ? props.tableItemColumnAttrs[index]
+      : undefined
+
+    return mergeProps(
+      this.getAttrs(),
+      columnAttrs ?? {},
+      getObjectNoUndefined({
+        selected: props.selected,
+        disabled: props.disabled,
+        stickyTop: props.stickyTop,
+        stickyLeft: isArray(props.stickyLeft) ? props.stickyLeft.includes(index) : undefined,
+        isSkeleton: props.isSkeleton,
+        index
+      })
+    )
+  }
+
+  /**
+   * Resolves the cell attributes from the given value.
+   *
+   * Разрешает атрибуты ячейки из переданного значения.
+   * @param value cell value / значение ячейки
+   * @returns object containing cell attributes or undefined / объект, содержащий атрибуты ячейки, или undefined
+   */
+  protected getCellAttrs(value: unknown): ConstrBind | undefined {
+    if (value === '*none') {
+      return {
+        class: this.naming.getStatusClass('none')
+      }
+    }
+
+    return isObjectNotArray(value) ? value as ConstrBind : undefined
   }
 
   /**
@@ -191,6 +236,16 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
+   * Returns the class name for the table item component.
+   *
+   * Возвращает имя класса для компонента ячейки таблицы.
+   * @returns class name / имя класса
+   */
+  protected getItemClassName(): string {
+    return `${this.naming.getDesign()}-${this.name}`
+  }
+
+  /**
    * Returns the slots name based on the column index.
    *
    * Возвращает имя слота на основе индекса колонки.
@@ -200,53 +255,12 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   protected getSlotsName(index: string): string {
     if (
       this.slots
-      && !(index in this.slots)
-      && 'default' in this.slots
+      && !isFunction(this.slots[index])
+      && isFunction(this.slots.default)
     ) {
       return 'default'
     }
 
     return index
-  }
-
-  /**
-   * Resolves the cell attributes from the given value.
-   *
-   * Разрешает атрибуты ячейки из переданного значения.
-   * @param value cell value / значение ячейки
-   * @returns object containing cell attributes or undefined / объект, содержащий атрибуты ячейки, или undefined
-   */
-  protected getCellAttrs(value: any): Record<string, any> | undefined {
-    if (value === '*none') {
-      return {
-        class: this.naming.getStatusClass('none')
-      }
-    }
-
-    return isObjectNotArray(value) ? value : undefined
-  }
-
-  /**
-   * Returns binding properties for the table item.
-   *
-   * Возвращает свойства привязки для ячейки таблицы.
-   * @param index column index / индекс колонки
-   * @returns component bindings / привязки компонента
-   */
-  protected getBinds(index: string): Record<string, any> {
-    const props = this.getProps()
-
-    return toBinds(
-      this.getAttrs(),
-      props.tableItemColumnAttrs?.[index],
-      {
-        selected: props.selected,
-        disabled: props.disabled,
-        stickyTop: props.stickyTop,
-        stickyLeft: (props?.stickyLeft?.indexOf?.(index) ?? -1) !== -1,
-        isSkeleton: props.isSkeleton,
-        index
-      }
-    )
   }
 }

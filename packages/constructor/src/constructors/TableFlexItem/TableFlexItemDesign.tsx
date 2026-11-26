@@ -1,9 +1,9 @@
 import { type ConstrOptions } from '@dxtmisha/functional'
 
-import { TableFlexItem } from './TableFlexItem'
 import { TableItemDesign } from '../TableItem'
+import { TableFlexItem } from './TableFlexItem'
 
-import type { TableFlexItemPropsBasic } from './props'
+import type { TableFlexItemProps } from './props'
 import type {
   TableFlexItemClasses,
   TableFlexItemComponents,
@@ -20,7 +20,7 @@ export class TableFlexItemDesign<
   COMP extends TableFlexItemComponents,
   EXPOSE extends TableFlexItemExpose,
   CLASSES extends TableFlexItemClasses,
-  P extends TableFlexItemPropsBasic
+  P extends TableFlexItemProps
 > extends TableItemDesign<
     COMP,
     EXPOSE,

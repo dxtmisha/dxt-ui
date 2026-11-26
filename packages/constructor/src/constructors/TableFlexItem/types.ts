@@ -43,6 +43,7 @@ export interface TableFlexItemSlots extends TableItemSlots {
  * Тип, описывающий подклассы.
  */
 export type TableFlexItemClasses = {
+  /** Main class name of the flex table item / Основное имя класса ячейки флекс-таблицы */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string

@@ -6,6 +6,7 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 - Поддержка стандартных и настраиваемых HTML-тегов (свойство `tag`, по умолчанию `td`)
 - Выравнивание содержимого ячейки (`align` и `alignVertical`)
+- Опциональные горизонтальные и вертикальные разделители (`dividerX`, `dividerY`)
 - Ограничение количества строк для ячеек с длинными метками (`labelClamp`)
 - Динамические состояния скелетона (`isSkeleton`) для фаз загрузки
 - Поддержка липких (sticky) колонок и заголовков (`stickyLeft`, `stickyTop`)
@@ -18,19 +19,21 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 <template>
   <table>
-    <tr>
-      <!-- Простая ячейка со значением -->
-      <TableItem value="Значение ячейки" />
+    <tbody>
+      <tr>
+        <!-- Простая ячейка с меткой -->
+        <TableItem label="Значение ячейки" />
 
-      <!-- Центрированная ячейка с объединением колонок и ограничением строк -->
-      <TableItem
-        label="Длинное название ячейки"
-        description="Необязательное описание ячейки"
-        align="center"
-        colspan="2"
-        labelClamp
-      />
-    </tr>
+        <!-- Центрированная ячейка с объединением колонок и ограничением строк -->
+        <TableItem
+          label="Длинное название ячейки"
+          description="Необязательное описание ячейки"
+          align="center"
+          colspan="2"
+          labelClamp
+        />
+      </tr>
+    </tbody>
   </table>
 </template>
   `}

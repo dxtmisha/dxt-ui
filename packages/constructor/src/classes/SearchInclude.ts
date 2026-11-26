@@ -1,4 +1,4 @@
-import { toRefs, type Ref } from 'vue'
+import { toRef } from 'vue'
 import {
   executeFunction,
   useSearchRef,
@@ -28,27 +28,17 @@ export class SearchInclude<T extends SearchItem = any> {
    * @param columns fallback columns array or callback function returning columns / резервный массив колонок или функция обратного вызова, возвращающая колонки
    */
   constructor(
-    protected readonly props: SearchPropsInclude<T>,
+    protected readonly props: Readonly<SearchPropsInclude<T>>,
     protected readonly columns?: SearchColumns<T> | (() => SearchColumns<T>)
   ) {
-    const { search } = toRefs(props)
+    const search = toRef(props, 'search', '')
 
     this.item = useSearchRef(
       () => this.props.list,
       () => this.getSearchColumns(),
-      search as Ref<string>,
+      search,
       this.props.searchOptions
     )
-  }
-
-  /**
-   * Returns search filtered list of items.
-   *
-   * Возвращает список элементов, отфильтрованный поиском.
-   * @returns search filtered list of items / отфильтрованный список элементов
-   */
-  get list(): SearchFormatList<T, SearchColumns<T>> {
-    return this.item.listSearch.value
   }
 
   /**
@@ -62,13 +52,13 @@ export class SearchInclude<T extends SearchItem = any> {
   }
 
   /**
-   * Returns current search query string.
+   * Returns search filtered list of items.
    *
-   * Возвращает текущую строку поиска.
-   * @returns current search query string / текущая строка поиска
+   * Возвращает список элементов, отфильтрованный поиском.
+   * @returns search filtered list of items / отфильтрованный список элементов
    */
-  get search(): string {
-    return this.item.search.value
+  get list(): SearchFormatList<T, SearchColumns<T>> {
+    return this.item.listSearch.value
   }
 
   /**
@@ -79,6 +69,16 @@ export class SearchInclude<T extends SearchItem = any> {
    */
   get loading(): boolean {
     return this.item.loading.value
+  }
+
+  /**
+   * Returns current search query string.
+   *
+   * Возвращает текущую строку поиска.
+   * @returns current search query string / текущая строка поиска
+   */
+  get search(): string {
+    return this.item.search.value
   }
 
   /**

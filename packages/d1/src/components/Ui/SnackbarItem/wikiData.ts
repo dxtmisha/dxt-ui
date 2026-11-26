@@ -13,7 +13,7 @@ const propsNames: StorybookProps = [
   { name: 'ariaLive', type: 'string', option: ['off', 'polite', 'assertive'] },
   { name: 'button', type: 'string | number | ConstrBind<ButtonProps>' },
   { name: 'closeButton', type: 'boolean' },
-  { name: 'component', type: 'any' },
+  { name: 'component', type: 'string | Component' },
   { name: 'componentProps', type: 'object' },
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
@@ -43,7 +43,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', description: `Slot for the notification body/ Слот для содержимого уведомления`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'body', description: `Slot for the notification body / Слот для содержимого уведомления`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
@@ -55,7 +55,7 @@ const eventsNames: StorybookSlots = [
   { name: 'actionsLite', description: `Simple click event for actions / Простое событие клика для действий`, properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'close', description: `Event triggered when notification is closed/ Событие при закрытии уведомления`, properties: [{ name: 'value', type: 'string | undefined' }] }
+  { name: 'close', description: `Event triggered when notification is closed / Событие при закрытии уведомления`, properties: [{ name: 'value', type: 'string | undefined' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

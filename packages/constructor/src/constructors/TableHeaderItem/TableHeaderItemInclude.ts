@@ -1,5 +1,7 @@
 // ai-none
 
+import { isFunction } from '@dxtmisha/functional'
+
 import { TableItemInclude } from '../TableItem'
 
 /**
@@ -21,13 +23,26 @@ export class TableHeaderItemInclude extends TableItemInclude {
   protected override readonly name = 'tableHeaderItem'
 
   /**
-   * Returns the slots name based on the column index for header items.
+   * Returns the slots name based on the column index for header or footer items.
    *
-   * Возвращает имя слота на основе индекса колонки для элементов шапки.
+   * Возвращает имя слота на основе индекса колонки для элементов шапки или подвала.
    * @param index column index / индекс колонки
    * @returns slots name / имя слота
    */
   protected override getSlotsName(index: string): string {
-    return `header-${super.getSlotsName(index)}`
+    const props = this.getProps() as { isFoot?: boolean }
+    const prefix = props.isFoot ? 'foot' : 'header'
+    const slotName = `${prefix}-${index}`
+    const defaultSlotName = `${prefix}-default`
+
+    if (
+      this.slots
+      && !isFunction(this.slots[slotName])
+      && isFunction(this.slots[defaultSlotName])
+    ) {
+      return defaultSlotName
+    }
+
+    return slotName
   }
 }

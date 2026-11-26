@@ -1,15 +1,17 @@
+import type { Component } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
 import type { AreaPropsInclude } from '../../types/areaTypes'
-import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
+import type { LabelProps } from '../../types/labelTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
 
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 import type { ButtonPropsBasic } from '../Button'
 import type { IconPropsBasic, IconTrailingPropsInclude, IconValue } from '../Icon'
 
+/** Design token properties for SnackbarItem / Свойства дизайн-токенов для SnackbarItem */
 type SnackbarItemPropsToken = {
   // :type [!] System label / Системная метка
   success?: boolean
@@ -17,6 +19,11 @@ type SnackbarItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic incoming properties for SnackbarItem component.
+ *
+ * Базовые входящие свойства для компонента SnackbarItem.
+ */
 export type SnackbarItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
@@ -30,23 +37,26 @@ export type SnackbarItemPropsBasic<
   & TextClosePropsInclude
   & AreaPropsInclude
   & {
-    /** Value/ Значения */
-    /** Button configuration or text/ Конфигурация или текст кнопки */
+    // Value
+    /** Button configuration or text / Конфигурация или текст кнопки */
     button?: string | number | ConstrBind<Button>
-    /** HTML content for the notification/ HTML-содержимое для уведомления */
+    /**
+     * Trusted HTML content for the notification (caller must sanitize untrusted HTML to prevent XSS) /
+     * Доверенное HTML-содержимое для уведомления (вызывающая сторона должна санитизировать недоверенный HTML для предотвращения XSS)
+     */
     html?: string
-    /** Custom component for the notification/ Пользовательский компонент для уведомления */
-    component?: any
-    /** Properties for the custom component/ Свойства для пользовательского компонента */
+    /** Custom component for the notification / Пользовательский компонент для уведомления */
+    component?: Component | string
+    /** Properties for the custom component / Свойства для пользовательского компонента */
     componentProps?: object
 
-    /** Unique identifier or value for the item/ Уникальный идентификатор или значение для элемента */
+    /** Unique identifier or value for the item / Уникальный идентификатор или значение для элемента */
     value?: string
 
-    /** Style/ Стили */
-    /** Whether to show a close button/ Показывать ли кнопку закрытия */
+    // Style
+    /** Whether to show a close button / Показывать ли кнопку закрытия */
     closeButton?: boolean
-    /** Icon for the close button/ Иконка для кнопки закрытия */
+    /** Icon for the close button / Иконка для кнопки закрытия */
     iconClose?: IconValue<Icon>
   }
 

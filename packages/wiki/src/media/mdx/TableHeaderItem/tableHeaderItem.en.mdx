@@ -1,14 +1,15 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-The table header cell component representing a `<th>` tag. Extends all capabilities of `TableItem` and introduces built-in support for displaying tooltips to provide additional info or guidance directly from the header cell.
+The table header cell component representing a `<th>` tag. Extends all capabilities of `TableItem` and adds accessible header `scope`, interactive 3-state column sorting, and built-in tooltip support directly inside the header cell.
 
 **Key Features:**
 
-- Extends `TableItem` properties and features (alignments, tag customization, sticky settings)
-- Standard HTML tag support (`tag` prop, defaults to `th`)
-- Built-in tooltip support triggered by an icon (`iconTooltip` or custom `help-circle` default)
+- Extends `TableItem` properties and features (alignments, dividers, tag customization, sticky settings)
+- Standard HTML header tag and semantic `scope` support (`tag` defaults to `th`; `scope`: `col`, `row`, `colgroup`, `rowgroup`)
+- Interactive 3-state sorting (`showSort`, `sortColumn`, `sortDir`, `aria-sort`, `@sort` event)
+- Built-in tooltip support triggered by an icon (`iconTooltip` or `help-circle` default)
 - Slot for placing rich HTML or custom component content inside the tooltip (`tooltip` slot)
-- Tooltip customization via `tooltipLabel` and `tooltipDescription`
+- Tooltip customization via `tooltipLabel`, `tooltipDescription`, and `tooltipAttrs`
 
 <Source
     code={`
@@ -19,12 +20,20 @@ The table header cell component representing a `<th>` tag. Extends all capabilit
   <table>
     <thead>
       <tr>
-        <!-- Simple header cell -->
-        <TableHeaderItem value="Header 1" />
+        <!-- Simple sortable header cell -->
+        <TableHeaderItem
+          label="Name"
+          index="name"
+          scope="col"
+          :showSort="true"
+          sortColumn="name"
+          sortDir="asc"
+        />
 
         <!-- Header with built-in tooltip -->
         <TableHeaderItem
           label="Header with Tooltip"
+          scope="col"
           tooltipLabel="Help Label"
           tooltipDescription="This explains the meaning of this column."
         />

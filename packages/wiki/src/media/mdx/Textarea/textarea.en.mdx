@@ -1,25 +1,22 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Multi-line text input component with support for auto-sizing, validation, and advanced styling.
+The `Textarea` component is a multi-line text input field combining `Field` anatomy with the `TextareaAutosize` engine.
 
-Textarea provides a convenient interface for entering large amounts of text. The component automatically adjusts its height to fit the content, supports character limits, icons, labels, and helper messages. Integrates with the form validation system.
+It provides automatic height adjustment, form validation, character counting, clear button behavior, helper and warning messages, icons, and full slot customization inside a single accessible form control.
 
-**Key Features:**
+**Key features:**
 
-- Automatic height adjustment (autosize)
-- Validation support and error display
-- Built-in character counter
-- Support for icons, prefixes, and suffixes
-- Floating or static label
-- States: active, disabled, read-only, loading
-- Theme and size customization
+- **Automatic or Fixed Sizing:** Auto-grows with content via `autosize` (default `true`) or uses fixed `rows`, `cols`, and `wrap`
+- **Form Validation & Warnings:** Supports `required`, `minlength`, `maxlength`, `validationCode`, `validationMessage`, `forceShowMessage`, and non-blocking `warning` / `warningMessage`
+- **Integrated Field Anatomy:** Built-in `label`, `helperMessage`, character counter (`counterShow`, `maxlength`), clear action (`cancel`), and leading/trailing icons
+- **Interactive States:** Full support for `disabled`, `readonly`, `loading`, and `isSkeleton`
+- **Flexible Slots & Exposed API:** Supports `leading`, `trailing`, `prefix`, `suffix`, `caption`, and `label` slots alongside `setValue`, `clear`, `checkValidity`, `getValue`, and `getValidationMessage`
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Comment and feedback fields
-- Contact forms
-- Description or biography editors
-- Address or note input
+- Comment, review, and feedback forms
+- User biographies, notes, and product descriptions
+- Multi-line address or support ticket inputs
 
 <Source
     code={`
@@ -35,10 +32,12 @@ const comment = ref('')
     label="Your comment"
     placeholder="Enter text..."
     autosize
-    counter
+    counter-show
     :maxlength="500"
   />
 </template>
   `}
     language="html"
 />
+
+> Textarea unifies auto-growing multi-line text entry with form validation, character counting, and consistent field ergonomics.

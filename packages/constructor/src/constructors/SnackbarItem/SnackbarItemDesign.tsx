@@ -1,11 +1,10 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, toRaw, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { SnackbarItem } from './SnackbarItem'
 
 import {
@@ -20,7 +19,11 @@ import {
 } from './types'
 
 /**
- * SnackbarItemDesign
+ * SnackbarItemDesign constructor class responsible for assembling and rendering the SnackbarItem component.
+ * Manages subclass resolution, root element attribute merging, and rendering of tool, context, body, and actions areas.
+ *
+ * Класс-конструктор SnackbarItemDesign, отвечающий за сборку и рендеринг компонента SnackbarItem.
+ * Управляет разрешением подклассов, слиянием атрибутов корневого элемента и рендерингом областей инструмента, контекста, тела и действий.
  */
 export class SnackbarItemDesign<
   COMP extends SnackbarItemComponents,
@@ -36,14 +39,17 @@ export class SnackbarItemDesign<
     CLASSES,
     P
   > {
+  /** SnackbarItem logic orchestrator instance / Экземпляр логического оркестратора SnackbarItem */
   protected readonly item: SnackbarItem
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for SnackbarItemDesign.
+   *
+   * Конструктор для SnackbarItemDesign.
+   * @param name class name / название класса
+   * @param props component properties / свойства компонента
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor SnackbarItem logic class / класс логики SnackbarItem
    */
   constructor(
     name: string,
@@ -68,21 +74,20 @@ export class SnackbarItemDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -108,6 +113,7 @@ export class SnackbarItemDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -117,58 +123,62 @@ export class SnackbarItemDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.ariaBind
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.aria,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
         ...this.renderMain(),
-        ...this.item.actions.render()
+        ...this.item.callInstance('actions', item => item.render(), [])
       ]
     )
   }
 
   /**
-   * Rendering part of the content.
+   * Rendering part of the content including icon, context, action button, and close button.
    *
-   * Рендер части содержимого.
+   * Рендер основной части содержимого, включая иконку, контекст, кнопку действия и кнопку закрытия.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderMain = (): VNode[] => {
+  readonly renderMain = (): VNode[] => {
     return [
       h(
         'div',
         this.getKeyClass('tool'),
         [
-          ...this.item.icon.render(),
+          ...this.item.callInstance('icon', item => item.render(), []),
           ...this.renderContext(),
-          ...this.item.button.render({
-            class: this.classes?.value.button
-          }),
-          ...this.renderClose()
+          ...this.item.callInstance('button', item => item.render(), []),
+          ...this.item.callInstance('buttonClose', item => item.render(), [])
         ]
       )
     ]
   }
 
   /**
-   * Description area rendering.
+   * Context area rendering including label, description, and body content.
    *
-   * Рендер зоны описания.
+   * Рендер зоны контекста, включая метку, описание и содержимое тела.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderContext = (): VNode[] => {
+  readonly renderContext = (): VNode[] => {
     return [
       h(
         'div',
         this.getKeyClass('context'),
         [
-          ...this.item.label.render(),
-          ...this.item.description.render(),
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('description', item => item.render(), []),
           ...this.renderBody()
         ]
       )
@@ -176,11 +186,12 @@ export class SnackbarItemDesign<
   }
 
   /**
-   * Rendering of the body content in the body slot.
+   * Rendering of the body content from HTML string, body slot, or custom component.
    *
-   * Рендер тела, содержимый в слоте body.
+   * Рендер содержимого тела из HTML-строки, слота body или пользовательского компонента.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     const children: VNode[] = []
 
     if (this.props.html) {
@@ -215,34 +226,12 @@ export class SnackbarItemDesign<
           key: 'body-component',
           class: this.classes?.value.body
         },
-        h(this.props.component, this.props.componentProps)
+        typeof this.props.component === 'string'
+          ? h(this.props.component, this.props.componentProps)
+          : h(toRaw(this.props.component), this.props.componentProps)
       ))
     }
 
     return children
-  }
-
-  /**
-   * Generates an element to display the close button.
-   *
-   * Генерирует элемент для вывода кнопки закрытия.
-   */
-  readonly renderClose = (): VNode[] => {
-    if (this.props.closeButton) {
-      return this.components?.render(
-        'button',
-        {
-          key: 'button-close',
-          class: this.classes?.value.close,
-          icon: this.props.iconClose,
-          onclick: this.item.onClose,
-          ...AriaStaticInclude.label(this.item.text.close)
-        },
-        undefined,
-        'button-close'
-      ) ?? []
-    }
-
-    return []
   }
 }

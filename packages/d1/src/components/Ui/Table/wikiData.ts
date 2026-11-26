@@ -12,8 +12,8 @@ const propsNames: StorybookProps = [
   { name: 'columns', type: 'string[]' },
   { name: 'columnsWidth', type: 'Record<string, string | number>' },
   { name: 'defaultHeight', type: 'string | number' },
-  { name: 'foot', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
-  { name: 'header', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
+  { name: 'foot', type: 'TableHeader<TableHeaderItemProps> | TableHeaders<TableHeaderItemProps>' },
+  { name: 'header', type: 'TableHeader<TableHeaderItemProps> | TableHeaders<TableHeaderItemProps>' },
   { name: 'headerTop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyValue', type: 'string' },
@@ -33,8 +33,8 @@ const propsNames: StorybookProps = [
   { name: 'stickyTop', type: 'string[]' },
   { name: 'tableItemAttrs', type: 'ConstrBind<TableItemProps>' },
   { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableItemProps>>' },
-  { name: 'tableRecordAttrs', type: 'ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>' },
-  { name: 'tableRowAttrs', type: 'Record<string, ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>>' }
+  { name: 'tableRecordAttrs', type: 'ConstrBind<TableRecordProps>' },
+  { name: 'tableRowAttrs', type: 'Record<string, ConstrBind<TableRecordProps>>' }
   // :propsList [!] System label / Системная метка
 ]
 

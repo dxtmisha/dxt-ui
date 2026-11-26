@@ -6,12 +6,13 @@ The `Table` component handles rendering structured datasets. It integrates colum
 
 **Key Features:**
 
-- Structured representation of datasets in tabular form
-- Column-based data extraction via the `columns` array
-- Multi-row hierarchical header support via the `header` prop
-- Sticky headers (`headerTop`) and sticky left columns (`stickyLeft`) for large datasets
-- Column-level cell alignment, row selection, and attribute binding (`tableItemColumnAttrs`)
-- Custom slot support per column index for custom cell rendering
+- Structured representation of datasets in tabular form with optional `caption` (`captionBottom`, `captionDecorative`) and `colgroup` column widths (`columnsWidth`)
+- Column-based data extraction via the `columns` array (or automatic inference from `header`)
+- Multi-row hierarchical header (`header`) and footer (`foot`) support
+- Built-in local search (`search`, `searchColumns`, `searchOptions`), sorting (`sort`, `sortDir`, `sortFunction`), and pagination (`page`, `rows`)
+- Sticky headers (`headerTop`), sticky left columns (`stickyLeft`), and sticky bottom scrollbar (`stickyScrollBottom`) for large datasets
+- Column-level and row-level attribute binding (`tableItemColumnAttrs`, `tableRowAttrs`), selection (`selected`), and skeleton states (`isSkeleton`)
+- Custom slot support for sections and per-column cells (`header`, `items`, `foot`, `body`, `caption`, `#<column>`, `#header-<column>`, `#foot-<column>`)
 
 <Source
     code={`

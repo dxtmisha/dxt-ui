@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextareaAutosize } from './TextareaAutosize'
 
 import {
@@ -19,7 +20,13 @@ import {
 } from './types'
 
 /**
- * TextareaAutosizeDesign
+ * Rendering class for the TextareaAutosize component.
+ * Creates the logic orchestrator instance, configures element classes, and renders
+ * the hidden measurement clone alongside the textarea element.
+ *
+ * Класс рендеринга компонента TextareaAutosize.
+ * Создаёт экземпляр оркестратора логики, настраивает классы элементов и рендерит
+ * скрытый элемент-клон для расчёта высоты вместе с элементом textarea.
  */
 export class TextareaAutosizeDesign<
   COMP extends TextareaAutosizeComponents,
@@ -35,14 +42,17 @@ export class TextareaAutosizeDesign<
     CLASSES,
     P
   > {
+  /** TextareaAutosize logic orchestrator instance / Экземпляр оркестратора логики TextareaAutosize */
   protected readonly item: TextareaAutosize
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for creating a TextareaAutosize design instance.
+   *
+   * Конструктор для создания экземпляра дизайна TextareaAutosize.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor logic orchestrator class / класс оркестратора логики
    */
   constructor(
     name: string,
@@ -67,13 +77,56 @@ export class TextareaAutosizeDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Renders the hidden clone element used to measure textarea height.
+   *
+   * Рендерит скрытый элемент-клон для измерения высоты textarea.
+   * @returns rendered clone VNode / отрендеренный VNode элемента-клона
+   */
+  readonly renderClone = (): VNode => {
+    const cloneRef = this.item.callInstance('resize', item => item.clone)
+
+    return h(
+      'div',
+      mergeProps(
+        AriaStaticInclude.hidden(),
+        {
+          ref: cloneRef,
+          class: this.classes?.value.clone
+        }
+      )
+    )
+  }
+
+  /**
+   * Renders the textarea element.
+   *
+   * Рендерит элемент textarea.
+   * @returns rendered textarea VNode / отрендеренный VNode элемента textarea
+   */
+  readonly renderTextarea = (): VNode => {
+    const props = mergeProps(
+      this.getAttrs(),
+      this.props.inputAttrs ?? {},
+      this.item.binds,
+      {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      }
+    )
+
+    return h('textarea', props)
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: () => this.item.value.item.value
+      getValue: () => this.item.getValue()
     } as EXPOSE
   }
 
@@ -81,6 +134,7 @@ export class TextareaAutosizeDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -97,6 +151,7 @@ export class TextareaAutosizeDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -106,45 +161,12 @@ export class TextareaAutosizeDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual nodes / отрендеренные виртуальные узлы
    */
   protected initRender(): VNode[] {
     return [
       this.renderClone(),
       this.renderTextarea()
     ]
-  }
-
-  /**
-   * Renders a textarea element.
-   *
-   * Рендерит элемент textarea.
-   */
-  readonly renderTextarea = (): VNode => {
-    const props = mergeProps(
-      this.getAttrs(),
-      this.props.inputAttrs ?? {},
-      {
-        ref: this.element,
-        value: this.item.value.item.value,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        onFocus: this.item.resize.on,
-        onInput: this.item.resize.onInput
-      }
-    )
-
-    return h('textarea', props)
-  }
-
-  /**
-   * Renders a clone element.
-   *
-   * Рендерит элемент-клон.
-   */
-  readonly renderClone = (): VNode => {
-    return h('div', {
-      ref: this.item.resize.clone,
-      class: this.classes?.value.clone
-    })
   }
 }

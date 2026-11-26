@@ -7,11 +7,11 @@
 
   &--lazy {
     content-visibility: auto;
-    contain-intrinsic-height: ui.v('??minHeight', 32px);
+    contain-intrinsic-height: ui.v('??sys.minHeight', ui.v('??minHeight', 32px));
 
     &--hidden {
       visibility: hidden;
-      min-height: ui.v('??minHeight', 32px);
+      min-height: ui.v('??sys.minHeight', ui.v('??minHeight', 32px));
     }
   }
 }

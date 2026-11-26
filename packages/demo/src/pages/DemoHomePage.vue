@@ -116,13 +116,21 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Slider" name="component-slider"/>
         <DemoLink label="SliderField" name="component-slider-field"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
+        <DemoLink label="SnackbarItem" name="component-snackbar-item"/>
         <DemoLink label="Switch" name="component-switch"/>
         <DemoLink label="TabItem" name="component-tab-item"/>
         <DemoLink label="Table" name="component-table"/>
         <DemoLink label="TableFlex" name="component-table-flex"/>
+        <DemoLink label="TableFlexHeaderItem" name="component-table-flex-header-item"/>
+        <DemoLink label="TableFlexItem" name="component-table-flex-item"/>
+        <DemoLink label="TableFlexRecord" name="component-table-flex-record"/>
+        <DemoLink label="TableHeaderItem" name="component-table-header-item"/>
+        <DemoLink label="TableItem" name="component-table-item"/>
+        <DemoLink label="TableRecord" name="component-table-record"/>
         <DemoLink label="Tabs" name="component-tabs"/>
         <DemoLink label="TabsNavigation" name="component-tabs-navigation"/>
         <DemoLink label="Textarea" name="component-textarea"/>
+        <DemoLink label="TextareaAutosize" name="component-textarea-autosize"/>
         <DemoLink label="Tooltip" name="component-tooltip"/>
         <DemoLink label="Window" name="component-window"/>
       </D1Group>

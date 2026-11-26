@@ -15,7 +15,7 @@ export type TextareaAutosizeComponents = {
  * Тип, описывающий доступные события.
  */
 export type TextareaAutosizeEmits = {
-  /** Event triggered on input/ Событие при вводе */
+  /** Event triggered on input / Событие при вводе */
   input: [event: InputEvent]
 }
 
@@ -25,7 +25,7 @@ export type TextareaAutosizeEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface TextareaAutosizeExpose {
-  /** Returns the current value/ Возвращает текущее значение */
+  /** Returns the current value / Возвращает текущее значение */
   getValue(): string
 }
 
@@ -44,6 +44,7 @@ export interface TextareaAutosizeSlots {
  * Тип, описывающий подклассы.
  */
 export type TextareaAutosizeClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   clone: string

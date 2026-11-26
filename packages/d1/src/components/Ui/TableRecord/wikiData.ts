@@ -5,9 +5,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'columns', type: 'string[]' },
+  { name: 'columns', type: 'readonly string[]' },
   { name: 'disabled', type: 'boolean' },
   { name: 'index', type: 'string' },
+  { name: 'isFoot', type: 'boolean' },
   { name: 'isHeader', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'item', type: 'Record<string, any>' },

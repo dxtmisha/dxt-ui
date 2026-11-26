@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -51,7 +51,7 @@ export class TableRecordDesign<
     name: string,
     props: Readonly<P>,
     options?: ConstrOptions<COMP, TableRecordEmits, P>,
-    ItemConstructor: typeof TableRecord = TableRecord
+    ItemConstructor: typeof TableRecord | (new (...args: ConstructorParameters<typeof TableRecord>) => TableRecord) = TableRecord
   ) {
     super(
       name,
@@ -67,6 +67,28 @@ export class TableRecordDesign<
       this.slots,
       this.emits
     )
+  }
+
+  /**
+   * Renders the column cell children of the table record row.
+   *
+   * Рендерит дочерние ячейки колонок для строки записи таблицы.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
+   */
+  readonly renderChildren = (): VNode[] => {
+    const children: VNode[] = []
+
+    if (this.props.columns) {
+      for (const index of this.props.columns) {
+        const column = this.item.renderColumn(index)
+
+        if (column) {
+          children.push(column)
+        }
+      }
+    }
+
+    return children
   }
 
   /**
@@ -112,34 +134,18 @@ export class TableRecordDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    return h('tr', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, this.renderChildren())
-  }
-
-  /**
-   * Rendering children elements.
-   *
-   * Рендеринг дочерних элементов.
-   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
-   */
-  readonly renderChildren = (): any[] => {
-    const children: any[] = []
-
-    if (this.props.columns) {
-      for (const index of this.props.columns) {
-        const column = this.item.renderColumn(index)
-
-        if (column) {
-          children.push(column)
+    return h(
+      'tr',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
         }
-      }
-    }
-
-    return children
+      ),
+      this.renderChildren()
+    )
   }
 }

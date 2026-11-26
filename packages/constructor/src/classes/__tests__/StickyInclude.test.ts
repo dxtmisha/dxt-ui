@@ -1,21 +1,61 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { ref, reactive } from 'vue'
+import { createApp, defineComponent, h, nextTick, reactive, ref, type App, type Ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { StickyInclude } from '../StickyInclude'
+import type { StickyPropsInclude } from '../../types/stickyTypes'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as Record<string, unknown>
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback(),
-    onUnmounted: () => {}
-  }
+const createRect = (top: number, height: number = 500): DOMRect => ({
+  top,
+  bottom: top + height,
+  height,
+  width: 100,
+  left: 0,
+  right: 100,
+  x: 0,
+  y: top,
+  toJSON: () => {}
 })
 
 describe('StickyInclude', () => {
   let parentElement: HTMLElement
   let stickyElement: HTMLElement
+  const mountedApps: { app: App, container: HTMLElement }[] = []
+
+  const mountSticky = (
+    props: Readonly<StickyPropsInclude> | (() => Readonly<StickyPropsInclude>),
+    elementRef: Ref<HTMLElement | undefined> = ref(stickyElement),
+    parentRef: Ref<HTMLElement | undefined> = ref(parentElement)
+  ): { sticky: StickyInclude, wrapper: { unmount: () => void } } => {
+    let sticky!: StickyInclude
+
+    const TestComponent = defineComponent({
+      setup() {
+        sticky = new StickyInclude(props, new DesignName('dxt.sticky'), elementRef, parentRef)
+        return () => h('div')
+      }
+    })
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const app = createApp(TestComponent)
+    app.mount(container)
+
+    let unmounted = false
+    const unmount = (): void => {
+      if (!unmounted) {
+        unmounted = true
+        app.unmount()
+        if (container.parentNode === document.body) {
+          document.body.removeChild(container)
+        }
+      }
+    }
+
+    mountedApps.push({ app, container })
+
+    return { sticky, wrapper: { unmount } }
+  }
 
   beforeEach(() => {
     parentElement = document.createElement('div')
@@ -25,285 +65,298 @@ describe('StickyInclude', () => {
   })
 
   afterEach(() => {
-    document.body.removeChild(parentElement)
+    while (mountedApps.length > 0) {
+      const entry = mountedApps.pop()
+      if (entry) {
+        entry.app.unmount()
+        if (entry.container.parentNode === document.body) {
+          document.body.removeChild(entry.container)
+        }
+      }
+    }
+
+    if (parentElement.parentNode === document.body) {
+      document.body.removeChild(parentElement)
+    }
+
     vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
-  it('should initialize and apply top positioning by default', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
+  describe('Standard functional requirements (Positioning & Clamping)', () => {
+    it('should initialize and apply top 0px when parent is below viewport top', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    // Mock getBoundingClientRect
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: 100,
-      bottom: 600,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: 100,
-      toJSON: () => {}
+      const { wrapper } = mountSticky(reactive({ stickyScrollBottom: true, stickyEnable: undefined }))
+
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('0px')
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('50px')
+      expect(stickyElement.dataset.sticky).toBeUndefined()
+
+      wrapper.unmount()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('')
+      expect(stickyElement.dataset.sticky).toBeUndefined()
     })
 
-    // Mock offsetHeight
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should adjust position and set active dataset when scrolled past viewport top', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      mountSticky(reactive({ stickyScrollBottom: true }))
 
-    // Top is at 100px relative to viewport, boundaryTop + topOffset = 0.
-    // calculatedTop = 0 - 100 = -100, clamped to [0, 450] -> 0
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('0px')
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('50px')
-    expect(stickyElement.dataset.sticky).toBeUndefined()
-    ;(sticky as unknown as { stop(): void }).stop()
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('')
-    expect(stickyElement.dataset.sticky).toBeUndefined()
-  })
-
-  it('should adjust position when scrolled past the viewport top', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    // Parent is scrolled up: top is at -100px relative to viewport
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('50px')
+      expect(stickyElement.dataset.sticky).toBe('active')
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should respect stickyTop as raw number and reactive Ref', async () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      const topOffset = ref(20)
+      mountSticky(() => ({ stickyScrollBottom: true, stickyTop: topOffset }))
 
-    // calculatedTop = 0 - (-100) = 100px, clamped to [0, 450] -> 100px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
-    expect(stickyElement.dataset.sticky).toBe('active')
-    ;(sticky as unknown as { reset(): void }).reset()
-  })
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('120px')
 
-  it('should respect top offset option', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      topOffset.value = 40
+      await nextTick()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('140px')
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should clamp position to parent height minus element height and never go below 0', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-600, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyTop: 20, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      mountSticky(reactive({ stickyScrollBottom: true }))
 
-    // calculatedTop = (0 + 20) - (-100) = 120px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('120px')
-    ;(sticky as unknown as { reset(): void }).reset()
-  })
-
-  it('should clamp position to parent height boundaries', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    // Parent is scrolled very far up: top is at -600px relative to viewport
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -600,
-      bottom: -100,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -600,
-      toJSON: () => {}
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('450px')
+      expect(stickyElement.dataset.sticky).toBe('active')
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should clamp to 0px when element height exceeds parent height', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 30))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      mountSticky(reactive({ stickyScrollBottom: true }))
 
-    // calculatedTop = 0 - (-600) = 600px, clamped to parent height - element height (500 - 50 = 450px)
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('450px')
-    ;(sticky as unknown as { reset(): void }).reset()
-  })
-
-  it('should not track position when stickyEnable is false', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('0px')
+      expect(stickyElement.dataset.sticky).toBeUndefined()
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should support props as a getter function', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: false }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      mountSticky(() => ({ stickyScrollBottom: true, stickyTop: 10, stickyEnable: true }))
 
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
-    ;(sticky as unknown as { reset(): void }).reset()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('110px')
+    })
   })
 
-  it('should not track position when stickyScrollBottom is false', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
+  describe('Enablement, falsy boundaries, and reactive Ref unwrapping', () => {
+    it('should not track position when stickyEnable is false or stickyScrollBottom is false', () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: false }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      mountSticky(reactive({ stickyScrollBottom: true, stickyEnable: false }))
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
 
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
-    ;(sticky as unknown as { reset(): void }).reset()
-  })
-
-  it('should reactively disable/enable tracking when stickyEnable changes', async () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      mountSticky(reactive({ stickyScrollBottom: false, stickyEnable: true }))
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should unwrap Ref<boolean> for stickyEnable inside plain/getter props and toggle reactively', async () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const isEnabled = ref(false)
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: isEnabled }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      const isEnabled = ref(false)
+      mountSticky(() => ({ stickyScrollBottom: true, stickyEnable: isEnabled }))
 
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
 
-    isEnabled.value = true
-    await new Promise(resolve => setTimeout(resolve, 0)) // let watch trigger
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
+      isEnabled.value = true
+      await nextTick()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
 
-    isEnabled.value = false
-    await new Promise(resolve => setTimeout(resolve, 0)) // let watch trigger
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
-
-    ;(sticky as unknown as { reset(): void }).reset()
-  })
-
-  it('should support props as a function returning StickyPropsInclude', () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      isEnabled.value = false
+      await nextTick()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should not apply styles when stickyTop changes while sticky is disabled', async () => {
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const propsFunction = () => reactive({ stickyScrollBottom: true, stickyTop: 10, stickyEnable: true })
-    const sticky = new StickyInclude(propsFunction, new DesignName('dxt.sticky'), elementReference, parentReference)
+      const topOffset = ref(10)
+      mountSticky(() => ({ stickyScrollBottom: true, stickyEnable: false, stickyTop: topOffset }))
 
-    // calculatedTop = (0 + 10) - (-100) = 110px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('110px')
-    ;(sticky as unknown as { reset(): void }).reset()
+      topOffset.value = 30
+      await nextTick()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+    })
   })
 
-  it('should find all scrollable ancestors and window, and listen to scroll events on all of them', () => {
-    const outerScrollableElement = document.createElement('div')
-    outerScrollableElement.style.overflowY = 'scroll'
-    document.body.appendChild(outerScrollableElement)
+  describe('Scroll container discovery, passive listeners, and scroll end timeout', () => {
+    it('should discover all scrollable ancestors plus window and attach passive scroll listeners', () => {
+      const outerScrollable = document.createElement('div')
+      outerScrollable.style.overflowY = 'scroll'
+      document.body.appendChild(outerScrollable)
 
-    const innerScrollableElement = document.createElement('div')
-    innerScrollableElement.style.overflowY = 'auto'
-    outerScrollableElement.appendChild(innerScrollableElement)
+      const innerScrollable = document.createElement('div')
+      innerScrollable.style.overflowY = 'auto'
+      outerScrollable.appendChild(innerScrollable)
 
-    const testParent = document.createElement('div')
-    innerScrollableElement.appendChild(testParent)
+      const testParent = document.createElement('div')
+      innerScrollable.appendChild(testParent)
 
-    const testSticky = document.createElement('div')
-    testParent.appendChild(testSticky)
+      const testSticky = document.createElement('div')
+      testParent.appendChild(testSticky)
 
-    const parentReference = ref(testParent)
-    const elementReference = ref(testSticky)
+      const addEventSpy = vi.spyOn(innerScrollable, 'addEventListener')
+      const { sticky } = mountSticky(
+        reactive({ stickyScrollBottom: true, stickyEnable: true }),
+        ref(testSticky),
+        ref(testParent)
+      )
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      const internal = sticky as unknown as {
+        scrollContainer: (HTMLElement | Window)[]
+        eventScroll: unknown[]
+      }
 
-    // Access protected fields for verification
-    const scrollContainers = (sticky as unknown as { scrollContainer: (HTMLElement | Window)[] }).scrollContainer
-    const eventScrolls = (sticky as unknown as { eventScroll: unknown[] }).eventScroll
+      expect(internal.scrollContainer).toEqual([innerScrollable, outerScrollable, window])
+      expect(internal.eventScroll).toHaveLength(3)
+      expect(addEventSpy).toHaveBeenCalledWith('scroll', expect.any(Function), { passive: true })
 
-    expect(scrollContainers).toContain(innerScrollableElement)
-    expect(scrollContainers).toContain(outerScrollableElement)
-    expect(scrollContainers).toContain(window)
-    expect(scrollContainers.length).toBe(3)
-    expect(eventScrolls.length).toBe(3)
-
-    ;(sticky as unknown as { reset(): void }).reset()
-    document.body.removeChild(outerScrollableElement)
-  })
-
-  it('should set stickyScroll dataset property to active during scroll only when scrollTop is greater than element height, and remove it after timeout', async () => {
-    const parentReference = ref(parentElement)
-    const elementReference = ref(stickyElement)
-
-    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
-      top: -100,
-      bottom: 400,
-      height: 500,
-      width: 100,
-      left: 0,
-      right: 100,
-      x: 0,
-      y: -100,
-      toJSON: () => {}
+      document.body.removeChild(outerScrollable)
     })
 
-    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+    it('should support custom stickyScrollContainer and compute offset relative to container top', () => {
+      const customContainer = document.createElement('div')
+      document.body.appendChild(customContainer)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), new DesignName('dxt.sticky'), elementReference, parentReference)
+      vi.spyOn(customContainer, 'getBoundingClientRect').mockReturnValue(createRect(80, 400))
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-20, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const getScrollTopSpy = vi.spyOn(sticky as any, 'getScrollTop')
+      mountSticky(reactive({
+        stickyScrollBottom: true,
+        stickyScrollContainer: customContainer,
+        stickyTop: 10
+      }))
 
-    // Case 1: scrollTop <= element.offsetHeight
-    getScrollTopSpy.mockReturnValue(30)
-    sticky.onScroll()
-    expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+      // (boundaryTop 80 + topOffset 10) - parentTop (-20) = 110px
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('110px')
 
-    // Case 2: scrollTop > element.offsetHeight
-    getScrollTopSpy.mockReturnValue(100)
-    sticky.onScroll()
-    expect(stickyElement.dataset.stickyScroll).toBe('active')
+      document.body.removeChild(customContainer)
+    })
 
-    // Wait for the timeout to clear the attribute (> 256ms)
-    await new Promise(resolve => setTimeout(resolve, 300))
+    it('should toggle stickyScroll dataset during scroll and clear after 64ms via fake timers', () => {
+      vi.useFakeTimers()
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+      const { sticky } = mountSticky(reactive({ stickyScrollBottom: true, stickyEnable: true }))
+      const getScrollTopSpy = vi.spyOn(sticky as unknown as { getScrollTop(): number }, 'getScrollTop')
 
-    ;(sticky as unknown as { stop(): void }).stop()
+      getScrollTopSpy.mockReturnValue(30)
+      sticky.onScroll()
+      expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+
+      getScrollTopSpy.mockReturnValue(100)
+      sticky.onScroll()
+      expect(stickyElement.dataset.stickyScroll).toBe('active')
+
+      vi.advanceTimersByTime(63)
+      expect(stickyElement.dataset.stickyScroll).toBe('active')
+
+      vi.advanceTimersByTime(1)
+      expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+    })
+  })
+
+  describe('Lifecycle cleanup, element ref swap, and non-component safety', () => {
+    it('should clean up styles on previous element when element ref swaps', async () => {
+      const secondStickyElement = document.createElement('div')
+      parentElement.appendChild(secondStickyElement)
+
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+      vi.spyOn(secondStickyElement, 'offsetHeight', 'get').mockReturnValue(60)
+
+      const elementRef = ref<HTMLElement | undefined>(stickyElement)
+      mountSticky(reactive({ stickyScrollBottom: true }), elementRef)
+
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
+      expect(stickyElement.dataset.sticky).toBe('active')
+
+      elementRef.value = secondStickyElement
+      await nextTick()
+
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+      expect(stickyElement.dataset.sticky).toBeUndefined()
+      expect(secondStickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
+      expect(secondStickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('60px')
+      expect(secondStickyElement.dataset.sticky).toBe('active')
+    })
+
+    it('should stop watchers, remove listeners, clear containers, and cancel timeout on unmount', async () => {
+      vi.useFakeTimers()
+      vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue(createRect(-100, 500))
+      vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+
+      const removeWindowListenerSpy = vi.spyOn(window, 'removeEventListener')
+      const isEnabled = ref(true)
+      const { sticky, wrapper } = mountSticky(() => ({
+        stickyScrollBottom: true,
+        stickyEnable: isEnabled
+      }))
+
+      const getScrollTopSpy = vi.spyOn(sticky as unknown as { getScrollTop(): number }, 'getScrollTop')
+      getScrollTopSpy.mockReturnValue(120)
+      sticky.onScroll()
+      expect(stickyElement.dataset.stickyScroll).toBe('active')
+
+      wrapper.unmount()
+
+      const internal = sticky as unknown as {
+        scrollContainer: unknown[]
+        eventScroll: unknown[]
+        watchStops: unknown[]
+        scrollTimeout?: unknown
+      }
+
+      expect(removeWindowListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function), { passive: true })
+      expect(internal.scrollContainer).toEqual([])
+      expect(internal.eventScroll).toEqual([])
+      expect(internal.watchStops).toEqual([])
+      expect(internal.scrollTimeout).toBeUndefined()
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+      expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+
+      // Verify stopped watchers do not reanimate tracking after unmount
+      isEnabled.value = false
+      await nextTick()
+      isEnabled.value = true
+      await nextTick()
+      expect(internal.eventScroll).toEqual([])
+      expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
+    })
+
+    it('should not emit Vue lifecycle warnings when instantiated outside a component instance', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const sticky = new StickyInclude(
+        { stickyScrollBottom: true },
+        new DesignName('dxt.sticky'),
+        ref(stickyElement),
+        ref(parentElement)
+      )
+
+      expect(sticky).toBeInstanceOf(StickyInclude)
+      expect(warnSpy).not.toHaveBeenCalled()
+    })
   })
 })

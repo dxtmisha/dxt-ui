@@ -1,12 +1,17 @@
 // ai-none
 
-import { inject, type Ref } from 'vue'
-
-import type { ConstrEmit, SortColumnItem, SortDir } from '@dxtmisha/functional'
+import { getCurrentInstance, inject, type Ref } from 'vue'
+import type {
+  ConstrBind,
+  ConstrEmit,
+  SortColumnItem,
+  SortDir
+} from '@dxtmisha/functional'
 
 import type { SortColumn } from '../../types/sortTypes'
-import type { TableHeaderItemEmits } from './types'
+import type { ChipPropsBasic } from '../Chip'
 import type { TableHeaderItemProps } from './props'
+import type { TableHeaderItemEmits } from './types'
 
 /**
  * Class representing table header item sorting logic (TableHeaderItemSort).
@@ -16,6 +21,17 @@ import type { TableHeaderItemProps } from './props'
  * Управляет именем индекса колонки сортировки, состоянием направления сортировки и эмиссией переключений.
  */
 export class TableHeaderItemSort {
+  /**
+   * Checks whether sorting controls are enabled for the table header item.
+   *
+   * Проверяет, включены ли элементы управления сортировкой для ячейки шапки таблицы.
+   * @param props input properties / входные свойства
+   * @returns true if sorting controls should be enabled / true, если элементы управления сортировкой должны быть включены
+   */
+  static is(props?: Readonly<TableHeaderItemProps>): boolean {
+    return Boolean(props?.showSort)
+  }
+
   /** Reactive reference to currently selected sort column key / Реактивная ссылка на ключевой индекс текущей колонки сортировки */
   readonly sortColumn?: Ref<SortColumn | undefined>
 
@@ -28,13 +44,19 @@ export class TableHeaderItemSort {
    * Конструктор для TableHeaderItemSort.
    * @param props input properties / входные свойства
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
+   * @param sortColumn reactive reference to active sort column / реактивная ссылка на активную колонку сортировки
+   * @param sortDir reactive reference to active sort direction / реактивная ссылка на активное направление сортировки
    */
   constructor(
-    protected readonly props: TableHeaderItemProps,
-    protected readonly emits?: ConstrEmit<TableHeaderItemEmits>
+    protected readonly props: Readonly<TableHeaderItemProps>,
+    protected readonly emits?: ConstrEmit<TableHeaderItemEmits>,
+    sortColumn?: Ref<SortColumn | undefined>,
+    sortDir?: Ref<SortDir | undefined>
   ) {
-    this.sortColumn = inject('sortColumn', undefined)
-    this.sortDir = inject('sortDir', undefined)
+    const hasInstance = Boolean(getCurrentInstance())
+
+    this.sortColumn = sortColumn ?? (hasInstance ? inject('sortColumn', undefined) : undefined)
+    this.sortDir = sortDir ?? (hasInstance ? inject('sortDir', undefined) : undefined)
   }
 
   /**
@@ -44,7 +66,7 @@ export class TableHeaderItemSort {
    * @returns column index name / имя индекса колонки
    */
   get column(): string {
-    return String(this.props.index || '')
+    return String(this.props.index ?? '')
   }
 
   /**
@@ -77,7 +99,9 @@ export class TableHeaderItemSort {
    * @returns sorting active status / статус активности сортировки
    */
   isSorted(): boolean {
-    return this.getSortColumn() === this.column && Boolean(this.dir)
+    return Boolean(this.column)
+      && this.getSortColumn() === this.column
+      && Boolean(this.dir)
   }
 
   /**
@@ -96,7 +120,7 @@ export class TableHeaderItemSort {
    * Возвращает дополнительные свойства для включения компонента чипа.
    * @returns extra chip properties object / объект дополнительных свойств чипа
    */
-  readonly chipExtra = () => {
+  readonly chipExtra = (): Partial<ConstrBind<ChipPropsBasic>> => {
     if (this.isSorted()) {
       return {
         icon: {
@@ -104,7 +128,7 @@ export class TableHeaderItemSort {
           iconActive: this.props.iconArrowDown,
           active: this.dir === 'desc'
         },
-        selected: this.isSorted(),
+        selected: true,
         onClick: this.onSort
       }
     }

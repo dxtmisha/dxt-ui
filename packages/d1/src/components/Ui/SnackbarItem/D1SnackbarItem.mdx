@@ -21,6 +21,7 @@ import {SnackbarItemWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'SnackbarItem'} type={'snackbarItem'}/>
 <Canvas of={SnackbarItem.SnackbarItemBasic}/>
+<Canvas of={SnackbarItem.SnackbarItemStatusAndEvents}/>
 
 <StorybookDescriptions componentName={'SnackbarItem'} type={'component'}/>
 <StorybookDescriptions componentName={'SnackbarItem'} type={'html'}/>
@@ -33,7 +34,7 @@ import {SnackbarItemWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Event'} type={'actions'}/>
-<StorybookDescriptions componentName={'SnackbarItem'} type={'eventClose'}/>
+<StorybookDescriptions componentName={'SnackbarItem'} type={'event.close'}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
@@ -43,8 +44,9 @@ import {SnackbarItemWikiStorybook} from './wiki'
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
+<Canvas of={SnackbarItem.SnackbarItemSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Slot'} type={'body'}/>
-
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)

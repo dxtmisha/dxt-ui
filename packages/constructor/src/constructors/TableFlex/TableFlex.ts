@@ -1,14 +1,64 @@
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Table } from '../Table'
 
+import type { AriaList } from '../../types/ariaTypes'
+
 /**
  * Class representing a flex table constructor (TableFlex).
- * Coordinates flex table rendering, inheriting logic from Table.
+ * Coordinates flex table rendering, ARIA table role, and div-based tag overrides, inheriting logic from Table.
  *
  * Класс, представляющий конструктор флекс-таблицы (TableFlex).
- * Координирует рендеринг флекс-таблицы, наследуя логику Table.
+ * Координирует рендеринг флекс-таблицы, ARIA-роль таблицы и переопределения тегов на div, наследуя логику Table.
  */
 export class TableFlex extends Table {
+  /**
+   * Computed ARIA attributes for the flex table element.
+   *
+   * Вычисляемые ARIA-атрибуты для элемента флекс-таблицы.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return AriaStaticInclude.role('table')
+  }
+
+  /**
+   * Computed ARIA attributes for flex table section wrappers (`header`, `items`, `foot`).
+   *
+   * Вычисляемые ARIA-атрибуты для обёрток секций флекс-таблицы (`header`, `items`, `foot`).
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get ariaSection(): AriaList {
+    return AriaStaticInclude.role('rowgroup')
+  }
+
+  /**
+   * Computed HTML attributes and bindings for the flex table element.
+   *
+   * Вычисляемые HTML-атрибуты и привязки для элемента флекс-таблицы.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
+   */
+  override get binds(): ConstrBind {
+    return {
+      ...super.binds,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Computed HTML attributes and bindings for flex table section wrappers (`header`, `items`, `foot`).
+   *
+   * Вычисляемые HTML-атрибуты и привязки для обёрток секций флекс-таблицы (`header`, `items`, `foot`).
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
+   */
+  override get bindsSection(): ConstrBind {
+    return {
+      ...super.bindsSection,
+      ...this.ariaSection
+    }
+  }
+
   /**
    * Returns the HTML tag for the table.
    *
@@ -40,22 +90,22 @@ export class TableFlex extends Table {
   }
 
   /**
-   * Returns the HTML tag for the table header.
-   *
-   * Возвращает HTML-тег для шапки таблицы.
-   * @returns HTML tag name / имя HTML-тега
-   */
-  override get tagHeader(): string {
-    return 'div'
-  }
-
-  /**
    * Returns the HTML tag for the table foot.
    *
    * Возвращает HTML-тег для подвала таблицы.
    * @returns HTML tag name / имя HTML-тега
    */
   override get tagFoot(): string {
+    return 'div'
+  }
+
+  /**
+   * Returns the HTML tag for the table header.
+   *
+   * Возвращает HTML-тег для шапки таблицы.
+   * @returns HTML tag name / имя HTML-тега
+   */
+  override get tagHeader(): string {
     return 'div'
   }
 
@@ -67,18 +117,5 @@ export class TableFlex extends Table {
    */
   override get tagItems(): string {
     return 'div'
-  }
-
-  /**
-   * Computed HTML attributes and bindings for the flex table element.
-   *
-   * Вычисляемые HTML-атрибуты и привязки для элемента флекс-таблицы.
-   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
-   */
-  override get binds(): Record<string, any> {
-    return {
-      ...super.binds,
-      ...AriaStaticInclude.role('table')
-    }
   }
 }

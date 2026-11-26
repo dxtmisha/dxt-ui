@@ -1,22 +1,25 @@
 // ai-none
 
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
-  type ConstrBind,
+  type ConstrComponent,
+  type ConstrItem,
   type DesignComponents,
   type DesignName,
+  executeFunctionRef,
+  getObjectNoUndefined,
+  isArray,
+  isObjectNotArray,
   isSelected,
-  toBinds
+  isString
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 
 import type { TableRecordPropsInclude } from './basicTypes'
-import type { TableRecordExpose, TableRecordSlots } from './types'
 import type { TableRecordPropsBasic } from './props'
-import type { TableItemPropsBasic } from '../TableItem'
-import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
+import type { TableRecordExpose, TableRecordSlots } from './types'
 
 /**
  * TableRecordInclude class provides functionality for rendering table record items
@@ -57,10 +60,10 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    */
   constructor(
     props: ComponentIncludeProps<TableRecordPropsInclude>,
-    protected readonly naming: DesignName,
-    components?: DesignComponents<any, TableRecordPropsInclude>,
+    naming: DesignName,
+    components?: DesignComponents<ConstrComponent, TableRecordPropsInclude>,
     extra?: ComponentIncludeExtra<TableRecordPropsBasic>,
-    protected readonly slots?: Record<string, any>,
+    protected readonly slots?: ConstrItem,
     index?: string
   ) {
     super(props, naming, components, extra, index)
@@ -68,24 +71,52 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
 
   /**
    * Returns the unique key identifier for the table record item.
+   * Resolves own scalar fields (`props.keyValue`, `item.index`, `item.value`) before falling back to `key`.
    *
    * Возвращает уникальный строковый ключ-идентификатор для элемента записи таблицы.
+   * Разрешает собственные скалярные поля (`props.keyValue`, `item.index`, `item.value`) перед откатом к `key`.
    * @param key fallback index in the array / резервный индекс в массиве
-   * @param item record item properties / свойства элемента записи
+   * @param item record item data / данные элемента записи
    * @returns unique key string / уникальная строка ключа
    */
   getKey(
     key: number | string,
-    item: TableItemPropsBasic | TableHeaderItemPropsBasic
+    item?: unknown
   ): string {
     const props = this.getProps()
 
-    return String(
-      (props.keyValue && (item as never)?.[props.keyValue])
-      || item?.index
-      || item?.value
-      || key
-    )
+    if (isObjectNotArray(item)) {
+      const record = item as Record<string, unknown>
+
+      if (
+        props.keyValue
+        && Object.hasOwn(record, props.keyValue)
+      ) {
+        const customKey = this.resolveKeyValue(record[props.keyValue])
+
+        if (customKey !== undefined) {
+          return customKey
+        }
+      }
+
+      if (Object.hasOwn(record, 'index')) {
+        const indexKey = this.resolveKeyValue(record.index)
+
+        if (indexKey !== undefined) {
+          return indexKey
+        }
+      }
+
+      if (Object.hasOwn(record, 'value')) {
+        const valueKey = this.resolveKeyValue(record.value)
+
+        if (valueKey !== undefined) {
+          return valueKey
+        }
+      }
+    }
+
+    return String(key)
   }
 
   /**
@@ -101,41 +132,70 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    */
   readonly renderRecord = (
     key: string,
-    columns: string[],
-    item: any,
+    columns: readonly string[],
+    item?: unknown,
     isHeader?: boolean,
-    attrs?: ConstrBind<TableRecordPropsBasic>
+    attrs?: ComponentIncludeExtra<TableRecordPropsBasic>
   ): VNode | undefined => {
     if (this.components) {
       const props = this.getProps()
       const index = this.getKey(key, item)
+      const rowAttrs = props.tableRowAttrs && Object.hasOwn(props.tableRowAttrs, index)
+        ? props.tableRowAttrs[index]
+        : undefined
+      const extraAttrs = executeFunctionRef(attrs)
+      const disabled = isObjectNotArray(item)
+        && Object.hasOwn(item, 'disabled')
+        && item.disabled !== undefined
+        ? Boolean(item.disabled)
+        : undefined
 
       return this.components.renderOne(
         this.name,
-        toBinds(
-          {
+        mergeProps(
+          getObjectNoUndefined({
             tableItemAttrs: props.tableItemAttrs,
             tableItemColumnAttrs: props.tableItemColumnAttrs,
             isSkeleton: props.isSkeleton,
             lazy: props.lazy,
             defaultHeight: props.defaultHeight
-          },
-          this.getAttrs(attrs),
-          props.tableRowAttrs?.[index],
-          {
-            selected: isSelected(index, props.selected),
-            disabled: item?.disabled,
+          }),
+          this.getAttrs(),
+          rowAttrs ?? {},
+          getObjectNoUndefined({
+            selected: props.selected !== undefined ? isSelected(index, props.selected) : undefined,
+            disabled,
             item,
             columns,
             isHeader,
-            stickyTop: (props.stickyTop?.indexOf(index) ?? -1) !== -1,
+            stickyTop: isArray(props.stickyTop) ? props.stickyTop.includes(index) : undefined,
             stickyLeft: props.stickyLeft,
             index
-          }
+          }),
+          extraAttrs ?? {}
         ),
         this.slots,
         index
       )
+    }
+
+    return undefined
+  }
+
+  /**
+   * Resolves a scalar key candidate (non-empty string or finite number) to a string identifier.
+   *
+   * Преобразует скалярный кандидат ключа (непустую строку или конечное число) в строковый идентификатор.
+   * @param value candidate key value / проверяемое значение ключа
+   * @returns normalized string key or undefined / нормализованный строковый ключ или undefined
+   */
+  protected resolveKeyValue(value: unknown): string | undefined {
+    if (isString(value) && value !== '') {
+      return value
+    }
+
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return String(value)
     }
 
     return undefined

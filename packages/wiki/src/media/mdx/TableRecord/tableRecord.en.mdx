@@ -1,14 +1,14 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-The table row component representing a `<tr>` tag. It coordinates the rendering of a set of column cells (`TableHeaderItem` if `isHeader` is true, or `TableItem` otherwise) based on a data record (`item` prop) and a list of column indexes (`columns` prop).
+The table row component representing a `<tr>` tag. It coordinates the rendering of a set of column cells (`TableHeaderItem` for `isHeader`, `isFoot`, or per-cell `isHeader`, or `TableItem` for data cells) based on a data record (`item` prop) and a list of column indexes (`columns` prop).
 
 **Key Features:**
 
-- Standard table row container (`tr` tag)
+- Standard table row container (`tr` tag) with automatic `data-key` resolution
 - Dynamic cell generation based on `columns` keys and `item` values
-- Automatic selection between header cells (`TableHeaderItem`) and data cells (`TableItem`) via the `isHeader` flag
-- Selectable and disabled states applied row-wide (`selected`, `disabled`)
-- Dynamic custom slots named after column indexes to custom render specific cell contents
+- Header row mode (`isHeader`, setting `scope="col"`), footer row mode (`isFoot`, omitting `scope="col"` and resolving `#foot-*` slots), and per-cell row headers (`isHeader: true` on an individual cell object, setting `scope="row"`)
+- Selectable and disabled states applied row-wide (`selected`, `disabled`) with ARIA synchronization
+- Dynamic custom slots per column (`#<column>`, `#default`, `#header-<column>`, `#header-default`, `#foot-<column>`, `#foot-default`)
 
 <Source
     code={`
@@ -17,18 +17,31 @@ The table row component representing a `<tr>` tag. It coordinates the rendering 
 
 <template>
   <table>
-    <!-- Header Row -->
-    <TableRecord
-      :isHeader="true"
-      :columns="['name', 'role']"
-      :item="{ name: 'Name', role: 'Role' }"
-    />
+    <thead>
+      <!-- Header Row -->
+      <TableRecord
+        :isHeader="true"
+        :columns="['name', 'role']"
+        :item="{ name: 'Name', role: 'Role' }"
+      />
+    </thead>
 
-    <!-- Data Row -->
-    <TableRecord
-      :columns="['name', 'role']"
-      :item="{ name: 'Alice', role: 'Developer' }"
-    />
+    <tbody>
+      <!-- Data Row -->
+      <TableRecord
+        :columns="['name', 'role']"
+        :item="{ name: 'Alice', role: 'Developer' }"
+      />
+    </tbody>
+
+    <tfoot>
+      <!-- Footer Row -->
+      <TableRecord
+        :isFoot="true"
+        :columns="['name', 'role']"
+        :item="{ name: 'Total', role: '1 user' }"
+      />
+    </tfoot>
   </table>
 </template>
   `}

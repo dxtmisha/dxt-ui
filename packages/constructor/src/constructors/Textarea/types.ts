@@ -43,6 +43,7 @@ export interface TextareaSlots extends FieldSlotsInclude {
  * Тип, описывающий подклассы.
  */
 export type TextareaClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

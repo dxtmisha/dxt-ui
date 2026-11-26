@@ -1,4 +1,9 @@
-- `[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for rendering a custom cell for the specified column index.
+- `[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for rendering a custom data cell for the specified column index.
+- `default(props: TableRecordItemSlotProps): any` — Fallback slot for data cells without a dedicated column slot.
+- `header-[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for rendering a custom header cell when `isHeader` is active.
+- `header-default(props: TableRecordItemSlotProps): any` — Fallback slot for header cells without a dedicated `header-<column>` slot.
+- `foot-[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for rendering a custom footer cell when `isFoot` is active.
+- `foot-default(props: TableRecordItemSlotProps): any` — Fallback slot for footer cells without a dedicated `foot-<column>` slot.
 
 > **TableRecordItemSlotProps:**
 > - `item: any` — Row data object.

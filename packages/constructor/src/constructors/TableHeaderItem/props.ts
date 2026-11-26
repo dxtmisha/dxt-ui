@@ -76,7 +76,6 @@ export type TableHeaderItemProps = TableHeaderItemPropsBasic & TableHeaderItemPr
  */
 export const defaultsTableHeaderItem = {
   tag: 'th',
-  scope: 'col',
   ...{
     // :default [!] System label / Системная метка
     align: 'left',

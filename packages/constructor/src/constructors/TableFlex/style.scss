@@ -3,4 +3,15 @@
 
 @mixin mixinTableFlex {
   @include table.mixinTable;
+
+  &__table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--captionBottom {
+    @include ui.subclass('caption') {
+      order: 1;
+    }
+  }
 }

@@ -7,7 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'autosize', type: 'boolean' },
   { name: 'height', type: 'string', option: ['xs', 'sm', 'md', 'lg', 'xl', 'auto'] },
-  { name: 'inputAttrs', type: 'Record<string, any>' },
+  { name: 'inputAttrs', type: 'ConstrBind' },
   { name: 'value', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
@@ -19,7 +19,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'input', description: `Event triggered on input/ Событие при вводе`, properties: [{ name: 'event', type: 'InputEvent' }] }
+  { name: 'input', description: `Event triggered on input / Событие при вводе`, properties: [{ name: 'event', type: 'InputEvent' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

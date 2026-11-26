@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Table Footer State
+
+The `isFoot` property toggles the table row into the footer display mode:
+
+- Summary/footer cells (`TableHeaderItem` / `<th>`) are rendered without adding `scope="col"`, keeping footer semantics distinct from column headers.
+- Custom cell slots resolve through `foot-<column>` and `foot-default` instead of `header-<column>` and `header-default`.
+
+<Source
+    code={`
+<table>
+  <tfoot>
+    <TableRecord
+      :isFoot="true"
+      :columns="['name', 'role']"
+      :item="{ name: 'Total', role: '2 users' }"
+    >
+      <template #foot-name="{ value }">
+        <strong>{{ value }}</strong>
+      </template>
+    </TableRecord>
+  </tfoot>
+</table>
+  `}
+    language="html"
+/>

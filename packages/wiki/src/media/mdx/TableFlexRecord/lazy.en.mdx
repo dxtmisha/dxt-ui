@@ -1,0 +1,5 @@
+## Lazy loading & default height
+
+The `lazy` property (enabled by default for data rows) activates viewport-based rendering via `IntersectionObserver`. Off-screen rows stay lightweight until they enter the viewport margin, while `isHeader` and `isFoot` rows always render eagerly.
+
+Use `defaultHeight` (a pixel number such as `48` or any valid CSS length such as `'4rem'`) to reserve each lazy row's minimum height via the component `--[design]-tableFlexRecord-sys-minHeight` CSS variable and prevent layout jumps during scrolling.

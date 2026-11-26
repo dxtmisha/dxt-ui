@@ -53,12 +53,6 @@ export type TablePropsBasic<
 
     /** List of row records / Список записей строк */
     list?: TableList<TableItem>
-
-    /** Current page / Текущая страница */
-    page?: number | string
-
-    /** Number of records to display per page / Количество отображаемых записей на странице */
-    rows?: number | string
   }
 
 /**

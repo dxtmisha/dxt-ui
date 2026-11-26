@@ -1,103 +1,90 @@
-import { type Ref, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
-  type DesignComp,
-  type DesignName,
-  isString,
+  type ConstrItems,
+  DesignLogicAbstract,
   isObjectNotArray,
+  isString,
   type SortColumnItem
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
 import { TableHeaderItemInclude } from '../TableHeaderItem'
 import { TableItemInclude } from '../TableItem'
 
-import type { TableRecordComponents, TableRecordEmits, TableRecordSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { TableRecordProps } from './props'
+import type { TableRecordComponents, TableRecordEmits, TableRecordSlots } from './types'
+
+/** TableRecord dependency constructors type / Тип конструкторов зависимостей TableRecord */
+export type TableRecordConstructors = {
+  /** Table header item include constructor / Конструктор включения ячейки шапки таблицы */
+  tableHeaderItem: typeof TableHeaderItemInclude
+  /** Table item include constructor / Конструктор включения ячейки таблицы */
+  tableItem: typeof TableItemInclude
+}
 
 /**
  * Class representing a table record constructor (TableRecord).
- * Coordinates rendering of table items and header items within a row.
+ * Provides lazy coordination for rendering table items, header items, row bindings, and ARIA attributes.
  *
  * Класс, представляющий конструктор записи таблицы (TableRecord).
- * Координирует рендеринг ячеек таблицы и элементов шапки в пределах строки.
+ * Обеспечивает ленивую координацию рендеринга ячеек таблицы, ячеек шапки, привязок строки и ARIA-атрибутов.
  */
-export class TableRecord {
-  /** Table header items include instance / Экземпляр включения ячеек шапки таблицы */
-  readonly tableHeaderItem: TableHeaderItemInclude
-  /** Table items include instance / Экземпляр включения ячеек таблицы */
-  readonly tableItem: TableItemInclude
+export class TableRecord<
+  E extends HTMLElement = HTMLElement,
+  COMP extends TableRecordComponents = TableRecordComponents,
+  EMITS extends TableRecordEmits = TableRecordEmits,
+  SLOTS extends TableRecordSlots = TableRecordSlots,
+  P extends TableRecordProps = TableRecordProps,
+  CONSTRUCTORS extends TableRecordConstructors & Record<string, new (...parameters: never[]) => unknown> = TableRecordConstructors
+> extends DesignLogicAbstract<
+    E,
+    COMP,
+    EMITS,
+    SLOTS,
+    P,
+    CONSTRUCTORS
+  > {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<CONSTRUCTORS> = {
+    tableHeaderItem: {
+      item: TableHeaderItemInclude,
+      canCreate: () => Boolean(this.components?.is('tableHeaderItem')),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        { onSort: (item: SortColumnItem) => (this.emits as ConstrEmit<TableRecordEmits> | undefined)?.('sort', item) },
+        this.slots
+      ]
+    },
+    tableItem: {
+      item: TableItemInclude,
+      canCreate: () => Boolean(this.components?.is('tableItem')),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        this.slots
+      ]
+    }
+  } as unknown as ConstrItems<CONSTRUCTORS>
 
   /**
-   * Constructor for TableRecord.
+   * Computed ARIA attributes for the table record row.
    *
-   * Конструктор для TableRecord.
-   * @param props input properties / входные свойства
-   * @param element target HTML element / целевой HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
-   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.TableHeaderItemIncludeConstructor class for creating a table header item include / класс для создания включения ячейки шапки таблицы
-   * @param constructors.TableItemIncludeConstructor class for creating a table item include / класс для создания включения ячейки таблицы
+   * Вычисляемые ARIA-атрибуты для строки записи таблицы.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  constructor(
-    protected readonly props: TableRecordProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TableRecordComponents, TableRecordProps>,
-    protected readonly slots?: TableRecordSlots,
-    protected readonly emits?: ConstrEmit<TableRecordEmits>,
-    constructors: {
-      TableHeaderItemIncludeConstructor?: typeof TableHeaderItemInclude
-      TableItemIncludeConstructor?: typeof TableItemInclude
-    } = {}
-  ) {
-    const {
-      TableHeaderItemIncludeConstructor = TableHeaderItemInclude,
-      TableItemIncludeConstructor = TableItemInclude
-    } = constructors
-
-    this.tableHeaderItem = new TableHeaderItemIncludeConstructor(
-      props,
-      naming,
-      components,
-      { onSort: (item: SortColumnItem) => this.emits?.('sort', item) },
-      slots
-    )
-
-    this.tableItem = new TableItemIncludeConstructor(
-      props,
-      naming,
-      components,
-      undefined,
-      slots
-    )
-  }
-
-  /**
-   * Returns the key identifier of the element.
-   *
-   * Возвращает ключ идентификатора элемента.
-   * @returns key identifier or undefined / ключ идентификатора или undefined
-   */
-  get key(): string | undefined {
-    if (this.props.item) {
-      if (isString(this.props.item?.index)) {
-        return this.props.item.index
-      }
-
-      if (isString(this.props.item?.value)) {
-        return this.props.item.value
-      }
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.selected(this.props.selected || undefined),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }
-
-    if (this.props.index) {
-      return this.props.index
-    }
-
-    return undefined
   }
 
   /**
@@ -106,47 +93,126 @@ export class TableRecord {
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
    * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
    */
-  get binds(): Record<string, any> {
+  get binds(): ConstrBind {
     return {
       'data-key': this.key,
-      ...AriaStaticInclude.selected(this.props.selected),
-      ...AriaStaticInclude.disabled(this.props.disabled)
+      ...this.aria
     }
   }
 
   /**
-   * Renders the column cell depending on whether it is a header row or data row.
+   * Returns the key identifier of the row element.
+   * Prefers explicit `props.index` and falls back to own `item.index` or `item.value` scalar identifiers.
    *
-   * Рендерит ячейку колонки в зависимости от того, является ли строка шапкой или данными.
+   * Возвращает ключ-идентификатор элемента строки.
+   * Отдаёт приоритет явному `props.index` и при его отсутствии использует собственные скалярные поля `item.index` или `item.value`.
+   * @returns key identifier or undefined / ключ-идентификатор или undefined
+   */
+  get key(): string | undefined {
+    const explicitKey = this.resolveKeyValue(this.props.index)
+
+    if (explicitKey !== undefined) {
+      return explicitKey
+    }
+
+    const record = this.props.item
+
+    if (isObjectNotArray(record)) {
+      if (Object.hasOwn(record, 'index')) {
+        const indexKey = this.resolveKeyValue(record.index)
+
+        if (indexKey !== undefined) {
+          return indexKey
+        }
+      }
+
+      if (Object.hasOwn(record, 'value')) {
+        const valueKey = this.resolveKeyValue(record.value)
+
+        if (valueKey !== undefined) {
+          return valueKey
+        }
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Renders the column cell depending on whether it is a header cell or a data cell.
+   *
+   * Рендерит ячейку колонки в зависимости от того, является ли она ячейкой заголовка или данных.
    * @param index column index / индекс колонки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   renderColumn(index: string): VNode | undefined {
-    const key = `${this.key}__${index}`
+    const rowKey = this.key
+    const cellKey = rowKey !== undefined ? `${rowKey}__${index}` : index
 
     if (this.isHeaderColumn(index)) {
-      return this.tableHeaderItem.renderItem(key, index, this.props.item, {
-        scope: this.props.isHeader ? 'col' : 'row'
-      })
+      const scope = this.props.isHeader
+        ? 'col'
+        : (!this.props.isFoot ? 'row' : undefined)
+
+      return this.callInstance(
+        'tableHeaderItem',
+        item => item.renderItem(
+          cellKey,
+          index,
+          this.props.item,
+          scope ? { scope } : undefined
+        )
+      )
     }
 
-    return this.tableItem.renderItem(key, index, this.props.item)
+    return this.callInstance(
+      'tableItem',
+      item => item.renderItem(cellKey, index, this.props.item)
+    )
   }
 
   /**
-   * Checks whether the column is a header cell.
+   * Checks whether the column should be rendered as a header cell.
    *
-   * Проверяет, является ли колонка ячейкой-заголовком.
+   * Проверяет, должна ли колонка рендериться как ячейка-заголовок.
    * @param index column index / индекс колонки
-   * @returns true if header column / true, если заголовок колонки
+   * @returns true if header column / true, если колонка является заголовком
    */
   protected isHeaderColumn(index: string): boolean {
-    if (this.props.isHeader) {
+    if (this.props.isHeader || this.props.isFoot) {
       return true
     }
 
-    const item = this.props.item?.[index]
+    const record = this.props.item
 
-    return isObjectNotArray(item) && Boolean(item?.isHeader)
+    if (
+      isObjectNotArray(record)
+      && Object.hasOwn(record, index)
+    ) {
+      const cell = record[index]
+
+      return isObjectNotArray(cell) && Boolean(cell.isHeader)
+    }
+
+    return false
+  }
+
+  /**
+   * Resolves a scalar key candidate (non-empty string or finite number) to a string identifier.
+   *
+   * Преобразует скалярный кандидат ключа (непустую строку или конечное число) в строковый идентификатор.
+   * @param value candidate key value / проверяемое значение ключа
+   * @returns normalized string key or undefined / нормализованный строковый ключ или undefined
+   */
+  protected resolveKeyValue(value: unknown): string | undefined {
+    if (isString(value) && value !== '') {
+      return value
+    }
+
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return String(value)
+    }
+
+    return undefined
   }
 }

@@ -2,7 +2,9 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  forOwn,
+  isFunction
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -20,7 +22,16 @@ import {
 } from './types'
 
 /**
- * TabsDesign
+ * TabsDesign handles the visual layout, VNode rendering, and ARIA tabpanel slot integration of Tabs.
+ * It composes TabsNavigation and MotionAxis sub-components to display interactive tabbed content.
+ *
+ * TabsDesign управляет визуальной структурой, рендерингом VNode и интеграцией слотов ARIA tabpanel компонента Tabs.
+ * Объединяет субкомпоненты TabsNavigation и MotionAxis для отображения интерактивного содержимого вкладок.
+ *
+ * @template COMP type describing component configuration / тип, описывающий конфигурацию компонентов
+ * @template EXPOSE type describing exposed API structure / тип, описывающий структуру экспортируемого API
+ * @template CLASSES type describing CSS classes map / тип, описывающий карту CSS-классов
+ * @template P type describing properties interface / тип, описывающий интерфейс свойств
  */
 export class TabsDesign<
   COMP extends TabsComponents,
@@ -36,14 +47,17 @@ export class TabsDesign<
     CLASSES,
     P
   > {
+  /** Tabs business logic orchestrator instance / Экземпляр оркестратора бизнес-логики Tabs */
   protected readonly item: Tabs
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for initializing the Tabs design renderer.
+   *
+   * Конструктор для инициализации отрисовщика дизайна Tabs.
+   * @param name component tag class name / имя класса тега компонента
+   * @param props reactive input properties / реактивные входные свойства
+   * @param options additional construction configuration options / дополнительные параметры конфигурации сборки
+   * @param ItemConstructor business logic orchestrator constructor / конструктор оркестратора бизнес-логики
    */
   constructor(
     name: string,
@@ -68,20 +82,20 @@ export class TabsDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes exposed API properties and methods.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует экспортируемые свойства и методы API.
+   * @returns object containing exposed API methods / объект, содержащий экспортируемые методы API
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.event.expose
-    } as EXPOSE
+    return this.item.expose as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Generates and returns dynamic CSS classes map for rendering.
    *
-   * Доработка полученного списка классов.
+   * Генерирует и возвращает карту динамических CSS-классов для рендеринга.
+   * @returns object containing CSS class mappings / объект, содержащий сопоставления CSS-классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -95,47 +109,55 @@ export class TabsDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Generates and returns custom inline CSS styles map.
    *
-   * Доработка полученного списка стилей.
+   * Генерирует и возвращает карту пользовательских встроенных стилей CSS.
+   * @returns object containing inline CSS rules / объект, содержащий встроенные правила CSS
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Main entry point for rendering the Tabs component navigation and slide panels.
    *
-   * Метод для рендеринга.
+   * Главная точка входа для рендеринга навигации и панелей слайдов компонента Tabs.
+   * @returns array of VNodes representing navigation and motion axis panels / массив VNode, представляющих навигацию и панели оси движения
    */
   protected initRender(): VNode[] {
     return [
-      ...this.item.tabsNavigation.render(),
-      ...this.item.motionAxis.render(this.slidesRender())
+      ...this.item.callInstance('tabsNavigation', item => item.render(), []),
+      ...this.item.i('motionAxis').render(this.renderSlides())
     ]
   }
 
   /**
-   * Rendering of slides.
+   * Wraps component slots into accessible ARIA tabpanel VNode render functions for MotionAxis.
    *
-   * Рендеринг слайдов.
+   * Оборачивает слоты компонента в функции рендеринга доступных ARIA tabpanel VNode для MotionAxis.
+   * @returns map of slot render functions or undefined / карта функций рендеринга слотов или undefined
    */
-  readonly slidesRender = (): Record<string, () => any> | undefined => {
+  readonly renderSlides = (): Record<string, () => VNode> | undefined => {
     if (this.slots) {
       const slots: Record<string, () => VNode> = {}
 
-      for (const key in this.slots) {
-        const id = this.item.tabsNavigation.ids?.[key]
-        slots[key] = () => h(
-          'div',
-          {
-            class: this.classes?.value.slide,
-            ...AriaStaticInclude.role('tabpanel'),
-            ...AriaStaticInclude.labelledby(id)
-          },
-          this.initSlot(key)
-        )
-      }
+      forOwn(this.slots, (slot, key) => {
+        if (isFunction(slot)) {
+          slots[key] = () => {
+            const tabId = this.item.callInstance('tabsNavigation', item => item.ids?.[key])
+
+            return h(
+              'div',
+              {
+                class: this.classes?.value.slide,
+                ...AriaStaticInclude.role('tabpanel'),
+                ...AriaStaticInclude.labelledby(tabId)
+              },
+              this.initSlot(key)
+            )
+          }
+        }
+      })
 
       return slots
     }

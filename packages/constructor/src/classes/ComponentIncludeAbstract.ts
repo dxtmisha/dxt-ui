@@ -1,4 +1,4 @@
-import { computed, ref, type VNode } from 'vue'
+import { computed, mergeProps, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
@@ -7,8 +7,7 @@ import {
   executeFunction,
   executeFunctionRef,
   getObjectNoUndefined,
-  type RawSlots,
-  toBinds
+  type RawSlots
 } from '@dxtmisha/functional'
 import type {
   ComponentIncludeExposeItem,
@@ -140,10 +139,10 @@ export abstract class ComponentIncludeAbstract<
    */
   protected getAttrs(attrs?: PartialPropsExtra): PartialPropsExtra {
     if (attrs) {
-      return toBinds(
+      return mergeProps(
         attrs,
         this.binds.value
-      )
+      ) as PartialPropsExtra
     }
 
     return this.binds.value
@@ -253,11 +252,11 @@ export abstract class ComponentIncludeAbstract<
    * @returns resolved bindings / разрешенные привязки
    */
   protected toBinds(): PartialPropsExtra {
-    const binds = toBinds<PartialPropsExtra>(
-      this.getExtra(),
-      this.getPropsAttrs(),
+    const binds = mergeProps(
+      getObjectNoUndefined(this.getExtra() ?? {}),
+      getObjectNoUndefined(this.getPropsAttrs() ?? {}),
       { class: this.getClassName() }
-    )
+    ) as PartialPropsExtra
 
     if (this.hasInitElement) {
       return {

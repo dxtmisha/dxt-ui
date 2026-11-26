@@ -1,23 +1,28 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Flexbox-based table component orchestrating grid-like column indexes and list row records for tabular data visualization.
+The `TableFlex` component is a responsive flexbox-based data table that renders a semantic `<div role="table">` hierarchy without native `<table>` or `<colgroup>` elements. It orchestrates column definitions, headers, footers, lazy-rendered rows, sorting, searching, pagination, selection, and sticky positioning.
 
-The `TableFlex` component handles rendering structured datasets using flexbox layout. It integrates column configurations (`columns`), header setups (`header`), dataset rows (`list`), sticky header positioning (`headerTop`), sticky left columns (`stickyLeft`), and cell formatting to deliver high-performance interactive flex tables.
+**Key features:**
 
-**Key Features:**
+- **Flexbox Table Semantics:** Renders `<div role="table">` with `<div>`-based caption, header, items, and footer regions (zero native `<table>`/`<colgroup>` tags)
+- **Header, Footer & Caption Support:** Multi-row `header` and `foot` (with `isFoot` and `#foot-<column>` / `#foot-default` slots) plus top or bottom `caption` (`captionBottom`)
+- **Viewport Lazy Rendering:** Virtualizes data rows via `lazy` (enabled by default) and `defaultHeight`, while keeping header and footer rows eagerly rendered
+- **Built-in Data Pipeline:** Local filtering (`search`, `searchColumns`, `searchOptions`), 3-state column sorting (`sort`, `sortDir`, `sortFunction`, `@sort`), and client-side pagination (`page`, `rows`)
+- **Sticky Ergonomics:** Sticky headers (`headerTop`), sticky left columns (`stickyLeft`), sticky top rows (`stickyTop`), and sticky bottom horizontal scrollbar (`stickyScrollBottom`)
+- **Rich Customization:** Row selection (`selected`, `keyValue`), skeleton loading (`isSkeleton`), attribute forwarding (`tableItemAttrs`, `tableItemColumnAttrs`, `tableRecordAttrs`, `tableRowAttrs`), and granular slots
 
-- Structured representation of datasets in flexbox table form
-- Column-based data extraction via the `columns` array
-- Multi-row hierarchical header support via the `header` prop
-- Sticky headers (`headerTop`) and sticky left columns (`stickyLeft`) for large datasets
-- Column-level cell alignment, row selection, and attribute binding (`tableItemColumnAttrs`)
-- Custom slot support per column index for custom cell rendering
+**Common use cases:**
+
+- Responsive data tables that adapt cleanly across desktop and mobile viewports
+- Large scrollable datasets benefiting from viewport-based lazy row rendering
+- Interactive management grids with sorting, search highlighting, pagination, and custom column slots
 
 <Source
     code={`
 <script setup>
 const columns = ['id', 'name', 'role', 'status']
-const header = { id: 'ID', name: 'Name', role: 'Role', status: 'Status' }
+const header = { id: 'ID', name: { label: 'Name', showSort: true }, role: 'Role', status: 'Status' }
+const foot = { id: 'Total', name: '2 users', role: '-', status: 'Active' }
 const list = [
   { id: '1', name: 'Alice', role: 'Developer', status: 'Active' },
   { id: '2', name: 'Bob', role: 'Designer', status: 'Pending' }
@@ -26,14 +31,18 @@ const list = [
 
 <template>
   <TableFlex
+    caption="Team Directory"
     :columns="columns"
     :header="header"
+    :foot="foot"
     :list="list"
     :headerTop="true"
+    :defaultHeight="48"
+    keyValue="id"
   />
 </template>
   `}
     language="html"
 />
 
-> TableFlex provides complete layout orchestration for flexbox tabular datasets with full keyboard, sticky positioning, and custom slot capabilities.
+> TableFlex delivers full data-table orchestration on top of modern flexbox layout, combining ARIA table semantics, lazy row rendering, sorting, search, pagination, and slot flexibility.

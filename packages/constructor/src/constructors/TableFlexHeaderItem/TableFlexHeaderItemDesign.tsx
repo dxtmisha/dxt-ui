@@ -1,9 +1,9 @@
 import { type ConstrOptions } from '@dxtmisha/functional'
 
-import { TableFlexHeaderItem } from './TableFlexHeaderItem'
 import { TableHeaderItemDesign } from '../TableHeaderItem'
+import { TableFlexHeaderItem } from './TableFlexHeaderItem'
 
-import type { TableFlexHeaderItemPropsBasic } from './props'
+import type { TableFlexHeaderItemProps } from './props'
 import type {
   TableFlexHeaderItemClasses,
   TableFlexHeaderItemComponents,
@@ -20,7 +20,7 @@ export class TableFlexHeaderItemDesign<
   COMP extends TableFlexHeaderItemComponents,
   EXPOSE extends TableFlexHeaderItemExpose,
   CLASSES extends TableFlexHeaderItemClasses,
-  P extends TableFlexHeaderItemPropsBasic
+  P extends TableFlexHeaderItemProps
 > extends TableHeaderItemDesign<
     COMP,
     EXPOSE,

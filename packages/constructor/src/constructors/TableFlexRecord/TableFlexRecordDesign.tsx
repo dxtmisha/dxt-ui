@@ -1,21 +1,18 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
-  type ConstrStyles,
-  DesignConstructorAbstract
+  type ConstrStyles
 } from '@dxtmisha/functional'
 
+import { TableRecordDesign } from '../TableRecord'
 import { TableFlexRecord } from './TableFlexRecord'
 
-import {
-  type TableFlexRecordPropsBasic
-} from './props'
-import {
-  type TableFlexRecordClasses,
-  type TableFlexRecordComponents,
-  type TableFlexRecordEmits,
-  type TableFlexRecordExpose,
-  type TableFlexRecordSlots
+import type { TableFlexRecordProps } from './props'
+import type {
+  TableFlexRecordClasses,
+  TableFlexRecordComponents,
+  TableFlexRecordEmits,
+  TableFlexRecordExpose
 } from './types'
 
 /**
@@ -27,18 +24,15 @@ export class TableFlexRecordDesign<
   COMP extends TableFlexRecordComponents,
   EXPOSE extends TableFlexRecordExpose,
   CLASSES extends TableFlexRecordClasses,
-  P extends TableFlexRecordPropsBasic
-> extends DesignConstructorAbstract<
-    HTMLDivElement,
+  P extends TableFlexRecordProps
+> extends TableRecordDesign<
     COMP,
-    TableFlexRecordEmits,
     EXPOSE,
-    TableFlexRecordSlots,
     CLASSES,
     P
   > {
   /** TableFlexRecord controller instance / Экземпляр контроллера записи флекс-таблицы (TableFlexRecord) */
-  protected readonly item: TableFlexRecord
+  protected declare readonly item: TableFlexRecord
 
   /**
    * Constructor for TableFlexRecordDesign.
@@ -58,27 +52,9 @@ export class TableFlexRecordDesign<
     super(
       name,
       props,
-      options
+      options,
+      ItemConstructor
     )
-
-    this.item = new ItemConstructor(
-      this.props,
-      this.element,
-      this.naming,
-      this.components,
-      this.slots,
-      this.emits
-    )
-  }
-
-  /**
-   * Initialization of all the necessary properties for work.
-   *
-   * Инициализация всех необходимых свойств для работы.
-   * @returns exposed object / экспортируемый объект
-   */
-  protected initExpose(): EXPOSE {
-    return {} as EXPOSE
   }
 
   /**
@@ -87,9 +63,9 @@ export class TableFlexRecordDesign<
    * Доработка полученного списка классов.
    * @returns object with classes / объект с классами
    */
-  protected initClasses(): Partial<CLASSES> {
+  protected override initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.lazy.classes,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -103,8 +79,8 @@ export class TableFlexRecordDesign<
    * Доработка полученного списка стилей.
    * @returns styles object / объект стилей
    */
-  protected initStyles(): ConstrStyles {
-    return this.item.lazy.styles
+  protected override initStyles(): ConstrStyles {
+    return this.item.styles
   }
 
   /**
@@ -113,41 +89,23 @@ export class TableFlexRecordDesign<
    * Основная функция рендеринга для компонента записи флекс-таблицы.
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
-  protected initRender(): VNode {
-    const children: any[] = []
+  protected override initRender(): VNode {
+    const children: VNode[] = this.item.isRender()
+      ? this.renderChildren()
+      : []
 
-    if (this.item.lazy.is()) {
-      children.push(this.renderChildren())
-    }
-
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, children)
-  }
-
-  /**
-   * Rendering children elements.
-   *
-   * Рендеринг дочерних элементов.
-   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
-   */
-  readonly renderChildren = (): any[] => {
-    const children: any[] = []
-
-    if (this.props.columns) {
-      for (const index of this.props.columns) {
-        const column = this.item.renderColumn(index)
-
-        if (column) {
-          children.push(column)
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
         }
-      }
-    }
-
-    return children
+      ),
+      children
+    )
   }
 }

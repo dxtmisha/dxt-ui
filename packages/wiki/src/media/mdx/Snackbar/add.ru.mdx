@@ -6,11 +6,11 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ### Метод add()
 
-Через инстанс компонента (`ref`) доступен объект `data`, предоставляющий метод `add(item: SnackbarValue)`. Параметр `item` определяет конфигурацию и поведение добавляемого уведомления.
+Через инстанс компонента (`ref`) напрямую доступен метод `add(item: SnackbarValue)`. Параметр `item` определяет конфигурацию и поведение добавляемого уведомления.
 
 <Source
     code={`
-snackbar.value?.data.add({
+snackbar.value?.add({
   data: {
     label: 'Заголовок уведомления',
     description: 'Описание происходящего события'
@@ -38,7 +38,7 @@ snackbar.value?.data.add({
     code={`
 import MyAlert from './MyAlert.vue'
 
-snackbar.value?.data.add({
+snackbar.value?.add({
   component: MyAlert,
   data: {
     title: 'Внимание!',

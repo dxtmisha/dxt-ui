@@ -1,21 +1,23 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-The flexbox-based table row component coordinating flex cell rendering from dataset items and column indexes. Used inside flexbox table container structures to construct flexible table rows.
+The `TableFlexRecord` component is a flexbox-based table row that renders a `<div role="row">` container and maps `columns` to flex cells (`TableFlexItem` or `TableFlexHeaderItem`). It extends `TableRecord` with viewport-based lazy rendering (`lazy` and `defaultHeight`) for high-volume datasets.
 
-**Key Features:**
+**Key features:**
 
-- Flexbox layout row rendering for dynamic list datasets
-- Automatic cell rendering mapping `columns` to `item` properties
-- Support for flex header rows (`isHeader`)
-- Custom cell slot overrides per column index
-- Dynamic skeleton states (`isSkeleton`)
-- Row-wide selection and disabled states (`selected`, `disabled`)
+- **Flexbox Row Semantics:** Renders `<div role="row">` with automatic `data-key`, `aria-selected`, and `aria-disabled` bindings
+- **Header & Footer Row Modes:** Supports header rows via `isHeader` (`#header-<column>` / `#header-default` slots) and footer summary rows via `isFoot` (`#foot-<column>` / `#foot-default` slots)
+- **Lazy Viewport Rendering:** Defers off-screen data cell rendering via `lazy` (enabled by default) and preserves row layout stability with `defaultHeight` (sets the `--[design]-tableFlexRecord-sys-minHeight` CSS variable); automatically bypassed when `isHeader` or `isFoot` is enabled
+- **Column Slot Customization:** Supports per-column and fallback slots (`#<column>`, `#default`, `#header-<column>`, `#header-default`, `#foot-<column>`, `#foot-default`)
+- **Cell & State Forwarding:** Propagates `selected`, `disabled`, `isSkeleton`, `stickyTop`, `stickyLeft`, `tableItemAttrs`, and `tableItemColumnAttrs`, and bubbles `@sort` events from header cells
+
+**Common use cases:**
+
+- Data, header, and footer rows orchestrated by `TableFlex`
+- Virtualized or long scrollable flex tables using `lazy` and `defaultHeight`
+- Standalone flexbox record rows with custom per-column slot templates
 
 <Source
     code={`
-<script setup>
-</script>
-
 <template>
   <!-- Header row -->
   <TableFlexRecord
@@ -24,14 +26,27 @@ The flexbox-based table row component coordinating flex cell rendering from data
     :item="{ id: 'ID', name: 'Name', role: 'Role', status: 'Status' }"
   />
 
-  <!-- Data row -->
+  <!-- Lazy data row with reserved default height -->
   <TableFlexRecord
+    :lazy="true"
+    :defaultHeight="48"
     :columns="['id', 'name', 'role', 'status']"
     :item="{ id: '1', name: 'Misha', role: 'Developer', status: 'Active' }"
   />
+
+  <!-- Footer row with #foot-* slot customization -->
+  <TableFlexRecord
+    :isFoot="true"
+    :columns="['id', 'name', 'role', 'status']"
+    :item="{ id: 'Total', name: '1 record', role: '-', status: 'Active' }"
+  >
+    <template #foot-name="{ value }">
+      <strong>{{ value }}</strong>
+    </template>
+  </TableFlexRecord>
 </template>
   `}
     language="html"
 />
 
-> TableFlexRecord provides flexbox-based layout and orchestration for table row items, automatically rendering cells based on dataset structures.
+> TableFlexRecord orchestrates flexbox table rows across header, lazy-rendered data, and footer modes with full slot customization and accessible row semantics.

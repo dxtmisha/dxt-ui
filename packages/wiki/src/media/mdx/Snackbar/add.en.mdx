@@ -6,11 +6,11 @@ The primary interaction with the `Snackbar` component occurs through the `add` m
 
 ### Method add()
 
-The component instance (via `ref`) provides a `data` object containing the `add(item: SnackbarValue)` method. The `item` parameter determines the configuration and behavior of the new notification.
+The component instance (via `ref`) exposes the `add(item: SnackbarValue)` method directly. The `item` parameter determines the configuration and behavior of the new notification.
 
 <Source
     code={`
-snackbar.value?.data.add({
+snackbar.value?.add({
   data: {
     label: 'Notification Title',
     description: 'Description of the occurring event'
@@ -38,7 +38,7 @@ For notifications with non-standard layouts, you can pass your own component via
     code={`
 import MyAlert from './MyAlert.vue'
 
-snackbar.value?.data.add({
+snackbar.value?.add({
   component: MyAlert,
   data: {
     title: 'Warning!',

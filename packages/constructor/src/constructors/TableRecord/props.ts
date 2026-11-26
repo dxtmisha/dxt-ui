@@ -28,10 +28,13 @@ export type TableRecordPropsBasic<
     /** Row data / Данные строки */
     item?: Record<string, TableRecordValue<TableItem | TableHeaderItem> | any>
     /** Column indexes / Индексы колонок */
-    columns?: string[]
+    columns?: readonly string[]
 
     /** Whether the row represents a table header / Является ли строка заголовком таблицы */
     isHeader?: boolean
+
+    /** Whether the row represents a table footer / Является ли строка подвалом таблицы */
+    isFoot?: boolean
 
     /** Unique rendering key / Уникальный ключ рендеринга */
     index?: string

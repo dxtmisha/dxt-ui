@@ -23,6 +23,8 @@ interface TestExtraProps {
   'aria-expanded'?: boolean
   /** CSS class / CSS-класс */
   'class'?: string
+  /** Click handler / Обработчик клика */
+  'onClick'?: (...args: unknown[]) => void
 }
 
 /** Test exposed methods interface / Интерфейс экспортируемых тестовых методов */
@@ -178,6 +180,45 @@ describe('ComponentIncludeAbstract', () => {
       expect(merged['data-custom']).toBe('from-props')
       expect(merged.class).toContain('parent-class__test-sub')
       expect(merged.class).toContain('custom-override')
+    })
+
+    it('should compose event handlers across extra, propsAttrs, and call-site attrs via mergeProps without overwriting', () => {
+      const callOrder: string[] = []
+      const extraClick = vi.fn(() => callOrder.push('extra'))
+      const propsClick = vi.fn(() => callOrder.push('props'))
+      const callSiteClick = vi.fn(() => callOrder.push('callSite'))
+
+      const include = new TestComponentInclude(
+        {
+          subAttrs: {
+            'data-custom': undefined,
+            'onClick': propsClick
+          }
+        },
+        new DesignName('parent.class'),
+        undefined,
+        {
+          'data-custom': 'preserved-from-extra',
+          'onClick': extraClick
+        }
+      )
+
+      const binds = include.binds.value
+      expect(binds['data-custom']).toBe('preserved-from-extra')
+      expect(Array.isArray(binds.onClick)).toBe(true)
+
+      const merged = include.testGetAttrs({ onClick: callSiteClick })
+      const handlers = Array.isArray(merged.onClick) ? merged.onClick : [merged.onClick]
+      for (const handler of handlers) {
+        if (typeof handler === 'function') {
+          handler()
+        }
+      }
+
+      expect(extraClick).toHaveBeenCalledOnce()
+      expect(propsClick).toHaveBeenCalledOnce()
+      expect(callSiteClick).toHaveBeenCalledOnce()
+      expect(callOrder).toEqual(['callSite', 'extra', 'props'])
     })
 
     it('should proxy and cast exposed sub-component methods across boolean, string, number, and default types', () => {

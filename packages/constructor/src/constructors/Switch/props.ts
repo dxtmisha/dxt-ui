@@ -1,9 +1,14 @@
-import type { ImagePropsBasic } from '../Image'
-import type { FieldMessagePropsBasic } from '../FieldMessage'
-import type { FieldCounterPropsBasic } from '../FieldCounter'
-import type { ProgressPropsBasic } from '../Progress'
 import type { CheckboxPropsBasic } from '../Checkbox'
+import type { FieldCounterPropsBasic } from '../FieldCounter'
+import type { FieldMessagePropsBasic } from '../FieldMessage'
+import type { ImagePropsBasic } from '../Image'
+import type { ProgressPropsBasic } from '../Progress'
 
+/**
+ * Type describing token properties for Switch.
+ *
+ * Тип, описывающий свойства токенов для Switch.
+ */
 type SwitchPropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
@@ -16,6 +21,11 @@ type SwitchPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Interface describing basic properties of the Switch component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента Switch.
+ */
 export type SwitchPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
@@ -36,6 +46,8 @@ export type SwitchProps = SwitchPropsBasic & SwitchPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSwitch = {
+  modelValue: undefined,
+  valueVariant: undefined,
   valueVariantHide: '0',
   ...{
     // :default [!] System label / Системная метка

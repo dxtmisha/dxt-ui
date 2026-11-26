@@ -1,41 +1,63 @@
 // ai-none
 
 import { ref, watch } from 'vue'
-import { type ConstrEmit } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
-import type { TextareaAutosizeEmits } from './types'
 import type { TextareaAutosizeProps } from './props'
+import type { TextareaAutosizeEmits } from './types'
 
 /**
- * Class for working with values.
+ * Class for managing the reactive text value of the textarea component.
+ * Synchronizes internal state with the incoming `value` prop and dispatches `input` events on changes.
  *
- * Класс для работы со значениями.
+ * Класс для управления реактивным текстовым значением компонента textarea.
+ * Синхронизирует внутреннее состояние с входящим свойством `value` и генерирует события `input` при изменениях.
  */
-export class TextareaAutosizeValue {
-  readonly item = ref('')
+export class TextareaAutosizeValue extends DesignLifecycleAbstract {
+  /** Watcher stop handle / Функция остановки наблюдателя */
+  protected stopWatch?: () => void
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Constructor for TextareaAutosizeValue.
+   *
+   * Конструктор для TextareaAutosizeValue.
+   * @param props input data / входные данные
+   * @param emits event emitter callback / функция вызова событий
    */
   constructor(
-    protected readonly props: TextareaAutosizeProps,
+    protected readonly props: Readonly<TextareaAutosizeProps>,
     protected readonly emits?: ConstrEmit<TextareaAutosizeEmits>
   ) {
-    this.set(props.value)
+    super()
+    this.set(this.props.value)
+  }
 
-    watch(
-      () => props.value,
-      () => this.set(props.value)
+  /** Reactive current text value / Реактивное текущее текстовое значение */
+  readonly item = ref<string>('')
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    this.stopWatch?.()
+    this.set(this.props.value)
+
+    this.stopWatch = watch(
+      () => this.props.value,
+      () => this.set(this.props.value)
     )
   }
 
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
   /**
-   * Changes values.
+   * Updates the stored text value if it differs from the current one.
    *
-   * Изменяет значения.
-   * @param value changeable value/ изменяемое значение
+   * Обновляет сохранённое текстовое значение, если оно отличается от текущего.
+   * @param value new text value / новое текстовое значение
+   * @returns true if the value changed / true, если значение изменилось
    */
   set(value?: string): boolean {
     if (this.isDifference(value)) {
@@ -47,24 +69,30 @@ export class TextareaAutosizeValue {
   }
 
   /**
-   * Event for changing the value.
+   * Handles native input events and emits `input` when the value changes.
    *
-   * Событие для изменения значения.
-   * @param event invoked event/ вызываемое событие
+   * Обрабатывает нативные события ввода и генерирует событие `input` при изменении значения.
+   * @param event invoked input event / вызываемое событие ввода
    */
-  on(event: InputEvent) {
-    if (this.set((event.target as HTMLInputElement).value)) {
+  on(event: InputEvent): void {
+    const target = event.target as HTMLTextAreaElement | null
+
+    if (
+      target
+      && this.set(target.value)
+    ) {
       this.emits?.('input', event)
     }
   }
 
   /**
-   * Checks if the value has actually been changed.
+   * Checks whether the normalized candidate value differs from the stored value.
    *
-   * Проверяет, было ли значение действительно изменено.
-   * @param value changeable value/ изменяемое значение
+   * Проверяет, отличается ли нормализованное новое значение от сохранённого.
+   * @param value candidate text value / проверяемое текстовое значение
+   * @returns true if the value differs / true, если значение отличается
    */
-  protected isDifference(value?: string) {
-    return this.item.value !== value
+  protected isDifference(value?: string): boolean {
+    return this.item.value !== (value ?? '')
   }
 }

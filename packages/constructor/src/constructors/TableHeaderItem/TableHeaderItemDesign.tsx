@@ -1,11 +1,12 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { TableHeaderItem } from './TableHeaderItem'
+import { TableHeaderItemSort } from './TableHeaderItemSort'
 
 import type { TooltipControl } from '../Tooltip'
 import type { TableHeaderItemProps } from './props'
@@ -46,7 +47,7 @@ export class TableHeaderItemDesign<
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
-   * @param ItemConstructor class constructor for the table cell item / конструктор класса элемента ячейки таблицы
+   * @param ItemConstructor class constructor for the table header cell item / конструктор класса элемента ячейки шапки таблицы
    */
   constructor(
     name: string,
@@ -71,9 +72,70 @@ export class TableHeaderItemDesign<
   }
 
   /**
-   * Initializes exposed interface for the table item component.
+   * Renders the basic part of the table header cell (label, sort control, and tooltip).
    *
-   * Инициализирует экспортируемые свойства для компонента ячейки таблицы.
+   * Рендерит базовую часть ячейки шапки таблицы (метку, элемент сортировки и подсказку).
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderBody = (): VNode[] => {
+    const children: VNode[] = [
+      ...this.item.callInstance('label', item => item.render(), []),
+      ...this.item.callInstance(
+        'chip',
+        item => item.render(
+          undefined,
+          undefined,
+          () => TableHeaderItemSort.is(this.props) && item.is
+        ),
+        []
+      ),
+      ...this.item.callInstance(
+        'tooltip',
+        item => item.render({
+          control: this.renderTooltipControl
+        }),
+        []
+      )
+    ]
+
+    if (children.length > 0) {
+      return [
+        h(
+          'div',
+          this.getKeyClass('body'),
+          children
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the tooltip control element.
+   *
+   * Рендерит элемент управления подсказкой.
+   * @param control tooltip control options / параметры управления подсказкой
+   * @returns virtual node (VNode) or undefined / виртуальный узел (VNode) или undefined
+   */
+  readonly renderTooltipControl = (
+    control: TooltipControl
+  ): VNode | undefined => {
+    return this.components?.renderOne(
+      'icon',
+      mergeProps(
+        this.item.tooltipControlBind,
+        control.binds
+      ),
+      undefined,
+      'iconControl'
+    )
+  }
+
+  /**
+   * Initializes exposed interface for the table header item component.
+   *
+   * Инициализирует экспортируемые свойства для компонента ячейки шапки таблицы.
    * @returns exposed object / экспортируемый объект
    */
   protected initExpose(): EXPOSE {
@@ -81,9 +143,9 @@ export class TableHeaderItemDesign<
   }
 
   /**
-   * Initializes classes for elements in the table item component.
+   * Initializes classes for elements in the table header item component.
    *
-   * Инициализирует классы для элементов компонента ячейки таблицы.
+   * Инициализирует классы для элементов компонента ячейки шапки таблицы.
    * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
@@ -102,9 +164,9 @@ export class TableHeaderItemDesign<
   }
 
   /**
-   * Initializes styles for the table item component.
+   * Initializes styles for the table header item component.
    *
-   * Инициализирует стили для компонента ячейки таблицы.
+   * Инициализирует стили для компонента ячейки шапки таблицы.
    * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
@@ -112,101 +174,31 @@ export class TableHeaderItemDesign<
   }
 
   /**
-   * Main render function for the table item component.
+   * Main render function for the table header item component.
    *
-   * Основная функция рендеринга для компонента ячейки таблицы.
+   * Основная функция рендеринга для компонента ячейки шапки таблицы.
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderBody(),
-      ...this.item.description.render()
+      ...this.item.callInstance('description', item => item.render(), [])
     ]
 
     this.initSlot('context', children)
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
-      children
-    )
-  }
-
-  /**
-   * Renders the basic part of the table cell.
-   *
-   * Рендер базовой части ячейки таблицы.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderBody = (): VNode[] => {
-    const children: any[] = [
-      ...this.item.label.render(),
-      ...this.renderSort(),
-      ...this.renderTooltip()
-    ]
-
-    if (children.length > 0) {
-      return [
-        h(
-          'div',
-          this.getKeyClass('body'),
-          children
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the sorting element.
-   *
-   * Рендер элемента сортировки.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderSort = (): VNode[] => {
-    if (this.props.showSort) {
-      return this.item.chip.render()
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the tooltip.
-   *
-   * Рендер подсказки.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderTooltip = (): VNode[] => {
-    return this.item.tooltip.render({
-      control: (props: TooltipControl): VNode | undefined => this.renderTooltipControl(props)
-    })
-  }
-
-  /**
-   * Renders the tooltip control element.
-   *
-   * Рендер элемента управления подсказкой.
-   * @param control tooltip control options / параметры управления подсказкой
-   * @returns virtual node (VNode) or undefined / виртуальный узел (VNode) или undefined
-   */
-  readonly renderTooltipControl = (
-    control: TooltipControl
-  ): VNode | undefined => {
-    return this.components?.renderOne(
-      'icon',
-      toBinds(
-        this.item.tooltipControlBind,
-        control.binds
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
       ),
-      undefined,
-      'iconControl'
+      children
     )
   }
 }

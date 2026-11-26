@@ -1,96 +1,145 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { TextInclude } from '../../classes/TextInclude'
 import { TeleportInclude } from '../../classes/TeleportInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { SnackbarData } from './SnackbarData'
 import { SnackbarEvent } from './SnackbarEvent'
 
-import type { SnackbarComponents, SnackbarEmits, SnackbarSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { SnackbarProps } from './props'
+import type { SnackbarComponents, SnackbarEmits, SnackbarSlots } from './types'
+
+/** Snackbar dependency constructors type / Тип конструкторов зависимостей Snackbar */
+export type SnackbarConstructors = {
+  /** Notification queue data manager constructor / Конструктор менеджера данных очереди уведомлений */
+  data: typeof SnackbarData
+  /** Event emitter manager constructor / Конструктор менеджера событий */
+  event: typeof SnackbarEvent
+  /** Teleport manager constructor / Конструктор менеджера телепорта */
+  teleport: typeof TeleportInclude
+  /** Text localization manager constructor / Конструктор менеджера локализации текста */
+  text: typeof TextInclude
+}
 
 /**
- * Snackbar
+ * Snackbar class for orchestrating the notification queue, events, teleportation, and ARIA region bindings.
+ * Lazily instantiates subordinate helpers and coordinates timer/DOM lifecycle cleanup via `DesignLogicAbstract`.
+ *
+ * Класс Snackbar для оркестрации очереди уведомлений, событий, телепортации и привязок ARIA-области.
+ * Лениво инициализирует подчинённые хелперы и координирует очистку таймеров и DOM через `DesignLogicAbstract`.
  */
-export class Snackbar {
-  /** Data manager for snackbar / Менеджер данных для снекбара */
-  readonly data: SnackbarData
-
-  /** Event manager for snackbar / Менеджер событий для снекбара */
-  readonly event: SnackbarEvent
-
-  /** Text manager for snackbar / Менеджер текста для снекбара */
-  readonly text: TextInclude
-
-  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
-  readonly teleport: TeleportInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.DataConstructor class for creating data / класс для создания данных
-   * @param constructors.EventConstructor class for working with events / класс для работы с событиями
-   * @param constructors.TeleportIncludeConstructor class for working with teleport / класс для работы с телепортом
-   */
-  constructor(
-    protected readonly props: SnackbarProps,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<SnackbarComponents, SnackbarProps>,
-    protected readonly slots?: SnackbarSlots,
-    protected readonly emits?: ConstrEmit<SnackbarEmits>,
-    constructors: {
-      DataConstructor?: typeof SnackbarData
-      EventConstructor?: typeof SnackbarEvent
-      TeleportIncludeConstructor?: typeof TeleportInclude
-    } = {}
-  ) {
-    const {
-      DataConstructor = SnackbarData,
-      EventConstructor = SnackbarEvent,
-      TeleportIncludeConstructor = TeleportInclude
-    } = constructors
-
-    this.event = new EventConstructor(emits)
-
-    this.data = new DataConstructor(
-      props,
-      element as any,
-      naming,
-      this.event
-    )
-
-    this.text = new TextInclude(props)
-    this.teleport = new TeleportIncludeConstructor()
-  }
-
-  /**
-   * Properties for ARIA binding.
-   *
-   * Свойства для привязки ARIA.
-   */
-  get binds() {
-    return {
-      onMouseenter: this.data.pause,
-      onMouseleave: this.data.resume,
-      ...AriaStaticInclude.role('region'),
-      ...AriaStaticInclude.label(this.text.notifications)
+export class Snackbar extends DesignLogicAbstract<
+  HTMLDivElement,
+  SnackbarComponents,
+  SnackbarEmits,
+  SnackbarSlots,
+  SnackbarProps,
+  SnackbarConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SnackbarConstructors> = {
+    data: {
+      item: SnackbarData,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming,
+        () => this.i('event')
+      ]
+    },
+    event: {
+      item: SnackbarEvent,
+      parameters: () => [this.emits]
+    },
+    teleport: {
+      item: TeleportInclude
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
     }
   }
 
   /**
-   * Event for hiding the message.
+   * Constructor for Snackbar.
+   * Eagerly initializes `TeleportInclude` during `setup` so Vue `inject` captures any SSR teleport target.
    *
-   * Событие для скрытия сообщения.
-   * @param value element identification / идентификация элемента
+   * Конструктор для Snackbar.
+   * Немедленно инициализирует `TeleportInclude` во время `setup`, чтобы `inject` Vue захватил SSR-цель телепорта.
+   * @param props input properties / входные свойства
+   * @param element root HTML element reference / ссылка на корневой HTML-элемент
+   * @param naming component naming helper / помощник именования компонента
+   * @param components object for working with sub-components / объект для работы с вложенными компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits event emitter function / функция вызова событий
+   * @param constructors dependency constructors override map / карта переопределения конструкторов зависимостей
    */
-  readonly onClose = (value: string) => this.data.remove(value)
+  constructor(
+    props: Readonly<SnackbarProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<SnackbarComponents, SnackbarProps>,
+    slots?: SnackbarSlots,
+    emits?: ConstrEmit<SnackbarEmits>,
+    constructors?: Partial<SnackbarConstructors>
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
+
+    this.i('teleport')
+  }
+
+  /**
+   * Returns WAI-ARIA attributes for the snackbar notifications region.
+   *
+   * Возвращает WAI-ARIA атрибуты для области уведомлений снекбара.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('region'),
+      ...AriaStaticInclude.label(this.i('text').notifications)
+    }
+  }
+
+  /**
+   * Returns root element bindings including hover pause/resume handlers and ARIA attributes.
+   *
+   * Возвращает привязки корневого элемента, включая обработчики паузы/возобновления при наведении и ARIA-атрибуты.
+   * @returns root element binding properties / свойства привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    const data = this.i('data')
+
+    return {
+      onMouseenter: data.pause,
+      onMouseleave: data.resume,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Handles closing of a snackbar notification item by its identifier.
+   *
+   * Обрабатывает закрытие элемента уведомления снекбара по его идентификатору.
+   * @param value element identification / идентификатор элемента
+   */
+  readonly onClose = (value: string): void => this.i('data').remove(value)
 }

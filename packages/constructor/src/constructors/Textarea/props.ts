@@ -8,11 +8,13 @@ import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldTextareaProps } from '../../types/fieldTypes'
 
+/** Token-based properties for Textarea / Токен-свойства для Textarea */
 type TextareaPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for Textarea / Базовые свойства для Textarea */
 export type TextareaPropsBasic<
   TextareaAutosize extends TextareaAutosizePropsBasic = TextareaAutosizePropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,

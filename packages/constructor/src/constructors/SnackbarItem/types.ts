@@ -27,7 +27,7 @@ export type SnackbarItemEmits
   = ActionsEmitsInclude
     & EventClickEmits
     & {
-      /** Event triggered when notification is closed/ Событие при закрытии уведомления */
+      /** Event triggered when notification is closed / Событие при закрытии уведомления */
       close: [value: string | undefined]
     }
 
@@ -45,7 +45,7 @@ export interface SnackbarItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
-  /** Slot for the notification body/ Слот для содержимого уведомления */
+  /** Slot for the notification body / Слот для содержимого уведомления */
   body?(props: any): any
 }
 
@@ -55,6 +55,7 @@ export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
  * Тип, описывающий подклассы.
  */
 export type SnackbarItemClasses = {
+  /** Main root element classes / Классы основного корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   tool: string

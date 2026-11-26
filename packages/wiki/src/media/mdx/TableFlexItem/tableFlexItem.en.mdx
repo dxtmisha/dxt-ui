@@ -1,31 +1,35 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-The flexbox-based table cell component representing a flexbox layout item cell. Used inside flexbox row structures to display text, labels, and descriptions, and supports flex-basis spanning (`colspan` up to 12).
+The `TableFlexItem` component is a flexbox-based table cell that renders a semantic `<div role="cell">` element inside flexbox row structures. It extends `TableItem` logic while replacing native HTML `colspan`/`rowspan` attributes with `data-colspan`/`data-rowspan` attributes for CSS flex-basis distribution (up to 12 units).
 
-**Key Features:**
+**Key features:**
 
-- Flexbox layout cell structure with `colspan` flex-basis support (up to 12)
-- Cell alignment options (`align` and `alignVertical`)
-- Text clamping for cells with long labels (`labelClamp`)
-- Dynamic skeleton states (`isSkeleton`) for loading phases
-- Sticky columns and headers support (`stickyLeft`, `stickyTop`)
-- Selectable and interactive states (`selected`, `disabled`)
+- **Flexbox Cell Semantics:** Renders `<div role="cell">` by default (customizable via `tag`) with `data-colspan`, `data-rowspan`, and `data-index` attributes instead of native HTML table attributes
+- **Alignment & Dividers:** Horizontal (`align`) and vertical (`alignVertical`) alignment with optional horizontal and vertical cell dividers (`dividerX`, `dividerY`)
+- **Text Clamping:** Multi-line clamping for dense tabular labels via `labelClamp`
+- **Sticky Positioning:** Supports sticky top headers and sticky left columns (`stickyTop`, `stickyLeft`)
+- **States & Skeleton:** Integrated `selected`, `disabled` (with `aria-selected`/`aria-disabled`), and `isSkeleton` loading support
+- **Flexible Slots:** Supports `default`, `description`, and `context` slots for rich cell layouts
+
+**Common use cases:**
+
+- Data cells inside responsive flexbox tables (`TableFlex` and `TableFlexRecord`)
+- Multi-column spanning cells using proportional `colspan` values (2 to 12)
+- Dense dashboards requiring text truncation, sticky columns, and skeleton placeholders
 
 <Source
     code={`
-<script setup>
-</script>
-
 <template>
-  <!-- Simple cell with value -->
-  <TableFlexItem value="Cell Value" />
+  <!-- Simple flex table cell -->
+  <TableFlexItem label="Cell Value" />
 
-  <!-- Centered cell with custom span and label clamping -->
+  <!-- Centered cell with proportional span, description, and label clamping -->
   <TableFlexItem
     label="Clamped Label Value"
     description="Optional cell description"
     align="center"
     colspan="2"
+    dividerX
     labelClamp
   />
 </template>
@@ -33,4 +37,4 @@ The flexbox-based table cell component representing a flexbox layout item cell. 
     language="html"
 />
 
-> TableFlexItem provides flexbox-based layout and presentation options for cell contents, ensuring consistent text truncation, alignments, and skeleton logic within flexible tables.
+> TableFlexItem provides flexbox-based layout, accessible cell semantics, and consistent alignment, clamping, and skeleton behavior for flexible tabular interfaces.

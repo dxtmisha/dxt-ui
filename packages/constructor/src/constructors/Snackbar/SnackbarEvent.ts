@@ -12,7 +12,9 @@ import type { SnackbarEmits } from './types'
  */
 export class SnackbarEvent {
   /**
-   * Constructor
+   * Constructor for SnackbarEvent.
+   *
+   * Конструктор для SnackbarEvent.
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(

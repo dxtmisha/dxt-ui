@@ -1,27 +1,22 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Text field component that automatically adjusts its height based on content.
+The `TextareaAutosize` component is a multi-line text field engine that automatically adjusts its height based on content.
 
-TextareaAutosize provides a multi-line text field that dynamically changes its height depending on the amount of entered text. The component uses a hidden clone element for precise height calculation, taking into account all padding and styles of the original textarea. This ensures smooth and natural behavior when entering text without manual height adjustment.
+It combines CSS `field-sizing: content` with a hidden `aria-hidden="true"` clone fallback to measure scroll-free container height accurately while respecting padding and typography of the underlying `<textarea>` element.
 
 **Key features:**
 
-- Automatic height adjustment based on content
-- Precise size calculation considering padding and styles
-- Smooth height transitions on content change
-- Optional autosize toggle for fixed height
-- Support for all standard textarea attributes
-- Reactive value binding with input events
-- Optimized performance through requestAnimationFrame
+- **Automatic Height Adjustment:** Expands and shrinks dynamically with entered text when `autosize` is enabled (default `true`)
+- **Hidden Clone Measurement:** Uses an `aria-hidden="true"` clone synchronized via `requestAnimationFrame` when CSS `field-sizing` is unavailable
+- **Fixed Height Toggle:** Set `:autosize="false"` to disable dynamic height calculation and use native `rows`
+- **Native Attribute Forwarding:** Forwards standard `<textarea>` attributes (`rows`, `cols`, `maxlength`, `placeholder`, `disabled`, `readonly`, `aria-label`) through `inputAttrs` or fallthrough attributes
+- **Reactive Value & Expose API:** Synchronizes with the `value` prop, emits native `input` events, and exposes `getValue()`
 
 **Common use cases:**
 
-- Comment and review fields
-- Feedback forms with long texts
-- Description and notes editors
-- Chats and messengers
-- Forms with dynamic content
-- Multi-line fields in adaptive interfaces
+- Foundational textarea engine inside higher-level field components such as `Textarea`
+- Auto-expanding comment, note, and chat message inputs
+- Dynamic multi-line forms where scrollbars inside textareas are undesirable
 
 <Source
     code={`
@@ -31,40 +26,31 @@ import { ref } from 'vue'
 const message = ref('')
 
 const handleInput = (event) => {
-  console.log('Current value:', event.target.value)
+  message.value = event.target.value
 }
 </script>
 
 <template>
-  <div class="form">
-    <TextareaAutosize
-      v-model="message"
-      :inputAttrs="{
-        placeholder: 'Enter your message...',
-        maxlength: 500
-      }"
-      @input="handleInput"
-    />
+  <TextareaAutosize
+    :value="message"
+    :input-attrs="{
+      placeholder: 'Enter your message...',
+      maxlength: 500
+    }"
+    @input="handleInput"
+  />
 
-    <TextareaAutosize
-      value="Text field with fixed height"
-      :autosize="false"
-      :inputAttrs="{
-        placeholder: 'Height does not change',
-        rows: 3
-      }"
-    />
-
-    <TextareaAutosize
-      :inputAttrs="{
-        placeholder: 'Comment',
-        'aria-label': 'Comment field',
-        required: true
-      }"
-    />
-  </div>
+  <TextareaAutosize
+    value="Text field with fixed height"
+    :autosize="false"
+    :input-attrs="{
+      placeholder: 'Height does not change',
+      rows: 3
+    }"
+  />
 </template>
   `}
     language="html"
 />
 
+> TextareaAutosize provides a lightweight, accessible auto-growing textarea primitive with seamless fallback measurement.

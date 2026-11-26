@@ -1,4 +1,4 @@
-import { h, markRaw, type VNode } from 'vue'
+import { h, mergeProps, toRaw, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * SnackbarDesign
+ * SnackbarDesign constructor class responsible for assembling, teleporting, and rendering
+ * the Snackbar notification container, priority spacers, and individual notification items.
+ *
+ * Класс-конструктор SnackbarDesign, отвечающий за сборку, телепортацию и рендеринг
+ * контейнера уведомлений Snackbar, разделителей приоритета и отдельных элементов уведомлений.
  */
 export class SnackbarDesign<
   COMP extends SnackbarComponents,
@@ -36,14 +40,17 @@ export class SnackbarDesign<
     CLASSES,
     P
   > {
+  /** Snackbar logic orchestrator instance / Экземпляр логического оркестратора Snackbar */
   protected readonly item: Snackbar
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for SnackbarDesign.
+   *
+   * Конструктор для SnackbarDesign.
+   * @param name class name / название класса
+   * @param props component properties / свойства компонента
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor Snackbar logic class / класс логики Snackbar
    */
   constructor(
     name: string,
@@ -68,16 +75,17 @@ export class SnackbarDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed methods object / объект экспортируемых методов
    */
   protected initExpose(): EXPOSE {
     return {
-      isItem: this.item.data.isItem,
-      add: this.item.data.add,
-      remove: this.item.data.remove,
-      clear: this.item.data.clear
+      isItem: () => this.item.i('data').isItem(),
+      add: (item: SnackbarValue) => this.item.i('data').add(item),
+      remove: (value: string) => this.item.i('data').remove(value),
+      clear: () => this.item.i('data').clear()
     } as EXPOSE
   }
 
@@ -85,6 +93,7 @@ export class SnackbarDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +112,7 @@ export class SnackbarDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,19 +122,22 @@ export class SnackbarDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   protected initRender(): VNode[] {
-    if (this.item.data.isItem()) {
-      return this.item.teleport.render(
+    if (this.item.i('data').isItem()) {
+      return this.item.i('teleport').render(
         h(
           'div',
-          {
-            ...this.getAttrs(),
-            ref: this.element,
-            class: this.classes?.value.main,
-            style: this.styles?.value,
-            ...this.item.binds
-          },
+          mergeProps(
+            this.getAttrs(),
+            this.item.binds,
+            {
+              ref: this.element,
+              class: this.classes?.value.main,
+              style: this.styles?.value
+            }
+          ),
           [
             ...this.renderData(),
             ...this.renderSpace()
@@ -137,21 +150,22 @@ export class SnackbarDesign<
   }
 
   /**
-   * Rendering a list of elements.
+   * Renders the list of notification wrapper elements.
    *
-   * Рендер списка элементов.
+   * Рендерит список элементов-обёрток уведомлений.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderData = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
-    this.item.data.item.value.forEach(
+    this.item.i('data').item.value.forEach(
       item => children.push(h(
         item.highPriority ? 'aside' : 'div',
         {
           'key': item.value,
           'class': {
             [this.classes?.value.item ?? 'item']: true,
-            [this.classes?.value.priority ?? 'priority']: item.highPriority
+            [this.classes?.value.priority ?? 'priority']: Boolean(item.highPriority)
           },
           'data-snackbar-item': item.value
         },
@@ -163,22 +177,25 @@ export class SnackbarDesign<
   }
 
   /**
-   * Element rendering.
+   * Renders an individual notification item using a custom component or the connected `snackbarItem` component.
    *
-   * Рендер элемента.
-   * @param item add element / элемент добавления
+   * Рендерит отдельный элемент уведомления через пользовательский компонент или подключённый компонент `snackbarItem`.
+   * @param item notification configuration object / объект конфигурации уведомления
+   * @returns virtual node or undefined / виртуальный узел или undefined
    */
-  readonly renderItem = (item: SnackbarValue): VNode => {
-    const props = {
-      ...item.data,
-      value: item.value,
-      onClose: this.item.onClose
-    }
+  readonly renderItem = (item: SnackbarValue): VNode | undefined => {
+    const props = mergeProps(
+      item.data ?? {},
+      {
+        value: item.value,
+        onClose: this.item.onClose
+      }
+    )
 
     if (item.component) {
-      const component = { ...markRaw(item.component) }
-
-      return h(component, props)
+      return typeof item.component === 'string'
+        ? h(item.component, props)
+        : h(toRaw(item.component), props)
     }
 
     return this.components?.renderOne(
@@ -186,16 +203,17 @@ export class SnackbarDesign<
       props,
       undefined,
       item.value
-    ) as VNode
+    )
   }
 
   /**
-   * Render separators by priority.
+   * Renders the priority separator element when at least one high-priority item exists.
    *
-   * Рендер разделителей по приоритету.
+   * Рендерит элемент-разделитель по приоритету при наличии хотя бы одного приоритетного уведомления.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderSpace = (): VNode[] => {
-    if (this.item.data.isPriority()) {
+    if (this.item.i('data').isPriority()) {
       return [
         h('div', this.getKeyClass('space'))
       ]

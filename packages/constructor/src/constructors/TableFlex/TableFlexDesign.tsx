@@ -1,9 +1,9 @@
 import { type ConstrOptions } from '@dxtmisha/functional'
 
-import { TableFlex } from './TableFlex'
 import { TableDesign } from '../Table'
+import { TableFlex } from './TableFlex'
 
-import type { TableFlexPropsBasic } from './props'
+import type { TableFlexProps } from './props'
 import type {
   TableFlexClasses,
   TableFlexComponents,
@@ -20,13 +20,16 @@ export class TableFlexDesign<
   COMP extends TableFlexComponents,
   EXPOSE extends TableFlexExpose,
   CLASSES extends TableFlexClasses,
-  P extends TableFlexPropsBasic
+  P extends TableFlexProps
 > extends TableDesign<
     COMP,
     EXPOSE,
     CLASSES,
     P
   > {
+  /** TableFlex controller instance / Экземпляр контроллера флекс-таблицы (TableFlex) */
+  protected declare readonly item: TableFlex
+
   /**
    * Constructor for TableFlexDesign.
    *
@@ -56,7 +59,7 @@ export class TableFlexDesign<
    * Доработка полученного списка классов.
    * @returns object with classes / объект с классами
    */
-  protected initClasses(): Partial<CLASSES> {
+  protected override initClasses(): Partial<CLASSES> {
     return {
       main: {},
       ...{

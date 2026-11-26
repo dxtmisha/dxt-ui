@@ -23,23 +23,23 @@ import roleRu from './role.ru.mdx'
 export const wikiMdxSnackbarItem: StorybookComponentsMdxItem = {
   name: 'SnackbarItem',
   descriptions: {
-    snackbarItem: {
+    'snackbarItem': {
       en: snackbarItemEn,
       ru: snackbarItemRu
     },
-    component: {
+    'component': {
       en: componentEn,
       ru: componentRu
     },
-    html: {
+    'html': {
       en: htmlEn,
       ru: htmlRu
     },
-    eventClose: {
+    'event.close': {
       en: eventCloseEn,
       ru: eventCloseRu
     },
-    role: {
+    'role': {
       en: roleEn,
       ru: roleRu
     }

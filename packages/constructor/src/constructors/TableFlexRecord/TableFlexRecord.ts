@@ -1,87 +1,123 @@
-import type { Ref } from 'vue'
-import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
+import type {
+  ConstrClassObject,
+  ConstrItems,
+  ConstrStyles,
+  SortColumnItem
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
-import { TableRecord } from '../TableRecord'
+import { TableHeaderItemInclude } from '../TableHeaderItem'
+import { TableItemInclude } from '../TableItem'
+import { TableRecord, type TableRecordConstructors } from '../TableRecord'
 import { TableFlexRecordLazy } from './TableFlexRecordLazy'
 
-import type { TableFlexRecordComponents, TableFlexRecordEmits, TableFlexRecordSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { TableFlexRecordProps } from './props'
+import type {
+  TableFlexRecordComponents,
+  TableFlexRecordEmits,
+  TableFlexRecordSlots
+} from './types'
+
+/** TableFlexRecord dependency constructors type / Тип конструкторов зависимостей TableFlexRecord */
+export type TableFlexRecordConstructors = TableRecordConstructors & {
+  /** Lazy loading handler constructor / Конструктор обработчика ленивой загрузки */
+  lazy: typeof TableFlexRecordLazy
+}
 
 /**
  * Class representing a flex table record constructor (TableFlexRecord).
- * Coordinates rendering of flex table cells and header items within a flex row with lazy loading support.
+ * Inherits row coordination from TableRecord and adds lazy viewport rendering, row ARIA role, and lazy state classes/styles.
  *
  * Класс, представляющий конструктор записи флекс-таблицы (TableFlexRecord).
- * Координирует рендеринг ячеек флекс-таблицы и элементов шапки в пределах флекс-строки с поддержкой ленивой загрузки.
+ * Наследует координацию строки от TableRecord и добавляет ленивый рендеринг в области видимости, ARIA-роль строки и классы/стили ленивого состояния.
  */
-export class TableFlexRecord extends TableRecord {
-  /** Client-only rendering include / Подключение рендеринга только на клиенте */
-  readonly clientOnly: ClientOnlyInclude
-  /** Table record lazy loading handler instance / Экземпляр обработчика ленивой загрузки записи таблицы */
-  readonly lazy: TableFlexRecordLazy
-
-  /**
-   * Constructor for TableFlexRecord.
-   *
-   * Конструктор для TableFlexRecord.
-   * @param props input properties / входные свойства
-   * @param element target HTML element / целевой HTML-элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
-   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering handler / класс для обработчика рендеринга только на клиенте
-   * @param constructors.TableFlexRecordLazyConstructor class for lazy loading handler / класс для обработчика ленивой загрузки
-   */
-  constructor(
-    props: TableFlexRecordProps,
-    element: Ref<HTMLElement | undefined>,
-    naming: DesignName,
-    components?: DesignComp<TableFlexRecordComponents, TableFlexRecordProps>,
-    slots?: TableFlexRecordSlots,
-    emits?: ConstrEmit<TableFlexRecordEmits>,
-    constructors: {
-      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-      TableFlexRecordLazyConstructor?: typeof TableFlexRecordLazy
-    } = {}
-  ) {
-    super(
-      props,
-      element,
-      naming,
-      components,
-      slots,
-      emits
-    )
-
-    const {
-      ClientOnlyIncludeConstructor = ClientOnlyInclude,
-      TableFlexRecordLazyConstructor = TableFlexRecordLazy
-    } = constructors
-
-    this.clientOnly = new ClientOnlyIncludeConstructor()
-    this.lazy = new TableFlexRecordLazyConstructor(
-      props,
-      element,
-      naming,
-      this.clientOnly
-    )
+export class TableFlexRecord extends TableRecord<
+  HTMLElement,
+  TableFlexRecordComponents,
+  TableFlexRecordEmits,
+  TableFlexRecordSlots,
+  TableFlexRecordProps,
+  TableFlexRecordConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TableFlexRecordConstructors> = {
+    lazy: {
+      item: TableFlexRecordLazy,
+      canCreate: () => TableFlexRecordLazy.is(this.props),
+      conditions: () => TableFlexRecordLazy.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming,
+        this.isMounted
+      ]
+    },
+    tableHeaderItem: {
+      item: TableHeaderItemInclude,
+      canCreate: () => Boolean(this.components?.is('tableHeaderItem')),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        { onSort: (item: SortColumnItem) => this.emits?.('sort', item) },
+        this.slots
+      ]
+    },
+    tableItem: {
+      item: TableItemInclude,
+      canCreate: () => Boolean(this.components?.is('tableItem')),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        this.slots
+      ]
+    }
   }
 
   /**
-   * Computed HTML attributes and bindings for the flex table record element.
+   * Computed ARIA attributes for the flex table record row.
    *
-   * Вычисляемые HTML-атрибуты и привязки для элемента записи флекс-таблицы.
-   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
+   * Вычисляемые ARIA-атрибуты для строки записи флекс-таблицы.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  override get binds(): Record<string, any> {
+  override get aria(): AriaList {
     return {
-      ...super.binds,
+      ...super.aria,
       ...AriaStaticInclude.role('row')
     }
+  }
+
+  /**
+   * Computed classes for the flex table record row.
+   *
+   * Вычисляемые классы для строки записи флекс-таблицы.
+   * @returns classes object / объект классов
+   */
+  get classes(): ConstrClassObject {
+    return this.callInstance('lazy', item => item.classes, {})
+  }
+
+  /**
+   * Computed styles for the flex table record row.
+   *
+   * Вычисляемые стили для строки записи флекс-таблицы.
+   * @returns styles object / объект стилей
+   */
+  get styles(): ConstrStyles {
+    return this.callInstance('lazy', item => item.styles, {})
+  }
+
+  /**
+   * Returns whether the flex table record should render its column cells.
+   *
+   * Возвращает, должна ли запись флекс-таблицы рендерить ячейки колонок.
+   * @returns true if column cells should be rendered / true, если ячейки колонок должны рендериться
+   */
+  isRender(): boolean {
+    return this.callInstance('lazy', item => item.is(), true)
   }
 }

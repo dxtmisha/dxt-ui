@@ -11,6 +11,11 @@ type TabsPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for the Tabs component.
+ *
+ * Базовые свойства компонента Tabs.
+ */
 export type TabsPropsBasic<
   TabItem extends TabItemPropsBasic = TabItemPropsBasic,
   TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic,

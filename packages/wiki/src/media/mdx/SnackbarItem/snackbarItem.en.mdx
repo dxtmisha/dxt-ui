@@ -1,22 +1,20 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `SnackbarItem` component represents an individual notification card inside a `Snackbar` queue or as a standalone feedback banner. It manages the visual layout and accessibility semantics of a notification, including label, description, icons, body content, action buttons, and a close button.
 
-The component represents an individual notification card inside the `Snackbar`. It is responsible for the visual presentation of a message, including titles, text, icons, and actions.
+**Key features:**
 
-**Key Features:**
+- **Structured Content:** Supports `label`, `description`, custom `html`, Vue `component` with `componentProps`, and `#default`, `#description`, and `#body` slots
+- **Leading & Trailing Icons:** Full icon configuration including `icon`, `iconTrailing`, `iconTurn`, `iconHide`, `iconDir`, and `iconAttrs`
+- **Action Controls:** Built-in single action `button` (`click`/`clickLite`) and multi-action bar via `actionsList`, `actionsSecondary`, `actionsHide`, and `actionsAttrs`
+- **Dismissible Close Button:** Configurable `closeButton`, `iconClose`, `textClose`, and `value` emitted with the `close` event
+- **WAI-ARIA Live Region:** Automatically applies `aria-atomic="true"`, defaults `error` to `role="alert"` / `aria-live="assertive"` and `success` to `role="status"` / `aria-live="polite"`, and supports explicit `role` and `ariaLive` overrides
 
-- Displays labels, descriptions, and main text
-- Supports both leading and trailing icons
-- Default close button (cross)
-- Supports an additional action button
-- Flexible configuration via slots for complex content
+**Common use cases:**
 
-**Typical Usage Scenarios:**
-
-- Displaying short text messages
-- Notifications with "Undo" or "Retry" buttons
-- Cards with status icons (Success, Error, Info)
+- Displaying short confirmation or status messages
+- Notifications with "Undo" or "Retry" action buttons
+- Error and success feedback cards with accessible live region announcements
 
 <Source
     code={`
@@ -24,26 +22,30 @@ The component represents an individual notification card inside the `Snackbar`. 
   <!-- Basic Usage -->
   <SnackbarItem
     label="Message sent successfully"
-    icon="check"
+    icon="check_circle"
+    success
   />
 
   <!-- With Action Button -->
   <SnackbarItem
-    description="Your subscription expires in 3 days."
-    button="Renew"
-    @click="onRenew"
+    label="File deleted"
+    description="You can restore this file within 30 days."
+    button="Undo"
+    icon-close="close"
+    value="file-deleted"
+    @click="onUndo"
+    @close="onClose"
   />
 
-  <!-- With Custom Content -->
-  <SnackbarItem>
-    <div class="custom-content">
-      <strong>Attention!</strong>
-      <p>An unexpected server error occurred.</p>
-    </div>
+  <!-- With Custom Body Slot -->
+  <SnackbarItem label="System update">
+    <template #body>
+      <strong>Attention!</strong> A new version is ready to install.
+    </template>
   </SnackbarItem>
 </template>
   `}
     language="html"
 />
 
-> SnackbarItem is typically not used on its own but is rendered automatically by the `Snackbar` component based on a provided list of data.
+> SnackbarItem is designed both as the default notification unit rendered by `Snackbar` and as a self-contained accessible notification card.

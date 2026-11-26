@@ -32,8 +32,8 @@
   }
 
   &--dividerX:not(:last-child) {
-    border-right-style: ui.v('??borderStyleX', solid);
-    border-right-width: ui.v('??borderWidth');
+    border-inline-end-style: ui.v('??borderStyleX', solid);
+    border-inline-end-width: ui.v('??borderWidth');
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }
 

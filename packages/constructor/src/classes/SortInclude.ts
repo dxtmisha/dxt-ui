@@ -1,4 +1,4 @@
-import { computed, isRef, type Ref } from 'vue'
+import { computed, unref, type Ref } from 'vue'
 import {
   executeFunction,
   isObjectNotArray,
@@ -32,17 +32,13 @@ export class SortInclude<T = any> {
    * @param sortDir fallback sorting direction, reactive ref, or callback function returning direction / резервное направление сортировки, реактивный реф или функция обратного вызова
    */
   constructor(
-    protected readonly props: SortPropsInclude<T>,
-    protected readonly targetList?: any[] | (() => any[] | undefined),
+    protected readonly props: Readonly<SortPropsInclude<T>>,
+    protected readonly targetList?: readonly T[] | (() => readonly T[] | undefined),
     protected readonly sort?: SortIncludeSort,
     protected readonly sortDir?: SortIncludeSortDir
   ) { }
 
-  /**
-   * Computed property for normalized column sorting specifications list.
-   *
-   * Реактивное свойство для списка нормализованных спецификаций сортировки колонок.
-   */
+  /** Computed property for normalized column sorting specifications list / Реактивное свойство для списка нормализованных спецификаций сортировки колонок */
   readonly columns = computed<SortColumnItem[]>(() => {
     const sort = this.getValue(this.sort) ?? this.props.sort
 
@@ -51,27 +47,29 @@ export class SortInclude<T = any> {
     }
 
     if (isObjectNotArray(sort)) {
-      return Object.entries(sort).map(([column, dir]) => ({
-        column,
-        dir: dir === 'desc' ? 'desc' : 'asc'
-      }))
+      return Object.entries(sort)
+        .filter(([column]) => Boolean(column))
+        .map(([column, dir]) => ({
+          column,
+          dir: dir === 'desc' ? 'desc' : 'asc'
+        }))
     }
 
-    const sortListList = toArray(sort) as string[]
+    const sortColumns = toArray(sort) as string[]
     const result: SortColumnItem[] = []
 
-    sortListList.forEach((col) => {
-      result.push(this.getColumnItem(col))
+    sortColumns.forEach((columnName) => {
+      const columnItem = this.getColumnItem(columnName)
+
+      if (columnItem.column) {
+        result.push(columnItem)
+      }
     })
 
     return result
   })
 
-  /**
-   * Computed property for sorted list of items.
-   *
-   * Реактивное свойство для отсортированного списка элементов.
-   */
+  /** Computed property for sorted list of items / Реактивное свойство для отсортированного списка элементов */
   readonly sortedList = computed<T[]>(() => {
     return sortList(
       this.getSourceList(),
@@ -121,38 +119,38 @@ export class SortInclude<T = any> {
   }
 
   /**
-   * Returns original source list from targetList callback or props list.
-   *
-   * Возвращает исходный список элементов из функции обратного вызова targetList или props list.
-   * @returns array of source items / массив исходных элементов
-   */
-  protected getSourceList(): T[] {
-    return executeFunction(this.targetList) ?? this.props.list ?? []
-  }
-
-  /**
    * Returns a normalized sort column item for a given column key or prefix string.
    *
    * Возвращает нормализованный элемент колонки сортировки для заданного ключа или строки с префиксом.
-   * @param col column name string or prefix / имя колонки или строка с префиксом
+   * @param columnName column name string or prefix / имя колонки или строка с префиксом
    * @returns normalized sort column item / нормализованный элемент колонки сортировки
    */
-  protected getColumnItem(col: string): SortColumnItem {
-    let column = col
+  protected getColumnItem(columnName: string): SortColumnItem {
+    let column = columnName
     let dir: SortDir = 'asc'
     const sortDir = this.getValue(this.sortDir) ?? this.props.sortDir
 
-    if (col.startsWith('-')) {
-      column = col.slice(1)
+    if (columnName.startsWith('-')) {
+      column = columnName.slice(1)
       dir = 'desc'
-    } else if (col.startsWith('+')) {
-      column = col.slice(1)
+    } else if (columnName.startsWith('+')) {
+      column = columnName.slice(1)
       dir = 'asc'
     } else if (sortDir) {
       dir = sortDir === 'desc' ? 'desc' : 'asc'
     }
 
     return { column, dir }
+  }
+
+  /**
+   * Returns original source list from targetList callback or props list.
+   *
+   * Возвращает исходный список элементов из функции обратного вызова targetList или props list.
+   * @returns array of source items / массив исходных элементов
+   */
+  protected getSourceList(): T[] {
+    return (executeFunction(this.targetList) ?? this.props.list ?? []) as T[]
   }
 
   /**
@@ -163,6 +161,6 @@ export class SortInclude<T = any> {
    * @returns unwrapped value / развернутое значение
    */
   protected getValue<V>(value: V | Ref<V> | (() => V)): V {
-    return executeFunction(isRef(value) ? value.value : value)
+    return executeFunction(unref(value))
   }
 }

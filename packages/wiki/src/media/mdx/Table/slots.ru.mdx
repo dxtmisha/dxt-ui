@@ -1,11 +1,16 @@
-- `[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для кастомного рендеринга ячеек столбца с указанным именем (применяется для ячеек данных, шапки и подвала).
+- `[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для кастомного рендеринга ячеек данных столбца с указанным именем.
+- `default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек данных без отдельного слота столбца.
+- `header-[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для кастомного рендеринга ячеек шапки столбца с указанным именем.
+- `header-default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек шапки без отдельного слота `header-<column>`.
+- `foot-[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для кастомного рендеринга ячеек подвала столбца с указанным именем.
+- `foot-default(props: TableRecordItemSlotProps): any` — Резервный слот для ячеек подвала без отдельного слота `foot-<column>`.
 - `header(props: { columns: string[] }): any` — Слот для кастомного содержимого шапки таблицы (`<thead>`).
 - `items(props: { columns: string[] }): any` — Слот для кастомного содержимого элементов таблицы (`<tbody>`).
 - `foot(props: { columns: string[] }): any` — Слот для кастомного содержимого подвала таблицы (`<tfoot>`).
 
 > **TableRecordItemSlotProps:**
-> - `item: any` — Объект данных строки для обычных ячеек или объект конфигурации заголовка для ячеек шапки.
-> - `value: any` — Значение ячейки (или значение/объект заголовка).
+> - `item: any` — Объект данных строки для обычных ячеек или объект конфигурации заголовка/подвала для ячеек шапки и подвала.
+> - `value: any` — Значение ячейки (или значение/объект заголовка/подвала).
 > - `classes: { label: string, description: string }` — Вспомогательные имена классов элементов ячейки.
 > - `key: string` — Уникальный ключ рендеринга.
 > - `index: string` — Индекс колонки.

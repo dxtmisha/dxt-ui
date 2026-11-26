@@ -12,6 +12,7 @@ import { wikiTableRecord } from './wikiTableRecord'
  */
 export const wikiTableFlexRecord: StorybookArgsToList = {
   'tableFlexRecord.columns': wikiTableRecord['tableRecord.columns'] as StorybookArgsToItem,
+  'tableFlexRecord.isFoot': wikiTableRecord['tableRecord.isFoot'] as StorybookArgsToItem,
   'tableFlexRecord.isHeader': wikiTableRecord['tableRecord.isHeader'] as StorybookArgsToItem,
   'tableFlexRecord.item': wikiTableRecord['tableRecord.item'] as StorybookArgsToItem
 }

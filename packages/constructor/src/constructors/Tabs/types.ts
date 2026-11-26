@@ -43,6 +43,7 @@ export type TabsSlots = MotionAxisSlots
  * Тип, описывающий подклассы.
  */
 export type TabsClasses = {
+  /** Main element class / Класс главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   slide: string

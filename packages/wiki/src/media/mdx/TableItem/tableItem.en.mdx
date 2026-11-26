@@ -6,6 +6,7 @@ The baseline table cell component representing a `<td>` or other custom tags. Us
 
 - Standard and custom HTML tag support (`tag` prop, defaults to `td`)
 - Cell alignment options (`align` and `alignVertical`)
+- Optional horizontal and vertical cell dividers (`dividerX`, `dividerY`)
 - Text clamping for cells with long labels (`labelClamp`)
 - Dynamic skeleton states (`isSkeleton`) for loading phases
 - Sticky columns and headers support (`stickyLeft`, `stickyTop`)
@@ -18,19 +19,21 @@ The baseline table cell component representing a `<td>` or other custom tags. Us
 
 <template>
   <table>
-    <tr>
-      <!-- Simple cell with value -->
-      <TableItem value="Cell Value" />
+    <tbody>
+      <tr>
+        <!-- Simple cell with label -->
+        <TableItem label="Cell Value" />
 
-      <!-- Centered cell with custom span and label clamping -->
-      <TableItem
-        label="Clamped Label Value"
-        description="Optional cell description"
-        align="center"
-        colspan="2"
-        labelClamp
-      />
-    </tr>
+        <!-- Centered cell with custom span and label clamping -->
+        <TableItem
+          label="Clamped Label Value"
+          description="Optional cell description"
+          align="center"
+          colspan="2"
+          labelClamp
+        />
+      </tr>
+    </tbody>
   </table>
 </template>
   `}

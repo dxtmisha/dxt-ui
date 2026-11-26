@@ -1,14 +1,14 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Компонент строки таблицы, представляющий тег `<tr>`. Он координирует рендеринг набора ячеек столбцов (`TableHeaderItem`, если `isHeader` равен true, или `TableItem` в противном случае) на основе записи данных (свойство `item`) и списка индексов столбцов (свойство `columns`).
+Компонент строки таблицы, представляющий тег `<tr>`. Он координирует рендеринг набора ячеек столбцов (`TableHeaderItem` для `isHeader`, `isFoot` или отдельной ячейки с `isHeader`, либо `TableItem` для обычных ячеек данных) на основе записи данных (свойство `item`) и списка индексов столбцов (свойство `columns`).
 
 **Ключевые особенности:**
 
-- Стандартный контейнер строки таблицы (тег `tr`)
+- Стандартный контейнер строки таблицы (тег `tr`) с автоматическим определением `data-key`
 - Динамическая генерация ячеек на основе ключей `columns` и значений `item`
-- Автоматический выбор между ячейками заголовка (`TableHeaderItem`) и ячейками данных (`TableItem`) с помощью флага `isHeader`
-- Состояния выбора и отключения, применяемые ко всей строке (`selected`, `disabled`)
-- Динамические пользовательские слоты, названные в честь индексов столбцов, для кастомного рендеринга содержимого конкретных ячеек
+- Режим строки заголовка (`isHeader` с `scope="col"`), режим строки подвала (`isFoot` без `scope="col"` и со слотами `#foot-*`), а также заголовки отдельных ячеек строки (`isHeader: true` в объекте ячейки с `scope="row"`)
+- Состояния выбора и отключения, применяемые ко всей строке (`selected`, `disabled`) с синхронизацией ARIA
+- Динамические пользовательские слоты для каждой колонки (`#<column>`, `#default`, `#header-<column>`, `#header-default`, `#foot-<column>`, `#foot-default`)
 
 <Source
     code={`
@@ -17,18 +17,31 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 <template>
   <table>
-    <!-- Строка заголовка -->
-    <TableRecord
-      :isHeader="true"
-      :columns="['name', 'role']"
-      :item="{ name: 'Имя', role: 'Роль' }"
-    />
+    <thead>
+      <!-- Строка заголовка -->
+      <TableRecord
+        :isHeader="true"
+        :columns="['name', 'role']"
+        :item="{ name: 'Имя', role: 'Роль' }"
+      />
+    </thead>
 
-    <!-- Строка данных -->
-    <TableRecord
-      :columns="['name', 'role']"
-      :item="{ name: 'Алиса', role: 'Разработчик' }"
-    />
+    <tbody>
+      <!-- Строка данных -->
+      <TableRecord
+        :columns="['name', 'role']"
+        :item="{ name: 'Алиса', role: 'Разработчик' }"
+      />
+    </tbody>
+
+    <tfoot>
+      <!-- Строка подвала -->
+      <TableRecord
+        :isFoot="true"
+        :columns="['name', 'role']"
+        :item="{ name: 'Итого', role: '1 пользователь' }"
+      />
+    </tfoot>
   </table>
 </template>
   `}

@@ -1,5 +1,8 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract,
+  type ListSelectedList
+} from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -9,79 +12,132 @@ import { TabsNavigationInclude } from '../TabsNavigation'
 
 import { TabsSelected } from './TabsSelected'
 
-import type { TabsComponents, TabsEmits, TabsSlots } from './types'
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { TabsProps } from './props'
+import type {
+  TabsComponents,
+  TabsEmits,
+  TabsExpose,
+  TabsSlots
+} from './types'
+
+/** Tabs dependency constructors type / Тип конструкторов зависимостей Tabs */
+export type TabsConstructors = {
+  /** Event click listener constructor / Конструктор обработчика кликов */
+  event: typeof EventClickInclude
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<ListSelectedList | undefined>
+  /** Motion axis inclusion constructor / Конструктор подключения оси движения */
+  motionAxis: typeof MotionAxisInclude
+  /** Selected tab state constructor / Конструктор состояния выбранной вкладки */
+  selected: typeof TabsSelected
+  /** Tabs navigation inclusion constructor / Конструктор подключения навигации вкладок */
+  tabsNavigation: typeof TabsNavigationInclude
+}
 
 /**
- * Tabs
+ * Orchestrator class for the Tabs component.
+ * Coordinates tab selection state, two-way model synchronization, navigation bar rendering, and slide transitions.
+ *
+ * Класс-оркестратор для компонента Tabs.
+ * Координирует состояние выбранной вкладки, двустороннюю синхронизацию модели, рендеринг панели навигации и переходы слайдов.
  */
-export class Tabs {
-  readonly event: EventClickInclude
-  readonly motionAxis: MotionAxisInclude
-  readonly tabsNavigation: TabsNavigationInclude
-  readonly selected: TabsSelected
+export class Tabs extends DesignLogicAbstract<
+  HTMLDivElement,
+  TabsComponents,
+  TabsEmits,
+  TabsSlots,
+  TabsProps,
+  TabsConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TabsConstructors> = {
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    model: {
+      item: ModelInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits
+      ]
+    },
+    motionAxis: {
+      item: MotionAxisInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        this.emits,
+        () => this.i('selected').getString()
+      ]
+    },
+    selected: {
+      item: TabsSelected,
+      parameters: () => [
+        this.props,
+        () => this.i('model')
+      ]
+    },
+    tabsNavigation: {
+      item: TabsNavigationInclude,
+      canCreate: () => TabsNavigationInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          'selected': this.i('selected').item.value,
+          'onClick': this.onClick,
+          'onUpdate:selected': this.onUpdateSelected
+        })
+      ]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.MotionAxisIncludeConstructor class for working with motion axis/ класс для работы с осью движения
-   * @param constructors.TabsNavigationIncludeConstructor class for working with tabs navigation/ класс для работы с навигацией вкладок
-   * @param constructors.TabsSelectedConstructor class for working with selected/ класс для работы с выбранным
+   * Returns exposed API properties and methods.
+   *
+   * Возвращает экспортируемые свойства и методы API.
+   * @returns exposed API object / объект экспортируемого API
    */
-  constructor(
-    protected readonly props: TabsProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TabsComponents, TabsProps>,
-    protected readonly slots?: TabsSlots,
-    protected readonly emits?: ConstrEmit<TabsEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ModelIncludeConstructor?: typeof ModelInclude
-      MotionAxisIncludeConstructor?: typeof MotionAxisInclude
-      TabsNavigationIncludeConstructor?: typeof TabsNavigationInclude
-      TabsSelectedConstructor?: typeof TabsSelected
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      ModelIncludeConstructor = ModelInclude,
-      MotionAxisIncludeConstructor = MotionAxisInclude,
-      TabsNavigationIncludeConstructor = TabsNavigationInclude,
-      TabsSelectedConstructor = TabsSelected
-    } = constructors
+  get expose(): TabsExpose {
+    return {
+      getValue: () => this.i('event').expose.getValue?.(),
+      getDetail: () => this.i('event').expose.getDetail?.()
+    }
+  }
 
-    this.selected = new TabsSelectedConstructor(props)
-    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    new ModelIncludeConstructor('selected', emits, this.selected.item)
+  /**
+   * Forwards tab navigation click events through EventClickInclude lazily.
+   *
+   * Лениво перенаправляет события клика навигации вкладок через EventClickInclude.
+   * @param event native MouseEvent object / объект нативного события MouseEvent
+   * @param options event click value details / детальная информация события клика
+   */
+  protected readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.i('event').onClick(event, options)
+  }
 
-    this.tabsNavigation = new TabsNavigationIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        'selected': this.selected.item.value,
-        'onClick': this.event.onClick,
-        'onUpdate:selected': this.selected.set
-      })
-    )
-
-    this.motionAxis = new MotionAxisIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      emits,
-      () => String(this.selected.item.value)
-    )
+  /**
+   * Updates the selected tab value when triggered by TabsNavigation.
+   *
+   * Обновляет выбранное значение вкладки при изменении из TabsNavigation.
+   * @param selected newly selected tab value / новое выбранное значение вкладки
+   */
+  protected readonly onUpdateSelected = (
+    selected?: ListSelectedList
+  ): void => {
+    this.i('selected').set(selected)
   }
 }

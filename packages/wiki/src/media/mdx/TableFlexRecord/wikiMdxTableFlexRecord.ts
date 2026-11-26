@@ -1,5 +1,7 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
+import lazyEn from './lazy.en.mdx'
+import lazyRu from './lazy.ru.mdx'
 import tableFlexRecordEn from './tableFlexRecord.en.mdx'
 import tableFlexRecordRu from './tableFlexRecord.ru.mdx'
 
@@ -11,6 +13,10 @@ import tableFlexRecordRu from './tableFlexRecord.ru.mdx'
 export const wikiMdxTableFlexRecord: StorybookComponentsMdxItem = {
   name: 'TableFlexRecord',
   descriptions: {
+    lazy: {
+      en: lazyEn,
+      ru: lazyRu
+    },
     tableFlexRecord: {
       en: tableFlexRecordEn,
       ru: tableFlexRecordRu

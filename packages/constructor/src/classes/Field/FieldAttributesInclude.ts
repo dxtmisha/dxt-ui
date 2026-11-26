@@ -97,6 +97,16 @@ export class FieldAttributesInclude {
   }
 
   /**
+   * Returns data for the textarea element without the `type` attribute.
+   *
+   * Возвращает данные для элемента textarea без атрибута `type`.
+   * @returns data record / объект с данными
+   */
+  get listForTextarea(): Record<string, any> {
+    return this.getData(this.getTextareaAttributes())
+  }
+
+  /**
    * Returns properties.
    *
    * Возвращает свойства.
@@ -163,6 +173,16 @@ export class FieldAttributesInclude {
       'spellcheck',
       'autocorrect'
     ]
+  }
+
+  /**
+   * Returns the list of attributes to be set on the textarea element.
+   *
+   * Возвращает список атрибутов, которые нужно установить на элемент textarea.
+   * @returns array of textarea attribute keys / массив ключей атрибутов textarea
+   */
+  protected getTextareaAttributes(): (keyof FieldAllProps)[] {
+    return this.getInputAttributes().filter(attribute => attribute !== 'type')
   }
 
   /**

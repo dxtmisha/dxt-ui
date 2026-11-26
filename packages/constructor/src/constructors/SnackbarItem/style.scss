@@ -14,6 +14,8 @@
   &__context {
     @include ui.flexStretchY;
     @include ui.flexDynamic;
+    min-width: 0;
+    overflow-wrap: anywhere;
     gap: inherit;
     order: 4;
   }

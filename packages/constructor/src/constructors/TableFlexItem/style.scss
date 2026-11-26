@@ -7,6 +7,7 @@
   flex-grow: 1;
   flex-shrink: 1;
   min-width: 0;
+  overflow-wrap: anywhere;
 
   @for $i from 2 through 12 {
     &[data-colspan="#{$i}"] {

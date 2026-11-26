@@ -1,5 +1,13 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, toBinds } from '@dxtmisha/functional'
+import { mergeProps, type Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName,
+  getObjectNoUndefined
+} from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -12,156 +20,200 @@ import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { FieldInclude } from '../Field'
 
-import type { TextareaComponents, TextareaEmits, TextareaSlots } from './types'
 import type { TextareaProps } from './props'
-import type { FieldElementInput } from '../../types/fieldTypes'
+import type { TextareaComponents, TextareaEmits, TextareaSlots } from './types'
+
+/** Textarea dependency constructors type / Тип конструкторов зависимостей Textarea */
+export type TextareaConstructors = {
+  /** Field attributes constructor / Конструктор атрибутов поля */
+  attributes: typeof FieldAttributesInclude
+  /** Field change constructor / Конструктор изменения поля */
+  change: typeof FieldChangeInclude
+  /** Field code constructor / Конструктор кода поля */
+  code: typeof FieldCodeInclude
+  /** Field element constructor / Конструктор элемента поля */
+  elementItem: typeof FieldElementInclude
+  /** Field event constructor / Конструктор события поля */
+  event: typeof FieldEventInclude
+  /** Field constructor / Конструктор поля */
+  field: typeof FieldInclude
+  /** Field form constructor / Конструктор формы поля */
+  form: typeof FieldFormInclude
+  /** Field validation constructor / Конструктор валидации поля */
+  validation: typeof FieldValidationInclude
+  /** Field value constructor / Конструктор значения поля */
+  value: typeof FieldValueInclude<string>
+}
 
 /**
- * Textarea
+ * Textarea constructor logic orchestrator class.
+ * Manages multi-line text input value state, validation, form registration, field wrapper bindings, and autosize bindings.
+ *
+ * Класс-оркестратор логики конструктора Textarea.
+ * Управляет состоянием многострочного текстового значения, валидацией, регистрацией в форме, привязками обёртки поля и авторазмера.
  */
-export class Textarea {
-  readonly attributes: FieldAttributesInclude
-  readonly elementItem: FieldElementInclude
-  readonly change: FieldChangeInclude
-  readonly value: FieldValueInclude
-  readonly code: FieldCodeInclude
-  readonly validation: FieldValidationInclude
-  readonly form: FieldFormInclude
-  readonly event: FieldEventInclude
-  readonly field: FieldInclude
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
-   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
-   * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
-   */
-  constructor(
-    protected readonly props: TextareaProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TextareaComponents, TextareaProps>,
-    protected readonly slots?: TextareaSlots,
-    protected readonly emits?: ConstrEmit<TextareaEmits>,
-    constructors: {
-      FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
-      FieldChangeIncludeConstructor?: typeof FieldChangeInclude
-      FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldElementIncludeConstructor?: typeof FieldElementInclude
-      FieldEventIncludeConstructor?: typeof FieldEventInclude
-      FieldFormIncludeConstructor?: typeof FieldFormInclude
-      FieldIncludeConstructor?: typeof FieldInclude
-      FieldValidationIncludeConstructor?: typeof FieldValidationInclude
-      FieldValueIncludeConstructor?: typeof FieldValueInclude
-    } = {}
-  ) {
-    const {
-      FieldAttributesIncludeConstructor = FieldAttributesInclude,
-      FieldChangeIncludeConstructor = FieldChangeInclude,
-      FieldCodeIncludeConstructor = FieldCodeInclude,
-      FieldElementIncludeConstructor = FieldElementInclude,
-      FieldEventIncludeConstructor = FieldEventInclude,
-      FieldFormIncludeConstructor = FieldFormInclude,
-      FieldIncludeConstructor = FieldInclude,
-      FieldValidationIncludeConstructor = FieldValidationInclude,
-      FieldValueIncludeConstructor = FieldValueInclude
-    } = constructors
-
-    this.change = new FieldChangeIncludeConstructor(this.props)
-    this.attributes = new FieldAttributesIncludeConstructor(this.props)
-
-    this.elementItem = new FieldElementIncludeConstructor(
-      this.props,
-      this.element as Ref<FieldElementInput>
-    )
-    this.value = new FieldValueIncludeConstructor(
-      this.props,
-      () => this.elementItem
-    )
-
-    this.code = new FieldCodeIncludeConstructor(this.props)
-    this.validation = new FieldValidationIncludeConstructor(
-      this.props,
-      () => this.attributes,
-      () => this.value,
-      () => this.change,
-      () => this.code
-    )
-    this.form = new FieldFormIncludeConstructor(
-      this.props,
-      () => this.value,
-      () => this.validation
-    )
-    this.event = new FieldEventIncludeConstructor(
-      this.props,
-      () => this.change,
-      () => this.value,
-      () => this.validation,
-      this.emits,
-      () => this.form
-    )
-
-    this.field = new FieldIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        maxlength: this.props.maxlength
-      }),
-      undefined,
-      () => this.value,
-      () => this.event
-    )
-
-    // TODO: Temporary workaround until Textarea is migrated to DesignLogicAbstract / Временный костыль до перевода Textarea на DesignLogicAbstract
-    this.value.onMounted?.()
-    this.event.onMounted?.()
-  }
-
-  /**
-   * Returns bindings for the textarea element.
-   *
-   * Возвращает привязки для элемента textarea.
-   */
-  get binds() {
-    return {
-      ref: this.element,
-      autosize: this.props.autosize,
-      value: this.value.item.value,
-      onFocus: this.event.onFocus,
-      onBlur: this.event.onBlur,
-      onInput: this.event.onInput,
-      onChange: this.event.onChange
+export class Textarea extends DesignLogicAbstract<
+  HTMLElement,
+  TextareaComponents,
+  TextareaEmits,
+  TextareaSlots,
+  TextareaProps,
+  TextareaConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TextareaConstructors> = {
+    attributes: {
+      item: FieldAttributesInclude,
+      parameters: () => [this.props]
+    },
+    change: {
+      item: FieldChangeInclude,
+      parameters: () => [this.props]
+    },
+    code: {
+      item: FieldCodeInclude,
+      parameters: () => [this.props]
+    },
+    elementItem: {
+      item: FieldElementInclude,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    event: {
+      item: FieldEventInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('change'),
+        () => this.i('value'),
+        () => this.i('validation'),
+        this.emits,
+        () => this.callInstance('form', item => item)
+      ]
+    },
+    field: {
+      item: FieldInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          maxlength: this.props.maxlength
+        }),
+        undefined,
+        () => this.i('value'),
+        () => this.i('event')
+      ]
+    },
+    form: {
+      item: FieldFormInclude,
+      canCreate: () => FieldFormInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('value'),
+        () => this.i('validation')
+      ]
+    },
+    validation: {
+      item: FieldValidationInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('attributes'),
+        () => this.i('value'),
+        () => this.i('change'),
+        () => this.i('code')
+      ]
+    },
+    value: {
+      item: FieldValueInclude<string>,
+      parameters: () => [
+        this.props,
+        () => this.i('elementItem'),
+        undefined,
+        false,
+        false,
+        true
+      ]
     }
   }
 
   /**
-   * Returns properties for the input element.
+   * Constructor for initializing Textarea logic orchestration.
    *
-   * Возвращает свойства для элемента ввода.
+   * Конструктор для инициализации оркестрации логики Textarea.
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param naming component naming helper / помощник именования компонента
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
-  get bindsInput() {
-    return toBinds(
-      this.attributes.listForInput,
-      this.props.textareaAttrs,
+  constructor(
+    props: Readonly<TextareaProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<TextareaComponents, TextareaProps>,
+    slots?: TextareaSlots,
+    emits?: ConstrEmit<TextareaEmits>,
+    constructors?: Partial<TextareaConstructors>
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
+
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
+  }
+
+  /**
+   * Returns bindings for the TextareaAutosize component.
+   *
+   * Возвращает привязки для компонента TextareaAutosize.
+   * @returns textarea autosize bindings / привязки компонента TextareaAutosize
+   */
+  get binds(): ConstrBind {
+    const event = this.i('event')
+
+    return mergeProps(
+      this.props.textareaAttrs ?? {},
+      getObjectNoUndefined({
+        autosize: this.props.autosize
+      }),
       {
+        value: this.i('value').item.value,
+        onFocus: event.onFocus,
+        onBlur: event.onBlur,
+        onInput: event.onInput,
+        onChange: event.onChange
+      }
+    )
+  }
+
+  /**
+   * Returns properties for the native textarea element.
+   *
+   * Возвращает свойства для нативного элемента textarea.
+   * @returns textarea input bindings / привязки элемента ввода textarea
+   */
+  get bindsInput(): ConstrBind {
+    return mergeProps(
+      this.i('attributes').listForTextarea,
+      this.props.textareaAttrs?.inputAttrs ?? {},
+      getObjectNoUndefined({
         cols: this.props.cols,
         rows: this.props.rows,
+        wrap: this.props.wrap,
         fieldSizing: this.props.fieldSizing
-      }
+      })
     )
   }
 }

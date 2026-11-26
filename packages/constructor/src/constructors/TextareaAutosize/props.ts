@@ -1,17 +1,21 @@
+import type { ConstrBind } from '@dxtmisha/functional'
+
+/** Token-based properties for TextareaAutosize / Токен-свойства для TextareaAutosize */
 export type TextareaAutosizePropsToken = {
   // :type [!] System label / Системная метка
   autosize?: boolean
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for TextareaAutosize / Базовые свойства для TextareaAutosize */
 export type TextareaAutosizePropsBasic = {
-  /** Value/ Значения */
-  /** Current text value/ Текущее текстовое значение */
+  /** Value / Значения */
+  /** Current text value / Текущее текстовое значение */
   value?: string
 
-  /** Style/ Стили */
-  /** Additional attributes for the textarea element/ Дополнительные атрибуты для элемента textarea */
-  inputAttrs?: Record<string, any>
+  /** Style / Стили */
+  /** Additional attributes for the textarea element / Дополнительные атрибуты для элемента textarea */
+  inputAttrs?: ConstrBind
 }
 
 /**

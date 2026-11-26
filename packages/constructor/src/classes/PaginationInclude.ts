@@ -1,7 +1,7 @@
+import { computed } from 'vue'
 import { executeFunction, toNumberPositive } from '@dxtmisha/functional'
 
 import type { PaginationPropsInclude } from '../types/paginationTypes'
-import { computed } from 'vue'
 
 /**
  * Class representing pagination logic across components.
@@ -19,9 +19,35 @@ export class PaginationInclude<T = any> {
    * @param targetList target list array or callback function returning list / целевой массив списка или функция обратного вызова, возвращающая список
    */
   constructor(
-    protected readonly props: PaginationPropsInclude<T>,
+    protected readonly props: Readonly<PaginationPropsInclude<T>>,
     protected readonly targetList?: T[] | (() => T[] | undefined)
   ) { }
+
+  /** Source list array from targetList callback or props list / Исходный массив списка из callback-функции targetList или props list */
+  protected readonly sourceList = computed<T[]>(() => {
+    return executeFunction(this.targetList) ?? this.props.list ?? []
+  })
+
+  /**
+   * Returns paginated or full list of items.
+   *
+   * Возвращает пагинированный или полный список элементов.
+   * @returns paginated or full list of items / пагинированный или полный список элементов
+   */
+  get list(): T[] {
+    const sourceList = this.sourceList.value
+    const rows = this.rows
+
+    if (
+      rows
+      && sourceList.length > rows
+    ) {
+      const start = (this.page - 1) * rows
+      return sourceList.slice(start, start + rows)
+    }
+
+    return sourceList
+  }
 
   /**
    * Returns maximum available page number based on list length and rows per page.
@@ -61,35 +87,4 @@ export class PaginationInclude<T = any> {
   get rows(): number {
     return toNumberPositive(this.props.rows)
   }
-
-  /**
-   * Returns paginated or full list of items.
-   *
-   * Возвращает пагинированный или полный список элементов.
-   * @returns paginated or full list of items / пагинированный или полный список элементов
-   */
-  get list(): T[] {
-    const sourceList = this.sourceList.value
-    const rows = this.rows
-
-    if (
-      rows
-      && sourceList.length > rows
-    ) {
-      const start = (this.page - 1) * rows
-      return sourceList.slice(start, start + rows)
-    }
-
-    return sourceList
-  }
-
-  /**
-   * Returns source list array from targetList callback or props list.
-   *
-   * Возвращает исходный массив списка из callback-функции targetList или props list.
-   * @returns source list array / исходный массив списка
-   */
-  protected readonly sourceList = computed<T[]>(() => {
-    return executeFunction(this.targetList) ?? this.props.list ?? []
-  })
 }

@@ -1,4 +1,5 @@
 import { type TablePropsBasic, defaultsTable } from '@dxtmisha/constructor/Table'
+import type { TableHeaderItemProps } from '../TableHeaderItem'
 import type { TableItemProps } from '../TableItem'
 import type { TableRecordProps } from '../TableRecord'
 
@@ -18,7 +19,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TableProps = TablePropsBasic<TableItemProps, TableRecordProps> & PropsToken
+export type TableProps = TablePropsBasic<
+  TableItemProps,
+  TableHeaderItemProps,
+  TableRecordProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

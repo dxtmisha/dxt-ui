@@ -23,6 +23,17 @@ export const wikiTableRecord: StorybookArgsToList = {
     },
     hide: true
   },
+  'tableRecord.isFoot': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Whether the row represents a table footer',
+        ru: 'Является ли строка подвалом таблицы'
+      }
+    },
+    isDemo: true
+  },
   'tableRecord.isHeader': {
     type: StorybookControl.boolean,
     options: {

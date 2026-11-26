@@ -1,23 +1,22 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Snackbar` component orchestrates and displays a queue of temporary notifications in a teleported overlay region (`role="region"`). Snackbars provide concise feedback about application processes without interrupting the user's current workflow.
 
-A component used to display temporary notifications (snackbars) in various parts of the screen. Snackbars provide brief messages about app processes at the bottom or top of the screen.
+It manages automatic visibility detection, configurable auto-hide timers with pause-on-hover behavior, high-priority notification separation, and full programmatic queue control through exposed methods.
 
-Snackbar manages a message queue, automatically hiding notifications after a specified time or upon user interaction.
+**Key features:**
 
-**Key Features:**
+- **Flexible Positioning:** Configure screen placement and entrance direction via `vertical`, `horizontal`, and `origin`
+- **Adaptive Queue Limits:** Control visible stack capacity and responsive display with `limit`, `all`, and `full`
+- **Priority Separation:** Pin urgent alerts separately from standard notifications using `highPriority`
+- **Lifecycle & Hover Pause:** Configurable auto-hide `delay` (default 8 seconds), automatic pause on `mouseenter` and resume on `mouseleave`, plus `show` and `hide` events
+- **Programmatic API:** Manage notifications dynamically via exposed `add()`, `remove()`, `clear()`, and `isItem()` methods
 
-- Flexible positioning (top/bottom, left/right/block)
-- Configurable auto-hide delay (default 8 seconds)
-- Supports different entrance animations based on position
-- Active notification list management
+**Common use cases:**
 
-**Typical Usage Scenarios:**
-
-- Confirming user actions (e.g., "File saved erfolgreich")
-- Informing about errors or warnings
-- Real-time system notifications
+- Confirming user actions (e.g., "File saved successfully")
+- Informing about network errors, retries, or warnings
+- Real-time system status notifications across the application
 
 <Source
     code={`
@@ -27,16 +26,18 @@ import { ref } from 'vue'
 const snackbar = ref(null)
 
 const addMessage = () => {
-  snackbar.value?.data.add({
-    label: 'Notification Title',
-    description: 'Description of the event that occurred in the app.',
-    button: 'Ok'
+  snackbar.value?.add({
+    data: {
+      label: 'Notification Title',
+      description: 'Description of the event that occurred in the app.',
+      button: 'Ok'
+    }
   })
 }
 </script>
 
 <template>
-  <Button label="Show Notification" @click="addMessage" />
+  <button @click="addMessage">Show Notification</button>
 
   <Snackbar
     ref="snackbar"
@@ -48,4 +49,4 @@ const addMessage = () => {
     language="html"
 />
 
-> It is recommended to use Snackbar for non-critical information that does not require immediate user action.
+> Place a single `Snackbar` instance near the root of your application to coordinate consistent notification queues across all views.
