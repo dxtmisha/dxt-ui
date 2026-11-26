@@ -1,4 +1,4 @@
-import { ref, type Ref, watch } from 'vue'
+import { ref, type Ref, watch, type WatchStopHandle } from 'vue'
 import { setAreaValue } from '../functions/setAreaValue'
 import type { AreaPropsInclude } from '../types/areaTypes'
 
@@ -10,19 +10,11 @@ import type { AreaPropsInclude } from '../types/areaTypes'
  * Передает идентификатор области макета дочерним компонентам через внедрение зависимостей Vue.
  */
 export class AreaInclude {
-  /**
-   * Checks whether the area property is provided in props.
-   *
-   * Проверяет, указано ли свойство area в свойствах.
-   * @param props input data / входные данные
-   * @returns true if area is defined / true, если area определено
-   */
-  static is(props?: Readonly<AreaPropsInclude>): boolean {
-    return Boolean(props?.area)
-  }
-
   /** Reactive area value / Реактивное значение области */
   protected readonly value: Ref<string | undefined> = ref()
+
+  /** Stop handle for the reactive area watcher / Функция остановки реактивного наблюдателя области */
+  protected stopWatch?: WatchStopHandle
 
   /**
    * Constructor for AreaInclude.
@@ -36,7 +28,17 @@ export class AreaInclude {
     this.updateValue()
 
     setAreaValue(this.value)
-    watch(() => props.area, this.updateValue)
+    this.stopWatch = watch(() => props.area, this.updateValue)
+  }
+
+  /**
+   * Stops the reactive area watcher and releases resources.
+   *
+   * Останавливает реактивный наблюдатель области и освобождает ресурсы.
+   */
+  destroy(): void {
+    this.stopWatch?.()
+    this.stopWatch = undefined
   }
 
   /**

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { computed, createApp, createSSRApp, defineComponent, h, nextTick, provide, ref } from 'vue'
+import { computed, createApp, createSSRApp, defineComponent, h, type InjectionKey, nextTick, provide, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { AREA_PROP_NAME } from '../../types/areaTypes'
 import { getAreaValue } from '../getAreaValue'
@@ -239,7 +239,7 @@ describe('getAreaValue', () => {
 
       const MidNull = defineComponent({
         setup() {
-          provide(AREA_PROP_NAME, null)
+          provide(AREA_PROP_NAME as InjectionKey<null>, null)
           return () => h(LeafNull)
         }
       })

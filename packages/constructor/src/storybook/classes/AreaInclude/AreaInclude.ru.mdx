@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/AreaInclude - Провайдер контекста области макета'/>
+
+# Класс AreaInclude
+
+Класс `AreaInclude` — это **вспомогательный класс внедрения зависимостей (DI)** в пакете `@dxtmisha/constructor`, предназначенный для управления значением области макета компонента и его реактивной передачи дочерним компонентам через механизм `provide/inject` во Vue.
+
+## Ключевые особенности
+
+- **Синхронная регистрация контекста** — вызывает `setAreaValue(this.value)` немедленно во время `setup()`, даже если изначально `props.area === undefined`, чтобы последующие реактивные изменения корректно доставлялись потомкам.
+- **Реактивная синхронизация** — отслеживает изменения `props.area` через `watch` и обновляет переданный `Ref<string | undefined>` без повторного вызова `provide`.
+- **Поддержка наследования от предков (Fallback)** — работает в паре с `getAreaValue()` (`getInjectNearest`), позволяя вложенным компонентам с `area: undefined` наследовать область ближайшего предка.
+- **Интеграция с оркестраторами через DI** — подключается в подклассах `DesignLogicAbstract` через `constructorItems` и допускает переопределение конструктора для кастомизации и тестирования.
+- **SSR-изоморфизм** — использует исключительно привязанные к экземпляру компонента Vue `ref`, `provide` и `watch`, гарантируя полную изоляцию между параллельными SSR-запросами.
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует реактивную ссылку области значением `props.area`, регистрирует её в контексте инъекций Vue через `setAreaValue` и подписывается на реактивные обновления `props.area`. Должен создаваться синхронно на этапе `setup()` компонента.
+
+**Параметры:**
+- `props: Readonly<AreaPropsInclude>` — Объект входных свойств компонента с необязательным идентификатором области `area`.
+
+**Возвращает:** `AreaInclude` — Созданный экземпляр менеджера области.
+
+```typescript
+import { defineComponent } from 'vue'
+import { AreaInclude, type AreaPropsInclude } from '@dxtmisha/constructor'
+
+export default defineComponent({
+  props: {
+    area: String
+  },
+  setup(props: Readonly<AreaPropsInclude>) {
+    new AreaInclude(props)
+    return () => null
+  }
+})
+```
+
+### Жизненный цикл
+
+- `destroy(): void` — Останавливает реактивный наблюдатель `props.area` и очищает сохранённый `WatchStopHandle`. Безопасен для повторного вызова.
+
+## Типы
+
+### AreaPropsInclude
+
+- `area?: string` — Необязательный идентификатор области макета, передаваемый дочерним компонентам.
+
+## Архитектура инъекции
+
+`AreaInclude` выступает реактивным связующим звеном между входными свойствами компонента и `setAreaValue`:
+
+1. **Инициализация (`setup()`)**: записывает начальное значение в `protected readonly value: Ref<string | undefined>` через `updateValue()`, вызывает `setAreaValue(this.value)` (`provide(AREA_PROP_NAME, this.value)`) и подключает `watch(() => props.area, this.updateValue)`.
+2. **Немедленное создание в оркестраторах**: подклассы `DesignLogicAbstract` (`Header`, `Block`, `Actions`, `Section`, `Container`, `SnackbarItem` и др.) создают `AreaInclude` сразу в конструкторе через `this.i('area')` без `canCreate`, поскольку во Vue вызов `provide()` должен выполняться синхронно в `setup()`.
+3. **Наследование и переопределение**: пока `props.area` равно `undefined`, функция `getAreaValue()` пропускает этот уровень и ищет значение выше по дереву; как только `props.area` принимает строковое значение (включая `''`), контекст для всех потомков переопределяется.
+
+```typescript
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
+import { AreaInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    area: {
+      item: AreaInclude,
+      parameters: () => [this.props]
+    }
+  }
+
+  constructor(...args) {
+    super(...args)
+    this.i('area')
+  }
+}
+```

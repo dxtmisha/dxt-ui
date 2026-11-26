@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/AreaInclude - Nhà cung cấp ngữ cảnh vùng bố cục'/>
+
+# Lớp AreaInclude
+
+Lớp `AreaInclude` là **lớp hỗ trợ tiêm phụ thuộc (Dependency Injection)** trong `@dxtmisha/constructor`, dùng để quản lý giá trị vùng bố cục (area) của thành phần và truyền giá trị đó một cách phản hồi (reactive) xuống các thành phần con thông qua cơ chế `provide/inject` của Vue.
+
+## Các tính năng chính
+
+- **Đăng ký ngữ cảnh đồng bộ** — gọi `setAreaValue(this.value)` ngay trong `setup()`, ngay cả khi `props.area` ban đầu là `undefined`, đảm bảo các cập nhật phản hồi sau này vẫn hoạt động.
+- **Đồng bộ hóa phản hồi** — theo dõi thay đổi của `props.area` qua `watch` và cập nhật trực tiếp `Ref<string | undefined>` mà không cần gọi lại `provide`.
+- **Hỗ trợ kế thừa từ thành phần cha (Fallback)** — phối hợp với `getAreaValue()` (`getInjectNearest`), cho phép các thành phần con có `area: undefined` kế thừa vùng từ thành phần cha gần nhất.
+- **Tích hợp DI với lớp điều phối** — kết nối vào các lớp con của `DesignLogicAbstract` thông qua `constructorItems` và hỗ trợ ghi đè constructor để tùy biến hoặc kiểm thử.
+- **Đẳng cấu SSR (SSR Isomorphism)** — chỉ sử dụng `ref`, `provide` và `watch` gắn với từng phiên bản thành phần Vue, đảm bảo cách ly hoàn toàn giữa các yêu cầu SSR đồng thời.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo tham chiếu phản hồi của vùng từ `props.area`, đăng ký vào ngữ cảnh tiêm phụ thuộc Vue qua `setAreaValue` và đăng ký theo dõi thay đổi phản hồi của `props.area`. Phải được khởi tạo đồng bộ trong giai đoạn `setup()` của thành phần.
+
+**Tham số:**
+- `props: Readonly<AreaPropsInclude>` — Đối tượng thuộc tính đầu vào của thành phần chứa định danh vùng tùy chọn `area`.
+
+**Trả về:** `AreaInclude` — Phiên bản trình quản lý vùng đã được khởi tạo.
+
+```typescript
+import { defineComponent } from 'vue'
+import { AreaInclude, type AreaPropsInclude } from '@dxtmisha/constructor'
+
+export default defineComponent({
+  props: {
+    area: String
+  },
+  setup(props: Readonly<AreaPropsInclude>) {
+    new AreaInclude(props)
+    return () => null
+  }
+})
+```
+
+### Vòng đời
+
+- `destroy(): void` — Dừng trình theo dõi phản hồi `props.area` và giải phóng tham chiếu `WatchStopHandle` đã lưu. An toàn khi gọi nhiều lần.
+
+## Kiểu dữ liệu
+
+### AreaPropsInclude
+
+- `area?: string` — Định danh vùng bố cục tùy chọn được truyền xuống các thành phần con.
+
+## Kiến trúc tiêm phụ thuộc
+
+`AreaInclude` đóng vai trò cầu nối phản hồi giữa props của thành phần và `setAreaValue`:
+
+1. **Khởi tạo (`setup()`)**: gán giá trị ban đầu vào `protected readonly value: Ref<string | undefined>` qua `updateValue()`, gọi `setAreaValue(this.value)` (`provide(AREA_PROP_NAME, this.value)`) và gắn `watch(() => props.area, this.updateValue)`.
+2. **Khởi tạo ngay trong lớp điều phối**: các lớp con của `DesignLogicAbstract` (`Header`, `Block`, `Actions`, `Section`, `Container`, `SnackbarItem`, v.v.) khởi tạo `AreaInclude` ngay trong constructor qua `this.i('area')` mà không dùng `canCreate`, vì Vue yêu cầu `provide()` phải chạy đồng bộ trong `setup()`.
+3. **Kế thừa và ghi đè**: khi `props.area` là `undefined`, `getAreaValue()` bỏ qua cấp này và tìm giá trị ở thành phần cha cao hơn; khi `props.area` nhận giá trị chuỗi (bao gồm `''`), ngữ cảnh cho toàn bộ thành phần con sẽ được ghi đè ngay lập tức.
+
+```typescript
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
+import { AreaInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    area: {
+      item: AreaInclude,
+      parameters: () => [this.props]
+    }
+  }
+
+  constructor(...args) {
+    super(...args)
+    this.i('area')
+  }
+}
+```
