@@ -10,7 +10,7 @@ import { CMS_PERMISSION_ERROR_GROUP } from '../../media/errors/cmsPermissionErro
 import { permissions } from '../../media/schema/permissions'
 import { rolePermissions } from '../../media/schema/rolePermissions'
 import { roles } from '../../media/schema/roles'
-import { CmsDbCodeManagerAbstract } from '../abstract/CmsDbCodeManagerAbstract'
+import { CmsDbCodeManagerAbstract } from '../abstract/temp/CmsDbCodeManagerAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsVerification } from '../CmsVerification'
 import type { CmsDbInstance } from '../CmsDbInstance'

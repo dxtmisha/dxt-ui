@@ -4,15 +4,16 @@ import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import { CmsDbCodeItemAbstract } from '../CmsDbCodeItemAbstract'
-import { CmsDbCodeManagerAbstract } from '../CmsDbCodeManagerAbstract'
-import type {
-  CmsCodeCreateInput,
-  CmsCodeInsertValues,
-  CmsCodeListOptions,
-  CmsCodeUpdateInput,
-  CmsDb,
-  CmsDbCodeItemData
+import { CmsDbCodeItemAbstract } from '../temp/CmsDbCodeItemAbstract'
+import { CmsDbCodeManagerAbstract } from '../temp/CmsDbCodeManagerAbstract'
+import {
+  type CmsCodeCreateInput,
+  type CmsCodeInsertValues,
+  type CmsCodeListOptions,
+  type CmsCodeUpdateInput,
+  type CmsDb,
+  type CmsDbCodeItemData,
+  CmsSystemStatus
 } from '../../../types/cmsDbTypes'
 
 const testCodeManagerTable = pgTable('test_code_manager_items', {
@@ -111,7 +112,7 @@ function makeRecord(overrides: Partial<CmsDbCodeItemData> = {}): CmsDbCodeItemDa
     code: 'item:read',
     name: 'Read item',
     description: null,
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides

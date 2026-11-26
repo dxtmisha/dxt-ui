@@ -6,7 +6,11 @@ import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../../media/errors/cmsCreated
 import { CmsCreatedOriginItem } from '../CmsCreatedOriginItem'
 import { CmsCreatedOriginManager } from '../CmsCreatedOriginManager'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import type { CmsCreatedOrigin, CmsDb } from '../../../types/cmsDbTypes'
+import {
+  type CmsCreatedOrigin,
+  type CmsDb,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsCreatedOriginListResult } from '../../../types/cmsCreatedOriginTypes'
 
 interface MockQueryChain {
@@ -93,7 +97,7 @@ function makeCreatedOrigin(overrides: Partial<CmsCreatedOrigin> = {}): CmsCreate
     code: 'admin',
     name: 'cms-created_origin-admin',
     description: 'cms-created_origin-admin_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -225,7 +229,7 @@ describe('CmsCreatedOriginManager', () => {
 
     const result = await manager.getList({
       search: 'admin',
-      systemStatus: 'active',
+      systemStatus: CmsSystemStatus.active,
       limit: 500,
       offset: -5
     })

@@ -1,5 +1,5 @@
 import { text } from 'drizzle-orm/pg-core'
-import type { CmsSystemStatus } from '../../types/cmsDbTypes'
+import { CmsSystemStatus } from '../../types/cmsDbTypes'
 
 /**
  * Returns the standard `systemStatus` column definition for CMS tables.
@@ -10,6 +10,6 @@ import type { CmsSystemStatus } from '../../types/cmsDbTypes'
 export function getCmsSystemStatusColumn() {
   return {
     /** System record status / Системный статус записи */
-    systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active')
+    systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default(CmsSystemStatus.active)
   }
 }

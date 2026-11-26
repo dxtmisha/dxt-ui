@@ -5,7 +5,12 @@ import { CMS_ROLE_ERROR_GROUP } from '../../../media/errors/cmsRoleErrorCauseLis
 import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
-import type { CmsDb, CmsPermission, CmsRole } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  type CmsRole,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
 
 interface MockQueryChain {
@@ -93,7 +98,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: null,
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
@@ -108,7 +113,7 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,

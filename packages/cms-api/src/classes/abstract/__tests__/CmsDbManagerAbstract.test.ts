@@ -4,12 +4,13 @@ import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import { CmsDbItemAbstract } from '../CmsDbItemAbstract'
-import { CmsDbManagerAbstract } from '../CmsDbManagerAbstract'
-import type {
-  CmsDb,
-  CmsDbItemData,
-  CmsListOptions
+import { CmsDbItemAbstract } from '../temp/CmsDbItemAbstract'
+import { CmsDbManagerAbstract } from '../temp/CmsDbManagerAbstract'
+import {
+  type CmsDb,
+  type CmsDbItemData,
+  type CmsListOptions,
+  CmsSystemStatus
 } from '../../../types/cmsDbTypes'
 
 const testManagerTable = pgTable('test_manager_items', {
@@ -113,7 +114,7 @@ function makeRecord(overrides: Partial<TestManagerRecord> = {}): TestManagerReco
   return {
     id: 1,
     name: 'Item',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides

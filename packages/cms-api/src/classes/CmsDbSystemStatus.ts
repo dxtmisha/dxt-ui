@@ -7,8 +7,8 @@ import { updateRecord } from '../functions/db/updateRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsDbTimestamp } from './CmsDbTimestamp'
-import type {
-  CmsIdTable,
+import {
+  type CmsIdTable,
   CmsSystemStatus
 } from '../types/cmsDbTypes'
 
@@ -70,12 +70,12 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
     CmsVerification.isPositiveInteger(id)
 
     const baseTable = this.getBaseTable()
-    return updateRecord(
+    return Boolean(await updateRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
       this.buildUpdateValues({}, systemStatus)
-    )
+    ))
   }
 
   /**
@@ -86,7 +86,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    * @returns True if a matching record was activated / True, если запись найдена и активирована
    */
   async activate(id: number): Promise<boolean> {
-    return this.update(id, 'active')
+    return this.update(id, CmsSystemStatus.active)
   }
 
   /**
@@ -97,7 +97,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    * @returns True if a matching record was blocked / True, если запись найдена и заблокирована
    */
   async block(id: number): Promise<boolean> {
-    return this.update(id, 'blocked')
+    return this.update(id, CmsSystemStatus.blocked)
   }
 
   /**
@@ -108,7 +108,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
    * @returns True if a matching record was marked as deleted / True, если запись найдена и помечена как удалённая
    */
   async softDelete(id: number): Promise<boolean> {
-    return this.update(id, 'deleted')
+    return this.update(id, CmsSystemStatus.deleted)
   }
 
   /**
@@ -152,7 +152,7 @@ export class CmsDbSystemStatus<TTable extends CmsIdTable = CmsIdTable> {
         isCreate
         && statusValues.systemStatus === undefined
       ) {
-        statusValues.systemStatus = 'active'
+        statusValues.systemStatus = CmsSystemStatus.active
       }
     }
 

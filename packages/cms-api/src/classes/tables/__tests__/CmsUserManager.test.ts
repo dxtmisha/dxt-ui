@@ -9,7 +9,11 @@ import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleManager } from '../CmsRoleManager'
 import { CmsUserItem } from '../CmsUserItem'
 import { CmsUserManager } from '../CmsUserManager'
-import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
 import type {
   CmsUserListResult,
@@ -127,7 +131,7 @@ function makeUser(overrides: Partial<CmsUserPublic> = {}): CmsUserPublic {
     avatar: null,
     bio: null,
     status: 'active',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     emailVerifiedAt: null,
     phoneVerifiedAt: null,
     twoFactorEnabled: false,
@@ -147,7 +151,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: null,
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
@@ -162,7 +166,7 @@ function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithP
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,

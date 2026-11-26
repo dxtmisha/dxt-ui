@@ -7,7 +7,11 @@ import { permissions } from '../../media/schema/permissions'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
 import { CmsDbTimestamp } from '../CmsDbTimestamp'
-import type { CmsDb, CmsIdTable } from '../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsIdTable,
+  CmsSystemStatus
+} from '../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -127,7 +131,7 @@ describe('CmsDbSystemStatus', () => {
       const { dbInstance, raw } = createMockDb({ updateQueue: [[{ id: 1 }]] })
       const status = new CmsDbSystemStatus(permissions, dbInstance)
 
-      await expect(status.update(0, 'blocked')).rejects.toThrow(ErrorCenterError)
+      await expect(status.update(0, CmsSystemStatus.blocked)).rejects.toThrow(ErrorCenterError)
       await expect(status.activate(-1)).rejects.toThrow('Valid positive integer record ID is required.')
       await expect(status.block(2.3)).rejects.toThrow(ErrorCenterError)
       await expect(status.softDelete(Number.NaN)).rejects.toThrow(ErrorCenterError)
@@ -152,7 +156,7 @@ describe('CmsDbSystemStatus', () => {
       })
       const status = new CmsDbSystemStatus(permissions, dbInstance)
 
-      expect(await status.update(7, 'blocked')).toBe(true)
+      expect(await status.update(7, CmsSystemStatus.blocked)).toBe(true)
       expect(await status.activate(7)).toBe(true)
       expect(await status.block(7)).toBe(true)
       expect(await status.softDelete(7)).toBe(true)
@@ -212,8 +216,8 @@ describe('CmsDbSystemStatus', () => {
         name: 'Test',
         systemStatus: 'active'
       })
-      expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: 'blocked' }, 'deleted')).toEqual({
-        systemStatus: 'deleted'
+      expect(statusWithoutTimestamp.buildCreateValues({ systemStatus: CmsSystemStatus.blocked }, CmsSystemStatus.deleted)).toEqual({
+        systemStatus: CmsSystemStatus.deleted
       })
       expect(statusWithoutTimestamp.buildCreateValues()).toEqual({
         systemStatus: 'active'
@@ -243,9 +247,9 @@ describe('CmsDbSystemStatus', () => {
       expect(statusWithoutTimestamp.buildUpdateValues({ name: 'Updated' })).toEqual({
         name: 'Updated'
       })
-      expect(statusWithoutTimestamp.buildUpdateValues({ name: 'Updated' }, 'blocked')).toEqual({
+      expect(statusWithoutTimestamp.buildUpdateValues({ name: 'Updated' }, CmsSystemStatus.blocked)).toEqual({
         name: 'Updated',
-        systemStatus: 'blocked'
+        systemStatus: CmsSystemStatus.blocked
       })
 
       const statusWithTimestamp = new CmsDbSystemStatus(
@@ -265,8 +269,8 @@ describe('CmsDbSystemStatus', () => {
         createdAt: fixedNow,
         updatedAt: fixedNow
       })
-      expect(statusWithTimestamp.buildSystemStatusValues({}, 'blocked', false)).toEqual({
-        systemStatus: 'blocked',
+      expect(statusWithTimestamp.buildSystemStatusValues({}, CmsSystemStatus.blocked, false)).toEqual({
+        systemStatus: CmsSystemStatus.blocked,
         updatedAt: fixedNow
       })
       expect(statusWithoutTimestamp.buildUpdateValues()).toEqual({})
@@ -275,12 +279,12 @@ describe('CmsDbSystemStatus', () => {
       expect(statusOnTableWithoutColumn.buildCreateValues({ name: 'Test' })).toEqual({
         name: 'Test'
       })
-      expect(statusOnTableWithoutColumn.buildUpdateValues({ name: 'Test' }, 'blocked')).toEqual({
+      expect(statusOnTableWithoutColumn.buildUpdateValues({ name: 'Test' }, CmsSystemStatus.blocked)).toEqual({
         name: 'Test'
       })
     })
 
-    it.each(['active', 'blocked', 'deleted'] as const)(
+    it.each([CmsSystemStatus.active, CmsSystemStatus.blocked, CmsSystemStatus.deleted] as const)(
       'supports all CmsSystemStatus union variant "%s" consistently across update and builders',
       async (targetStatus) => {
         const { dbInstance, updateChains } = createMockDb({ updateQueue: [[{ id: 5 }]] })

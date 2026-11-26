@@ -7,8 +7,8 @@ import { updateRecord } from '../functions/db/updateRecord'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
-  CmsIdTable,
-  CmsTimestampValues
+  CmsDbTimestampData,
+  CmsIdTable
 } from '../types/cmsDbTypes'
 
 /**
@@ -36,7 +36,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
    * @param id Record identifier / Идентификатор записи
    * @returns Timestamp values or undefined if invalid, unsupported, or not found / Значения временных меток или undefined, если ID некорректен, колонки отсутствуют или запись не найдена
    */
-  async get(id: number): Promise<CmsTimestampValues | undefined> {
+  async get(id: number): Promise<Omit<CmsDbTimestampData, 'id'> | undefined> {
     if (!CmsVerification.isPositiveInteger(id, false)) {
       return undefined
     }
@@ -56,7 +56,7 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return undefined
     }
 
-    return findOneRecord<CmsTimestampValues>(
+    return findOneRecord<Omit<CmsDbTimestampData, 'id'>>(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
@@ -113,12 +113,12 @@ export class CmsDbTimestamp<TTable extends CmsIdTable = CmsIdTable> {
       return false
     }
 
-    return updateRecord(
+    return Boolean(await updateRecord(
       this.databaseInstance.get(),
       baseTable,
       eq(baseTable.id, id),
       { updatedAt } as Partial<typeof baseTable.$inferInsert>
-    )
+    ))
   }
 
   /**

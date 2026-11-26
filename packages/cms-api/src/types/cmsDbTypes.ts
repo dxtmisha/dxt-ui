@@ -10,6 +10,16 @@ import type {
   users
 } from '../media/schema/cmsSchema'
 
+/** System record status for main CMS entities / Системный статус записи для основных сущностей CMS */
+export enum CmsSystemStatus {
+  /** Active record status / Активный статус записи */
+  active = 'active',
+  /** Blocked record status / Заблокированный статус записи */
+  blocked = 'blocked',
+  /** Soft-deleted record status / Мягко удалённый статус записи */
+  deleted = 'deleted'
+}
+
 /** Base Drizzle PostgreSQL table constraint requiring id and systemStatus columns / Базовый тип таблицы Drizzle PostgreSQL с обязательными колонками id и systemStatus */
 export type CmsIdTable = PgTable & {
   /** Primary identifier column / Колонка первичного идентификатора */
@@ -66,12 +76,18 @@ export interface CmsListResult<TItem> {
   hasMore: boolean
 }
 
-/** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */
-export interface CmsTimestampValues {
+/** Base CMS record shape containing only the primary identifier / Базовая структура записи CMS только с первичным идентификатором */
+export interface CmsDbIdData {
+  /** Primary identifier / Первичный идентификатор */
+  id: number
+}
+
+/** Timestamp record shape containing identifier and timestamp fields / Структура записи с идентификатором и временными метками */
+export interface CmsDbTimestampData extends CmsDbIdData {
   /** Creation timestamp / Дата создания */
-  createdAt?: Date
+  createdAt: Date
   /** Last update timestamp / Дата последнего обновления */
-  updatedAt?: Date
+  updatedAt: Date
 }
 
 /** Base CMS entity record shape containing identifier, system status, and timestamp fields / Базовая структура записи сущности CMS с полями идентификатора, системного статуса и временных меток */
@@ -188,9 +204,6 @@ export type CmsRolePermission = typeof rolePermissions.$inferSelect
 
 /** New role permission relation payload for database insert / Данные новой связи роли и права доступа для вставки в базу данных */
 export type CmsNewRolePermission = typeof rolePermissions.$inferInsert
-
-/** System record status for main CMS entities / Системный статус записи для основных сущностей CMS */
-export type CmsSystemStatus = 'active' | 'blocked' | 'deleted'
 
 /** User account status / Статус учётной записи пользователя */
 export type CmsUserStatus = 'active' | 'invited' | 'blocked' | 'suspended'

@@ -6,7 +6,11 @@ import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionE
 import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsPermissionManager } from '../CmsPermissionManager'
-import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsPermissionListResult } from '../../../types/cmsPermissionTypes'
 
 interface MockQueryChain {
@@ -112,7 +116,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: 'Allows viewing users',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,

@@ -11,7 +11,7 @@ deleteRecord
 hasRecord
 toIds
 toOrderBy
-CmsDbValuesAbstract
 findRecords
-CmsDbAbstract
 CmsDbManagerAbstract
+CmsDbAbstract
+CmsDbValuesAbstract

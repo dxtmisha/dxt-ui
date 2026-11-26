@@ -4,7 +4,11 @@ import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCause
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../../media/errors/cmsCreatedOriginErrorCauseList'
 import { CmsCreatedOriginItem } from '../CmsCreatedOriginItem'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import type { CmsCreatedOrigin, CmsDb } from '../../../types/cmsDbTypes'
+import {
+  type CmsCreatedOrigin,
+  type CmsDb,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -79,7 +83,7 @@ function makeCreatedOrigin(overrides: Partial<CmsCreatedOrigin> = {}): CmsCreate
     code: 'admin',
     name: 'cms-created_origin-admin',
     description: 'cms-created_origin-admin_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -134,7 +138,7 @@ describe('CmsCreatedOriginItem', () => {
         code: 'web-portal',
         name: 'Web Portal',
         description: null,
-        systemStatus: 'blocked'
+        systemStatus: CmsSystemStatus.blocked
       })
       const mock = createMockDb({
         selectQueue: [[updatedRecord]],
@@ -146,7 +150,7 @@ describe('CmsCreatedOriginItem', () => {
         code: '  web-portal  ',
         name: '  Web Portal  ',
         description: '   ',
-        systemStatus: 'blocked'
+        systemStatus: CmsSystemStatus.blocked
       })
 
       expect(result).toBe(item)
@@ -186,9 +190,9 @@ describe('CmsCreatedOriginItem', () => {
     })
 
     it('updates systemStatus via activate, block, and softDelete', async () => {
-      const blocked = makeCreatedOrigin({ systemStatus: 'blocked' })
-      const active = makeCreatedOrigin({ systemStatus: 'active' })
-      const deleted = makeCreatedOrigin({ systemStatus: 'deleted' })
+      const blocked = makeCreatedOrigin({ systemStatus: CmsSystemStatus.blocked })
+      const active = makeCreatedOrigin({ systemStatus: CmsSystemStatus.active })
+      const deleted = makeCreatedOrigin({ systemStatus: CmsSystemStatus.deleted })
       const mock = createMockDb({
         updateQueue: [[{ id: 1 }], [{ id: 1 }], [{ id: 1 }], []],
         selectQueue: [[blocked], [active], [deleted]]

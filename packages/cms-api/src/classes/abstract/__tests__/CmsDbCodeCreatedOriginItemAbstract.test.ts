@@ -3,8 +3,11 @@ import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
-import { CmsDbCodeCreatedOriginItemAbstract } from '../CmsDbCodeCreatedOriginItemAbstract'
-import type { CmsDbCodeCreatedOriginItemData } from '../../../types/cmsDbTypes'
+import { CmsDbCodeCreatedOriginItemAbstract } from '../temp/CmsDbCodeCreatedOriginItemAbstract'
+import {
+  type CmsDbCodeCreatedOriginItemData,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 
 const testCodeOriginItemsTable = pgTable('test_code_origin_items', {
   id: serial('id').primaryKey(),
@@ -41,7 +44,7 @@ function makeRecord(
     name: 'Read item',
     description: null,
     createdOrigin: 'admin',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides

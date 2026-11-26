@@ -6,7 +6,11 @@ import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsUserItem } from '../CmsUserItem'
-import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsRoleWithPermissions } from '../../../types/cmsRoleTypes'
 import type { CmsUserWithRoles } from '../../../types/cmsUserTypes'
 
@@ -95,7 +99,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'cms-permission-users_read',
     description: 'cms-permission-users_read_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
@@ -110,7 +114,7 @@ function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithP
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
@@ -132,7 +136,7 @@ function makeUserData(overrides: Partial<CmsUserWithRoles> = {}): CmsUserWithRol
     avatar: 'https://example.com/avatar.png',
     bio: 'CMS admin',
     status: 'active',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     emailVerifiedAt: null,
     phoneVerifiedAt: null,
     twoFactorEnabled: false,

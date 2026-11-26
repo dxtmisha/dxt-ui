@@ -4,8 +4,12 @@ import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import { CmsDbItemAbstract } from '../CmsDbItemAbstract'
-import type { CmsDb, CmsDbItemData } from '../../../types/cmsDbTypes'
+import { CmsDbItemAbstract } from '../temp/CmsDbItemAbstract'
+import {
+  type CmsDb,
+  type CmsDbItemData,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 
 const testItemsTable = pgTable('test_items', {
   id: serial('id').primaryKey(),
@@ -67,7 +71,7 @@ function makeRecord(overrides: Partial<TestItemRecord> = {}): TestItemRecord {
   return {
     id: 10,
     name: 'Initial',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -91,7 +95,7 @@ describe('CmsDbItemAbstract', () => {
       [makeRecord({ name: 'Updated' })],
       [makeRecord({ name: 'Reloaded' })],
       [makeRecord({ name: 'Updated Direct' })],
-      [makeRecord({ systemStatus: 'blocked' })],
+      [makeRecord({ systemStatus: CmsSystemStatus.blocked })],
       []
     ]
     const updateQueue = [

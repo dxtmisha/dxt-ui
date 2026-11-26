@@ -7,7 +7,7 @@ import { seedCmsCreatedOrigins } from '../../functions/seedCmsCreatedOrigins'
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
 import { CmsCreatedOriginItem } from './CmsCreatedOriginItem'
-import { CmsDbCodeManagerAbstract } from '../abstract/CmsDbCodeManagerAbstract'
+import { CmsDbCodeManagerAbstract } from '../abstract/temp/CmsDbCodeManagerAbstract'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type {
   CmsCodeInsertValues,

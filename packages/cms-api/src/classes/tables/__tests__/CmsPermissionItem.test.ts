@@ -4,7 +4,11 @@ import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCause
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
-import type { CmsDb, CmsPermission } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
@@ -86,7 +90,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'cms-permission-users_read',
     description: 'cms-permission-users_read_description',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,

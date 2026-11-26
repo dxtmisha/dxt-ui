@@ -1,6 +1,6 @@
 import { CMS_CREATED_ORIGIN_ERROR_GROUP } from '../../media/errors/cmsCreatedOriginErrorCauseList'
 import { createdOrigins } from '../../media/schema/createdOrigins'
-import { CmsDbCodeItemAbstract } from '../abstract/CmsDbCodeItemAbstract'
+import { CmsDbCodeItemAbstract } from '../abstract/temp/CmsDbCodeItemAbstract'
 import type { CmsDbInstance } from '../CmsDbInstance'
 import type { CmsCreatedOrigin } from '../../types/cmsDbTypes'
 import type { CmsCreatedOriginUpdateInput } from '../../types/cmsCreatedOriginTypes'

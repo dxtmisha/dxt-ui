@@ -1,5 +1,5 @@
 import { CmsDbCodeItemAbstract } from './CmsDbCodeItemAbstract'
-import { CmsVerification } from '../CmsVerification'
+import { CmsVerification } from '../../CmsVerification'
 import type {
   CmsCodeCreatedOriginCreateInput,
   CmsCodeCreatedOriginInsertValues,
@@ -7,7 +7,7 @@ import type {
   CmsCodeCreatedOriginUpdateInput,
   CmsDbCodeCreatedOriginItemData,
   CmsDbUpdateValidator
-} from '../../types/cmsDbTypes'
+} from '../../../types/cmsDbTypes'
 
 /**
  * Abstract base class for code-addressable CMS entities tracking a `createdOrigin` field, providing shared getter, update validation, and create payload builder.

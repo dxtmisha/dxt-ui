@@ -4,8 +4,12 @@ import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { registerCmsErrorCauses } from '../../../functions/registerCmsErrorCauses'
 import { CMS_PERMISSION_ERROR_GROUP } from '../../../media/errors/cmsPermissionErrorCauseList'
 import { CmsDbInstance } from '../../CmsDbInstance'
-import { CmsDbCodeItemAbstract } from '../CmsDbCodeItemAbstract'
-import type { CmsDb, CmsDbCodeItemData } from '../../../types/cmsDbTypes'
+import { CmsDbCodeItemAbstract } from '../temp/CmsDbCodeItemAbstract'
+import {
+  type CmsDb,
+  type CmsDbCodeItemData,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 
 const testCodeItemsTable = pgTable('test_code_items', {
   id: serial('id').primaryKey(),
@@ -91,7 +95,7 @@ function makeRecord(overrides: Partial<TestCodeItemRecord> = {}): TestCodeItemRe
     code: 'item:read',
     name: 'Read item',
     description: 'Allows reading items',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -142,12 +146,12 @@ describe('CmsDbCodeItemAbstract', () => {
       code: 'users:delete',
       name: 'Users Delete',
       description: '  Delete users  ',
-      systemStatus: 'blocked'
+      systemStatus: CmsSystemStatus.blocked
     })).toEqual({
       code: 'users:delete',
       name: 'Users Delete',
       description: 'Delete users',
-      systemStatus: 'blocked'
+      systemStatus: CmsSystemStatus.blocked
     })
 
     expect(item.buildUpdateValues({
@@ -165,7 +169,7 @@ describe('CmsDbCodeItemAbstract', () => {
       name: 'Manage',
       description: null,
       extraColumn: 'custom-value',
-      systemStatus: 'active',
+      systemStatus: CmsSystemStatus.active,
       updatedAt: expect.any(Date)
     })
 
@@ -187,7 +191,7 @@ describe('CmsDbCodeItemAbstract', () => {
       code: 'allowed:code',
       name: 'Allowed',
       extraColumn: 'CUSTOM',
-      systemStatus: 'active',
+      systemStatus: CmsSystemStatus.active,
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date)
     })

@@ -6,7 +6,12 @@ import { CmsDbInstance } from '../../CmsDbInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsRoleManager } from '../CmsRoleManager'
-import type { CmsDb, CmsPermission, CmsRole } from '../../../types/cmsDbTypes'
+import {
+  type CmsDb,
+  type CmsPermission,
+  type CmsRole,
+  CmsSystemStatus
+} from '../../../types/cmsDbTypes'
 import type { CmsRoleListResult } from '../../../types/cmsRoleTypes'
 
 interface MockQueryChain {
@@ -114,7 +119,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: null,
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
@@ -129,7 +134,7 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
     code: 'admin',
     name: 'Administrator',
     description: 'Admin role',
-    systemStatus: 'active',
+    systemStatus: CmsSystemStatus.active,
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,
