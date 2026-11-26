@@ -24,7 +24,7 @@ export type NavigationRailComponents
 export type NavigationRailEmits
   = EventClickEmits
     & {
-      /** Event for closing the list/ Событие закрытия списка */
+      /** Event for closing the list / Событие закрытия списка */
       close: []
     }
 

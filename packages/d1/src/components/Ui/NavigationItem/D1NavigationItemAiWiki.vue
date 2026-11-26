@@ -18,6 +18,11 @@ defineOptions({
     :component="D1NavigationItem"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent v-bind="args" icon="home" label="Home" description="Dashboard overview"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

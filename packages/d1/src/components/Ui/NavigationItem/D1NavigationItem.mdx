@@ -20,9 +20,13 @@ import {NavigationItemWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'NavigationItem'} type={'navigationItem'}/>
+<Canvas of={NavigationItem.NavigationItemBasic}/>
 
 <StorybookDescriptions componentName={'Value'} type={'highlight'}/>
 <Canvas of={NavigationItem.NavigationItemHighlight}/>
+
+<StorybookDescriptions componentName={'ListItem'} type={'fill'}/>
+<Canvas of={NavigationItem.NavigationItemFill}/>
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={NavigationItem.NavigationItemSkeleton}/>
@@ -33,6 +37,7 @@ import {NavigationItemWikiStorybook} from './wiki'
 ## Events
 
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
+<Canvas of={NavigationItem.NavigationItemEvents}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
@@ -41,6 +46,7 @@ import {NavigationItemWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
 <StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
+<Canvas of={NavigationItem.NavigationItemExpose}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
@@ -53,5 +59,6 @@ import {NavigationItemWikiStorybook} from './wiki'
 <StorybookDescriptions componentName={'Slot'} type={'suffix'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'ListItem'} type={'slots'}/>
+<Canvas of={NavigationItem.NavigationItemSlots}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

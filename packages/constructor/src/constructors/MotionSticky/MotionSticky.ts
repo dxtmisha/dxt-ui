@@ -1,23 +1,60 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  type DesignName,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { MotionStickyElement } from './MotionStickyElement'
 import { MotionStickyScroll } from './MotionStickyScroll'
 
-import type { MotionStickyComponents, MotionStickyEmits, MotionStickySlots } from './types'
 import type { MotionStickyProps } from './props'
+import type { MotionStickyComponents, MotionStickyEmits, MotionStickySlots } from './types'
+
+/**
+ * MotionSticky dependency constructors type /
+ * Тип конструкторов зависимостей MotionSticky.
+ */
+export type MotionStickyConstructors = {
+  /** Helper constructor for sticky element position calculations / Конструктор помощника для вычислений положения липкого элемента */
+  element: typeof MotionStickyElement
+  /** Scroll event listener manager constructor / Конструктор менеджера прослушивания событий прокрутки */
+  scroll: typeof MotionStickyScroll
+}
 
 /**
  * Class for working with the computation component when the element sticks.
  *
  * Класс для работы с компонентом вычисления, когда элемент прилипает.
  */
-export class MotionSticky {
-  /** Reference helper for element interactions / Вспомогательный класс для работы с элементами */
-  readonly element: MotionStickyElement
-
-  /** Scroll event listener manager / Менеджер прослушивания событий прокрутки */
-  readonly scroll: MotionStickyScroll
+export class MotionSticky extends DesignLogicAbstract<
+  HTMLElement,
+  MotionStickyComponents,
+  MotionStickyEmits,
+  MotionStickySlots,
+  MotionStickyProps,
+  MotionStickyConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<MotionStickyConstructors> = {
+    element: {
+      item: MotionStickyElement,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.emits
+      ]
+    },
+    scroll: {
+      item: MotionStickyScroll,
+      parameters: () => [
+        this.props,
+        () => this.i('element')
+      ]
+    }
+  }
 
   /**
    * Constructor
@@ -28,41 +65,34 @@ export class MotionSticky {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
-   * @param constructors.MotionStickyElementConstructor class for working with elements / класс для работы с элементами
-   * @param constructors.MotionStickyScrollConstructor class for working with events / класс для работы с событиями
    */
   constructor(
-    protected readonly props: MotionStickyProps,
+    props: Readonly<MotionStickyProps>,
     element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<MotionStickyComponents, MotionStickyProps>,
-    protected readonly slots?: MotionStickySlots,
-    protected readonly emits?: ConstrEmit<MotionStickyEmits>,
-    constructors: {
-      MotionStickyElementConstructor?: typeof MotionStickyElement
-      MotionStickyScrollConstructor?: typeof MotionStickyScroll
-    } = {}
+    naming: DesignName,
+    components?: DesignComp<MotionStickyComponents, MotionStickyProps>,
+    slots?: MotionStickySlots,
+    emits?: ConstrEmit<MotionStickyEmits>,
+    constructors?: Partial<MotionStickyConstructors>
   ) {
-    const {
-      MotionStickyElementConstructor = MotionStickyElement,
-      MotionStickyScrollConstructor = MotionStickyScroll
-    } = constructors
-
-    this.element = new MotionStickyElementConstructor(
-      this.props,
+    super(
+      props,
       element,
-      this.emits
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
 
-    this.scroll = new MotionStickyScrollConstructor(
-      this.props,
-      this.element
-    )
+    this.i('scroll')
   }
 
   /**
-   * Returns the tag name /
-   * Возвращает название тега
+   * Returns the tag name.
+   *
+   * Возвращает название тега.
+   * @returns tag name / название тега
    */
   get tag(): string {
     return this.props.tag ?? 'div'

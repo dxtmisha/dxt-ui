@@ -1,21 +1,22 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Specialized menu for selecting languages with automatic flag and name loading.
+A specialized menu for selecting languages with automatic flag and localized name loading.
 
-MenuLanguage is an extension of the Menu component, designed specifically for language selection. It leverages the GeoFlagRef utility to automatically populate the menu with a list of languages, including native language names and country flags where relevant. It supports all the standard Menu functionalities like Window-based popups, custom controls, and sophisticated focus management.
+`MenuLanguage` extends `MenuCountry` and `Menu` specifically for language selection. It leverages `GeoFlagRef.getNationalLanguage` to populate items with national language names, localized language names, associated country flags, and optional international dialing codes (`showPhoneCode`). It supports all standard `Menu` features, including `Window`-based popups, embedded rendering, search, custom slots, and exposed navigation controls.
 
-**Key Features:**
+**Key features:**
 
-- Automatic generation of language list via GeoFlagRef utility
-- Filtering of available languages via the countryList property
-- Support for native language names
-- All standard features of the base Menu component (positioning, keyboard navigation, submenus, etc.)
+- **Automatic Language List:** Populates language flags, localized labels, and native language descriptions via `GeoFlagRef`
+- **Code Filtering:** Restricts available languages via the `list` prop (ISO 639-1 / locale or ISO 3166-1 alpha-2 codes)
+- **Native & Localized Names:** Displays localized language labels alongside native language names (`description`) and supports switching display language via the `language` prop
+- **Built-in Search & Highlighting:** Supports direct `showSearch`, `filterMode`, and `highlightLengthStart` props with searchable localized and native names, codes, and optional phone code captions (`showPhoneCode`)
+- **Menu Capabilities:** Inherits `Window` popup positioning, `disableFocusReturn`, `v-model:selected` / `v-model:model-selected`, `menuAttrs` customization, keyboard navigation, and `expose` API
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Language selection dropdowns
-- Localization settings in user profiles or settings page
-- Multilingual interface switches
+- Language selection dropdowns in headers and navigation bars
+- Localization settings in user profiles or application preferences
+- Multilingual interface and content switchers
 
 <Source
     code={`
@@ -28,11 +29,12 @@ const selectedValue = ref('en')
 <template>
   <MenuLanguage
     v-model:selected="selectedValue"
+    :list="['en', 'ru', 'vi']"
     is-selected-by-value
   >
-    <template #control="{ binds }">
+    <template #control="{ binds, selectedNames }">
       <button v-bind="binds">
-        Select Language
+        {{ selectedNames.value[0] || 'Select Language' }}
       </button>
     </template>
   </MenuLanguage>
@@ -40,3 +42,5 @@ const selectedValue = ref('en')
   `}
     language="html"
 />
+
+> MenuLanguage combines localized and native language metadata with flag rendering and full Menu popup and selection ergonomics.

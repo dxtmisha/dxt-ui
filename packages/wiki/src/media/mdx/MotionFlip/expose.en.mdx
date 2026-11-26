@@ -9,9 +9,11 @@
 
 The `update` method orchestrates FLIP layout animations during DOM modifications.
 
-1. Records original bounding rectangles for all child elements before DOM modification.
-2. Executes the asynchronous `callback` function to update state and DOM elements.
-3. Measures new child positions and applies calculated offset CSS variables.
-4. Triggers smooth CSS transform transition to animate elements to their target positions.
+1. Records original bounding rectangles for all child elements before DOM modification (when not `disabled`).
+2. Executes the `callback` function to update state and DOM elements.
+3. Measures new child positions and applies calculated offset CSS variables and freeze/go modifier classes.
+4. Cleans up temporary classes and inline variables on `transitionend` or after the fallback timeout.
 
-> Important: Always wrap DOM-modifying state changes inside the `update` callback so that initial and final element coordinates can be accurately measured.
+Calling `stop()` cancels any pending animation frames and timers, immediately removing active modifier classes and system CSS variables.
+
+> Important: When orchestrating updates manually, wrap DOM-modifying state changes inside the `update` callback so initial and final element coordinates are measured accurately.

@@ -1,5 +1,9 @@
-import { type Ref } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -14,138 +18,178 @@ import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
-import type { NavigationRailItemComponents, NavigationRailItemEmits, NavigationRailItemSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { NavigationRailItemProps } from './props'
+import type {
+  NavigationRailItemComponents,
+  NavigationRailItemEmits,
+  NavigationRailItemSlots
+} from './types'
+
+/** NavigationRailItem dependency constructors type / Тип конструкторов зависимостей NavigationRailItem */
+export type NavigationRailItemConstructors = {
+  /** Badge constructor / Конструктор бейджа */
+  badge: typeof BadgeInclude
+  /** Enabled status constructor / Конструктор статуса активности */
+  enabled: typeof EnabledInclude
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Icon constructor / Конструктор иконки */
+  icon: typeof IconInclude
+  /** Label constructor / Конструктор метки */
+  label: typeof LabelInclude
+  /** Progress constructor / Конструктор индикатора прогресса */
+  progress: typeof ProgressInclude
+  /** Ripple constructor / Конструктор эффекта волны */
+  ripple: typeof RippleInclude
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
  * Constructor class for the NavigationRailItem component, managing its child elements, attributes, classes, and accessibility.
  *
  * Класс-конструктор для компонента NavigationRailItem, управляющий его дочерними элементами, атрибутами, классами и доступностью.
  */
-export class NavigationRailItem {
-  /** Class for working with the icon / Класс для работы с иконкой */
-  readonly icon: IconInclude
-  /** Class for working with the label / Класс для работы с меткой */
-  readonly label: LabelInclude
-  /** Class for working with the badge / Класс для работы с бейджем */
-  readonly badge: BadgeInclude
-
-  /** Class for working with the ripple effect / Класс для работы с эффектом ряби (ripple) */
-  readonly ripple: RippleInclude
-  /** Class for working with the progress indicator / Класс для работы с индикатором прогресса */
-  readonly progress: ProgressInclude
-  /** Class for working with the skeleton / Класс для работы со скелетоном */
-  readonly skeleton: SkeletonInclude
-
-  /** Class for working with the enabled state / Класс для работы с состоянием активности */
-  readonly enabled: EnabledInclude
-  /** Class for working with the click events / Класс для работы с событиями клика */
-  readonly event: EventClickInclude
+export class NavigationRailItem extends DesignLogicAbstract<
+  HTMLDivElement,
+  NavigationRailItemComponents,
+  NavigationRailItemEmits,
+  NavigationRailItemSlots,
+  NavigationRailItemProps,
+  NavigationRailItemConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<NavigationRailItemConstructors> = {
+    badge: {
+      item: BadgeInclude,
+      canCreate: () => BadgeInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({
+          overlap: this.callInstance('icon', item => item.isIcon(), false) ? 'circular' : 'static'
+        })
+      ]
+    },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.callInstance('progress', item => item)
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    icon: {
+      item: IconInclude,
+      canCreate: () => IconInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        { isSkeleton: true }
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        undefined,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    progress: {
+      item: ProgressInclude,
+      canCreate: () => ProgressInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        {
+          circular: true
+        }
+      ]
+    },
+    ripple: {
+      item: RippleInclude,
+      canCreate: () => RippleInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('enabled'),
+        this.components
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classTextVariant']
+      ]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.BadgeIncludeConstructor class for working with badge / класс для работы с бейджем
-   * @param constructors.EnabledIncludeConstructor class for working with enabled / класс для работы с активностью
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
-   * @param constructors.IconIncludeConstructor class for working with icon / класс для работы с иконкой
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
-   * @param constructors.ProgressIncludeConstructor class for working with progress / класс для работы с прогрессом
-   * @param constructors.RippleIncludeConstructor class for working with ripple / класс для работы с ripple
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
+   * Values for aria attributes.
+   *
+   * Значения для атрибутов aria.
+   * @returns list of aria properties / список свойств aria
    */
-  constructor(
-    protected readonly props: NavigationRailItemProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<NavigationRailItemComponents, NavigationRailItemProps>,
-    protected readonly slots?: NavigationRailItemSlots,
-    protected readonly emits?: ConstrEmit<NavigationRailItemEmits>,
-    constructors: {
-      BadgeIncludeConstructor?: typeof BadgeInclude
-      EnabledIncludeConstructor?: typeof EnabledInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      IconIncludeConstructor?: typeof IconInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-      ProgressIncludeConstructor?: typeof ProgressInclude
-      RippleIncludeConstructor?: typeof RippleInclude
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      BadgeIncludeConstructor = BadgeInclude,
-      EnabledIncludeConstructor = EnabledInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      IconIncludeConstructor = IconInclude,
-      LabelIncludeConstructor = LabelInclude,
-      ProgressIncludeConstructor = ProgressInclude,
-      RippleIncludeConstructor = RippleInclude,
-      SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors
-
-    this.skeleton = new SkeletonIncludeConstructor(
-      props,
-      naming,
-      ['classTextVariant']
-    )
-    this.progress = new ProgressIncludeConstructor(
-      props,
-      naming,
-      components,
-      {
-        circular: true
-      }
-    )
-    this.enabled = new EnabledIncludeConstructor(props, () => this.progress)
-
-    this.icon = new IconIncludeConstructor(props, naming, components, { isSkeleton: true })
-    this.label = new LabelIncludeConstructor(
-      props,
-      naming,
-      undefined,
-      slots,
-      undefined,
-      undefined,
-      undefined,
-      this.skeleton
-    )
-    this.badge = new BadgeIncludeConstructor(
-      props,
-      naming,
-      components,
-      () => ({
-        overlap: this.icon.isIcon() ? 'circular' : 'static'
-      })
-    )
-
-    this.ripple = new RippleIncludeConstructor(naming, () => this.enabled, components)
-    this.event = new EventClickIncludeConstructor(
-      props,
-      () => this.enabled,
-      emits
-    )
-  }
-
-  /** Tag type / Тип тега */
-  get tag(): string {
-    if (this.props.tag) {
-      return this.props.tag
+  get aria(): AriaList {
+    const aria: AriaList = {
+      tabindex: this.props.tabindex,
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.selected(Boolean(this.props.selected)),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }
 
-    if (this.props.href) {
-      return 'a'
+    const progressAria = this.callInstance('progress', item => item.aria.value)
+
+    if (progressAria) {
+      Object.assign(aria, progressAria)
     }
 
-    return 'div'
+    return aria
   }
 
-  /** Values for the class / Значения для класса */
+  /**
+   * Values for attributes.
+   *
+   * Значения для атрибутов.
+   * @returns element binding attributes / атрибуты привязки элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      'data-value': this.props.index ?? this.props.value,
+      'data-divider': this.props.divider ? 'active' : undefined,
+      'data-parent': this.props.parent,
+      'data-list-id': this.props.listId,
+      ...this.i('event').binds,
+      ...this.aria
+    }
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
   get classes(): ConstrClassObject {
     return {
       [this.naming.getStatusClass('selected')]: Boolean(this.props.selected),
@@ -153,25 +197,24 @@ export class NavigationRailItem {
     }
   }
 
-  /** Values for attributes / Значения для атрибутов */
-  get binds(): Record<string, any> {
-    return {
-      'href': this.props.href,
-      'data-value': this.props.index ?? this.props.value,
-      'data-divider': this.props.divider ? 'active' : undefined,
-      'data-parent': this.props.parent,
-      'data-list-id': this.props.listId,
-      ...this.event.binds
+  /**
+   * Tag type.
+   *
+   * Тип тега.
+   * @returns tag name / название тега
+   */
+  get tag(): string {
+    if (this.props.tag) {
+      return this.props.tag
     }
-  }
 
-  /** Values for aria attributes / Значения для атрибутов aria */
-  get aria(): Record<string, any> {
-    return {
-      tabindex: this.props.tabindex,
-      ...AriaStaticInclude.role(this.props.role),
-      ...AriaStaticInclude.selected(Boolean(this.props.selected)),
-      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
+    if (
+      this.props.to
+      || this.props.href
+    ) {
+      return 'a'
     }
+
+    return 'div'
   }
 }

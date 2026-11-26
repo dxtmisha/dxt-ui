@@ -1,9 +1,12 @@
 // ai-none
 
 import { type Ref, ref } from 'vue'
-import type { DesignName } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, type DesignName } from '@dxtmisha/functional'
 
 import type { MotionAxisClassStatus } from './basicTypes'
+
+/** Fallback timeout duration for transitionend listener in milliseconds / Длительность резервного таймаута для слушателя transitionend в миллисекундах */
+const TRANSITION_END_TIMEOUT_MS = 1024
 
 /**
  * Class for managing element DOM states, styles, and animation cycles.
@@ -12,13 +15,18 @@ import type { MotionAxisClassStatus } from './basicTypes'
  * Класс для управления состояниями DOM-элементов, стилями и циклами анимации.
  * Инкапсулирует обновления CSS-классов, переходы и состояния блокировки прокрутки.
  */
-export class MotionAxisElement {
+export class MotionAxisElement extends DesignLifecycleAbstract {
   /** Map of standard slide CSS class names for different states / Карта стандартных имён CSS-классов слайдов для различных состояний */
   protected readonly classStatus: MotionAxisClassStatus
   /** Reactive state indicating if start of transition has occurred / Реактивное состояние, указывающее, произошел ли старт перехода */
   protected readonly start = ref<boolean>(false)
   /** Reactive state indicating if active transition motion is running / Реактивное состояние, указывающее, запущено ли движение перехода */
   protected readonly move = ref<boolean>(false)
+
+  /** Active fallback timeout identifier / Идентификатор активного резервного таймаута */
+  protected timeoutId?: ReturnType<typeof setTimeout>
+  /** Cleanup callback for active transitionend listener / Функция очистки активного слушателя transitionend */
+  protected stopListener?: () => void
 
   /**
    * Constructor for initializing element managers.
@@ -28,9 +36,11 @@ export class MotionAxisElement {
    * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected element: Ref<HTMLDivElement | undefined>,
+    protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly naming: DesignName
   ) {
+    super()
+
     this.classStatus = {
       main: this.getClassStatusItem(),
       previous: this.getClassStatusItem('previous'),
@@ -40,14 +50,23 @@ export class MotionAxisElement {
   }
 
   /**
+   * Cleans up pending transition listeners and timers on unmount.
+   *
+   * Очищает ожидающие слушатели переходов и таймеры при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.clearEvent()
+  }
+
+  /**
    * Checks if the element is an active slide.
    *
    * Проверяет, является ли элемент активным слайдом.
    * @param element selected element / выбранный элемент
    * @returns true if active / true если активен
    */
-  isActive(element: HTMLDivElement): boolean {
-    return element.classList.contains(this.classStatus.active)
+  isActive(element?: HTMLElement | null): boolean {
+    return Boolean(element?.classList?.contains(this.classStatus.active))
   }
 
   /**
@@ -106,7 +125,7 @@ export class MotionAxisElement {
    *
    * Блокирует прокрутку в ближайшем контейнере прокрутки.
    */
-  blockScroll() {
+  blockScroll(): void {
     const scrollElement = this.getElementScroll()
 
     if (scrollElement) {
@@ -119,7 +138,7 @@ export class MotionAxisElement {
    *
    * Восстанавливает прокрутку в ближайшем контейнере прокрутки.
    */
-  returnScroll() {
+  returnScroll(): void {
     const scrollElement = this.getElementScroll()
 
     if (scrollElement) {
@@ -132,7 +151,7 @@ export class MotionAxisElement {
    *
    * Переход в состояние старта.
    */
-  toStart() {
+  toStart(): void {
     this.start.value = true
   }
 
@@ -141,7 +160,7 @@ export class MotionAxisElement {
    *
    * Окончание состояния старта.
    */
-  toEnd() {
+  toEnd(): void {
     this.start.value = false
   }
 
@@ -150,7 +169,7 @@ export class MotionAxisElement {
    *
    * Переход в состояние движения.
    */
-  toMove() {
+  toMove(): void {
     this.move.value = true
   }
 
@@ -159,7 +178,7 @@ export class MotionAxisElement {
    *
    * Окончание состояния движения.
    */
-  toStop() {
+  toStop(): void {
     this.move.value = false
   }
 
@@ -169,25 +188,61 @@ export class MotionAxisElement {
    * Активизирует события прослушивания окончания анимации.
    * @param callback event listener / прослушивать события
    */
-  initEvent(callback: () => void) {
-    if (this.element.value) {
-      const go = () => {
+  initEvent(callback: () => void): void {
+    const element = this.element.value
+
+    this.clearEvent()
+
+    if (element) {
+      const go = (): void => {
         if (this.move.value) {
-          callback()
-          this.element.value?.removeEventListener('transitionend', listener)
+          this.clearEvent()
           this.toStop()
-          clearTimeout(timeout)
+          callback()
         }
       }
-      const listener = (event: TransitionEvent) => {
+      const listener = (event: TransitionEvent): void => {
         if (this.isTransitionend(event)) {
           go()
         }
       }
-      const timeout = setTimeout(go, 1024)
 
-      this.element.value.addEventListener('transitionend', listener)
+      this.timeoutId = setTimeout(go, TRANSITION_END_TIMEOUT_MS)
+      this.stopListener = () => {
+        element.removeEventListener('transitionend', listener)
+      }
+
+      element.addEventListener('transitionend', listener)
     }
+  }
+
+  /**
+   * Clears active transitionend listener and fallback timeout.
+   *
+   * Очищает активный слушатель transitionend и резервный таймаут.
+   */
+  clearEvent(): void {
+    if (this.timeoutId !== undefined) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = undefined
+    }
+
+    if (this.stopListener) {
+      this.stopListener()
+      this.stopListener = undefined
+    }
+  }
+
+  /**
+   * Checks if the current transitionend event matches key axis transformation.
+   *
+   * Проверка соответствия события transitionend ключевому преобразованию осей.
+   * @param event event object / объект события
+   * @returns true if it is valid transitionend / true если переход валидный
+   */
+  protected isTransitionend(event: TransitionEvent): boolean {
+    return ['transform', 'translate', 'scale'].indexOf(event.propertyName) !== -1
+      && this.isActive(event.target as HTMLElement | null)
   }
 
   /**
@@ -229,17 +284,5 @@ export class MotionAxisElement {
    */
   protected getElementScroll(): HTMLElement | undefined {
     return this.element.value?.closest(`.${this.getClassScroll()}`) ?? undefined
-  }
-
-  /**
-   * Checking if the current transitionend event matches key axis transformation.
-   *
-   * Проверка соответствия события transitionend ключевому преобразованию осей.
-   * @param event event object / объект события
-   * @returns true if it is valid transitionend / true если переход валидный
-   */
-  protected isTransitionend(event: TransitionEvent): boolean {
-    return ['transform', 'translate', 'scale'].indexOf(event.propertyName) !== -1
-      && this.isActive(event.target as HTMLDivElement)
   }
 }

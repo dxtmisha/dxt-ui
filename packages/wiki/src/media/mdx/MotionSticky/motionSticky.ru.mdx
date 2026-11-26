@@ -20,12 +20,22 @@ MotionSticky вычисляет липкое положение на основ�
 <Source
     code={`
 <template>
-  <MotionSticky class-activity="is-sticky">
-    <div class="header-content">
-      Мой липкий заголовок
-    </div>
-  </MotionSticky>
+  <div id="scroll-container" style="height: 240px; overflow: auto;">
+    <div style="height: 120px;" />
+    <MotionSticky
+      element-scroll="#scroll-container"
+      class-activity="is-sticky"
+      style="top: 0;"
+    >
+      <div class="header-content">
+        Мой липкий заголовок
+      </div>
+    </MotionSticky>
+    <div style="height: 480px;" />
+  </div>
 </template>
   `}
     language="html"
 />
+
+> MotionSticky отслеживает границы прокрутки для липких элементов и синхронизирует CSS-классы активности, атрибуты dataset и события состояния без ручного управления слушателями прокрутки.

@@ -131,14 +131,11 @@ export class NavigationRailDesign<
       'div',
       mergeProps(
         this.getAttrs(),
-        AriaStaticInclude.role(this.props.role),
+        this.item.binds,
         {
           ref: this.element,
           class: this.classes?.value.main,
-          style: this.styles?.value,
-          tabindex: this.props.control ? undefined : this.props.tabindex,
-          onFocus: () => this.item.i('control').onFocus(),
-          onBlur: () => this.item.i('control').onBlur()
+          style: this.styles?.value
         }
       ),
       this.renderData()
@@ -192,10 +189,7 @@ export class NavigationRailDesign<
     return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       mergeProps(
-        inMenu && this.props.iconArrowRight !== undefined
-          ? { iconTrailing: this.props.iconArrowRight }
-          : {},
-        this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
+        this.item.getItemManagementFormMenu(item, Boolean(props.open.value), inMenu),
         props.binds
       )
     )
@@ -209,11 +203,16 @@ export class NavigationRailDesign<
    * @returns rendered space VNode / сгенерированный узел разрыва VNode
    */
   readonly renderSpace = (item: ListDataItem): VNode => {
-    return h('div', {
-      key: item.value,
-      class: this.classes?.value.space,
-      ...AriaStaticInclude.role('separator')
-    })
+    return h(
+      'div',
+      mergeProps(
+        AriaStaticInclude.role('separator'),
+        {
+          key: item.value,
+          class: this.classes?.value.space
+        }
+      )
+    )
   }
 
   /**
@@ -224,11 +223,16 @@ export class NavigationRailDesign<
    * @returns rendered line VNode / сгенерированный узел линии VNode
    */
   readonly renderLine = (item: ListDataItem): VNode => {
-    return h('div', {
-      key: item.value,
-      class: this.classes?.value.line,
-      ...AriaStaticInclude.role('separator')
-    })
+    return h(
+      'div',
+      mergeProps(
+        AriaStaticInclude.role('separator'),
+        {
+          key: item.value,
+          class: this.classes?.value.line
+        }
+      )
+    )
   }
 
   /**
@@ -251,10 +255,7 @@ export class NavigationRailDesign<
       return h('div', props, this.initSlot(item.value))
     }
 
-    return h('div', {
-      ...props,
-      innerHTML: item.label
-    })
+    return h('div', mergeProps(props, { innerHTML: item.label }))
   }
 
   /**
@@ -273,7 +274,7 @@ export class NavigationRailDesign<
       'listMenu',
       {
         divider: this.props.divider,
-        disabled: item.disabled
+        disabled: Boolean(this.props.disabled || item.disabled)
       },
       {
         head: (props: WindowControlItem) => this.renderItemMenu(item, props, inMenu),

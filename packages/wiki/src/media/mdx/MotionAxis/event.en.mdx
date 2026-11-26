@@ -2,31 +2,38 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ### `start`
 
-Event triggered at the beginning of the transition animation.
+Event triggered when the slide transition animation starts.
 
 **Parameters:**
-- `selected: string | number` — identifier of the slide to which the transition starts
+- `selected: string | undefined` — identifier of the slide to which the transition starts
 
 ### `end`
 
-Event triggered after the transition animation completes.
+Event triggered after the slide transition animation completes.
 
 **Parameters:**
-- `selected: string | number` — identifier of the slide on which the transition ended
+- `selected: string | undefined` — identifier of the slide on which the transition ended
 
 ### `motionAxis`
 
-Event triggered at the beginning and end of the transition animation.
+Event triggered at both the start and end phases of the transition animation.
 
 **Parameters:**
-- `options: MotionAxisEmitOptions` — object with event parameters
+- `options: MotionAxisEmitOptions` — object with transition phase parameters
 
-**Structure MotionAxisEmitOptions:**
-- `type: 'start' | 'end'` — event type
-- `selected: string | number` — identifier of the selected slide
-- `previous: string | number` — identifier of the previous slide
-- `preparation: string | number` — identifier of the slide being prepared
-- `active: string | number` — identifier of the active slide
+**`MotionAxisEmitOptions` structure:**
+- `type: 'start' | 'end'` — transition phase type
+- `selected?: string` — identifier of the target selected slide
+- `previous?: string` — identifier of the outgoing slide (cleared on `'end'`)
+- `preparation?: string` — identifier of the incoming slide being prepared (cleared on `'end'`)
+- `active?: string` — identifier of the currently active slide
+
+### `update:selected` & `update:modelSelected`
+
+Events triggered whenever the internal selected slide identifier changes (supporting `v-model:selected` and `v-model:modelSelected`).
+
+**Parameters:**
+- `value: string | undefined` — new selected slide identifier
 
 <Source
     code={`
@@ -46,9 +53,10 @@ const handleMotionAxis = (options) => {
 
 <template>
   <MotionAxis
+    :selected="selected"
     @start="handleStart"
     @end="handleEnd"
-    @motionAxis="handleMotionAxis"
+    @motion-axis="handleMotionAxis"
   >
     <!-- Slides -->
   </MotionAxis>

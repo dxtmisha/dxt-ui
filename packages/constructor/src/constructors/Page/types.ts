@@ -29,7 +29,6 @@ export interface PageExpose extends BlockExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface PageSlots extends BlockSlots {
-  // default? (props: any): any
 }
 
 /**
@@ -38,6 +37,7 @@ export interface PageSlots extends BlockSlots {
  * Тип, описывающий подклассы.
  */
 export type PageClasses = {
+  /** Root element class / Класс корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   headline: string

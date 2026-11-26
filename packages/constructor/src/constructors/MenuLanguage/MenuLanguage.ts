@@ -8,8 +8,8 @@ import {
 
 import { MenuCountry, type MenuCountryConstructors } from '../MenuCountry/MenuCountry'
 import { MenuCountryList } from '../MenuCountry/MenuCountryList'
-import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from '../MenuCountry/types'
 import type { MenuLanguageProps } from './props'
+import type { MenuLanguageComponents, MenuLanguageEmits, MenuLanguageSlots } from './types'
 
 /**
  * Class for generating and managing the localized language list for MenuLanguage.
@@ -54,9 +54,9 @@ export class MenuLanguage extends MenuCountry {
     props: Readonly<MenuLanguageProps>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
-    components?: DesignComp<MenuCountryComponents, MenuLanguageProps>,
-    slots?: MenuCountrySlots,
-    emits?: ConstrEmit<MenuCountryEmits>,
+    components?: DesignComp<MenuLanguageComponents, MenuLanguageProps>,
+    slots?: MenuLanguageSlots,
+    emits?: ConstrEmit<MenuLanguageEmits>,
     constructors?: Partial<MenuCountryConstructors>
   ) {
     super(

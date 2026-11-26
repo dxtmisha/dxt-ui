@@ -1,9 +1,10 @@
 // ai-none
 
-import { type Ref, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
-import { MotionAxisSlides } from './MotionAxisSlides'
-import { MotionAxisStatus } from './MotionAxisStatus'
+import type { MotionAxisSlides } from './MotionAxisSlides'
+import type { MotionAxisStatus } from './MotionAxisStatus'
 
 import type { MotionAxisSelectedValue } from './basicTypes'
 import type { MotionAxisProps } from './props'
@@ -15,7 +16,7 @@ import type { MotionAxisProps } from './props'
  * Класс для управления движением по осям, навигацией по слайдам и направлениями.
  * Управляет переходами в трехмерных осях (X, Y, Z) и направлениях (back, next, auto).
  */
-export class MotionAxisGo {
+export class MotionAxisGo extends DesignLifecycleAbstract {
   /** Active transition axis / Активная ось перехода */
   readonly axis = ref<MotionAxisProps['axis']>()
   /** Active transition direction / Активное направление перехода */
@@ -26,21 +27,28 @@ export class MotionAxisGo {
    *
    * Конструктор для инициализации элементов управления навигацией по слайдам.
    * @param props input data / входные данные
-   * @param element window element / элемент окна
-   * @param slides list of slides / список слайдов
-   * @param status class object for managing the active element / объект класса для управления активным элементом
+   * @param slides getter for slides list / геттер списка слайдов
+   * @param status getter for active element status manager / геттер менеджера статуса активного элемента
    */
   constructor(
     protected readonly props: Readonly<MotionAxisProps>,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly slides: MotionAxisSlides,
-    protected readonly status: MotionAxisStatus
+    protected readonly slides: () => MotionAxisSlides,
+    protected readonly status: () => MotionAxisStatus
   ) {
+    super()
+
     this.axis.value = props.axis
     this.direction.value = props.direction
+  }
 
-    watch(() => props.axis, () => this.setAxis(props.axis))
-    watch(() => props.direction, () => this.setDirection(props.direction))
+  /**
+   * Registers reactive watchers for axis and direction props on mount.
+   *
+   * Регистрирует реактивные наблюдатели для свойств axis и direction при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    watch(() => this.props.axis, () => this.setAxis(this.props.axis))
+    watch(() => this.props.direction, () => this.setDirection(this.props.direction))
   }
 
   /**
@@ -48,9 +56,9 @@ export class MotionAxisGo {
    *
    * Перемещение слайда на один шаг назад.
    */
-  readonly back = () => {
+  readonly back = (): void => {
     this.direction.value = 'back'
-    this.status.set(this.slides.getByIndex(-1))
+    this.status().set(this.slides().getByIndex(-1))
   }
 
   /**
@@ -58,9 +66,9 @@ export class MotionAxisGo {
    *
    * Перемещение слайда на один шаг вперед.
    */
-  readonly next = () => {
+  readonly next = (): void => {
     this.direction.value = 'next'
-    this.status.set(this.slides.getByIndex(+1))
+    this.status().set(this.slides().getByIndex(+1))
   }
 
   /**
@@ -69,16 +77,18 @@ export class MotionAxisGo {
    * Перемещение слайда на выбранный слайд с автоматическим выбором направления анимации.
    * @param selected selected item / выбранный элемент
    */
-  readonly to = (selected: MotionAxisSelectedValue) => {
-    const active = this.slides.findIndex()
-    const to = this.slides.findIndex(selected)
+  readonly to = (selected: MotionAxisSelectedValue): void => {
+    const slides = this.slides()
+    const status = this.status()
+    const active = slides.findIndex()
+    const to = slides.findIndex(selected)
 
     if (
       to !== -1
       && to !== active
     ) {
       if (active === -1) {
-        this.status.setFlash(selected)
+        status.setFlash(selected)
         return
       }
 
@@ -88,7 +98,7 @@ export class MotionAxisGo {
         this.direction.value = 'next'
       }
 
-      this.status.set(selected)
+      status.set(selected)
     }
   }
 
@@ -98,10 +108,10 @@ export class MotionAxisGo {
    * Переместите на верхний слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly top = (selected: MotionAxisProps['selected']) => {
+  readonly top = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'y'
     this.direction.value = 'back'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -110,10 +120,10 @@ export class MotionAxisGo {
    * Переместите на правый слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly right = (selected: MotionAxisProps['selected']) => {
+  readonly right = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'x'
     this.direction.value = 'next'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -122,10 +132,10 @@ export class MotionAxisGo {
    * Переместите на нижний слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly bottom = (selected: MotionAxisProps['selected']) => {
+  readonly bottom = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'y'
     this.direction.value = 'next'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -134,10 +144,10 @@ export class MotionAxisGo {
    * Переместите на левый слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly left = (selected: MotionAxisProps['selected']) => {
+  readonly left = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'x'
     this.direction.value = 'back'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -146,10 +156,10 @@ export class MotionAxisGo {
    * Переместите на задний слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly down = (selected: MotionAxisProps['selected']) => {
+  readonly down = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'z'
     this.direction.value = 'back'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -158,10 +168,10 @@ export class MotionAxisGo {
    * Переместите на передний слайд.
    * @param selected selected item / выбранный элемент
    */
-  readonly up = (selected: MotionAxisProps['selected']) => {
+  readonly up = (selected: MotionAxisProps['selected']): void => {
     this.axis.value = 'z'
     this.direction.value = 'next'
-    this.status.set(selected)
+    this.status().set(selected)
   }
 
   /**
@@ -170,7 +180,7 @@ export class MotionAxisGo {
    * Изменяет ось.
    * @param axis axis name / название оси
    */
-  readonly setAxis = (axis: MotionAxisProps['axis']) => {
+  readonly setAxis = (axis: MotionAxisProps['axis']): void => {
     this.axis.value = axis
   }
 
@@ -180,7 +190,7 @@ export class MotionAxisGo {
    * Изменяет направление.
    * @param direction direction name / название направления
    */
-  readonly setDirection = (direction: MotionAxisProps['direction']) => {
+  readonly setDirection = (direction: MotionAxisProps['direction']): void => {
     this.direction.value = direction
   }
 }

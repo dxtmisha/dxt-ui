@@ -6,18 +6,20 @@ The component automatically manages scroll visibility during transition animatio
 
 ### Usage
 
-To enable this feature, add the `*__scroll` class to the parent container that has scrolling.
+To enable this feature, add the `*__scroll` class to the scrollable parent container (where `*` is the component class name, e.g., `design-motion-axis__scroll`).
 
-1.  Wrap the component in a scrollable container.
-2.  Add the `*__scroll` class to this container (where `*` is the component class name, e.g., `design-tabs__scroll`).
+1. Wrap the component in a scrollable container.
+2. Add the `*__scroll` class to this container.
 
 <Source
     code={`
-<div class="design-tabs__scroll">
-  <Tabs ... />
+<div class="design-motion-axis__scroll">
+  <MotionAxis :selected="selected">
+    <!-- Slides -->
+  </MotionAxis>
 </div>
   `}
     language="html"
 />
 
-During the animation, the component will automatically add the `*__scroll--hidden` class (which applies `overflow: hidden`) to this container, and remove it after the animation ends.
+During the transition animation, the component automatically adds the `*__scroll--hidden` class (applying `overflow-x: hidden`) to the closest scrollable ancestor and removes it once the animation ends.

@@ -18,6 +18,10 @@ type NavigationRailPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props interface for NavigationRail component /
+ * Базовый интерфейс свойств для компонента NavigationRail
+ */
 export type NavigationRailPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   NavigationItem extends NavigationItemPropsBasic = NavigationItemPropsBasic,
@@ -25,48 +29,48 @@ export type NavigationRailPropsBasic<
 > = AriaRolePropsInclude
   & AriaMultiselectablePropsInclude
   & {
-    /** Status/ Статус */
-    /** Currently focused item/ Элемент, на котором установлен фокус */
+    /** Status / Статус */
+    /** Currently focused item / Элемент, на котором установлен фокус */
     focus?: ListSelectedItem
-    /** List of selected items/ Список выбранных элементов */
+    /** List of selected items / Список выбранных элементов */
     selected?: ListSelectedList
-    /** Whether the list is disabled/ Отключен ли список */
+    /** Whether the list is disabled / Отключен ли список */
     disabled?: boolean
 
-    /** Value/ Значения */
-    /** Data list/ Список данных */
+    /** Value / Значения */
+    /** Data list / Список данных */
     list?: ListRecord<NavigationRailItem | NavigationItem>
 
-    /** Key for the label in the data object/ Ключ для заголовка в объекте данных */
+    /** Key for the label in the data object / Ключ для заголовка в объекте данных */
     keyLabel?: string
-    /** Key for the value in the data object/ Ключ для значения в объекте данных */
+    /** Key for the value in the data object / Ключ для значения в объекте данных */
     keyValue?: string
 
-    /** Style/ Стили */
-    /** HTML tag for the list/ HTML-тег для списка */
+    /** Style / Стили */
+    /** HTML tag for the list / HTML-тег для списка */
     tag?: 'div' | 'button' | 'a' | 'span' | string
 
-    /** Whether to show dividers between items/ Показывать ли разделители между элементами */
+    /** Whether to show dividers between items / Показывать ли разделители между элементами */
     divider?: boolean
 
-    /** Additional attributes for list items/ Дополнительные атрибуты для элементов списка */
+    /** Additional attributes for list items / Дополнительные атрибуты для элементов списка */
     itemAttrs?: ConstrBind<NavigationRailItem | NavigationItem>
-    /** Attributes for the item management component/ Атрибуты для компонента управления элементом */
+    /** Attributes for the item management component / Атрибуты для компонента управления элементом */
     itemManagementAttrs?: ConstrBind<NavigationRailItem | NavigationItem>
-    /** Attributes for the item menu component/ Атрибуты для компонента меню элемента */
+    /** Attributes for the item menu component / Атрибуты для компонента меню элемента */
     itemMenuAttrs?: ConstrBind<NavigationRailItem | NavigationItem>
 
-    /** Icon for the right arrow/ Иконка для стрелки вправо */
+    /** Icon for the right arrow / Иконка для стрелки вправо */
     iconArrowRight?: IconValue<Icon>
 
-    /** ARIA/ ARIA */
-    /** ARIA role for items/ ARIA-роль для элементов */
+    /** ARIA / ARIA */
+    /** ARIA role for items / ARIA-роль для элементов */
     roleItem?: RoleType
-    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
+    /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
     tabindex?: string | number
 
-    /** Technical/ Технические свойства */
-    /** Whether to enable external control/ Включено ли внешнее управление */
+    /** Technical / Технические свойства */
+    /** Whether to enable external control / Включено ли внешнее управление */
     control?: boolean
   }
 
@@ -82,7 +86,7 @@ export type NavigationRailProps = NavigationRailPropsBasic & NavigationRailProps
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsNavigationRail = {
+export const defaultsNavigationRail: NavigationRailProps = {
   keyLabel: 'label',
   keyValue: 'value',
   tag: 'div',

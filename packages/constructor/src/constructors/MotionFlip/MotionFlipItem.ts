@@ -1,7 +1,21 @@
 // ai-none
 
 import type { MotionFlipElementSizeRect } from './basicTypes'
-import { MotionFlipElement } from './MotionFlipElement'
+import type { MotionFlipElement } from './MotionFlipElement'
+
+/**
+ * List of system CSS property suffixes applied to FLIP items.
+ *
+ * Список суффиксов системных CSS-свойств, применяемых к элементам FLIP.
+ */
+const MOTION_FLIP_STYLE_PROPERTIES = [
+  'top',
+  'left',
+  'width',
+  'width-to',
+  'height',
+  'height-to'
+] as const
 
 /**
  * Class for managing individual FLIP item elements.
@@ -17,11 +31,11 @@ export class MotionFlipItem {
   /**
    * Constructor
    * @param element item HTML element / HTML-элемент элемента
-   * @param elementManager main element manager instance / главный экземпляр менеджера элемента
+   * @param elementManager main element manager getter / геттер главного менеджера элемента
    */
   constructor(
     protected readonly element: HTMLElement,
-    protected readonly elementManager: MotionFlipElement
+    protected readonly elementManager: () => MotionFlipElement
   ) { }
 
   /**
@@ -36,15 +50,13 @@ export class MotionFlipItem {
   }
 
   /**
-   * Removes item sub-class and resets system CSS properties on the element.
+   * Returns current bounding client rectangle of the item element.
    *
-   * Удаляет подкласс элемента и сбрасывает системные CSS-свойства с элемента.
-   * @returns current instance / текущий экземпляр
+   * Возвращает текущий прямоугольник размеров элемента.
+   * @returns DOMRect rectangle / прямоугольник DOMRect
    */
-  reset(): this {
-    return this
-      .resetStyle()
-      .removeClass()
+  getRectangle(): DOMRect {
+    return this.element.getBoundingClientRect()
   }
 
   /**
@@ -56,19 +68,31 @@ export class MotionFlipItem {
    */
   update(currentRectangle?: DOMRect): this {
     if (this.original) {
-      const rect = currentRectangle ?? this.getRectangle()
+      const rectangle = currentRectangle ?? this.getRectangle()
 
       this
-        .setStyle('top', this.original.top - rect.top)
-        .setStyle('left', this.original.left - rect.left)
-        .setStyle('width', rect.width)
+        .setStyle('top', this.original.top - rectangle.top)
+        .setStyle('left', this.original.left - rectangle.left)
+        .setStyle('width', rectangle.width)
         .setStyle('width-to', this.original.width)
-        .setStyle('height', rect.height)
+        .setStyle('height', rectangle.height)
         .setStyle('height-to', this.original.height)
         .addClass()
     }
 
     return this
+  }
+
+  /**
+   * Removes item sub-class and resets system CSS properties on the element.
+   *
+   * Удаляет подкласс элемента и сбрасывает системные CSS-свойства с элемента.
+   * @returns current instance / текущий экземпляр
+   */
+  reset(): this {
+    return this
+      .resetStyle()
+      .removeClass()
   }
 
   /**
@@ -97,7 +121,7 @@ export class MotionFlipItem {
    * @returns item class name string / строка названия класса элемента
    */
   protected getItemClassName(): string {
-    return `${this.elementManager.getClassName()}__item`
+    return `${this.elementManager().getClassName()}__item`
   }
 
   /**
@@ -109,7 +133,7 @@ export class MotionFlipItem {
    * @returns current instance / текущий экземпляр
    */
   protected setStyle(name: string, value: number): this {
-    const className = this.elementManager.getClassName()
+    const className = this.elementManager().getClassName()
     this.element.style.setProperty(`--${className}-sys-${name}`, `${value}px`)
     return this
   }
@@ -144,7 +168,7 @@ export class MotionFlipItem {
    * @returns current instance / текущий экземпляр
    */
   protected removeStyle(name: string): this {
-    const className = this.elementManager.getClassName()
+    const className = this.elementManager().getClassName()
     this.element.style.removeProperty(`--${className}-sys-${name}`)
     return this
   }
@@ -156,24 +180,7 @@ export class MotionFlipItem {
    * @returns current instance / текущий экземпляр
    */
   protected resetStyle(): this {
-    this
-      .removeStyle('top')
-      .removeStyle('left')
-      .removeStyle('width')
-      .removeStyle('width-to')
-      .removeStyle('height')
-      .removeStyle('height-to')
-
+    MOTION_FLIP_STYLE_PROPERTIES.forEach(name => this.removeStyle(name))
     return this
-  }
-
-  /**
-   * Returns current bounding client rectangle of the item element.
-   *
-   * Возвращает текущий прямоугольник размеров элемента.
-   * @returns DOMRect rectangle / прямоугольник DOMRect
-   */
-  getRectangle(): DOMRect {
-    return this.element.getBoundingClientRect()
   }
 }

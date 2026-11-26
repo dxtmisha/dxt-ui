@@ -21,8 +21,14 @@ import {NavigationListWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'NavigationList'} type={'navigationList'}/>
 
+<StorybookDescriptions componentName={'List'} type={'lite'}/>
+<Canvas of={NavigationList.NavigationListLiteMode}/>
+
 <StorybookDescriptions componentName={'Value'} type={'highlight'}/>
 <Canvas of={NavigationList.NavigationListHighlight}/>
+
+<StorybookDescriptions componentName={'List'} type={'hierarchy'}/>
+<Canvas of={NavigationList.NavigationListHierarchyAndSlots}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -31,6 +37,7 @@ import {NavigationListWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'List'} type={'event.close'}/>
+<Canvas of={NavigationList.NavigationListEvents}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
@@ -38,6 +45,7 @@ import {NavigationListWikiStorybook} from './wiki'
 ## Expose
 
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<Canvas of={NavigationList.NavigationListExposeApi}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
@@ -45,5 +53,6 @@ import {NavigationListWikiStorybook} from './wiki'
 ## Slots
 
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+<Canvas of={NavigationList.NavigationListHierarchyAndSlots}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

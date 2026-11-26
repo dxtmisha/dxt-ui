@@ -1,43 +1,43 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for performing FLIP (First, Last, Invert, Play) animations on child elements.
+The `MotionFlip` component performs FLIP (First, Last, Invert, Play) layout animations on child elements whenever their positions or dimensions change.
 
-MotionFlip automatically animates positional and dimensional changes of child elements when the layout changes (e.g. reordering, inserting, or removing list items).
+It wraps a container of child elements and tracks layout changes automatically via `MutationObserver` (`auto` is enabled by default) or explicitly through the exposed `update(callback)` method, applying hardware-accelerated CSS transitions and cleaning up temporary styles upon completion.
 
-**Key Features:**
+**Key features:**
 
-- Smooth FLIP layout transitions during DOM updates
-- Automatic DOM mutation observing via `auto` property
-- Asynchronous callback orchestration via `update` method
-- Automatic transition cleanup upon animation end
-- Ability to disable layout animation via `disabled` property
+- **Automatic Mutation Tracking:** Observes child DOM changes automatically by default via the `auto` property
+- **Explicit Callback Orchestration:** Supports manual pre- and post-update measurement via the exposed `update(callback)` method
+- **Animation Interruption Control:** Allows immediate cancellation and state cleanup via the exposed `stop()` method
+- **Conditional Disabling:** Disables FLIP measurements and transitions while still executing state callbacks via `disabled`
+- **Automatic Style Cleanup:** Removes temporary modifier classes and system CSS variables after `transitionend` or fallback timeout
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Reorderable list and grid layouts
-- Dynamic filter and sorting interfaces
-- Drag-and-drop item transitions
-- Card and gallery item reordering
+- Reorderable lists and dynamic grid layouts
+- Filtered and sorted item collections
+- Interactive card shuffling and layout transitions
 
 <Source
     code={`
 <script setup>
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
-const flipRef = ref()
+const motionFlipElement = ref()
 const items = ref([1, 2, 3, 4, 5])
 
 const shuffle = async () => {
-  await flipRef.value?.update(() => {
-    items.value = [...items.value].sort(() => Math.random() - 0.5)
+  await motionFlipElement.value?.update(async () => {
+    items.value = [...items.value].reverse()
+    await nextTick()
   })
 }
 </script>
 
 <template>
-  <button @click="shuffle">Shuffle</button>
+  <button @click="shuffle">Reorder</button>
 
-  <MotionFlip ref="flipRef">
+  <MotionFlip ref="motionFlipElement" :auto="false">
     <div v-for="item in items" :key="item">
       <div class="item">
         Item {{ item }}
@@ -48,3 +48,5 @@ const shuffle = async () => {
   `}
     language="html"
 />
+
+> MotionFlip combines automatic DOM observation and explicit callback-driven FLIP orchestration to deliver smooth layout transitions with minimal setup.

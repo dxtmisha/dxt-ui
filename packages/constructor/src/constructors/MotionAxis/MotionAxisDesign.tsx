@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -84,17 +84,19 @@ export class MotionAxisDesign<
    * @returns exposed API map / экспортируемая карта API
    */
   protected initExpose(): EXPOSE {
-    return {
-      next: this.item.go.next,
-      back: this.item.go.back,
-      to: this.item.go.to,
+    const go = this.item.i('go')
 
-      top: this.item.go.top,
-      right: this.item.go.right,
-      bottom: this.item.go.bottom,
-      left: this.item.go.left,
-      down: this.item.go.down,
-      up: this.item.go.up
+    return {
+      next: go.next,
+      back: go.back,
+      to: go.to,
+
+      top: go.top,
+      right: go.right,
+      bottom: go.bottom,
+      left: go.left,
+      down: go.down,
+      up: go.up
     } as EXPOSE
   }
 
@@ -131,15 +133,17 @@ export class MotionAxisDesign<
    * Метод для рендеринга контейнера компонента.
    * @returns VNode node / узел VNode
    */
-  protected initRender(): VNode {
+  protected initRender = (): VNode => {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderSlides()
     )
   }
@@ -156,7 +160,7 @@ export class MotionAxisDesign<
     if (this.slots) {
       forEach(this.slots, (slot, key) => {
         if (this.item.isInDom(key)) {
-          const classStatus = this.item.elementItem.getClassStatus()
+          const classStatus = this.item.i('element').getClassStatus()
 
           children.push(h(
             'div',
@@ -164,9 +168,9 @@ export class MotionAxisDesign<
               key,
               'class': {
                 [classStatus.main]: true,
-                [classStatus.previous]: this.item.previous.is(key),
-                [classStatus.preparation]: this.item.status.isPreparation(key),
-                [classStatus.active]: this.item.status.isActive(key)
+                [classStatus.previous]: this.item.i('previous').is(key),
+                [classStatus.preparation]: this.item.i('status').isPreparation(key),
+                [classStatus.active]: this.item.i('status').isActive(key)
               },
               'data-key': key
             },

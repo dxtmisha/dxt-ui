@@ -40,10 +40,10 @@ export interface NavigationRailItemExpose extends EventClickExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface NavigationRailItemSlots extends LabelSlots {
-  /** Slot for the leading element/ Слот для ведущего элемента */
+  /** Slot for the leading element / Слот для ведущего элемента */
   leading?(props: any): any
 
-  /** Slot for the list item body/ Слот для содержимого элемента списка */
+  /** Slot for the list item body / Слот для содержимого элемента списка */
   body?(props: any): any
 }
 
@@ -53,6 +53,7 @@ export interface NavigationRailItemSlots extends LabelSlots {
  * Тип, описывающий подклассы.
  */
 export type NavigationRailItemClasses = {
+  /** Main component class / Основной класс компонента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string

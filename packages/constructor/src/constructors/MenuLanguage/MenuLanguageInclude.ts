@@ -1,10 +1,13 @@
 // ai-none
 
+import { mergeProps, type Ref } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 import type { MenuLanguageExposeInclude, MenuLanguagePropsInclude } from './basicTypes'
-import type { MenuLanguageSlots } from './types'
+import type { MenuLanguageExpose, MenuLanguageSlots } from './types'
 import type { MenuLanguageProps } from './props'
 
 /**
@@ -22,7 +25,8 @@ export class MenuLanguageInclude extends ComponentIncludeAbstract<
   MenuLanguageExposeInclude,
   MenuLanguageSlots
 > {
-  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+  /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
+  protected override readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'getId' },
     { name: 'getOpen', type: 'boolean' },
     { name: 'getControl' },
@@ -42,19 +46,10 @@ export class MenuLanguageInclude extends ComponentIncludeAbstract<
     { name: 'next' }
   ]
 
+  /** Sub-component name / Название субкомпонента */
   protected override readonly name = 'menuLanguage'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
   protected override readonly propsAttrsName = 'menuLanguageAttrs'
-
-  /**
-   * Exposes the API methods and properties /
-   * Экспортирует API-методы и свойства
-   */
-  override get expose() {
-    return {
-      ...super.toExpose(),
-      getMenuLanguageElement: () => this.element
-    }
-  }
 
   /**
    * Builds and resolves all HTML attributes and classes for binding.
@@ -62,10 +57,27 @@ export class MenuLanguageInclude extends ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): any {
+  protected override toBinds(): Partial<ConstrBind<MenuLanguageProps>> {
+    const props = this.getProps()
+
+    return mergeProps(
+      {
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {})
+      },
+      super.toBinds()
+    ) as Partial<ConstrBind<MenuLanguageProps>>
+  }
+
+  /**
+   * Collects and exposes defined proxy methods of the sub-component.
+   *
+   * Собирает и экспортирует определенные прокси-методы субкомпонента.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  protected override toExpose(): MenuLanguageExposeInclude {
     return {
-      ...super.toBinds(),
-      disabled: this.getProps().disabled
+      ...super.toExpose(),
+      getMenuLanguageElement: () => this.element as Ref<ConstrBind<MenuLanguageExpose> | undefined>
     }
   }
 }

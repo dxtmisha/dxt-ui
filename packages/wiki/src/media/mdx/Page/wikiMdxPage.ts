@@ -11,7 +11,7 @@ import pageRu from './page.ru.mdx'
 export const wikiMdxPage: StorybookComponentsMdxItem = {
   name: 'Page',
   descriptions: {
-    block: {
+    page: {
       en: pageEn,
       ru: pageRu
     }

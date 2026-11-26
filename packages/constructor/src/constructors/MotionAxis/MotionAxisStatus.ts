@@ -1,16 +1,19 @@
 // ai-none
 
 import { ref } from 'vue'
-import type { ConstrEmit } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
-import { MotionAxisElement } from './MotionAxisElement'
-import { MotionAxisPrevious } from './MotionAxisPrevious'
-import { MotionAxisSelected } from './MotionAxisSelected'
-import { MotionAxisStyles } from './MotionAxisStyles'
+import type { MotionAxisElement } from './MotionAxisElement'
+import type { MotionAxisPrevious } from './MotionAxisPrevious'
+import type { MotionAxisSelected } from './MotionAxisSelected'
+import type { MotionAxisStyles } from './MotionAxisStyles'
 
 import type { MotionAxisEmitType, MotionAxisSelectedValue } from './basicTypes'
 import type { MotionAxisEmits } from './types'
 import type { MotionAxisProps } from './props'
+
+/** Maximum number of animation frame checks while waiting for preparation element / Максимальное число проверок кадров анимации при ожидании элемента подготовки */
+const EXPECTATION_FRAME_LIMIT = 64
 
 /**
  * Class for managing the lifecycle and transition status of MotionAxis slides.
@@ -19,33 +22,59 @@ import type { MotionAxisProps } from './props'
  * Класс для управления жизненным циклом и статусом перехода слайдов MotionAxis.
  * Обрабатывает последовательность: запуск, подготовка, обновление активных слайдов, блокировка прокрутки и отправка событий.
  */
-export class MotionAxisStatus {
+export class MotionAxisStatus extends DesignLifecycleAbstract {
   /** Element preparation status / Статус подготовки элемента */
   readonly preparation = ref<MotionAxisSelectedValue>()
 
   /** Active element status / Статус активного элемента */
   readonly active = ref<MotionAxisSelectedValue>()
 
+  /** Pending requestAnimationFrame identifier / Идентификатор ожидающего requestAnimationFrame */
+  protected animationFrameId?: number
+
+  /** Indicates whether the instance has been unmounted / Указывает, был ли экземпляр размонтирован */
+  protected isDestroyed = false
+
   /**
    * Constructor for initializing status managers.
    *
    * Конструктор для инициализации менеджеров статуса.
    * @param props input data / входные данные
-   * @param element class object for managing an element / объект класса для управления элементом
-   * @param selected class object for managing the active element / объект класса для управления активным элементом
-   * @param previous object for managing the outgoing slide / объект управления уходящим слайдом
-   * @param styles class object for managing styles / объект класса для управления стилями
+   * @param element getter for element manager / геттер менеджера элемента
+   * @param previous getter for outgoing slide manager / геттер менеджера уходящего слайда
+   * @param selected getter for selected slide manager / геттер менеджера выбранного слайда
+   * @param styles getter for styles manager / геттер менеджера стилей
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    props: MotionAxisProps,
-    protected readonly element: MotionAxisElement,
-    protected readonly selected: MotionAxisSelected,
-    protected readonly previous: MotionAxisPrevious,
-    protected readonly styles: MotionAxisStyles,
+    props: Readonly<MotionAxisProps>,
+    protected readonly element: () => MotionAxisElement,
+    protected readonly previous: () => MotionAxisPrevious,
+    protected readonly selected: () => MotionAxisSelected,
+    protected readonly styles: () => MotionAxisStyles,
     protected readonly emits?: ConstrEmit<MotionAxisEmits>
   ) {
+    super()
     this.active.value = props.selected
+  }
+
+  /**
+   * Resets destroyed flag on mount.
+   *
+   * Сбрасывает флаг уничтожения при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.isDestroyed = false
+  }
+
+  /**
+   * Cancels pending animation frames on unmount.
+   *
+   * Отменяет ожидающие кадры анимации при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.isDestroyed = true
+    this.cancelExpectation()
   }
 
   /**
@@ -76,8 +105,8 @@ export class MotionAxisStatus {
    * Возвращает выбранный элемент.
    * @returns selected slide ID / ID выбранного слайда
    */
-  get() {
-    return this.selected.item.value
+  get(): MotionAxisSelectedValue {
+    return this.selected().item.value
   }
 
   /**
@@ -89,9 +118,9 @@ export class MotionAxisStatus {
    */
   set(selected: MotionAxisProps['selected']): this {
     if (
-      !this.selected.is(selected)
+      !this.selected().is(selected)
     ) {
-      this.selected.set(selected)
+      this.selected().set(selected)
       this.start()
     }
 
@@ -106,7 +135,7 @@ export class MotionAxisStatus {
    * @returns this instance / текущий экземпляр класса
    */
   setFlash(selected: MotionAxisProps['selected']): this {
-    this.selected.set(selected)
+    this.selected().set(selected)
     this.active.value = selected
 
     return this
@@ -117,13 +146,14 @@ export class MotionAxisStatus {
    *
    * Начало активации.
    */
-  start() {
-    this.element.toStart()
+  start(): void {
+    this.cancelExpectation()
+    this.element().toStart()
 
-    this.previous.set(this.active.value)
-    this.preparation.value = this.selected.item.value
+    this.previous().set(this.active.value)
+    this.preparation.value = this.selected().item.value
 
-    this.element.blockScroll()
+    this.element().blockScroll()
     this.expectation()
   }
 
@@ -133,15 +163,23 @@ export class MotionAxisStatus {
    * Ожидание подготовки элемента.
    * @param limit limit of checks / лимит проверок
    */
-  protected expectation(limit: number = 64) {
-    if (limit <= 0) {
+  protected expectation(limit: number = EXPECTATION_FRAME_LIMIT): void {
+    if (limit <= 0 || this.isDestroyed) {
       return
     }
 
-    requestAnimationFrame(() => {
-      const preparation = this.element.getElementPreparation()
+    this.cancelExpectation()
+    this.animationFrameId = requestAnimationFrame(() => {
+      this.animationFrameId = undefined
 
-      if (!this.element.get()) {
+      if (this.isDestroyed) {
+        return
+      }
+
+      const element = this.element()
+      const preparation = element.getElementPreparation()
+
+      if (!element.get()) {
         return
       }
 
@@ -149,20 +187,38 @@ export class MotionAxisStatus {
         preparation
         && preparation.offsetHeight > 0
       ) {
-        this.styles.addNext()
+        this.styles().addNext()
 
-        requestAnimationFrame(() => {
-          this.element.toEnd()
-          this.element.toMove()
+        this.animationFrameId = requestAnimationFrame(() => {
+          this.animationFrameId = undefined
 
-          this.element.initEvent(this.end)
-          this.active.value = this.selected.item.value
+          if (this.isDestroyed) {
+            return
+          }
+
+          element.toEnd()
+          element.toMove()
+
+          element.initEvent(this.end)
+          this.active.value = this.selected().item.value
           this.emit('start')
         })
       } else {
-        this.expectation(limit--)
+        this.expectation(limit - 1)
       }
     })
+  }
+
+  /**
+   * Cancels any scheduled animation frame callback.
+   *
+   * Отменяет запланированный обратный вызов кадра анимации.
+   */
+  protected cancelExpectation(): void {
+    if (this.animationFrameId !== undefined && typeof cancelAnimationFrame === 'function') {
+      cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = undefined
+    }
   }
 
   /**
@@ -170,12 +226,12 @@ export class MotionAxisStatus {
    *
    * Остановка и удаление всех данных.
    */
-  protected readonly end = () => {
-    this.previous.set(undefined)
+  protected readonly end = (): void => {
+    this.previous().set(undefined)
     this.preparation.value = undefined
 
     this.emit('end')
-    this.element.returnScroll()
+    this.element().returnScroll()
   }
 
   /**
@@ -185,20 +241,22 @@ export class MotionAxisStatus {
    * @param type transition lifecycle phase / фаза жизненного цикла перехода
    */
   protected emit(type: MotionAxisEmitType): void {
+    const selected = this.selected().item.value
+
     if (
       this.emits
-      && this.selected.item.value !== undefined
+      && selected !== undefined
     ) {
       if (type === 'start') {
-        this.emits('start', this.selected.item.value)
+        this.emits('start', selected)
       } else {
-        this.emits('end', this.selected.item.value)
+        this.emits('end', selected)
       }
 
       this.emits('motionAxis', {
         type,
-        selected: this.selected.item.value,
-        previous: this.previous.get(),
+        selected,
+        previous: this.previous().get(),
         preparation: this.preparation.value,
         active: this.active.value
       })

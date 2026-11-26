@@ -1,4 +1,4 @@
-import { type ListItemPropsBasic } from '../ListItem'
+import type { ListItemPropsBasic } from '../ListItem'
 
 import type { IconPropsBasic } from '../Icon'
 import type { BadgePropsBasic } from '../Badge'
@@ -6,6 +6,7 @@ import type { ProgressPropsBasic } from '../Progress'
 import type { CheckboxPropsBasic } from '../Checkbox'
 import type { RadioPropsBasic } from '../Radio'
 
+/** Token-generated properties for NavigationItem / Свойства из дизайн-токенов для NavigationItem */
 type NavigationItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -45,11 +46,12 @@ export type NavigationItemProps = NavigationItemPropsBasic & NavigationItemProps
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsNavigationItem = {
+export const defaultsNavigationItem: NavigationItemProps = {
   tag: 'a',
   tabindex: '-1',
   role: 'option',
   selectionStyle: 'none',
+  lazyCacheHeight: true,
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center',

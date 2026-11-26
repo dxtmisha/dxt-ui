@@ -28,7 +28,16 @@ describe('NavigationRail (SSR)', () => {
     const scopeA = effectScope()
     let idA: number | undefined
     scopeA.run(() => {
-      const rail = new NavigationRail({ control: true, list: [{ value: 'a', label: 'A' }] }, ref(undefined), naming)
+      const rail = new NavigationRail(
+        {
+          ...defaultsNavigationRail,
+          control: true,
+          list: [{ value: 'a', label: 'A' }]
+        },
+        ref(undefined),
+        naming
+      )
+      expect(rail.aria).toEqual({ role: 'listbox' })
       idA = rail.getItem(rail.list[0]!).listId as number
     })
     scopeA.stop()
@@ -38,7 +47,21 @@ describe('NavigationRail (SSR)', () => {
     const scopeB = effectScope()
     let idB: number | undefined
     scopeB.run(() => {
-      const rail = new NavigationRail({ list: [{ value: 'b', label: 'B' }] }, ref(undefined), naming)
+      const rail = new NavigationRail(
+        {
+          ...defaultsNavigationRail,
+          disabled: true,
+          ariaMultiselectable: true,
+          list: [{ value: 'b', label: 'B' }]
+        },
+        ref(undefined),
+        naming
+      )
+      expect(rail.aria).toEqual({
+        'role': 'listbox',
+        'aria-multiselectable': 'true',
+        'aria-disabled': 'true'
+      })
       idB = rail.getItem(rail.list[0]!).listId as number
     })
     scopeB.stop()
@@ -47,10 +70,10 @@ describe('NavigationRail (SSR)', () => {
     expect(idB).toBe(2)
   })
 
-  it('renders NavigationRailDesign component to HTML string in SSR', async () => {
+  it('renders NavigationRailDesign component to HTML string across variants in SSR', async () => {
     const MockRailItem = defineComponent({
       name: 'MockRailItem',
-      props: ['label', 'value', 'listId'],
+      props: ['label', 'value', 'listId', 'disabled'],
       setup(props, { attrs }) {
         return () => h(
           'div',
@@ -58,22 +81,35 @@ describe('NavigationRail (SSR)', () => {
             ...attrs,
             'class': ['ssr-rail-item', attrs.class],
             'data-list-id': props.listId,
-            'data-value': props.value
+            'data-value': props.value,
+            'data-disabled': String(Boolean(props.disabled))
           },
           String(props.label)
         )
       }
     })
 
-    const variants: NavigationRailProps[] = [
+    const variants: Array<{ props: NavigationRailProps, expected: string[] }> = [
       {
-        ...defaultsNavigationRail,
-        list: [{ value: 'home', label: 'Home' }]
+        props: {
+          ...defaultsNavigationRail,
+          list: [
+            { value: 'home', label: 'Home' },
+            { type: 'line', value: 'ln' },
+            { type: 'html', value: 'slotBanner', label: 'Fallback' }
+          ]
+        },
+        expected: ['role="listbox"', 'role="separator"', 'data-value="home"', 'SSR Banner']
       },
       {
-        ...defaultsNavigationRail,
-        control: true,
-        list: [{ value: 'profile', label: 'Profile' }]
+        props: {
+          ...defaultsNavigationRail,
+          control: true,
+          ariaMultiselectable: true,
+          disabled: true,
+          list: [{ value: 'profile', label: 'Profile' }]
+        },
+        expected: ['aria-multiselectable="true"', 'aria-disabled="true"', 'data-disabled="true"', 'data-value="profile"']
       }
     ]
 
@@ -90,7 +126,7 @@ describe('NavigationRail (SSR)', () => {
             NavigationRailProps
           >(
             'd1.navigationRail',
-            variant,
+            variant.props,
             {
               components: {
                 navigationRailItem: MockRailItem
@@ -101,12 +137,16 @@ describe('NavigationRail (SSR)', () => {
         }
       })
 
-      const html = await renderToString(createSSRApp({ render: () => h(TestComponent) }))
-      expect(html).toContain('role="listbox"')
-      expect(html).toContain('ssr-rail-item')
-      expect(html).toContain('data-list-id="2"')
+      const app = createSSRApp({
+        render: () => h(TestComponent, null, {
+          slotBanner: () => h('span', 'SSR Banner')
+        })
+      })
+      const html = await renderToString(app)
 
-      ServerStorage.reset()
+      for (const fragment of variant.expected) {
+        expect(html).toContain(fragment)
+      }
     }
   })
 })

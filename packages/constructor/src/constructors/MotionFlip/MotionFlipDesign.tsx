@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -6,7 +6,6 @@ import {
 } from '@dxtmisha/functional'
 
 import { MotionFlip } from './MotionFlip'
-import type { MotionFlipCallback } from './basicTypes'
 import type { MotionFlipPropsBasic } from './props'
 import type {
   MotionFlipClasses,
@@ -76,8 +75,8 @@ export class MotionFlipDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      stop: () => this.item.action.stop(),
-      update: (callback: MotionFlipCallback) => this.item.action.update(callback)
+      stop: this.item.stop,
+      update: this.item.update
     } as EXPOSE
   }
 
@@ -114,15 +113,18 @@ export class MotionFlipDesign<
    * Функция рендеринга.
    * @returns VNode element / VNode элемент
    */
-  protected initRender(): VNode {
+  protected initRender = (): VNode => {
     return h(
       'div',
-      {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        onTransitionend: this.item.action.onTransition
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }

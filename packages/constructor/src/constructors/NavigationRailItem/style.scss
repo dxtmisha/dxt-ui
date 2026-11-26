@@ -5,6 +5,8 @@
   @include ui.flexY;
   justify-content: center;
   position: relative;
+  min-width: 0;
+  max-width: 100%;
 
   padding: 0;
 
@@ -22,13 +24,23 @@
   &__context {
     position: relative;
     @include ui.flexY;
+    min-width: 0;
+    max-width: 100%;
     z-index: 4;
   }
 
   &__contextLine {
     position: relative;
     @include ui.flexX;
+    min-width: 0;
+    max-width: 100%;
     z-index: 4;
+  }
+
+  &__label {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   &__ripple {

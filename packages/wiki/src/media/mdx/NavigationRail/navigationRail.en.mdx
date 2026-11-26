@@ -1,37 +1,40 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Vertical navigation rail component designed for primary navigation sidebars, application drawer rails, and mini navigation bars.
+Vertical navigation rail component designed for primary sidebars, application drawer rails, and compact navigation bars.
 
-NavigationRail displays vertical navigation options for applications. It supports keyboard navigation, item focus, selection tracking, hierarchical menus, dividers, custom item attributes, and full accessibility ARIA roles.
+NavigationRail renders top-level `NavigationRailItem` entries and nested `NavigationItem` sub-menus. It provides selection tracking, focus management, keyboard navigation, dividers, custom slots, container `disabled` protection, and full ARIA semantics.
 
-**Key Features:**
+**Key features:**
 
-- Compact vertical layout for sidebars and navigation rails
-- Hierarchical dataset rendering with group and menu items
-- Keyboard navigation (arrows, Enter, Space) and focus management
-- Selection state tracking (`v-model:selected` or `selected`)
-- Section dividers and custom item attributes
-- Built-in accessibility with ARIA attributes
-- Support for external control mode (`control`)
+- Compact vertical layout tailored for persistent sidebars and rail navigation
+- Hierarchical datasets supporting nested sub-menus, dividers, spaces, and custom HTML/slots
+- Keyboard navigation with arrow keys, Home/End, Enter, and Escape when `control` is active
+- Single and multi-selection tracking with `selected`, `focus`, `@click`, and `@click-lite`
+- Container-wide `disabled` propagation blocking clicks, keyboard actions, and nested menus
+- Built-in ARIA attributes (`role`, `aria-multiselectable`, `aria-disabled`, `roleItem`)
+- Flexible attribute customization via `itemAttrs`, `itemMenuAttrs`, and `itemManagementAttrs`
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Primary sidebar navigation in desktop web applications
-- Compact icon/label navigation rail in responsive layouts
-- Multi-level settings or workspace navigation panels
+- Primary sidebar navigation rail in desktop web applications
+- Compact icon-and-label drawer rail for responsive workspaces
+- Multi-level tool and settings navigation panels
 
 <Source
     code={`
 <template>
   <NavigationRail
-    v-model:selected="selected"
+    :selected="selected"
     :list="[
       { label: 'Home', value: 'home', icon: 'home' },
       { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
       { label: 'Settings', value: 'settings', icon: 'settings' }
     ]"
+    @click-lite="(value) => selected = value.value"
   />
 </template>
   `}
     language="html"
 />
+
+> **Tip:** Set `:disabled="true"` on `NavigationRail` to cascade `aria-disabled="true"` across the rail, nested menus, and items while automatically blocking pointer and keyboard activation.

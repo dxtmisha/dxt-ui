@@ -8,3 +8,14 @@ export type MotionStickyPosition = {
   /** Bottom position coordinate / Координата нижней позиции */
   bottom: number
 }
+
+/**
+ * Type describing computed CSS sticky offset positions /
+ * Тип, описывающий вычисленные CSS-смещения положения липкого элемента.
+ */
+export type MotionStickyStylePosition = {
+  /** Top offset coordinate / Координата верхнего смещения */
+  top?: number
+  /** Bottom offset coordinate / Координата нижнего смещения */
+  bottom?: number
+}

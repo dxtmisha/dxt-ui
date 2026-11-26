@@ -1,37 +1,31 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Page` component is a top-level semantic container designed to wrap the primary content of a view or document. It extends `Block` with a default `<main>` root tag, `<h1>` header level (`tagHeader`), and `'page'` area context.
 
-A top-level semantic container component designed to wrap the main content of a page. It uses the `<main>` tag by default.
+`Page` provides a standardized header hierarchy (`headline`, `label`, `caption`, `icon`, `description`) while automatically linking `aria-labelledby` and `aria-describedby` to rendered header and description elements. When only default body content is provided, it omits the header/description wrapper and skips helper instantiation.
 
-Page provides capabilities for displaying main headlines, labels, descriptions, captions, and icons. The main purpose of the component is to designate the unique part of the document's content, which is critical for accessibility and SEO. The headline is rendered as `<h1>` by default.
+**Key features:**
 
-**Key Features:**
+- **Primary Landmark Semantics:** Wraps unique page content using the `<main>` root tag by default (configurable via `tag`)
+- **Top-Level Heading Hierarchy:** Renders `<h1>` for the header label by default (`tagHeader`), anchoring the document outline above `Section` (`h2`), `Block` (`h3`), and `Group` (`h4`)
+- **Full Block Capabilities:** Inherits `headline`, `label`, `caption`, `description`, leading `icon`, and all 6 slots (`#default`, `#headline`, `#label`, `#description`, `#caption`, `#trailing`)
+- **Automatic ARIA & Area Context:** Synchronizes `aria-labelledby` and `aria-describedby` with generated or explicit `labelId` and `descriptionId`, and propagates `'page'` as the default reactive `area` context
 
-- Semantic wrapper for main content (`<main>` tag)
-- Support for main headlines (default `<h1>`), labels, descriptions, and captions
-- Support for icons
-- Customizable layout and spacing
-- Full support for slots for content customization
+**Common use cases:**
 
-**Typical Use Cases:**
-
-- Wrapper for unique page content
-- Main application screen
-- Article or documentation page
-- Root element for routed components (views)
+- Top-level wrapper for unique screen or route content
+- Main application dashboard, article, or documentation view
+- Root landmark container combining page title, description, and trailing actions
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-</script>
-
 <template>
   <Page
-    headline="Main Page Title"
-    label="Category"
-    description="Brief description of the page content"
+    headline="Account Overview"
+    label="Dashboard"
+    caption="Updated"
+    description="Review your recent activity, metrics, and account settings."
+    icon="dashboard"
   >
     <p>Unique page content...</p>
   </Page>
@@ -40,4 +34,4 @@ import { ref } from 'vue'
     language="html"
 />
 
-> Page should be used once per page (or per active view) and should not include repeated navigation elements.
+> Page should be used once per page or active view to designate the main document landmark and primary heading.

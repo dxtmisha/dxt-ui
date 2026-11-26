@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -19,7 +19,7 @@ import {
 } from './types'
 
 /**
- * MotionStickyDesign
+ * Design constructor class for sticky element.
  *
  * Дизайн-компонент липкого элемента.
  */
@@ -114,12 +114,14 @@ export class MotionStickyDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }

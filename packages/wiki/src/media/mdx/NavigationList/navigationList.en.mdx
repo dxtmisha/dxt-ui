@@ -2,36 +2,39 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 Specialized navigation list component for building sidebars, dropdown menus, and application top bars.
 
-NavigationList extends the core List component, optimized for app navigation. It renders NavigationItem elements and provides hierarchical data support, full keyboard navigation, real-time search with text highlighting, vertical/horizontal axis orientation, and performance-optimized lite rendering mode.
+NavigationList extends the core List component for application navigation. It renders NavigationItem elements with hierarchical groups and sub-menus, keyboard navigation, real-time search with text highlighting, axis orientation, disabled protection, and lite/lazy performance modes.
 
-**Key Features:**
+**Key features:**
 
-- Core list orchestration inherited from List
-- Renders specialized NavigationItem elements
-- Full keyboard navigation with arrow keys and shortcuts
-- Real-time search filtering and match highlighting
-- Hierarchical tree structure with group headers and sub-menus
-- Axis orientation support (vertical and horizontal)
-- Automatic section divider rendering
-- Performance-optimized lite mode for large dataset lists
+- Core list orchestration inherited from List with navigation item defaults
+- Hierarchical data support with subtitles, groups, sub-menus, dividers, spaces, and custom slots
+- Full keyboard navigation with arrow keys, Home/End, Enter, and Escape (`control`)
+- Real-time search filtering (`showSearch`, `filterMode`) and text highlighting (`highlight`)
+- Vertical and horizontal orientation axis (`axis`) with automatic section dividers (`divider`)
+- Performance-optimized `lite` and viewport `lazy` modes with height caching
+- Accessibility ARIA attributes including `role`, `aria-multiselectable`, and container `disabled` propagation
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Primary sidebar application navigation
-- Navigation dropdown menus and section drawers
-- Fast-access menu panels and view switchers
+- Primary sidebar navigation menus in web applications
+- Navigation dropdown menus, searchable drawers, and section switchers
+- Horizontal navigation strips and multi-level workspace menus
 
 <Source
     code={`
 <template>
   <NavigationList
+    :selected="selected"
     :list="[
       { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
       { label: 'Analytics', value: 'analytics', icon: 'insights' },
       { label: 'Settings', value: 'settings', icon: 'settings' }
     ]"
+    @click-lite="(value) => selected = value.value"
   />
 </template>
   `}
     language="html"
 />
+
+> **Tip:** Enable `control` when integrating `NavigationList` inside popups or custom focus containers to support full arrow-key navigation and `Escape` closing out of the box.

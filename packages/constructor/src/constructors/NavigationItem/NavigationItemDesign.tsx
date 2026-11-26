@@ -1,12 +1,16 @@
-import { ListItemDesign } from '../ListItem'
+import type { ConstrOptions } from '@dxtmisha/functional'
 
-import {
-  type NavigationItemPropsBasic
+import { ListItemDesign } from '../ListItem'
+import { NavigationItem } from './NavigationItem'
+
+import type {
+  NavigationItemPropsBasic
 } from './props'
-import {
-  type NavigationItemClasses,
-  type NavigationItemComponents,
-  type NavigationItemExpose
+import type {
+  NavigationItemClasses,
+  NavigationItemComponents,
+  NavigationItemEmits,
+  NavigationItemExpose
 } from './types'
 
 /**
@@ -27,4 +31,26 @@ export class NavigationItemDesign<
     CLASSES,
     P
   > {
+  /**
+   * Constructor
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor item constructor class / класс конструктора элемента
+   */
+  constructor(
+    name: string,
+    props: Readonly<P>,
+    options?: ConstrOptions<COMP, NavigationItemEmits, P>,
+    ItemConstructor: typeof NavigationItem = NavigationItem
+  ) {
+    super(
+      name,
+      props,
+      options,
+      ItemConstructor
+    )
+  }
 }

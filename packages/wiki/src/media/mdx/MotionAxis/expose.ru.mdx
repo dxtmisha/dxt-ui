@@ -1,9 +1,9 @@
-- `back(): void` — Переход к предыдущему слайду.
-- `next(): void` — Переход к следующему слайду.
-- `to(selected: string | number): void` — Переход к указанному слайду.
-- `top(selected: string | number): void` — Переход к слайду с анимацией сверху.
-- `right(selected: string | number): void` — Переход к слайду с анимацией справа.
-- `bottom(selected: string | number): void` — Переход к слайду с анимацией снизу.
-- `left(selected: string | number): void` — Переход к слайду с анимацией слева.
-- `down(selected: string | number): void` — Переход к слайду с анимацией вниз.
-- `up(selected: string | number): void` — Переход к слайду с анимацией вверх.
+- `back(): void` — Переход к предыдущему слайду (`direction = 'back'`).
+- `next(): void` — Переход к следующему слайду (`direction = 'next'`).
+- `to(selected?: string): void` — Переход к указанному слайду с автоматическим определением направления по порядку слайдов.
+- `top(selected?: string): void` — Переход к указанному слайду по оси `Y` в направлении `back`.
+- `right(selected?: string): void` — Переход к указанному слайду по оси `X` в направлении `next`.
+- `bottom(selected?: string): void` — Переход к указанному слайду по оси `Y` в направлении `next`.
+- `left(selected?: string): void` — Переход к указанному слайду по оси `X` в направлении `back`.
+- `down(selected?: string): void` — Переход к указанному слайду по оси `Z` в направлении `back`.
+- `up(selected?: string): void` — Переход к указанному слайду по оси `Z` в направлении `next`.

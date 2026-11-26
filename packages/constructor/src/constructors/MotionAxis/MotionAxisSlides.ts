@@ -1,8 +1,8 @@
 // ai-none
 
-import { onUpdated, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 
-import { MotionAxisStatus } from './MotionAxisStatus'
+import type { MotionAxisStatus } from './MotionAxisStatus'
 
 import type { MotionAxisSlots } from './types'
 import type { MotionAxisSelectedValue } from './basicTypes'
@@ -22,14 +22,13 @@ export class MotionAxisSlides {
    * Constructor for initializing slide list managers.
    *
    * Конструктор для инициализации менеджеров списка слайдов.
-   * @param status status tracker object / объект отслеживания статуса
+   * @param status getter for status tracker object / геттер объекта отслеживания статуса
    * @param slots component slots / слоты компонента
    */
   constructor(
-    protected readonly status: MotionAxisStatus,
+    protected readonly status: () => MotionAxisStatus,
     protected readonly slots?: MotionAxisSlots
   ) {
-    onUpdated(this.update)
     this.update()
   }
 
@@ -39,7 +38,7 @@ export class MotionAxisSlides {
    * Возвращает реактивный список ключей слайдов.
    * @returns reactive reference of keys array / реактивная ссылка на массив ключей
    */
-  get() {
+  get(): Ref<string[]> {
     return this.item
   }
 
@@ -55,20 +54,20 @@ export class MotionAxisSlides {
     const selected = this.findIndex()
 
     if (selected === -1) {
-      return slides?.[0]
+      return slides[0]
     }
 
     const focus = selected + step
 
     if (focus >= slides.length) {
-      return slides?.[0]
+      return slides[0]
     }
 
     if (focus <= -1) {
-      return slides?.[slides.length - 1]
+      return slides[slides.length - 1]
     }
 
-    return slides?.[focus]
+    return slides[focus]
   }
 
   /**
@@ -79,8 +78,8 @@ export class MotionAxisSlides {
    * @returns slide index or -1 if not found / индекс слайда или -1, если не найден
    */
   findIndex(
-    selected: MotionAxisSelectedValue = this.status.get()
-  ) {
+    selected: MotionAxisSelectedValue = this.status().get()
+  ): number {
     return this.item.value.findIndex(item => item === selected)
   }
 
@@ -90,7 +89,7 @@ export class MotionAxisSlides {
    * Вручную добавляет ключ слайда в список.
    * @param key slide key / ключ слайда
    */
-  add(key: string) {
+  add(key: string): void {
     this.item.value.push(key)
   }
 
@@ -99,7 +98,7 @@ export class MotionAxisSlides {
    *
    * Сбрасывает и очищает список слайдов.
    */
-  reset() {
+  reset(): void {
     this.item.value = []
   }
 
@@ -108,7 +107,7 @@ export class MotionAxisSlides {
    *
    * Автоматически обновляет ключи списка слайдов на основе текущих слотов.
    */
-  readonly update = () => {
+  readonly update = (): void => {
     if (this.slots) {
       this.item.value = Object.keys(this.slots)
     } else {

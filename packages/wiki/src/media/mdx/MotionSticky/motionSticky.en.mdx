@@ -20,12 +20,22 @@ MotionSticky computes sticky positions based on scroll offset calculations. It a
 <Source
     code={`
 <template>
-  <MotionSticky class-activity="is-sticky">
-    <div class="header-content">
-      My Sticky Header
-    </div>
-  </MotionSticky>
+  <div id="scroll-container" style="height: 240px; overflow: auto;">
+    <div style="height: 120px;" />
+    <MotionSticky
+      element-scroll="#scroll-container"
+      class-activity="is-sticky"
+      style="top: 0;"
+    >
+      <div class="header-content">
+        My Sticky Header
+      </div>
+    </MotionSticky>
+    <div style="height: 480px;" />
+  </div>
 </template>
   `}
     language="html"
 />
+
+> MotionSticky tracks scroll boundaries for sticky elements and synchronizes CSS activity classes, dataset attributes, and status events without manual scroll listeners.

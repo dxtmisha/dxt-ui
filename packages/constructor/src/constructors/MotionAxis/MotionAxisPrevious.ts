@@ -1,8 +1,9 @@
 // ai-none
 
 import { ref, watch } from 'vue'
-import { MotionAxisStyles } from './MotionAxisStyles'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
+import type { MotionAxisStyles } from './MotionAxisStyles'
 import type { MotionAxisSelectedValue } from './basicTypes'
 
 /**
@@ -12,7 +13,7 @@ import type { MotionAxisSelectedValue } from './basicTypes'
  * Класс для управления и отслеживания предыдущего слайда.
  * Координирует работу с `MotionAxisStyles` для применения или очистки CSS-стилей ранее активного слайда.
  */
-export class MotionAxisPrevious {
+export class MotionAxisPrevious extends DesignLifecycleAbstract {
   /** Identifier of the previous slide / Идентификатор предыдущего слайда */
   readonly item = ref<MotionAxisSelectedValue>()
 
@@ -20,16 +21,25 @@ export class MotionAxisPrevious {
    * Constructor for initializing previous slide trackers.
    *
    * Конструктор для инициализации средств отслеживания предыдущего слайда.
-   * @param styles style management object / объект управления стилями
+   * @param styles getter for style management object / геттер объекта управления стилями
    */
   constructor(
-    protected readonly styles: MotionAxisStyles
+    protected readonly styles: () => MotionAxisStyles
   ) {
+    super()
+  }
+
+  /**
+   * Registers watcher for previous slide changes on mount.
+   *
+   * Регистрирует наблюдатель изменений предыдущего слайда при монтировании.
+   */
+  override readonly onMounted = (): void => {
     watch(this.item, (value) => {
       if (value) {
-        this.styles.add(value)
+        this.styles().add(value)
       } else {
-        this.styles.remove()
+        this.styles().remove()
       }
     })
   }
@@ -62,7 +72,7 @@ export class MotionAxisPrevious {
    * @param value values for change / значения для изменения
    * @returns this instance / текущий экземпляр класса
    */
-  set(value?: string): this {
+  set(value?: MotionAxisSelectedValue): this {
     this.item.value = value
     return this
   }

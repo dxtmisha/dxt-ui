@@ -3,7 +3,7 @@
 import type { Ref } from 'vue'
 import type { DesignName } from '@dxtmisha/functional'
 
-import { MotionAxisSelected } from './MotionAxisSelected'
+import type { MotionAxisSelected } from './MotionAxisSelected'
 
 /**
  * Class for managing dynamic CSS variables and layout coordinates for transition slides.
@@ -19,12 +19,12 @@ export class MotionAxisStyles {
    * Конструктор для инициализации координаторов стилей.
    * @param element window element / элемент окна
    * @param naming component naming helper / помощник именования компонента
-   * @param selected class object for managing the active element / объект класса для управления активным элементом
+   * @param selected getter for managing the active element / геттер для управления активным элементом
    */
   constructor(
     protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly naming: DesignName,
-    protected readonly selected: MotionAxisSelected
+    protected readonly selected: () => MotionAxisSelected
   ) {
   }
 
@@ -44,8 +44,9 @@ export class MotionAxisStyles {
       && element
     ) {
       const elementRect = element.getBoundingClientRect()
+      const escapedSlide = slide.replace(/["\\]/g, '\\$&')
 
-      const itemRect = element.querySelector(`[data-key="${slide}"]`)
+      const itemRect = element.querySelector(`[data-key="${escapedSlide}"]`)
         ?.getBoundingClientRect()
 
       if (
@@ -65,16 +66,21 @@ export class MotionAxisStyles {
    *
    * Вычисляет границы входящего слайда и устанавливает переменную высоты перехода следующего элемента.
    */
-  addNext() {
+  addNext(): void {
     const element = this.element.value
+    const selected = this.selected().item.value
 
-    if (element) {
+    if (
+      element
+      && selected !== undefined
+    ) {
+      const escapedSelected = selected.replace(/["\\]/g, '\\$&')
       const itemRect = element
-        ?.querySelector(`[data-key="${this.selected.item.value}"]`)
+        .querySelector(`[data-key="${escapedSelected}"]`)
         ?.getBoundingClientRect()
 
       if (itemRect) {
-        element.style.setProperty(this.naming.getStyle('next-height'), `${itemRect?.height ?? '0'}px`)
+        element.style.setProperty(this.naming.getStyle('next-height'), `${itemRect.height}px`)
       }
     }
   }
@@ -84,7 +90,7 @@ export class MotionAxisStyles {
    *
    * Очищает и удаляет все динамические CSS-переменные переходов из таблицы стилей компонента.
    */
-  remove() {
+  remove(): void {
     const element = this.element.value
 
     if (element) {

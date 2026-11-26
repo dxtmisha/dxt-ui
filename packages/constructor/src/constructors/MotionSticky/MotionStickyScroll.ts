@@ -1,7 +1,11 @@
 // ai-none
 
-import { onMounted, onUnmounted, watch } from 'vue'
-import { EventItem } from '@dxtmisha/functional'
+import { type WatchStopHandle, watch } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  EventItem,
+  isDomRuntime
+} from '@dxtmisha/functional'
 
 import { MotionStickyElement } from './MotionStickyElement'
 
@@ -12,31 +16,55 @@ import type { MotionStickyProps } from './props'
  *
  * Класс для работы с привязкой событий прокрутки липкого элемента.
  */
-export class MotionStickyScroll {
+export class MotionStickyScroll extends DesignLifecycleAbstract {
   /** Reference to the scroll event item listener / Ссылка на слушатель событий прокрутки */
   protected event?: EventItem<HTMLElement | Window, Event>
+
+  /** Active requestAnimationFrame identifier / Идентификатор активного requestAnimationFrame */
+  protected animationFrame?: number
+
+  /** Stop handle for the reactive watcher / Функция остановки реактивного наблюдателя */
+  protected stopWatch?: WatchStopHandle
 
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param stickyElement helper class for sticky element calculations / вспомогательный класс для вычислений липкого элемента
+   * @param stickyElement helper class getter for sticky element calculations / геттер вспомогательного класса для вычислений липкого элемента
    */
   constructor(
-    protected readonly props: MotionStickyProps,
-    protected readonly stickyElement: MotionStickyElement
+    protected readonly props: Readonly<MotionStickyProps>,
+    protected readonly stickyElement: () => MotionStickyElement
   ) {
-    watch(
+    super()
+  }
+
+  /**
+   * Initializes scroll listeners and reactive watchers on mount.
+   *
+   * Инициализирует слушатели прокрутки и реактивные наблюдатели при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.update()
+
+    this.stopWatch?.()
+    this.stopWatch = watch(
       [
-        this.stickyElement.element,
-        () => this.stickyElement.eventElement
+        () => this.stickyElement().element.value,
+        () => this.stickyElement().eventElement
       ],
       this.update
     )
+  }
 
-    onMounted(this.update)
-    onUnmounted(() => {
-      this.stop()
-    })
+  /**
+   * Cleans up scroll listeners, watchers, and pending animation frames on unmount.
+   *
+   * Очищает слушатели прокрутки, наблюдатели и ожидающие кадры анимации при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+    this.stop()
   }
 
   /**
@@ -46,7 +74,11 @@ export class MotionStickyScroll {
    */
   readonly update = (): void => {
     this.make()
-    requestAnimationFrame(this.onScroll)
+
+    if (isDomRuntime()) {
+      this.cancelAnimationFrame()
+      this.animationFrame = requestAnimationFrame(this.onScroll)
+    }
   }
 
   /**
@@ -55,18 +87,31 @@ export class MotionStickyScroll {
    * События для прослушивания события скролла.
    */
   protected readonly onScroll = (): void => {
-    const positionStyle = this.stickyElement.getPositionStyle()
-    const positionElement = this.stickyElement.getPositionElement()
+    this.animationFrame = undefined
+
+    const stickyElement = this.stickyElement()
+    const positionStyle = stickyElement.getPositionStyle()
+    const positionElement = stickyElement.getPositionElement()
 
     if (
       positionStyle
       && positionElement
     ) {
-      this.stickyElement.setStatus(
-        positionStyle.top === Math.round(positionElement.top)
-        || positionStyle.top === Math.floor(positionElement.top)
-        || positionStyle.bottom === Math.ceil(positionElement.bottom)
-        || positionStyle.bottom === Math.floor(positionElement.bottom)
+      stickyElement.setStatus(
+        (
+          positionStyle.top !== undefined
+          && (
+            positionStyle.top === Math.round(positionElement.top)
+            || positionStyle.top === Math.floor(positionElement.top)
+          )
+        )
+        || (
+          positionStyle.bottom !== undefined
+          && (
+            positionStyle.bottom === Math.ceil(positionElement.bottom)
+            || positionStyle.bottom === Math.floor(positionElement.bottom)
+          )
+        )
       )
     }
   }
@@ -77,38 +122,44 @@ export class MotionStickyScroll {
    * Инициализация слушателя события прокрутки.
    */
   protected make(): void {
-    const element = this.stickyElement.eventElement
+    this.stop()
+
+    const element = this.stickyElement().eventElement
 
     if (element) {
-      this.event = new EventItem(element, 'scroll', this.onScroll)
+      this.event = new EventItem(
+        element,
+        'scroll',
+        this.onScroll,
+        { passive: true }
+      )
       this.event.start()
-    } else {
-      this.stop()
     }
   }
 
   /**
-   * Stop scroll event listener.
+   * Stop scroll event listener and cancel pending frame.
    *
-   * Остановить слушатель событий прокрутки.
+   * Останавливает слушатель событий прокрутки и отменяет ожидающий кадр анимации.
    */
   protected stop(): void {
+    this.cancelAnimationFrame()
     this.event?.stop()
     this.event = undefined
   }
 
   /**
-   * Initialize scroll event listener.
+   * Cancels the scheduled animation frame if active.
    *
-   * Инициализация слушателя события прокрутки.
-   * @param targetEventElement target element / целевой элемент
-   * @returns event item instance / экземпляр события
+   * Отменяет запланированный кадр анимации, если он активен.
    */
-  protected makeEvent(targetEventElement: HTMLElement | Window): EventItem<HTMLElement | Window, Event> {
-    return new EventItem(
-      targetEventElement,
-      'scroll',
-      this.onScroll
-    )
+  protected cancelAnimationFrame(): void {
+    if (
+      this.animationFrame !== undefined
+      && isDomRuntime()
+    ) {
+      cancelAnimationFrame(this.animationFrame)
+      this.animationFrame = undefined
+    }
   }
 }

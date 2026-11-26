@@ -14,10 +14,13 @@ import {
   ServerStorage
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import { ListControl, ListFocus, ListGo, type ListProps } from '../List'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { NavigationRailProps } from './props'
 import type { NavigationRailComponents, NavigationRailEmits, NavigationRailSlots } from './types'
 
@@ -27,6 +30,8 @@ export type NavigationRailConstructors = {
   control: typeof ListControl
   /** List data constructor / Конструктор данных списка */
   data: typeof ListDataRef
+  /** Enabled state constructor / Конструктор состояния активности */
+  enabled: typeof EnabledInclude
   /** Event click constructor / Конструктор события клика */
   event: typeof EventClickInclude
   /** Focus constructor / Конструктор фокусировки */
@@ -58,7 +63,8 @@ export class NavigationRail extends DesignLogicAbstract<
   protected override readonly constructorItems: ConstrItems<NavigationRailConstructors> = {
     control: {
       item: ListControl,
-      conditions: () => Boolean(this.props.control),
+      conditions: () => Boolean(this.props.control && !this.props.disabled),
+      canCreate: () => Boolean(this.props.control && !this.props.disabled),
       parameters: () => [
         this.props as ListProps,
         this.element,
@@ -79,11 +85,15 @@ export class NavigationRail extends DesignLogicAbstract<
         toRef(this.props, 'keyLabel')
       ]
     },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
     event: {
       item: EventClickInclude,
       parameters: () => [
         undefined,
-        undefined,
+        () => this.i('enabled'),
         this.emits
       ]
     },
@@ -104,6 +114,37 @@ export class NavigationRail extends DesignLogicAbstract<
         () => this.i('focus'),
         this.emits
       ]
+    }
+  }
+
+  /**
+   * Computed ARIA attributes for the navigation rail container.
+   *
+   * Вычисляемые ARIA-атрибуты контейнера боковой панели навигации.
+   * @returns ARIA attributes map / карта ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role(this.props.role),
+      ...(this.props.ariaMultiselectable !== undefined
+        ? AriaStaticInclude.multiselectable(this.props.ariaMultiselectable)
+        : {}),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
+    }
+  }
+
+  /**
+   * Computed root element attributes and focus event bindings.
+   *
+   * Вычисляемые атрибуты корневого элемента и обработчики фокуса.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind<NavigationRailProps> {
+    return {
+      ...this.aria,
+      tabindex: this.props.disabled || this.props.control ? undefined : this.props.tabindex,
+      onFocus: () => this.callInstance('control', item => item.onFocus()),
+      onBlur: () => this.callInstance('control', item => item.onBlur())
     }
   }
 
@@ -134,7 +175,7 @@ export class NavigationRail extends DesignLogicAbstract<
 
   /** Mount lifecycle hook preparing selected item / Хук монтирования для подготовки выбранного элемента */
   protected override readonly onMounted = async (): Promise<void> => {
-    if (this.props.control) {
+    if (this.props.control && !this.props.disabled) {
       await nextTick()
 
       if (!this.isDestroyed) {
@@ -174,14 +215,23 @@ export class NavigationRail extends DesignLogicAbstract<
   getItem(
     item: ConstrBind<ListDataItem>
   ): ConstrBind<ListDataItem> {
+    const itemOverrides: Partial<ConstrBind<ListDataItem>> = {
+      'key': item.value,
+      'data-item': true
+    }
+
+    if (this.props.roleItem !== undefined) {
+      itemOverrides.role = this.props.roleItem
+    }
+
+    if (this.props.disabled) {
+      itemOverrides.disabled = true
+    }
+
     return mergeProps(
       this.itemBinds.value,
       item,
-      {
-        'key': item.value,
-        ...(this.props.roleItem !== undefined ? { role: this.props.roleItem } : {}),
-        'data-item': true
-      }
+      itemOverrides
     ) as ConstrBind<ListDataItem>
   }
 
@@ -195,35 +245,37 @@ export class NavigationRail extends DesignLogicAbstract<
   getItemMenu(
     item: ConstrBind<ListDataItem>
   ): ConstrBind<ListDataItem> {
+    const menuOverrides: Partial<ConstrBind<ListDataItem>> = {
+      key: item.value,
+      class: this.naming.getSubClass('menu')
+    }
+
     return mergeProps(
       this.itemBinds.value,
       this.props.itemMenuAttrs ?? {},
       item,
-      {
-        key: item.value,
-        class: this.naming.getSubClass('menu')
-      }
+      this.withDisabled(menuOverrides)
     ) as ConstrBind<ListDataItem>
   }
 
   /**
-   * Gets binding properties for a menu management item with right arrow.
+   * Gets binding properties for a menu management item with optional right arrow inside nested menus.
    *
-   * Получает привязочные свойства для элемента управления меню со стрелкой вправо.
+   * Получает привязочные свойства для элемента управления меню со стрелкой вправо внутри вложенных меню.
    * @param item list item data / данные элемента списка
    * @param open whether the menu is open / открыто ли меню
+   * @param inMenu whether the menu is nested inside another menu / находится ли меню внутри другого меню
    * @returns binding properties object for management item / объект свойств привязки элемента управления
    */
   getItemManagementFormMenu(
     item: ConstrBind<ListDataItem>,
-    open: boolean
+    open: boolean,
+    inMenu: boolean = false
   ): ConstrBind<ListDataItem> {
     return this.getItemManagement(
-      {
-        ...item,
-        filterMode: false
-      },
-      open
+      item,
+      open,
+      inMenu ? this.props.iconArrowRight : undefined
     )
   }
 
@@ -246,24 +298,49 @@ export class NavigationRail extends DesignLogicAbstract<
    * Внутренний метод для создания привязочных свойств элемента управления.
    * @param item list item data / данные элемента списка
    * @param open whether the item is open / открыт ли элемент
+   * @param iconTrailing optional trailing icon / необязательная завершающая иконка
    * @returns binding properties for management item / привязочные свойства элемента управления
    */
   protected getItemManagement(
     item: ConstrBind<ListDataItem>,
-    open: boolean
+    open: boolean,
+    iconTrailing?: NavigationRailProps['iconArrowRight']
   ): ConstrBind<ListDataItem> {
+    const managementOverrides: Partial<ConstrBind<ListDataItem>> = {
+      'class': this.naming.getSubClass('management'),
+      'focus': item?.index === this.i('focus').focus.value,
+      'selectedChild': this.isOpenGroup(item),
+      open,
+      'data-status': open ? 'open' : 'close',
+      'selectionStyle': 'none'
+    }
+
+    if (iconTrailing !== undefined) {
+      managementOverrides.iconTrailing = iconTrailing
+    }
+
     return mergeProps(
       this.itemBinds.value,
       this.props.itemManagementAttrs ?? {},
       item,
-      {
-        'class': this.naming.getSubClass('management'),
-        'focus': item?.index === this.i('focus').focus.value,
-        'selectedChild': this.isOpenGroup(item),
-        open,
-        'data-status': open ? 'open' : 'close',
-        'selectionStyle': 'none'
-      }
+      this.withDisabled(managementOverrides)
     ) as ConstrBind<ListDataItem>
+  }
+
+  /**
+   * Attaches disabled state when rail is disabled.
+   *
+   * Добавляет состояние отключения при отключенной панели навигации.
+   * @param target target binding overrides / целевой объект переопределений привязки
+   * @returns updated bindings object / обновленный объект привязок
+   */
+  protected withDisabled(
+    target: Partial<ConstrBind<ListDataItem>>
+  ): Partial<ConstrBind<ListDataItem>> {
+    if (this.props.disabled) {
+      target.disabled = true
+    }
+
+    return target
   }
 }

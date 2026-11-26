@@ -24,9 +24,9 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'end', description: `Event triggered at the end of animation/ Событие завершения анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
-  { name: 'motionAxis', description: `Event for axis motion/ Событие движения оси`, properties: [{ name: 'options', type: 'MotionAxisEmitOptions' }] },
-  { name: 'start', description: `Event triggered at the start of animation/ Событие начала анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
+  { name: 'end', description: `Event triggered at the end of animation / Событие завершения анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
+  { name: 'motionAxis', description: `Event for axis motion / Событие движения оси`, properties: [{ name: 'options', type: 'MotionAxisEmitOptions' }] },
+  { name: 'start', description: `Event triggered at the start of animation / Событие начала анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
   { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'MotionAxisSelectedValue' }] },
   { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'MotionAxisSelectedValue' }] }
   // :eventsList [!] System label / Системная метка

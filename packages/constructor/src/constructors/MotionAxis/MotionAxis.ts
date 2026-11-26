@@ -1,5 +1,12 @@
-import { onMounted, type Ref, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import { getCurrentInstance, onUpdated, type Ref, watch } from 'vue'
+import {
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName
+} from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 
@@ -14,6 +21,26 @@ import { MotionAxisStyles } from './MotionAxisStyles'
 import type { MotionAxisComponents, MotionAxisEmits, MotionAxisSlots } from './types'
 import type { MotionAxisProps } from './props'
 
+/** MotionAxis dependency constructors type / Тип конструкторов зависимостей MotionAxis */
+export type MotionAxisConstructors = {
+  /** Element manager constructor / Конструктор менеджера элементов */
+  element: typeof MotionAxisElement
+  /** Axis movement and navigation constructor / Конструктор перемещения по осям и навигации */
+  go: typeof MotionAxisGo
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude
+  /** Previous slide tracker constructor / Конструктор отслеживания предыдущего слайда */
+  previous: typeof MotionAxisPrevious
+  /** Selected slide state constructor / Конструктор состояния выбранного слайда */
+  selected: typeof MotionAxisSelected
+  /** Slides list manager constructor / Конструктор менеджера списка слайдов */
+  slides: typeof MotionAxisSlides
+  /** Transition status manager constructor / Конструктор менеджера статуса перехода */
+  status: typeof MotionAxisStatus
+  /** Transition styles coordinator constructor / Конструктор координатора стилей перехода */
+  styles: typeof MotionAxisStyles
+}
+
 /**
  * Controller class for managing axis-based transition animations (MotionAxis).
  * It orchestrates DOM elements, slides, selection state, and style updates.
@@ -21,21 +48,78 @@ import type { MotionAxisProps } from './props'
  * Класс-контроллер для управления анимациями перехода по осям (MotionAxis).
  * Управляет DOM-элементами, слайдами, состоянием выбора и обновлением стилей.
  */
-export class MotionAxis {
-  /** Controller for managing individual slide DOM elements / Контроллер для управления DOM-элементами отдельных слайдов */
-  readonly elementItem: MotionAxisElement
-  /** Manager handling animation direction and transitions / Менеджер, обрабатывающий направление анимации и переходы */
-  readonly go: MotionAxisGo
-  /** Handler tracking the previously active slide / Обработчик, отслеживающий ранее активный слайд */
-  readonly previous: MotionAxisPrevious
-  /** Reactive state container for the currently selected slide / Реактивный контейнер состояния для текущего выбранного слайда */
-  readonly selected: MotionAxisSelected
-  /** Controller managing slides configuration and rendering / Контроллер, управляющий конфигурацией и рендерингом слайдов */
-  readonly slides: MotionAxisSlides
-  /** Tracker for active transitions and element statuses / Трекер активных переходов и статусов элементов */
-  readonly status: MotionAxisStatus
-  /** Generator and manager of CSS classes and styles for motion / Генератор и менеджер CSS-классов и стилей движения */
-  readonly styles: MotionAxisStyles
+export class MotionAxis extends DesignLogicAbstract<
+  HTMLDivElement,
+  MotionAxisComponents,
+  MotionAxisEmits,
+  MotionAxisSlots,
+  MotionAxisProps,
+  MotionAxisConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<MotionAxisConstructors> = {
+    element: {
+      item: MotionAxisElement,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    go: {
+      item: MotionAxisGo,
+      parameters: () => [
+        this.props,
+        () => this.i('slides'),
+        () => this.i('status')
+      ]
+    },
+    model: {
+      item: ModelInclude,
+      parameters: () => [
+        'selected',
+        this.emits,
+        this.i('selected').item
+      ]
+    },
+    previous: {
+      item: MotionAxisPrevious,
+      parameters: () => [
+        () => this.i('styles')
+      ]
+    },
+    selected: {
+      item: MotionAxisSelected,
+      parameters: () => [
+        this.props
+      ]
+    },
+    slides: {
+      item: MotionAxisSlides,
+      parameters: () => [
+        () => this.i('status'),
+        this.slots
+      ]
+    },
+    status: {
+      item: MotionAxisStatus,
+      parameters: () => [
+        this.props,
+        () => this.i('element'),
+        () => this.i('previous'),
+        () => this.i('selected'),
+        () => this.i('styles'),
+        this.emits
+      ]
+    },
+    styles: {
+      item: MotionAxisStyles,
+      parameters: () => [
+        this.element,
+        this.naming,
+        () => this.i('selected')
+      ]
+    }
+  }
 
   /**
    * Constructor for initializing the MotionAxis controller.
@@ -47,87 +131,46 @@ export class MotionAxis {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
-   * @param constructors.MotionAxisElementConstructor class for working with elements / класс для работы с элементами
-   * @param constructors.MotionAxisGoConstructor class for working with go / класс для работы с переходом
-   * @param constructors.MotionAxisPreviousConstructor class for working with previous / класс для работы с предыдущим
-   * @param constructors.MotionAxisSelectedConstructor class for working with selected / класс для работы с выбранным
-   * @param constructors.MotionAxisSlidesConstructor class for working with slides / класс для работы со слайдами
-   * @param constructors.MotionAxisStatusConstructor class for working with status / класс для работы со статусом
-   * @param constructors.MotionAxisStylesConstructor class for working with styles / класс для работы со стилями
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: MotionAxisProps,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<MotionAxisComponents, MotionAxisProps>,
-    protected readonly slots?: MotionAxisSlots,
-    protected readonly emits?: ConstrEmit<MotionAxisEmits>,
-    constructors: {
-      ModelIncludeConstructor?: typeof ModelInclude
-      MotionAxisElementConstructor?: typeof MotionAxisElement
-      MotionAxisGoConstructor?: typeof MotionAxisGo
-      MotionAxisPreviousConstructor?: typeof MotionAxisPrevious
-      MotionAxisSelectedConstructor?: typeof MotionAxisSelected
-      MotionAxisSlidesConstructor?: typeof MotionAxisSlides
-      MotionAxisStatusConstructor?: typeof MotionAxisStatus
-      MotionAxisStylesConstructor?: typeof MotionAxisStyles
-    } = {}
+    props: Readonly<MotionAxisProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<MotionAxisComponents, MotionAxisProps>,
+    slots?: MotionAxisSlots,
+    emits?: ConstrEmit<MotionAxisEmits>,
+    constructors?: Partial<MotionAxisConstructors>
   ) {
-    const {
-      ModelIncludeConstructor = ModelInclude,
-      MotionAxisElementConstructor = MotionAxisElement,
-      MotionAxisGoConstructor = MotionAxisGo,
-      MotionAxisPreviousConstructor = MotionAxisPrevious,
-      MotionAxisSelectedConstructor = MotionAxisSelected,
-      MotionAxisSlidesConstructor = MotionAxisSlides,
-      MotionAxisStatusConstructor = MotionAxisStatus,
-      MotionAxisStylesConstructor = MotionAxisStyles
-    } = constructors
-
-    this.selected = new MotionAxisSelectedConstructor(props)
-
-    this.elementItem = new MotionAxisElementConstructor(
-      this.element,
-      this.naming
-    )
-
-    this.styles = new MotionAxisStylesConstructor(
-      this.element,
-      this.naming,
-      this.selected
-    )
-
-    this.previous = new MotionAxisPreviousConstructor(this.styles)
-    this.status = new MotionAxisStatusConstructor(
-      props,
-      this.elementItem,
-      this.selected,
-      this.previous,
-      this.styles,
-      this.emits
-    )
-
-    this.slides = new MotionAxisSlidesConstructor(this.status, slots)
-    this.go = new MotionAxisGoConstructor(
+    super(
       props,
       element,
-      this.slides,
-      this.status
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
 
-    new ModelIncludeConstructor(
-      'selected',
-      this.emits,
-      this.selected.item
-    )
+    this.i('model')
 
-    watch(
-      () => props.selected,
-      this.updateSelected
-    )
-    onMounted(this.updateSelected)
+    if (getCurrentInstance()) {
+      onUpdated(() => {
+        if (this.hasInstance('slides')) {
+          this.i('slides').update()
+        }
+      })
+    }
+  }
+
+  /**
+   * Synchronizes selected state on mount and starts watching prop changes.
+   *
+   * Синхронизирует выбранное состояние при монтировании и запускает отслеживание изменений свойств.
+   */
+  protected override readonly onMounted = (): void => {
+    this.updateSelected()
+    watch(() => this.props.selected, this.updateSelected)
   }
 
   /**
@@ -137,11 +180,13 @@ export class MotionAxis {
    * @returns map of class names to boolean activation / карта имён классов и булевых значений активации
    */
   get classes(): ConstrClassObject {
+    const go = this.i('go')
+
     return {
-      [this.naming.getStatusClass('axis', this.go.axis.value)]: true,
-      [this.naming.getStatusClass('direction', this.go.direction.value)]: true,
-      [this.naming.getStatusClass('start')]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
-      [this.naming.getStatusClass('move')]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
+      [this.naming.getStatusClass('axis', go.axis.value)]: true,
+      [this.naming.getStatusClass('direction', go.direction.value)]: true,
+      [this.naming.getStatusClass('start')]: Boolean(this.props.animationHeight) && this.i('element').getStart(),
+      [this.naming.getStatusClass('move')]: Boolean(this.props.animationHeight) && this.i('element').getMove()
     }
   }
 
@@ -153,11 +198,11 @@ export class MotionAxis {
    * @returns true if the element is included in the DOM / true если элемент включен в DOM
    */
   isInDom(key: string): boolean {
-    return this.props.inDom
+    return Boolean(this.props.inDom)
       || this.isInDomSlide(key)
-      || this.previous.is(key)
-      || this.status.isPreparation(key)
-      || this.status.isActive(key)
+      || this.i('previous').is(key)
+      || this.i('status').isPreparation(key)
+      || this.i('status').isActive(key)
   }
 
   /**
@@ -183,14 +228,14 @@ export class MotionAxis {
     const selected = this.props.selected
 
     if (
-      !this.selected.is(selected)
+      !this.i('selected').is(selected)
     ) {
       if (this.props.direction === 'auto') {
-        this.go.to(selected)
+        this.i('go').to(selected)
         return
       }
 
-      this.status.set(selected)
+      this.i('status').set(selected)
     }
   }
 }

@@ -83,8 +83,14 @@ import DemoMenuChipPage from './pages/components/DemoMenuChipPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
 import DemoMenuLanguagePage from './pages/components/DemoMenuLanguagePage.vue'
 import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
+import DemoMotionFlipPage from './pages/components/DemoMotionFlipPage.vue'
 import DemoMotionStickyPage from './pages/components/DemoMotionStickyPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
+import DemoNavigationItemPage from './pages/components/DemoNavigationItemPage.vue'
+import DemoNavigationListPage from './pages/components/DemoNavigationListPage.vue'
+import DemoNavigationRailPage from './pages/components/DemoNavigationRailPage.vue'
+import DemoNavigationRailItemPage from './pages/components/DemoNavigationRailItemPage.vue'
+import DemoPagePage from './pages/components/DemoPagePage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoPaginationPage from './pages/components/DemoPaginationPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
@@ -514,6 +520,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoMotionAxisPage
   },
   {
+    path: '/component-motion-flip',
+    name: 'component-motion-flip',
+    component: DemoMotionFlipPage
+  },
+  {
     path: '/component-motion-sticky',
     name: 'component-motion-sticky',
     component: DemoMotionStickyPage
@@ -522,6 +533,31 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-motion-transform',
     name: 'component-motion-transform',
     component: DemoMotionTransformPage
+  },
+  {
+    path: '/component-navigation-item',
+    name: 'component-navigation-item',
+    component: DemoNavigationItemPage
+  },
+  {
+    path: '/component-navigation-list',
+    name: 'component-navigation-list',
+    component: DemoNavigationListPage
+  },
+  {
+    path: '/component-navigation-rail',
+    name: 'component-navigation-rail',
+    component: DemoNavigationRailPage
+  },
+  {
+    path: '/component-navigation-rail-item',
+    name: 'component-navigation-rail-item',
+    component: DemoNavigationRailItemPage
+  },
+  {
+    path: '/component-page',
+    name: 'component-page',
+    component: DemoPagePage
   },
   {
     path: '/component-page-area',

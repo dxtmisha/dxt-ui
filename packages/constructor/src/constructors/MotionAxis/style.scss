@@ -10,6 +10,9 @@
     @include ui.initByCustom('transform', calc(ui.v('??dimension', 128px) * ui.v('??direction', 0) * ui.v('??previous', +1)));
     display: none;
     position: relative;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     opacity: 0;
 
     &--previous,

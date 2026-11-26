@@ -4,6 +4,7 @@ import type { IconPropsBasic } from '../Icon'
 import type { NavigationItemPropsBasic } from '../NavigationItem'
 import type { InputPropsBasic } from '../Input'
 
+/** Token-generated properties for NavigationList / Свойства из дизайн-токенов для NavigationList */
 type NavigationListPropsToken = {
   // :type [!] System label / Системная метка
   axis?: 'x' | 'y'
@@ -33,7 +34,7 @@ export type NavigationListProps = NavigationListPropsBasic & NavigationListProps
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsNavigationList = {
+export const defaultsNavigationList: NavigationListProps = {
   ...defaultsList,
   tag: 'a',
   ...{

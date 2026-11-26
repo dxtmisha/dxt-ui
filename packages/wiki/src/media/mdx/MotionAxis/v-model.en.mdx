@@ -2,10 +2,10 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ## State Management via v-model
 
-Two-way binding of the selected slide via `v-model:selected`.
+Two-way binding of the selected slide via `v-model:selected` (and synchronization events for `v-model:modelSelected`).
 
 **Parameters:**
-- `selected: string | number` — identifier of the selected slide
+- `selected: string | undefined` — identifier of the selected slide
 
 <Source
     code={`

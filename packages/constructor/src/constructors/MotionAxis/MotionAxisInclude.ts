@@ -1,5 +1,6 @@
 // ai-none
 
+import { mergeProps } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -10,7 +11,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 
 import type {
   MotionAxisComponentInclude,
@@ -59,7 +60,7 @@ export class MotionAxisInclude<
    * @param selected selected element / выбранный элемент
    */
   constructor(
-    props: Readonly<Props>,
+    props: ComponentIncludeProps<Props>,
     naming: DesignName,
     components?: DesignComponents<MotionAxisComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -87,8 +88,8 @@ export class MotionAxisInclude<
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
   protected override getAttrs(
-    attrs?: ConstrBind<PropsExtra>
-  ) {
+    attrs?: Partial<ConstrBind<PropsExtra>>
+  ): Partial<ConstrBind<PropsExtra>> {
     return {
       ...super.getAttrs(attrs),
       selected: this.selectedItem
@@ -101,11 +102,13 @@ export class MotionAxisInclude<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
-    return {
-      ...super.toBinds(),
-      onMotionAxis: this.onMotionAxis
-    }
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
+    return mergeProps(
+      super.toBinds(),
+      {
+        onMotionAxis: this.onMotionAxis
+      }
+    ) as Partial<ConstrBind<PropsExtra>>
   }
 
   /**
@@ -114,7 +117,7 @@ export class MotionAxisInclude<
    * Поднимает событие 'motionAxis' наверх.
    * @param options event payload / параметры события
    */
-  protected readonly onMotionAxis = (options: MotionAxisEmitOptions) => {
+  protected readonly onMotionAxis = (options: MotionAxisEmitOptions): void => {
     this.emits?.('motionAxis', options)
   }
 }

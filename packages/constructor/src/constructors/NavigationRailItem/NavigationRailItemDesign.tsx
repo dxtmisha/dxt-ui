@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -77,7 +77,7 @@ export class NavigationRailItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -115,63 +115,65 @@ export class NavigationRailItemDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
-   * @returns rendered VNode or undefined / отрендеренный VNode или undefined
+   * @returns rendered VNode / отрендеренный VNode
    */
-  protected initRender(): VNode | undefined {
-    const children: any[] = []
+  protected initRender(): VNode {
+    const children: VNode[] = []
 
     this.initSlot('leading', children)
 
     children.push(
       ...this.renderContext(),
-      ...this.item.progress.render(),
-      ...this.item.ripple.render()
+      ...this.item.callInstance('progress', item => item.render(), []),
+      ...this.item.callInstance('ripple', item => item.render(), [])
     )
 
     this.initSlot('body', children)
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
 
   /**
-   * Generates icon and badge container.
+   * Generates icon, label, and badge container.
    *
-   * Генерирует контейнер для иконки и значка.
+   * Генерирует контейнер для иконки, метки и значка.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderContext = (): VNode[] => {
-    if (this.item.badge.is) {
-      if (this.item.icon.isIcon()) {
+    if (this.item.callInstance('badge', item => item.is, false)) {
+      if (this.item.callInstance('icon', item => item.isIcon(), false)) {
         return [
           h('div', this.getKeyClass('context'), [
-            ...this.item.icon.renderIcon(),
-            ...this.item.badge.render()
+            ...this.item.callInstance('icon', item => item.renderIcon(), []),
+            ...this.item.callInstance('badge', item => item.render(), [])
           ]),
-          ...this.item.label.render()
+          ...this.item.callInstance('label', item => item.render(), [])
         ]
       }
 
       return [
         h('div', this.getKeyClass('contextLine'), [
-          ...this.item.label.render(),
-          ...this.item.badge.render()
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('badge', item => item.render(), [])
         ])
       ]
     }
 
     return [
-      ...this.item.icon.renderIcon(),
-      ...this.item.label.render()
+      ...this.item.callInstance('icon', item => item.renderIcon(), []),
+      ...this.item.callInstance('label', item => item.render(), [])
     ]
   }
 }

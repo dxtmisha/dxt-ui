@@ -1,22 +1,22 @@
-import {
-  type ConstrOptions
-} from '@dxtmisha/functional'
+import type { ConstrOptions } from '@dxtmisha/functional'
 
 import { BlockDesign } from '../Block'
 import { Page } from './Page'
 
-import {
-  type PagePropsBasic
-} from './props'
-import {
-  type PageClasses,
-  type PageComponents,
-  type PageEmits,
-  type PageExpose
+import type { PagePropsBasic } from './props'
+import type {
+  PageClasses,
+  PageComponents,
+  PageEmits,
+  PageExpose
 } from './types'
 
 /**
- * PageDesign
+ * PageDesign component class for rendering the page component layout and slots.
+ * Extends BlockDesign using the Page logic orchestrator and page semantic defaults.
+ *
+ * Класс компонента PageDesign для рендеринга разметки и слотов компонента страницы.
+ * Расширяет BlockDesign с использованием оркестратора логики Page и семантических значений страницы по умолчанию.
  */
 export class PageDesign<
   COMP extends PageComponents,
@@ -30,11 +30,13 @@ export class PageDesign<
     P
   > {
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor block item class/ класс элемента блока
+   * Constructor for creating a PageDesign instance.
+   *
+   * Конструктор для создания экземпляра PageDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor page item class / класс элемента страницы
    */
   constructor(
     name: string,

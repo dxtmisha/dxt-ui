@@ -1,6 +1,6 @@
 // ai-none
 
-import { MotionFlipElement } from './MotionFlipElement'
+import type { MotionFlipElement } from './MotionFlipElement'
 import { MotionFlipItem } from './MotionFlipItem'
 
 /**
@@ -16,11 +16,21 @@ export class MotionFlipItems {
 
   /**
    * Constructor
-   * @param elementManager main element manager instance / главный экземпляр менеджера элемента
+   * @param elementManager main element manager getter / геттер главного менеджера элемента
    */
   constructor(
-    protected readonly elementManager: MotionFlipElement
+    protected readonly elementManager: () => MotionFlipElement
   ) { }
+
+  /**
+   * Updates positions and sizes for all child item elements.
+   *
+   * Обновляет положения и размеры для всех дочерних элементов.
+   */
+  update(): void {
+    const rectangles = this.items.map(item => item.getRectangle())
+    this.items.forEach((item, index) => item.update(rectangles[index]))
+  }
 
   /**
    * Resets all child item elements.
@@ -51,22 +61,12 @@ export class MotionFlipItems {
   }
 
   /**
-   * Updates positions and sizes for all child item elements.
-   *
-   * Обновляет положения и размеры для всех дочерних элементов.
-   */
-  update(): void {
-    const rectangles = this.items.map(item => item.getRectangle())
-    this.items.forEach((item, index) => item.update(rectangles[index]))
-  }
-
-  /**
    * Initializes and creates all child item elements with their original sizes.
    *
    * Инициализирует и создаёт все дочерние элементы с их исходными размерами.
    */
   init(): void {
-    const element = this.elementManager.getElement()
+    const element = this.elementManager().getElement()
 
     if (element) {
       const children = Array.from(element.children) as HTMLElement[]

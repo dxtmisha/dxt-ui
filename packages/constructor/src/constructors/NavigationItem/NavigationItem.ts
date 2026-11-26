@@ -1,10 +1,10 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
-import { ListItem } from '../ListItem'
+import { ListItem, type ListItemConstructors } from '../ListItem'
 
+import type { NavigationItemProps } from './props'
 import type { NavigationItemComponents, NavigationItemEmits, NavigationItemSlots } from './types'
-import type { NavigationItemPropsBasic } from './props'
 
 /**
  * NavigationItem class constructor managing its child elements, attributes, classes, and accessibility.
@@ -16,22 +16,24 @@ import type { NavigationItemPropsBasic } from './props'
 export class NavigationItem extends ListItem {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected override readonly props: NavigationItemPropsBasic,
-    protected override readonly element: Ref<HTMLElement | undefined>,
-    protected override readonly naming: DesignName,
-    protected override readonly components?: DesignComp<NavigationItemComponents, NavigationItemPropsBasic>,
-    protected override readonly slots?: NavigationItemSlots,
-    protected override readonly emits?: ConstrEmit<NavigationItemEmits>,
-    constructors: Record<string, any> = {}
+    props: Readonly<NavigationItemProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<NavigationItemComponents, NavigationItemProps>,
+    slots?: NavigationItemSlots,
+    emits?: ConstrEmit<NavigationItemEmits>,
+    constructors?: Partial<ListItemConstructors>
   ) {
     super(
       props,

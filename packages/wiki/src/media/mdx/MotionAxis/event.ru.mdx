@@ -2,31 +2,38 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ### `start`
 
-Событие срабатывает в начале анимации перехода.
+Событие срабатывает в начале анимации перехода слайда.
 
 **Параметры:**
-- `selected: string | number` — идентификатор слайда, к которому начинается переход
+- `selected: string | undefined` — идентификатор слайда, к которому начинается переход
 
 ### `end`
 
-Событие срабатывает после завершения анимации перехода.
+Событие срабатывает после завершения анимации перехода слайда.
 
 **Параметры:**
-- `selected: string | number` — идентификатор слайда, на котором завершился переход
+- `selected: string | undefined` — идентификатор слайда, на котором завершился переход
 
 ### `motionAxis`
 
-Событие срабатывает в начале и в конце анимации перехода.
+Событие срабатывает на этапах начала и завершения анимации перехода.
 
 **Параметры:**
-- `options: MotionAxisEmitOptions` — объект с параметрами события
+- `options: MotionAxisEmitOptions` — объект с параметрами фазы перехода
 
-**Структура MotionAxisEmitOptions:**
-- `type: 'start' | 'end'` — тип события
-- `selected: string | number` — идентификатор выбранного слайда
-- `previous: string | number` — идентификатор предыдущего слайда
-- `preparation: string | number` — идентификатор подготавливаемого слайда
-- `active: string | number` — идентификатор активного слайда
+**Структура `MotionAxisEmitOptions`:**
+- `type: 'start' | 'end'` — тип фазы перехода
+- `selected?: string` — идентификатор выбранного целевого слайда
+- `previous?: string` — идентификатор уходящего слайда (очищается на этапе `'end'`)
+- `preparation?: string` — идентификатор подготавливаемого входящего слайда (очищается на этапе `'end'`)
+- `active?: string` — идентификатор текущего активного слайда
+
+### `update:selected` и `update:modelSelected`
+
+События срабатывают при изменении внутреннего идентификатора выбранного слайда (поддержка `v-model:selected` и `v-model:modelSelected`).
+
+**Параметры:**
+- `value: string | undefined` — новый идентификатор выбранного слайда
 
 <Source
     code={`
@@ -46,9 +53,10 @@ const handleMotionAxis = (options) => {
 
 <template>
   <MotionAxis
+    :selected="selected"
     @start="handleStart"
     @end="handleEnd"
-    @motionAxis="handleMotionAxis"
+    @motion-axis="handleMotionAxis"
   >
     <!-- Слайды -->
   </MotionAxis>

@@ -1,6 +1,7 @@
 // ai-none
 
-import { onMounted, onUnmounted, watch } from 'vue'
+import { watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import type { MotionFlipAction } from './MotionFlipAction'
 import type { MotionFlipElement } from './MotionFlipElement'
@@ -12,44 +13,77 @@ import type { MotionFlipProps } from './props'
  *
  * Класс для управления наблюдением за изменениями DOM для автоматического запуска FLIP-анимаций.
  */
-export class MotionFlipObserver {
+export class MotionFlipObserver extends DesignLifecycleAbstract {
   /** Mutation observer instance / Экземпляр наблюдателя за мутациями */
   protected observer?: MutationObserver
+
+  /** Reactive watcher stop handle / Обработчик остановки реактивного наблюдателя */
+  protected stopWatch?: WatchStopHandle
 
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param action action controller / контроллер действий
-   * @param elementManager element manager / менеджер элемента
-   * @param items item list controller / контроллер списка элементов
+   * @param action action controller getter / геттер контроллера действий
+   * @param elementManager element manager getter / геттер менеджера элемента
+   * @param items item list controller getter / геттер контроллера списка элементов
    */
   constructor(
-    protected readonly props: MotionFlipProps,
-    protected readonly action: MotionFlipAction,
-    protected readonly elementManager: MotionFlipElement,
-    protected readonly items: MotionFlipItems
+    protected readonly props: Readonly<MotionFlipProps>,
+    protected readonly action: () => MotionFlipAction,
+    protected readonly elementManager: () => MotionFlipElement,
+    protected readonly items: () => MotionFlipItems
   ) {
-    watch(
-      [
-        () => this.props.auto,
-        () => this.elementManager.getElement()
-      ],
-      this.update
-    )
-
-    onMounted(this.update)
-    onUnmounted(() => {
-      this.stop()
-    })
+    super()
   }
 
   /**
-   * Updates observer state based on auto property and element availability.
+   * Checks whether automatic DOM mutation observation should be enabled.
    *
-   * Обновляет состояние наблюдателя в зависимости от свойства auto и доступности элемента.
+   * Проверяет, должно ли быть включено автоматическое наблюдение за мутациями DOM.
+   * @param props component properties / свойства компонента
+   * @returns true if automatic observation is active / true, если автоматическое наблюдение активно
+   */
+  static is(props?: MotionFlipProps): boolean {
+    return Boolean(props?.auto && !props?.disabled)
+  }
+
+  /**
+   * Starts mutation observation and reactive watchers when component mounts.
+   *
+   * Запускает наблюдение за мутациями и реактивные наблюдатели при монтировании компонента.
+   */
+  override readonly onMounted = (): void => {
+    this.update()
+
+    this.stopWatch?.()
+    this.stopWatch = watch(
+      [
+        () => this.props.auto,
+        () => this.props.disabled,
+        () => this.elementManager().getElement()
+      ],
+      this.update
+    )
+  }
+
+  /**
+   * Disconnects mutation observer and stops watchers when component unmounts.
+   *
+   * Отключает наблюдатель мутаций и останавливает наблюдатели при размонтировании компонента.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
+    this.stop()
+  }
+
+  /**
+   * Updates observer state based on auto property, disabled state, and element availability.
+   *
+   * Обновляет состояние наблюдателя в зависимости от свойства auto, состояния disabled и доступности элемента.
    */
   protected readonly update = (): void => {
-    if (this.props.auto) {
+    if (MotionFlipObserver.is(this.props)) {
       this.start()
     } else {
       this.stop()
@@ -62,8 +96,10 @@ export class MotionFlipObserver {
    * Обработчик событий мутации для изменений DOM.
    */
   protected readonly onMutation = (): void => {
-    if (this.action.isEnable()) {
-      this.action.go()
+    const action = this.action()
+
+    if (action.isEnable()) {
+      action.go()
       this.takeRecords()
     }
   }
@@ -74,11 +110,11 @@ export class MotionFlipObserver {
    * Запускает наблюдение за мутациями DOM на целевом элементе.
    */
   protected start(): void {
-    const element = this.elementManager.getElement()
+    const element = this.elementManager().getElement()
 
-    if (element) {
+    if (element && typeof MutationObserver !== 'undefined') {
       this.stop()
-      this.items.init()
+      this.items().init()
 
       this.observer = new MutationObserver(this.onMutation)
       this.observer.observe(element, {

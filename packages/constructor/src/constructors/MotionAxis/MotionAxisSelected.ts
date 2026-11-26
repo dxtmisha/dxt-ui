@@ -23,7 +23,7 @@ export class MotionAxisSelected {
    * @param props input data / входные данные
    */
   constructor(
-    protected props: MotionAxisProps
+    protected readonly props: Readonly<MotionAxisProps>
   ) {
     this.item.value = props.selected
   }
@@ -35,7 +35,7 @@ export class MotionAxisSelected {
    * @param selected selected slide / выбранный слайд
    * @returns true if slide matches selected / true если слайд совпадает с выбранным
    */
-  is(selected?: string): boolean {
+  is(selected?: MotionAxisSelectedValue): boolean {
     return this.item.value === selected
   }
 

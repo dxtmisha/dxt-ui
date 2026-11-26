@@ -8,6 +8,10 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
+/**
+ * Type describing token properties for NavigationRailItem /
+ * Тип, описывающий свойства токенов для NavigationRailItem
+ */
 export type NavigationRailItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -36,8 +40,6 @@ export type NavigationRailItemPropsBasic<
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    /** Item index / Индекс элемента */
-    index?: any
     /** URL address for links / URL-адрес для ссылок */
     href?: string
 

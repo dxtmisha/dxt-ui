@@ -2,10 +2,10 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ## Управление состоянием через v-model
 
-Двусторонняя привязка выбранного слайда через `v-model:selected`.
+Двусторонняя привязка выбранного слайда через `v-model:selected` (а также события синхронизации для `v-model:modelSelected`).
 
 **Параметры:**
-- `selected: string | number` — идентификатор выбранного слайда
+- `selected: string | undefined` — идентификатор выбранного слайда
 
 <Source
     code={`

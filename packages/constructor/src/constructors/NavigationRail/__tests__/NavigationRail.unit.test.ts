@@ -1,11 +1,13 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, defineComponent, h, nextTick, ref, type App } from 'vue'
+import { createApp, defineComponent, h, nextTick, reactive, ref, type App } from 'vue'
 import { DesignName, ServerStorage } from '@dxtmisha/functional'
 
+import { EnabledInclude } from '../../../classes/EnabledInclude'
+import { ListControl, ListFocus, ListGo } from '../../List'
 import { NavigationRail, type NavigationRailConstructors } from '../NavigationRail'
-import type { NavigationRailProps } from '../props'
+import { defaultsNavigationRail, type NavigationRailProps } from '../props'
 
 const applications: App[] = []
 
@@ -21,16 +23,26 @@ describe('NavigationRail (Unit)', () => {
 
   function createNavigationRailInScope(
     props: NavigationRailProps = {},
-    constructors?: Partial<NavigationRailConstructors>
+    constructors?: Partial<NavigationRailConstructors>,
+    emits: (...args: unknown[]) => void = vi.fn()
   ): {
     rail: NavigationRail
+    emits: ReturnType<typeof vi.fn>
     unmount: () => void
   } {
     let instance!: NavigationRail
     const Host = defineComponent({
       setup() {
         const element = ref<HTMLElement>()
-        instance = new NavigationRail(props, element, naming, undefined, undefined, vi.fn(), constructors)
+        instance = new NavigationRail(
+          props,
+          element,
+          naming,
+          undefined,
+          undefined,
+          emits as never,
+          constructors
+        )
         return () => h('div', { ref: element })
       }
     })
@@ -42,20 +54,40 @@ describe('NavigationRail (Unit)', () => {
 
     return {
       rail: instance,
+      emits: emits as ReturnType<typeof vi.fn>,
       unmount: () => application.unmount()
     }
   }
 
-  describe('Lazy instantiation and Dependency Injection', () => {
-    it('keeps control and go uninstantiated until accessed when control is false', () => {
+  describe('Defaults, Lazy instantiation and Dependency Injection', () => {
+    it('exposes expected defaultsNavigationRail values', () => {
+      expect(defaultsNavigationRail).toEqual({
+        keyLabel: 'label',
+        keyValue: 'value',
+        tag: 'div',
+        role: 'listbox',
+        tabindex: 0
+      })
+    })
+
+    it('keeps subordinate helpers uninstantiated before access and blocks control creation when disabled or inactive', () => {
       ServerStorage.init(() => ({}))
       const { rail, unmount } = createNavigationRailInScope({
+        ...defaultsNavigationRail,
         list: [{ value: 'home', label: 'Home' }]
       })
 
       expect(rail.hasInstance('data')).toBe(false)
       expect(rail.hasInstance('focus')).toBe(false)
       expect(rail.hasInstance('go')).toBe(false)
+      expect(rail.hasInstance('control')).toBe(false)
+      expect(rail.hasInstance('enabled')).toBe(false)
+      expect(rail.hasInstance('event')).toBe(false)
+
+      const binds = rail.binds
+      expect(binds.tabindex).toBe(0)
+      ;(binds.onFocus as () => void)()
+      ;(binds.onBlur as () => void)()
       expect(rail.hasInstance('control')).toBe(false)
 
       expect(rail.list).toHaveLength(1)
@@ -67,35 +99,116 @@ describe('NavigationRail (Unit)', () => {
       unmount()
     })
 
-    it('supports dependency injection overrides', () => {
+    it('supports dependency injection overrides for all NavigationRailConstructors', () => {
       ServerStorage.init(() => ({}))
       const customOnClick = vi.fn()
+      const customOnFocus = vi.fn()
+
+      class CustomControl extends ListControl {
+        override readonly onFocus = customOnFocus
+      }
+      class CustomEnabled extends EnabledInclude {}
+      class CustomFocus extends ListFocus {}
+      class CustomGo extends ListGo {}
       class CustomEventClick {
         onClick = customOnClick
       }
 
       const { rail, unmount } = createNavigationRailInScope(
         {
+          control: true,
           list: [{ value: 'home', label: 'Home' }]
         },
         {
-          event: CustomEventClick as unknown as NavigationRailConstructors['event']
+          control: CustomControl,
+          enabled: CustomEnabled,
+          event: CustomEventClick as unknown as NavigationRailConstructors['event'],
+          focus: CustomFocus,
+          go: CustomGo
         }
       )
 
       const binds = rail.getItem(rail.list[0]!)
       expect(binds.onClick).toBe(customOnClick)
+      expect(rail.i('focus')).toBeInstanceOf(CustomFocus)
+      expect(rail.i('go')).toBeInstanceOf(CustomGo)
+      expect(rail.i('enabled')).toBeInstanceOf(CustomEnabled)
+      expect(rail.i('control')).toBeInstanceOf(CustomControl)
+
+      ;(rail.binds.onFocus as () => void)()
+      expect(customOnFocus).toHaveBeenCalledTimes(1)
+
       unmount()
     })
   })
 
-  describe('Item, menu, management bindings and SSR isolation', () => {
-    it('builds item, menu, and management bindings without overwriting item roles', () => {
+  describe('ARIA attributes and root bindings', () => {
+    it('computes role, aria-multiselectable, aria-disabled, and tabindex dynamically', () => {
+      ServerStorage.init(() => ({}))
+      const props = reactive<NavigationRailProps>({
+        ...defaultsNavigationRail,
+        list: [{ value: 'home', label: 'Home' }]
+      })
+      const { rail, unmount } = createNavigationRailInScope(props)
+
+      expect(rail.aria).toEqual({ role: 'listbox' })
+      expect(rail.binds.tabindex).toBe(0)
+
+      props.role = 'navigation'
+      props.ariaMultiselectable = true
+      expect(rail.aria).toEqual({
+        'role': 'navigation',
+        'aria-multiselectable': 'true'
+      })
+
+      props.ariaMultiselectable = false
+      expect(rail.aria).toEqual({
+        'role': 'navigation',
+        'aria-multiselectable': 'false'
+      })
+
+      props.control = true
+      expect(rail.binds.tabindex).toBeUndefined()
+
+      props.control = false
+      props.disabled = true
+      expect(rail.aria['aria-disabled']).toBe('true')
+      expect(rail.binds.tabindex).toBeUndefined()
+
+      unmount()
+    })
+
+    it('prevents control activation when disabled=true even if control=true', async () => {
+      ServerStorage.init(() => ({}))
+      const { rail, unmount } = createNavigationRailInScope({
+        ...defaultsNavigationRail,
+        control: true,
+        disabled: true,
+        selected: 'one',
+        list: [{ value: 'one', label: 'One' }]
+      })
+
+      await nextTick()
+
+      expect(rail.hasInstance('control')).toBe(false)
+      expect(rail.hasInstance('go')).toBe(false)
+
+      ;(rail.binds.onFocus as () => void)()
+      ;(rail.binds.onBlur as () => void)()
+      expect(rail.hasInstance('control')).toBe(false)
+
+      unmount()
+    })
+  })
+
+  describe('Item, menu, management bindings, disabled propagation and SSR isolation', () => {
+    it('builds item, menu, and management bindings cleanly and propagates inMenu iconArrowRight', () => {
       ServerStorage.init(() => ({}))
       const itemClick = vi.fn()
       const { rail, unmount } = createNavigationRailInScope({
         tag: 'a',
         divider: true,
+        iconArrowRight: 'chevron_right',
         itemAttrs: { 'data-rail': '1' },
         itemMenuAttrs: { 'data-menu-attr': 'm' },
         itemManagementAttrs: { 'data-mgmt-attr': 'x' },
@@ -131,11 +244,69 @@ describe('NavigationRail (Unit)', () => {
       expect(menuBinds['data-menu-attr']).toBe('m')
       expect(menuBinds.class).toContain('d1-navigationRail__menu')
 
-      const mgmtBinds = rail.getItemManagementFormMenu(menuItem!, true)
-      expect(mgmtBinds['data-mgmt-attr']).toBe('x')
-      expect(mgmtBinds['data-status']).toBe('open')
-      expect(mgmtBinds.selectedChild).toBe(true)
-      expect(mgmtBinds.selectionStyle).toBe('none')
+      const mgmtTopBinds = rail.getItemManagementFormMenu(menuItem!, false, false)
+      expect(mgmtTopBinds['data-mgmt-attr']).toBe('x')
+      expect(mgmtTopBinds['data-status']).toBe('close')
+      expect(mgmtTopBinds.selectedChild).toBe(true)
+      expect(mgmtTopBinds.selectionStyle).toBe('none')
+      expect(mgmtTopBinds.iconTrailing).toBeUndefined()
+      expect('filterMode' in rail.getItemManagementFormMenu({ index: 'm', type: 'menu', value: 'm', label: 'M' }, false, false)).toBe(false)
+
+      const mgmtNestedBinds = rail.getItemManagementFormMenu(menuItem!, true, true)
+      expect(mgmtNestedBinds['data-status']).toBe('open')
+      expect(mgmtNestedBinds.iconTrailing).toBe('chevron_right')
+
+      unmount()
+    })
+
+    it('propagates rail-level disabled state to all item helpers and blocks event emissions', () => {
+      ServerStorage.init(() => ({}))
+      const emits = vi.fn()
+      const { rail, unmount } = createNavigationRailInScope(
+        {
+          disabled: true,
+          list: [
+            { value: 'home', label: 'Home' },
+            {
+              index: 'mnu',
+              type: 'menu',
+              label: 'More',
+              value: [{ value: 'sub', label: 'Sub' }]
+            }
+          ]
+        },
+        undefined,
+        emits
+      )
+
+      const itemBinds = rail.getItem(rail.list[0]!)
+      expect(itemBinds.disabled).toBe(true)
+      expect(rail.getItemMenu({ index: 'sub', type: 'item', value: 'sub', label: 'Sub' }).disabled).toBe(true)
+      expect(rail.getItemManagementFormMenu(rail.list[1]!, false, true).disabled).toBe(true)
+
+      const clickHandler = itemBinds.onClick as (event: MouseEvent, options?: Record<string, unknown>) => void
+      clickHandler(new MouseEvent('click'), { value: 'home', type: 'click' })
+      expect(emits).not.toHaveBeenCalled()
+
+      unmount()
+    })
+
+    it('preserves numeric 0 values across label, value, index, selected, and tabindex', () => {
+      ServerStorage.init(() => ({}))
+      const { rail, unmount } = createNavigationRailInScope({
+        ...defaultsNavigationRail,
+        tabindex: 0,
+        selected: 0,
+        list: [{ index: 0, value: 0, label: '0' }]
+      })
+
+      expect(rail.binds.tabindex).toBe(0)
+      expect(rail.i('data').isSelected.value).toBe(true)
+      expect(rail.i('data').selectedValues.value).toEqual([0])
+
+      const itemBinds = rail.getItem(rail.list[0]!)
+      expect(itemBinds.value).toBe(0)
+      expect(itemBinds.label).toBe('0')
 
       unmount()
     })

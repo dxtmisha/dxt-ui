@@ -1,33 +1,33 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Specialized list item component designed for application navigation menus, sidebars, and top navigation bars.
+The `NavigationItem` component is a specialized list item built for application navigation menus, sidebars, drawers, and top navigation bars.
 
-NavigationItem extends the core ListItem component, tailored specifically for navigation structures. It inherits all features of ListItem (labels, descriptions, leading/trailing icons, badges, selected states, and ripple click effects) while providing optimized navigation-specific styling.
+Extending the core `ListItem` constructor, it preserves all layout slots, icon and badge integrations, selection styles, search highlighting, lazy rendering, and interactive states while defaulting to an anchor (`<a>`) element tailored for navigation structures.
 
-**Key Features:**
+**Key features:**
 
-- Inherited layout capabilities and slots from ListItem (prefix, suffix, label, description, caption)
-- Optimized visual styling for navigation menus and sidebars
-- Icon support with flexible positioning
-- Badge integration for status indicators and notification counts
-- Interactive states (focus, selected, disabled, readonly)
-- Visual ripple click feedback
-- Support for navigation links (Vue Router / href) and button/div tags
+- **Inherited ListItem Architecture:** Full support for `leading`, `prefix`, `default`, `caption`, `suffix`, `description`, `body`, and `trailing` slots
+- **Link & Tag Flexibility:** Defaults to `<a>` with `href` and router `to` support, or switches to `button`, `div`, `span`, or `li` via `tag`
+- **Icons & Badges:** Leading and trailing icons with alignment (`iconAlign`, `iconTop`) plus numeric or dot status badges
+- **Interactive & Selection States:** Supports `focus`, `open`, `selected`, `selectedChild`, `disabled`, `readonly`, and `selectionStyle` (`none`, `checkbox`, `radio`, `checkmark`)
+- **Search, Loading & Lazy Rendering:** Includes `highlight` / `filterMode`, `loading` progress, `isSkeleton` placeholders, `lazy` visibility rendering, and ripple feedback
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Sidebar menu items
-- Header navigation links
-- Navigation drawer items and action lists
+- Sidebar and navigation drawer links inside `NavigationList`
+- Header navigation bar items and nested menu sections
+- Selectable navigation entries with counters, descriptions, or shortcut suffixes
 
 <Source
     code={`
 <template>
   <NavigationList>
-    <NavigationItem icon="home" selected>Home</NavigationItem>
-    <NavigationItem icon="settings" description="System configuration">Settings</NavigationItem>
+    <NavigationItem icon="home" href="#home" selected>Home</NavigationItem>
+    <NavigationItem icon="settings" href="#settings" description="System configuration">Settings</NavigationItem>
   </NavigationList>
 </template>
   `}
     language="html"
 />
+
+> NavigationItem combines semantic navigation link behavior with the complete layout, state management, and accessibility features of ListItem.

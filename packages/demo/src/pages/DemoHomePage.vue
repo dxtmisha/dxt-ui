@@ -88,8 +88,14 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="MenuCountry" name="component-menu-country"/>
         <DemoLink label="MenuLanguage" name="component-menu-language"/>
         <DemoLink label="Motion Axis" name="component-motion-axis"/>
+        <DemoLink label="MotionFlip" name="component-motion-flip"/>
         <DemoLink label="MotionSticky" name="component-motion-sticky"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
+        <DemoLink label="NavigationItem" name="component-navigation-item"/>
+        <DemoLink label="NavigationList" name="component-navigation-list"/>
+        <DemoLink label="NavigationRail" name="component-navigation-rail"/>
+        <DemoLink label="NavigationRailItem" name="component-navigation-rail-item"/>
+        <DemoLink label="Page" name="component-page"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Pagination" name="component-pagination"/>
         <DemoLink label="Progress" name="component-progress"/>

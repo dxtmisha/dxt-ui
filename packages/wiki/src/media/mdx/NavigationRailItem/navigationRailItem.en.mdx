@@ -1,34 +1,47 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Compact navigation list item component designed specifically for vertical Navigation Rail bars, sidebars, and mini navigation drawers.
+The `NavigationRailItem` component is a compact navigation item designed for vertical navigation rails, sidebars, and mini navigation drawers.
 
-NavigationRailItem is tailored for vertical rail navigation interfaces. It features single leading icon support, label rendering, badge integration, divider support, ripple click effects, and progress/skeleton loading states.
+It combines leading icon rendering, label content, badge indicators, divider markers, progress loading, skeleton placeholders, ripple feedback, and ARIA accessibility attributes into a single interactive element.
 
-**Key Features:**
+**Key features:**
 
-- Compact vertical layout for Navigation Rail bars
-- Single leading icon with customizable alignment
-- Label and badge integration
-- Interactive states (focus, selected, disabled, readonly)
-- Divider support for section separation
-- Visual ripple click feedback
-- Support for links (href / Vue Router) and button/div/span tags
-- Leading and body slots for custom layout extension
+- **Compact Rail Layout:** Automatic layout grouping for leading icons, labels, and overlapping or inline badges
+- **Interactive States:** Built-in support for `selected`, `focus`, `open`, `selectedChild`, `disabled`, `readonly`, and `divider` states
+- **Loading & Skeletons:** Integrated circular progress indicator via `loading` and zero-duplication skeleton rendering via `isSkeleton`
+- **Polymorphic Tag & Links:** Supports `button`, `a`, `span`, `li`, and `div` tags as well as `href` and Vue Router `to` navigation
+- **Slots & Events:** Provides `leading`, `default`, and `body` slots, emits `click` and `clickLite`, and exposes `getValue` and `getDetail`
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Navigation Rail items in desktop and tablet apps
-- Mini sidebar navigation items
-- Vertical action bar buttons
+- Vertical navigation rail items in desktop and tablet applications
+- Compact sidebar and mini-drawer navigation links
+- Action items with notification badges and loading states
 
 <Source
     code={`
 <template>
-  <div class="navigation-rail">
-    <NavigationRailItem icon="home" selected>Home</NavigationRailItem>
-    <NavigationRailItem icon="settings">Settings</NavigationRailItem>
-  </div>
+  <NavigationRailItem
+    icon="home"
+    label="Home"
+    value="home"
+    selected
+  />
+  <NavigationRailItem
+    icon="notifications"
+    label="Alerts"
+    :badge="5"
+    value="alerts"
+  />
+  <NavigationRailItem
+    icon="settings"
+    label="Settings"
+    divider
+    value="settings"
+  />
 </template>
   `}
     language="html"
 />
+
+> NavigationRailItem unifies compact vertical navigation presentation, keyboard and pointer accessibility, and flexible slot extension.

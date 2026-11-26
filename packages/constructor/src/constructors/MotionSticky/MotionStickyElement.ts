@@ -1,11 +1,16 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import { type ConstrEmit, getElement } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  getElement,
+  getElementOrWindow,
+  isDomRuntime
+} from '@dxtmisha/functional'
 
-import type { MotionStickyEmits } from './types'
+import type { MotionStickyPosition, MotionStickyStylePosition } from './basicTypes'
 import type { MotionStickyProps } from './props'
-import type { MotionStickyPosition } from './basicTypes'
+import type { MotionStickyEmits } from './types'
 
 /**
  * Class for working with sticky element position calculations.
@@ -20,21 +25,10 @@ export class MotionStickyElement {
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: MotionStickyProps,
+    protected readonly props: Readonly<MotionStickyProps>,
     readonly element: Ref<HTMLElement | undefined>,
     protected readonly emits?: ConstrEmit<MotionStickyEmits>
-  ) { }
-
-  /**
-   * Element for control management.
-   *
-   * Элемент для контроля управления.
-   */
-  get focusElement(): HTMLElement | Element | undefined {
-    return getElement(this.props.elementScroll)
-      ?? document.scrollingElement
-      ?? document.documentElement
-  }
+  ) {}
 
   /**
    * Element for event management.
@@ -42,11 +36,30 @@ export class MotionStickyElement {
    * Элемент для управления событием.
    */
   get eventElement(): HTMLElement | Window | undefined {
-    if (this.props.elementScroll) {
-      return getElement(this.props.elementScroll)
+    if (isDomRuntime()) {
+      if (this.props.elementScroll) {
+        return getElementOrWindow(this.props.elementScroll)
+      }
+
+      return window
     }
 
-    return window
+    return undefined
+  }
+
+  /**
+   * Element for control management.
+   *
+   * Элемент для контроля управления.
+   */
+  get focusElement(): HTMLElement | Element | undefined {
+    if (isDomRuntime()) {
+      return getElement(this.props.elementScroll)
+        ?? document.scrollingElement
+        ?? document.documentElement
+    }
+
+    return undefined
   }
 
   /**
@@ -57,29 +70,6 @@ export class MotionStickyElement {
    */
   getElement(): HTMLElement | undefined {
     return this.element.value
-  }
-
-  /**
-   * Returns the position of the styles.
-   *
-   * Возвращает позицию стилей.
-   * @returns sticky positions / липкие позиции
-   */
-  getPositionStyle(): MotionStickyPosition | undefined {
-    const targetElement = this.element.value
-
-    if (targetElement) {
-      const computedStyle = getComputedStyle(targetElement)
-
-      if (computedStyle.position === 'sticky') {
-        return {
-          top: parseInt(computedStyle.top.replace(/[^0-9]/ig, '')) || 0,
-          bottom: parseInt(computedStyle.bottom.replace(/[^0-9]/ig, '')) || 0
-        }
-      }
-    }
-
-    return undefined
   }
 
   /**
@@ -95,14 +85,46 @@ export class MotionStickyElement {
     if (
       targetElement
       && focusElement
+      && isDomRuntime()
     ) {
       const rectTarget = targetElement.getBoundingClientRect()
       const rectFocus = focusElement.getBoundingClientRect()
-      const topOffset = Math.round(rectTarget.top - (rectFocus.top > 0 ? rectFocus.top : 0))
+      const focusTop = rectFocus.top > 0 ? rectFocus.top + focusElement.clientTop : 0
+      const focusBorderBottom = parseFloat(getComputedStyle(focusElement).borderBottomWidth) || 0
+      const focusBottom = rectFocus.bottom > window.innerHeight
+        ? window.innerHeight
+        : rectFocus.bottom - focusBorderBottom
+      const topOffset = Math.round(rectTarget.top - focusTop)
 
       return {
         top: topOffset <= -0.99 ? 0 : topOffset,
-        bottom: Math.round((rectFocus.bottom > window.innerHeight ? window.innerHeight : rectFocus.bottom) - rectTarget.bottom)
+        bottom: Math.round(focusBottom - rectTarget.bottom)
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the position of the styles.
+   *
+   * Возвращает позицию стилей.
+   * @returns sticky positions / липкие позиции
+   */
+  getPositionStyle(): MotionStickyStylePosition | undefined {
+    const targetElement = this.element.value
+
+    if (
+      targetElement
+      && isDomRuntime()
+    ) {
+      const computedStyle = getComputedStyle(targetElement)
+
+      if (computedStyle.position === 'sticky') {
+        return {
+          top: this.parsePositionOffset(computedStyle.top),
+          bottom: this.parsePositionOffset(computedStyle.bottom)
+        }
       }
     }
 
@@ -123,7 +145,14 @@ export class MotionStickyElement {
       const scrollState = this.getScrollState()
 
       if (this.props.classActivity) {
-        targetElement.classList.toggle(this.props.classActivity, stickyStatus)
+        const classes = this.props.classActivity
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean)
+
+        for (const className of classes) {
+          targetElement.classList.toggle(className, stickyStatus)
+        }
       }
 
       if (this.updateSticky(stickyValue)) {
@@ -132,6 +161,23 @@ export class MotionStickyElement {
 
       this.updateScrollState(scrollState)
     }
+  }
+
+  /**
+   * Parses computed CSS offset value into finite pixels or undefined for auto/invalid values.
+   *
+   * Преобразует вычисленное CSS-значение смещения в число пикселей или undefined для auto/некорректных значений.
+   * @param value computed style offset value / вычисленное CSS-значение смещения
+   * @returns numeric offset in pixels or undefined / числовое смещение в пикселях или undefined
+   */
+  protected parsePositionOffset(value: string): number | undefined {
+    const parsed = Number.parseFloat(value)
+
+    if (Number.isFinite(parsed)) {
+      return parsed
+    }
+
+    return undefined
   }
 
   /**
@@ -163,27 +209,6 @@ export class MotionStickyElement {
   }
 
   /**
-   * Set target dataset if sticky state has changed.
-   *
-   * Установка dataset при изменении статуса прикрепления.
-   * @param stickyValue value for change / значение для изменения
-   * @returns true if sticky state has changed / true, если статус прикрепления изменился
-   */
-  protected updateSticky(stickyValue: string): boolean {
-    const targetElement = this.element.value
-
-    if (
-      targetElement
-      && stickyValue !== targetElement.dataset.sticky
-    ) {
-      targetElement.dataset.sticky = stickyValue
-      return true
-    }
-
-    return false
-  }
-
-  /**
    * Set target dataset if scroll state has changed.
    *
    * Установка dataset при изменении статуса прокрутки.
@@ -198,6 +223,27 @@ export class MotionStickyElement {
       && scrollState !== targetElement.dataset.stickyScroll
     ) {
       targetElement.dataset.stickyScroll = scrollState
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   * Set target dataset if sticky state has changed.
+   *
+   * Установка dataset при изменении статуса прикрепления.
+   * @param stickyValue value for change / значение для изменения
+   * @returns true if sticky state has changed / true, если статус прикрепления изменился
+   */
+  protected updateSticky(stickyValue: string): boolean {
+    const targetElement = this.element.value
+
+    if (
+      targetElement
+      && stickyValue !== targetElement.dataset.sticky
+    ) {
+      targetElement.dataset.sticky = stickyValue
       return true
     }
 
