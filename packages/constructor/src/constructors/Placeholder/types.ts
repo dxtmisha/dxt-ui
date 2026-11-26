@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ActionsComponentInclude, ActionsEmitsInclude } from '../Actions'
@@ -34,7 +35,8 @@ export interface PlaceholderExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface PlaceholderSlots extends LabelSlots, DescriptionSlots {
-  context?(props: any): any
+  /** Context slot inserted between description and actions / Слот контекста между описанием и действиями */
+  context?(props?: Record<string, unknown>): VNode[]
 }
 
 /**

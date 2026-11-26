@@ -1,30 +1,43 @@
-# Отчёт о тестировании: D1NavigationList
+# Отчет о визуальном тестировании: D1NavigationList
 
-**Компонент**: `D1NavigationList`  
-**URL**: `http://localhost:3000/component-navigation-list`  
-**Инструмент**: Headless Chrome CDP (`127.0.0.1:9222`)  
-**Дата**: 2026-11-26  
-**Статус**: ✅ ПРОЙДЕНО (`100%`)
+## 1. Сводка тестирования
+- **Компонент**: `D1NavigationList`
+- **URL**: `http://localhost:3000/component-navigation-list`
+- **Статус**: ✅ Пройдено
+- **Дата тестирования**: `2026-11-26T07:21:07.506Z`
+- **Охват**: `27` экземпляров компонента на странице, `4` разрешения экрана
 
----
+## 2. Результаты тестирования
 
-## Сводка результатов
+### 2.1. Визуальный осмотр и рендеринг (VIS)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-VIS-001 | Первичный рендеринг страницы и всех демонстрационных блоков | ✅ | Заголовок `NavigationList` отображен корректно, отрендерено `27` экземпляров `.d1-navigationList` без визуальных искажений | [TC-VIS-001.png](file:///Users/tung/Documents/GitHub/dxt-ui/packages/d1/ai-tests/D1NavigationList/screenshots/TC-VIS-001.png) |
 
-- **Всего `.d1-navigationList` экземпляров**: 27 (видимых: 26, вкл. скрытые фильтром или в группах)
-- **Секции (`D1Group`)**: 9, заголовок `<h1>` присутствует
-- **Ошибки консоли (`console.error`)**: `0`
-- **Предупреждения Vue (`[Vue warn]`)**: `0`
-- **Ошибки страницы (`pageerror`)**: `0`
-- **Сетевые ошибки (`>= 400`)**: `0`
+### 2.2. Интерактивность, состояния, события и жизненный цикл (INT)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-INT-001 | Выбор (`Select Analytics`), фокус, подсветка, `lite`, `expose`, фильтрация (`User`) и `mount/unmount` | ✅ | Подтверждены выбор `analytics`, состояние `"isSelected":true`, фильтрация до `3` элементов; жизненный цикл `Mounted: false` → `Mounted: true` отработал без ошибок | [TC-INT-001.png](file:///Users/tung/Documents/GitHub/dxt-ui/packages/d1/ai-tests/D1NavigationList/screenshots/TC-INT-001.png) |
 
----
+### 2.3. Граничные значения и защита от некорректных данных (BND)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-BND-001 | Блокировка кликов `disabled`, отображение `0`, защита от XSS | ✅ | `Blocked Click Count: 0`, значение `0` отображено, XSS-элемент (`<img src="x">`) не инъектирован (`xssInjected: false`) | — |
 
-## Результаты прогонов
+### 2.4. Адаптивность (Responsive) (RSP)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-RSP-001 | Проверка верстки на `1440×900`, `768×1024`, `375×812`, `320×568` | ✅ | Переполнение отсутствует на всех `4` вьюпортах (`1440/1440`, `768/768`, `375/375`, `320/320`, `overflowingSelf: 0`) | [TC-RSP-001.png](file:///Users/tung/Documents/GitHub/dxt-ui/packages/d1/ai-tests/D1NavigationList/screenshots/TC-RSP-001.png) |
 
-| Тест-кейс | Статус | Фактический результат | Скриншот |
-| :--- | :--- | :--- | :--- |
-| TC-VIS-001 | ✅ | Десктоп (`1440×900`): все группы, `subtitle`, `line`, `space`, `group`, `menu`, `html`, скелетон и узкий блок отрисованы | [TC-VIS-001.png](screenshots/TC-VIS-001.png) |
-| TC-FNC-001..004 | ✅ | `selected (single): analytics`, `focus: settings`, фильтр `User` оставил `["users"]`, Expose вернул `selectedValues: ["dashboard"]`, Toggle Mount отработал чисто (`Mounted: false` -> `true`) | [TC-FNC-001.png](screenshots/TC-FNC-001.png) |
-| TC-BND-001 | ✅ | Корневой `disabled` блокирует клики (`Blocked Click Count: 0`), числовой `0` и экранирование XSS работают корректно | — |
-| TC-RSP-001 | ✅ | `1440×900`, `768×1024`, `375×812`, `320×568`: `scrollWidth === innerWidth`, `overflowingSelf: 0` на всех вьюпортах | [TC-RSP-001.png](screenshots/TC-RSP-001.png) |
-| TC-A11Y-001 | ✅ | Роли `["listbox", "menu"]`, `aria-disabled="true"` (`ariaDisabledCount: 1`), `aria-multiselectable="true"` (`ariaMultiselectableCount: 1`) | — |
+### 2.5. Базовая доступность (A11Y)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-A11Y-001 | Проверка ARIA-ролей и состояний | ✅ | Присутствуют роли `listbox` и `menu`, атрибут `aria-multiselectable="true"` (`1`), `aria-disabled="true"` (`1`) | — |
+
+### 2.6. Консоль, ошибки и сеть (LOG)
+| ID | Сценарий | Статус | Фактический результат | Скриншот |
+| :--- | :--- | :---: | :--- | :--- |
+| TC-LOG-001 | Мониторинг ошибок консоли, Vue, runtime и сети | ✅ | `consoleErrors: 0`, `vueWarnings: 0`, `pageErrors: 0`, `networkErrors: 0` | — |
+
+## 3. Выявленные проблемы
+Проблем не выявлено.

@@ -1,19 +1,20 @@
 import {
   type Ref,
-  onMounted,
-  onUnmounted,
-  watch,
-  ref,
+  getCurrentInstance,
+  nextTick,
   onUpdated,
-  nextTick
+  ref
 } from 'vue'
 import {
   type ConstrEmit,
+  type ConstrItems,
   type DesignComp,
+  DesignLogicAbstract,
   type DesignName,
-  EventRef,
   ScrollbarWidthRef
 } from '@dxtmisha/functional'
+
+import { ScrollStickyScroll } from './ScrollStickyScroll'
 
 import type {
   ScrollStickyComponents,
@@ -22,20 +23,50 @@ import type {
 } from './types'
 import type { ScrollStickyProps } from './props'
 
+/** ScrollSticky dependency constructors type / Тип конструкторов зависимостей ScrollSticky */
+export type ScrollStickyConstructors = {
+  /** Scroll synchronization lifecycle manager constructor / Конструктор менеджера жизненного цикла синхронизации прокрутки */
+  scroll: typeof ScrollStickyScroll
+  /** Scrollbar width measurement constructor / Конструктор измерения ширины полосы прокрутки */
+  width: typeof ScrollbarWidthRef
+}
+
 /**
- * ScrollSticky class coordinates sticky horizontal scrollbar synchronization. /
- * Класс ScrollSticky координирует липкую синхронизацию горизонтальной прокрутки.
+ * ScrollSticky orchestrator class coordinating sticky horizontal scrollbar synchronization,
+ * resize recalculation, and lazy lifecycle dependency management.
+ *
+ * Класс-оркестратор ScrollSticky, координирующий липкую синхронизацию горизонтальной прокрутки,
+ * пересчёт размеров и ленивое управление зависимостями жизненного цикла.
  */
-export class ScrollSticky {
+export class ScrollSticky extends DesignLogicAbstract<
+  HTMLDivElement,
+  ScrollStickyComponents,
+  ScrollStickyEmits,
+  ScrollStickySlots,
+  ScrollStickyProps,
+  ScrollStickyConstructors
+> {
   /** Scroll element reference / Ссылка на элемент прокрутки */
   readonly scrollElement = ref<HTMLDivElement>()
-  /** Scrollbar width manager / Менеджер ширины полосы прокрутки */
-  readonly width: ScrollbarWidthRef
 
-  /** Main element scroll event listener / Слушатель событий прокрутки основного элемента */
-  protected eventMain?: EventRef<HTMLDivElement, Event>
-  /** Scrollbar element scroll event listener / Слушатель событий прокрутки элемента полосы прокрутки */
-  protected eventScroll?: EventRef<HTMLDivElement, Event>
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ScrollStickyConstructors> = {
+    scroll: {
+      item: ScrollStickyScroll,
+      conditions: () => this.props.visible !== false,
+      canCreate: () => this.props.visible !== false,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming,
+        () => this.i('width'),
+        this.scrollElement
+      ]
+    },
+    width: {
+      item: ScrollbarWidthRef
+    }
+  }
 
   /**
    * Constructor
@@ -45,207 +76,44 @@ export class ScrollSticky {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width / класс для работы с шириной скролла
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: ScrollStickyProps,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ScrollStickyComponents, ScrollStickyProps>,
-    protected readonly slots?: ScrollStickySlots,
-    protected readonly emits?: ConstrEmit<ScrollStickyEmits>,
-    constructors: {
-      ScrollbarWidthRefConstructor?: typeof ScrollbarWidthRef
-    } = {}
+    props: Readonly<ScrollStickyProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<ScrollStickyComponents, ScrollStickyProps>,
+    slots?: ScrollStickySlots,
+    emits?: ConstrEmit<ScrollStickyEmits>,
+    constructors?: Partial<ScrollStickyConstructors>
   ) {
-    const {
-      ScrollbarWidthRefConstructor = ScrollbarWidthRef
-    } = constructors
-
-    this.width = new ScrollbarWidthRefConstructor()
-
-    watch(
-      [
-        this.element,
-        this.scrollElement,
-        this.width.width
-      ],
-      this.update
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
 
-    onMounted(this.update)
-    onUpdated(async () => {
-      await nextTick()
-      this.onResize()
-    })
-    onUnmounted(() => this.stop())
-  }
+    if (getCurrentInstance()) {
+      onUpdated(async () => {
+        await nextTick()
 
-  /**
-   * Initializes listeners and resizes elements.
-   *
-   * Инициализирует слушатели и выполняет изменение размеров элементов.
-   */
-  readonly update = (): void => {
-    this.on()
-    this.onMain()
-    this.onResize()
-  }
-
-  /**
-   * Returns or initializes the scroll event listener for the main element.
-   *
-   * Возвращает или инициализирует слушатель событий прокрутки для основного элемента.
-   * @returns scroll event instance / экземпляр события прокрутки
-   */
-  protected getEvent(): EventRef<HTMLDivElement, Event> {
-    if (!this.eventMain) {
-      this.eventMain = new EventRef(
-        this.element,
-        undefined,
-        this.getEventTypes(),
-        this.onMain
-      )
-    }
-
-    return this.eventMain
-  }
-
-  /**
-   * Returns or initializes the scroll event listener for the scroll element.
-   *
-   * Возвращает или инициализирует слушатель событий прокрутки для элемента прокрутки.
-   * @returns scroll event instance / экземпляр события прокрутки
-   */
-  protected getEventScroll(): EventRef<HTMLDivElement, Event> {
-    if (!this.eventScroll) {
-      this.eventScroll = new EventRef(
-        this.scrollElement,
-        undefined,
-        this.getEventTypes(),
-        this.onScroll
-      )
-    }
-
-    return this.eventScroll
-  }
-
-  /**
-   * Returns the list of registered event types.
-   *
-   * Возвращает список зарегистрированных типов событий.
-   * @returns array of event types / массив типов событий
-   */
-  protected getEventTypes(): string[] {
-    return [
-      'scroll-sync',
-      'resize'
-    ]
-  }
-
-  /**
-   * Helper that executes the callback if both main and scroll elements are available.
-   *
-   * Вспомогательный метод, который выполняет функцию обратного вызова, если доступны оба элемента.
-   * @param callback function to execute / функция для выполнения
-   * @returns boolean flag indicating element availability / логический флаг доступности элементов
-   */
-  protected checkScroll(
-    callback?: (
-      element: HTMLDivElement,
-      scrollElement: HTMLDivElement
-    ) => void
-  ): boolean {
-    const element = this.element.value
-    const scrollElement = this.scrollElement.value
-
-    if (
-      element
-      && scrollElement
-    ) {
-      callback?.(element, scrollElement)
-      return true
-    }
-
-    return false
-  }
-
-  /**
-   * Starts listening to scroll events on both elements.
-   *
-   * Начинает прослушивание событий прокрутки на обоих элементах.
-   */
-  protected start(): void {
-    this.getEvent().start()
-    this.getEventScroll().start()
-  }
-
-  /**
-   * Stops listening to scroll events.
-   *
-   * Останавливает прослушивание событий прокрутки.
-   */
-  protected stop(): void {
-    if (this.eventMain) {
-      this.eventMain.stop()
-    }
-
-    if (this.eventScroll) {
-      this.eventScroll.stop()
+        if (this.isMounted.value) {
+          this.onResize()
+        }
+      })
     }
   }
 
   /**
-   * Recalculates the scroll width. /
-   * Пересчитывает ширину прокрутки.
+   * Recalculates the scroll width via the active scroll coordinator.
+   *
+   * Пересчитывает ширину прокрутки через активный координатор прокрутки.
    */
   readonly onResize = (): void => {
-    this.checkScroll((element, scrollElement) => {
-      scrollElement.style.setProperty(
-        this.naming.getStyle('width'),
-        `${element.scrollWidth ?? 0}px`
-      )
-      scrollElement.style.setProperty(
-        this.naming.getStyle('scrollHeight'),
-        `${this.width.width.value ?? 0}px`
-      )
-    })
-  }
-
-  /**
-   * Synchronizes the scrollbar's horizontal position with the main element's scroll position.
-   *
-   * Синхронизирует горизонтальное положение полосы прокрутки с положением прокрутки основного элемента.
-   */
-  readonly onMain = () => {
-    this.onResize()
-    this.checkScroll((element, scrollElement) => {
-      scrollElement.scrollLeft = element.scrollLeft
-    })
-  }
-
-  /**
-   * Synchronizes the main element's scroll position with the scrollbar's horizontal position.
-   *
-   * Синхронизирует положение прокрутки основного элемента с горизонтальным положением полосы прокрутки.
-   */
-  readonly onScroll = () => {
-    this.checkScroll((element, scrollElement) => {
-      element.scrollLeft = scrollElement.scrollLeft
-    })
-  }
-
-  /**
-   * Activates event listeners if elements are available, otherwise stops them.
-   *
-   * Активирует слушатели событий, если элементы доступны, иначе останавливает их.
-   */
-  protected readonly on = () => {
-    if (this.checkScroll()) {
-      this.start()
-    } else {
-      this.stop()
-    }
+    this.callInstance('scroll', item => item.onResize())
   }
 }

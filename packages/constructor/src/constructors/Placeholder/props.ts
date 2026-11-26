@@ -3,11 +3,16 @@ import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { LabelProps } from '../../types/labelTypes'
 
+/** Token-generated properties for Placeholder / Свойства из дизайн-токенов для Placeholder */
 type PlaceholderPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props interface for Placeholder component /
+ * Базовый интерфейс свойств для компонента Placeholder
+ */
 export type PlaceholderPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic,
   Actions extends ActionsPropsBasic = ActionsPropsBasic

@@ -98,12 +98,14 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Page" name="component-page"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Pagination" name="component-pagination"/>
+        <DemoLink label="Placeholder" name="component-placeholder"/>
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="ProgressBar" name="component-progress-bar"/>
         <DemoLink label="Radio" name="component-radio"/>
         <DemoLink label="Ripple" name="component-ripple"/>
         <DemoLink label="Scrollbar" name="component-scrollbar"/>
         <DemoLink label="ScrollSticky" name="component-scroll-sticky"/>
+        <DemoLink label="Section" name="component-section"/>
         <DemoLink label="SegmentControl" name="component-segment-control"/>
         <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>

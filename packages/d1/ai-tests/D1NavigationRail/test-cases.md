@@ -1,20 +1,22 @@
 # Тест-кейсы: D1NavigationRail
 
-**Компонент**: `D1NavigationRail` (`packages/demo/src/pages/components/DemoNavigationRailPage.vue`)  
-**Маршрут**: `/component-navigation-rail`  
-**Дата**: 2026-11-26  
+- **Компонент**: `D1NavigationRail`
+- **URL**: `http://localhost:3000/component-navigation-rail`
 
----
+## 1. Визуальный осмотр и рендеринг (`VIS`)
+- `TC-VIS-001`: Проверка отображения заголовка страницы (`NavigationRail`) и всех демонстрационных вариантов (`16` экземпляров `.d1-navigationRail`).
 
-## Матрица тест-кейсов
+## 2. Интерактивность, события и жизненный цикл (`INT`)
+- `TC-INT-001`: Программный выбор (`Select Inbox`), фокусировка (`Focus Explore`), чтение `expose` (`Read Expose State`), раскрытие/закрытие подменю (`Tools` → `Console`, `Escape`) и цикл `Toggle Mount`.
 
-| ID | Категория | Сценарий | Ожидаемый результат |
-| :--- | :--- | :--- | :--- |
-| TC-VIS-001 | Визуальный рендер | Начальная загрузка на десктопе (`1440×900`) | Отображаются панели навигации с иконками, бейджами, `badgeDot`, разделителями, группами и слотами |
-| TC-FNC-001 | Интерактив и выбор | Нажатие кнопок `Select Inbox`, `Focus Explore` | Обновляются значения `selected (single): inbox`, `focus: explore` |
-| TC-FNC-002 | Выпадающее подменю | Клик по пункту `Tools` (`type: 'menu'`) и закрытие по `Escape` | Открывается подменю с пунктом `Console` (`submenuVisible: true`), закрывается по клавише `Escape` |
-| TC-FNC-003 | Expose API | Нажатие `Read Expose State` | Выводится JSON с `isSelected: true`, `selectedValues: ["home"]`, `selectedNames: ["Home"]` |
-| TC-FNC-004 | Жизненный цикл | Двукратное нажатие `Toggle Mount` | Панель размонтируется (`Mounted: false`) и монтируется повторно (`Mounted: true`) |
-| TC-BND-001 | Блокировка и границы | Клик по отключённой панели (`disabled`), `[]`, `undefined`, числовой `0`, XSS | Клик заблокирован (`Blocked Click Count: 0`), граничные значения и XSS обработаны безопасно |
-| TC-RSP-001 | Адаптивность | Проверка на `1440×900`, `768×1024`, `375×812`, `320×568` | `scrollWidth === innerWidth`, `overflowingSelf === 0` на всех вьюпортах |
-| TC-A11Y-001 | Доступность | Проверка ролей, ARIA-атрибутов и клавиатурного управления | Поддержка ролей `listbox` / `menu`, `roleItem`, `aria-multiselectable`, `aria-disabled` и навигации стрелками |
+## 3. Граничные значения (`BND`)
+- `TC-BND-001`: Блокировка кликов при `disabled` (`Blocked Click Count: 0`) и защита от XSS (`<img src="x">`).
+
+## 4. Адаптивность (`RSP`)
+- `TC-RSP-001`: Проверка отсутствия горизонтального переполнения на разрешениях `1440×900`, `768×1024`, `375×812`, `320×568`.
+
+## 5. Доступность (`A11Y`)
+- `TC-A11Y-001`: Проверка ARIA-ролей (`listbox`, `menu`), `aria-multiselectable="true"` и `aria-disabled="true"`.
+
+## 6. Консоль и сеть (`LOG`)
+- `TC-LOG-001`: Отсутствие ошибок консоли, предупреждений Vue, runtime-исключений и сетевых ошибок.

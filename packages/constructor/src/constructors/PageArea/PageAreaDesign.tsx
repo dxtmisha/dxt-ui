@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -20,7 +20,9 @@ import {
 } from './types'
 
 /**
- * PageAreaDesign
+ * PageAreaDesign class delegates rendering to `page`, `section`, `block`, or `group` based on layout area context.
+ *
+ * Класс PageAreaDesign делегирует рендеринг компонентам `page`, `section`, `block` или `group` в зависимости от контекста области.
  */
 export class PageAreaDesign<
   COMP extends PageAreaComponents,
@@ -36,14 +38,17 @@ export class PageAreaDesign<
     CLASSES,
     P
   > {
+  /** PageArea logic controller instance / Экземпляр логического контроллера PageArea */
   protected readonly item: PageArea
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for PageAreaDesign.
+   *
+   * Конструктор для PageAreaDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -104,25 +109,13 @@ export class PageAreaDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns delegated virtual node or undefined / виртуальная нода делегируемого компонента или undefined
    */
   protected initRender(): VNode | undefined {
-    let componentName = 'group'
-
-    switch (this.item.area) {
-      case 'container':
-        componentName = 'page'
-        break
-      case 'page':
-        componentName = 'section'
-        break
-      case 'section':
-        componentName = 'block'
-        break
-      case 'block':
-        componentName = 'group'
-        break
-    }
-
-    return this.components?.renderOne(componentName as never, this.props, this.slots as RawSlots)
+    return this.components?.renderOne(
+      this.item.componentName,
+      mergeProps(this.getAttrs(), this.props),
+      this.slots as RawSlots
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -37,7 +37,7 @@ export class PlaceholderDesign<
     CLASSES,
     P
   > {
-  /** Placeholder logical instance / Логический экземпляр предупреждения */
+  /** Placeholder logical instance / Логический экземпляр заглушки */
   protected readonly item: Placeholder
 
   /**
@@ -69,6 +69,26 @@ export class PlaceholderDesign<
       this.slots,
       this.emits
     )
+  }
+
+  /**
+   * Rendering the body for the image.
+   *
+   * Рендеринг тела для изображения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderBodyImage = (): VNode[] => {
+    const image = this.item.callInstanceArray('image', item => item.render())
+
+    if (image.length > 0) {
+      return [h(
+        'div',
+        this.getKeyClass('image'),
+        image
+      )]
+    }
+
+    return []
   }
 
   /**
@@ -118,38 +138,27 @@ export class PlaceholderDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderBodyImage(),
-      ...this.item.label.render(),
-      ...this.item.description.render()
+      ...this.item.callInstanceArray('label', item => item.render()),
+      ...this.item.callInstanceArray('description', item => item.render())
     ]
 
     this.initSlot('context', children)
-    children.push(...this.item.actions.render())
+    children.push(...this.item.callInstanceArray('actions', item => item.render()))
 
-    return h('div', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, children)
-  }
-
-  /**
-   * Rendering the body for the image.
-   *
-   * Рендеринг тела для изображения.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderBodyImage = (): VNode[] => {
-    if (this.item.image.is) {
-      return [h(
-        'div',
-        this.getKeyClass('image'),
-        this.item.image.render()
-      )]
-    }
-
-    return []
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 }

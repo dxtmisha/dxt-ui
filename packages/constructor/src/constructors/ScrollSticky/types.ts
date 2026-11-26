@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ScrollStickyBindItem } from './basicTypes'
@@ -37,17 +38,17 @@ export interface ScrollStickySlots {
      * Пересчитывает ширину прокрутки.
      */
     onResize(): void
-  }): any
+  }): VNode[]
 
   /**
    * Slot for context element replacement / Слот для замены элемента контекста
    */
-  context?(props: ScrollStickyBindItem): any
+  context?(props: ScrollStickyBindItem): VNode[]
 
   /**
    * Slot for scroll element replacement / Слот для замены элемента прокрутки
    */
-  scroll?(props: ScrollStickyBindItem): any
+  scroll?(props: ScrollStickyBindItem): VNode[]
 }
 
 /**

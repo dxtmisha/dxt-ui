@@ -59,8 +59,79 @@ export const wikiDescriptionsScrollSticky: StorybookComponentsDescriptionItem = 
         <div style="height: 320px;"/>
       </div>
     `,
-  import: [],
-  stories: [],
+  import: [
+    'import { ref } from \'vue\'',
+    'import { expect, within, userEvent, waitFor } from \'storybook/test\''
+  ],
+  play: `
+    const component = canvasElement.querySelector('.design-component')
+    await expect(component).toBeInTheDocument()
+    await expect(component?.querySelector('.design-component__context')).toBeInTheDocument()
+    await expect(component?.querySelector('.design-component__scroll')).toBeInTheDocument()
+  `,
+  stories: [
+    {
+      id: 'ScrollStickyTestVisibilityAndSlots',
+      name: {
+        en: 'Test: Visibility toggle, scroll sync and custom slots',
+        ru: 'Тест: Видимость скроллбара, синхронизация и кастомные слоты'
+      },
+      setup: `
+        const visible = ref(true)
+        const toggleVisible = () => {
+          visible.value = !visible.value
+        }
+        return { visible, toggleVisible }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="toggleVisible">Toggle Scrollbar</button>
+          </div>
+          <DesignComponent
+            data-testid="ss-reactive"
+            :visible="visible"
+            style="max-width: 320px;"
+          >
+            <div style="width: 900px; height: 60px;">Wide scrollable content</div>
+          </DesignComponent>
+          <DesignComponent data-testid="ss-slots" style="max-width: 320px;">
+            <template #context="{ binds }">
+              <div v-bind="binds" data-testid="ss-custom-context">
+                <div style="width: 800px; height: 40px;">Custom context wrapper</div>
+              </div>
+            </template>
+            <template #scroll="{ binds }">
+              <div v-bind="binds" data-testid="ss-custom-scroll" />
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const reactiveEl = canvasElement.querySelector('[data-testid="ss-reactive"]')
+        await expect(reactiveEl?.querySelector('.design-component__scroll')).toBeInTheDocument()
+
+        const ctx = reactiveEl?.querySelector('.design-component__context') as HTMLElement | null
+        const scr = reactiveEl?.querySelector('.design-component__scroll') as HTMLElement | null
+        if (ctx && scr) {
+          ctx.scrollLeft = 120
+          ctx.dispatchEvent(new Event('scroll'))
+          await waitFor(() => {
+            expect(scr.scrollLeft).toBe(120)
+          })
+        }
+
+        await userEvent.click(canvas.getByRole('button', { name: 'Toggle Scrollbar' }))
+        await waitFor(() => {
+          expect(reactiveEl?.querySelector('.design-component__scroll')).toBeNull()
+        })
+
+        await expect(canvasElement.querySelector('[data-testid="ss-custom-context"]')).toBeInTheDocument()
+        await expect(canvasElement.querySelector('[data-testid="ss-custom-scroll"]')).toBeInTheDocument()
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'ScrollSticky'} type={'scrollsticky'}/>

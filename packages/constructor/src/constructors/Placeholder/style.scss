@@ -3,10 +3,21 @@
 @mixin mixinPlaceholder {
   @include ui.flexY;
   justify-content: center;
+  min-width: 0;
+  max-width: 100%;
 
   text-align: center;
 
   &__image {
     position: relative;
+    max-width: 100%;
+  }
+
+  &__label,
+  &__description,
+  &__actions {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 }

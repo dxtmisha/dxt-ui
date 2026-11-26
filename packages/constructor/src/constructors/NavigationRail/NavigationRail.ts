@@ -308,7 +308,7 @@ export class NavigationRail extends DesignLogicAbstract<
   ): ConstrBind<ListDataItem> {
     const managementOverrides: Partial<ConstrBind<ListDataItem>> = {
       'class': this.naming.getSubClass('management'),
-      'focus': item?.index === this.i('focus').focus.value,
+      'focus': item.index === this.i('focus').focus.value,
       'selectedChild': this.isOpenGroup(item),
       open,
       'data-status': open ? 'open' : 'close',

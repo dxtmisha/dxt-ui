@@ -93,12 +93,14 @@ import DemoNavigationRailItemPage from './pages/components/DemoNavigationRailIte
 import DemoPagePage from './pages/components/DemoPagePage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoPaginationPage from './pages/components/DemoPaginationPage.vue'
+import DemoPlaceholderPage from './pages/components/DemoPlaceholderPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoProgressBarPage from './pages/components/DemoProgressBarPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoRipplePage from './pages/components/DemoRipplePage.vue'
 import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
 import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
+import DemoSectionPage from './pages/components/DemoSectionPage.vue'
 import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
 import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
@@ -570,6 +572,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoPaginationPage
   },
   {
+    path: '/component-placeholder',
+    name: 'component-placeholder',
+    component: DemoPlaceholderPage
+  },
+  {
     path: '/component-progress',
     name: 'component-progress',
     component: DemoProgressPage
@@ -598,6 +605,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-scroll-sticky',
     name: 'component-scroll-sticky',
     component: DemoScrollStickyPage
+  },
+  {
+    path: '/component-section',
+    name: 'component-section',
+    component: DemoSectionPage
   },
   {
     path: '/component-segment-control',

@@ -1,5 +1,6 @@
 import type { BlockProps } from '../Block'
 
+/** Token properties for PageArea / Токен-свойства для PageArea */
 type PageAreaPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка

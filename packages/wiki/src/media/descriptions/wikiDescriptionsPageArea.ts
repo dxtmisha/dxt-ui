@@ -25,7 +25,11 @@ export const wikiDescriptionsPageArea: StorybookComponentsDescriptionItem = {
       'сокращенная запись для сложных макетов страниц с вложенными элементами'
     ]
   },
-  import: [],
+  import: [
+    'import { defineComponent, h, ref } from \'vue\'',
+    'import { setAreaValue } from \'@dxtmisha/constructor\'',
+    'import { expect, within, userEvent, waitFor } from \'storybook/test\''
+  ],
   render: `
       <DesignComponent v-bind="args">
         <p>
@@ -38,6 +42,9 @@ export const wikiDescriptionsPageArea: StorybookComponentsDescriptionItem = {
         </p>
       </DesignComponent>
   `,
+  play: `
+      await expect(canvasElement).toHaveTextContent('PageArea component')
+    `,
   stories: [
     {
       id: 'PageAreaBasic',
@@ -46,9 +53,13 @@ export const wikiDescriptionsPageArea: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <DesignComponent>
+        <DesignComponent label="Basic Area">
           <p>This is a basic example of PageArea content. It can contain any combination of blocks, sections, or individual UI elements.</p>
         </DesignComponent>
+      `,
+      play: `
+        await expect(canvasElement).toHaveTextContent('Basic Area')
+        await expect(canvasElement).toHaveTextContent('basic example of PageArea content')
       `
     },
     {
@@ -64,8 +75,84 @@ export const wikiDescriptionsPageArea: StorybookComponentsDescriptionItem = {
           <template #label>Label slot</template>
           <template #description>Description slot</template>
           <template #caption>Caption slot</template>
-          <template #trailing>Trailing slot</template>
+          <template #trailing>
+            <span data-testid="pa-trailing-slot">Trailing slot</span>
+          </template>
         </DesignComponent>
+      `,
+      play: `
+        await expect(canvasElement).toHaveTextContent('Headline slot')
+        await expect(canvasElement).toHaveTextContent('Label slot')
+        await expect(canvasElement).toHaveTextContent('Description slot')
+        await expect(canvasElement).toHaveTextContent('Caption slot')
+        await expect(canvasElement.querySelector('[data-testid="pa-trailing-slot"]')).toHaveTextContent('Trailing slot')
+        await expect(canvasElement).toHaveTextContent('Default slot')
+      `
+    },
+    {
+      id: 'PageAreaTestCascadeAndBoundary',
+      name: {
+        en: 'Test: Hierarchical area delegation and boundary values',
+        ru: 'Тест: Иерархическое делегирование областей и граничные значения'
+      },
+      setup: `
+        const rootArea = ref<string | undefined>('container')
+        const toggleArea = () => {
+          rootArea.value = rootArea.value === 'container' ? 'section' : 'container'
+        }
+        const AreaHost = defineComponent({
+          props: {
+            area: {
+              type: String,
+              default: undefined
+            }
+          },
+          setup(props: { area?: string }, { slots }) {
+            setAreaValue(props.area ? rootArea : undefined)
+            return () => h('div', { 'data-testid': 'pa-host' }, slots.default ? slots.default() : [])
+          }
+        })
+        return { rootArea, toggleArea, AreaHost }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="toggleArea">Toggle Root Area</button>
+            <span data-testid="pa-mode">{{ rootArea }}</span>
+          </div>
+          <component :is="AreaHost" :area="rootArea">
+            <DesignComponent data-testid="pa-level-1" tag-header="h1" label="Level One">
+              <DesignComponent data-testid="pa-level-2" label="Level Two">
+                <DesignComponent data-testid="pa-level-3" label="Level Three">
+                  <span>Deep child</span>
+                </DesignComponent>
+              </DesignComponent>
+            </DesignComponent>
+          </component>
+          <DesignComponent
+            data-testid="pa-zero"
+            :headline="0"
+            :label="0"
+            :description="0"
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const level1 = canvasElement.querySelector('[data-testid="pa-level-1"]')
+        const level2 = canvasElement.querySelector('[data-testid="pa-level-2"]')
+        await expect(level1?.tagName).toBe('MAIN')
+        await expect(level2?.tagName).toBe('SECTION')
+        await expect(canvasElement.querySelector('[data-testid="pa-level-3"]')).toHaveTextContent('Level Three')
+
+        await userEvent.click(canvas.getByRole('button', { name: 'Toggle Root Area' }))
+        await waitFor(() => {
+          expect(canvasElement.querySelector('[data-testid="pa-mode"]')).toHaveTextContent('section')
+          expect(canvasElement.querySelector('[data-testid="pa-level-1"]')?.tagName).toBe('DIV')
+        })
+
+        const zeroEl = canvasElement.querySelector('[data-testid="pa-zero"]')
+        await expect(zeroEl).toHaveTextContent('0')
       `
     }
   ],

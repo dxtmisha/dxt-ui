@@ -29,6 +29,14 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
       'поддержка загрузочного скелетона'
     ]
   },
+  import: [
+    'import { ref } from \'vue\'',
+    'import { expect, within, userEvent, waitFor } from \'storybook/test\''
+  ],
+  play: `
+    const component = canvasElement.querySelector('.design-component')
+    await expect(component).toBeInTheDocument()
+  `,
   stories: [
     {
       id: 'ProgressBarBasic',
@@ -55,6 +63,13 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
             { value: 30, label: '30%', color: '#eb2f96' }
           ]" />
         </div>
+      `,
+      play: `
+        const bars = canvasElement.querySelectorAll('.design-component')
+        await expect(bars.length).toBe(4)
+        await expect(bars[2]).toHaveClass('design-component--overlay')
+        await expect(bars[3]).toHaveTextContent('30%')
+        await expect(canvasElement.querySelectorAll('[role="progressbar"]').length).toBeGreaterThanOrEqual(4)
       `
     },
     {
@@ -75,6 +90,72 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
             ]" />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+        const bars = canvasElement.querySelectorAll('.design-component')
+        await expect(bars.length).toBe(2)
+      `
+    },
+    {
+      id: 'ProgressBarTestValuesFocusAndBoundary',
+      name: {
+        en: 'Test: Reactive values, focus, max=0 protection and ARIA',
+        ru: 'Тест: Реактивные значения, фокус, защита max=0 и ARIA'
+      },
+      setup: `
+        const current = ref(25)
+        const max = ref(100)
+        const focusId = ref<string | undefined>('seg-a')
+        const setSeventyFive = () => {
+          current.value = 75
+          focusId.value = 'seg-b'
+        }
+        return { current, max, focusId, setSeventyFive }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="setSeventyFive">Update Progress</button>
+          </div>
+          <DesignComponent
+            data-testid="pb-reactive"
+            :value="current"
+            :max="max"
+          />
+          <DesignComponent
+            data-testid="pb-focus"
+            :focus="focusId"
+            :value="[
+              { index: 'seg-a', value: 40, label: 'Part A' },
+              { index: 'seg-b', value: 60, label: 'Part B' }
+            ]"
+            show-label
+          />
+          <DesignComponent
+            data-testid="pb-zero-max"
+            :value="50"
+            :max="0"
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const reactiveBar = canvasElement.querySelector('[data-testid="pb-reactive"] [role="progressbar"]')
+        await expect(reactiveBar).toHaveAttribute('aria-valuenow', '25')
+        await expect(reactiveBar).toHaveAttribute('aria-valuemax', '100')
+
+        await expect(canvasElement.querySelector('[data-testid="pb-focus"] [data-index="seg-a"]')).toHaveClass('design-component__item--focus')
+        await expect(canvasElement.querySelector('[data-testid="pb-reactive"] .design-component__item--space')).toHaveAttribute('aria-hidden', 'true')
+
+        await userEvent.click(canvas.getByRole('button', { name: 'Update Progress' }))
+        await waitFor(() => {
+          expect(canvasElement.querySelector('[data-testid="pb-reactive"] [role="progressbar"]')).toHaveAttribute('aria-valuenow', '75')
+          expect(canvasElement.querySelector('[data-testid="pb-focus"] [data-index="seg-b"]')).toHaveClass('design-component__item--focus')
+        })
+
+        const zeroMaxItem = canvasElement.querySelector('[data-testid="pb-zero-max"] [role="progressbar"]')
+        await expect(zeroMaxItem).toHaveAttribute('aria-label', '0%')
+        await expect(zeroMaxItem?.getAttribute('style') ?? '').not.toContain('NaN')
       `
     }
   ],

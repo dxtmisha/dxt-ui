@@ -16,7 +16,9 @@ import {
 } from './types'
 
 /**
- * SectionDesign
+ * SectionDesign component class for rendering semantic section containers and delegating layout to BlockDesign.
+ *
+ * Класс компонента SectionDesign для рендеринга семантических контейнеров секций и делегирования разметки BlockDesign.
  */
 export class SectionDesign<
   COMP extends SectionComponents,
@@ -30,11 +32,13 @@ export class SectionDesign<
     P
   > {
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor block item class/ класс элемента блока
+   * Constructor for creating a SectionDesign instance.
+   *
+   * Конструктор для создания экземпляра SectionDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor section item class / класс элемента секции
    */
   constructor(
     name: string,

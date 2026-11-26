@@ -1,12 +1,17 @@
 import type { SkeletonPropsInclude } from '../Skeleton'
 import type { ProgressBarItem, ProgressBarList } from './basicTypes'
 
+/** Token-generated properties for ProgressBar / Свойства из дизайн-токенов для ProgressBar */
 type ProgressBarPropsToken = {
   // :type [!] System label / Системная метка
   overlay?: boolean
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props interface for ProgressBar component /
+ * Базовый интерфейс свойств для компонента ProgressBar
+ */
 export type ProgressBarPropsBasic = SkeletonPropsInclude & {
   /** Focus item index / Фокусируемый индекс элемента */
   focus?: string

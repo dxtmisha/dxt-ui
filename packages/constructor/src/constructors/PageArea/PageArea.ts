@@ -1,38 +1,61 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
 import { getAreaValue } from '../../functions/getAreaValue'
 
-import type { PageAreaComponents, PageAreaEmits, PageAreaSlots } from './types'
 import type { PageAreaProps } from './props'
+import type { PageAreaComponents, PageAreaEmits, PageAreaSlots } from './types'
+
+/** Mapping from parent layout area to delegated component name / Карта соответствия родительской области и делегируемого компонента */
+const PAGE_AREA_COMPONENT_MAP: Record<string, keyof PageAreaComponents> = {
+  container: 'page',
+  page: 'section',
+  section: 'block',
+  block: 'group'
+}
+
+/** PageArea dependency constructors type / Тип конструкторов зависимостей PageArea */
+export type PageAreaConstructors = {}
 
 /**
- * PageArea
+ * PageArea orchestrator class for resolving the current layout area context
+ * and delegating rendering to the corresponding structural component (`page`, `section`, `block`, or `group`).
  *
- * Класс для работы с областью страницы.
+ * Класс-оркестратор PageArea для определения текущего контекста области макета
+ * и делегирования рендеринга соответствующему структурному компоненту (`page`, `section`, `block` или `group`).
  */
-export class PageArea {
-  /**
-   * Constructor
-   *
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: PageAreaProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<PageAreaComponents, PageAreaProps>,
-    protected readonly slots?: PageAreaSlots,
-    protected readonly emits?: ConstrEmit<PageAreaEmits>
-  ) {
-  }
+export class PageArea extends DesignLogicAbstract<
+  HTMLDivElement,
+  PageAreaComponents,
+  PageAreaEmits,
+  PageAreaSlots,
+  PageAreaProps,
+  PageAreaConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<PageAreaConstructors> = {}
 
-  /** Area value / Значение области */
+  /**
+   * Current layout area value injected from ancestor structural components.
+   *
+   * Текущее значение области макета, полученное от родительских структурных компонентов.
+   * @returns area identifier or undefined / идентификатор области или undefined
+   */
   get area(): string | undefined {
     return getAreaValue()
+  }
+
+  /**
+   * Resolves the delegated component key matching the current layout hierarchy level.
+   *
+   * Определяет ключ делегируемого компонента в соответствии с текущим уровнем иерархии макета.
+   * @returns component key from `PageAreaComponents` / ключ компонента из `PageAreaComponents`
+   */
+  get componentName(): keyof PageAreaComponents {
+    const currentArea = this.area
+
+    if (currentArea && currentArea in PAGE_AREA_COMPONENT_MAP) {
+      return PAGE_AREA_COMPONENT_MAP[currentArea] ?? 'group'
+    }
+
+    return 'group'
   }
 }

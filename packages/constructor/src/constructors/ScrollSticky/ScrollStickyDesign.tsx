@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -46,10 +46,10 @@ export class ScrollStickyDesign<
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -74,7 +74,53 @@ export class ScrollStickyDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Renders the context element.
+   *
+   * Рендерит элемент контекста.
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderContext = (): VNode => {
+    if (this.slots?.context) {
+      const context = this.initSlot('context', undefined, this.getContextSlotProps())
+
+      if (context) {
+        return context
+      }
+    }
+
+    return h(
+      'div',
+      this.getContextBinds(),
+      this.initSlot('default', undefined, {
+        onResize: this.item.onResize
+      })
+    )
+  }
+
+  /**
+   * Renders the scroll element.
+   *
+   * Рендерит элемент прокрутки.
+   * @returns virtual node or undefined / виртуальный узел или undefined
+   */
+  readonly renderScroll = (): VNode | undefined => {
+    if (this.props.visible === false) {
+      return undefined
+    }
+
+    if (this.slots?.scroll) {
+      const scroll = this.initSlot('scroll', undefined, this.getScrollSlotProps())
+
+      if (scroll) {
+        return scroll
+      }
+    }
+
+    return h('div', this.getScrollBinds())
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
    * @returns exposed properties / открытые свойства
@@ -118,63 +164,25 @@ export class ScrollStickyDesign<
    * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    return h('div', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, [
-      this.renderContext(),
-      this.renderScroll()
-    ])
-  }
-
-  /**
-   * Renders the context element. /
-   * Рендерит элемент контекста.
-   * @returns virtual node / виртуальный узел
-   */
-  protected renderContext(): VNode {
-    if (this.slots?.context) {
-      const context = this.initSlot('context', undefined, this.getContextSlotProps())
-
-      if (context) {
-        return context
-      }
-    }
-
     return h(
       'div',
-      this.getContextBinds(),
-      this.initSlot('default', undefined, {
-        onResize: this.item.onResize
-      })
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      [
+        this.renderContext(),
+        this.renderScroll()
+      ]
     )
   }
 
   /**
-   * Renders the scroll element.
+   * Returns properties to pass to the context slot.
    *
-   * Рендерит элемент прокрутки.
-   * @returns virtual node / виртуальный узел
-   */
-  protected renderScroll(): VNode | undefined {
-    if (this.props.visible === false) {
-      return undefined
-    }
-
-    if (this.slots?.scroll) {
-      const scroll = this.initSlot('scroll', undefined, this.getScrollSlotProps())
-
-      if (scroll) {
-        return scroll
-      }
-    }
-
-    return h('div', this.getScrollBinds())
-  }
-
-  /**
-   * Returns properties to pass to the context slot. /
    * Возвращает свойства для передачи в слот контекста.
    * @returns context slot properties / свойства слота контекста
    */
@@ -191,7 +199,8 @@ export class ScrollStickyDesign<
   }
 
   /**
-   * Returns context element binding properties. /
+   * Returns context element binding properties.
+   *
    * Возвращает свойства привязки элемента контекста.
    * @returns context properties object / объект свойств контекста
    */
@@ -203,7 +212,8 @@ export class ScrollStickyDesign<
   }
 
   /**
-   * Returns properties to pass to the scroll slot. /
+   * Returns properties to pass to the scroll slot.
+   *
    * Возвращает свойства для передачи в слот прокрутки.
    * @returns scroll slot properties / свойства слота прокрутки
    */
@@ -220,7 +230,8 @@ export class ScrollStickyDesign<
   }
 
   /**
-   * Returns scroll element binding properties. /
+   * Returns scroll element binding properties.
+   *
    * Возвращает свойства привязки элемента прокрутки.
    * @returns scroll properties object / объект свойств прокрутки
    */

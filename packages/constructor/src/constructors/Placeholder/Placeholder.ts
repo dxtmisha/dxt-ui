@@ -1,5 +1,9 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract,
+  isFilled
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -8,92 +12,110 @@ import { LabelInclude } from '../../classes/LabelInclude'
 import { ActionsInclude } from '../Actions'
 import { ImageInclude } from '../Image'
 
-import type { PlaceholderComponents, PlaceholderEmits, PlaceholderSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { PlaceholderProps } from './props'
+import type { PlaceholderComponents, PlaceholderEmits, PlaceholderSlots } from './types'
+
+/** Placeholder dependency constructors type / Тип конструкторов зависимостей Placeholder */
+export type PlaceholderConstructors = {
+  /** Actions manager constructor / Конструктор менеджера действий */
+  actions: typeof ActionsInclude
+  /** Description manager constructor / Конструктор менеджера описания */
+  description: typeof DescriptionInclude
+  /** Image manager constructor / Конструктор менеджера изображения */
+  image: typeof ImageInclude
+  /** Label manager constructor / Конструктор менеджера метки */
+  label: typeof LabelInclude
+}
 
 /**
- * Class representing the business logic and structure of the Placeholder component.
+ * Placeholder orchestrator class managing illustrative image, label, description,
+ * action controls, and WAI-ARIA container bindings with lazy dependency instantiation.
  *
- * Класс, представляющий бизнес-логику и структуру компонента Placeholder.
+ * Класс-оркестратор Placeholder, управляющий иллюстративным изображением, меткой, описанием,
+ * кнопками действий и WAI-ARIA-привязками контейнера с ленивой инициализацией зависимостей.
  */
-export class Placeholder {
-  /** Actions controller / Контроллер действий */
-  readonly actions: ActionsInclude
-
-  /** Description controller / Контроллер описания */
-  readonly description: DescriptionInclude
-
-  /** Image controller / Контроллер изображения */
-  readonly image: ImageInclude
-
-  /** Label controller / Контроллер метки */
-  readonly label: LabelInclude
+export class Placeholder extends DesignLogicAbstract<
+  HTMLDivElement,
+  PlaceholderComponents,
+  PlaceholderEmits,
+  PlaceholderSlots,
+  PlaceholderProps,
+  PlaceholderConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<PlaceholderConstructors> = {
+    actions: {
+      item: ActionsInclude,
+      canCreate: () => Boolean(
+        !this.props.actionsHide
+        && (
+          isFilled(this.props.actionsList)
+          || isFilled(this.props.actionsSecondary)
+          || isFilled(this.props.actionsAttrs?.list)
+          || isFilled(this.props.actionsAttrs?.listSecondary)
+        )
+      ),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({ align: 'center' }),
+        undefined,
+        this.emits
+      ]
+    },
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    image: {
+      item: ImageInclude,
+      canCreate: () => ImageInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.emits
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    }
+  }
 
   /**
-   * Constructor for the warning display logic.
+   * Computed ARIA attributes linking the placeholder container to its label and description.
    *
-   * Конструктор для логики отображения предупреждений.
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ActionsIncludeConstructor class for working with actions / класс для работы с действиями
-   * @param constructors.DescriptionIncludeConstructor class for working with description / класс для работы с описанием
-   * @param constructors.ImageIncludeConstructor class for working with image / класс для работы с изображением
-   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
+   * Вычисляемые ARIA-атрибуты, связывающие контейнер заглушки с меткой и описанием.
+   * @returns ARIA attributes map / карта ARIA-атрибутов
    */
-  constructor(
-    protected readonly props: PlaceholderProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<PlaceholderComponents, PlaceholderProps>,
-    protected readonly slots?: PlaceholderSlots,
-    protected readonly emits?: ConstrEmit<PlaceholderEmits>,
-    constructors: {
-      ActionsIncludeConstructor?: typeof ActionsInclude
-      DescriptionIncludeConstructor?: typeof DescriptionInclude
-      ImageIncludeConstructor?: typeof ImageInclude
-      LabelIncludeConstructor?: typeof LabelInclude
-    } = {}
-  ) {
-    const {
-      ActionsIncludeConstructor = ActionsInclude,
-      DescriptionIncludeConstructor = DescriptionInclude,
-      ImageIncludeConstructor = ImageInclude,
-      LabelIncludeConstructor = LabelInclude
-    } = constructors
+  get aria(): AriaList {
+    const aria: AriaList = {}
+    const labelId = this.callInstance('label', item => (item.is ? item.id : undefined))
+    const descriptionId = this.callInstance('description', item => (item.is ? item.id : undefined))
 
-    this.image = new ImageIncludeConstructor(
-      props,
-      naming,
-      components,
-      emits
-    )
+    if (labelId) {
+      Object.assign(aria, AriaStaticInclude.labelledby(labelId))
+    }
 
-    this.description = new DescriptionIncludeConstructor(
-      props,
-      naming,
-      slots
-    )
+    if (descriptionId) {
+      Object.assign(aria, AriaStaticInclude.describedby(descriptionId))
+    }
 
-    this.label = new LabelIncludeConstructor(
-      props,
-      naming,
-      undefined,
-      slots
-    )
-
-    this.actions = new ActionsIncludeConstructor(
-      props,
-      naming,
-      components,
-      () => ({ align: 'center' }),
-      undefined,
-      emits
-    )
+    return aria
   }
 
   /**
@@ -102,23 +124,9 @@ export class Placeholder {
    * Вычисляемые привязки для главного элемента.
    * @returns bindings object / объект привязок
    */
-  get binds(): Record<string, any> {
-    const props = {}
-
-    if (this.label.is) {
-      Object.assign(
-        props,
-        AriaStaticInclude.labelledby(this.label.id)
-      )
+  get binds(): ConstrBind {
+    return {
+      ...this.aria
     }
-
-    if (this.description.is) {
-      Object.assign(
-        props,
-        AriaStaticInclude.describedby(this.description.id)
-      )
-    }
-
-    return props
   }
 }

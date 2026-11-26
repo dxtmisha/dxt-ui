@@ -4,6 +4,8 @@ import D1ScrollSticky from './D1ScrollSticky.vue'
 import { ScrollStickyWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
+import { expect, within, userEvent, waitFor } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -62,9 +64,77 @@ export const ScrollSticky: Story = {
         <div style="height: 320px;"/>
       </div>
     `
-  })
+  }),
+  play: async ({ canvasElement }) => {
+    const component = canvasElement.querySelector('.d1-scrollSticky')
+    await expect(component).toBeInTheDocument()
+    await expect(component?.querySelector('.d1-scrollSticky__context')).toBeInTheDocument()
+    await expect(component?.querySelector('.d1-scrollSticky__scroll')).toBeInTheDocument()
+  }
   // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка
+export const ScrollStickyTestVisibilityAndSlots: Story = {
+  name: 'Тест: Видимость скроллбара, синхронизация и кастомные слоты',
+  render: () => ({
+    components: { D1ScrollSticky },
+    setup() {
+      const visible = ref(true)
+      const toggleVisible = () => {
+        visible.value = !visible.value
+      }
+      return { visible, toggleVisible }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button type="button" class="wiki-storybook-button" @click="toggleVisible">Toggle Scrollbar</button>
+          </div>
+          <D1ScrollSticky
+            data-testid="ss-reactive"
+            :visible="visible"
+            style="max-width: 320px;"
+          >
+            <div style="width: 900px; height: 60px;">Wide scrollable content</div>
+          </D1ScrollSticky>
+          <D1ScrollSticky data-testid="ss-slots" style="max-width: 320px;">
+            <template #context="{ binds }">
+              <div v-bind="binds" data-testid="ss-custom-context">
+                <div style="width: 800px; height: 40px;">Custom context wrapper</div>
+              </div>
+            </template>
+            <template #scroll="{ binds }">
+              <div v-bind="binds" data-testid="ss-custom-scroll" />
+            </template>
+          </D1ScrollSticky>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const reactiveEl = canvasElement.querySelector('[data-testid="ss-reactive"]')
+    await expect(reactiveEl?.querySelector('.d1-scrollSticky__scroll')).toBeInTheDocument()
+
+    const ctx = reactiveEl?.querySelector('.d1-scrollSticky__context') as HTMLElement | null
+    const scr = reactiveEl?.querySelector('.d1-scrollSticky__scroll') as HTMLElement | null
+    if (ctx && scr) {
+      ctx.scrollLeft = 120
+      ctx.dispatchEvent(new Event('scroll'))
+      await waitFor(() => {
+        expect(scr.scrollLeft).toBe(120)
+      })
+    }
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Toggle Scrollbar' }))
+    await waitFor(() => {
+      expect(reactiveEl?.querySelector('.d1-scrollSticky__scroll')).toBeNull()
+    })
+
+    await expect(canvasElement.querySelector('[data-testid="ss-custom-context"]')).toBeInTheDocument()
+    await expect(canvasElement.querySelector('[data-testid="ss-custom-scroll"]')).toBeInTheDocument()
+  }
+}
 // :story-items [!] System label / Системная метка

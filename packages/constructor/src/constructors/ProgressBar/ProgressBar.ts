@@ -1,11 +1,10 @@
 import { computed } from 'vue'
-import type { Ref } from 'vue'
 import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName,
+  type ConstrItems,
+  DesignLogicAbstract,
   isArray,
   isFilled,
+  isNumber,
   isObjectNotArray,
   toNumber
 } from '@dxtmisha/functional'
@@ -13,60 +12,49 @@ import {
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { SkeletonInclude } from '../Skeleton'
 
-import type { ProgressBarComponents, ProgressBarEmits, ProgressBarSlots } from './types'
 import type { ProgressBarProps } from './props'
+import type { ProgressBarComponents, ProgressBarEmits, ProgressBarSlots } from './types'
 import type { ProgressBarItem, ProgressBarInfoItem, ProgressBarInfoList, ProgressBarList } from './basicTypes'
 
+/** ProgressBar dependency constructors type / Тип конструкторов зависимостей ProgressBar */
+export type ProgressBarConstructors = {
+  /** Skeleton manager constructor / Конструктор менеджера скелетона */
+  skeleton: typeof SkeletonInclude
+}
+
 /**
- * Class for working with the progress bar component.
+ * ProgressBar orchestrator class managing multi-segment progress value normalization,
+ * percentage calculation, ARIA progressbar attributes, and skeleton class integration.
  *
- * Класс для работы с компонентом прогрессивный бар.
+ * Класс-оркестратор ProgressBar, управляющий нормализацией значений многосегментного прогресса,
+ * вычислением процентов, ARIA-атрибутами progressbar и интеграцией классов скелетона.
  */
-export class ProgressBar {
-  /**
-   * An object for working with the Skeleton / Объект для работы с Skeleton
-   */
-  readonly skeleton: SkeletonInclude
-
-  /**
-   * Constructor
-   *
-   * Конструктор
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.SkeletonIncludeConstructor class for working with Skeleton / класс для работы с Skeleton
-   */
-  constructor(
-    protected readonly props: ProgressBarProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ProgressBarComponents, ProgressBarProps>,
-    protected readonly slots?: ProgressBarSlots,
-    protected readonly emits?: ConstrEmit<ProgressBarEmits>,
-    constructors: {
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors
-
-    this.skeleton = new SkeletonIncludeConstructor(
-      props,
-      naming,
-      ['classBackgroundVariant']
-    )
+export class ProgressBar extends DesignLogicAbstract<
+  HTMLDivElement,
+  ProgressBarComponents,
+  ProgressBarEmits,
+  ProgressBarSlots,
+  ProgressBarProps,
+  ProgressBarConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ProgressBarConstructors> = {
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackgroundVariant']
+      ]
+    }
   }
 
   /**
-   * Returns the current value.
+   * Returns the current total value across all progress segments.
    *
-   * Возвращает текущее значение.
+   * Возвращает текущее суммарное значение по всем сегментам прогресса.
+   * @returns total numeric value / суммарное числовое значение
    */
   get value(): number {
     let total = 0
@@ -79,9 +67,33 @@ export class ProgressBar {
   }
 
   /**
-   * Returns the data format to the standard view.
+   * Returns the maximum available value.
    *
-   * Возвращает формат данных в стандартный вид.
+   * Возвращает максимальное доступное значение.
+   * @returns maximum numeric value / максимальное числовое значение
+   */
+  get max(): number {
+    if (
+      isFilled(this.props.max)
+      || isNumber(this.props.max)
+    ) {
+      return toNumber(this.props.max)
+    }
+
+    let maximumValue = 0
+
+    this.standard.forEach((item) => {
+      maximumValue += toNumber(item.value ?? 0)
+    })
+
+    return maximumValue
+  }
+
+  /**
+   * Returns the normalized list of progress segments.
+   *
+   * Возвращает нормализованный список сегментов прогресса.
+   * @returns list of normalized progress items / список нормализованных элементов прогресса
    */
   protected get standard(): ProgressBarList {
     const value = this.props.value
@@ -106,28 +118,10 @@ export class ProgressBar {
   }
 
   /**
-   * Returns the maximum available value.
+   * Computed list of processed progress segments including any remainder space.
    *
-   * Возвращает максимальное доступное значение.
-   */
-  get max(): number {
-    if (isFilled(this.props.max)) {
-      return toNumber(this.props.max)
-    }
-
-    let maximumValue = 0
-
-    this.standard.forEach((item) => {
-      maximumValue += toNumber(item.value ?? 0)
-    })
-
-    return maximumValue
-  }
-
-  /**
-   * Returns processed data for work.
-   *
-   * Возвращает обработанные данные для работы.
+   * Вычисляемый список обработанных сегментов прогресса с учётом остатка.
+   * @returns processed items list / список обработанных элементов
    */
   readonly item = computed<ProgressBarInfoList>(() => {
     const value: ProgressBarInfoList = []
@@ -149,6 +143,26 @@ export class ProgressBar {
   })
 
   /**
+   * Returns the skeleton text class when skeleton mode is active.
+   *
+   * Возвращает класс текста скелетона при активном режиме скелетона.
+   * @returns text skeleton class name / имя класса текста скелетона
+   */
+  getSkeletonTextClass(): string {
+    return this.callInstance('skeleton', item => item.classesSkeleton.classText, '')
+  }
+
+  /**
+   * Returns the skeleton background class when skeleton mode is active.
+   *
+   * Возвращает класс фона скелетона при активном режиме скелетона.
+   * @returns background skeleton class name / имя класса фона скелетона
+   */
+  getSkeletonBackgroundClass(): string {
+    return this.callInstance('skeleton', item => item.classesSkeleton.classBackground, '')
+  }
+
+  /**
    * Returns the class name of the progress item.
    *
    * Возвращает название класса элемента прогресса.
@@ -159,9 +173,9 @@ export class ProgressBar {
   }
 
   /**
-   * Returns data for the progress bar item.
+   * Returns processed display, class, style, and ARIA data for a progress bar item.
    *
-   * Возвращает данные для элемента прогресс-бара.
+   * Возвращает обработанные данные отображения, классов, стилей и ARIA для элемента прогресс-бара.
    * @param item input item data / входящие данные элемента
    * @param max maximum value / максимальное значение
    * @returns processed item / обработанный элемент
@@ -169,14 +183,15 @@ export class ProgressBar {
   protected getItem(item: ProgressBarItem, max: number): ProgressBarInfoItem {
     const palette = item.color ? undefined : (item.palette ?? this.props.palette)
     const color = item.color || (!palette && this.props.color) || null
-    const percent = 100 / max * toNumber(item.value)
+    const numericValue = toNumber(item.value ?? 0)
+    const percent = max > 0 ? Math.max(0, 100 / max * numericValue) : 0
     const classNameItem = this.getItemClassName()
 
     return {
       ...item,
       percent,
       classes: {
-        [`${classNameItem}--focus`]: Boolean(this.props.focus) && this.props.focus === item.index,
+        [`${classNameItem}--focus`]: isFilled(this.props.focus) && this.props.focus === item.index,
         [`${classNameItem}--palette`]: Boolean(palette),
         [`${classNameItem}--color`]: Boolean(color),
         [`${this.naming.getDesign()}-palette--${palette}`]: Boolean(palette)
@@ -188,19 +203,19 @@ export class ProgressBar {
       aria: {
         ...AriaStaticInclude.role('progressbar'),
         ...AriaStaticInclude.valueMinMax(
-          toNumber(item.value),
+          numericValue,
           0,
           max
         ),
-        ...AriaStaticInclude.label(item.label || `${Math.round(percent)}%`)
+        ...AriaStaticInclude.label(item.label ?? `${Math.round(percent)}%`)
       }
     }
   }
 
   /**
-   * Returns data for the empty space of the progress bar.
+   * Returns data for the empty space segment of the progress bar.
    *
-   * Возвращает данные для пустого пространства прогресс-бара.
+   * Возвращает данные для сегмента пустого пространства прогресс-бара.
    * @param remainder remainder percentage / процент остатка
    * @returns space item / элемент пустого пространства
    */

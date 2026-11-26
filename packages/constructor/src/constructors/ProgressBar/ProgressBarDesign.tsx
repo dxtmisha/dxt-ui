@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -19,9 +19,9 @@ import {
 } from './props'
 
 /**
- * ProgressBarDesign
+ * ProgressBarDesign class for rendering and managing styles and classes of the progress bar.
  *
- * ProgressBarDesign - класс для рендеринга и управления стилями/классами прогресс-бара.
+ * Класс ProgressBarDesign для рендеринга и управления стилями и классами прогресс-бара.
  */
 export class ProgressBarDesign<
   COMP extends ProgressBarComponents,
@@ -37,12 +37,13 @@ export class ProgressBarDesign<
     CLASSES,
     P
   > {
+  /** ProgressBar logic orchestrator instance / Экземпляр оркестратора логики ProgressBar */
   protected readonly item: ProgressBar
 
   /**
-   * Constructor
+   * Constructor for ProgressBarDesign.
    *
-   * Конструктор
+   * Конструктор для ProgressBarDesign.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -71,9 +72,70 @@ export class ProgressBarDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Renders a single progress bar segment item.
+   *
+   * Рендерит отдельный сегмент прогресс-бара.
+   * @param item processed progress item data / обработанные данные элемента прогресса
+   * @param index item position index / индекс позиции элемента
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderItem = (item: ProgressBarInfoItem, index: number): VNode => {
+    const children: VNode[] = []
+
+    if (
+      item.label
+      && this.props.showLabel
+    ) {
+      children.push(h(
+        'div',
+        {
+          class: {
+            [this.classes?.value.itemLabel ?? '']: true,
+            [this.item.getSkeletonTextClass()]: Boolean(this.props.isSkeleton)
+          }
+        },
+        item.label
+      ))
+    }
+
+    children.push(h('div', {
+      class: {
+        [this.classes?.value.itemProgress ?? '']: true,
+        [this.item.getSkeletonBackgroundClass()]: Boolean(this.props.isSkeleton)
+      }
+    }))
+
+    return h(
+      'div',
+      {
+        'key': item.index ?? index,
+        'class': {
+          [this.classes?.value.item ?? '']: true,
+          ...item.classes
+        },
+        'style': item.style,
+        'data-index': item.index,
+        ...item.aria
+      },
+      children
+    )
+  }
+
+  /**
+   * Renders all progress bar segments.
+   *
+   * Рендерит все сегменты прогресс-бара.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderList = (): VNode[] => {
+    return this.item.item.value.map((item, index) => this.renderItem(item, index))
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -83,6 +145,7 @@ export class ProgressBarDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -101,6 +164,7 @@ export class ProgressBarDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -110,69 +174,20 @@ export class ProgressBarDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, this.renderList())
-  }
-
-  /**
-   * Render the progress element.
-   *
-   * Рендер элемента прогресса.
-   * @param item Data about the element / Данные об элементе
-   * @returns element Node / узел элемента
-   */
-  protected readonly renderItem = (item: ProgressBarInfoItem): VNode => {
-    const children: VNode[] = []
-
-    if (
-      item.label
-      && this.props.showLabel
-    ) {
-      children.push(h(
-        'div',
-        {
-          class: {
-            [this.classes?.value.itemLabel ?? '']: true,
-            [this.item.skeleton.classesSkeleton.classText]: this.props.isSkeleton
-          }
-        },
-        item.label
-      ))
-    }
-
-    children.push(h('div', {
-      class: {
-        [this.classes?.value.itemProgress ?? '']: true,
-        [this.item.skeleton.classesSkeleton.classBackground]: this.props.isSkeleton
-      }
-    }))
-
     return h(
       'div',
-      {
-        'class': {
-          [this.classes?.value.item ?? '']: true,
-          ...item.classes
-        },
-        'style': item.style,
-        'data-index': item.index,
-        ...item.aria
-      },
-      children
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      this.renderList()
     )
-  }
-
-  protected readonly renderList = (): VNode[] => {
-    const children: VNode[] = []
-
-    this.item.item.value.forEach(item => children.push(this.renderItem(item)))
-
-    return children
   }
 }

@@ -121,8 +121,6 @@ src/constructors/Window/Window.ts
 src/constructors/List/ListSearch.ts
 src/constructors/List/ListGo.ts
 src/constructors/List/ListControl.ts
-src/constructors/NavigationRail/NavigationRail.ts
-src/constructors/NavigationRail/NavigationRailDesign.tsx
 src/constructors/Menu/MenuRequest.ts
 src/constructors/Menu/MenuValue.ts
 src/constructors/Menu/MenuGo.ts
@@ -486,3 +484,17 @@ src/constructors/NavigationRailItem/NavigationRailItem.ts
 src/constructors/NavigationRailItem/NavigationRailItemDesign.tsx
 src/constructors/Page/Page.ts
 src/constructors/Page/PageDesign.tsx
+src/constructors/NavigationRail/NavigationRail.ts
+src/constructors/NavigationRail/NavigationRailDesign.tsx
+src/constructors/Section/Section.ts
+src/constructors/Section/SectionDesign.tsx
+src/constructors/Placeholder/Placeholder.ts
+src/constructors/Placeholder/PlaceholderDesign.tsx
+src/constructors/ProgressBar/ProgressBar.ts
+src/constructors/ProgressBar/ProgressBarDesign.tsx
+src/constructors/ScrollSticky/ScrollStickyScroll.ts
+src/constructors/ScrollSticky/ScrollSticky.ts
+src/constructors/ScrollSticky/ScrollStickyDesign.tsx
+
+src/constructors/PageArea/PageArea.ts
+src/constructors/PageArea/PageAreaDesign.tsx

@@ -29,7 +29,6 @@ export interface SectionExpose extends BlockExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SectionSlots extends BlockSlots {
-  // default? (props: any): any
 }
 
 /**
@@ -38,6 +37,7 @@ export interface SectionSlots extends BlockSlots {
  * Тип, описывающий подклассы.
  */
 export type SectionClasses = {
+  /** Main class name / Название основного класса */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   headline: string
