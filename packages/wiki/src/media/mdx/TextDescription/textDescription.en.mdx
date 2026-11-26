@@ -1,19 +1,33 @@
-## Description
+import { Source } from '@storybook/addon-docs/blocks';
 
-A clean and semantic component for displaying text descriptions with custom dynamic tag wrapping.
+The `TextDescription` component is a lightweight text primitive for rendering descriptive copy, helper notes, and captions with dynamic HTML wrapper tag support.
 
-TextDescription is built for modular and lightweight layout structures, offering a standardized approach to presenting paragraph text, sub-labels, or detailed information block captions.
+It delegates rendering through `DescriptionInclude` with lazy instantiation, automatically omitting empty DOM output when neither the `description` prop nor the `description` slot contains content while preserving numeric `0`, custom `descriptionId`, and merged external attributes.
 
-**Key Features:**
+**Key features:**
 
-- Dynamic wrapper tag support (e.g., span, div, p, etc.) via the `tag` prop
-- Standardized render logic powered by `DescriptionInclude`
-- Highly optimized, clutter-free HTML output
-- Cohesive integration with design-system typography tokens
+- **Dynamic Wrapper Tag:** Configurable semantic HTML tag (`div`, `p`, `span`, `small`, `figcaption`, etc.) via `tag` (defaults to `div`)
+- **Zero-Overhead Empty State:** Lazily skips `DescriptionInclude` allocation and renders nothing for empty or whitespace-only values
+- **Slot & Prop Composition:** Supports text/numeric `description` values (including `0`) and rich markup via the `description` slot
+- **Accessibility Ready:** Automatically generates deterministic element IDs or applies custom `descriptionId` for `aria-describedby` associations
 
-**Typical Usage Scenarios:**
+**Common use cases:**
 
-- Displaying auxiliary description strings in block layouts
-- Presenting captions and footnotes under list items
-- Rendering paragraph text sections
-- Form field helper and informative instructions
+- Displaying helper text and secondary instructions next to form fields
+- Presenting captions, footnotes, and metadata beneath headings or cards
+- Rendering semantic paragraph descriptions with unified design-system typography
+
+<Source
+    code={`
+<template>
+  <TextDescription
+    description="Secondary helper description text"
+    description-id="field-helper"
+    tag="p"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> TextDescription provides clean, semantic, SSR-safe description rendering with minimal DOM footprint and full design-token integration.

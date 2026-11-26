@@ -131,6 +131,8 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="TabsNavigation" name="component-tabs-navigation"/>
         <DemoLink label="Textarea" name="component-textarea"/>
         <DemoLink label="TextareaAutosize" name="component-textarea-autosize"/>
+        <DemoLink label="TextDescription" name="component-text-description"/>
+        <DemoLink label="TextLabel" name="component-text-label"/>
         <DemoLink label="Tooltip" name="component-tooltip"/>
         <DemoLink label="Window" name="component-window"/>
       </D1Group>

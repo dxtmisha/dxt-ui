@@ -126,6 +126,8 @@ import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 import DemoTabsNavigationPage from './pages/components/DemoTabsNavigationPage.vue'
 import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
 import DemoTextareaAutosizePage from './pages/components/DemoTextareaAutosizePage.vue'
+import DemoTextDescriptionPage from './pages/components/DemoTextDescriptionPage.vue'
+import DemoTextLabelPage from './pages/components/DemoTextLabelPage.vue'
 import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
 
@@ -749,6 +751,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-textarea-autosize',
     name: 'component-textarea-autosize',
     component: DemoTextareaAutosizePage
+  },
+  {
+    path: '/component-text-description',
+    name: 'component-text-description',
+    component: DemoTextDescriptionPage
+  },
+  {
+    path: '/component-text-label',
+    name: 'component-text-label',
+    component: DemoTextLabelPage
   },
   {
     path: '/component-tooltip',

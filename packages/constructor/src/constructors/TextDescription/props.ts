@@ -6,7 +6,7 @@ type TextDescriptionPropsToken = {
 }
 
 export type TextDescriptionPropsBasic = DescriptionProps & {
-  /** html tag for wrapping the description/html тег для оборачивания описания */
+  /** HTML tag for wrapping the description / HTML-тег для оборачивания описания */
   tag?: string
 }
 

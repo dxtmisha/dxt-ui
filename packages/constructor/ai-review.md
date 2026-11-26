@@ -584,3 +584,7 @@ src/constructors/TableFlexRecord/TableFlexRecord.ts
 src/constructors/TableFlexRecord/TableFlexRecordDesign.tsx
 src/constructors/TableFlex/TableFlex.ts
 src/constructors/TableFlex/TableFlexDesign.tsx
+src/constructors/TextDescription/TextDescription.ts
+src/constructors/TextDescription/TextDescriptionDesign.tsx
+src/constructors/TextLabel/TextLabel.ts
+src/constructors/TextLabel/TextLabelDesign.tsx

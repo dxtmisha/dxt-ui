@@ -6,7 +6,7 @@ type TextLabelPropsToken = {
 }
 
 export type TextLabelPropsBasic = LabelProps & {
-  /** html tag for wrapping the text/html тег для оборачивания текста */
+  /** HTML tag for wrapping the text / HTML-тег для оборачивания текста */
   tag?: string
 }
 

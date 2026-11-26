@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,19 +7,23 @@ import {
 
 import { TextDescription } from './TextDescription'
 
-import {
-  type TextDescriptionPropsBasic
+import type {
+  TextDescriptionPropsBasic
 } from './props'
-import {
-  type TextDescriptionClasses,
-  type TextDescriptionComponents,
-  type TextDescriptionEmits,
-  type TextDescriptionExpose,
-  type TextDescriptionSlots
+import type {
+  TextDescriptionClasses,
+  TextDescriptionComponents,
+  TextDescriptionEmits,
+  TextDescriptionExpose,
+  TextDescriptionSlots
 } from './types'
 
 /**
- * TextDescriptionDesign
+ * TextDescriptionDesign constructor class responsible for rendering textual descriptions
+ * with dynamic tag wrapping, merged attributes, and token classes/styles.
+ *
+ * Класс-конструктор TextDescriptionDesign, отвечающий за рендеринг текстовых описаний
+ * с динамической оберткой тегом, объединением атрибутов и токенами классов/стилей.
  */
 export class TextDescriptionDesign<
   COMP extends TextDescriptionComponents,
@@ -35,14 +39,17 @@ export class TextDescriptionDesign<
     CLASSES,
     P
   > {
+  /** TextDescription logic orchestrator instance / Экземпляр оркестратора логики TextDescription */
   protected readonly item: TextDescription
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a TextDescriptionDesign instance.
+   *
+   * Конструктор для создания экземпляра TextDescriptionDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструктора
    */
   constructor(
     name: string,
@@ -67,18 +74,10 @@ export class TextDescriptionDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {} as EXPOSE
-  }
-
-  /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -92,27 +91,46 @@ export class TextDescriptionDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initialization of all the necessary properties for work.
    *
-   * Доработка полученного списка стилей.
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
-  protected initStyles(): ConstrStyles {
-    return {}
+  protected initExpose(): EXPOSE {
+    return {} as EXPOSE
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the description element.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга элемента описания.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   protected initRender(): VNode[] {
-    return this.item.description.render(
-      undefined,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      }
+    return this.item.callInstance(
+      'description',
+      item => item.render(
+        undefined,
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          }
+        )
+      ),
+      []
     )
+  }
+
+  /**
+   * Refinement of the received list of styles.
+   *
+   * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
+   */
+  protected initStyles(): ConstrStyles {
+    return {}
   }
 }

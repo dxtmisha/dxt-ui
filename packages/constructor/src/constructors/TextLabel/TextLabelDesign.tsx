@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,19 +7,23 @@ import {
 
 import { TextLabel } from './TextLabel'
 
-import {
-  type TextLabelPropsBasic
+import type {
+  TextLabelPropsBasic
 } from './props'
-import {
-  type TextLabelClasses,
-  type TextLabelComponents,
-  type TextLabelEmits,
-  type TextLabelExpose,
-  type TextLabelSlots
+import type {
+  TextLabelClasses,
+  TextLabelComponents,
+  TextLabelEmits,
+  TextLabelExpose,
+  TextLabelSlots
 } from './types'
 
 /**
- * TextLabelDesign
+ * TextLabelDesign constructor class responsible for rendering textual labels
+ * with dynamic tag wrapping, merged attributes, and token classes/styles.
+ *
+ * Класс-конструктор TextLabelDesign, отвечающий за рендеринг текстовых меток
+ * с динамической оберткой тегом, объединением атрибутов и токенами классов/стилей.
  */
 export class TextLabelDesign<
   COMP extends TextLabelComponents,
@@ -35,14 +39,17 @@ export class TextLabelDesign<
     CLASSES,
     P
   > {
+  /** TextLabel logic orchestrator instance / Экземпляр оркестратора логики TextLabel */
   protected readonly item: TextLabel
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for creating a TextLabelDesign instance.
+   *
+   * Конструктор для создания экземпляра TextLabelDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструктора
    */
   constructor(
     name: string,
@@ -67,18 +74,10 @@ export class TextLabelDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {} as EXPOSE
-  }
-
-  /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -92,27 +91,46 @@ export class TextLabelDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initialization of all the necessary properties for work.
    *
-   * Доработка полученного списка стилей.
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
-  protected initStyles(): ConstrStyles {
-    return {}
+  protected initExpose(): EXPOSE {
+    return {} as EXPOSE
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the label element.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга элемента метки.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   protected initRender(): VNode[] {
-    return this.item.label.render(
-      undefined,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      }
+    return this.item.callInstance(
+      'label',
+      item => item.render(
+        undefined,
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          }
+        )
+      ),
+      []
     )
+  }
+
+  /**
+   * Refinement of the received list of styles.
+   *
+   * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
+   */
+  protected initStyles(): ConstrStyles {
+    return {}
   }
 }

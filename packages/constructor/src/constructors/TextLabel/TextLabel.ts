@@ -1,54 +1,54 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 
-import type { TextLabelComponents, TextLabelEmits, TextLabelSlots } from './types'
 import type { TextLabelProps } from './props'
+import type {
+  TextLabelComponents,
+  TextLabelEmits,
+  TextLabelSlots
+} from './types'
+
+/** TextLabel dependency constructors type / Тип конструкторов зависимостей TextLabel */
+export type TextLabelConstructors = {
+  /** Label include constructor / Конструктор подключения метки */
+  label: typeof LabelInclude
+}
 
 /**
- * TextLabel
+ * Class representing the TextLabel logic orchestrator.
+ * Manages lazy instantiation of the label renderer with dynamic tag resolution.
+ *
+ * Класс, представляющий оркестратор логики TextLabel.
+ * Управляет ленивой инициализацией рендерера метки с динамическим разрешением тега.
  */
-export class TextLabel {
-  /** Label include/ Подключение метки */
-  readonly label: LabelInclude
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
-   */
-  constructor(
-    protected readonly props: TextLabelProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<TextLabelComponents, TextLabelProps>,
-    protected readonly slots?: TextLabelSlots,
-    protected readonly emits?: ConstrEmit<TextLabelEmits>,
-    constructors: {
-      LabelConstructor?: typeof LabelInclude
-    } = {}
-  ) {
-    const {
-      LabelConstructor = LabelInclude
-    } = constructors
-
-    this.label = new LabelConstructor(
-      this.props,
-      this.naming,
-      undefined,
-      this.slots,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      () => this.props.tag
-    )
+export class TextLabel extends DesignLogicAbstract<
+  HTMLElement,
+  TextLabelComponents,
+  TextLabelEmits,
+  TextLabelSlots,
+  TextLabelProps,
+  TextLabelConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<TextLabelConstructors> = {
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        () => this.props.tag
+      ]
+    }
   }
 }
