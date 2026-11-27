@@ -5,7 +5,7 @@ import {
   getBind,
   getObjectNoUndefined,
   isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -47,8 +47,7 @@ export class CollageBar extends DesignLogicAbstract<
     button: {
       item: ButtonInclude,
       canCreate: () => Boolean(
-        isFilled(this.props.button, true)
-        || isNumber(this.props.button)
+        isFilledOrNumber(this.props.button)
         || isFilled(this.props.icon)
         || isFilled(this.props.buttonAttrs)
       ),
@@ -64,10 +63,7 @@ export class CollageBar extends DesignLogicAbstract<
             ...this.i('event').binds
           })
 
-          if (
-            isFilled(this.props.button, true)
-            || isNumber(this.props.button)
-          ) {
+          if (isFilledOrNumber(this.props.button)) {
             return mergeProps(
               extra,
               getObjectNoUndefined(getBind(this.props.button, undefined, 'label', true))

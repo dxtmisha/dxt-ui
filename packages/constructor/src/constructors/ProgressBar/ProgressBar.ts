@@ -4,7 +4,7 @@ import {
   DesignLogicAbstract,
   isArray,
   isFilled,
-  isNumber,
+  isFilledOrNumber,
   isObjectNotArray,
   toNumber
 } from '@dxtmisha/functional'
@@ -73,10 +73,7 @@ export class ProgressBar extends DesignLogicAbstract<
    * @returns maximum numeric value / максимальное числовое значение
    */
   get max(): number {
-    if (
-      isFilled(this.props.max)
-      || isNumber(this.props.max)
-    ) {
+    if (isFilledOrNumber(this.props.max)) {
       return toNumber(this.props.max)
     }
 

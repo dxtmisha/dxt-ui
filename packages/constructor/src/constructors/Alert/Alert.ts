@@ -6,7 +6,7 @@ import {
   DesignLogicAbstract,
   getBind,
   isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { ActionsInclude } from '../Actions'
@@ -98,13 +98,13 @@ export class Alert extends DesignLogicAbstract<
     },
     button: {
       item: ButtonInclude,
-      canCreate: () => isFilled(this.props.button) || isNumber(this.props.button),
+      canCreate: () => isFilledOrNumber(this.props.button),
       parameters: () => [
         undefined,
         this.naming,
         this.components,
         () => {
-          if (isFilled(this.props.button) || isNumber(this.props.button)) {
+          if (isFilledOrNumber(this.props.button)) {
             const bind = getBind(this.props.button, undefined, 'label', true)
 
             if (isFilled(bind)) {

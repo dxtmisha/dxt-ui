@@ -7,7 +7,7 @@ import {
   type DesignComponents,
   type DesignName,
   isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -45,8 +45,7 @@ export class BarsInclude<
    */
   static is(props?: Readonly<BarsPropsInclude>): boolean {
     return !props?.barsHide && Boolean(
-      isFilled(props?.barsLabel, true)
-      || isNumber(props?.barsLabel)
+      isFilledOrNumber(props?.barsLabel)
       || isFilled(props?.barsDescription, true)
       || props?.barsBackHide !== true
     )

@@ -5,7 +5,7 @@ import {
   type ConstrBind,
   getObjectNoUndefined,
   isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -45,18 +45,13 @@ export class CollageBarInclude<
     const attrs = props?.collageBarAttrs
 
     return Boolean(
-      isFilled(props?.label, true)
-      || isNumber(props?.label)
-      || isFilled(props?.description, true)
-      || isNumber(props?.description)
+      isFilledOrNumber(props?.label)
+      || isFilledOrNumber(props?.description)
       || isFilled(props?.to)
       || isFilled(props?.href)
-      || isFilled(attrs?.label, true)
-      || isNumber(attrs?.label)
-      || isFilled(attrs?.description, true)
-      || isNumber(attrs?.description)
-      || isFilled(attrs?.button, true)
-      || isNumber(attrs?.button)
+      || isFilledOrNumber(attrs?.label)
+      || isFilledOrNumber(attrs?.description)
+      || isFilledOrNumber(attrs?.button)
       || isFilled(attrs?.icon)
       || isFilled(attrs?.buttonAttrs)
       || isFilled(attrs?.to)
@@ -91,12 +86,9 @@ export class CollageBarInclude<
     const binds = this.binds.value
 
     return Boolean(
-      isFilled(binds.label, true)
-      || isNumber(binds.label)
-      || isFilled(binds.description, true)
-      || isNumber(binds.description)
-      || isFilled(binds.button, true)
-      || isNumber(binds.button)
+      isFilledOrNumber(binds.label)
+      || isFilledOrNumber(binds.description)
+      || isFilledOrNumber(binds.button)
       || isFilled(binds.icon)
       || isFilled(binds.buttonAttrs)
       || isFilled(binds.to)

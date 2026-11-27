@@ -3,8 +3,7 @@ import {
   type ConstrClassObject,
   type ConstrItems,
   DesignLogicAbstract,
-  isFilled,
-  isNumber,
+  isFilledOrNumber,
   type NumberOrString
 } from '@dxtmisha/functional'
 
@@ -237,10 +236,7 @@ export class Dropzone extends DesignLogicAbstract<
    * @returns resolved label value / разрешенное значение метки
    */
   protected getLabel(): NumberOrString | undefined {
-    if (
-      isFilled(this.props.label, true)
-      || isNumber(this.props.label)
-    ) {
+    if (isFilledOrNumber(this.props.label)) {
       return this.props.label
     }
 

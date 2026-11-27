@@ -3,8 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  isFilled,
-  toBinds
+  isFilled
 } from '@dxtmisha/functional'
 
 import { SelectValue } from './SelectValue'
@@ -190,8 +189,8 @@ export class SelectValueDesign<
   protected readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
     return this.components?.renderOne(
       'chip',
-      toBinds(
-        this.props.chipAttrs,
+      mergeProps(
+        this.props.chipAttrs ?? {},
         {
           'class': this.classes?.value.item,
           'icon': this.props.iconShow && item.icon ? item.icon : undefined,

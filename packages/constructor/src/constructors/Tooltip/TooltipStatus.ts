@@ -1,7 +1,7 @@
 // ai-none
 
 import { ref } from 'vue'
-import { isFilled, isNumber } from '@dxtmisha/functional'
+import { isFilledOrNumber } from '@dxtmisha/functional'
 
 import type { TooltipSlots } from './types'
 import type { TooltipProps } from './props'
@@ -71,10 +71,8 @@ export class TooltipStatus {
     return (
       !this.props.disabled
       && Boolean(
-        isFilled(this.props.label, true)
-        || isNumber(this.props.label)
-        || isFilled(this.props.description, true)
-        || isNumber(this.props.description)
+        isFilledOrNumber(this.props.label)
+        || isFilledOrNumber(this.props.description)
         || (
           this.slots
           && (

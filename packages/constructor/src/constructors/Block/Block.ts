@@ -7,8 +7,7 @@ import {
   DesignLogicAbstract,
   type DesignName,
   getElementId,
-  isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -173,8 +172,7 @@ export class Block extends DesignLogicAbstract<
    */
   isHeadline(): boolean {
     return Boolean(
-      isFilled(this.props.headline, true)
-      || isNumber(this.props.headline)
+      isFilledOrNumber(this.props.headline)
       || this.slots?.headline
     )
   }
@@ -190,10 +188,8 @@ export class Block extends DesignLogicAbstract<
       (
         this.components?.is('header')
         && (
-          isFilled(this.props.label, true)
-          || isNumber(this.props.label)
-          || isFilled(this.props.headerAttrs?.label, true)
-          || isNumber(this.props.headerAttrs?.label)
+          isFilledOrNumber(this.props.label)
+          || isFilledOrNumber(this.props.headerAttrs?.label)
           || this.slots?.label
         )
       )

@@ -7,7 +7,7 @@ import {
   type DesignName,
   getObjectNoUndefined,
   isFilled,
-  isNumber,
+  isFilledOrNumber,
   type RawSlots
 } from '@dxtmisha/functional'
 
@@ -56,8 +56,7 @@ export class HeaderInclude<
     slots?: HeaderSlotsInclude
   ): boolean {
     return Boolean(
-      isFilled(props?.label, true)
-      || isNumber(props?.label)
+      isFilledOrNumber(props?.label)
       || CaptionInclude.is(props, slots)
       || IconInclude.is(props)
       || isFilled(props?.headerAttrs)
