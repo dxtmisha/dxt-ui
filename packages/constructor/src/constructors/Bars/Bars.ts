@@ -80,7 +80,8 @@ export class Bars extends DesignLogicAbstract<
       parameters: () => [
         () => ({
           description: this.isAction() ? this.props.actionDescription : this.props.description,
-          descriptionId: this.props.descriptionId
+          descriptionId: this.props.descriptionId,
+          isSkeleton: this.props.isSkeleton
         }),
         this.naming,
         this.slots,
@@ -104,7 +105,8 @@ export class Bars extends DesignLogicAbstract<
       parameters: () => [
         () => ({
           label: this.isAction() ? this.props.actionLabel : this.props.label,
-          labelId: this.props.labelId
+          labelId: this.props.labelId,
+          isSkeleton: this.props.isSkeleton
         }),
         this.naming,
         undefined,

@@ -9,7 +9,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
-import type { SkeletonInclude } from '../constructors/Skeleton'
+import type { SkeletonInclude, SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { LabelNumberProps, LabelNumberSlots } from '../types/labelTypes'
 
@@ -33,7 +33,7 @@ export class LabelNumberInclude extends LabelInclude {
    * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: RefOrNormalOrFunction<LabelNumberProps>,
+    protected readonly props: RefOrNormalOrFunction<LabelNumberProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelNumberSlots,

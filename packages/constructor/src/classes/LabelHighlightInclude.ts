@@ -2,7 +2,7 @@ import { computed, type VNode } from 'vue'
 import { type ConstrClass, type DesignName, getExp, isFilled, isNumber } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { LabelHighlightProps, LabelHighlightSlots } from '../types/labelTypes'
 
@@ -26,7 +26,7 @@ export class LabelHighlightInclude extends LabelInclude {
    * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: Readonly<LabelHighlightProps>,
+    protected readonly props: Readonly<LabelHighlightProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelHighlightSlots,

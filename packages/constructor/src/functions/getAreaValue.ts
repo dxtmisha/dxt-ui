@@ -8,5 +8,5 @@ import { AREA_PROP_NAME } from '../types/areaTypes'
  * @returns area value / значение области
  */
 export function getAreaValue(): string | undefined {
-  return getInjectNearest<string>(AREA_PROP_NAME)
+  return getInjectNearest(AREA_PROP_NAME)
 }

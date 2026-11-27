@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { h } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { SuffixInclude } from '../SuffixInclude'
@@ -34,11 +34,23 @@ describe('SuffixInclude', () => {
 
     it('should render suffix correctly with props, slots, and skeleton', () => {
       const skeleton = new SkeletonInclude({ isSkeleton: true }, new DesignName('d1.field'), ['classText'])
-      const include = new SuffixInclude(
+      const skeletonGetter = vi.fn(() => skeleton)
+
+      const includeInactive = new SuffixInclude(
         { suffix: 'Suf', suffixId: 'suf-id' },
         new DesignName('my.class'),
         { suffix: () => h('span', 'SlotSuf') },
-        () => skeleton
+        skeletonGetter
+      )
+      const inactiveNodes = includeInactive.render()
+      expect(inactiveNodes[0]?.props?.class).toBe('my-class__suffix')
+      expect(skeletonGetter).not.toHaveBeenCalled()
+
+      const include = new SuffixInclude(
+        { suffix: 'Suf', suffixId: 'suf-id', isSkeleton: true },
+        new DesignName('my.class'),
+        { suffix: () => h('span', 'SlotSuf') },
+        skeletonGetter
       )
       const nodes = include.render()
 
@@ -52,6 +64,7 @@ describe('SuffixInclude', () => {
       })
       expect(nodes[0]?.children).toHaveLength(2)
       expect(nodes[0]?.children).toContain('Suf')
+      expect(skeletonGetter).toHaveBeenCalledTimes(1)
     })
 
     it('should return empty array when no suffix prop or slot is provided', () => {

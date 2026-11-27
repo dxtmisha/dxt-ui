@@ -1,68 +1,90 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, expectTypeOf, afterEach, vi } from 'vitest'
+import { createSSRApp, h } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 import { AriaStaticInclude } from '../AriaStaticInclude'
+import type { AriaList } from '../../types/ariaTypes'
+import type { RoleType } from '../../types/roleTypes'
 
 describe('AriaStaticInclude', () => {
-  describe('Boolean conversion helper (isTrueOrFalse)', () => {
-    it('should convert boolean or undefined values to ARIA string literals', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  describe('Standard functional requirements (Happy path & Usage scenarios)', () => {
+    it('should convert boolean values to ARIA string literals via isTrueOrFalse', () => {
       expect(AriaStaticInclude.isTrueOrFalse(true)).toBe('true')
       expect(AriaStaticInclude.isTrueOrFalse(false)).toBe('false')
       expect(AriaStaticInclude.isTrueOrFalse(undefined)).toBe('false')
-    })
-  })
-
-  describe('Semantic role and naming attributes', () => {
-    it('should return role object', () => {
-      expect(AriaStaticInclude.role('button')).toEqual({ role: 'button' })
-      expect(AriaStaticInclude.role('img')).toEqual({ role: 'img' })
-      expect(AriaStaticInclude.role(undefined)).toEqual({ role: undefined })
+      expectTypeOf(AriaStaticInclude.isTrueOrFalse(true)).toEqualTypeOf<'true' | 'false'>()
     })
 
-    it('should return roledescription attribute when non-empty', () => {
+    it.each<RoleType>([
+      'button',
+      'checkbox',
+      'dialog',
+      'grid',
+      'img',
+      'link',
+      'listbox',
+      'menu',
+      'navigation',
+      'progressbar',
+      'radio',
+      'radiogroup',
+      'region',
+      'row',
+      'separator',
+      'slider',
+      'switch',
+      'tab',
+      'table',
+      'tablist',
+      'tabpanel',
+      'timer'
+    ])('should return role attribute for %s', (role) => {
+      expect(AriaStaticInclude.role(role)).toEqual({ role })
+    })
+
+    it('should return roledescription, label, labelledby, and describedby attributes', () => {
       expect(AriaStaticInclude.roledescription('slide')).toEqual({ 'aria-roledescription': 'slide' })
-      expect(AriaStaticInclude.roledescription('')).toEqual({})
-      expect(AriaStaticInclude.roledescription(undefined)).toEqual({})
-    })
-
-    it('should return label attribute for string or numeric values', () => {
-      expect(AriaStaticInclude.label('test-label')).toEqual({ 'aria-label': 'test-label' })
+      expect(AriaStaticInclude.label('Save changes')).toEqual({ 'aria-label': 'Save changes' })
       expect(AriaStaticInclude.label(123)).toEqual({ 'aria-label': 123 })
-      expect(AriaStaticInclude.label('')).toEqual({})
-      expect(AriaStaticInclude.label(0)).toEqual({})
-      expect(AriaStaticInclude.label(undefined)).toEqual({})
-    })
-
-    it('should return labelledby and describedby attributes', () => {
       expect(AriaStaticInclude.labelledby('label-id')).toEqual({ 'aria-labelledby': 'label-id' })
-      expect(AriaStaticInclude.labelledby('')).toEqual({})
-      expect(AriaStaticInclude.labelledby(undefined)).toEqual({})
-
       expect(AriaStaticInclude.describedby('desc-id')).toEqual({ 'aria-describedby': 'desc-id' })
-      expect(AriaStaticInclude.describedby('')).toEqual({})
-      expect(AriaStaticInclude.describedby(undefined)).toEqual({})
-    })
-  })
 
-  describe('Widget states and boolean ARIA attributes', () => {
-    it('should return atomic, busy, checked, expanded, and multiselectable attributes', () => {
+      expectTypeOf(AriaStaticInclude.label('test')).toEqualTypeOf<AriaList>()
+    })
+
+    it('should return atomic, busy, checked, expanded, multiselectable, and pressed attributes', () => {
       expect(AriaStaticInclude.atomic(true)).toEqual({ 'aria-atomic': 'true' })
       expect(AriaStaticInclude.atomic(false)).toEqual({ 'aria-atomic': 'false' })
-      expect(AriaStaticInclude.atomic(undefined)).toEqual({ 'aria-atomic': 'false' })
+      expect(AriaStaticInclude.atomic()).toEqual({ 'aria-atomic': 'false' })
 
       expect(AriaStaticInclude.busy(true)).toEqual({ 'aria-busy': 'true' })
       expect(AriaStaticInclude.busy(false)).toEqual({ 'aria-busy': 'false' })
-      expect(AriaStaticInclude.busy(undefined)).toEqual({ 'aria-busy': 'false' })
+      expect(AriaStaticInclude.busy()).toEqual({ 'aria-busy': 'false' })
 
       expect(AriaStaticInclude.checked(true)).toEqual({ 'aria-checked': 'true' })
       expect(AriaStaticInclude.checked(false)).toEqual({ 'aria-checked': 'false' })
-      expect(AriaStaticInclude.checked(undefined)).toEqual({ 'aria-checked': 'false' })
+      expect(AriaStaticInclude.checked()).toEqual({ 'aria-checked': 'false' })
+      expect(AriaStaticInclude.checked('mixed')).toEqual({ 'aria-checked': 'mixed' })
+      expect(AriaStaticInclude.checked('true')).toEqual({ 'aria-checked': 'true' })
+      expect(AriaStaticInclude.checked('false')).toEqual({ 'aria-checked': 'false' })
 
       expect(AriaStaticInclude.expanded(true)).toEqual({ 'aria-expanded': 'true' })
       expect(AriaStaticInclude.expanded(false)).toEqual({ 'aria-expanded': 'false' })
-      expect(AriaStaticInclude.expanded(undefined)).toEqual({ 'aria-expanded': 'false' })
+      expect(AriaStaticInclude.expanded()).toEqual({ 'aria-expanded': 'false' })
 
       expect(AriaStaticInclude.multiselectable(true)).toEqual({ 'aria-multiselectable': 'true' })
       expect(AriaStaticInclude.multiselectable(false)).toEqual({ 'aria-multiselectable': 'false' })
-      expect(AriaStaticInclude.multiselectable(undefined)).toEqual({ 'aria-multiselectable': 'false' })
+      expect(AriaStaticInclude.multiselectable()).toEqual({ 'aria-multiselectable': 'false' })
+
+      expect(AriaStaticInclude.pressed(true)).toEqual({ 'aria-pressed': 'true' })
+      expect(AriaStaticInclude.pressed(false)).toEqual({ 'aria-pressed': 'false' })
+      expect(AriaStaticInclude.pressed()).toEqual({ 'aria-pressed': 'false' })
+      expect(AriaStaticInclude.pressed('mixed')).toEqual({ 'aria-pressed': 'mixed' })
+      expect(AriaStaticInclude.pressed('true')).toEqual({ 'aria-pressed': 'true' })
+      expect(AriaStaticInclude.pressed('false')).toEqual({ 'aria-pressed': 'false' })
     })
 
     it('should return hidden attribute with default true', () => {
@@ -82,50 +104,96 @@ describe('AriaStaticInclude', () => {
 
       expect(AriaStaticInclude.invalid(true)).toEqual({ 'aria-invalid': 'true' })
       expect(AriaStaticInclude.invalid(false)).toEqual({})
+      expect(AriaStaticInclude.invalid('false')).toEqual({})
+      expect(AriaStaticInclude.invalid('true')).toEqual({ 'aria-invalid': 'true' })
+      expect(AriaStaticInclude.invalid('grammar')).toEqual({ 'aria-invalid': 'grammar' })
+      expect(AriaStaticInclude.invalid('spelling')).toEqual({ 'aria-invalid': 'spelling' })
       expect(AriaStaticInclude.invalid()).toEqual({ 'aria-invalid': 'true' })
     })
 
-    it('should return selected attribute when explicitly boolean and omit when undefined', () => {
+    it('should return selected attribute when explicitly boolean and omit when undefined or null', () => {
       expect(AriaStaticInclude.selected(true)).toEqual({ 'aria-selected': 'true' })
       expect(AriaStaticInclude.selected(false)).toEqual({ 'aria-selected': 'false' })
       expect(AriaStaticInclude.selected(undefined)).toEqual({})
+      expect(AriaStaticInclude.selected(null)).toEqual({})
     })
 
-    it('should return current attribute for token strings and boolean states', () => {
-      expect(AriaStaticInclude.current('page')).toEqual({ 'aria-current': 'page' })
-      expect(AriaStaticInclude.current('step')).toEqual({ 'aria-current': 'step' })
+    it.each<NonNullable<AriaList['aria-current']>>([
+      'page',
+      'step',
+      'location',
+      'date',
+      'time',
+      'true',
+      'false'
+    ])('should return current attribute for string token %s', (token) => {
+      expect(AriaStaticInclude.current(token)).toEqual({ 'aria-current': token })
+    })
+
+    it('should return current attribute for boolean and undefined states', () => {
       expect(AriaStaticInclude.current(true)).toEqual({ 'aria-current': 'true' })
       expect(AriaStaticInclude.current(false)).toEqual({ 'aria-current': 'false' })
       expect(AriaStaticInclude.current(undefined)).toEqual({ 'aria-current': 'false' })
     })
-  })
 
-  describe('Relationship, live region, and layout attributes', () => {
-    it('should return controls and haspopup attributes', () => {
-      expect(AriaStaticInclude.controls('element-id')).toEqual({ 'aria-controls': 'element-id' })
-      expect(AriaStaticInclude.controls(undefined)).toEqual({})
-
-      expect(AriaStaticInclude.haspopup('dialog')).toEqual({ 'aria-haspopup': 'dialog' })
-      expect(AriaStaticInclude.haspopup(true)).toEqual({ 'aria-haspopup': true })
-      expect(AriaStaticInclude.haspopup(undefined)).toEqual({})
+    it.each<NonNullable<AriaList['aria-haspopup']>>([
+      'true',
+      'dialog',
+      'menu',
+      'listbox',
+      'tree',
+      'grid'
+    ])('should return haspopup attribute for %s', (popupType) => {
+      expect(AriaStaticInclude.haspopup(popupType)).toEqual({ 'aria-haspopup': popupType })
     })
 
-    it('should return live, orientation, and sort attributes', () => {
-      expect(AriaStaticInclude.live('polite')).toEqual({ 'aria-live': 'polite' })
-      expect(AriaStaticInclude.live('assertive')).toEqual({ 'aria-live': 'assertive' })
-      expect(AriaStaticInclude.live(undefined)).toEqual({})
-
-      expect(AriaStaticInclude.orientation('horizontal')).toEqual({ 'aria-orientation': 'horizontal' })
-      expect(AriaStaticInclude.orientation('vertical')).toEqual({ 'aria-orientation': 'vertical' })
-      expect(AriaStaticInclude.orientation(undefined)).toEqual({})
-
-      expect(AriaStaticInclude.sort('ascending')).toEqual({ 'aria-sort': 'ascending' })
-      expect(AriaStaticInclude.sort('descending')).toEqual({ 'aria-sort': 'descending' })
-      expect(AriaStaticInclude.sort('none')).toEqual({ 'aria-sort': 'none' })
-      expect(AriaStaticInclude.sort(undefined)).toEqual({})
+    it('should convert boolean true to string "true" in haspopup', () => {
+      expect(AriaStaticInclude.haspopup(true)).toEqual({ 'aria-haspopup': 'true' })
     })
 
-    it('should return valueMinMax range attributes', () => {
+    it.each<NonNullable<AriaList['aria-live']>>(['off', 'polite', 'assertive'])('should return live attribute for %s', (live) => {
+      expect(AriaStaticInclude.live(live)).toEqual({ 'aria-live': live })
+    })
+
+    it.each<NonNullable<AriaList['aria-orientation']>>(['horizontal', 'vertical', 'undefined'])('should return orientation attribute for %s', (orientation) => {
+      expect(AriaStaticInclude.orientation(orientation)).toEqual({ 'aria-orientation': orientation })
+    })
+
+    it.each<NonNullable<AriaList['aria-sort']>>(['none', 'ascending', 'descending', 'other'])('should return sort attribute for %s', (sortDir) => {
+      expect(AriaStaticInclude.sort(sortDir)).toEqual({ 'aria-sort': sortDir })
+    })
+
+    it('should return sort attribute for custom string values', () => {
+      expect(AriaStaticInclude.sort('custom-sort')).toEqual({ 'aria-sort': 'custom-sort' })
+    })
+
+    it('should return controls and composite control, ariaModal, and modal attributes', () => {
+      expect(AriaStaticInclude.controls('panel-id')).toEqual({ 'aria-controls': 'panel-id' })
+
+      expect(AriaStaticInclude.control('trigger-id', 'menu-id', 'menu', true)).toEqual({
+        'id': 'trigger-id',
+        'aria-controls': 'menu-id',
+        'aria-haspopup': 'menu',
+        'aria-expanded': 'true'
+      })
+
+      expect(AriaStaticInclude.ariaModal(true)).toEqual({ 'aria-modal': 'true' })
+      expect(AriaStaticInclude.ariaModal(false)).toEqual({})
+      expect(AriaStaticInclude.ariaModal()).toEqual({ 'aria-modal': 'true' })
+
+      expect(AriaStaticInclude.modal(true, 'label-id', 'desc-id')).toEqual({
+        'aria-modal': 'true',
+        'aria-labelledby': 'label-id',
+        'aria-describedby': 'desc-id'
+      })
+      expect(AriaStaticInclude.modal(false, 'label-id', 'desc-id')).toEqual({
+        'aria-labelledby': 'label-id',
+        'aria-describedby': 'desc-id'
+      })
+      expect(AriaStaticInclude.modal(false)).toEqual({})
+    })
+
+    it('should return valueMinMax range attributes for numeric and string ranges', () => {
       expect(AriaStaticInclude.valueMinMax(50, 0, 100)).toEqual({
         'aria-valuenow': 50,
         'aria-valuemin': 0,
@@ -136,39 +204,196 @@ describe('AriaStaticInclude', () => {
         'aria-valuemin': '0%',
         'aria-valuemax': '100%'
       })
-      expect(AriaStaticInclude.valueMinMax(undefined, undefined, undefined)).toEqual({
-        'aria-valuenow': undefined,
-        'aria-valuemin': undefined,
-        'aria-valuemax': undefined
-      })
     })
   })
 
-  describe('Composite helper methods (control, ariaModal, modal)', () => {
-    it('should return composite control attributes', () => {
-      expect(AriaStaticInclude.control('test-id', 'test-controls', 'menu', true)).toEqual({
-        'id': 'test-id',
-        'aria-controls': 'test-controls',
-        'aria-haspopup': 'menu',
+  describe('Boundary values, zero/falsy traps, and limit thresholds', () => {
+    it('should preserve numeric 0, floats, and negative values in valueMinMax while omitting null and NaN', () => {
+      expect(AriaStaticInclude.valueMinMax(0, 0, 0)).toEqual({
+        'aria-valuenow': 0,
+        'aria-valuemin': 0,
+        'aria-valuemax': 0
+      })
+      expect(AriaStaticInclude.valueMinMax(0.5, -100, 0)).toEqual({
+        'aria-valuenow': 0.5,
+        'aria-valuemin': -100,
+        'aria-valuemax': 0
+      })
+      expect(AriaStaticInclude.valueMinMax(Number.NaN, null, 100)).toEqual({
+        'aria-valuemax': 100
+      })
+    })
+
+    it('should omit haspopup inside composite control when false or "false"', () => {
+      expect(AriaStaticInclude.control('btn-id', 'panel-id', false, true)).toEqual({
+        'id': 'btn-id',
+        'aria-controls': 'panel-id',
         'aria-expanded': 'true'
       })
-      expect(AriaStaticInclude.control(undefined, undefined, undefined, undefined)).toEqual({
-        'id': undefined,
+      expect(AriaStaticInclude.control('btn-id', 'panel-id', 'false', false)).toEqual({
+        'id': 'btn-id',
+        'aria-controls': 'panel-id',
         'aria-expanded': 'false'
       })
     })
 
-    it('should return ariaModal and composite modal attributes', () => {
-      expect(AriaStaticInclude.ariaModal(true)).toEqual({ 'aria-modal': true })
-      expect(AriaStaticInclude.ariaModal(false)).toEqual({})
-      expect(AriaStaticInclude.ariaModal()).toEqual({ 'aria-modal': true })
+    it('should omit numeric 0 in label while preserving string "0" per contract', () => {
+      expect(AriaStaticInclude.label(0)).toEqual({})
+      expect(AriaStaticInclude.label('0')).toEqual({ 'aria-label': '0' })
+    })
 
-      expect(AriaStaticInclude.modal(true, 'label-id', 'desc-id')).toEqual({
-        'aria-modal': true,
-        'aria-labelledby': 'label-id',
-        'aria-describedby': 'desc-id'
+    it('should omit haspopup when false or "false"', () => {
+      expect(AriaStaticInclude.haspopup(false)).toEqual({})
+      expect(AriaStaticInclude.haspopup('false')).toEqual({})
+    })
+
+    it('should omit non-modal attributes in modal(false) while keeping explicit labelledby/describedby', () => {
+      expect(AriaStaticInclude.modal(false, 'header-id')).toEqual({
+        'aria-labelledby': 'header-id'
       })
-      expect(AriaStaticInclude.modal(false)).toEqual({})
+    })
+  })
+
+  describe('Empty, whitespace-only, and nullish inputs', () => {
+    it('should omit empty string and undefined values without overwriting existing attributes during spread', () => {
+      expect(AriaStaticInclude.role('')).toEqual({})
+      expect(AriaStaticInclude.role(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.roledescription('')).toEqual({})
+      expect(AriaStaticInclude.roledescription(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.label('')).toEqual({})
+      expect(AriaStaticInclude.label(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.labelledby('')).toEqual({})
+      expect(AriaStaticInclude.labelledby(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.describedby('')).toEqual({})
+      expect(AriaStaticInclude.describedby(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.controls('')).toEqual({})
+      expect(AriaStaticInclude.controls(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.haspopup(undefined)).toEqual({})
+      expect(AriaStaticInclude.live(undefined)).toEqual({})
+      expect(AriaStaticInclude.orientation(undefined)).toEqual({})
+      expect(AriaStaticInclude.sort('')).toEqual({})
+      expect(AriaStaticInclude.sort(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.control(undefined, undefined, undefined, undefined)).toEqual({
+        'aria-expanded': 'false'
+      })
+      expect(AriaStaticInclude.control('', '', undefined, false)).toEqual({
+        'aria-expanded': 'false'
+      })
+
+      expect(AriaStaticInclude.valueMinMax(undefined, undefined, undefined)).toEqual({})
+      expect(AriaStaticInclude.valueMinMax('', '', '')).toEqual({})
+      expect(AriaStaticInclude.valueMinMax(undefined, 0, 100)).toEqual({
+        'aria-valuemin': 0,
+        'aria-valuemax': 100
+      })
+
+      const merged = {
+        role: 'button',
+        id: 'existing-id',
+        ...AriaStaticInclude.role(undefined),
+        ...AriaStaticInclude.control(undefined, undefined, undefined, true)
+      }
+      expect(merged).toEqual({
+        'role': 'button',
+        'id': 'existing-id',
+        'aria-expanded': 'true'
+      })
+    })
+
+    it('should preserve whitespace-only strings when explicitly passed to label', () => {
+      expect(AriaStaticInclude.label('   ')).toEqual({ 'aria-label': '   ' })
+    })
+  })
+
+  describe('Immutability and isolation', () => {
+    it('should return fresh plain objects on each call without shared mutable references', () => {
+      const first = AriaStaticInclude.modal(true, 'title-1', 'desc-1')
+      const second = AriaStaticInclude.modal(true, 'title-1', 'desc-1')
+
+      expect(first).toEqual(second)
+      expect(first).not.toBe(second)
+
+      first['aria-label'] = 'mutated'
+      expect(second['aria-label']).toBeUndefined()
+    })
+  })
+
+  describe('Multilingual and Unicode handling', () => {
+    it('should preserve Cyrillic, Vietnamese diacritics, CJK, and multi-byte Emoji in label and roledescription', () => {
+      expect(AriaStaticInclude.label('Закрыть окно — Tiếng Việt 🚀')).toEqual({
+        'aria-label': 'Закрыть окно — Tiếng Việt 🚀'
+      })
+      expect(AriaStaticInclude.roledescription('Слайд • 項目 • 👨‍👩‍👧‍👦')).toEqual({
+        'aria-roledescription': 'Слайд • 項目 • 👨‍👩‍👧‍👦'
+      })
+    })
+  })
+
+  describe('SSR isomorphism and Vue attribute rendering', () => {
+    it('should render valid ARIA HTML attributes in SSR without browser DOM globals', async () => {
+      const app = createSSRApp({
+        render() {
+          return h('button', {
+            ...AriaStaticInclude.role('button'),
+            ...AriaStaticInclude.control('trigger-1', 'dialog-1', 'dialog', false),
+            ...AriaStaticInclude.label('Открыть меню'),
+            ...AriaStaticInclude.disabled(false),
+            ...AriaStaticInclude.pressed('mixed')
+          })
+        }
+      })
+
+      const html = await renderToString(app)
+
+      expect(html).toContain('role="button"')
+      expect(html).toContain('id="trigger-1"')
+      expect(html).toContain('aria-controls="dialog-1"')
+      expect(html).toContain('aria-haspopup="dialog"')
+      expect(html).toContain('aria-expanded="false"')
+      expect(html).toContain('aria-label="Открыть меню"')
+      expect(html).toContain('aria-pressed="mixed"')
+      expect(html).not.toContain('aria-disabled')
+    })
+
+    it('should omit empty/undefined attributes while rendering zero min/max during Vue SSR serialization', async () => {
+      const app = createSSRApp({
+        render() {
+          return h('div', {
+            ...AriaStaticInclude.role(undefined),
+            ...AriaStaticInclude.valueMinMax(undefined, 0, 100)
+          })
+        }
+      })
+
+      const html = await renderToString(app)
+
+      expect(html).not.toContain('role=')
+      expect(html).not.toContain('aria-valuenow=')
+      expect(html).toContain('aria-valuemin="0"')
+      expect(html).toContain('aria-valuemax="100"')
+    })
+
+    it('should safely escape quote and angle-bracket characters in attribute values during Vue SSR serialization', async () => {
+      const app = createSSRApp({
+        render() {
+          return h('button', {
+            ...AriaStaticInclude.role('button'),
+            ...AriaStaticInclude.label('" onclick="alert(1)" <script>')
+          })
+        }
+      })
+
+      const html = await renderToString(app)
+
+      expect(html).toContain('aria-label="&quot; onclick=&quot;alert(1)&quot; &lt;script&gt;"')
+      expect(html).not.toContain('onclick="alert(1)"')
     })
   })
 })

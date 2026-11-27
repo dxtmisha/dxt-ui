@@ -67,15 +67,29 @@ describe('DescriptionInclude', () => {
     const skeletonMock = {
       classes: { 'sys-skeleton': true, 'sys-skeleton--loading': true }
     } as any
-    const include = new DescriptionInclude(
+    const skeletonGetter = vi.fn(() => skeletonMock)
+
+    const includeInactive = new DescriptionInclude(
       { description: 'Hello Description' },
       new DesignName('my.class'),
       undefined,
-      () => skeletonMock
+      skeletonGetter
     )
-    const nodes = include.render()
-    expect(nodes.length).toBe(1)
-    expect(nodes[0].props?.class).toBe('my-class__description sys-skeleton sys-skeleton--loading')
+    const inactiveNodes = includeInactive.render()
+    expect(inactiveNodes.length).toBe(1)
+    expect(inactiveNodes[0].props?.class).toBe('my-class__description')
+    expect(skeletonGetter).not.toHaveBeenCalled()
+
+    const includeActive = new DescriptionInclude(
+      { description: 'Hello Description', isSkeleton: true },
+      new DesignName('my.class'),
+      undefined,
+      skeletonGetter
+    )
+    const activeNodes = includeActive.render()
+    expect(activeNodes.length).toBe(1)
+    expect(activeNodes[0].props?.class).toBe('my-class__description sys-skeleton sys-skeleton--loading')
+    expect(skeletonGetter).toHaveBeenCalledTimes(1)
   })
 
   it('should handle numeric 0 and string "0" as valid descriptions', () => {

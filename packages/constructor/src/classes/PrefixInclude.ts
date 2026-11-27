@@ -1,7 +1,7 @@
 import { type VNode, type VNodeArrayChildren } from 'vue'
 import { getElementId, type DesignName, isFilled, render } from '@dxtmisha/functional'
 
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { PrefixProps, PrefixSlots } from '../types/prefixTypes'
 
@@ -43,7 +43,7 @@ export class PrefixInclude {
    * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: Readonly<PrefixProps>,
+    protected readonly props: Readonly<PrefixProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly slots?: PrefixSlots,
     protected readonly skeleton?: () => SkeletonInclude | undefined
@@ -102,6 +102,8 @@ export class PrefixInclude {
     }
 
     if (children.length > 0) {
+      const skeleton = this.getSkeleton()
+
       return [
         render(
           'div',
@@ -109,7 +111,7 @@ export class PrefixInclude {
             'id': this.id,
             'class': {
               [this.naming.getSubClass('prefix')]: true,
-              ...this.skeleton?.()?.classes
+              ...skeleton?.classes
             },
             'data-event-type': 'prefix'
           },
@@ -120,5 +122,19 @@ export class PrefixInclude {
     }
 
     return []
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если режим скелетона активен.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    if (SkeletonInclude.is(this.props)) {
+      return this.skeleton?.()
+    }
+
+    return undefined
   }
 }

@@ -161,12 +161,11 @@ describe('SnackbarItem (Unit)', () => {
   })
 
   describe('ARIA live region computation', () => {
-    it('should return atomic=true with undefined role by default', () => {
+    it('should return atomic=true without role by default', () => {
       const { item } = createMountedSnackbarItem()
 
       expect(item.aria).toEqual({
-        'aria-atomic': 'true',
-        'role': undefined
+        'aria-atomic': 'true'
       })
     })
 

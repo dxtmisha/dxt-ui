@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { LabelInclude } from '../LabelInclude'
+import { SkeletonInclude } from '../../constructors/Skeleton'
 
 describe('LabelInclude', () => {
   it('should return correct is state', () => {
@@ -63,5 +64,38 @@ describe('LabelInclude', () => {
     const stringZeroNodes = includeStringZero.render()
     expect(stringZeroNodes.length).toBe(1)
     expect(stringZeroNodes[0].children).toContain('0')
+  })
+
+  it('should apply skeleton classes only when isSkeleton is active', () => {
+    const skeleton = new SkeletonInclude({ isSkeleton: true }, new DesignName('d1.field'), ['classText'])
+    const skeletonGetter = vi.fn(() => skeleton)
+
+    const includeInactive = new LabelInclude(
+      { label: 'Test Label' },
+      new DesignName('prefix'),
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      skeletonGetter
+    )
+    const inactiveNodes = includeInactive.render()
+    expect(inactiveNodes[0]?.props?.class).toBe('prefix__label')
+    expect(skeletonGetter).not.toHaveBeenCalled()
+
+    const includeActive = new LabelInclude(
+      { label: 'Test Label', isSkeleton: true },
+      new DesignName('prefix'),
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      skeletonGetter
+    )
+    const activeNodes = includeActive.render()
+    expect(activeNodes[0]?.props?.class).toBe('prefix__label d1-skeleton__text')
+    expect(skeletonGetter).toHaveBeenCalledTimes(1)
   })
 })

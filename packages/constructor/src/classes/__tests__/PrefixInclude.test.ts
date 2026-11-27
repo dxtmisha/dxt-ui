@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { h } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { PrefixInclude } from '../PrefixInclude'
@@ -34,11 +34,23 @@ describe('PrefixInclude', () => {
 
     it('should render prefix correctly with props, slots, and skeleton', () => {
       const skeleton = new SkeletonInclude({ isSkeleton: true }, new DesignName('d1.field'), ['classText'])
-      const include = new PrefixInclude(
+      const skeletonGetter = vi.fn(() => skeleton)
+
+      const includeInactive = new PrefixInclude(
         { prefix: 'Pre', prefixId: 'pref-id' },
         new DesignName('my.class'),
         { prefix: () => h('span', 'SlotPre') },
-        () => skeleton
+        skeletonGetter
+      )
+      const inactiveNodes = includeInactive.render()
+      expect(inactiveNodes[0]?.props?.class).toBe('my-class__prefix')
+      expect(skeletonGetter).not.toHaveBeenCalled()
+
+      const include = new PrefixInclude(
+        { prefix: 'Pre', prefixId: 'pref-id', isSkeleton: true },
+        new DesignName('my.class'),
+        { prefix: () => h('span', 'SlotPre') },
+        skeletonGetter
       )
       const nodes = include.render()
 
@@ -52,6 +64,7 @@ describe('PrefixInclude', () => {
       })
       expect(nodes[0]?.children).toHaveLength(2)
       expect(nodes[0]?.children).toContain('Pre')
+      expect(skeletonGetter).toHaveBeenCalledTimes(1)
     })
 
     it('should return empty array when no prefix prop or slot is provided', () => {

@@ -67,12 +67,21 @@ describe('CaptionInclude', () => {
     const skeletonMock = {
       classes: { 'sys-skeleton': true, 'sys-skeleton--loading': true }
     } as any
-    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, () => skeletonMock)
-    expect(include.binds.class).toEqual({
+    const skeletonGetter = vi.fn(() => skeletonMock)
+
+    const includeInactive = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, skeletonGetter)
+    expect(includeInactive.binds.class).toEqual({
+      'my-class__caption': true
+    })
+    expect(skeletonGetter).not.toHaveBeenCalled()
+
+    const includeActive = new CaptionInclude({ caption: 'Hello', isSkeleton: true }, new DesignName('my.class'), undefined, skeletonGetter)
+    expect(includeActive.binds.class).toEqual({
       'my-class__caption': true,
       'sys-skeleton': true,
       'sys-skeleton--loading': true
     })
+    expect(skeletonGetter).toHaveBeenCalledTimes(1)
   })
 
   it('should render correct vnodes when caption is present', () => {

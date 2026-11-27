@@ -1,0 +1,145 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/AriaStaticInclude - Статические генераторы ARIA-атрибутов'/>
+
+# Класс AriaStaticInclude
+
+Класс `AriaStaticInclude` — это **статический утилитарный класс** в пакете `@dxtmisha/constructor`, предназначенный для формирования стандартизированных, строго типизированных объектов WAI-ARIA атрибутов (`AriaList`) для привязок компонентов и состояний дерева доступности.
+
+## Ключевые особенности
+
+- **Нулевые накладные расходы на создание экземпляров** — все методы являются `static` и возвращают обычные объекты `AriaList`, готовые для распаковки в `get aria()` или привязки VNode.
+- **Единообразная нормализация булевых значений** — преобразует булевы состояния виджетов в строковые литералы `'true'` / `'false'` по спецификации ARIA либо условно опускает неактивные атрибуты.
+- **Составные помощники для виджетов** — предоставляет комбинированные генераторы (`control`, `modal`) для интерактивных триггеров, всплывающих окон и модальных диалогов.
+- **Недеструктивный пропуск пустых значений** — методы для опциональных строк и токенов возвращают `{}` при пустых или `undefined` значениях, не перезаписывая существующие атрибуты при распаковке объекта.
+- **SSR-изоморфизм** — чистые методы без внутреннего состояния и обращений к DOM или браузерным глобалам, полностью безопасные для серверного рендеринга и гидратации Vue.
+
+## Методы
+
+### Помощники булевых и числовых значений
+
+- `isTrueOrFalse(value?: boolean): 'true' | 'false'` — Преобразует булево значение или `undefined` в строковый литерал ARIA `'true'` или `'false'`.
+- `valueMinMax(value?: string | number | null, min?: string | number | null, max?: string | number | null): AriaList` — Возвращает атрибуты `'aria-valuenow'`, `'aria-valuemin'` и `'aria-valuemax'` для заданных непустых значений диапазона (сохраняя числовой `0`), опуская `undefined`, `null`, `''` и `NaN`.
+
+### Роли и именование
+
+- `role(role?: RoleType): AriaList` — Возвращает `{ role }` для непустого значения или `{}` в противном случае.
+- `roledescription(roledescription?: string): AriaList` — Возвращает `{ 'aria-roledescription': roledescription }` для непустой строки или `{}` в противном случае.
+- `label(label?: string | number): AriaList` — Возвращает `{ 'aria-label': label }` для непустых строк и ненулевых чисел (пустая строка и числовой `0` возвращают `{}`; для сохранения нуля передавайте строку `'0'`).
+- `labelledby(id?: string): AriaList` — Возвращает `{ 'aria-labelledby': id }` для непустой строки или `{}` в противном случае.
+- `describedby(id?: string): AriaList` — Возвращает `{ 'aria-describedby': id }` для непустой строки или `{}` в противном случае.
+
+### Состояния виджетов
+
+- `atomic(isAtomic?: boolean): AriaList` — Возвращает `{ 'aria-atomic': 'true' | 'false' }` для управления полнотой озвучивания динамических областей.
+- `busy(isBusy?: boolean): AriaList` — Возвращает `{ 'aria-busy': 'true' | 'false' }`, сигнализируя об активном обновлении элемента.
+- `checked(isChecked?: AriaList['aria-checked']): AriaList` — Возвращает `{ 'aria-checked': 'true' | 'false' | 'mixed' }` для флажков, радиокнопок и переключателей.
+- `disabled(isDisabled: boolean = true): AriaList` — Возвращает `{ 'aria-disabled': 'true' }` при `isDisabled = true` или `{}` при `false`.
+- `expanded(isExpanded?: boolean): AriaList` — Возвращает `{ 'aria-expanded': 'true' | 'false' }` для раскрывающихся триггеров и контейнеров.
+- `hidden(isHidden: boolean = true): AriaList` — Возвращает `{ 'aria-hidden': 'true' | 'false' }` (по умолчанию `true` для декоративных элементов).
+- `invalid(isInvalid: AriaList['aria-invalid'] = true): AriaList` — Возвращает `{ 'aria-invalid': 'true' | 'grammar' | 'spelling' }` при активной ошибке или `{}` при `false` / `'false'`.
+- `multiselectable(isMultiselectable?: boolean): AriaList` — Возвращает `{ 'aria-multiselectable': 'true' | 'false' }` для контейнеров с множественным выбором.
+- `pressed(isPressed?: AriaList['aria-pressed']): AriaList` — Возвращает `{ 'aria-pressed': 'true' | 'false' | 'mixed' }` для кнопок-переключателей.
+- `readonly(isReadonly: boolean = true): AriaList` — Возвращает `{ 'aria-readonly': 'true' }` при `isReadonly = true` или `{}` при `false`.
+- `selected(isSelected?: boolean | null): AriaList` — Возвращает `{ 'aria-selected': 'true' | 'false' }` при `isSelected !== undefined` и `isSelected !== null` или `{}` при `undefined` / `null`.
+
+### Связи, динамические области и ориентация
+
+- `controls(controls?: string): AriaList` — Возвращает `{ 'aria-controls': controls }` для непустой строки или `{}` в противном случае.
+- `current(value?: AriaList['aria-current']): AriaList` — Возвращает `{ 'aria-current': value }` для непустых строковых токенов (`'page'`, `'step'` и др.) либо `'true'`/`'false'` для булевых значений и `undefined`.
+- `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Возвращает `{ 'aria-haspopup': 'true' | popupType }` при активном значении или `{}` при `false`, `'false'` и `undefined`.
+- `live(live?: AriaList['aria-live']): AriaList` — Возвращает `{ 'aria-live': live }` (`'off' | 'polite' | 'assertive'`) при наличии значения или `{}` в противном случае.
+- `orientation(orientation?: AriaList['aria-orientation']): AriaList` — Возвращает `{ 'aria-orientation': orientation }` (`'horizontal' | 'vertical' | 'undefined'`) при наличии значения или `{}` в противном случае.
+- `sort(sortDir?: AriaList['aria-sort'] | (string & {})): AriaList` — Возвращает `{ 'aria-sort': sortDir }` для непустой строки или `{}` в противном случае.
+
+### Составные методы
+
+#### `control`
+
+Формирует составной объект ARIA-атрибутов (`id`, `aria-controls`, `aria-haspopup`, `aria-expanded`) для интерактивных элементов управления и триггеров.
+
+**Параметры:**
+- `id?: string` — Идентификатор элемента-триггера.
+- `controls?: string` — Идентификатор управляемого всплывающего элемента или панели.
+- `haspopup?: AriaList['aria-haspopup']` — Тип всплывающего окна (`'menu'`, `'dialog'`, `'listbox'` и др.) или булево значение.
+- `expanded?: boolean` — Флаг развёрнутого состояния управляемого элемента.
+
+**Возвращает:** `AriaList` — Составной объект ARIA-атрибутов.
+
+```typescript
+import { AriaStaticInclude } from '@dxtmisha/constructor'
+
+const triggerAria = AriaStaticInclude.control(
+  'menu-trigger',
+  'menu-panel',
+  'menu',
+  true
+)
+// { id: 'menu-trigger', 'aria-controls': 'menu-panel', 'aria-haspopup': 'menu', 'aria-expanded': 'true' }
+```
+
+#### `ariaModal`
+
+Возвращает `{ 'aria-modal': 'true' }` при `isModal = true` или `{}` при `false`.
+
+**Параметры:**
+- `isModal: boolean = true` — Ограничивает ли диалоговое окно взаимодействие своим содержимым.
+
+**Возвращает:** `AriaList` — Объект с атрибутом `aria-modal`.
+
+```typescript
+const modalAttr = AriaStaticInclude.ariaModal(true)
+// { 'aria-modal': 'true' }
+```
+
+#### `modal`
+
+Формирует составной объект ARIA-атрибутов (`aria-modal`, `aria-labelledby`, `aria-describedby`) для модальных окон и диалоговых областей.
+
+**Параметры:**
+- `isModal: boolean = true` — Является ли окно модальным.
+- `ariaLabelledby?: string` — Идентификатор элемента заголовка.
+- `ariaDescribedby?: string` — Идентификатор элемента описания.
+
+**Возвращает:** `AriaList` — Составной объект ARIA-атрибутов модального окна.
+
+```typescript
+const dialogAria = AriaStaticInclude.modal(
+  true,
+  'dialog-title',
+  'dialog-description'
+)
+// { 'aria-modal': 'true', 'aria-labelledby': 'dialog-title', 'aria-describedby': 'dialog-description' }
+```
+
+## Типы
+
+### AriaList
+
+- `'aria-label'?: string` — Строка доступного имени элемента.
+- `'aria-labelledby'?: string` — Идентификатор элемента-метки.
+- `'aria-describedby'?: string` — Идентификатор элемента-описания.
+- `'aria-controls'?: string` — Идентификатор управляемого элемента.
+- `'aria-expanded'?: AriaTrueOrFalse` — Состояние развёрнутости управляемого элемента.
+- `'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'` — Тип всплывающего окна, открываемого элементом.
+- `'aria-modal'?: AriaTrueOrFalse` — Признак модального окна.
+- `'role'?: RoleType` — Семантическая ARIA-роль элемента.
+
+## Архитектура использования
+
+`AriaStaticInclude` предназначен для композиции внутри геттера `get aria(): AriaList` в классах-конструкторах совместно с динамическими `Include`-классами:
+
+```typescript
+import { AriaStaticInclude, type AriaList } from '@dxtmisha/constructor'
+
+export class CustomButton {
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('button'),
+      ...AriaStaticInclude.label(this.props.ariaLabel),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.pressed(this.isPressed)
+    }
+  }
+}
+```

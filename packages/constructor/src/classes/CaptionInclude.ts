@@ -11,7 +11,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from './AriaStaticInclude'
-import { SkeletonInclude } from '../constructors/Skeleton'
+import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
 
 import type { CaptionProps, CaptionSlots } from '../types/captionTypes'
 
@@ -55,7 +55,7 @@ export class CaptionInclude {
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
-    protected readonly props: RefOrNormalOrFunction<CaptionProps>,
+    protected readonly props: RefOrNormalOrFunction<CaptionProps & SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly slots?: CaptionSlots,
     protected readonly skeleton?: () => SkeletonInclude | undefined,
@@ -70,13 +70,7 @@ export class CaptionInclude {
    * @returns checking state / состояние проверки
    */
   get is(): boolean {
-    const caption = this.getProps().caption
-
-    return Boolean(
-      isFilled(caption, true)
-      || isNumber(caption)
-      || this.slots?.caption
-    )
+    return CaptionInclude.is(this.getProps(), this.slots)
   }
 
   /**
@@ -86,7 +80,7 @@ export class CaptionInclude {
    * @returns element bindings object / объект привязок элемента
    */
   get binds(): ConstrBind {
-    const skeleton = this.skeleton?.()
+    const skeleton = this.getSkeleton()
     const binds = {
       'class': {
         [this.naming.getSubClass('caption')]: true,
@@ -156,7 +150,21 @@ export class CaptionInclude {
    * Возвращает свойства, разрешая функции при необходимости.
    * @returns resolved caption properties / разрешенные свойства подписи
    */
-  protected getProps(): CaptionProps {
+  protected getProps(): CaptionProps & SkeletonPropsInclude {
     return executeFunctionRef(this.props)
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если режим скелетона активен.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    if (SkeletonInclude.is(this.getProps())) {
+      return this.skeleton?.()
+    }
+
+    return undefined
   }
 }

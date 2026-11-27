@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/AreaInclude - Layout Area Context Provider'/>
+
+# AreaInclude Class
+
+The `AreaInclude` class is a **Dependency Injection Helper Class** in `@dxtmisha/constructor` designed to manage a component's layout area value and provide it reactively to descendant components via Vue's `provide/inject` mechanism.
+
+## Key Features
+
+- **Synchronous Context Registration** — invokes `setAreaValue(this.value)` immediately during `setup()`, even when `props.area` is initially `undefined`, ensuring reactive updates remain observable later.
+- **Reactive Synchronization** — tracks `props.area` changes via Vue `watch` and updates the provided `Ref<string | undefined>` in place without re-calling `provide`.
+- **Ancestor Fallback Support** — pairs with `getAreaValue()` (`getInjectNearest`), allowing nested components with `area: undefined` to fall back to the nearest enclosing ancestor's area.
+- **DI Orchestrator Integration** — integrates into `DesignLogicAbstract` subclasses via `constructorItems` and supports constructor overrides for testing and customization.
+- **SSR Isomorphism** — relies exclusively on Vue component-scoped `ref`, `provide`, and `watch`, ensuring strict isolation across concurrent server-side renders.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the reactive area reference from `props.area`, registers it in the Vue injection context via `setAreaValue`, and subscribes to reactive `props.area` updates. Must be instantiated synchronously during a component's `setup()` phase.
+
+**Parameters:**
+- `props: Readonly<AreaPropsInclude>` — Component props object containing the optional `area` identifier.
+
+**Returns:** `AreaInclude` — The initialized area manager instance.
+
+```typescript
+import { defineComponent } from 'vue'
+import { AreaInclude, type AreaPropsInclude } from '@dxtmisha/constructor'
+
+export default defineComponent({
+  props: {
+    area: String
+  },
+  setup(props: Readonly<AreaPropsInclude>) {
+    new AreaInclude(props)
+    return () => null
+  }
+})
+```
+
+### Lifecycle
+
+- `destroy(): void` — Stops the reactive `props.area` watcher and clears the stored `WatchStopHandle` reference. Safe to call multiple times.
+
+## Types
+
+### AreaPropsInclude
+
+- `area?: string` — Optional layout area identifier passed down to descendant components.
+
+## Injection Architecture
+
+`AreaInclude` acts as the reactive bridge between component props and `setAreaValue`:
+
+1. **Initialization (`setup()`)**: Sets the internal `protected readonly value: Ref<string | undefined>` via `updateValue()`, calls `setAreaValue(this.value)` (`provide(AREA_PROP_NAME, this.value)`), and attaches `watch(() => props.area, this.updateValue)`.
+2. **Eager Instantiation in Orchestrators**: `DesignLogicAbstract` subclasses (`Header`, `Block`, `Actions`, `Section`, `Container`, `SnackbarItem`, etc.) instantiate `AreaInclude` eagerly in their constructor via `this.i('area')` without `canCreate`, because Vue requires `provide()` to run synchronously during `setup()`.
+3. **Fallback vs. Override**: When `props.area` is `undefined`, `getAreaValue()` skips the `undefined` reference and resolves the nearest ancestor area; when `props.area` becomes a string (including `''`), it immediately overrides the context for all descendants.
+
+```typescript
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
+import { AreaInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    area: {
+      item: AreaInclude,
+      parameters: () => [this.props]
+    }
+  }
+
+  constructor(...args) {
+    super(...args)
+    this.i('area')
+  }
+}
+```
