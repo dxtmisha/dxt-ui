@@ -90,14 +90,14 @@ export class StylesTool {
   }
 
   /**
-   * Joins an array of code lines into a single multiline string with Windows/standard line breaks (`\r\n`).
+   * Joins an array of code lines into a single multiline string with LF line breaks (`\n`).
    *
-   * Объединяет массив строк кода в единую многострочную строку с переносами строк (`\r\n`).
+   * Объединяет массив строк кода в единую многострочную строку с переносами строк (`\n`).
    * @param data array of code lines / массив строк кода
    * @returns joined multiline string / объединенная многострочная строка
    */
   static join(data: string[]): string {
-    return data.join('\r\n')
+    return data.join('\n')
   }
 
   /**

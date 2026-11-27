@@ -98,6 +98,6 @@ export class DesignConstructors {
     const path: string[] = [...UI_DIRS_LIBRARY, UI_FILE_STYLE_SCSS]
     const styles = this.getComponentsStyle()
 
-    PropertiesFile.writeByPath(path, styles.join('\r\n'))
+    PropertiesFile.writeByPath(path, styles.join('\n'))
   }
 }

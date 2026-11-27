@@ -97,7 +97,7 @@ export class LibraryItems {
     PropertiesFile.write(
       UI_DIRS_LIBRARY,
       name,
-      file.join('\r\n'),
+      file.join('\n'),
       extension
     )
   }

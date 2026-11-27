@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { EventClickValue } from '@dxtmisha/constructor/Button'
+import type { EventClickValue } from '@dxtmisha/constructor'
 import type { ButtonProps } from '@dxtmisha/d1/D1Button'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoBox from '../../components/DemoBox.vue'

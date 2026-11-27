@@ -134,7 +134,7 @@ export class DesignComponent extends DesignCommand {
     const file = FILE_PROPERTIES
 
     if (!this.isFile(file)) {
-      this.write(file, `{\r\n  "main": "{d.${this.getStructure().getComponentName()}}"\r\n}\r\n`)
+      this.write(file, `{\n  "main": "{d.${this.getStructure().getComponentName()}}"\n}\n`)
     }
 
     return this
@@ -768,8 +768,7 @@ export class DesignComponent extends DesignCommand {
       }, Infinity)
 
     return rawLines.map(line =>
-      line.trim().length > 0 ? line.slice(minIndent) : ''
-    )
+      line.trim().length > 0 ? line.slice(minIndent) : '')
   }
 
   /**
@@ -781,8 +780,7 @@ export class DesignComponent extends DesignCommand {
    */
   private toSetupStories(setup: string): string[] {
     return this.normalizeIndentLines(setup).map(line =>
-      line.length > 0 ? `      ${line}` : ''
-    )
+      line.length > 0 ? `      ${line}` : '')
   }
 
   /**
@@ -799,8 +797,7 @@ export class DesignComponent extends DesignCommand {
 
     if (fullPlay.startsWith('async') || fullPlay.startsWith('(') || fullPlay.startsWith('function')) {
       return normalizedLines.map((line, index) =>
-        index === 0 ? `${indent}play: ${line}` : `${indent}${line}`
-      )
+        index === 0 ? `${indent}play: ${line}` : `${indent}${line}`)
     }
 
     const params: string[] = []
@@ -911,8 +908,7 @@ export class DesignComponent extends DesignCommand {
           'spyOn'
         ]
         const usedSymbols = availableSymbols.filter(symbol =>
-          new RegExp(`\\b${symbol}\\b`).test(allPlayCode)
-        )
+          new RegExp(`\\b${symbol}\\b`).test(allPlayCode))
 
         if (usedSymbols.length > 0) {
           imports.push(`import { ${usedSymbols.join(', ')} } from 'storybook/test'`)

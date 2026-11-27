@@ -8,7 +8,8 @@ import { PropertiesPalette } from './PropertiesPalette'
 import {
   PropertyCategory,
   type PropertyItem,
-  PropertyKey, PropertyType
+  PropertyKey,
+  PropertyType
 } from '../../types/propertyTypes'
 
 const NAME_DESIGNS = 'setDesignsDesigns'
@@ -40,15 +41,15 @@ export class PropertiesScss {
    * Возвращает полную отформатированную строку SCSS, содержащую все миксины конфигурации.
    */
   get() {
-    let data = '@use "@dxtmisha/styles" as variables;\r\n\r\n'
+    let data = '@use "@dxtmisha/styles" as variables;\n\n'
 
-    data += `${this.getDesigns()}\r\n`
-    data += `${this.getRoot()}\r\n`
-    data += `${this.getMedia()}\r\n`
-    data += `${this.getClasses()}\r\n`
-    data += `${this.getPalette()}\r\n`
-    data += `${this.getShade()}\r\n`
-    data += `${this.getProperties()}\r\n`
+    data += `${this.getDesigns()}\n`
+    data += `${this.getRoot()}\n`
+    data += `${this.getMedia()}\n`
+    data += `${this.getClasses()}\n`
+    data += `${this.getPalette()}\n`
+    data += `${this.getShade()}\n`
+    data += `${this.getProperties()}\n`
 
     return data
   }
@@ -59,7 +60,7 @@ export class PropertiesScss {
    * Возвращает список подключенных дизайнов.
    */
   protected getDesigns(): string {
-    const designs = forEach(this.items.getDesigns(), design => `\r\n  '${design}',`)
+    const designs = forEach(this.items.getDesigns(), design => `\n  '${design}',`)
     return this.getPropertiesValue(NAME_DESIGNS, designs.join(''))
   }
 
@@ -89,7 +90,7 @@ export class PropertiesScss {
           item,
           name
         ) => {
-          data += `\r\n  '${design}-${name}': ${this.getValueItem(item)},`
+          data += `\n  '${design}-${name}': ${this.getValueItem(item)},`
         })
       }
     })
@@ -120,7 +121,7 @@ export class PropertiesScss {
         name,
         value
       }) => {
-        data += `\r\n  '${name}': ('${value.join('\', \'')}'),`
+        data += `\n  '${name}': ('${value.join('\', \'')}'),`
       })
 
     return this.getPropertiesValue(NAME_PALETTE, data)
@@ -140,7 +141,7 @@ export class PropertiesScss {
         design,
         value
       }) => {
-        data += `\r\n  '${design}': (${value.join(',')}),`
+        data += `\n  '${design}': (${value.join(',')}),`
       })
 
     return this.getPropertiesValue(NAME_SHADE, data)
@@ -165,7 +166,7 @@ export class PropertiesScss {
     const data: string[] = []
 
     this.items.findCategory(category)
-      .forEach(property => data.push(`\r\n  '${property.index}',`))
+      .forEach(property => data.push(`\n  '${property.index}',`))
 
     return data.join('')
   }
@@ -179,7 +180,7 @@ export class PropertiesScss {
    */
   private getValue(property: PropertyItem, space: string) {
     if (isObjectNotArray(property.value)) {
-      return `value: (${this.to(property.value, `${space}    `)}\r\n${space}  ),`
+      return `value: (${this.to(property.value, `${space}    `)}\n${space}  ),`
     } else if (Array.isArray(property.value)) {
       return `value: (${property.value.join(', ')}),`
     }
@@ -232,27 +233,27 @@ export class PropertiesScss {
         property?.value
         && property?.[PropertyKey.variable] !== 'none'
       ) {
-        data += `\r\n${space}'${name}':(`
-        data += `\r\n${space}  index: '${name}',`
-        data += `\r\n${space}  name: '${property?.[PropertyKey.name] || name}',`
-        data += `\r\n${space}  type: '${property?.[PropertyKey.variable]}',`
+        data += `\n${space}'${name}':(`
+        data += `\n${space}  index: '${name}',`
+        data += `\n${space}  name: '${property?.[PropertyKey.name] || name}',`
+        data += `\n${space}  type: '${property?.[PropertyKey.variable]}',`
 
         if (
           property?.[PropertyKey.category]
           || property?.[PropertyKey.variable] !== PropertyType.component
         ) {
-          data += `\r\n${space}  ${this.getValue(property, space)}`
+          data += `\n${space}  ${this.getValue(property, space)}`
         }
 
         if (property?.[PropertyKey.modification] === false) {
-          data += `\r\n${space}  modification: false,`
+          data += `\n${space}  modification: false,`
         }
 
         if (property?.[PropertyKey.varKey] === true) {
-          data += `\r\n${space}  var: true,`
+          data += `\n${space}  var: true,`
         }
 
-        data += `\r\n${space}),`
+        data += `\n${space}),`
       }
     })
 

@@ -23,8 +23,8 @@ describe('StylesTool', () => {
     expect(StylesTool.addImportProperties()).toBe('@use "@dxtmisha/styles" as ui;')
   })
 
-  it('joins array of lines into multiline string with \\r\\n', () => {
-    expect(StylesTool.join(['line1', 'line2', 'line3'])).toBe('line1\r\nline2\r\nline3')
+  it('joins array of lines into multiline string with \\n', () => {
+    expect(StylesTool.join(['line1', 'line2', 'line3'])).toBe('line1\nline2\nline3')
     expect(StylesTool.join([])).toBe('')
   })
 

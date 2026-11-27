@@ -43,7 +43,7 @@ await expect(component).toHaveTextContent('Button')
   `,
   import: [
     'import { ref } from \'vue\'',
-    'import type { EventClickValue } from \'@dxtmisha/constructor/Button\''
+    'import type { EventClickValue } from \'@dxtmisha/constructor\''
   ],
   stories: [
     // =========================================================================

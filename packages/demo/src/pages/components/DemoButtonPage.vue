@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import type { ButtonExpose, EventClickValue } from '@dxtmisha/constructor/Button'
+import type { EventClickValue } from '@dxtmisha/constructor'
+import type { ButtonExpose } from '@dxtmisha/constructor/Button'
 import type { ButtonProps } from '@dxtmisha/d1/D1Button'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoBox from '../../components/DemoBox.vue'

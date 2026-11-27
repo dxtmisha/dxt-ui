@@ -485,9 +485,13 @@ export class PropertiesFile {
   ): void {
     this.createDir(path)
 
+    const content = typeof value === 'string'
+      ? value.replace(/\r\n/g, '\n')
+      : (transform && typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value)
+
     requireFs.writeFileSync(
       this.joinPath(path),
-      transform && typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value as any
+      content as any
     )
   }
 

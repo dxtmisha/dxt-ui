@@ -6,7 +6,7 @@ import { ButtonWikiStorybook } from './wiki'
 // :story-import [!] System label / Системная метка
 import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
-import type { EventClickValue } from '@dxtmisha/constructor/Button'
+import type { EventClickValue } from '@dxtmisha/constructor'
 import { expect, within, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 

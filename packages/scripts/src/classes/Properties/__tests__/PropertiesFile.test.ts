@@ -60,6 +60,12 @@ describe('PropertiesFile', () => {
       expect.stringContaining('output.txt'),
       'Hello World'
     )
+
+    PropertiesFile.writeByPath('dist/eol.txt', 'line1\r\nline2\r\n', false)
+    expect(writeSpy).toHaveBeenCalledWith(
+      expect.stringContaining('eol.txt'),
+      'line1\nline2\n'
+    )
   })
 
   it('handles directory removal and creation', () => {

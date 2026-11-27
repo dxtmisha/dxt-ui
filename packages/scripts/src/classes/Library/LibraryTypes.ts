@@ -99,7 +99,7 @@ export class LibraryTypes {
         )
       })
 
-    return list.join(',\r\n')
+    return list.join(',\n')
   }
 
   /**

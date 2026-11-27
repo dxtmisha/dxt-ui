@@ -53,7 +53,7 @@ export class LibraryList {
         `export const styleVarsReg: RegExp = ${this.getVarsReg()}`,
         '',
         'export const componentsList: PluginComponentImports = [',
-        list.join(',\r\n'),
+        list.join(',\n'),
         ']'
       ]
     )

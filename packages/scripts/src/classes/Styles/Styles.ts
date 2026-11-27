@@ -197,7 +197,7 @@ export class Styles {
         `@use "./${FILE_VAR}";`,
         `@use "./${FILE_PROPERTIES}";`,
         `@use "./${FILE_CLASS}";`
-      ].join('\r\n'),
+      ].join('\n'),
       UI_EXTENSION_STYLE
     )
 
@@ -212,7 +212,7 @@ export class Styles {
         '',
         `@include variables.setDesignsDesign('${design}');`,
         ''
-      ].join('\r\n'),
+      ].join('\n'),
       UI_EXTENSION_STYLE
     )
 
@@ -227,7 +227,7 @@ export class Styles {
           '',
           '@include ui.initGlobal;',
           `@include ui.initDesignBody('${design}.main');`
-        ].join('\r\n'),
+        ].join('\n'),
         UI_EXTENSION_STYLE
       )
     }

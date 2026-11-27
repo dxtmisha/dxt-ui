@@ -50,7 +50,7 @@ export class StylesRoot {
     return [
       StylesTool.addImportProperties(),
       '',
-      this.initCalc(data.join('\r\n'))
+      this.initCalc(data.join('\n'))
     ]
   }
 

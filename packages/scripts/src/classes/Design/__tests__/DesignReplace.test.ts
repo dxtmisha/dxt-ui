@@ -50,10 +50,10 @@ describe('DesignReplace', () => {
 
   it('does not add trailing indentation spaces to empty lines in replaceMark', () => {
     const structure = new DesignStructure('icon')
-    const sample = 'export const Story = {\r\n  // :story-main [!]\r\n  old\r\n  // :story-main [!]\r\n}'
+    const sample = 'export const Story = {\n  // :story-main [!]\n  old\n  // :story-main [!]\n}'
     const replace = new DesignReplace(structure, 'Icon', sample)
 
     replace.replaceMark('story-main', ['line1', '', 'line2'])
-    expect(replace.get()).toBe('export const Story = {\r\n  // :story-main [!]\r\n  line1\r\n\r\n  line2\r\n  // :story-main [!]\r\n}')
+    expect(replace.get()).toBe('export const Story = {\n  // :story-main [!]\n  line1\n\n  line2\n  // :story-main [!]\n}')
   })
 })

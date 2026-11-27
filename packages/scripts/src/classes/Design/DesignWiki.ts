@@ -44,7 +44,7 @@ export class DesignWiki {
           '',
           `export const wiki${toCamelCaseFirst(designName)}: StorybookArgsToList = {}`,
           ''
-        ].join('\r\n'),
+        ].join('\n'),
         'ts'
       )
     }

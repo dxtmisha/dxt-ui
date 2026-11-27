@@ -39,7 +39,7 @@ export class LibraryExport {
 
     PropertiesFile.writeByPath(
       UI_DIRS_FILE_EXPORT,
-      `${this.initFile().trim()}\r\n`
+      `${this.initFile().trim()}\n`
     )
 
     if (this.isSub()) {
@@ -47,11 +47,11 @@ export class LibraryExport {
 
       PropertiesFile.writeByPath(
         UI_DIRS_FILE_EXPORT_SUB,
-        `${this.initFile(true).trim()}\r\n`
+        `${this.initFile(true).trim()}\n`
       )
     }
 
-    console.log('\r\nfinish')
+    console.log('\nfinish')
   }
 
   /**
@@ -201,11 +201,11 @@ export class LibraryExport {
       )
     })
 
-    const importsString = imports.join('\r\n').trim()
-    const htmlString = html.join('\r\n').trim()
+    const importsString = imports.join('\n').trim()
+    const htmlString = html.join('\n').trim()
 
     return importsString
-      ? `${importsString}\r\n\r\n${htmlString}`
+      ? `${importsString}\n\n${htmlString}`
       : htmlString
   }
 
@@ -234,6 +234,6 @@ export class LibraryExport {
       }
     })
 
-    return imports.join('\r\n') + '\r\n'
+    return imports.join('\n') + '\n'
   }
 }
