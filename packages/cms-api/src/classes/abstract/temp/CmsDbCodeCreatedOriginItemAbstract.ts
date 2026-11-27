@@ -1,3 +1,5 @@
+// export:none
+
 import { CmsDbCodeItemAbstract } from './CmsDbCodeItemAbstract'
 import { CmsVerification } from '../../CmsVerification'
 import type {

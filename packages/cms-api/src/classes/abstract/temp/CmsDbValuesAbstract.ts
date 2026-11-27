@@ -1,3 +1,5 @@
+// export:none
+
 import { getTableColumns } from 'drizzle-orm'
 import { hasKey } from '@dxtmisha/functional-basic'
 
