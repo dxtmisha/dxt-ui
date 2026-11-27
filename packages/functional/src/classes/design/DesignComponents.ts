@@ -1,4 +1,4 @@
-import { computed, type ComputedRef, type VNode } from 'vue'
+import { computed, type ComputedRef, mergeProps, type VNode } from 'vue'
 import {
   forEach,
   isObjectNotArray
@@ -6,7 +6,6 @@ import {
 
 import { getRef } from '../../functions/ref/getRef'
 import { render } from '../../functions/ref/render'
-import { toBinds } from '../../functions/toBinds'
 
 import type {
   RawChildren,
@@ -66,9 +65,9 @@ export class DesignComponents<
   }
 
   /**
-   * Caches the computed defaults for an index and merges explicit props using `toBinds`. Without a nonempty index, returns the supplied props unchanged.
+   * Caches the computed defaults for an index and merges explicit props using `mergeProps`. Without a nonempty index, returns the supplied props unchanged.
    *
-   * Кэширует вычисляемые значения по индексу и объединяет явные свойства через `toBinds`. Без непустого индекса возвращает исходные свойства без изменений.
+   * Кэширует вычисляемые значения по индексу и объединяет явные свойства через `mergeProps`. Без непустого индекса возвращает исходные свойства без изменений.
    * @param index Entry or modification index. / Индекс записи либо модификации.
    * @param props Input properties. / Входные свойства.
    * @returns Merged prop map or the unchanged props when no index is supplied. / Объединённая карта свойств либо исходные свойства без индекса.
@@ -86,7 +85,7 @@ export class DesignComponents<
       }
 
       if (props) {
-        return toBinds(caching.value, props)
+        return mergeProps(caching.value, props)
       }
 
       return caching.value

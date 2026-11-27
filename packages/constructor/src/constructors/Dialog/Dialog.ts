@@ -5,9 +5,8 @@ import {
   type DesignComp,
   type DesignName,
   getBind,
-  isFilled,
-  isFunction,
-  isNumber
+  isFilledOrNumber,
+  isFunction
 } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -303,7 +302,7 @@ export class Dialog extends ModalAbstract {
 
     if (
       BarsInclude.is(this.props)
-      && (isFilled(this.props.barsDescription, true) || isNumber(this.props.barsDescription))
+      && isFilledOrNumber(this.props.barsDescription)
     ) {
       return undefined
     }
@@ -336,7 +335,7 @@ export class Dialog extends ModalAbstract {
 
     if (
       BarsInclude.is(this.props)
-      && (isFilled(this.props.barsLabel, true) || isNumber(this.props.barsLabel))
+      && isFilledOrNumber(this.props.barsLabel)
     ) {
       return undefined
     }

@@ -3,8 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  isFilled,
-  isNumber
+  isFilledOrNumber
 } from '@dxtmisha/functional'
 
 import { Block } from './Block'
@@ -107,7 +106,7 @@ export class BlockDesign<
     if (this.item.isHeadline()) {
       const children: Array<VNode | string | number> = []
 
-      if (isFilled(this.props.headline, true) || isNumber(this.props.headline)) {
+      if (isFilledOrNumber(this.props.headline)) {
         children.push(this.props.headline)
       }
 

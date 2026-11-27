@@ -1,7 +1,7 @@
 // ai-none
 
 import { ref, watch, type WatchStopHandle } from 'vue'
-import { DesignLifecycleAbstract, isFilled, isNumber } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, isFilledOrNumber } from '@dxtmisha/functional'
 
 import type { BarsProps } from './props'
 
@@ -62,10 +62,8 @@ export class BarsAction extends DesignLifecycleAbstract {
     return Boolean(
       props?.action
       || props?.modelAction
-      || isFilled(props?.actionLabel, true)
-      || isNumber(props?.actionLabel)
-      || isFilled(props?.actionDescription, true)
-      || isNumber(props?.actionDescription)
+      || isFilledOrNumber(props?.actionLabel)
+      || isFilledOrNumber(props?.actionDescription)
       || props?.actionBars
     )
   }
@@ -78,10 +76,8 @@ export class BarsAction extends DesignLifecycleAbstract {
    */
   isPossible(): boolean {
     return Boolean(
-      isFilled(this.props.actionLabel, true)
-      || isNumber(this.props.actionLabel)
-      || isFilled(this.props.actionDescription, true)
-      || isNumber(this.props.actionDescription)
+      isFilledOrNumber(this.props.actionLabel)
+      || isFilledOrNumber(this.props.actionDescription)
       || this.props.actionBars
     )
   }

@@ -1,4 +1,5 @@
-import { executeFunction, toBinds, type FunctionOr } from '@dxtmisha/functional'
+import { mergeProps } from 'vue'
+import { executeFunction, type FunctionOr } from '@dxtmisha/functional'
 
 import type { FieldTypeInclude } from './FieldTypeInclude'
 import type { FieldPatternInclude } from './FieldPatternInclude'
@@ -239,6 +240,6 @@ export class FieldAttributesInclude {
       }
     })
 
-    return toBinds(data, props.inputAttrs)
+    return mergeProps(data, props.inputAttrs ?? {})
   }
 }

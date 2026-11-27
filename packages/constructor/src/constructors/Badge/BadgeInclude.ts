@@ -1,6 +1,6 @@
 // ai-none
 
-import { type ConstrBind, getBind, isFilled, isNumber } from '@dxtmisha/functional'
+import { type ConstrBind, getBind, isFilledOrNumber } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
@@ -32,8 +32,7 @@ export class BadgeInclude extends ComponentIncludeAbstract<
    */
   static is(props?: BadgePropsInclude): boolean {
     return Boolean(
-      isFilled(props?.badge, true)
-      || isNumber(props?.badge)
+      isFilledOrNumber(props?.badge)
       || props?.badgeDot
     )
   }

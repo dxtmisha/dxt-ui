@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, type DesignName, getExp, isFilled, isNumber } from '@dxtmisha/functional'
+import { type ConstrClass, type DesignName, getExp, isFilled, isFilledOrNumber } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
@@ -61,10 +61,7 @@ export class LabelHighlightInclude extends LabelInclude {
       return true
     }
 
-    if (
-      !isFilled(props.label, true)
-      && !isNumber(props.label)
-    ) {
+    if (!isFilledOrNumber(props.label)) {
       return false
     }
 
@@ -89,7 +86,7 @@ export class LabelHighlightInclude extends LabelInclude {
 
     return Boolean(
       (
-        (isFilled(props.value, true) || isNumber(props.value))
+        isFilledOrNumber(props.value)
         && props.value.toString().match(expression)
       )
       || (
@@ -113,7 +110,7 @@ export class LabelHighlightInclude extends LabelInclude {
     if (
       props.highlight
       && props.highlight.length >= this.getLengthStart()
-      && (isFilled(props.label, true) || isNumber(props.label))
+      && isFilledOrNumber(props.label)
     ) {
       const className = this.naming.getSubClass('highlight')
       const label = String(props.label)

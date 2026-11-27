@@ -71,7 +71,9 @@ describe('DesignComponents', () => {
       const props = { class: 'external', style: { color: 'blue' }, label: 'explicit' }
       const registry = new DesignComponents(components, { button: defaults })
       expect(registry.getModification('button', props)).toEqual({
-        class: ['base', 'external'], style: [defaults.style, props.style], label: 'explicit'
+        class: 'base external',
+        style: { color: 'blue', padding: '1px' },
+        label: 'explicit'
       })
       expect(defaults.label).toBe('default')
       expect(defaults.style.color).toBe('red')

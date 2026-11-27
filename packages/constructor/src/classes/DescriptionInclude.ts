@@ -1,12 +1,10 @@
-import { unref, type VNode } from 'vue'
+import { mergeProps, unref, type VNode } from 'vue'
 import {
   getElementId,
   type DesignName,
-  isFilled,
-  isNumber,
+  isFilledOrNumber,
   type RefOrNormal,
   render,
-  toBinds,
   executeFunctionRef,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
@@ -36,8 +34,7 @@ export class DescriptionInclude {
     slots?: DescriptionSlots
   ): boolean {
     return Boolean(
-      isFilled(props?.description, true)
-      || isNumber(props?.description)
+      isFilledOrNumber(props?.description)
       || (slots && 'description' in slots)
     )
   }
@@ -74,8 +71,7 @@ export class DescriptionInclude {
     const description = this.getProps().description
 
     return Boolean(
-      isFilled(description, true)
-      || isNumber(description)
+      isFilledOrNumber(description)
       || this.slots?.description
     )
   }
@@ -105,7 +101,7 @@ export class DescriptionInclude {
     const children: any[] = []
     const description = this.getProps().description
 
-    if (isFilled(description, true) || isNumber(description)) {
+    if (isFilledOrNumber(description)) {
       children.push(description)
     }
 
@@ -123,7 +119,7 @@ export class DescriptionInclude {
       return [
         render(
           unref(this.tag) ?? 'div',
-          toBinds(
+          mergeProps(
             {
               id: this.id,
               class: {

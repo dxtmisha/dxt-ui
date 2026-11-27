@@ -1,13 +1,11 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode, type VNodeArrayChildren } from 'vue'
 import {
   type ConstrBind,
   executeFunctionRef,
   type DesignName,
-  isFilled,
-  isNumber,
+  isFilledOrNumber,
   type RefOrNormalOrFunction,
-  render,
-  toBinds
+  render
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from './AriaStaticInclude'
@@ -38,8 +36,7 @@ export class CaptionInclude {
     slots?: CaptionSlots
   ): boolean {
     return Boolean(
-      isFilled(props?.caption, true)
-      || isNumber(props?.caption)
+      isFilledOrNumber(props?.caption)
       || (slots && 'caption' in slots)
     )
   }
@@ -112,13 +109,13 @@ export class CaptionInclude {
    * @returns list of virtual nodes / список виртуальных узлов
    */
   render(
-    childrenExtra?: any[],
-    props: Record<string, any> = {}
+    childrenExtra?: VNodeArrayChildren,
+    props: ConstrBind = {}
   ): VNode[] {
-    const children: any[] = []
+    const children: VNodeArrayChildren = []
     const caption = this.getProps().caption
 
-    if (isFilled(caption, true) || isNumber(caption)) {
+    if (isFilledOrNumber(caption)) {
       children.push(caption)
     }
 
@@ -134,7 +131,7 @@ export class CaptionInclude {
       return [
         render(
           this.tag,
-          toBinds(this.binds, props),
+          mergeProps(this.binds, props),
           children,
           'caption'
         )

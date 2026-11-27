@@ -1,14 +1,12 @@
-import { type Ref, type VNode } from 'vue'
+import { mergeProps, type Ref, type VNode } from 'vue'
 import {
   type ConstrClass,
   type DesignName,
   executeFunctionRef,
   getElementId,
-  isFilled,
-  isNumber,
+  isFilledOrNumber,
   type RefOrNormalOrFunction,
-  render,
-  toBinds
+  render
 } from '@dxtmisha/functional'
 
 import { SkeletonInclude, type SkeletonPropsInclude } from '../constructors/Skeleton'
@@ -36,8 +34,7 @@ export class LabelInclude {
     slots?: LabelSlots | LabelAlternativeSlots
   ): boolean {
     return Boolean(
-      isFilled(props?.label, true)
-      || isNumber(props?.label)
+      isFilledOrNumber(props?.label)
       || (slots && ('default' in slots || 'label' in slots))
     )
   }
@@ -88,10 +85,8 @@ export class LabelInclude {
     const label = this.getProps().label
 
     if (
-      isFilled(label, true)
-      || isNumber(label)
-      || isFilled(this.labelReplacing?.value, true)
-      || isNumber(this.labelReplacing?.value)
+      isFilledOrNumber(label)
+      || isFilledOrNumber(this.labelReplacing?.value)
     ) {
       return true
     }
@@ -142,7 +137,7 @@ export class LabelInclude {
         elements.push(
           render(
             executeFunctionRef(this.tag) ?? 'span',
-            toBinds(
+            mergeProps(
               {
                 id: this.id,
                 class: this.getClassName()
@@ -239,9 +234,8 @@ export class LabelInclude {
     const label = this.getProps().label
 
     if (
-      !isFilled(this.labelReplacing?.value, true)
-      && !isNumber(this.labelReplacing?.value)
-      && (isFilled(label, true) || isNumber(label))
+      !isFilledOrNumber(this.labelReplacing?.value)
+      && isFilledOrNumber(label)
     ) {
       return [label]
     }
@@ -256,10 +250,7 @@ export class LabelInclude {
    * @returns array with virtual span node / массив с виртуальным узлом span
    */
   protected initLabelReplacing(): any[] {
-    if (
-      isFilled(this.labelReplacing?.value, true)
-      || isNumber(this.labelReplacing?.value)
-    ) {
+    if (isFilledOrNumber(this.labelReplacing?.value)) {
       return [
         render(
           'span',

@@ -2,8 +2,7 @@ import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputFileItem } from './InputFileItem'
@@ -258,8 +257,8 @@ export class InputFileItemDesign<
       'buttonCrop',
       item => item.render(
         undefined,
-        toBinds(
-          props?.binds,
+        mergeProps(
+          props?.binds ?? {},
           { class: this.classes?.value.buttonCrop }
         )
       ),
@@ -279,8 +278,8 @@ export class InputFileItemDesign<
       'buttonDelete',
       item => item.render(
         undefined,
-        toBinds(
-          props?.binds,
+        mergeProps(
+          props?.binds ?? {},
           { class: this.classes?.value.buttonDelete }
         )
       ),
