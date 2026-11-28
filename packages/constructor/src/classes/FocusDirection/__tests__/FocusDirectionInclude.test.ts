@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { describe, it, expect, expectTypeOf, vi, beforeEach, afterEach } from 'vitest'
-import { ref } from 'vue'
+import { createSSRApp, h, ref } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 import { type ConstrBind, DesignLifecycleAbstract } from '@dxtmisha/functional'
+import { FocusDirectionActive } from '../FocusDirectionActive'
+import { FocusDirectionCoordinates } from '../FocusDirectionCoordinates'
 import { FocusDirectionInclude } from '../FocusDirectionInclude'
 
 /**
@@ -76,7 +79,11 @@ describe('FocusDirectionInclude', () => {
       expect(focusDirection).toBeInstanceOf(DesignLifecycleAbstract)
       expectTypeOf(focusDirection.binds).toEqualTypeOf<ConstrBind>()
       expectTypeOf(focusDirection.bindsItem()).toEqualTypeOf<ConstrBind>()
+      expectTypeOf(focusDirection.getActive()).toEqualTypeOf<FocusDirectionActive<HTMLElement>>()
+      expectTypeOf(focusDirection.getCoordinates()).toEqualTypeOf<FocusDirectionCoordinates<HTMLElement>>()
 
+      expect(focusDirection.getActive()).toBeInstanceOf(FocusDirectionActive)
+      expect(focusDirection.getCoordinates()).toBeInstanceOf(FocusDirectionCoordinates)
       expect(focusDirection.is()).toBe(true)
       expect(focusDirection.binds).toEqual({
         tabindex: 0,
@@ -84,19 +91,35 @@ describe('FocusDirectionInclude', () => {
         onBlur: focusDirection.onBlur
       })
       expect(focusDirection.bindsItem()).toEqual({ tabindex: -1 })
-      expect(focusDirection.tabindexItem()).toBe(-1)
     })
 
-    it('should accept both Ref and getter function for container element', () => {
-      const focusDirection = new FocusDirectionInclude(() => parentElement)
+    it('should accept Ref, raw element, getter function, and getter returning Ref for container element', () => {
+      const focusDirectionFromGetter = new FocusDirectionInclude(() => parentElement)
 
-      focusDirection.onFocus()
+      focusDirectionFromGetter.onFocus()
       expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
 
       parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
       expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(true)
 
-      focusDirection.onUnmounted()
+      focusDirectionFromGetter.onBlur()
+      focusDirectionFromGetter.onUnmounted()
+
+      const parentRef = ref<HTMLElement | undefined>(parentElement)
+      const focusDirectionFromRefGetter = new FocusDirectionInclude(() => parentRef)
+
+      focusDirectionFromRefGetter.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirectionFromRefGetter.onBlur()
+      focusDirectionFromRefGetter.onUnmounted()
+
+      const focusDirectionFromElement = new FocusDirectionInclude(parentElement)
+
+      focusDirectionFromElement.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirectionFromElement.onUnmounted()
     })
 
     it('should update aria-activedescendant when active element has an id', () => {
@@ -231,6 +254,37 @@ describe('FocusDirectionInclude', () => {
       focusDirection.onUnmounted()
     })
 
+    it('should ignore arrow and Enter/Space keys when modifier/meta keys are pressed', () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      focusDirection.onFocus()
+
+      const clickSpy = vi.spyOn(itemTopLeft, 'click')
+
+      for (const modifier of ['ctrlKey', 'altKey', 'metaKey'] as const) {
+        const arrowEvent = new KeyboardEvent('keydown', {
+          key: 'ArrowRight',
+          [modifier]: true,
+          bubbles: true,
+          cancelable: true
+        })
+        parentElement.dispatchEvent(arrowEvent)
+        expect(arrowEvent.defaultPrevented).toBe(false)
+        expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+        const enterEvent = new KeyboardEvent('keydown', {
+          key: 'Enter',
+          [modifier]: true,
+          bubbles: true,
+          cancelable: true
+        })
+        parentElement.dispatchEvent(enterEvent)
+        expect(enterEvent.defaultPrevented).toBe(false)
+        expect(clickSpy).not.toHaveBeenCalled()
+      }
+
+      focusDirection.onUnmounted()
+    })
+
     it('should stay put when no candidate exists in direction', () => {
       const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
       focusDirection.onFocus()
@@ -258,7 +312,6 @@ describe('FocusDirectionInclude', () => {
 
       expect(focusDirection.is()).toBe(false)
       expect(focusDirection.binds).toEqual({})
-      expect(focusDirection.tabindexItem()).toBeUndefined()
       expect(focusDirection.bindsItem({ class: 'item' })).toEqual({ class: 'item' })
 
       focusDirection.onFocus()
@@ -287,6 +340,61 @@ describe('FocusDirectionInclude', () => {
       expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(false)
       expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(false)
       expect(clickSpy).not.toHaveBeenCalled()
+    })
+
+    it('should immediately clear active state and stop listeners synchronously when reactive control ref flips to false', () => {
+      const controlRef = ref(true)
+      const removeSpy = vi.spyOn(parentElement, 'removeEventListener')
+      itemTopLeft.id = 'reactive-item-1'
+
+      const focusDirection = new FocusDirectionInclude(
+        ref<HTMLElement | undefined>(parentElement),
+        undefined,
+        undefined,
+        undefined,
+        () => controlRef.value
+      )
+
+      focusDirection.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+      expect(focusDirection.binds['aria-activedescendant']).toBe('reactive-item-1')
+
+      controlRef.value = false
+
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(false)
+      expect(focusDirection.binds).toEqual({})
+      expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function), undefined)
+
+      controlRef.value = true
+      focusDirection.onFocus()
+      expect(itemTopLeft.classList.contains('sys-focusDirection__item--active')).toBe(true)
+
+      focusDirection.onUnmounted()
+    })
+
+    it('should stop reactive control watcher on onBlur and onUnmounted without redundant callbacks', () => {
+      const controlRef = ref(true)
+      const focusDirection = new FocusDirectionInclude(
+        ref<HTMLElement | undefined>(parentElement),
+        undefined,
+        undefined,
+        undefined,
+        () => controlRef.value
+      )
+
+      focusDirection.onFocus()
+      focusDirection.onBlur()
+
+      const clearSpy = vi.spyOn(focusDirection.getActive(), 'clear')
+      controlRef.value = false
+      expect(clearSpy).not.toHaveBeenCalled()
+
+      controlRef.value = true
+      focusDirection.onFocus()
+      focusDirection.onUnmounted()
+
+      controlRef.value = false
+      expect(clearSpy).not.toHaveBeenCalled()
     })
 
     it('should recover cleanly when active element is detached from DOM during re-render', () => {
@@ -321,9 +429,9 @@ describe('FocusDirectionInclude', () => {
       const emptyRef = ref<HTMLElement | undefined>(undefined)
       const focusDirection = new FocusDirectionInclude(emptyRef)
 
-      expect(() => focusDirection.activateDefault()).not.toThrow()
+      expect(() => focusDirection.getActive().initDefault()).not.toThrow()
       expect(() => focusDirection.onFocus()).not.toThrow()
-      expect(() => focusDirection.clearActive()).not.toThrow()
+      expect(() => focusDirection.getActive().clear()).not.toThrow()
       expect(() => focusDirection.onBlur()).not.toThrow()
       expect(() => focusDirection.onUnmounted()).not.toThrow()
     })
@@ -344,6 +452,52 @@ describe('FocusDirectionInclude', () => {
       itemTopLeft.classList.add('sys-focusDirection__item--active')
       parentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
       expect(itemTopRight.classList.contains('sys-focusDirection__item--active')).toBe(false)
+    })
+
+    it('should isolate listeners and active state across independent instances', () => {
+      const secondContainer = document.createElement('div')
+      const secondFirst = document.createElement('div')
+      secondFirst.id = 'second-1'
+      secondFirst.className = 'sys-focusDirection__item'
+      secondContainer.appendChild(secondFirst)
+      document.body.appendChild(secondContainer)
+
+      itemTopLeft.id = 'first-1'
+
+      const firstDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(parentElement))
+      const secondDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(secondContainer))
+
+      firstDirection.onFocus()
+      expect(firstDirection.binds['aria-activedescendant']).toBe('first-1')
+      expect(secondDirection.binds['aria-activedescendant']).toBeUndefined()
+
+      secondDirection.onFocus()
+      expect(firstDirection.binds['aria-activedescendant']).toBe('first-1')
+      expect(secondDirection.binds['aria-activedescendant']).toBe('second-1')
+
+      firstDirection.onUnmounted()
+      secondDirection.onUnmounted()
+      secondContainer.remove()
+    })
+
+    it('should render container and item bindings safely in SSR renderToString', async () => {
+      const focusDirection = new FocusDirectionInclude(ref<HTMLElement | undefined>(undefined))
+
+      const app = createSSRApp({
+        render() {
+          return h(
+            'div',
+            focusDirection.binds,
+            [h('button', focusDirection.bindsItem({ type: 'button' }), 'Item')]
+          )
+        }
+      })
+
+      const html = await renderToString(app)
+      expect(html).toContain('tabindex="0"')
+      expect(html).toContain('tabindex="-1"')
+      expect(html).not.toContain('aria-activedescendant')
+      expect(() => focusDirection.onUnmounted()).not.toThrow()
     })
   })
 })

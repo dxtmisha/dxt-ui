@@ -45,6 +45,7 @@ Lớp `AriaStaticInclude` là **lớp tiện ích tĩnh (Static Utility Class)**
 
 ### Quan hệ, vùng động & hướng bố cục
 
+- `activedescendant(id?: string): AriaList` — Trả về `{ 'aria-activedescendant': id }` khi không rỗng, ngược lại trả về `{}`.
 - `controls(controls?: string): AriaList` — Trả về `{ 'aria-controls': controls }` khi không rỗng, ngược lại trả về `{}`.
 - `current(value?: AriaList['aria-current']): AriaList` — Trả về `{ 'aria-current': value }` cho token chuỗi không rỗng (`'page'`, `'step'`, v.v.) hoặc `'true'`/`'false'` cho giá trị boolean và `undefined`.
 - `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Trả về `{ 'aria-haspopup': 'true' | popupType }` khi kích hoạt, hoặc `{}` khi `false`, `'false'` hay `undefined`.

@@ -27,7 +27,7 @@ import { CollageMasonryVertical } from './CollageMasonryVertical'
 import { CollageVariant } from './CollageVariant'
 import { CollageWoven } from './CollageWoven'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
+import { FocusDirectionInclude } from '../../classes/FocusDirection/FocusDirectionInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import type { EventClickValue } from '../../types/eventClickTypes'

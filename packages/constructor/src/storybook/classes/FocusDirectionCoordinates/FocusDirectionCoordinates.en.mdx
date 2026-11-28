@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/FocusDirectionCoordinates - 2D Spatial Navigation Calculator'/>
+
+# FocusDirectionCoordinates Class
+
+The `FocusDirectionCoordinates` class is a **Spatial Geometry Utility Class** in `@dxtmisha/constructor` used by `FocusDirectionInclude` to compute element center points and find the nearest focusable sibling candidate in a given arrow-key direction.
+
+## Key Features
+
+- **2D Spatial Nearest Lookup** — evaluates candidate element centers via `getBoundingClientRect()` and selects the closest candidate matching the requested arrow direction (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`).
+- **Cross-Axis Alignment Priority** — applies a `4x` weight multiplier to squared orthogonal distance so elements aligned on the same row or column take priority over closer diagonal items.
+- **Direction Threshold Guard** — enforces a `1px` minimum offset along the primary axis to ignore overlapping or sub-pixel-jittered siblings.
+- **Early-Exit Optimization** — validates supported arrow directions and non-empty selectors before querying the DOM or reading bounding rectangles.
+- **SSR Isomorphism** — skips DOM measurements safely when `active.get()` or `active.getElement()` resolves to `undefined`.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the 2D coordinate calculator with the active element manager and candidate selector.
+
+**Parameters:**
+- `active: FocusDirectionActive<E>` — Active descendant state manager used to resolve the active item and container element.
+- `selector: string = '.sys-focusDirection__item'` — CSS selector matching focusable candidate elements inside the container.
+
+**Returns:** `FocusDirectionCoordinates<E>` — Initialized coordinate calculator instance.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive, FocusDirectionCoordinates } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(container, '.grid__item')
+const coordinates = new FocusDirectionCoordinates(active, '.grid__item')
+```
+
+### Candidate Lookup
+
+- `findNearest(direction: string): HTMLElement | undefined` — Finds and returns the nearest candidate element in the specified arrow direction (`'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'`), or `undefined` if no valid candidate exists.
+
+## Types
+
+### FocusCoordinates
+
+- `x: number` — Horizontal coordinate of an element center or coordinate delta.
+- `y: number` — Vertical coordinate of an element center or coordinate delta.
+
+## Orchestrator Integration Architecture
+
+`FocusDirectionCoordinates` is instantiated inside `FocusDirectionInclude` and exposed via `getCoordinates()`, powering directional arrow-key movement in `move()`:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.grid__item'
+)
+
+const nextElement = focusDirection.getCoordinates().findNearest('ArrowRight')
+```

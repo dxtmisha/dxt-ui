@@ -1,9 +1,10 @@
-import { mergeProps, type VNode, type VNodeArrayChildren } from 'vue'
+import { mergeProps, unref, type VNode, type VNodeArrayChildren } from 'vue'
 import {
   type ConstrBind,
   executeFunctionRef,
   type DesignName,
   isFilledOrNumber,
+  type RefOrNormal,
   type RefOrNormalOrFunction,
   render
 } from '@dxtmisha/functional'
@@ -56,7 +57,7 @@ export class CaptionInclude {
     protected readonly naming: DesignName,
     protected readonly slots?: CaptionSlots,
     protected readonly skeleton?: () => SkeletonInclude | undefined,
-    protected readonly tag: string = 'div'
+    protected readonly tag?: RefOrNormal<string | undefined>
   ) {
   }
 
@@ -112,6 +113,10 @@ export class CaptionInclude {
     slotsChildren?: VNodeArrayChildren,
     props: ConstrBind = {}
   ): VNode[] {
+    if (!this.is) {
+      return []
+    }
+
     const children: VNodeArrayChildren = []
     const caption = this.getProps().caption
 
@@ -130,7 +135,7 @@ export class CaptionInclude {
     if (children.length > 0) {
       return [
         render(
-          this.tag,
+          unref(this.tag) ?? 'div',
           mergeProps(this.binds, props),
           children,
           'caption'

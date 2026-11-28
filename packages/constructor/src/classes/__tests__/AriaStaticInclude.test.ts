@@ -167,7 +167,8 @@ describe('AriaStaticInclude', () => {
       expect(AriaStaticInclude.sort('custom-sort')).toEqual({ 'aria-sort': 'custom-sort' })
     })
 
-    it('should return controls and composite control, ariaModal, and modal attributes', () => {
+    it('should return controls, activedescendant, and composite control, ariaModal, and modal attributes', () => {
+      expect(AriaStaticInclude.activedescendant('active-item-id')).toEqual({ 'aria-activedescendant': 'active-item-id' })
       expect(AriaStaticInclude.controls('panel-id')).toEqual({ 'aria-controls': 'panel-id' })
 
       expect(AriaStaticInclude.control('trigger-id', 'menu-id', 'menu', true)).toEqual({
@@ -270,6 +271,9 @@ describe('AriaStaticInclude', () => {
 
       expect(AriaStaticInclude.describedby('')).toEqual({})
       expect(AriaStaticInclude.describedby(undefined)).toEqual({})
+
+      expect(AriaStaticInclude.activedescendant('')).toEqual({})
+      expect(AriaStaticInclude.activedescendant(undefined)).toEqual({})
 
       expect(AriaStaticInclude.controls('')).toEqual({})
       expect(AriaStaticInclude.controls(undefined)).toEqual({})

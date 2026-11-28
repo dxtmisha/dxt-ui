@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/FocusDirectionInclude - Directional Keyboard Focus Controller'/>
+
+# FocusDirectionInclude Class
+
+The `FocusDirectionInclude` class is an **Orchestrator Inclusion Class** extending `DesignLifecycleAbstract` in `@dxtmisha/constructor` to manage 2D directional keyboard focus navigation across child elements via arrow keys (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`), `Enter`/`Space` activation, and `aria-activedescendant` tracking while keeping browser focus on the parent container.
+
+## Key Features
+
+- **Delegated Modular Architecture** — composes `FocusDirectionActive` (active descendant state, CSS class, and `aria-activedescendant`) and `FocusDirectionCoordinates` (2D spatial lookup) cleanly inside one orchestrator.
+- **Container & Child Bindings** — provides `binds` (`tabindex="0"`, `aria-activedescendant`, `onFocus`, `onBlur`) for the container and `bindsItem()` (`tabindex="-1"`) for child elements without mutating input objects.
+- **Dynamic Enable Control** — supports static booleans or reactive getter callbacks via `control` (`FunctionOr<boolean | undefined>`), synchronously watching reactive getters (`flush: 'sync'`) to detach listeners and clear active state immediately when disabled.
+- **IME & Modifier Shortcut Guards** — ignores keyboard navigation and `Enter`/`Space` clicks during active IME composition (`event.isComposing`) or when modifier keys (`Ctrl`, `Alt`, `Meta`) are pressed (`isMetaKey`), preserving CJK/Vietnamese Telex/VNI input and browser shortcuts.
+- **Automatic Lifecycle Cleanup** — extends `DesignLifecycleAbstract` to clean up `keydown` listeners, reactive `control` watchers, and active element references in `onUnmounted()`.
+- **SSR Isomorphism** — renders deterministic `binds` and `bindsItem()` attributes in server-side rendering without touching browser globals until `onFocus()`.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the directional focus controller along with its `FocusDirectionActive` and `FocusDirectionCoordinates` sub-instances.
+
+**Parameters:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Reference, raw element, or getter returning the parent container element (or `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — CSS selector for child elements participating in directional focus.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — CSS selector prioritizing the default active element on focus.
+- `activeClass: string = 'sys-focusDirection__item--active'` — CSS class name applied to the active child element.
+- `control: FunctionOr<boolean | undefined> = true` — Boolean flag or getter controlling whether directional focus is enabled.
+
+**Returns:** `FocusDirectionInclude<E>` — Initialized focus direction controller instance.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const focusDirection = new FocusDirectionInclude(
+  container,
+  '.grid__item',
+  '.grid__item--selected',
+  'grid__item--focus',
+  () => !props.disabled
+)
+```
+
+### Public Properties
+
+- `get binds(): ConstrBind` — Returns `{ tabindex: 0, ...active.aria, onFocus, onBlur }` when enabled via `is()`, or `{}` when disabled.
+
+### Accessors & State
+
+- `is(): boolean` — Evaluates `control` and returns `true` when directional keyboard navigation is enabled.
+- `getActive(): FocusDirectionActive<E>` — Returns the managed `FocusDirectionActive` state instance.
+- `getCoordinates(): FocusDirectionCoordinates<E>` — Returns the managed `FocusDirectionCoordinates` geometry calculator instance.
+- `bindsItem(extra?: ConstrBind): ConstrBind` — Merges `extra` properties with `tabindex: extra?.tabindex ?? -1` when enabled, or returns a shallow copy of `extra` when disabled.
+
+### Event & Lifecycle Handlers
+
+- `onFocus = (): void` — Initializes the default active child element via `active.initDefault()` and starts the container `keydown` listener and reactive `control` watcher when enabled.
+- `onBlur = (): void` — Stops the `keydown` listener and `control` watcher, and clears the active element state and CSS classes.
+- `onUnmounted = (): void` — Stops the `keydown` listener and `control` watcher, and resets cached active references on component unmount.
+
+## Orchestrator Integration Architecture
+
+`FocusDirectionInclude` is registered in `DesignLogicAbstract` `constructorItems` (for example, in `Collage` and `Pagination`) and bound directly to root and item VNodes:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+export class CustomGrid extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focusDirection: {
+      item: FocusDirectionInclude,
+      parameters: () => [
+        this.element,
+        '.grid__item',
+        '.grid__item--selected',
+        'grid__item--focus',
+        () => this.props.control
+      ]
+    }
+  }
+}
+```

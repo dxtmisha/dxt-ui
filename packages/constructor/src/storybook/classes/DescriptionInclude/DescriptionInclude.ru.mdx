@@ -1,0 +1,117 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/DescriptionInclude - Помощник рендеринга описания'/>
+
+# Класс DescriptionInclude
+
+Класс `DescriptionInclude` — это **утилитарный класс подключения** в пакете `@dxtmisha/constructor`, предназначенный для проверки наличия описания, разрешения стабильного идентификатора элемента для связывания доступности (`aria-describedby`), применения классов скелетона загрузки и рендеринга VNode описания из входных свойств, слотов и дополнительных дочерних узлов.
+
+## Ключевые особенности
+
+- **Статический предикат наличия** — предоставляет метод `DescriptionInclude.is(props, slots)` для ленивой инициализации (`canCreate`) в оркестраторах `DesignLogicAbstract` без выделения памяти под неиспользуемые экземпляры.
+- **Гибкие реактивные входные данные** — принимает обычные объекты, Vue `Ref` или функции-геттеры через `RefOrNormalOrFunction`, а также реактивный тег `RefOrNormal<string | undefined>`.
+- **Сохранение нулевых значений** — использует `isFilledOrNumber`, благодаря чему числовой `0` и строка `'0'` отображаются корректно, а пустые и пробельные строки игнорируются.
+- **Детерминированный резервный ID** — возвращает `props.descriptionId` или сгенерированный на уровне экземпляра идентификатор `getElementId()` для SSR-безопасной привязки `aria-describedby`.
+- **Интеграция со скелетоном** — лениво запрашивает необязательный коллбэк `skeleton` только при активном состоянии `SkeletonInclude.is(props)`.
+- **SSR-изоморфизм** — опирается исключительно на разрешение свойств, `mergeProps`/`unref` из Vue и `getElementId()` без прямого обращения к глобальным объектам браузера.
+
+## Методы
+
+### Статические предикаты
+
+- `static is(props?: DescriptionProps, slots?: DescriptionSlots): boolean` — Проверяет, заполнено ли свойство `props?.description` (включая число `0`) или присутствует ли ключ `'description'` в `slots`.
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует помощник описания реактивными или функциональными свойствами, помощником именования компонента, необязательным словарём слотов, функцией получения скелетона и тегом обёртки.
+
+**Параметры:**
+- `props: RefOrNormalOrFunction<DescriptionProps & SkeletonPropsInclude>` — Свойства компонента (обычный объект, `Ref` или функция-геттер).
+- `naming: DesignName` — Помощник именования компонента для формирования подкласса `__description`.
+- `slots?: DescriptionSlots` — Необязательный объект слотов Vue со слотом `description`.
+- `skeleton?: () => SkeletonInclude | undefined` — Необязательная функция обратного вызова, возвращающая экземпляр `SkeletonInclude` для классов состояния загрузки.
+- `tag?: RefOrNormal<string | undefined>` — Необязательный HTML-тег или `Ref` для оборачивающего элемента (по умолчанию `'div'`).
+
+**Возвращает:** `DescriptionInclude` — Инициализированный экземпляр помощника описания.
+
+```typescript
+import { toRef } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
+import { DescriptionInclude } from '@dxtmisha/constructor'
+
+const description = new DescriptionInclude(
+  props,
+  new DesignName('d1.alert'),
+  slots,
+  () => skeletonInstance,
+  toRef(props, 'tag')
+)
+```
+
+### Публичные свойства
+
+- `get is(): boolean` — Возвращает `DescriptionInclude.is(this.getProps(), this.slots)`.
+- `get id(): string` — Возвращает `this.getProps().descriptionId` либо сгенерированный `elementIdDefault`.
+
+### Рендеринг
+
+#### `render`
+
+Проверяет `this.is`, собирает содержимое из `props.description`, `slots.description` и `slotsChildren` и рендерит оборачивающий VNode при наличии дочерних элементов.
+
+**Параметры:**
+- `slotsChildren?: VNodeArrayChildren` — Дополнительные дочерние элементы, добавляемые после текста из `props` и слота.
+- `props: ConstrBind = {}` — Дополнительные HTML-атрибуты и обработчики событий, объединяемые через `mergeProps`.
+
+**Возвращает:** `VNode[]` — Массив с отрендеренным VNode описания или `[]`, если описание отсутствует либо пусто.
+
+```typescript
+const nodes = description.render(undefined, { 'aria-live': 'polite' })
+```
+
+## Типы
+
+### DescriptionProps
+
+- `description?: string | number` — Текст или числовое значение описания.
+- `descriptionId?: string` — Пользовательский идентификатор элемента описания.
+
+### DescriptionSlots
+
+- `description?(props: any): any` — Именованный слот для пользовательской разметки описания.
+
+## Архитектура интеграции с оркестратором
+
+`DescriptionInclude` спроектирован для совместной работы с ленивым созданием зависимостей `DesignLogicAbstract` (`canCreate` + `callInstance`) и `AriaStaticInclude.describedby`:
+
+```typescript
+import { toRef } from 'vue'
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { AriaStaticInclude, DescriptionInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots,
+        () => this.callInstance('skeleton', item => item),
+        toRef(this.props, 'tag')
+      ]
+    }
+  }
+
+  get aria() {
+    return {
+      ...AriaStaticInclude.describedby(
+        this.callInstance('description', item => (item.is ? item.id : undefined))
+      )
+    }
+  }
+}
+```

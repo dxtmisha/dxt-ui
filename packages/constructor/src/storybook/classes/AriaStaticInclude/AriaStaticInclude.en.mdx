@@ -45,6 +45,7 @@ The `AriaStaticInclude` class is a **Static Utility Class** in `@dxtmisha/constr
 
 ### Relationships, Live Regions & Orientation
 
+- `activedescendant(id?: string): AriaList` — Returns `{ 'aria-activedescendant': id }` when non-empty, or `{}` otherwise.
 - `controls(controls?: string): AriaList` — Returns `{ 'aria-controls': controls }` when non-empty, or `{}` otherwise.
 - `current(value?: AriaList['aria-current']): AriaList` — Returns `{ 'aria-current': value }` for non-empty token strings (`'page'`, `'step'`, etc.) or `'true'`/`'false'` for boolean/`undefined` values.
 - `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Returns `{ 'aria-haspopup': 'true' | popupType }` when active, or `{}` when `false`, `'false'`, or `undefined`.

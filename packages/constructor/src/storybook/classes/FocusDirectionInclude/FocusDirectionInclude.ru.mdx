@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/FocusDirectionInclude - Контроллер направленной клавиатурной навигации'/>
+
+# Класс FocusDirectionInclude
+
+Класс `FocusDirectionInclude` — это **оркестратор-класс подключения**, наследующий `DesignLifecycleAbstract` в пакете `@dxtmisha/constructor` для управления 2D-направленной навигацией фокуса по дочерним элементам с помощью клавиш со стрелками (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`), активацией по `Enter`/`Space` и отслеживанием `aria-activedescendant` при сохранении фокуса браузера на родительском контейнере.
+
+## Ключевые особенности
+
+- **Модульная декомпозиция** — объединяет `FocusDirectionActive` (состояние активного потомка, CSS-класс и `aria-activedescendant`) и `FocusDirectionCoordinates` (2D-поиск ближайшего элемента) внутри одного оркестратора.
+- **Привязки контейнера и элементов** — формирует `binds` (`tabindex="0"`, `aria-activedescendant`, `onFocus`, `onBlur`) для контейнера и `bindsItem()` (`tabindex="-1"`) для дочерних элементов без мутации переданных объектов.
+- **Динамическое управление активностью** — принимает булев флаг или реактивный геттер `control` (`FunctionOr<boolean | undefined>`), синхронно отслеживая реактивные геттеры (`flush: 'sync'`) для немедленного отключения слушателей и очистки активного состояния при выключении.
+- **Защита IME-ввода и горячих клавиш** — игнорирует стрелки и `Enter`/`Space` при активной композиции (`event.isComposing`) и при нажатых модификаторах `Ctrl`/`Alt`/`Meta` (`isMetaKey`), сохраняя ввод CJK/вьетнамского текста (Telex/VNI) и системные шорткаты браузера.
+- **Автоматическая очистка жизненного цикла** — наследует `DesignLifecycleAbstract` для снятия слушателя `keydown`, остановки реактивного наблюдателя `control` и освобождения ссылок на DOM в `onUnmounted()`.
+- **SSR-изоморфизм** — детерминированно генерирует атрибуты `binds` и `bindsItem()` на сервере без обращений к браузерным глобалам до вызова `onFocus()`.
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует контроллер направленного фокуса вместе с внутренними экземплярами `FocusDirectionActive` и `FocusDirectionCoordinates`.
+
+**Параметры:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Ссылка, прямой элемент или геттер, возвращающий родительский контейнер (либо `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — CSS-селектор дочерних элементов, участвующих в навигации.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — CSS-селектор приоритетного элемента, получающего фокус по умолчанию.
+- `activeClass: string = 'sys-focusDirection__item--active'` — Имя CSS-класса, назначаемого активному дочернему элементу.
+- `control: FunctionOr<boolean | undefined> = true` — Булев флаг или геттер, включающий управление навигацией.
+
+**Возвращает:** `FocusDirectionInclude<E>` — Инициализированный экземпляр контроллера направленного фокуса.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const focusDirection = new FocusDirectionInclude(
+  container,
+  '.grid__item',
+  '.grid__item--selected',
+  'grid__item--focus',
+  () => !props.disabled
+)
+```
+
+### Публичные свойства
+
+- `get binds(): ConstrBind` — Возвращает `{ tabindex: 0, ...active.aria, onFocus, onBlur }` при активном `is()`, или `{}` при отключении.
+
+### Методы доступа и состояния
+
+- `is(): boolean` — Вычисляет `control` и возвращает `true`, если направленная клавиатурная навигация включена.
+- `getActive(): FocusDirectionActive<E>` — Возвращает управляемый экземпляр состояния `FocusDirectionActive`.
+- `getCoordinates(): FocusDirectionCoordinates<E>` — Возвращает управляемый калькулятор геометрии `FocusDirectionCoordinates`.
+- `bindsItem(extra?: ConstrBind): ConstrBind` — Объединяет `extra` со значением `tabindex: extra?.tabindex ?? -1` при активном управлении, либо возвращает поверхностную копию `extra` при отключении.
+
+### Обработчики событий и жизненного цикла
+
+- `onFocus = (): void` — Инициализирует активный элемент по умолчанию через `active.initDefault()` и запускает слушатель `keydown` на контейнере вместе с реактивным наблюдателем `control` при включённом управлении.
+- `onBlur = (): void` — Останавливает слушатель `keydown` и наблюдатель `control`, а также очищает активное состояние и CSS-классы.
+- `onUnmounted = (): void` — Останавливает слушатель `keydown` и наблюдатель `control`, а также сбрасывает кэшированные ссылки при размонтировании компонента.
+
+## Архитектура интеграции с оркестратором
+
+`FocusDirectionInclude` регистрируется в `constructorItems` подклассов `DesignLogicAbstract` (например, в `Collage` и `Pagination`) и привязывается к корневому и дочерним VNode:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+export class CustomGrid extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focusDirection: {
+      item: FocusDirectionInclude,
+      parameters: () => [
+        this.element,
+        '.grid__item',
+        '.grid__item--selected',
+        'grid__item--focus',
+        () => this.props.control
+      ]
+    }
+  }
+}
+```

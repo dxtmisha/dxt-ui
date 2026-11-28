@@ -1,0 +1,117 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/DescriptionInclude - Trợ giúp kết xuất mô tả'/>
+
+# Lớp DescriptionInclude
+
+Lớp `DescriptionInclude` là **lớp tiện ích tích hợp (Inclusion Class)** trong `@dxtmisha/constructor`, dùng để kiểm tra sự tồn tại của nội dung mô tả, xác định mã định danh phần tử ổn định cho thuộc tính trợ năng (`aria-describedby`), áp dụng lớp CSS của skeleton khi đang tải và kết xuất VNode mô tả từ props, slot và các phần tử con bổ sung.
+
+## Các tính năng chính
+
+- **Vị từ kiểm tra tĩnh** — cung cấp `DescriptionInclude.is(props, slots)` cho cơ chế khởi tạo lười (`canCreate`) trong các lớp điều phối `DesignLogicAbstract` mà không cấp phát bộ nhớ cho thực thể chưa dùng.
+- **Đầu vào phản hồi linh hoạt** — chấp nhận đối tượng thường, Vue `Ref` hoặc hàm getter thông qua `RefOrNormalOrFunction`, cùng thẻ HTML phản hồi `RefOrNormal<string | undefined>`.
+- **Bảo toàn giá trị số `0`** — sử dụng `isFilledOrNumber` để giá trị số `0` và chuỗi `'0'` được kết xuất hợp lệ, đồng thời bỏ qua chuỗi rỗng hoặc chỉ chứa khoảng trắng.
+- **Mã định danh dự phòng xác định** — ưu tiên `props.descriptionId` hoặc dùng `getElementId()` theo từng thực thể để đảm bảo an toàn SSR cho liên kết `aria-describedby`.
+- **Tích hợp Skeleton** — chỉ gọi hàm `skeleton` tùy chọn khi `SkeletonInclude.is(props)` đang bật.
+- **Đẳng cấu SSR** — chỉ sử dụng cơ chế phân giải props, `mergeProps`/`unref` của Vue và `getElementId()` mà không truy cập trực tiếp biến toàn cục của trình duyệt.
+
+## Phương thức
+
+### Vị từ tĩnh
+
+- `static is(props?: DescriptionProps, slots?: DescriptionSlots): boolean` — Kiểm tra xem `props?.description` có giá trị hợp lệ (bao gồm số `0`) hoặc khóa `'description'` có tồn tại trong `slots` hay không.
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo lớp trợ giúp mô tả với thuộc tính phản hồi hoặc hàm getter, trình đặt tên thành phần, danh sách slot tùy chọn, hàm lấy skeleton tùy chọn và thẻ HTML bao bọc.
+
+**Tham số:**
+- `props: RefOrNormalOrFunction<DescriptionProps & SkeletonPropsInclude>` — Thuộc tính đầu vào của thành phần (đối tượng thường, `Ref` hoặc hàm getter).
+- `naming: DesignName` — Trình hỗ trợ đặt tên thành phần để tạo lớp con `__description`.
+- `slots?: DescriptionSlots` — Đối tượng slot Vue tùy chọn chứa slot `description`.
+- `skeleton?: () => SkeletonInclude | undefined` — Hàm gọi lại tùy chọn trả về thực thể `SkeletonInclude` cho các lớp trạng thái tải.
+- `tag?: RefOrNormal<string | undefined>` — Thẻ HTML hoặc `Ref` tùy chọn cho phần tử bao bọc (mặc định là `'div'`).
+
+**Trả về:** `DescriptionInclude` — Thực thể trợ giúp mô tả đã khởi tạo.
+
+```typescript
+import { toRef } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
+import { DescriptionInclude } from '@dxtmisha/constructor'
+
+const description = new DescriptionInclude(
+  props,
+  new DesignName('d1.alert'),
+  slots,
+  () => skeletonInstance,
+  toRef(props, 'tag')
+)
+```
+
+### Thuộc tính công khai
+
+- `get is(): boolean` — Trả về `DescriptionInclude.is(this.getProps(), this.slots)`.
+- `get id(): string` — Trả về `this.getProps().descriptionId` hoặc giá trị dự phòng `elementIdDefault`.
+
+### Kết xuất
+
+#### `render`
+
+Kiểm tra `this.is`, thu thập nội dung từ `props.description`, `slots.description` và `slotsChildren`, sau đó kết xuất VNode bao bọc nếu có phần tử con.
+
+**Tham số:**
+- `slotsChildren?: VNodeArrayChildren` — Các phần tử con bổ sung được chèn sau nội dung từ `props` và slot.
+- `props: ConstrBind = {}` — Các thuộc tính HTML hoặc trình lắng nghe sự kiện bổ sung được hợp nhất qua `mergeProps`.
+
+**Trả về:** `VNode[]` — Mảng chứa VNode mô tả đã kết xuất, hoặc `[]` khi không hoạt động hoặc rỗng.
+
+```typescript
+const nodes = description.render(undefined, { 'aria-live': 'polite' })
+```
+
+## Kiểu dữ liệu
+
+### DescriptionProps
+
+- `description?: string | number` — Văn bản hoặc giá trị số của phần mô tả.
+- `descriptionId?: string` — Mã định danh tùy chỉnh cho phần tử mô tả được kết xuất.
+
+### DescriptionSlots
+
+- `description?(props: any): any` — Slot có tên cho nội dung HTML tùy chỉnh của mô tả.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`DescriptionInclude` được thiết kế để kết hợp với cơ chế khởi tạo lười của `DesignLogicAbstract` (`canCreate` + `callInstance`) và `AriaStaticInclude.describedby`:
+
+```typescript
+import { toRef } from 'vue'
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { AriaStaticInclude, DescriptionInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots,
+        () => this.callInstance('skeleton', item => item),
+        toRef(this.props, 'tag')
+      ]
+    }
+  }
+
+  get aria() {
+    return {
+      ...AriaStaticInclude.describedby(
+        this.callInstance('description', item => (item.is ? item.id : undefined))
+      )
+    }
+  }
+}
+```

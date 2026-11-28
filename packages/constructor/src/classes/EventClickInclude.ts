@@ -63,7 +63,7 @@ export class EventClickInclude {
    */
   get expose(): EventClickExpose {
     return {
-      getValue: () => this.props?.value ?? this.props?.index,
+      getValue: () => this.getValue(),
       getDetail: () => this.props?.detail
     }
   }
@@ -100,36 +100,29 @@ export class EventClickInclude {
     event: MouseEvent,
     options?: EventClickValue
   ): void => {
-    const enabled = this.getEnabled()
-
-    if (enabled?.isDisabled) {
+    if (this.isDisabled()) {
       event.preventDefault()
       return
     }
 
     if (this.emits) {
       if (options) {
-        if (!enabled || enabled.isEnabled) {
+        if (this.isEnabled()) {
           this.emit(event, options)
         }
       } else if (this.toRouter()) {
         event.preventDefault()
       } else if (this.isTargetHref(event)) {
         return
-      } else if (enabled) {
+      } else {
         const optionsItem = this.getOptions(event)
 
         if (
-          enabled.isEnabled
-          || (
-            optionsItem.type === 'icon-trailing'
-            && !enabled.isDisabled
-          )
+          this.isEnabled()
+          || optionsItem.type === 'icon-trailing'
         ) {
           this.emit(event, optionsItem)
         }
-      } else {
-        this.emit(event, this.getOptions(event))
       }
     }
   }
@@ -146,7 +139,7 @@ export class EventClickInclude {
     options?: EventClickValue
   ): void => {
     if (
-      this.getEnabled()?.isDisabled
+      this.isDisabled()
       || this.isTargetHref(event)
     ) {
       return
@@ -156,6 +149,28 @@ export class EventClickInclude {
       this.onClick(event as unknown as MouseEvent, options)
       event.preventDefault()
     }
+  }
+
+  /**
+   * Checks if the component is disabled for click handling.
+   *
+   * Проверяет, отключён ли компонент для обработки клика.
+   * @returns true if component is disabled / true, если компонент отключён
+   */
+  protected isDisabled(): boolean {
+    return Boolean(this.enabled?.()?.isDisabled)
+  }
+
+  /**
+   * Checks if the component is active for click handling and navigation.
+   *
+   * Проверяет, активен ли компонент для обработки клика и навигации.
+   * @returns true if enabled manager is omitted or component is enabled / true, если менеджер активности отсутствует или компонент активен
+   */
+  protected isEnabled(): boolean {
+    const enabled = this.enabled?.()
+
+    return !enabled || enabled.isEnabled
   }
 
   /**
@@ -181,16 +196,6 @@ export class EventClickInclude {
   }
 
   /**
-   * Returns the enabled state manager if provided.
-   *
-   * Возвращает менеджер состояния активности, если он предоставлен.
-   * @returns enabled state manager or undefined / менеджер состояния активности или undefined
-   */
-  protected getEnabled(): EnabledInclude | undefined {
-    return this.enabled?.()
-  }
-
-  /**
    * Standardized click options and payload values for the event.
    *
    * Стандартизированные параметры клика и значения полезной нагрузки для события.
@@ -200,7 +205,7 @@ export class EventClickInclude {
   protected getOptions(event: MouseEvent): EventClickValue {
     return {
       type: this.getTargetType(event),
-      value: this.props?.value ?? this.props?.index,
+      value: this.getValue(),
       detail: this.props?.detail
     }
   }
@@ -219,6 +224,16 @@ export class EventClickInclude {
       ?.eventType
 
     return type ?? 'click'
+  }
+
+  /**
+   * Returns the component value or falls back to the index.
+   *
+   * Возвращает значение компонента или индекс в качестве запасного значения.
+   * @returns component value or index / значение компонента или индекс
+   */
+  protected getValue(): EventClickValue['value'] | undefined {
+    return this.props?.value ?? this.props?.index
   }
 
   /**
@@ -245,10 +260,13 @@ export class EventClickInclude {
    * @returns true if navigation was handled by the router, false otherwise / true, если навигация была обработана роутером, иначе false
    */
   protected toRouter(): boolean {
-    const enabled = this.getEnabled()
+    const to = this.props?.to
 
-    if (this.props?.to && (!enabled || enabled.isEnabled)) {
-      RouterItemRef.push(this.props?.to)
+    if (
+      to
+      && this.isEnabled()
+    ) {
+      RouterItemRef.push(to)
       return true
     }
 

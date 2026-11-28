@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { RouterItemRef } from '@dxtmisha/functional'
+import { describe, it, expect, expectTypeOf, vi, beforeEach, afterEach } from 'vitest'
+import { type ConstrHrefProps, RouterItemRef } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../EventClickInclude'
 import { EnabledInclude } from '../EnabledInclude'
+import type { EventClickExpose, EventClickValue } from '../../types/eventClickTypes'
 
 vi.mock('@dxtmisha/functional', async () => {
   const actual = await vi.importActual<typeof import('@dxtmisha/functional')>('@dxtmisha/functional')
@@ -19,6 +20,10 @@ vi.mock('@dxtmisha/functional', async () => {
 describe('EventClickInclude', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe('Href and expose getters', () => {
@@ -366,6 +371,170 @@ describe('EventClickInclude', () => {
       expect(RouterItemRef.push).toHaveBeenCalledWith('/profile')
       expect(toEvent.defaultPrevented).toBe(true)
       expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should trigger onClick on Space key and ignore Enter during IME composition', () => {
+      const emits = vi.fn()
+      const include = new EventClickInclude({ value: 'space-item' }, undefined, emits)
+
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', cancelable: true })
+      include.onKeydown(spaceEvent)
+      expect(spaceEvent.defaultPrevented).toBe(true)
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'click',
+        value: 'space-item',
+        detail: undefined
+      })
+
+      emits.mockClear()
+      const composingEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        isComposing: true,
+        cancelable: true
+      })
+      include.onKeydown(composingEvent)
+      expect(composingEvent.defaultPrevented).toBe(false)
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should forward custom options from onKeydown and handle null/non-Element target safely', () => {
+      const emits = vi.fn()
+      const include = new EventClickInclude({ href: '/profile' }, undefined, emits)
+      const customOptions = { type: 'action', value: 42, detail: { from: 'keyboard' } }
+
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(enterEvent, 'target', { value: document.createTextNode('label') })
+
+      expect(() => include.onKeydown(enterEvent, customOptions)).not.toThrow()
+      expect(enterEvent.defaultPrevented).toBe(true)
+      expect(emits).toHaveBeenCalledWith('click', enterEvent, customOptions)
+      expect(emits).toHaveBeenCalledWith('clickLite', customOptions)
+    })
+  })
+
+  describe('Boundary values, falsy traps, and types', () => {
+    it('should preserve falsy values (0, false, empty string) instead of falling back to index', () => {
+      const emits = vi.fn()
+
+      const includeZero = new EventClickInclude({ value: 0, index: 99 }, undefined, emits)
+      expect(includeZero.expose.getValue?.()).toBe(0)
+      includeZero.onClick(new MouseEvent('click'))
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'click',
+        value: 0,
+        detail: undefined
+      })
+
+      emits.mockClear()
+      const includeFalse = new EventClickInclude({ value: false, index: 99 }, undefined, emits)
+      expect(includeFalse.expose.getValue?.()).toBe(false)
+      includeFalse.onClick(new MouseEvent('click'))
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'click',
+        value: false,
+        detail: undefined
+      })
+
+      emits.mockClear()
+      const includeEmpty = new EventClickInclude({ value: '', index: 99 }, undefined, emits)
+      expect(includeEmpty.expose.getValue?.()).toBe('')
+      includeEmpty.onClick(new MouseEvent('click'))
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'click',
+        value: '',
+        detail: undefined
+      })
+    })
+
+    it('should handle readonly state for custom options and router navigation, and support object to without name', () => {
+      const emits = vi.fn()
+      const readonlyEnabled = new EnabledInclude({ readonly: true })
+      const includeReadonly = new EventClickInclude(
+        { to: { path: '/settings' }, href: '/fallback' },
+        () => readonlyEnabled,
+        emits
+      )
+
+      expect(includeReadonly.href).toEqual({ href: '/fallback' })
+
+      const customEvent = new MouseEvent('click', { cancelable: true })
+      includeReadonly.onClick(customEvent, { type: 'custom', value: 1, detail: undefined })
+      expect(emits).not.toHaveBeenCalled()
+      expect(customEvent.defaultPrevented).toBe(false)
+
+      const routerEvent = new MouseEvent('click', { cancelable: true })
+      includeReadonly.onClick(routerEvent)
+      expect(RouterItemRef.push).not.toHaveBeenCalled()
+      expect(routerEvent.defaultPrevented).toBe(false)
+
+      const includeEnabled = new EventClickInclude({ to: { path: '/settings' } }, undefined, emits)
+      const activeEvent = new MouseEvent('click', { cancelable: true })
+      includeEnabled.onClick(activeEvent)
+      expect(RouterItemRef.push).toHaveBeenCalledWith({ path: '/settings' })
+      expect(activeEvent.defaultPrevented).toBe(true)
+    })
+
+    it('should handle emits omitted safely when enabled and preserve Unicode/multilingual payloads', () => {
+      const includeNoEmits = new EventClickInclude({ to: '/profile', value: 'x' })
+      const noEmitEvent = new MouseEvent('click', { cancelable: true })
+      expect(() => includeNoEmits.onClick(noEmitEvent)).not.toThrow()
+      expect(RouterItemRef.push).not.toHaveBeenCalled()
+
+      const emits = vi.fn()
+      const unicodeValue = 'Nguyễn Привет 🚀'
+      const unicodeDetail = { label: 'tiếng Việt', emoji: '🔥' }
+      const includeUnicode = new EventClickInclude(
+        { value: unicodeValue, detail: unicodeDetail },
+        undefined,
+        emits
+      )
+
+      const target = document.createElement('button')
+      target.setAttribute('data-event-type', 'кнопка-tiếng-Việt')
+      const clickEvent = new MouseEvent('click')
+      Object.defineProperty(clickEvent, 'target', { value: target })
+
+      includeUnicode.onClick(clickEvent)
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'кнопка-tiếng-Việt',
+        value: unicodeValue,
+        detail: unicodeDetail
+      })
+    })
+
+    it('should evaluate enabled callback lazily across state transitions and isolate instances', () => {
+      let currentEnabled = new EnabledInclude({ disabled: false })
+      const emitsFirst = vi.fn()
+      const emitsSecond = vi.fn()
+
+      const includeFirst = new EventClickInclude({ value: 'first' }, () => currentEnabled, emitsFirst)
+      const includeSecond = new EventClickInclude({ value: 'second' }, undefined, emitsSecond)
+
+      includeFirst.onClick(new MouseEvent('click'))
+      expect(emitsFirst).toHaveBeenCalledTimes(2)
+
+      emitsFirst.mockClear()
+      currentEnabled = new EnabledInclude({ disabled: true })
+      const disabledEvent = new MouseEvent('click', { cancelable: true })
+      includeFirst.onClick(disabledEvent)
+      expect(disabledEvent.defaultPrevented).toBe(true)
+      expect(emitsFirst).not.toHaveBeenCalled()
+
+      includeSecond.onClick(new MouseEvent('click'))
+      expect(emitsSecond).toHaveBeenCalledTimes(2)
+    })
+
+    it('should match expected TypeScript contracts for href, expose, and binds', () => {
+      const include = new EventClickInclude({ href: '/docs' })
+
+      expectTypeOf(include.href).toEqualTypeOf<ConstrHrefProps>()
+      expectTypeOf(include.expose).toEqualTypeOf<EventClickExpose>()
+      expectTypeOf(include.binds).toMatchTypeOf<
+        ConstrHrefProps & {
+          onClick: (event: MouseEvent, options?: EventClickValue) => void
+          onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void
+        }
+      >()
     })
   })
 })

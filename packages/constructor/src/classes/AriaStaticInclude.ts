@@ -23,6 +23,17 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Returns the ARIA activedescendant attribute identifying the currently active descendant element when focus remains on the composite container.
+   *
+   * Возвращает атрибут ARIA activedescendant, идентифицирующий текущий активный дочерний элемент, когда фокус остаётся на составном контейнере.
+   * @param id identifier of the active descendant element / идентификатор активного дочернего элемента
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static activedescendant(id?: string): AriaList {
+    return this.isDataToData('aria-activedescendant', id)
+  }
+
+  /**
    * Returns the ARIA modal attribute indicating whether the element is modal, restricting focus and accessibility navigation to its contents.
    *
    * Возвращает атрибут ARIA modal, указывающий, является ли элемент модальным, ограничивая фокус и навигацию доступности его содержимым.

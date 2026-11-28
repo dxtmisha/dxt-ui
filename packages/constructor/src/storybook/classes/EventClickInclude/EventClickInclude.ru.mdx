@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/EventClickInclude - Обработка кликов, клавиатуры и роутера'/>
+
+# Класс EventClickInclude
+
+Класс `EventClickInclude` — это **утилитарный класс подключения** в пакете `@dxtmisha/constructor`, отвечающий за унифицированную обработку кликов мыши, активации с клавиатуры (`Enter` и `Space`), навигации через `RouterItemRef`, формирования `href` и генерации стандартизированных событий `click` и `clickLite`.
+
+## Ключевые особенности
+
+- **Единый объект привязок** — геттер `binds` объединяет `href`, `onClick` и `onKeydown` в один объект для привязки на корневой элемент компонента.
+- **Интеграция с роутером и ссылками** — геттер `href` преобразует именованный объект `RouteLocationRaw` (`to` со свойством `name`) через `RouterItemRef.rawToHref(to)` или возвращает `props.href`; `onClick` запускает навигацию `RouterItemRef.push(to)` и вызывает `event.preventDefault()`.
+- **Защита вложенных ссылок** — метод `isTargetHref` определяет клики и нажатия по элементу `<a>`, чей `href` совпадает с `props.href` (при отсутствии `props.to`), позволяя браузеру выполнить нативный переход без дублирования событий.
+- **Учёт активности и режима «только для чтения»** — лениво запрашивает коллбэк `enabled` (`EnabledInclude`) при каждом взаимодействии, блокирует отключённые элементы (`preventDefault()`) и разрешает клики по `icon-trailing` в режиме `readonly` (`!isDisabled` и `!isEnabled`).
+- **Извлечение значения и типа цели** — считывает `data-event-type` с ближайшего родительского элемента (по умолчанию `'click'`) и сохраняет ложноподобные значения (`0`, `false`, `''`) за счёт оператора `??` (`props.value ?? props.index`).
+- **Защита IME при вводе** — `onKeydown` использует `isEnter(event)`, автоматически игнорируя нажатия `Enter`/`Space` во время активной IME-композиции (`event.isComposing`).
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует обработчик кликов необязательными свойствами компонента, ленивым геттером состояния активности и функцией вызова событий.
+
+**Параметры:**
+- `props?: EventClickProps` — Необязательные входные свойства компонента (`to`, `href`, `value`, `detail`, `index`).
+- `enabled?: () => EnabledInclude | undefined` — Необязательный ленивый коллбэк, возвращающий активный экземпляр `EnabledInclude`.
+- `emits?: ConstrEmit<EventClickEmits>` — Необязательная функция эмитов компонента для вызова `click` и `clickLite`.
+
+**Возвращает:** `EventClickInclude` — Инициализированный экземпляр обработчика кликов.
+
+```typescript
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(props)
+const eventClick = new EventClickInclude(
+  props,
+  () => enabled,
+  emits
+)
+```
+
+### Публичные свойства
+
+- `get binds(): ConstrHrefProps & { onClick: (event: MouseEvent, options?: EventClickValue) => void; onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void }` — Возвращает `{ ...this.href, onClick: this.onClick, onKeydown: this.onKeydown }` для привязки к корневому элементу.
+- `get expose(): EventClickExpose` — Возвращает `{ getValue: () => this.getValue(), getDetail: () => this.props?.detail }` для интеграции с `defineExpose`.
+- `get href(): ConstrHrefProps` — Возвращает `RouterItemRef.rawToHref(to)`, если `props.to` является объектом со свойством `name`, иначе возвращает `{ href: this.props?.href }`.
+
+### Обработчики событий
+
+#### `onClick`
+
+Обрабатывает клики мыши (и перенаправленные активации с клавиатуры): отменяет действие по умолчанию при отключении, вызывает эмит с переданными `options`, выполняет `RouterItemRef.push(to)` при активности, пропускает нативные переходы по совпадающему `<a href>` или определяет `data-event-type` и вызывает `click` и `clickLite`.
+
+**Параметры:**
+- `event: MouseEvent` — Нативное событие мыши (или перенаправленное событие клавиатуры).
+- `options?: EventClickValue` — Необязательная заранее сформированная полезная нагрузка, обходящая стандартное определение цели и роутера.
+
+**Возвращает:** `void`
+
+```typescript
+eventClick.onClick(mouseEvent, {
+  type: 'custom',
+  value: 'item-1',
+  detail: { source: 'menu' }
+})
+```
+
+#### `onKeydown`
+
+Обрабатывает клавиатурную активацию на не-нативных интерактивных элементах: завершается досрочно при отключении или совпадении с нативной ссылкой `<a href>`, а при нажатии `Enter`/`Space` (вне IME-композиции) вызывает `onClick` и отменяет действие браузера по умолчанию.
+
+**Параметры:**
+- `event: KeyboardEvent` — Нативное событие клавиатуры.
+- `options?: EventClickValue` — Необязательная полезная нагрузка, передаваемая в `onClick`.
+
+**Возвращает:** `void`
+
+```typescript
+eventClick.onKeydown(keyboardEvent)
+```
+
+## Типы
+
+### EventClickProps
+
+- `to?: string | RouteLocationRaw` — Цель навигации, передаваемая в `RouterItemRef`.
+- `href?: string` — Статический URL для привязки ссылки и проверки вложенного `<a>`.
+- `value?: EventClickValue['value']` — Основное значение компонента для событий и `expose.getValue()`.
+- `detail?: EventClickValue['detail']` — Дополнительные метаданные события (`Record<string, any> | undefined`).
+- `index?: number | string` — Запасной идентификатор, возвращаемый при отсутствии `props.value` (`undefined` или `null`).
+
+### EventClickValue
+
+- `type: string` — Определённое значение атрибута `data-event-type` или `'click'`.
+- `value: any` — Итоговое значение события (`props.value ?? props.index`).
+- `detail: Record<string, any> | undefined` — Дополнительные детали события из `props.detail`.
+
+### EventClickEmits
+
+- `click: [event: MouseEvent, value: EventClickValue]` — Полное событие клика с объектом DOM-события и полезной нагрузкой.
+- `clickLite: [value: EventClickValue]` — Облегчённое событие клика, передающее только полезную нагрузку.
+
+### EventClickExpose
+
+- `getValue?: () => EventClickValue['value'] | undefined` — Возвращает вычисленное значение компонента или индекс.
+- `getDetail?: () => EventClickValue['detail'] | undefined` — Возвращает `props.detail`.
+
+## Архитектура интеграции с оркестратором
+
+`EventClickInclude` обычно регистрируется в `constructorItems` подклассов `DesignLogicAbstract` в паре с `EnabledInclude`, сохраняя ленивую инициализацию и слабую связанность:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    }
+  }
+
+  get binds() {
+    return {
+      ...this.i('event').binds
+    }
+  }
+
+  get expose() {
+    return {
+      ...this.i('event').expose
+    }
+  }
+}
+```

@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/EventClickInclude - Xử lý sự kiện nhấp, bàn phím và router'/>
+
+# Lớp EventClickInclude
+
+Lớp `EventClickInclude` là **lớp tiện ích tích hợp (Inclusion Class)** trong `@dxtmisha/constructor`, chịu trách nhiệm xử lý thống nhất thao tác nhấp chuột, kích hoạt bằng bàn phím (`Enter` và `Space`), điều hướng qua `RouterItemRef`, phân giải `href` và phát ra các sự kiện chuẩn hóa `click` và `clickLite`.
+
+## Các tính năng chính
+
+- **Ràng buộc phần tử thống nhất** — getter `binds` gộp `href`, `onClick` và `onKeydown` thành một đối tượng duy nhất sẵn sàng gắn lên phần tử gốc.
+- **Tích hợp Router và liên kết** — getter `href` chuyển đổi đối tượng `RouteLocationRaw` có tên (`to` chứa `name`) qua `RouterItemRef.rawToHref(to)` hoặc quay về `props.href`; `onClick` gọi `RouterItemRef.push(to)` khi khả dụng và thực thi `event.preventDefault()`.
+- **Bảo vệ thẻ liên kết lồng nhau** — `isTargetHref` phát hiện thao tác nhấp hoặc nhấn phím trên phần tử `<a>` có `href` trùng với `props.href` (khi không có `props.to`) để trình duyệt tự điều hướng mà không phát trùng sự kiện.
+- **Nhận biết trạng thái khả dụng và chỉ đọc** — đánh giá lười hàm gọi lại `enabled` (`EnabledInclude`) ở mỗi tương tác, chặn phần tử bị vô hiệu hóa (`preventDefault()`) nhưng vẫn cho phép nhấp vào `icon-trailing` ở chế độ `readonly` (`!isDisabled` và `!isEnabled`).
+- **Trích xuất giá trị và loại mục tiêu** — đọc `data-event-type` từ phần tử cha gần nhất (mặc định `'click'`) và bảo toàn các giá trị falsy (`0`, `false`, `''`) nhờ toán tử `??` (`props.value ?? props.index`).
+- **An toàn với bộ gõ IME** — `onKeydown` kiểm tra qua `isEnter(event)`, tự động bỏ qua phím `Enter`/`Space` khi `event.isComposing` là `true`.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo trình xử lý sự kiện nhấp với các thuộc tính tùy chọn của thành phần, hàm gọi lại lười trả về trạng thái khả dụng và hàm phát sự kiện.
+
+**Tham số:**
+- `props?: EventClickProps` — Thuộc tính đầu vào tùy chọn gồm `to`, `href`, `value`, `detail` và `index`.
+- `enabled?: () => EnabledInclude | undefined` — Hàm gọi lại lười tùy chọn trả về thực thể `EnabledInclude` đang hoạt động.
+- `emits?: ConstrEmit<EventClickEmits>` — Hàm phát sự kiện tùy chọn để kích hoạt `click` và `clickLite`.
+
+**Trả về:** `EventClickInclude` — Thực thể trình xử lý sự kiện nhấp đã khởi tạo.
+
+```typescript
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(props)
+const eventClick = new EventClickInclude(
+  props,
+  () => enabled,
+  emits
+)
+```
+
+### Thuộc tính công khai
+
+- `get binds(): ConstrHrefProps & { onClick: (event: MouseEvent, options?: EventClickValue) => void; onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void }` — Trả về `{ ...this.href, onClick: this.onClick, onKeydown: this.onKeydown }` để gắn vào phần tử gốc.
+- `get expose(): EventClickExpose` — Trả về `{ getValue: () => this.getValue(), getDetail: () => this.props?.detail }` để tích hợp với `defineExpose`.
+- `get href(): ConstrHrefProps` — Trả về `RouterItemRef.rawToHref(to)` khi `props.to` là đối tượng có thuộc tính `name`, ngược lại trả về `{ href: this.props?.href }`.
+
+### Trình xử lý sự kiện
+
+#### `onClick`
+
+Xử lý sự kiện nhấp chuột (và kích hoạt từ bàn phím được chuyển tiếp): hủy hành vi mặc định khi bị vô hiệu hóa, phát trực tiếp `options` tùy chỉnh khi được truyền, gọi `RouterItemRef.push(to)` khi đang hoạt động, nhường điều hướng gốc cho `<a href>` trùng khớp hoặc phân giải `data-event-type` và phát `click` cùng `clickLite`.
+
+**Tham số:**
+- `event: MouseEvent` — Sự kiện chuột gốc (hoặc sự kiện bàn phím được chuyển tiếp).
+- `options?: EventClickValue` — Tải trọng tùy chọn được dựng sẵn, bỏ qua bước phân giải router/mục tiêu mặc định.
+
+**Trả về:** `void`
+
+```typescript
+eventClick.onClick(mouseEvent, {
+  type: 'custom',
+  value: 'item-1',
+  detail: { source: 'menu' }
+})
+```
+
+#### `onKeydown`
+
+Xử lý kích hoạt bằng bàn phím trên các phần tử tương tác không phải thẻ gốc: thoát sớm nếu bị vô hiệu hóa hoặc nhắm vào thẻ `<a href>` trùng khớp, và chuyển tiếp phím `Enter`/`Space` (ngoài phiên gõ IME) tới `onClick` đồng thời ngăn cuộn/gửi biểu mẫu mặc định.
+
+**Tham số:**
+- `event: KeyboardEvent` — Sự kiện bàn phím gốc.
+- `options?: EventClickValue` — Tải trọng tùy chọn được chuyển tiếp cho `onClick`.
+
+**Trả về:** `void`
+
+```typescript
+eventClick.onKeydown(keyboardEvent)
+```
+
+## Kiểu dữ liệu
+
+### EventClickProps
+
+- `to?: string | RouteLocationRaw` — Đích điều hướng truyền cho `RouterItemRef`.
+- `href?: string` — URL tĩnh dùng để gắn liên kết gốc và đối chiếu thẻ `<a>` lồng nhau.
+- `value?: EventClickValue['value']` — Giá trị chính của thành phần trả về trong sự kiện và `expose.getValue()`.
+- `detail?: EventClickValue['detail']` — Dữ liệu mô tả bổ sung (`Record<string, any> | undefined`).
+- `index?: number | string` — Định danh dự phòng được trả về khi `props.value` là `undefined` hoặc `null`.
+
+### EventClickValue
+
+- `type: string` — Giá trị thuộc tính `data-event-type` được phân giải hoặc `'click'`.
+- `value: any` — Giá trị sự kiện đã phân giải (`props.value ?? props.index`).
+- `detail: Record<string, any> | undefined` — Chi tiết sự kiện bổ sung từ `props.detail`.
+
+### EventClickEmits
+
+- `click: [event: MouseEvent, value: EventClickValue]` — Sự kiện nhấp đầy đủ gồm đối tượng DOM và tải trọng.
+- `clickLite: [value: EventClickValue]` — Sự kiện nhấp rút gọn chỉ truyền tải trọng chuẩn hóa.
+
+### EventClickExpose
+
+- `getValue?: () => EventClickValue['value'] | undefined` — Trả về giá trị đã phân giải hoặc chỉ mục của thành phần.
+- `getDetail?: () => EventClickValue['detail'] | undefined` — Trả về `props.detail`.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`EventClickInclude` thường được đăng ký trong `constructorItems` của các lớp con `DesignLogicAbstract` cùng với `EnabledInclude` để giữ cơ chế khởi tạo lười và tách biệt phụ thuộc:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    }
+  }
+
+  get binds() {
+    return {
+      ...this.i('event').binds
+    }
+  }
+
+  get expose() {
+    return {
+      ...this.i('event').expose
+    }
+  }
+}
+```

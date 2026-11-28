@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/События и ввод/isArrow - Проверка нажатия клавиш со стрелками'/>
+
+# `isArrow`
+
+Проверяет, является ли нажатая клавиша или строка имени клавиши одной из клавиш направления со стрелками (`ArrowUp`, `ArrowDown`, `ArrowLeft` или `ArrowRight`). Функция полезна при реализации 1D/2D-навигации с клавиатуры с поддержкой доступности (a11y), защитой IME-ввода и совместимостью со старыми браузерами.
+
+**Параметры:**
+- `event?: KeyboardEvent | Event | string | null` — объект события клавиатуры или строка имени клавиши.
+
+**Возвращает:**
+`boolean` — `true`, если клавиша соответствует одной из стрелок (и для объекта события не активна IME-композиция), иначе `false`.
+
+**Поддерживаемые значения и свойства события:**
+Функция проверяет следующие значения для максимальной совместимости:
+- Строка / `event.key` / `event.code`: `'ArrowUp'`, `'ArrowDown'`, `'ArrowLeft'`, `'ArrowRight'`
+- Устаревший `event.keyCode`: `37` (влево), `38` (вверх), `39` (вправо), `40` (вниз)
+
+```typescript
+import { isArrow } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isArrow(event)) {
+    event.preventDefault()
+    // Выполнить направленную навигацию
+  }
+}
+
+// Либо проверить строку направления напрямую
+isArrow('ArrowRight') // true
+```

@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Events & Input/isArrow - Check for arrow key press'/>
+
+# `isArrow`
+
+Checks if the pressed key or key name string is one of the directional arrow keys (`ArrowUp`, `ArrowDown`, `ArrowLeft`, or `ArrowRight`). This function is useful for handling 1D/2D keyboard navigation while supporting accessibility (a11y), IME composition safety, and older browsers.
+
+**Parameters:**
+- `event?: KeyboardEvent | Event | string | null` — the keyboard event object or key name string.
+
+**Returns:**
+`boolean` — `true` if a directional arrow key is matched (and IME composition is not active for event objects), otherwise `false`.
+
+**Supported values and event properties:**
+The function checks the following values for maximum compatibility:
+- String value / `event.key` / `event.code`: `'ArrowUp'`, `'ArrowDown'`, `'ArrowLeft'`, `'ArrowRight'`
+- Legacy `event.keyCode`: `37` (Left), `38` (Up), `39` (Right), `40` (Down)
+
+```typescript
+import { isArrow } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isArrow(event)) {
+    event.preventDefault()
+    // Perform directional navigation
+  }
+}
+
+// Or validate a direction string directly
+isArrow('ArrowRight') // true
+```

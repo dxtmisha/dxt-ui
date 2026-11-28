@@ -5,7 +5,7 @@ import { type ConstrEmit, DesignName } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../../classes/AreaInclude'
 import { EventClickInclude } from '../../../classes/EventClickInclude'
-import { FocusDirectionInclude } from '../../../classes/FocusDirectionInclude'
+import { FocusDirectionInclude } from '../../../classes/FocusDirection/FocusDirectionInclude'
 import { ModelInclude } from '../../../classes/ModelInclude'
 import { TextInclude } from '../../../classes/TextInclude'
 

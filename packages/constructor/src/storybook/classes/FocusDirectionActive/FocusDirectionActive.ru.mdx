@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/FocusDirectionActive - Менеджер активного потомка'/>
+
+# Класс FocusDirectionActive
+
+Класс `FocusDirectionActive` — это **утилитарный класс состояния** в пакете `@dxtmisha/constructor`, используемый в `FocusDirectionInclude` для управления текущим активным дочерним элементом, его активным CSS-классом, валидацией кэша и реактивным идентификатором `aria-activedescendant` внутри контейнера направленного фокуса.
+
+## Ключевые особенности
+
+- **Инкапсуляция активного состояния** — отделяет кэширование DOM-элемента `current` и синхронизацию реактивного `activeId` от расчётов геометрии и обработки клавиатуры.
+- **Интеграция с WAI-ARIA** — предоставляет геттер `aria` через `AriaStaticInclude.activedescendant`, возвращая `{ 'aria-activedescendant': id }` при наличии ID или `{}` в противном случае.
+- **Автоматическая инвалидация кэша** — обнаруживает отсоединённые (`!isConnected`) или перемещённые вне контейнера (`!container?.contains(...)`) элементы в `get()` и сбрасывает устаревшее состояние.
+- **Гибкое получение контейнера** — принимает Vue `Ref`, прямой `HTMLElement`, функцию-геттер или геттер, возвращающий `Ref`, через `RefOrNormalOrFunction` и `executeFunctionRef`.
+- **Безопасный режим без CSS-класса** — защищает от `DOMException` при пустых значениях `activeClass` и `selector`, позволяя управлять только `aria-activedescendant`.
+- **SSR-изоморфизм** — не обращается к браузерным глобалам при инициализации и безопасно пропускает операции, если контейнер не определён (`undefined`).
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует менеджер состояния активного потомка для контейнера направленного фокуса.
+
+**Параметры:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Ссылка, прямой элемент или геттер, возвращающий родительский элемент контейнера (либо `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — CSS-селектор дочерних элементов, участвующих в навигации.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — CSS-селектор приоритетного элемента, получающего начальную активность по умолчанию.
+- `activeClass: string = 'sys-focusDirection__item--active'` — Имя CSS-класса, назначаемого текущему активному элементу.
+
+**Возвращает:** `FocusDirectionActive<E>` — Инициализированный экземпляр менеджера активного состояния.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(
+  container,
+  '.menu__item',
+  '.menu__item--selected',
+  'menu__item--focus'
+)
+```
+
+### Публичные свойства
+
+- `get aria(): AriaList` — Возвращает `AriaStaticInclude.activedescendant(this.activeId.value)` (`{ 'aria-activedescendant': id }` при наличии ID или `{}` в противном случае).
+- `get id(): string | undefined` — Возвращает реактивный ID текущего активного элемента или `undefined`.
+
+### Управление состоянием и выбором
+
+- `is(): boolean` — Возвращает `true`, если `get()` возвращает валидный активный дочерний элемент.
+- `get(): HTMLElement | undefined` — Проверяет актуальность кэша относительно контейнера и возвращает текущий активный элемент, выполняя поиск по `.${activeClass}` при отсутствии кэша.
+- `getElement(): E | undefined` — Разрешает и возвращает родительский элемент контейнера из переданного `Ref`, прямого элемента или функции-геттера.
+- `set(targetElement: HTMLElement): this` — Очищает прежние активные классы, добавляет `activeClass` к `targetElement`, обновляет `current` и синхронизирует `id`.
+- `reset(): this` — Сбрасывает кэшированную ссылку `current` и `id` без изменения DOM-классов.
+- `clear(): this` — Вызывает `reset()` и удаляет `activeClass` со всех элементов внутри контейнера.
+- `initDefault(): this` — Инициализирует элемент по `activeSelector` (или первый элемент по `selector`), если активный элемент ещё не выбран.
+
+## Архитектура интеграции с оркестратором
+
+`FocusDirectionActive` создаётся внутри `FocusDirectionInclude`, доступен через `getActive()` и формирует `aria-activedescendant` в геттере `binds` контейнера:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.item',
+  '.item--selected',
+  'item--focus',
+  true
+)
+
+// Прямой доступ к менеджеру активного состояния:
+focusDirection.getActive().id
+```

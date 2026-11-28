@@ -59,6 +59,19 @@ export class EnabledInclude {
   }
 
   /**
+   * Checks if the dynamic interactive state is enabled.
+   *
+   * Проверяет, включено ли динамическое интерактивное состояние.
+   * @returns dynamic state / динамическое состояние
+   */
+  get isDynamic(): boolean {
+    return Boolean(
+      !('dynamic' in this.props)
+      || this.props.dynamic
+    )
+  }
+
+  /**
    * Checks if the element is active.
    *
    * Проверяет, активен ли элемент.
@@ -67,11 +80,8 @@ export class EnabledInclude {
   get isEnabled(): boolean {
     return !this.props.disabled
       && !this.props.readonly
-      && !this.getProgress()?.is
-      && Boolean(
-        !('dynamic' in this.props)
-        || this.props.dynamic
-      )
+      && !this.progress?.()?.is
+      && this.isDynamic
   }
 
   /**
@@ -82,15 +92,5 @@ export class EnabledInclude {
    */
   get isReadonly(): boolean {
     return Boolean(this.props.readonly)
-  }
-
-  /**
-   * Returns the progress state manager if provided.
-   *
-   * Возвращает менеджер состояния прогресса, если он предоставлен.
-   * @returns progress state manager or undefined / менеджер состояния прогресса или undefined
-   */
-  protected getProgress(): ProgressInclude | undefined {
-    return this.progress?.()
   }
 }

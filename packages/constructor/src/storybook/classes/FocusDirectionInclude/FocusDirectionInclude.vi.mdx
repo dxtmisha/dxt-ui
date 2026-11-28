@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/FocusDirectionInclude - Bộ điều khiển điều hướng tiêu điểm bằng bàn phím'/>
+
+# Lớp FocusDirectionInclude
+
+Lớp `FocusDirectionInclude` là **lớp tích hợp điều phối** kế thừa `DesignLifecycleAbstract` trong `@dxtmisha/constructor`, dùng để quản lý điều hướng tiêu điểm 2D qua các phần tử con bằng phím mũi tên (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`), kích hoạt bằng `Enter`/`Space` và đồng bộ `aria-activedescendant` trong khi giữ tiêu điểm trình duyệt trên vùng chứa cha.
+
+## Các tính năng chính
+
+- **Kiến trúc phân tách mô-đun** — kết hợp `FocusDirectionActive` (trạng thái phần tử đang hoạt động, lớp CSS và `aria-activedescendant`) cùng `FocusDirectionCoordinates` (tìm kiếm không gian 2D) trong một lớp điều phối thống nhất.
+- **Ràng buộc cho vùng chứa và phần tử con** — cung cấp `binds` (`tabindex="0"`, `aria-activedescendant`, `onFocus`, `onBlur`) cho vùng chứa và `bindsItem()` (`tabindex="-1"`) cho phần tử con mà không làm biến đổi đối tượng đầu vào.
+- **Kiểm soát bật/tắt động** — hỗ trợ giá trị boolean hoặc hàm getter phản hồi qua `control` (`FunctionOr<boolean | undefined>`), theo dõi đồng bộ (`flush: 'sync'`) để gỡ bộ lắng nghe và xóa trạng thái hoạt động ngay lập tức khi bị tắt.
+- **Bảo vệ bộ gõ IME và phím tắt hệ thống** — bỏ qua phím mũi tên và `Enter`/`Space` khi đang trong phiên nhập IME (`event.isComposing`) hoặc khi nhấn phím bổ trợ `Ctrl`/`Alt`/`Meta` (`isMetaKey`), bảo vệ bộ gõ tiếng Việt Telex/VNI, CJK và phím tắt trình duyệt.
+- **Tự động dọn dẹp vòng đời** — kế thừa `DesignLifecycleAbstract` để dừng bộ lắng nghe `keydown`, dừng trình theo dõi `control` và giải phóng tham chiếu DOM trong `onUnmounted()`.
+- **Đẳng cấu SSR** — tạo thuộc tính `binds` và `bindsItem()` nhất quán khi kết xuất phía máy chủ mà không truy cập biến toàn cục trình duyệt cho tới `onFocus()`.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo bộ điều khiển điều hướng tiêu điểm cùng các thực thể con `FocusDirectionActive` và `FocusDirectionCoordinates`.
+
+**Tham số:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Tham chiếu, phần tử trực tiếp hoặc hàm getter trả về phần tử vùng chứa cha (hoặc `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — Bộ chọn CSS cho các phần tử con tham gia điều hướng tiêu điểm.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — Bộ chọn CSS ưu tiên cho phần tử nhận tiêu điểm mặc định ban đầu.
+- `activeClass: string = 'sys-focusDirection__item--active'` — Tên lớp CSS được gán cho phần tử con đang hoạt động.
+- `control: FunctionOr<boolean | undefined> = true` — Cờ boolean hoặc hàm getter điều khiển việc bật/tắt điều hướng tiêu điểm.
+
+**Trả về:** `FocusDirectionInclude<E>` — Thực thể bộ điều khiển điều hướng tiêu điểm đã khởi tạo.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const focusDirection = new FocusDirectionInclude(
+  container,
+  '.grid__item',
+  '.grid__item--selected',
+  'grid__item--focus',
+  () => !props.disabled
+)
+```
+
+### Thuộc tính công khai
+
+- `get binds(): ConstrBind` — Trả về `{ tabindex: 0, ...active.aria, onFocus, onBlur }` khi `is()` bật, hoặc `{}` khi bị tắt.
+
+### Truy cập và trạng thái
+
+- `is(): boolean` — Đánh giá `control` và trả về `true` khi điều hướng tiêu điểm bằng bàn phím được bật.
+- `getActive(): FocusDirectionActive<E>` — Trả về thực thể quản lý trạng thái `FocusDirectionActive`.
+- `getCoordinates(): FocusDirectionCoordinates<E>` — Trả về thực thể tính toán hình học `FocusDirectionCoordinates`.
+- `bindsItem(extra?: ConstrBind): ConstrBind` — Gộp `extra` với `tabindex: extra?.tabindex ?? -1` khi đang bật, hoặc trả về bản sao nông của `extra` khi bị tắt.
+
+### Xử lý sự kiện và vòng đời
+
+- `onFocus = (): void` — Khởi tạo phần tử hoạt động mặc định qua `active.initDefault()` và bắt đầu lắng nghe `keydown` cùng trình theo dõi `control` trên vùng chứa khi được bật.
+- `onBlur = (): void` — Dừng lắng nghe `keydown`, dừng trình theo dõi `control` và xóa trạng thái hoạt động cùng các lớp CSS.
+- `onUnmounted = (): void` — Dừng lắng nghe `keydown`, dừng trình theo dõi `control` và đặt lại các tham chiếu đang lưu đệm khi gỡ thành phần.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`FocusDirectionInclude` được đăng ký trong `constructorItems` của các lớp con `DesignLogicAbstract` (như `Collage` và `Pagination`) và gắn trực tiếp vào VNode gốc và VNode phần tử con:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+export class CustomGrid extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focusDirection: {
+      item: FocusDirectionInclude,
+      parameters: () => [
+        this.element,
+        '.grid__item',
+        '.grid__item--selected',
+        'grid__item--focus',
+        () => this.props.control
+      ]
+    }
+  }
+}
+```

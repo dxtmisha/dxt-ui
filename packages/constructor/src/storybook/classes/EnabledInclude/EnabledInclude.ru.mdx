@@ -1,0 +1,92 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/EnabledInclude - Состояние интерактивной активности'/>
+
+# Класс EnabledInclude
+
+Класс `EnabledInclude` — это **утилитарный класс подключения** в пакете `@dxtmisha/constructor`, предназначенный для централизованного управления состоянием интерактивной активности компонента. Он объединяет свойства `disabled`, `readonly`, необязательный флаг `dynamic` и ленивое состояние загрузки `ProgressInclude` в единые геттеры и WAI-ARIA привязки.
+
+## Ключевые особенности
+
+- **Единое вычисление доступности** — геттер `isEnabled` проверяет `disabled`, `readonly`, ленивый вызов `progress?.()?.is` и `isDynamic` с коротким замыканием, не вызывая геттер прогресса, если компонент уже отключён или в режиме «только для чтения».
+- **Контроль динамического режима** — геттер `isDynamic` различает отсутствие ключа `dynamic` в `props` (активно по умолчанию) и явное наличие свойства `dynamic` (`false` или `undefined` отключают интерактивность).
+- **Интеграция с WAI-ARIA** — геттер `aria` делегирует в `AriaStaticInclude.disabled(!this.isEnabled)`, возвращая `{ 'aria-disabled': 'true' }` при неактивности или `{}` при активности.
+- **Удобство привязки HTML-атрибутов** — `isDisabledOrUndefined` возвращает `true` при отключении и `undefined` в остальных случаях, предотвращая вывод лишнего атрибута `disabled="false"` в DOM.
+- **SSR-изоморфизм** — опирается исключительно на чтение свойств и `AriaStaticInclude` без зависимостей от глобальных объектов браузера.
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует менеджер интерактивной активности входными свойствами компонента и необязательным ленивым коллбэком, возвращающим экземпляр `ProgressInclude`.
+
+**Параметры:**
+- `props: EnabledProps & { dynamic?: boolean }` — Реактивные свойства компонента, содержащие `disabled`, `readonly` и необязательное свойство `dynamic`.
+- `progress?: () => ProgressInclude | undefined` — Необязательный ленивый геттер, возвращающий активный помощник `ProgressInclude`.
+
+**Возвращает:** `EnabledInclude` — Инициализированный экземпляр менеджера состояния активности.
+
+```typescript
+import { EnabledInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(
+  props,
+  () => callInstance('progress', item => item)
+)
+```
+
+### Публичные свойства
+
+- `get aria(): AriaList` — Возвращает `AriaStaticInclude.disabled(!this.isEnabled)` (`{ 'aria-disabled': 'true' }` при неактивности или `{}` при активности).
+- `get isDisabled(): boolean` — Возвращает `true`, если `props.disabled` истинно.
+- `get isDisabledOrUndefined(): boolean | undefined` — Возвращает `true` при `isDisabled === true`, иначе `undefined` для чистой привязки HTML-атрибутов.
+- `get isDynamic(): boolean` — Возвращает `true`, если ключ `'dynamic'` отсутствует в `props` или `props.dynamic` истинно.
+- `get isEnabled(): boolean` — Возвращает `true` только при одновременном выполнении `!props.disabled`, `!props.readonly`, `!progress?.()?.is` и `isDynamic`.
+- `get isReadonly(): boolean` — Возвращает `true`, если `props.readonly` истинно.
+
+## Типы
+
+### EnabledProps
+
+- `readonly?: boolean` — Переводит компонент в режим «только для чтения» (отключает интерактивность в `isEnabled` без установки `isDisabled`).
+- `disabled?: boolean` — Полностью отключает компонент.
+
+## Архитектура интеграции с оркестратором
+
+`EnabledInclude` обычно регистрируется в `constructorItems` подклассов `DesignLogicAbstract` и передаётся через коллбэк в помощники взаимодействия, такие как `EventClickInclude` и `RippleInclude`:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude, RippleInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.callInstance('progress', item => item)
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    ripple: {
+      item: RippleInclude,
+      canCreate: () => RippleInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('enabled'),
+        this.components
+      ]
+    }
+  }
+}
+```

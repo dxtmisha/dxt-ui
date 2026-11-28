@@ -1,0 +1,92 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/EnabledInclude - Trạng thái hoạt động tương tác'/>
+
+# Lớp EnabledInclude
+
+Lớp `EnabledInclude` là **lớp tiện ích tích hợp (Inclusion Class)** trong `@dxtmisha/constructor`, dùng để quản lý tập trung trạng thái khả dụng tương tác của thành phần. Lớp kết hợp các thuộc tính `disabled`, `readonly`, cờ tùy chọn `dynamic` và trạng thái tải `ProgressInclude` thành các getter thống nhất cùng thuộc tính WAI-ARIA.
+
+## Các tính năng chính
+
+- **Xác định khả dụng thống nhất** — getter `isEnabled` kiểm tra `disabled`, `readonly`, lời gọi lười `progress?.()?.is` và `isDynamic` với cơ chế đoản mạch (short-circuit), bỏ qua việc gọi hàm lấy tiến trình khi thành phần đã bị vô hiệu hóa hoặc chỉ đọc.
+- **Kiểm soát chế độ động** — getter `isDynamic` phân biệt giữa việc không khai báo khóa `dynamic` trong `props` (mặc định bật) và việc truyền rõ thuộc tính `dynamic` (`false` hoặc `undefined` sẽ tắt tương tác).
+- **Tích hợp WAI-ARIA** — getter `aria` ủy quyền cho `AriaStaticInclude.disabled(!this.isEnabled)`, trả về `{ 'aria-disabled': 'true' }` khi không khả dụng hoặc `{}` khi khả dụng.
+- **Hỗ trợ ràng buộc thuộc tính DOM** — `isDisabledOrUndefined` trả về `true` khi bị vô hiệu hóa và `undefined` trong các trường hợp còn lại, tránh sinh thuộc tính `disabled="false"` dư thừa.
+- **Đẳng cấu SSR** — chỉ đọc thuộc tính thuần túy và gọi `AriaStaticInclude`, không phụ thuộc vào biến toàn cục của trình duyệt.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo trình quản lý trạng thái tương tác với thuộc tính đầu vào của thành phần và hàm gọi lại tùy chọn trả về thực thể `ProgressInclude`.
+
+**Tham số:**
+- `props: EnabledProps & { dynamic?: boolean }` — Thuộc tính phản hồi của thành phần gồm `disabled`, `readonly` và `dynamic` tùy chọn.
+- `progress?: () => ProgressInclude | undefined` — Hàm gọi lại lười tùy chọn trả về trình hỗ trợ `ProgressInclude` đang hoạt động.
+
+**Trả về:** `EnabledInclude` — Thực thể trình quản lý trạng thái khả dụng đã khởi tạo.
+
+```typescript
+import { EnabledInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(
+  props,
+  () => callInstance('progress', item => item)
+)
+```
+
+### Thuộc tính công khai
+
+- `get aria(): AriaList` — Trả về `AriaStaticInclude.disabled(!this.isEnabled)` (`{ 'aria-disabled': 'true' }` khi không khả dụng, hoặc `{}` khi khả dụng).
+- `get isDisabled(): boolean` — Trả về `true` nếu `props.disabled` có giá trị đúng.
+- `get isDisabledOrUndefined(): boolean | undefined` — Trả về `true` khi `isDisabled` là `true`, ngược lại trả về `undefined` để gắn thuộc tính HTML gọn gàng.
+- `get isDynamic(): boolean` — Trả về `true` khi khóa `'dynamic'` không tồn tại trong `props` hoặc `props.dynamic` có giá trị đúng.
+- `get isEnabled(): boolean` — Trả về `true` chỉ khi `!props.disabled`, `!props.readonly`, `!progress?.()?.is` và `isDynamic` đều thỏa mãn.
+- `get isReadonly(): boolean` — Trả về `true` nếu `props.readonly` có giá trị đúng.
+
+## Kiểu dữ liệu
+
+### EnabledProps
+
+- `readonly?: boolean` — Đánh dấu thành phần ở chế độ chỉ đọc (không tương tác qua `isEnabled`, không đặt `isDisabled`).
+- `disabled?: boolean` — Vô hiệu hóa thành phần.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`EnabledInclude` thường được đăng ký trong `constructorItems` của các lớp con `DesignLogicAbstract` và truyền qua hàm gọi lại cho các lớp hỗ trợ tương tác như `EventClickInclude` và `RippleInclude`:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude, RippleInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.callInstance('progress', item => item)
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    ripple: {
+      item: RippleInclude,
+      canCreate: () => RippleInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('enabled'),
+        this.components
+      ]
+    }
+  }
+}
+```

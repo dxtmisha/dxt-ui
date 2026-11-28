@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/EventClickInclude - Click, Keyboard & Router Event Handler'/>
+
+# EventClickInclude Class
+
+The `EventClickInclude` class is a **Utility Inclusion Class** in `@dxtmisha/constructor` responsible for unified pointer click handling, keyboard activation (`Enter` and `Space`), router navigation via `RouterItemRef`, native `<a>` href resolution, and emitting standardized `click` and `clickLite` events.
+
+## Key Features
+
+- **Unified Element Bindings** — `binds` aggregates `href`, `onClick`, and `onKeydown` into a single object ready to spread onto interactive root elements.
+- **Router & Link Resolution** — `href` converts named `RouteLocationRaw` objects (`to` containing `name`) via `RouterItemRef.rawToHref(to)` and falls back to `props.href`; `onClick` delegates active `to` navigation to `RouterItemRef.push(to)` and calls `event.preventDefault()`.
+- **Nested Anchor Guard** — `isTargetHref` detects clicks or keyboard activations targeting an `<a>` element whose `href` matches `props.href` (when `props.to` is absent) so native link behavior proceeds without duplicate custom emits.
+- **Activity & Readonly Awareness** — lazily evaluates the `enabled` callback (`EnabledInclude`) on every interaction, blocking disabled elements (`preventDefault()`) while still allowing `icon-trailing` clicks in readonly mode (`!isDisabled` and `!isEnabled`).
+- **Value & Target Type Extraction** — resolves `data-event-type` from the closest ancestor element (defaulting to `'click'`) and preserves falsy values (`0`, `false`, `''`) via nullish coalescing (`props.value ?? props.index`).
+- **IME-Safe Keyboard Handling** — `onKeydown` delegates to `isEnter(event)`, automatically ignoring `Enter`/`Space` presses while `event.isComposing` is `true`.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the click event helper with optional component properties, a lazy activity-state getter, and an event emitter callback.
+
+**Parameters:**
+- `props?: EventClickProps` — Optional component properties containing `to`, `href`, `value`, `detail`, and `index`.
+- `enabled?: () => EnabledInclude | undefined` — Optional lazy callback returning the active `EnabledInclude` instance.
+- `emits?: ConstrEmit<EventClickEmits>` — Optional component emitter function used to trigger `click` and `clickLite`.
+
+**Returns:** `EventClickInclude` — Initialized click event handler instance.
+
+```typescript
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(props)
+const eventClick = new EventClickInclude(
+  props,
+  () => enabled,
+  emits
+)
+```
+
+### Public Properties
+
+- `get binds(): ConstrHrefProps & { onClick: (event: MouseEvent, options?: EventClickValue) => void; onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void }` — Returns `{ ...this.href, onClick: this.onClick, onKeydown: this.onKeydown }` for binding onto the root element.
+- `get expose(): EventClickExpose` — Returns `{ getValue: () => this.getValue(), getDetail: () => this.props?.detail }` for component `defineExpose` integration.
+- `get href(): ConstrHrefProps` — Returns `RouterItemRef.rawToHref(to)` when `props.to` is an object containing `name`, otherwise returns `{ href: this.props?.href }`.
+
+### Event Handlers
+
+#### `onClick`
+
+Handles mouse clicks (and forwarded keyboard activations): cancels default behavior when disabled, emits custom `options` directly when provided, performs `RouterItemRef.push(to)` when active, yields to matching native `<a href>` targets, or resolves `data-event-type` and emits `click` and `clickLite`.
+
+**Parameters:**
+- `event: MouseEvent` — Native mouse event (or forwarded keyboard event).
+- `options?: EventClickValue` — Optional pre-built payload bypassing automatic router/target resolution.
+
+**Returns:** `void`
+
+```typescript
+eventClick.onClick(mouseEvent, {
+  type: 'custom',
+  value: 'item-1',
+  detail: { source: 'menu' }
+})
+```
+
+#### `onKeydown`
+
+Handles keyboard activation on non-native interactive elements: returns early if disabled or targeting a matching native `<a href>`, and forwards `Enter`/`Space` presses (outside IME composition) to `onClick` while preventing default scrolling/submission.
+
+**Parameters:**
+- `event: KeyboardEvent` — Native keyboard event.
+- `options?: EventClickValue` — Optional payload forwarded to `onClick`.
+
+**Returns:** `void`
+
+```typescript
+eventClick.onKeydown(keyboardEvent)
+```
+
+## Types
+
+### EventClickProps
+
+- `to?: string | RouteLocationRaw` — Navigation target passed to `RouterItemRef`.
+- `href?: string` — Static URL used for native link binding and nested anchor matching.
+- `value?: EventClickValue['value']` — Primary payload value returned in events and `expose.getValue()`.
+- `detail?: EventClickValue['detail']` — Additional payload metadata (`Record<string, any> | undefined`).
+- `index?: number | string` — Fallback identifier returned when `props.value` is `undefined` or `null`.
+
+### EventClickValue
+
+- `type: string` — Resolved `data-event-type` attribute value or `'click'`.
+- `value: any` — Resolved event value (`props.value ?? props.index`).
+- `detail: Record<string, any> | undefined` — Optional event metadata from `props.detail`.
+
+### EventClickEmits
+
+- `click: [event: MouseEvent, value: EventClickValue]` — Full click event including the original DOM event and payload.
+- `clickLite: [value: EventClickValue]` — Lightweight click event carrying only the standardized payload.
+
+### EventClickExpose
+
+- `getValue?: () => EventClickValue['value'] | undefined` — Exposes the resolved component value or index.
+- `getDetail?: () => EventClickValue['detail'] | undefined` — Exposes `props.detail`.
+
+## Orchestrator Integration Architecture
+
+`EventClickInclude` is typically registered inside `DesignLogicAbstract` `constructorItems` alongside `EnabledInclude` so activity checks remain lazy and decoupled:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    }
+  }
+
+  get binds() {
+    return {
+      ...this.i('event').binds
+    }
+  }
+
+  get expose() {
+    return {
+      ...this.i('event').expose
+    }
+  }
+}
+```

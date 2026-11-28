@@ -45,6 +45,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Связи, динамические области и ориентация
 
+- `activedescendant(id?: string): AriaList` — Возвращает `{ 'aria-activedescendant': id }` для непустой строки или `{}` в противном случае.
 - `controls(controls?: string): AriaList` — Возвращает `{ 'aria-controls': controls }` для непустой строки или `{}` в противном случае.
 - `current(value?: AriaList['aria-current']): AriaList` — Возвращает `{ 'aria-current': value }` для непустых строковых токенов (`'page'`, `'step'` и др.) либо `'true'`/`'false'` для булевых значений и `undefined`.
 - `haspopup(haspopup?: AriaList['aria-haspopup']): AriaList` — Возвращает `{ 'aria-haspopup': 'true' | popupType }` при активном значении или `{}` при `false`, `'false'` и `undefined`.

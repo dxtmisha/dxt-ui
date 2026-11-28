@@ -1,0 +1,92 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/EnabledInclude - Interactive Activity & Availability State'/>
+
+# EnabledInclude Class
+
+The `EnabledInclude` class is a **Utility Inclusion Class** in `@dxtmisha/constructor` designed to centralize interactive availability checks across components. It combines `disabled`, `readonly`, optional `dynamic` state, and lazy `ProgressInclude` loading states into unified getters and WAI-ARIA bindings.
+
+## Key Features
+
+- **Unified Availability Resolution** — `isEnabled` evaluates `disabled`, `readonly`, lazy `progress?.()?.is`, and `isDynamic` with short-circuiting so the progress resolver is skipped when already disabled or read-only.
+- **Dynamic Mode Guard** — `isDynamic` distinguishes omitted `dynamic` keys (enabled by default) from explicit `dynamic` props (`false` or `undefined` disables interactivity).
+- **WAI-ARIA Integration** — `aria` delegates to `AriaStaticInclude.disabled(!this.isEnabled)`, returning `{ 'aria-disabled': 'true' }` when inactive or `{}` when interactive.
+- **Attribute Binding Helper** — `isDisabledOrUndefined` returns `true` when disabled and `undefined` otherwise, preventing false `disabled="false"` DOM attributes.
+- **SSR Isomorphism** — relies strictly on pure property lookups and `AriaStaticInclude` with zero browser global dependencies.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the interactive availability manager with component properties and an optional lazy callback returning the component's `ProgressInclude` instance.
+
+**Parameters:**
+- `props: EnabledProps & { dynamic?: boolean }` — Reactive component properties containing `disabled`, `readonly`, and optional `dynamic`.
+- `progress?: () => ProgressInclude | undefined` — Optional lazy getter returning the active `ProgressInclude` helper.
+
+**Returns:** `EnabledInclude` — Initialized interactive state manager instance.
+
+```typescript
+import { EnabledInclude } from '@dxtmisha/constructor'
+
+const enabled = new EnabledInclude(
+  props,
+  () => callInstance('progress', item => item)
+)
+```
+
+### Public Properties
+
+- `get aria(): AriaList` — Returns `AriaStaticInclude.disabled(!this.isEnabled)` (`{ 'aria-disabled': 'true' }` when inactive, or `{}` when active).
+- `get isDisabled(): boolean` — Returns `true` if `props.disabled` is truthy.
+- `get isDisabledOrUndefined(): boolean | undefined` — Returns `true` when `isDisabled` is `true`, or `undefined` otherwise for clean HTML attribute binding.
+- `get isDynamic(): boolean` — Returns `true` when `'dynamic'` is absent from `props`, or when `props.dynamic` is truthy.
+- `get isEnabled(): boolean` — Returns `true` only when `!props.disabled`, `!props.readonly`, `!progress?.()?.is`, and `isDynamic` are all satisfied.
+- `get isReadonly(): boolean` — Returns `true` if `props.readonly` is truthy.
+
+## Types
+
+### EnabledProps
+
+- `readonly?: boolean` — Marks the component as read-only (not interactive via `isEnabled`, without setting `isDisabled`).
+- `disabled?: boolean` — Marks the component as disabled.
+
+## Orchestrator Integration Architecture
+
+`EnabledInclude` is typically registered in `DesignLogicAbstract` `constructorItems` and shared with interaction helpers such as `EventClickInclude` and `RippleInclude` via callbacks:
+
+```typescript
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { EnabledInclude, EventClickInclude, RippleInclude } from '@dxtmisha/constructor'
+
+export class CustomButton extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.callInstance('progress', item => item)
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    ripple: {
+      item: RippleInclude,
+      canCreate: () => RippleInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        () => this.i('enabled'),
+        this.components
+      ]
+    }
+  }
+}
+```

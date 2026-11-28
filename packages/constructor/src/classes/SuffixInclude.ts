@@ -91,6 +91,10 @@ export class SuffixInclude {
    * @returns list of virtual nodes / список виртуальных узлов
    */
   render(): VNode[] {
+    if (!this.is) {
+      return []
+    }
+
     const children: VNodeArrayChildren = []
 
     if (isFilled(this.props.suffix)) {

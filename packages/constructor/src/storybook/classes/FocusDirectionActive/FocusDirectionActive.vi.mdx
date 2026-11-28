@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/FocusDirectionActive - Quản lý phần tử con đang hoạt động'/>
+
+# Lớp FocusDirectionActive
+
+Lớp `FocusDirectionActive` là **lớp tiện ích trạng thái** trong `@dxtmisha/constructor`, được sử dụng bởi `FocusDirectionInclude` để quản lý phần tử con đang hoạt động, lớp CSS kích hoạt, kiểm tra tính hợp lệ của bộ nhớ đệm và mã định danh phản hồi `aria-activedescendant` bên trong vùng chứa điều hướng tiêu điểm.
+
+## Các tính năng chính
+
+- **Đóng gói trạng thái hoạt động** — tách biệt việc lưu đệm phần tử DOM `current` và đồng bộ `activeId` phản hồi khỏi logic tính toán hình học và sự kiện bàn phím.
+- **Tích hợp WAI-ARIA** — cung cấp getter `aria` thông qua `AriaStaticInclude.activedescendant`, trả về `{ 'aria-activedescendant': id }` khi có ID hoặc `{}` khi không có.
+- **Tự động hủy bộ nhớ đệm lỗi thời** — phát hiện các phần tử đã tách khỏi DOM (`!isConnected`) hoặc bị di chuyển ra ngoài vùng chứa (`!container?.contains(...)`) trong `get()` và tự động đặt lại trạng thái.
+- **Đầu vào vùng chứa linh hoạt** — chấp nhận Vue `Ref`, `HTMLElement` trực tiếp, hàm getter hoặc getter trả về `Ref` thông qua `RefOrNormalOrFunction` và `executeFunctionRef`.
+- **Chế độ không lớp CSS an toàn** — bảo vệ khỏi lỗi `DOMException` khi `activeClass` hoặc `selector` rỗng, cho phép chỉ quản lý `aria-activedescendant`.
+- **Đẳng cấu SSR** — không truy cập biến toàn cục trình duyệt khi khởi tạo và bỏ qua an toàn khi vùng chứa là `undefined`.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo trình quản lý trạng thái phần tử con đang hoạt động cho vùng chứa điều hướng tiêu điểm.
+
+**Tham số:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Tham chiếu, phần tử trực tiếp hoặc hàm getter trả về phần tử vùng chứa cha (hoặc `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — Bộ chọn CSS cho các phần tử con tham gia điều hướng.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — Bộ chọn CSS ưu tiên cho phần tử nhận trạng thái hoạt động mặc định khi mới tiêu điểm.
+- `activeClass: string = 'sys-focusDirection__item--active'` — Tên lớp CSS được gán cho phần tử con đang hoạt động.
+
+**Trả về:** `FocusDirectionActive<E>` — Thực thể trình quản lý trạng thái hoạt động đã khởi tạo.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(
+  container,
+  '.menu__item',
+  '.menu__item--selected',
+  'menu__item--focus'
+)
+```
+
+### Thuộc tính công khai
+
+- `get aria(): AriaList` — Trả về `AriaStaticInclude.activedescendant(this.activeId.value)` (`{ 'aria-activedescendant': id }` khi có giá trị, ngược lại trả về `{}`).
+- `get id(): string | undefined` — Trả về chuỗi ID phản hồi của phần tử đang hoạt động hoặc `undefined`.
+
+### Quản lý trạng thái và lựa chọn
+
+- `is(): boolean` — Trả về `true` nếu `get()` trả về một phần tử con đang hoạt động hợp lệ.
+- `get(): HTMLElement | undefined` — Kiểm tra tính hợp lệ của bộ nhớ đệm so với DOM vùng chứa và trả về phần tử đang hoạt động hiện tại, tìm lại theo `.${activeClass}` nếu chưa lưu đệm.
+- `getElement(): E | undefined` — Phân giải và trả về phần tử vùng chứa cha từ `Ref`, phần tử trực tiếp hoặc hàm getter đã cấu hình.
+- `set(targetElement: HTMLElement): this` — Xóa các lớp hoạt động cũ, thêm `activeClass` vào `targetElement`, cập nhật `current` và đồng bộ `id`.
+- `reset(): this` — Đặt lại tham chiếu `current` và `id` mà không thay đổi lớp CSS trên DOM.
+- `clear(): this` — Gọi `reset()` và xóa `activeClass` khỏi toàn bộ phần tử bên trong vùng chứa.
+- `initDefault(): this` — Khởi tạo phần tử mặc định khớp với `activeSelector` (hoặc phần tử đầu tiên khớp `selector`) khi chưa có phần tử nào đang hoạt động.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`FocusDirectionActive` được khởi tạo bên trong `FocusDirectionInclude`, truy cập qua `getActive()` và cung cấp `aria-activedescendant` cho getter `binds` của vùng chứa:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.item',
+  '.item--selected',
+  'item--focus',
+  true
+)
+
+// Truy cập trực tiếp trình quản lý trạng thái hoạt động:
+focusDirection.getActive().id
+```

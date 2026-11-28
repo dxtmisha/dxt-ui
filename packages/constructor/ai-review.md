@@ -1,6 +1,14 @@
 src/functions/setAreaValue.ts
 src/classes/AreaInclude.ts
-src/classes/AriaStaticInclude.ts
 src/classes/ComponentIncludeAbstract.ts
 src/classes/FrameAbstract.ts
 src/classes/ControlAbstract.ts
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonInclude.ts
+src/classes/DescriptionInclude.ts
+src/classes/EnabledInclude.ts
+src/classes/EventClickInclude.ts
+src/classes/AriaStaticInclude.ts
+src/classes/FocusDirection/FocusDirectionActive.ts
+src/classes/FocusDirection/FocusDirectionCoordinates.ts
+src/classes/FocusDirection/FocusDirectionInclude.ts

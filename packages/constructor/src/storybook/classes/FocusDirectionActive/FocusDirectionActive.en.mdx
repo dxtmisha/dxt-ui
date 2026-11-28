@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/FocusDirectionActive - Active Descendant State Manager'/>
+
+# FocusDirectionActive Class
+
+The `FocusDirectionActive` class is a **State Utility Class** in `@dxtmisha/constructor` used by `FocusDirectionInclude` to manage the currently active child element, its active CSS class, cache validation, and the reactive `aria-activedescendant` identifier inside a directional focus container.
+
+## Key Features
+
+- **Encapsulated Active State** — isolates `current` DOM element caching and reactive `activeId` synchronization from directional geometry and keyboard event logic.
+- **WAI-ARIA Integration** — exposes `aria` via `AriaStaticInclude.activedescendant`, returning `{ 'aria-activedescendant': id }` when an active element ID is present or `{}` otherwise.
+- **Automatic Cache Invalidation** — detects detached (`!isConnected`) or moved (`!container?.contains(...)`) DOM elements in `get()` and resets stale state automatically.
+- **Flexible Container Input** — accepts a Vue `Ref`, raw `HTMLElement`, getter function, or getter returning a `Ref` via `RefOrNormalOrFunction` and `executeFunctionRef`.
+- **Safe Classless Mode** — guards empty `activeClass` and `selector` strings to avoid invalid `DOMException` queries when managing `aria-activedescendant` without CSS classes.
+- **SSR Isomorphism** — avoids browser globals on initialization and gracefully no-ops when the container resolves to `undefined`.
+
+## Methods
+
+### Initialization
+
+#### `constructor`
+
+Initializes the active descendant state manager for a directional focus container.
+
+**Parameters:**
+- `element: RefOrNormalOrFunction<E | undefined>` — Reference, raw element, or getter returning the parent container element (or `Ref`).
+- `selector: string = '.sys-focusDirection__item'` — CSS selector matching focusable child items.
+- `activeSelector: string = '.sys-focusDirection__item--active'` — CSS selector for prioritizing the default active item on initial focus.
+- `activeClass: string = 'sys-focusDirection__item--active'` — CSS class name applied to the currently active child element.
+
+**Returns:** `FocusDirectionActive<E>` — Initialized active state manager instance.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(
+  container,
+  '.menu__item',
+  '.menu__item--selected',
+  'menu__item--focus'
+)
+```
+
+### Public Properties
+
+- `get aria(): AriaList` — Returns `AriaStaticInclude.activedescendant(this.activeId.value)` (`{ 'aria-activedescendant': id }` when defined, or `{}` otherwise).
+- `get id(): string | undefined` — Returns the reactive ID string of the currently active element, or `undefined`.
+
+### State & Selection Management
+
+- `is(): boolean` — Returns `true` if a valid active child element is currently resolved by `get()`.
+- `get(): HTMLElement | undefined` — Validates cached state against the container DOM and returns the current active element, falling back to querying `.${activeClass}` if uncached.
+- `getElement(): E | undefined` — Resolves and returns the parent container element from the configured `Ref`, raw element, or getter function.
+- `set(targetElement: HTMLElement): this` — Clears existing active classes, applies `activeClass` to `targetElement`, updates `current`, and synchronizes `id`.
+- `reset(): this` — Clears cached `current` reference and `id` without mutating DOM classes.
+- `clear(): this` — Calls `reset()` and removes `activeClass` from all elements inside the container.
+- `initDefault(): this` — Initializes the default element matching `activeSelector` (or falls back to `selector`) when no active element is currently set.
+
+## Orchestrator Integration Architecture
+
+`FocusDirectionActive` is instantiated inside `FocusDirectionInclude` and exposed via `getActive()`, driving `aria-activedescendant` in the container's `binds` getter:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.item',
+  '.item--selected',
+  'item--focus',
+  true
+)
+
+// Access active state manager directly:
+focusDirection.getActive().id
+```

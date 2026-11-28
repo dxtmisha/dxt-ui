@@ -69,12 +69,7 @@ export class DescriptionInclude {
    * @returns checking result / результат проверки
    */
   get is(): boolean {
-    const description = this.getProps().description
-
-    return Boolean(
-      isFilledOrNumber(description)
-      || this.slots?.description
-    )
+    return DescriptionInclude.is(this.getProps(), this.slots)
   }
 
   /**
@@ -84,7 +79,7 @@ export class DescriptionInclude {
    * @returns unique identifier / уникальный идентификатор
    */
   get id(): string {
-    return this.getProps()?.descriptionId || this.elementIdDefault
+    return this.getProps().descriptionId || this.elementIdDefault
   }
 
   /**
@@ -99,6 +94,10 @@ export class DescriptionInclude {
     slotsChildren?: VNodeArrayChildren,
     props: ConstrBind = {}
   ): VNode[] {
+    if (!this.is) {
+      return []
+    }
+
     const children: VNodeArrayChildren = []
     const description = this.getProps().description
 
@@ -107,7 +106,7 @@ export class DescriptionInclude {
     }
 
     if (this.slots?.description) {
-      children.push(this.slots.description?.({}))
+      children.push(this.slots.description({}))
     }
 
     if (slotsChildren) {

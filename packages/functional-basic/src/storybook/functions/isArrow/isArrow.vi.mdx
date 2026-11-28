@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Sự kiện & Nhập liệu/isArrow - Kiểm tra nhấn phím mũi tên'/>
+
+# `isArrow`
+
+Kiểm tra xem phím được nhấn hoặc chuỗi tên phím có phải là một trong các phím mũi tên điều hướng (`ArrowUp`, `ArrowDown`, `ArrowLeft` hoặc `ArrowRight`) hay không. Hàm này hữu ích khi xử lý điều hướng bàn phím 1D/2D với hỗ trợ khả năng truy cập (a11y), bảo vệ bộ gõ IME và tương thích với các trình duyệt cũ.
+
+**Tham số:**
+- `event?: KeyboardEvent | Event | string | null` — đối tượng sự kiện bàn phím hoặc chuỗi tên phím.
+
+**Trả về:**
+`boolean` — `true` nếu khớp với phím mũi tên điều hướng (và không đang trong phiên nhập IME đối với đối tượng sự kiện), ngược lại là `false`.
+
+**Các giá trị và thuộc tính sự kiện được hỗ trợ:**
+Hàm kiểm tra các giá trị sau để đảm bảo khả năng tương thích tối đa:
+- Chuỗi / `event.key` / `event.code`: `'ArrowUp'`, `'ArrowDown'`, `'ArrowLeft'`, `'ArrowRight'`
+- Thuộc tính cũ `event.keyCode`: `37` (Trái), `38` (Lên), `39` (Phải), `40` (Xuống)
+
+```typescript
+import { isArrow } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isArrow(event)) {
+    event.preventDefault()
+    // Thực hiện điều hướng theo hướng mũi tên
+  }
+}
+
+// Hoặc kiểm tra trực tiếp chuỗi hướng
+isArrow('ArrowRight') // true
+```

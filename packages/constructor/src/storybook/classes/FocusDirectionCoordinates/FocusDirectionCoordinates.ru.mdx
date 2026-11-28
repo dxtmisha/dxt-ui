@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/FocusDirectionCoordinates - Калькулятор 2D-координат навигации'/>
+
+# Класс FocusDirectionCoordinates
+
+Класс `FocusDirectionCoordinates` — это **утилитарный класс пространственной геометрии** в пакете `@dxtmisha/constructor`, используемый в `FocusDirectionInclude` для вычисления центров элементов и поиска ближайшего кандидата для фокуса в направлении нажатой стрелки.
+
+## Ключевые особенности
+
+- **Пространственный 2D-поиск** — вычисляет центры элементов-кандидатов через `getBoundingClientRect()` и выбирает ближайший элемент в направлении стрелки (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`).
+- **Приоритет выравнивания по оси** — применяет весовой коэффициент `4` к квадрату перпендикулярного расстояния, отдавая приоритет элементам в той же строке или столбце перед диагональными соседями.
+- **Порог смещения по направлению** — требует минимальное смещение `1px` по целевой оси для отсечения наложенных или субпиксельно смещённых элементов.
+- **Ранний выход без лишних чтений DOM** — проверяет поддерживаемое направление и непустой селектор до обращения к `querySelectorAll` и `getBoundingClientRect()`.
+- **SSR-изоморфизм** — безопасно возвращает `undefined` без измерений DOM, если `active.get()` или `active.getElement()` не определены.
+
+## Методы
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует калькулятор 2D-координат с менеджером активного элемента и селектором кандидатов.
+
+**Параметры:**
+- `active: FocusDirectionActive<E>` — Менеджер состояния активного потомка, предоставляющий активный элемент и контейнер.
+- `selector: string = '.sys-focusDirection__item'` — CSS-селектор элементов-кандидатов внутри контейнера.
+
+**Возвращает:** `FocusDirectionCoordinates<E>` — Инициализированный экземпляр калькулятора координат.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive, FocusDirectionCoordinates } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(container, '.grid__item')
+const coordinates = new FocusDirectionCoordinates(active, '.grid__item')
+```
+
+### Поиск кандидатов
+
+- `findNearest(direction: string): HTMLElement | undefined` — Находит и возвращает ближайший элемент-кандидат в указанном направлении (`'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'`) или `undefined`, если подходящий элемент не найден.
+
+## Типы
+
+### FocusCoordinates
+
+- `x: number` — Горизонтальная координата центра элемента или разницы координат.
+- `y: number` — Вертикальная координата центра элемента или разницы координат.
+
+## Архитектура интеграции с оркестратором
+
+`FocusDirectionCoordinates` создаётся внутри `FocusDirectionInclude`, доступен через `getCoordinates()` и обеспечивает поиск следующего элемента в методе `move()`:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.grid__item'
+)
+
+const nextElement = focusDirection.getCoordinates().findNearest('ArrowRight')
+```

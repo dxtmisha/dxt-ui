@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/FocusDirectionCoordinates - Trình tính tọa độ điều hướng 2D'/>
+
+# Lớp FocusDirectionCoordinates
+
+Lớp `FocusDirectionCoordinates` là **lớp tiện ích hình học không gian** trong `@dxtmisha/constructor`, được `FocusDirectionInclude` sử dụng để tính tọa độ tâm phần tử và tìm phần tử ứng viên gần nhất theo hướng phím mũi tên.
+
+## Các tính năng chính
+
+- **Tìm kiếm không gian 2D gần nhất** — tính tâm các phần tử ứng viên qua `getBoundingClientRect()` và chọn phần tử gần nhất theo hướng mũi tên (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`).
+- **Ưu tiên căn chỉnh theo trục** — áp dụng hệ số trọng số `4` cho bình phương khoảng cách vuông góc để ưu tiên các phần tử cùng hàng hoặc cùng cột hơn phần tử chéo.
+- **Ngưỡng lệch hướng tối thiểu** — yêu cầu độ lệch tối thiểu `1px` dọc theo trục mục tiêu để loại bỏ các phần tử chồng lấn hoặc lệch dưới một pixel.
+- **Thoát sớm tối ưu** — kiểm tra hướng mũi tên hợp lệ và bộ chọn khác rỗng trước khi truy vấn DOM hoặc đọc hình học bố cục.
+- **Đẳng cấu SSR** — bỏ qua đo đạc DOM an toàn và trả về `undefined` khi `active.get()` hoặc `active.getElement()` là `undefined`.
+
+## Phương thức
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo trình tính tọa độ 2D với trình quản lý phần tử đang hoạt động và bộ chọn ứng viên.
+
+**Tham số:**
+- `active: FocusDirectionActive<E>` — Trình quản lý trạng thái phần tử con đang hoạt động để lấy phần tử hiện tại và vùng chứa.
+- `selector: string = '.sys-focusDirection__item'` — Bộ chọn CSS khớp với các phần tử ứng viên có thể nhận tiêu điểm.
+
+**Trả về:** `FocusDirectionCoordinates<E>` — Thực thể trình tính tọa độ đã khởi tạo.
+
+```typescript
+import { ref } from 'vue'
+import { FocusDirectionActive, FocusDirectionCoordinates } from '@dxtmisha/constructor'
+
+const container = ref<HTMLElement>()
+const active = new FocusDirectionActive(container, '.grid__item')
+const coordinates = new FocusDirectionCoordinates(active, '.grid__item')
+```
+
+### Tìm kiếm ứng viên
+
+- `findNearest(direction: string): HTMLElement | undefined` — Tìm và trả về phần tử ứng viên gần nhất theo hướng mũi tên (`'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'`), hoặc `undefined` nếu không có ứng viên phù hợp.
+
+## Kiểu dữ liệu
+
+### FocusCoordinates
+
+- `x: number` — Tọa độ ngang của tâm phần tử hoặc hiệu tọa độ.
+- `y: number` — Tọa độ dọc của tâm phần tử hoặc hiệu tọa độ.
+
+## Kiến trúc tích hợp với lớp điều phối
+
+`FocusDirectionCoordinates` được khởi tạo bên trong `FocusDirectionInclude`, truy cập qua `getCoordinates()`, và điều khiển việc di chuyển theo phím mũi tên trong `move()`:
+
+```typescript
+import { FocusDirectionInclude } from '@dxtmisha/constructor'
+
+const focusDirection = new FocusDirectionInclude(
+  () => containerRef.value,
+  '.grid__item'
+)
+
+const nextElement = focusDirection.getCoordinates().findNearest('ArrowRight')
+```

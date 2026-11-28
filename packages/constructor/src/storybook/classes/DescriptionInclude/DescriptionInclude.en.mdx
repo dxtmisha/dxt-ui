@@ -1,0 +1,117 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/DescriptionInclude - Description Rendering Helper'/>
+
+# DescriptionInclude Class
+
+The `DescriptionInclude` class is a **Utility Inclusion Class** in `@dxtmisha/constructor` designed to check description availability, resolve stable element identifiers for accessibility bindings (`aria-describedby`), apply loading skeleton classes, and render the description VNode from props, slots, and extra children.
+
+## Key Features
+
+- **Static Presence Predicate** — provides `DescriptionInclude.is(props, slots)` for lazy instantiation (`canCreate`) in `DesignLogicAbstract` orchestrators without allocating unused instances.
+- **Flexible Reactive Inputs** — accepts plain objects, Vue `Ref` objects, or getter functions via `RefOrNormalOrFunction`, as well as a reactive `RefOrNormal<string | undefined>` HTML tag.
+- **Zero-Boundary Preservation** — uses `isFilledOrNumber` so numeric `0` and string `'0'` render as valid descriptions while empty or whitespace-only strings are omitted.
+- **Deterministic Identifier Fallback** — resolves `props.descriptionId` or falls back to a per-instance `getElementId()` identifier for SSR-safe `aria-describedby` associations.
+- **Skeleton Integration** — lazily queries the optional `skeleton` callback only when `SkeletonInclude.is(props)` is active.
+- **SSR Isomorphism** — relies strictly on pure property resolution, Vue `mergeProps`/`unref`, and `getElementId()` with zero direct browser global access.
+
+## Methods
+
+### Static Predicates
+
+- `static is(props?: DescriptionProps, slots?: DescriptionSlots): boolean` — Checks whether `props?.description` is filled (including numeric `0`) or `'description'` is present in `slots`.
+
+### Initialization
+
+#### `constructor`
+
+Initializes the description helper with reactive or getter-based properties, component naming, optional slot dictionary, optional skeleton resolver, and optional wrapping tag.
+
+**Parameters:**
+- `props: RefOrNormalOrFunction<DescriptionProps & SkeletonPropsInclude>` — Component properties (plain object, `Ref`, or getter function).
+- `naming: DesignName` — Component naming helper used to resolve the `__description` subclass.
+- `slots?: DescriptionSlots` — Optional Vue slots object containing the `description` slot.
+- `skeleton?: () => SkeletonInclude | undefined` — Optional callback returning a `SkeletonInclude` instance for loading state classes.
+- `tag?: RefOrNormal<string | undefined>` — Optional HTML tag or `Ref` for the wrapping element (defaults to `'div'`).
+
+**Returns:** `DescriptionInclude` — Initialized description helper instance.
+
+```typescript
+import { toRef } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
+import { DescriptionInclude } from '@dxtmisha/constructor'
+
+const description = new DescriptionInclude(
+  props,
+  new DesignName('d1.alert'),
+  slots,
+  () => skeletonInstance,
+  toRef(props, 'tag')
+)
+```
+
+### Public Properties
+
+- `get is(): boolean` — Returns `DescriptionInclude.is(this.getProps(), this.slots)`.
+- `get id(): string` — Returns `this.getProps().descriptionId` or falls back to the generated `elementIdDefault`.
+
+### Rendering
+
+#### `render`
+
+Checks `this.is`, collects content from `props.description`, `slots.description`, and `slotsChildren`, and renders the wrapping VNode if any children exist.
+
+**Parameters:**
+- `slotsChildren?: VNodeArrayChildren` — Additional child nodes appended after the description prop and slot content.
+- `props: ConstrBind = {}` — Additional HTML attributes or event listeners merged via Vue `mergeProps`.
+
+**Returns:** `VNode[]` — Array containing the rendered description VNode, or `[]` when inactive or empty.
+
+```typescript
+const nodes = description.render(undefined, { 'aria-live': 'polite' })
+```
+
+## Types
+
+### DescriptionProps
+
+- `description?: string | number` — Description text or numeric value.
+- `descriptionId?: string` — Custom identifier for the rendered description element.
+
+### DescriptionSlots
+
+- `description?(props: any): any` — Named slot for custom description markup.
+
+## Orchestrator Integration Architecture
+
+`DescriptionInclude` is designed to pair with `DesignLogicAbstract` lazy dependency instantiation (`canCreate` + `callInstance`) and `AriaStaticInclude.describedby`:
+
+```typescript
+import { toRef } from 'vue'
+import { type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { AriaStaticInclude, DescriptionInclude } from '@dxtmisha/constructor'
+
+export class CustomBlock extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    description: {
+      item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots,
+        () => this.callInstance('skeleton', item => item),
+        toRef(this.props, 'tag')
+      ]
+    }
+  }
+
+  get aria() {
+    return {
+      ...AriaStaticInclude.describedby(
+        this.callInstance('description', item => (item.is ? item.id : undefined))
+      )
+    }
+  }
+}
+```

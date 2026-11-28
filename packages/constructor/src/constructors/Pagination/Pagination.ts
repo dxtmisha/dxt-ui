@@ -11,7 +11,7 @@ import {
 import { AreaInclude } from '../../classes/AreaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
+import { FocusDirectionInclude } from '../../classes/FocusDirection/FocusDirectionInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
