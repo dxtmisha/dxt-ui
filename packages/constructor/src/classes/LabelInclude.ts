@@ -1,5 +1,6 @@
-import { mergeProps, type Ref, type VNode } from 'vue'
+import { mergeProps, type Ref, type VNode, type VNodeArrayChildren } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClass,
   type DesignName,
   executeFunctionRef,
@@ -108,18 +109,18 @@ export class LabelInclude {
    * Renders the label element with children and properties.
    *
    * Рендерит элемент метки с дочерними элементами и свойствами.
-   * @param childrenExtra additional children elements / дополнительные дочерние элементы
+   * @param slotsChildren additional children elements / дополнительные дочерние элементы
    * @param props additional HTML properties / дополнительные HTML-свойства
    * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   render(
-    childrenExtra?: any[],
-    props: Record<string, any> = {}
+    slotsChildren?: VNodeArrayChildren,
+    props: ConstrBind = {}
   ): VNode[] {
-    const elements: any[] = []
+    const elements: VNode[] = []
 
     if (this.is) {
-      const children: any[] = [
+      const children: VNodeArrayChildren = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),
         ...this.initSlot()
@@ -129,8 +130,8 @@ export class LabelInclude {
         children.push(...this.elementsExtra())
       }
 
-      if (childrenExtra) {
-        children.push(...childrenExtra)
+      if (slotsChildren) {
+        children.push(...slotsChildren)
       }
 
       if (children.length > 0) {
@@ -223,7 +224,7 @@ export class LabelInclude {
    * Разрешает статический текст метки.
    * @returns array containing the text / массив, содержащий текст
    */
-  protected initLabel(): any[] {
+  protected initLabel(): VNodeArrayChildren {
     if (
       this.ignoreLabelIfSlot
       && this.hasSlot()
@@ -249,7 +250,7 @@ export class LabelInclude {
    * Разрешает динамический подсвеченный или замененный текст метки.
    * @returns array with virtual span node / массив с виртуальным узлом span
    */
-  protected initLabelReplacing(): any[] {
+  protected initLabelReplacing(): VNodeArrayChildren {
     if (isFilledOrNumber(this.labelReplacing?.value)) {
       return [
         render(
@@ -270,7 +271,7 @@ export class LabelInclude {
    * Разрешает содержимое слота для элемента метки.
    * @returns array with resolved slot content / массив с разрешенным содержимым слота
    */
-  protected initSlot(): any[] {
+  protected initSlot(): VNodeArrayChildren {
     if (this.slots) {
       if (this.alternativeSlots) {
         if ('label' in this.slots) {

@@ -67,15 +67,15 @@ export class TeleportInclude {
    * Renders the Teleport component with the specified properties and children.
    *
    * Рендерит компонент Teleport с указанными свойствами и дочерними элементами.
-   * @param children inner content of the Teleport / внутреннее содержимое Teleport
+   * @param slotsChildren inner content of the Teleport / внутреннее содержимое Teleport
    * @param props additional properties for the Teleport / дополнительные свойства для Teleport
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   render(
-    children?: RawChildren | RawSlots,
+    slotsChildren?: RawChildren | RawSlots,
     props: ConstrBind = {}
   ): VNode[] {
-    if (children) {
+    if (slotsChildren) {
       return [
         h(
           Teleport,
@@ -84,7 +84,7 @@ export class TeleportInclude {
             key: 'teleport',
             to: this.to
           },
-          children
+          slotsChildren
         )
       ]
     }

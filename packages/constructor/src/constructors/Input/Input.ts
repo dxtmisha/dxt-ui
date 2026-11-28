@@ -223,7 +223,8 @@ export class Input extends DesignLogicAbstract<
         () => this.i('value'),
         () => this.i('change'),
         () => this.i('code'),
-        () => this.i('match')
+        () => this.i('match'),
+        this.isMounted
       ]
     },
     value: {

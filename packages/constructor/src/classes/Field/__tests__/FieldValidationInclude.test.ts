@@ -1,20 +1,11 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
 import { FieldValidationInclude } from '../FieldValidationInclude'
 import type { FieldAttributesInclude } from '../FieldAttributesInclude'
 import type { FieldChangeInclude } from '../FieldChangeInclude'
 import type { FieldMatchInclude } from '../FieldMatchInclude'
 import type { FieldValueInclude } from '../FieldValueInclude'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as Record<string, unknown>
-  return {
-    ...actual,
-    getCurrentInstance: () => ({}),
-    onMounted: (fn: () => void) => fn()
-  }
-})
 
 describe('FieldValidationInclude', () => {
   it('should initialize and return error status based on inputs check', () => {
@@ -27,7 +18,37 @@ describe('FieldValidationInclude', () => {
       item: ref('')
     } as unknown as FieldValueInclude
 
-    const validation = new FieldValidationInclude(props, () => attributes, () => value)
+    const validation = new FieldValidationInclude(props, () => attributes, () => value, undefined, undefined, undefined, ref(true))
+
+    expect(validation.isError()).toBe(true)
+    expect(validation.checkValidity()).toBe(false)
+  })
+
+  it('should defer native and match validation while isMounted is false and activate on mount', () => {
+    const attributes = {
+      listForCheck: { required: true, type: 'text' }
+    } as unknown as FieldAttributesInclude
+    const value = {
+      getToArray: () => [''],
+      item: ref('')
+    } as unknown as FieldValueInclude
+    const match = {
+      check: () => ({
+        group: 'check',
+        status: false,
+        validationMessage: 'Fields do not match',
+        value: ''
+      })
+    } as unknown as FieldMatchInclude
+    const isMounted = ref(false)
+
+    const validation = new FieldValidationInclude({}, () => attributes, () => value, undefined, undefined, () => match, isMounted)
+
+    expect(validation.isError()).toBe(false)
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.message).toBe('')
+
+    isMounted.value = true
 
     expect(validation.isError()).toBe(true)
     expect(validation.checkValidity()).toBe(false)
@@ -43,7 +64,7 @@ describe('FieldValidationInclude', () => {
       item: ref('hello')
     } as unknown as FieldValueInclude
 
-    const validation = new FieldValidationInclude(props, () => attributes, () => value)
+    const validation = new FieldValidationInclude(props, () => attributes, () => value, undefined, undefined, undefined, ref(true))
 
     expect(validation.isError()).toBe(false)
     expect(validation.checkValidity()).toBe(true)
@@ -57,7 +78,7 @@ describe('FieldValidationInclude', () => {
       item: ref('val')
     } as unknown as FieldValueInclude
 
-    const validation = new FieldValidationInclude(props, () => attributes, () => value)
+    const validation = new FieldValidationInclude(props, () => attributes, () => value, undefined, undefined, undefined, ref(true))
 
     expect(validation.message).toBe('Prop error message')
     expect(validation.isError()).toBe(true)
@@ -76,7 +97,7 @@ describe('FieldValidationInclude', () => {
       is: () => isChanged.value
     } as unknown as FieldChangeInclude
 
-    const validation = new FieldValidationInclude({}, () => attributes, () => value, () => change)
+    const validation = new FieldValidationInclude({}, () => attributes, () => value, () => change, undefined, undefined, ref(true))
 
     expect(validation.isError()).toBe(true)
     expect(validation.message).toBe('')
@@ -100,7 +121,7 @@ describe('FieldValidationInclude', () => {
       })
     } as unknown as FieldMatchInclude
 
-    const validation = new FieldValidationInclude({}, () => attributes, () => value, undefined, undefined, () => match)
+    const validation = new FieldValidationInclude({}, () => attributes, () => value, undefined, undefined, () => match, ref(true))
     expect(validation.isError()).toBe(true)
     expect(validation.message).toBe('Fields do not match')
 
@@ -127,10 +148,10 @@ describe('FieldValidationInclude', () => {
       is: () => changed.value
     } as unknown as FieldChangeInclude
 
-    const validationWithoutChange = new FieldValidationInclude(props, () => attributes, () => value)
+    const validationWithoutChange = new FieldValidationInclude(props, () => attributes, () => value, undefined, undefined, undefined, ref(true))
     expect(validationWithoutChange.expose().isChanged()).toBe(false)
 
-    const validation = new FieldValidationInclude(props, () => attributes, () => value, () => change)
+    const validation = new FieldValidationInclude(props, () => attributes, () => value, () => change, undefined, undefined, ref(true))
     const exposed = validation.expose()
 
     expect(exposed.isChanged()).toBe(false)

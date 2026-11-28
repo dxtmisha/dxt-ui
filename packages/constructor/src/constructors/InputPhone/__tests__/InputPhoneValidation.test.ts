@@ -19,9 +19,9 @@ import type { FieldAllProps } from '../../../types/fieldTypes'
 const mountedCleanups: Array<() => void> = []
 
 /**
- * Helper to create InputPhoneValidation inside a mounted Vue component so ClientOnlyInclude is active.
+ * Helper to create InputPhoneValidation inside a mounted Vue component with reactive mount state.
  *
- * Вспомогательная функция для создания InputPhoneValidation внутри смонтированного Vue-компонента для активации ClientOnlyInclude.
+ * Вспомогательная функция для создания InputPhoneValidation внутри смонтированного Vue-компонента с реактивным состоянием монтирования.
  */
 async function createValidation(
   props: InputPhonePropsBasic = {},
@@ -78,7 +78,8 @@ async function createValidation(
         () => changeInclude,
         () => codeInclude,
         undefined,
-        () => textInclude
+        () => textInclude,
+        ref(true)
       )
 
       return () => h('div')

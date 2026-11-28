@@ -276,7 +276,8 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('change'),
         () => this.i('code'),
         undefined,
-        () => this.i('text')
+        () => this.i('text'),
+        this.isMounted
       ]
     },
     value: {

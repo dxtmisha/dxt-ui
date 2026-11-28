@@ -2,7 +2,6 @@
 export * from './classes/AreaInclude'
 export * from './classes/AriaStaticInclude'
 export * from './classes/CaptionInclude'
-export * from './classes/ClientOnlyInclude'
 export * from './classes/ComponentIncludeAbstract'
 export * from './classes/ControlAbstract'
 export * from './classes/DescriptionInclude'

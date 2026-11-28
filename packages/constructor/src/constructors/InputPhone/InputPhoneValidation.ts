@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import {
   anyToString,
   GeoPhone,
@@ -46,6 +47,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
    * @param code function returning object for error codes / функция, возвращающая объект для работы с кодами ошибок
    * @param match function returning object for match checking / функция, возвращающая объект для проверки совпадений
    * @param text function returning text localization helper / функция, возвращающая помощник локализации текста
+   * @param isMounted reactive mount status of the host component / реактивный статус монтирования компонента
    */
   constructor(
     protected override readonly props: Readonly<FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock' | 'phoneMatch'>>,
@@ -56,7 +58,8 @@ export class InputPhoneValidation extends FieldValidationInclude {
     change?: () => FieldChangeInclude,
     code?: () => FieldCodeInclude,
     match?: () => FieldMatchInclude,
-    protected readonly text?: () => TextInclude
+    protected readonly text?: () => TextInclude,
+    isMounted?: Ref<boolean>
   ) {
     super(
       props,
@@ -64,7 +67,8 @@ export class InputPhoneValidation extends FieldValidationInclude {
       value,
       change,
       code,
-      match
+      match,
+      isMounted
     )
   }
 

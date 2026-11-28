@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ref, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, DesignName } from '@dxtmisha/functional'
+import { reactive, ref, shallowRef, type VNode } from 'vue'
+import { type ConstrBind, type DesignComponents, DesignLifecycleAbstract, DesignName } from '@dxtmisha/functional'
 import { ComponentIncludeAbstract } from '../ComponentIncludeAbstract'
 import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 
@@ -37,6 +37,10 @@ interface TestExpose {
   getCount: () => number
   /** Raw object getter / Геттер сырого объекта */
   getRaw: (prefix?: string) => unknown
+  /** Optional string getter without default / Опциональный геттер строки без значения по умолчанию */
+  getOptionalString?: () => string | undefined
+  /** Optional number getter without default / Опциональный геттер числа без значения по умолчанию */
+  getOptionalNumber?: () => number | undefined
 }
 
 /**
@@ -55,7 +59,9 @@ class TestComponentInclude extends ComponentIncludeAbstract<
     { name: 'focus', method: 'focus', type: 'boolean', defaultValue: false },
     { name: 'getValue', method: 'value', type: 'string', defaultValue: 'default' },
     { name: 'getCount', type: 'number', defaultValue: 0 },
-    { name: 'getRaw', defaultValue: null }
+    { name: 'getRaw', defaultValue: null },
+    { name: 'getOptionalString', type: 'string' },
+    { name: 'getOptionalNumber', type: 'number' }
   ]
 
   /**
@@ -303,6 +309,171 @@ describe('ComponentIncludeAbstract', () => {
       const withComponents = new TestComponentInclude({}, new DesignName('parent.class'), componentsMock)
       expect(withComponents.render(undefined, undefined, () => false)).toEqual([])
       expect(renderMock).not.toHaveBeenCalled()
+    })
+
+    it('should preserve falsy boundary values (0, false, "") in props, extra, propsAttrs, and expose results', () => {
+      const include = new TestComponentInclude(
+        {
+          value: '',
+          subAttrs: {
+            'data-custom': '',
+            'aria-expanded': false,
+            'tabindex': 0
+          }
+        },
+        new DesignName('parent.class'),
+        undefined,
+        {
+          'data-custom': 'fallback',
+          'tabindex': 1
+        }
+      )
+
+      expect(include.testGetProps()).toEqual({
+        value: '',
+        subAttrs: {
+          'data-custom': '',
+          'aria-expanded': false,
+          'tabindex': 0
+        }
+      })
+      expect(include.binds.value['data-custom']).toBe('')
+      expect(include.binds.value['aria-expanded']).toBe(false)
+      expect(include.binds.value.tabindex).toBe(0)
+
+      include.setElementValue({
+        focus: () => false,
+        value: () => '',
+        getCount: () => 0,
+        getRaw: () => false
+      } as unknown as ConstrBind<TestExpose>)
+
+      expect(include.expose.focus()).toBe(false)
+      expect(include.expose.getValue()).toBe('')
+      expect(include.expose.getCount()).toBe(0)
+      expect(include.expose.getRaw()).toBe(false)
+    })
+
+    it('should fall back to defaultValue when element method is missing or returns nullish and preserve undefined for string/number without defaultValue', () => {
+      const include = new TestComponentInclude({}, new DesignName('parent.class'))
+
+      expect(include.expose.getOptionalString?.()).toBeUndefined()
+      expect(include.expose.getOptionalNumber?.()).toBeUndefined()
+
+      include.setElementValue({
+        focus: undefined,
+        value: () => null,
+        getCount: () => undefined,
+        getRaw: () => undefined,
+        getOptionalString: () => undefined,
+        getOptionalNumber: () => null
+      } as unknown as ConstrBind<TestExpose>)
+
+      expect(include.expose.focus()).toBe(false)
+      expect(include.expose.getValue()).toBe('default')
+      expect(include.expose.getCount()).toBe(0)
+      expect(include.expose.getRaw()).toBeNull()
+      expect(include.expose.getOptionalString?.()).toBeUndefined()
+      expect(include.expose.getOptionalNumber?.()).toBeUndefined()
+
+      include.setElementValue({
+        getOptionalString: () => 123,
+        getOptionalNumber: () => '456'
+      } as unknown as ConstrBind<TestExpose>)
+
+      expect(include.expose.getOptionalString?.()).toBe('123')
+      expect(include.expose.getOptionalNumber?.()).toBe(456)
+    })
+
+    it('should override constructor index with render index and forward slotsChildren', () => {
+      const mockedVNode = { type: 'span' } as unknown as VNode
+      const renderMock = vi.fn().mockReturnValue([mockedVNode])
+      const componentsMock = {
+        render: renderMock
+      } as unknown as DesignComponents<Record<string, object>, TestProps>
+      const slots = { default: () => 'slot-content' }
+
+      const include = new TestComponentInclude(
+        {},
+        new DesignName('parent.class'),
+        componentsMock,
+        undefined,
+        'default-index'
+      )
+
+      include.render(slots, { 'aria-expanded': true }, undefined, 'override-index')
+      expect(renderMock).toHaveBeenLastCalledWith(
+        'test-sub',
+        expect.objectContaining({ 'aria-expanded': true }),
+        slots,
+        'override-index'
+      )
+
+      include.render(slots, undefined, undefined, '')
+      expect(renderMock).toHaveBeenLastCalledWith(
+        'test-sub',
+        expect.objectContaining({ class: 'parent-class__test-sub' }),
+        slots,
+        ''
+      )
+    })
+  })
+
+  describe('Reactivity, lifecycle, immutability, and security boundaries', () => {
+    it('should reactively recompute binds when props or extra change without mutating caller objects', () => {
+      const reactiveProps = reactive<TestProps>({
+        subAttrs: { 'data-custom': 'initial' }
+      })
+      const initialExtra: Partial<ConstrBind<TestExtraProps>> = {
+        'aria-expanded': false
+      }
+      const reactiveExtra = shallowRef<Partial<ConstrBind<TestExtraProps>>>(initialExtra)
+      const originalExtraSnapshot: Partial<ConstrBind<TestExtraProps>> = { ...initialExtra }
+
+      const include = new TestComponentInclude(
+        () => reactiveProps,
+        new DesignName('parent.class'),
+        undefined,
+        () => reactiveExtra
+      )
+
+      expect(include.binds.value['data-custom']).toBe('initial')
+      expect(include.binds.value['aria-expanded']).toBe(false)
+
+      reactiveProps.subAttrs = { 'data-custom': 'updated' }
+      reactiveExtra.value = { 'aria-expanded': true }
+
+      expect(include.binds.value['data-custom']).toBe('updated')
+      expect(include.binds.value['aria-expanded']).toBe(true)
+      expect(originalExtraSnapshot).toEqual({ 'aria-expanded': false })
+    })
+
+    it('should filter prototype pollution keys from props, propsAttrs, and extra', () => {
+      const polluted = JSON.parse('{"__proto__":{"polluted":true},"data-custom":"safe"}') as Record<string, unknown>
+      const include = new TestComponentInclude(
+        { subAttrs: polluted as ConstrBind<TestExtraProps> },
+        new DesignName('parent.class'),
+        undefined,
+        polluted as Partial<ConstrBind<TestExtraProps>>
+      )
+
+      const binds = include.binds.value as Record<string, unknown>
+      expect(binds['data-custom']).toBe('safe')
+      expect(Object.hasOwn(binds, '__proto__')).toBe(false)
+      expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+    })
+
+    it('should extend DesignLifecycleAbstract and isolate state across separate instances', () => {
+      const first = new TestComponentInclude({ subAttrs: { 'data-custom': 'first' } }, new DesignName('first.item'))
+      const second = new TestComponentInclude({ subAttrs: { 'data-custom': 'second' } }, new DesignName('second.item'))
+
+      expect(first).toBeInstanceOf(DesignLifecycleAbstract)
+      first.setElementValue({ focus: () => true } as unknown as ConstrBind<TestExpose>)
+
+      expect(first.getElement()).toBeDefined()
+      expect(second.getElement()).toBeUndefined()
+      expect(first.binds.value['data-custom']).toBe('first')
+      expect(second.binds.value['data-custom']).toBe('second')
     })
   })
 })

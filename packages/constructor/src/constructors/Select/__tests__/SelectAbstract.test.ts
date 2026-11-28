@@ -78,7 +78,9 @@ class ConcreteSelectAbstract extends SelectAbstract {
         () => this.i('attributes'),
         () => this.i('value'),
         () => this.i('change'),
-        () => this.i('code')
+        () => this.i('code'),
+        undefined,
+        this.isMounted
       ]
     },
     value: {

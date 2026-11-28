@@ -22,7 +22,7 @@ describe('ScrollbarInclude', () => {
           scrollbar: {
             name: 'StubScrollbar',
             setup(componentProps: Record<string, unknown>, { slots }: { slots: { default?: () => unknown } }) {
-              return () => h('div', componentProps, (slots.default?.() as any))
+              return () => h('div', componentProps, slots.default?.() as any)
             }
           }
         },
@@ -31,9 +31,9 @@ describe('ScrollbarInclude', () => {
 
       const include = new ScrollbarInclude<ScrollbarPropsInclude>(props, naming, components as any, emits)
       const vnodes = include.render(
-        'section',
+        () => [h('p', 'Body content')],
         { key: 'bodyContext', class: 'd1-window__body__context' },
-        () => [h('p', 'Body content')]
+        'section'
       )
 
       expect(vnodes).toHaveLength(1)
@@ -73,9 +73,8 @@ describe('ScrollbarInclude', () => {
       const include = new ScrollbarInclude(props, naming)
 
       const vnodes = include.render(
-        'div',
-        { key: 'bodyContext', class: 'd1-window__body__context' },
-        () => [h('span', 'Fallback child')]
+        () => [h('span', 'Fallback child')],
+        { key: 'bodyContext', class: 'd1-window__body__context' }
       )
 
       expect(vnodes).toHaveLength(1)
@@ -93,7 +92,7 @@ describe('ScrollbarInclude', () => {
       const emptyComponents = new DesignComponents<ScrollbarComponentInclude, ScrollbarPropsInclude>({}, props)
       const include = new ScrollbarInclude(props, naming, emptyComponents)
 
-      const vnodes = include.render('article', { id: 'fallback-article' }, 'Plain text child')
+      const vnodes = include.render('Plain text child', { id: 'fallback-article' }, 'article')
 
       expect(vnodes).toHaveLength(1)
       expect(vnodes[0]?.type).toBe('article')

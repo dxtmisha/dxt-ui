@@ -1,5 +1,6 @@
-import { mergeProps, unref, type VNode } from 'vue'
+import { mergeProps, unref, type VNode, type VNodeArrayChildren } from 'vue'
 import {
+  type ConstrBind,
   getElementId,
   type DesignName,
   isFilledOrNumber,
@@ -90,15 +91,15 @@ export class DescriptionInclude {
    * Renders the description element with children and properties.
    *
    * Рендерит элемент описания с дочерними элементами и свойствами.
-   * @param childrenExtra additional children elements / дополнительные дочерние элементы
+   * @param slotsChildren additional children elements / дополнительные дочерние элементы
    * @param props additional HTML properties / дополнительные HTML-свойства
    * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   render(
-    childrenExtra?: any[],
-    props: Record<string, any> = {}
+    slotsChildren?: VNodeArrayChildren,
+    props: ConstrBind = {}
   ): VNode[] {
-    const children: any[] = []
+    const children: VNodeArrayChildren = []
     const description = this.getProps().description
 
     if (isFilledOrNumber(description)) {
@@ -109,8 +110,8 @@ export class DescriptionInclude {
       children.push(this.slots.description?.({}))
     }
 
-    if (childrenExtra) {
-      children.push(...childrenExtra)
+    if (slotsChildren) {
+      children.push(...slotsChildren)
     }
 
     if (children.length > 0) {

@@ -1,6 +1,6 @@
-import { computed, ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../ClientOnlyInclude'
 import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 
 import type { FieldAttributesInclude } from './FieldAttributesInclude'
@@ -20,9 +20,6 @@ export class FieldValidationInclude {
   /** Internal validation state / Внутреннее состояние валидации */
   protected readonly validation = ref<FieldValidationItem>()
 
-  /** Client only / Клиентская часть */
-  protected readonly clientOnly = new ClientOnlyInclude()
-
   /**
    * Constructor
    *
@@ -33,6 +30,7 @@ export class FieldValidationInclude {
    * @param change function returning object for change state / функция, возвращающая объект для состояния изменения
    * @param code function returning object for error codes / функция, возвращающая объект для работы с кодами ошибок
    * @param match function returning object for match checking / функция, возвращающая объект для проверки совпадений
+   * @param isMounted reactive mount status of the host component / реактивный статус монтирования компонента
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -40,7 +38,8 @@ export class FieldValidationInclude {
     protected readonly value: () => FieldValueInclude,
     protected readonly change?: () => FieldChangeInclude,
     protected readonly code?: () => FieldCodeInclude,
-    protected readonly match?: () => FieldMatchInclude
+    protected readonly match?: () => FieldMatchInclude,
+    protected readonly isMounted?: Ref<boolean>
   ) {
   }
 
@@ -57,7 +56,7 @@ export class FieldValidationInclude {
     }
 
     const check = this.checkItem()
-      ?? (this.clientOnly.isRender() ? this.match?.().check() : undefined)
+      ?? (this.isClient() ? this.match?.().check() : undefined)
 
     if (check) {
       return check
@@ -69,7 +68,7 @@ export class FieldValidationInclude {
   /** Hidden input element for native validation / Скрытый input для нативной валидации */
   protected readonly input = computed<FieldInputCheckInclude | undefined>(
     () => {
-      if (this.clientOnly.isRender()) {
+      if (this.isClient()) {
         return new FieldInputCheckInclude(
           this.attributes().listForCheck,
           undefined,
@@ -168,6 +167,16 @@ export class FieldValidationInclude {
       checkValidity: this.checkValidity,
       getValidationMessage: () => this.message
     }
+  }
+
+  /**
+   * Checks whether client-side validation is active.
+   *
+   * Проверяет, активна ли клиентская валидация.
+   * @returns true if mounted or running in DOM without explicit mount ref / true, если смонтирован или выполняется в DOM без явной ссылки монтирования
+   */
+  protected isClient(): boolean {
+    return this.isMounted ? this.isMounted.value : isDomRuntime()
   }
 
   /**

@@ -85,8 +85,12 @@ export abstract class ComponentIncludeAbstract<
 
   /**
    * Exposes the API methods and properties.
+   * Designed for single-time access during component `setup()` (e.g., for `defineExpose` / `initExpose`),
+   * as each access invokes `toExpose()` to build the proxy object. For repeated imperative calls, prefer `getElement()`.
    *
    * Экспортирует API-методы и свойства.
+   * Предназначен для однократного вызова на этапе `setup()` (например, для передачи в `defineExpose` / `initExpose`),
+   * так как каждое обращение вызывает `toExpose()` и создаёт новый прокси-объект. Для частых императивных вызовов используйте `getElement()`.
    * @returns exposed API object / объект экспортируемого API
    */
   get expose(): ComponentExpose {
@@ -171,6 +175,10 @@ export abstract class ComponentIncludeAbstract<
     return (...attrs: any[]) => {
       const data = this.element.value?.[item.method ?? item.name]?.(...attrs) ?? item.defaultValue
 
+      if (data === undefined && item.type !== 'boolean') {
+        return data
+      }
+
       switch (item.type) {
         case 'boolean':
           return Boolean(data)
@@ -191,7 +199,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns extra attributes or undefined / дополнительные атрибуты или undefined
    */
   protected getExtra(): PartialPropsExtra | undefined {
-    return executeFunctionRef(this.extra) as PartialPropsExtra
+    return executeFunctionRef(this.extra) as PartialPropsExtra | undefined
   }
 
   /**
@@ -211,7 +219,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns raw bindable properties or undefined / сырые связываемые свойства или undefined
    */
   protected getPropsAttrs(): ConstrBind<Props> | undefined {
-    return this.propsAttrsName ? this.getProps()?.[this.propsAttrsName] : undefined
+    return this.propsAttrsName ? this.getProps()[this.propsAttrsName] : undefined
   }
 
   /**

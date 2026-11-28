@@ -104,12 +104,12 @@ export class CaptionInclude {
    * Renders caption element with content from props, slots, and additional children.
    *
    * Отображает элемент caption с содержимым из props, слотов и дополнительных дочерних элементов.
-   * @param childrenExtra additional children elements / дополнительные дочерние элементы
+   * @param slotsChildren additional children elements / дополнительные дочерние элементы
    * @param props additional HTML properties / дополнительные HTML-свойства
    * @returns list of virtual nodes / список виртуальных узлов
    */
   render(
-    childrenExtra?: VNodeArrayChildren,
+    slotsChildren?: VNodeArrayChildren,
     props: ConstrBind = {}
   ): VNode[] {
     const children: VNodeArrayChildren = []
@@ -123,8 +123,8 @@ export class CaptionInclude {
       children.push(this.slots.caption?.({}))
     }
 
-    if (childrenExtra) {
-      children.push(...childrenExtra)
+    if (slotsChildren) {
+      children.push(...slotsChildren)
     }
 
     if (children.length > 0) {

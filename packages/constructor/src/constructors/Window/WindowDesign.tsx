@@ -241,7 +241,7 @@ export class WindowDesign<
 
     return this.item.callInstance(
       'scrollbar',
-      item => item.render('div', binds, this.renderDefault),
+      item => item.render(this.renderDefault, binds),
       () => [
         h(
           'div',

@@ -2,6 +2,7 @@
 
 import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
   type DesignName,
@@ -71,15 +72,15 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
    * Renders scrollbar component or fallback element.
    *
    * Рендерит компонент скроллбара или элемент по умолчанию.
+   * @param slotsChildren sub-component slots or child nodes / слоты субкомпонента или дочерние узлы
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
    * @param tag HTML tag or component name / HTML-тег или имя компонента
-   * @param props additional element properties / дополнительные свойства элемента
-   * @param children slot content or child nodes / содержимое слота или дочерние узлы
    * @returns array of rendered VNodes / массив отрендеренных VNode
    */
   render(
-    tag: string,
-    props?: Record<string, unknown>,
-    children?: RawChildren | RawSlots
+    slotsChildren?: RawChildren | RawSlots,
+    attrs: ConstrBind = {},
+    tag: string = 'div'
   ): VNode[] {
     if (this.components) {
       const scrollbar = this.components.renderOne(
@@ -90,10 +91,10 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
             class: this.naming.getSubClass('scrollbar'),
             ...this.scrollbarEvents
           },
-          props ?? {},
+          attrs,
           (this.props.scrollbarAttrs ?? {}) as Record<string, unknown>
         ),
-        children
+        slotsChildren
       )
 
       if (scrollbar) {
@@ -101,6 +102,6 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
       }
     }
 
-    return [h(tag, props, executeFunction(children) as RawChildren)]
+    return [h(tag, attrs, executeFunction(slotsChildren) as RawChildren)]
   }
 }
