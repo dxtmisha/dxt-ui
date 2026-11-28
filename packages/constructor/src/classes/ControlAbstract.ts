@@ -1,5 +1,8 @@
 import { type Ref, unref } from 'vue'
 import { type ConstrBind, isDomRuntime } from '@dxtmisha/functional'
+import { isRtl } from '@dxtmisha/functional-basic'
+
+import { FrameAbstract } from './FrameAbstract'
 
 import type { ControlProps } from '../types/controlTypes'
 
@@ -8,7 +11,18 @@ import type { ControlProps } from '../types/controlTypes'
  *
  * Абстрактный базовый класс для управления клавиатурным управлением, навигацией по элементам и делегированием фокуса в компонентах.
  */
-export abstract class ControlAbstract {
+export abstract class ControlAbstract extends FrameAbstract {
+  /**
+   * Checks whether keyboard control and focus navigation are enabled for the given properties.
+   *
+   * Проверяет, включены ли клавиатурное управление и навигация фокуса для заданных свойств.
+   * @param props input control properties / входные свойства управления
+   * @returns true if control is focusable / true, если управление доступно для фокуса
+   */
+  static is(props?: Readonly<ControlProps>): boolean {
+    return props?.control !== false
+  }
+
   /**
    * Constructor for ControlAbstract.
    *
@@ -19,7 +33,9 @@ export abstract class ControlAbstract {
   constructor(
     protected readonly props: Readonly<ControlProps> | undefined,
     protected readonly element: Ref<HTMLElement | undefined>
-  ) { }
+  ) {
+    super()
+  }
 
   /**
    * Returns binding attributes for the container element.
@@ -44,7 +60,17 @@ export abstract class ControlAbstract {
    * @returns true if control is focusable / true, если управление доступно для фокуса
    */
   protected isFocusable(): boolean {
-    return this.props?.control !== false
+    return ControlAbstract.is(this.props)
+  }
+
+  /**
+   * Checks whether the navigation container uses right-to-left (RTL) text direction.
+   *
+   * Проверяет, использует ли контейнер навигации направление текста справа налево (RTL).
+   * @returns true if RTL direction is active / true, если активно направление RTL
+   */
+  protected isRtl(): boolean {
+    return isRtl(unref(this.element))
   }
 
   /**
@@ -89,14 +115,19 @@ export abstract class ControlAbstract {
   protected abstract setIndex(index: number): void
 
   /**
-   * Sets the active index and shifts focus to its element.
+   * Sets the active index and shifts focus to its element if the index is within [min, max].
    *
-   * Устанавливает активный индекс и переносит фокус на его элемент.
+   * Устанавливает активный индекс и переносит фокус на его элемент, если индекс находится в диапазоне [min, max].
    * @param index target index / целевой индекс
    */
   protected set(index: number): void {
-    this.setIndex(index)
-    this.focus(index)
+    if (
+      index >= this.getMin()
+      && index <= this.getMax()
+    ) {
+      this.setIndex(index)
+      this.focus(index)
+    }
   }
 
   /**
@@ -112,7 +143,7 @@ export abstract class ControlAbstract {
 
     const targetIndex = index ?? this.getIndex()
 
-    requestAnimationFrame(() => {
+    this.startFrame(() => {
       const containerElement = unref(this.element)
       const targetElement = containerElement?.querySelector<HTMLElement>(
         this.getSelector(targetIndex)
@@ -146,12 +177,7 @@ export abstract class ControlAbstract {
    * Переходит к следующему элементу и устанавливает фокус на его элемент.
    */
   protected next(): void {
-    const currentIndex = this.getIndex()
-    const totalCount = this.getMax()
-
-    if (currentIndex < totalCount) {
-      this.set(currentIndex + 1)
-    }
+    this.set(this.getIndex() + 1)
   }
 
   /**
@@ -160,11 +186,7 @@ export abstract class ControlAbstract {
    * Переходит к предыдущему элементу и устанавливает фокус на его элемент.
    */
   protected previous(): void {
-    const currentIndex = this.getIndex()
-
-    if (currentIndex > this.getMin()) {
-      this.set(currentIndex - 1)
-    }
+    this.set(this.getIndex() - 1)
   }
 
   /**
@@ -174,17 +196,36 @@ export abstract class ControlAbstract {
    * @param event native keyboard event / нативное событие клавиатуры
    */
   protected readonly onKeydown = (event: KeyboardEvent): void => {
-    if (event.isComposing) {
+    if (
+      event.isComposing
+      || !this.isFocusable()
+    ) {
       return
     }
 
     switch (event.key) {
       case 'ArrowRight':
+        event.preventDefault()
+
+        if (this.isRtl()) {
+          this.previous()
+        } else {
+          this.next()
+        }
+        break
       case 'ArrowDown':
         event.preventDefault()
         this.next()
         break
       case 'ArrowLeft':
+        event.preventDefault()
+
+        if (this.isRtl()) {
+          this.next()
+        } else {
+          this.previous()
+        }
+        break
       case 'ArrowUp':
         event.preventDefault()
         this.previous()

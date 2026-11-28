@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/DOM & Elements/isRtl - Check if direction is RTL'/>
+
+# `isRtl`
+
+Checks whether the specified element or the document uses right-to-left (`rtl`) text direction.
+
+When an element is resolved, the function checks the nearest ancestor (or the element itself) with a `dir` attribute via `closest('[dir]')`. If `dir` is explicitly `'rtl'` or `'ltr'`, that value determines the result (case-insensitively). Otherwise, it falls back to `getComputedStyle(element).direction === 'rtl'`.
+
+When no target element is provided or found, the function checks `document.documentElement?.dir` and `document.dir`. Outside a DOM runtime (SSR), it always returns `false`.
+
+**Parameters:**
+- `elementSelectors?: ElementOrString<E> | null` — a selector, Element, Window (resolved to `document.body`), or null.
+
+**Returns:**
+`boolean` — `true` if RTL direction is active, otherwise `false`.
+
+```typescript
+import { isRtl } from '@dxtmisha/functional-basic'
+
+const container = document.createElement('div')
+container.setAttribute('dir', 'rtl')
+document.body.appendChild(container)
+
+console.log(isRtl(container)) // true
+console.log(isRtl()) // false (unless document/html has dir="rtl")
+```

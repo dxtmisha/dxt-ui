@@ -119,6 +119,19 @@ export type ItemName<V> = {
 
 // Element
 /**
+ * Text direction values (`ltr` / `rtl`).
+ *
+ * Значения направления текста (`ltr` / `rtl`).
+ * @enum {string}
+ */
+export enum ElementDirection {
+  /** Left-to-right text direction / Направление текста слева направо */
+  ltr = 'ltr',
+  /** Right-to-left text direction / Направление текста справа налево */
+  rtl = 'rtl'
+}
+
+/**
  * Union type for HTML, SVG elements, Element and Window object/
  * Объединенный тип для HTML, SVG элементов, Element и объекта Window
  */

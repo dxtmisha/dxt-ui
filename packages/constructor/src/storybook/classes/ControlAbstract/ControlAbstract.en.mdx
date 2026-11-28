@@ -1,0 +1,132 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/1. UI/Classes/ControlAbstract - Keyboard Control & Focus Navigation'/>
+
+# ControlAbstract Class
+
+The `ControlAbstract` class is an **Abstract Base Controller** extending `FrameAbstract` in `@dxtmisha/constructor` designed to provide WAI-ARIA keyboard navigation (`ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home`, `End`) with RTL support and cancellable asynchronous DOM focus delegation across multi-item UI components.
+
+## Key Features
+
+- **Static Activation Predicate** — provides `ControlAbstract.is(props)` for declarative lazy instantiation (`canCreate`) in `DesignLogicAbstract` orchestrators without allocating unused instances.
+- **Zero-Boilerplate Event Binding** — exposes a `binds` getter returning `{ onKeydown }` when keyboard control is enabled, or `{}` when disabled.
+- **IME Composition & Focus Guard** — ignores keyboard navigation events while `event.isComposing` is active or `isFocusable()` is `false`, protecting CJK and Vietnamese IME input sessions.
+- **RTL Direction Awareness** — automatically inverts `ArrowLeft` and `ArrowRight` navigation in right-to-left (`dir="rtl"` / computed `direction: rtl`) layouts.
+- **Cancellable Focus Frames** — inherits `FrameAbstract` (`startFrame` / `stopFrame` / `onUnmounted`) to cancel stale `requestAnimationFrame` callbacks on rapid keypresses or component unmount.
+- **Boundary-Safe Navigation** — guards `set()`, `next()`, `previous()`, `first()`, and `last()` against `min`/`max` bounds and empty ranges (`min > max`).
+- **SSR Isomorphism** — checks `isDomRuntime()` before invoking `requestAnimationFrame` or querying DOM elements during focus delegation.
+
+## Methods
+
+### Static Predicates
+
+- `static is(props?: Readonly<ControlProps>): boolean` — Checks whether keyboard control and focus navigation are enabled (`props?.control !== false`).
+
+### Initialization
+
+#### `constructor`
+
+Initializes the abstract controller with component control properties and a Vue `Ref` pointing to the container element.
+
+**Parameters:**
+- `props: Readonly<ControlProps> | undefined` — Component properties containing the optional `control` flag.
+- `element: Ref<HTMLElement | undefined>` — Reference to the root container HTML element used for DOM focus queries.
+
+**Returns:** `ControlAbstract` — Base controller state initialized for the subclass.
+
+```typescript
+import type { Ref } from 'vue'
+import { ControlAbstract, type ControlProps } from '@dxtmisha/constructor'
+
+export class PaginationControl extends ControlAbstract {
+  constructor(
+    protected override readonly props: Readonly<ControlProps>,
+    protected override readonly element: Ref<HTMLElement | undefined>,
+    private readonly getCurrent: () => number,
+    private readonly getTotal: () => number,
+    private readonly onSelect: (index: number) => void
+  ) {
+    super(props, element)
+  }
+
+  protected override getIndex(): number {
+    return this.getCurrent()
+  }
+
+  protected override getMin(): number {
+    return 1
+  }
+
+  protected override getMax(): number {
+    return this.getTotal()
+  }
+
+  protected override getSelector(index: number): string {
+    return `[data-index="${index}"]`
+  }
+
+  protected override setIndex(index: number): void {
+    this.onSelect(index)
+  }
+}
+```
+
+### Public Properties
+
+- `get binds(): ConstrBind` — Returns `{ onKeydown: this.onKeydown }` when `isFocusable()` returns `true`, or `{}` otherwise.
+
+### Protected State & Abstract Contract
+
+- `isFocusable(): boolean` — Checks whether keyboard control is active (defaults to `ControlAbstract.is(this.props)`). Can be overridden in subclasses for additional conditions.
+- `isRtl(): boolean` — Checks whether the container element or document uses right-to-left (`rtl`) directionality.
+- `abstract getIndex(): number` — Returns the currently active item index.
+- `abstract getMin(): number` — Returns the minimum selectable index.
+- `abstract getMax(): number` — Returns the maximum selectable index.
+- `abstract getSelector(index: number): string` — Returns the CSS selector used to locate the focusable DOM element for `index`.
+- `abstract setIndex(index: number): void` — Updates the active index in the underlying component state.
+
+### Navigation & Focus Helpers
+
+- `set(index: number): void` — Calls `setIndex(index)` and moves DOM focus via `focus(index)` when `index` is within `[getMin(), getMax()]`.
+- `focus(index?: number): void` — Schedules a cancellable animation frame via `startFrame` (when `isDomRuntime()` is `true`) to query `getSelector(index ?? getIndex())` inside `element` and call `.focus()`.
+- `first(): void` — Navigates and moves focus to `getMin()` via `set()`.
+- `last(): void` — Navigates and moves focus to `getMax()` via `set()`.
+- `next(): void` — Advances to `getIndex() + 1` and moves focus via `set()`.
+- `previous(): void` — Moves back to `getIndex() - 1` and moves focus via `set()`.
+- `onKeydown(event: KeyboardEvent): void` — Bound handler processing `ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home`, and `End` (respecting `isRtl()`, ignoring `event.isComposing` and `!isFocusable()`).
+
+## Types
+
+### ControlProps
+
+- `control?: boolean` — Enables or disables keyboard control and focus navigation (enabled by default unless `false`).
+
+## Architecture & Lazy Loading Integration
+
+`ControlAbstract` is designed to pair with `DesignLogicAbstract` lazy dependency management (`canCreate` + `callInstance`):
+
+1. **Lazy Instantiation**: Register the subclass in `constructorItems` with `canCreate: () => SubClass.is(this.props)`. When `control` is `false` (or a subclass condition fails), the controller instance is never allocated in memory.
+2. **Reactive Updates**: Access `binds` via `this.callInstance('focus', item => item.binds, {})`. If `props.control` starts as `true` and later switches to `false`, `isFocusable()` dynamically returns `false`, causing `binds` to return `{}` and detach `onKeydown`.
+
+```typescript
+import { type ConstrBind, type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { CarouselPaginationFocus } from '@dxtmisha/constructor/CarouselPagination'
+
+export class CustomPagination extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focus: {
+      item: CarouselPaginationFocus,
+      canCreate: () => CarouselPaginationFocus.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('selected')
+      ]
+    }
+  }
+
+  get binds(): ConstrBind {
+    return this.callInstance('focus', item => item.binds, {})
+  }
+}
+```

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/DOM и элементы/isRtl - Проверка направления текста RTL'/>
+
+# `isRtl`
+
+Проверяет, использует ли указанный элемент или документ направление текста справа налево (`rtl`).
+
+Если целевой элемент найден, функция ищет ближайшего предка (или сам элемент) с атрибутом `dir` через `closest('[dir]')`. Если значение `dir` явно равно `'rtl'` или `'ltr'` (без учёта регистра), результат определяется им. Иначе используется фолбэк `getComputedStyle(element).direction === 'rtl'`.
+
+Если элемент не передан или не найден в DOM, проверяются `document.documentElement?.dir` и `document.dir`. Вне DOM-среды (SSR) всегда возвращается `false`.
+
+**Параметры:**
+- `elementSelectors?: ElementOrString<E> | null` — селектор, Element, Window (преобразуется в `document.body`) или null.
+
+**Возвращает:**
+`boolean` — `true`, если активно направление RTL, иначе `false`.
+
+```typescript
+import { isRtl } from '@dxtmisha/functional-basic'
+
+const container = document.createElement('div')
+container.setAttribute('dir', 'rtl')
+document.body.appendChild(container)
+
+console.log(isRtl(container)) // true
+console.log(isRtl()) // false (если у document/html не задан dir="rtl")
+```

@@ -1,0 +1,132 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/1. UI/Classes/ControlAbstract - Клавиатурное управление и навигация фокуса'/>
+
+# Класс ControlAbstract
+
+Класс `ControlAbstract` — это **абстрактный базовый контроллер**, расширяющий `FrameAbstract` в пакете `@dxtmisha/constructor`, предназначенный для реализации WAI-ARIA клавиатурной навигации (`ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home`, `End`) с поддержкой RTL и отменяемого асинхронного делегирования фокуса DOM для многоэлементных UI-компонентов.
+
+## Ключевые особенности
+
+- **Статический предикат активности** — предоставляет метод `ControlAbstract.is(props)` для декларативной ленивой инициализации (`canCreate`) в оркестраторах `DesignLogicAbstract` без выделения памяти под неиспользуемые экземпляры.
+- **Готовая привязка событий** — геттер `binds` возвращает `{ onKeydown }` при активном управлении или пустой объект `{}` при отключении.
+- **Защита IME-ввода и фокусируемости** — игнорирует события клавиатуры во время композиции (`event.isComposing`) или при `isFocusable() === false`, предотвращая ложные переключения при вводе CJK и вьетнамской раскладки.
+- **Поддержка RTL** — автоматически инвертирует навигацию по `ArrowLeft` и `ArrowRight` в контексте справа налево (`dir="rtl"` / вычисленный `direction: rtl`).
+- **Отменяемые кадры фокуса** — наследует `FrameAbstract` (`startFrame` / `stopFrame` / `onUnmounted`) для отмены устаревших `requestAnimationFrame` при частых нажатиях и размонтировании.
+- **Безопасная граничная навигация** — защищает `set()`, `next()`, `previous()`, `first()` и `last()` от выхода за границы `[min, max]` и от пустых диапазонов (`min > max`).
+- **SSR-изоморфизм** — проверяет `isDomRuntime()` перед вызовом `requestAnimationFrame` и запросами к DOM при переносе фокуса.
+
+## Методы
+
+### Статические предикаты
+
+- `static is(props?: Readonly<ControlProps>): boolean` — Проверяет, включены ли клавиатурное управление и навигация фокуса (`props?.control !== false`).
+
+### Инициализация
+
+#### `constructor`
+
+Инициализирует базовый контроллер входными свойствами управления и Vue-ссылкой `Ref` на корневой HTML-элемент контейнера.
+
+**Параметры:**
+- `props: Readonly<ControlProps> | undefined` — Входные свойства компонента с необязательным флагом `control`.
+- `element: Ref<HTMLElement | undefined>` — Ссылка на корневой HTML-элемент контейнера для поиска целевых элементов фокуса в DOM.
+
+**Возвращает:** `ControlAbstract` — Инициализированное базовое состояние контроллера для наследника.
+
+```typescript
+import type { Ref } from 'vue'
+import { ControlAbstract, type ControlProps } from '@dxtmisha/constructor'
+
+export class PaginationControl extends ControlAbstract {
+  constructor(
+    protected override readonly props: Readonly<ControlProps>,
+    protected override readonly element: Ref<HTMLElement | undefined>,
+    private readonly getCurrent: () => number,
+    private readonly getTotal: () => number,
+    private readonly onSelect: (index: number) => void
+  ) {
+    super(props, element)
+  }
+
+  protected override getIndex(): number {
+    return this.getCurrent()
+  }
+
+  protected override getMin(): number {
+    return 1
+  }
+
+  protected override getMax(): number {
+    return this.getTotal()
+  }
+
+  protected override getSelector(index: number): string {
+    return `[data-index="${index}"]`
+  }
+
+  protected override setIndex(index: number): void {
+    this.onSelect(index)
+  }
+}
+```
+
+### Публичные свойства
+
+- `get binds(): ConstrBind` — Возвращает `{ onKeydown: this.onKeydown }`, если `isFocusable()` возвращает `true`, иначе `{}`.
+
+### Защищённое состояние и абстрактный контракт
+
+- `isFocusable(): boolean` — Проверяет доступность клавиатурного управления (по умолчанию `ControlAbstract.is(this.props)`). Может быть переопределён в подклассах для дополнительных условий.
+- `isRtl(): boolean` — Проверяет, использует ли контейнер или документ направление текста справа налево (`rtl`).
+- `abstract getIndex(): number` — Возвращает текущий активный индекс.
+- `abstract getMin(): number` — Возвращает минимально доступный индекс.
+- `abstract getMax(): number` — Возвращает максимально доступный индекс.
+- `abstract getSelector(index: number): string` — Возвращает CSS-селектор DOM-элемента для указанного `index`.
+- `abstract setIndex(index: number): void` — Устанавливает активный индекс во внутреннем состоянии компонента.
+
+### Методы навигации и фокуса
+
+- `set(index: number): void` — Вызывает `setIndex(index)` и переносит DOM-фокус через `focus(index)`, если `index` находится в диапазоне `[getMin(), getMax()]`.
+- `focus(index?: number): void` — Планирует отменяемый кадр анимации через `startFrame` (при `isDomRuntime() === true`), находит элемент по `getSelector(index ?? getIndex())` внутри `element` и вызывает `.focus()`.
+- `first(): void` — Переходит и переносит фокус на `getMin()` через `set()`.
+- `last(): void` — Переходит и переносит фокус на `getMax()` через `set()`.
+- `next(): void` — Переходит к `getIndex() + 1` и переносит фокус через `set()`.
+- `previous(): void` — Переходит к `getIndex() - 1` и переносит фокус через `set()`.
+- `onKeydown(event: KeyboardEvent): void` — Привязанный обработчик клавиш `ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home` и `End` (учитывает `isRtl()`, игнорирует `event.isComposing` и `!isFocusable()`).
+
+## Типы
+
+### ControlProps
+
+- `control?: boolean` — Включает или отключает клавиатурное управление и навигацию фокуса (по умолчанию включено, если не задано `false`).
+
+## Архитектура и интеграция с ленивой загрузкой
+
+`ControlAbstract` спроектирован для совместной работы с системой ленивой инициализации `DesignLogicAbstract` (`canCreate` + `callInstance`):
+
+1. **Ленивое создание**: зарегистрируйте подкласс в `constructorItems` с условием `canCreate: () => SubClass.is(this.props)`. Если `control` равен `false` (или не выполнено условие подкласса), экземпляр контроллера не создаётся в памяти.
+2. **Реактивное отключение**: запрашивайте `binds` через `this.callInstance('focus', item => item.binds, {})`. Если `props.control` изначально `true`, а затем меняется на `false`, `isFocusable()` динамически вернёт `false`, и `binds` отдаст `{}` для снятия `onKeydown`.
+
+```typescript
+import { type ConstrBind, type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { CarouselPaginationFocus } from '@dxtmisha/constructor/CarouselPagination'
+
+export class CustomPagination extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focus: {
+      item: CarouselPaginationFocus,
+      canCreate: () => CarouselPaginationFocus.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('selected')
+      ]
+    }
+  }
+
+  get binds(): ConstrBind {
+    return this.callInstance('focus', item => item.binds, {})
+  }
+}
+```

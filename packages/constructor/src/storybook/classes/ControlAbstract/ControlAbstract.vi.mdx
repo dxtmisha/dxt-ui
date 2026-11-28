@@ -1,0 +1,132 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/1. UI/Classes/ControlAbstract - Điều khiển bàn phím và điều hướng tiêu điểm'/>
+
+# Lớp ControlAbstract
+
+Lớp `ControlAbstract` là **lớp điều khiển cơ sở trừu tượng** kế thừa `FrameAbstract` trong `@dxtmisha/constructor`, cung cấp điều hướng bàn phím theo chuẩn WAI-ARIA (`ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home`, `End`) có hỗ trợ RTL và ủy quyền tiêu điểm DOM bất đồng bộ có thể hủy cho các thành phần UI nhiều mục.
+
+## Các tính năng chính
+
+- **Vị từ kích hoạt tĩnh** — cung cấp `ControlAbstract.is(props)` để cấu hình khởi tạo lười (`canCreate`) trong các lớp điều phối `DesignLogicAbstract` mà không cấp phát bộ nhớ cho các thực thể không sử dụng.
+- **Gắn kết sự kiện gọn nhẹ** — thuộc tính truy cập `binds` trả về `{ onKeydown }` khi bật điều khiển bàn phím, hoặc `{}` khi tắt.
+- **Bảo vệ bộ gõ IME và trạng thái tập trung** — bỏ qua sự kiện bàn phím khi `event.isComposing` đang hoạt động hoặc `isFocusable()` là `false`, bảo vệ quá trình nhập liệu tiếng Việt và CJK.
+- **Hỗ trợ hướng RTL** — tự động đảo chiều điều hướng `ArrowLeft` và `ArrowRight` trong bố cục phải sang trái (`dir="rtl"` / `direction: rtl`).
+- **Khung tiêu điểm có thể hủy** — kế thừa `FrameAbstract` (`startFrame` / `stopFrame` / `onUnmounted`) để hủy các `requestAnimationFrame` cũ khi nhấn phím liên tục hoặc khi hủy gắn kết.
+- **Điều hướng an toàn biên** — bảo vệ `set()`, `next()`, `previous()`, `first()` và `last()` khỏi vượt giới hạn `[min, max]` và dải rỗng (`min > max`).
+- **Đẳng cấu SSR** — kiểm tra `isDomRuntime()` trước khi gọi `requestAnimationFrame` hoặc truy vấn phần tử DOM khi chuyển tiêu điểm.
+
+## Phương thức
+
+### Vị từ tĩnh
+
+- `static is(props?: Readonly<ControlProps>): boolean` — Kiểm tra xem điều khiển bàn phím và điều hướng tiêu điểm có được bật hay không (`props?.control !== false`).
+
+### Khởi tạo
+
+#### `constructor`
+
+Khởi tạo lớp điều khiển cơ sở với thuộc tính điều khiển thành phần và tham chiếu Vue `Ref` trỏ tới phần tử HTML vùng chứa.
+
+**Tham số:**
+- `props: Readonly<ControlProps> | undefined` — Thuộc tính đầu vào của thành phần chứa cờ tùy chọn `control`.
+- `element: Ref<HTMLElement | undefined>` — Tham chiếu đến phần tử HTML gốc của vùng chứa dùng để tìm phần tử mục tiêu trong DOM.
+
+**Trả về:** `ControlAbstract` — Trạng thái điều khiển cơ sở đã khởi tạo cho lớp con.
+
+```typescript
+import type { Ref } from 'vue'
+import { ControlAbstract, type ControlProps } from '@dxtmisha/constructor'
+
+export class PaginationControl extends ControlAbstract {
+  constructor(
+    protected override readonly props: Readonly<ControlProps>,
+    protected override readonly element: Ref<HTMLElement | undefined>,
+    private readonly getCurrent: () => number,
+    private readonly getTotal: () => number,
+    private readonly onSelect: (index: number) => void
+  ) {
+    super(props, element)
+  }
+
+  protected override getIndex(): number {
+    return this.getCurrent()
+  }
+
+  protected override getMin(): number {
+    return 1
+  }
+
+  protected override getMax(): number {
+    return this.getTotal()
+  }
+
+  protected override getSelector(index: number): string {
+    return `[data-index="${index}"]`
+  }
+
+  protected override setIndex(index: number): void {
+    this.onSelect(index)
+  }
+}
+```
+
+### Thuộc tính công khai
+
+- `get binds(): ConstrBind` — Trả về `{ onKeydown: this.onKeydown }` khi `isFocusable()` trả về `true`, ngược lại trả về `{}`.
+
+### Trạng thái được bảo vệ và giao ước trừu tượng
+
+- `isFocusable(): boolean` — Kiểm tra trạng thái cho phép điều khiển bàn phím (mặc định là `ControlAbstract.is(this.props)`). Có thể ghi đè ở lớp con để bổ sung điều kiện.
+- `isRtl(): boolean` — Kiểm tra xem vùng chứa hoặc tài liệu có sử dụng hướng văn bản phải sang trái (`rtl`) hay không.
+- `abstract getIndex(): number` — Trả về chỉ số đang hoạt động hiện tại.
+- `abstract getMin(): number` — Trả về chỉ số nhỏ nhất hợp lệ.
+- `abstract getMax(): number` — Trả về chỉ số lớn nhất hợp lệ.
+- `abstract getSelector(index: number): string` — Trả về bộ chọn CSS để tìm phần tử DOM có thể nhận tiêu điểm cho `index`.
+- `abstract setIndex(index: number): void` — Cập nhật chỉ số hoạt động trong trạng thái nền của thành phần.
+
+### Phương thức điều hướng và tiêu điểm
+
+- `set(index: number): void` — Gọi `setIndex(index)` và chuyển tiêu điểm DOM thông qua `focus(index)` khi `index` nằm trong `[getMin(), getMax()]`.
+- `focus(index?: number): void` — Lên lịch khung hoạt ảnh có thể hủy qua `startFrame` (khi `isDomRuntime()` là `true`) để tìm phần tử theo `getSelector(index ?? getIndex())` bên trong `element` và gọi `.focus()`.
+- `first(): void` — Điều hướng và chuyển tiêu điểm tới `getMin()` thông qua `set()`.
+- `last(): void` — Điều hướng và chuyển tiêu điểm tới `getMax()` thông qua `set()`.
+- `next(): void` — Tiến tới `getIndex() + 1` và chuyển tiêu điểm thông qua `set()`.
+- `previous(): void` — Lùi về `getIndex() - 1` và chuyển tiêu điểm thông qua `set()`.
+- `onKeydown(event: KeyboardEvent): void` — Trình xử lý sự kiện đã ràng buộc cho `ArrowRight`, `ArrowDown`, `ArrowLeft`, `ArrowUp`, `Home` và `End` (hỗ trợ `isRtl()`, bỏ qua khi `event.isComposing` hoặc `!isFocusable()`).
+
+## Kiểu dữ liệu
+
+### ControlProps
+
+- `control?: boolean` — Bật hoặc tắt điều khiển bàn phím và điều hướng tiêu điểm (mặc định được bật trừ khi đặt là `false`).
+
+## Kiến trúc và tích hợp khởi tạo lười
+
+`ControlAbstract` được thiết kế để phối hợp với cơ chế khởi tạo lười của `DesignLogicAbstract` (`canCreate` + `callInstance`):
+
+1. **Khởi tạo lười**: khai báo lớp con trong `constructorItems` với `canCreate: () => SubClass.is(this.props)`. Khi `control` là `false` (hoặc điều kiện lớp con không đạt), thực thể điều khiển sẽ không được tạo trong bộ nhớ.
+2. **Cập nhật phản hồi**: truy cập `binds` qua `this.callInstance('focus', item => item.binds, {})`. Nếu `props.control` ban đầu là `true` rồi chuyển thành `false`, `isFocusable()` sẽ trả về `false` để `binds` trả về `{}` và gỡ `onKeydown`.
+
+```typescript
+import { type ConstrBind, type ConstrItems, DesignLogicAbstract } from '@dxtmisha/functional'
+import { CarouselPaginationFocus } from '@dxtmisha/constructor/CarouselPagination'
+
+export class CustomPagination extends DesignLogicAbstract<...> {
+  protected override readonly constructorItems: ConstrItems<CustomConstructors> = {
+    focus: {
+      item: CarouselPaginationFocus,
+      canCreate: () => CarouselPaginationFocus.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('selected')
+      ]
+    }
+  }
+
+  get binds(): ConstrBind {
+    return this.callInstance('focus', item => item.binds, {})
+  }
+}
+```

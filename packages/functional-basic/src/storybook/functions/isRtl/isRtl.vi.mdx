@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/DOM & Phần tử/isRtl - Kiểm tra hướng văn bản RTL'/>
+
+# `isRtl`
+
+Kiểm tra xem phần tử được chỉ định hoặc tài liệu có đang sử dụng hướng văn bản từ phải sang trái (`rtl`) hay không.
+
+Khi xác định được phần tử đích, hàm kiểm tra phần tử cha gần nhất (hoặc chính phần tử đó) có thuộc tính `dir` thông qua `closest('[dir]')`. Nếu giá trị `dir` là `'rtl'` hoặc `'ltr'` (không phân biệt chữ hoa/thường), kết quả sẽ dựa theo giá trị đó. Ngược lại, hàm dùng giá trị dự phòng `getComputedStyle(element).direction === 'rtl'`.
+
+Khi không truyền hoặc không tìm thấy phần tử đích trong DOM, hàm kiểm tra `document.documentElement?.dir` và `document.dir`. Ngoài môi trường DOM (SSR), hàm luôn trả về `false`.
+
+**Tham số:**
+- `elementSelectors?: ElementOrString<E> | null` — bộ chọn, Element, Window (được chuyển thành `document.body`) hoặc null.
+
+**Trả về:**
+`boolean` — `true` nếu hướng RTL đang được kích hoạt, ngược lại là `false`.
+
+```typescript
+import { isRtl } from '@dxtmisha/functional-basic'
+
+const container = document.createElement('div')
+container.setAttribute('dir', 'rtl')
+document.body.appendChild(container)
+
+console.log(isRtl(container)) // true
+console.log(isRtl()) // false (trừ khi document/html có dir="rtl")
+```

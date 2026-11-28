@@ -19,8 +19,8 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * @param props input configuration properties / входные конфигурационные свойства
    * @returns true if pagination is focusable / true, если пагинация доступна для фокуса
    */
-  static is(props?: Readonly<CarouselPaginationProps>): boolean {
-    return props?.control !== false
+  static override is(props?: Readonly<CarouselPaginationProps>): boolean {
+    return ControlAbstract.is(props)
       && props?.type !== 'fraction'
       && props?.type !== 'progressbar'
   }
